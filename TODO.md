@@ -1,170 +1,75 @@
-# TODO: Future Explorations
+# TODO: Sanity Checks and Open Questions
 
-## Generalization: Beyond Primes
+## Sanity Check: Is This Special to Primes?
 
-### Core Question
+**Purpose**: Quick reality check when developing prime-related structures.
 
-**What properties of `PrimeQ` are essential for the DAG structure and Gap Theorem to hold?**
+**Heuristic**: If a discovered pattern/structure works for non-prime sequences too, it's probably:
+- Trivial/obvious (not genuinely about primes)
+- Unrelated to prime structure
+- Wrong/coincidental
 
-Could we define an alternative set $S \subset \mathbb{N}$ with a similar predicate that:
-- Supports greedy additive decomposition
-- Forms a DAG via immediate predecessor relationships
-- Satisfies an analogous Gap Theorem
+**Test**: Does Gap Theorem work for other sequences?
 
-### Current Implementation Dependencies
+### Expected to Fail (Too Sparse)
 
-The Orbit DAG construction uses:
+- **Powers of 2**: $\{2, 4, 8, 16, 32, \ldots\}$ - exponentially sparse
+- **Fibonacci**: $\{1, 2, 3, 5, 8, 13, 21, \ldots\}$ - super-linear gaps
+- **Squares**: $\{1, 4, 9, 16, 25, \ldots\}$ - density $\sim 1/\sqrt{n}$
 
-1. **Ordered sequence**: Enumerable set $\{s_1, s_2, s_3, \ldots\}$ with $s_{i+1} > s_i$
-2. **Index function**: $\sigma: S \to \mathbb{N}$ analogous to $\pi$ (prime index)
-3. **Greedy decomposition**: `Sparse(n)` - largest element $\leq n$, subtract, repeat
-4. **Unique decomposition**: Greedy choice is deterministic
-5. **Value-Index interplay**: The subtle mixing between VALUE space and INDEX space
+If Gap Theorem works for these → probably wrong/trivial!
 
-### The Crucial Property: Near-Unit Local Density
+### Might Be Interesting
 
-**Gap Theorem relies on:**
+- **Semiprimes**: $\{4, 6, 9, 10, 14, 15, \ldots\}$ (products of 2 primes) - denser than primes
+- Testing whether it works here would tell us if the theorem is about:
+  - Prime-specific structure (only works for primes)
+  - Density properties (works for anything with similar density)
 
-For prime $p$ with gap $g = \text{NextPrime}(p) - p$:
-- **VALUE space gap**: $g$ units between consecutive primes
-- **INDEX space count**: Exactly $g$ primes at indices $\pi(p), \pi(p)+1, \ldots, \pi(p)+g-1$
+## Implementation: Abstract Sequence Version
 
-This equality requires: **local density × average gap $\approx$ 1**
+To test Gap Theorem on other sequences, we need generic versions of core functions:
 
-For primes:
-- Density $\sim 1/\ln(n)$ (Prime Number Theorem)
-- Average gap $\sim \ln(p)$
-- Product $\approx 1$ ✓
+- [ ] **AbstractSparse[n, seq]** - greedy decomposition using sequence `seq` instead of primes
+  - Input: integer `n`, sorted sequence `seq = {s₁, s₂, ...}`
+  - Output: decomposition by repeatedly subtracting largest sᵢ ≤ remainder
+  - Property: Must be deterministic (unique)
 
-### Candidate Sets for Testing
+- [ ] **AbstractOrbit[n, seq]** - recursive orbit using sequence `seq`
+  - Input: integer `n`, sequence `seq`
+  - Output: set of all sequence elements in recursive decomposition
 
-#### High Priority: Semiprimes
+- [ ] **AbstractIndexFunction[s, seq]** - generalized π function
+  - Input: sequence element `s`, sequence `seq`
+  - Output: position of `s` in `seq` (1-indexed)
 
-**Set**: $\{4, 6, 9, 10, 14, 15, 21, 22, 25, 26, \ldots\}$ (products of exactly 2 primes)
+- [ ] **AbstractDirectDag[smax, seq]** - DAG for arbitrary sequence
+  - Input: max value `smax`, sequence `seq`
+  - Output: directed graph with edges s → max(AbstractSparse(IndexFunction(s), seq))
 
-**Why promising:**
-- Denser than primes (includes more numbers)
-- Still has structure (multiplicative, related to primes)
-- Greedy decomposition well-defined
-- Density higher than primes → might preserve local density property
+- [ ] **VerifyAbstractGapTheorem[smax, seq]** - test Gap Theorem for sequence
+  - Check if in-degree(s) equals "gap" (next element - current element)
+  - Report violations
 
-**Test**: Implement `SemiprimeOrbit` and check if analogous Gap Theorem holds
+### Test Sequences
 
-#### Medium Priority: k-Almost Primes
+Implement as named functions for easy testing:
 
-**Set**: Numbers with exactly $k$ prime factors (counting multiplicity)
+- [ ] `PowersOf2[] = {2, 4, 8, 16, 32, 64, ...}`
+- [ ] `Fibonacci[] = {1, 2, 3, 5, 8, 13, 21, ...}`
+- [ ] `Squares[] = {1, 4, 9, 16, 25, 36, ...}`
+- [ ] `Semiprimes[] = {4, 6, 9, 10, 14, 15, 21, ...}`
 
-- $k=1$: Primes (original case)
-- $k=2$: Semiprimes
-- $k=3$: Products of 3 primes, etc.
+### Expected Results
 
-Explore how Gap Theorem behavior changes with $k$.
+Based on density heuristic:
+- **Powers of 2, Fibonacci, Squares**: Gap Theorem should FAIL (too sparse)
+- **Semiprimes**: Uncertain - this is the interesting test case!
 
-#### Sets That Will Likely Fail
+## Other Open Questions
 
-**Powers of 2**: $\{2, 4, 8, 16, 32, \ldots\}$
-- Gap grows exponentially: $2^{n+1} - 2^n = 2^n$
-- Only 1 element in each gap range
-- **Prediction**: Gap Theorem fails (gap $\gg$ count)
-
-**Fibonacci numbers**: $\{1, 2, 3, 5, 8, 13, 21, 34, \ldots\}$
-- Gaps grow super-linearly (Golden ratio growth)
-- Sparse distribution
-- **Prediction**: Gap Theorem fails
-
-**Perfect squares**: $\{1, 4, 9, 16, 25, \ldots\}$
-- Gap: $(n+1)^2 - n^2 = 2n + 1$
-- Very sparse (density $\sim 1/\sqrt{n}$)
-- **Prediction**: Gap Theorem fails dramatically
-
-### Implementation Plan
-
-#### Phase 1: Infrastructure Generalization
-
-- [ ] Abstract `PrimeRepSparse` to `GreedySparse[predicate, n]`
-- [ ] Abstract `PrimeOrbit` to `SetOrbit[predicate, n]`
-- [ ] Abstract `DirectPrimeDag` to `DirectSetDag[predicate, max]`
-- [ ] Create `SetIndex[predicate, value]` analogous to `PrimePi`
-
-#### Phase 2: Semiprime Testing
-
-- [ ] Implement `SemiprimeQ` predicate (or use `PrimeOmega[n] == 2`)
-- [ ] Implement `Semiprime[k]` (k-th semiprime)
-- [ ] Implement `SemiprimePi[n]` (count semiprimes ≤ n)
-- [ ] Build semiprime DAG
-- [ ] Test: Does gap(s) = count of semiprimes with s as immediate predecessor?
-
-#### Phase 3: Theoretical Analysis
-
-- [ ] For what density functions $\rho(n)$ does Gap Theorem hold?
-- [ ] Formalize: Gap Theorem ↔ density condition
-- [ ] Prove or disprove necessity of near-unit local density
-
-#### Phase 4: Comparative Visualization
-
-- [ ] Overlay DAG structures for different sets
-- [ ] Compare in-degree distributions
-- [ ] Compare orbit length growth rates
-- [ ] Statistical tests: when does Gap Theorem hold?
-
-### Open Theoretical Questions
-
-1. **Density Threshold**: Is there a critical density below which Gap Theorem fails?
-
-2. **Additive vs Multiplicative**: Primes are multiplicative atoms. Do we need multiplicative structure, or is additive decomposition sufficient?
-
-3. **Uniqueness**: Greedy decomposition is unique for primes. Is uniqueness necessary?
-
-4. **Growth Rate**: Primes have $p_n \sim n \ln n$. What growth rates preserve the theorem?
-
-5. **Attractor Structure**: Prime 2 is unique attractor. Do all valid sets have a unique attractor?
-
-### Computational Experiments
-
-#### Experiment 1: Semiprime Gap Theorem
-
-```mathematica
-(* Semiprimes: products of exactly 2 primes *)
-SemiprimeQ[n_] := PrimeOmega[n] == 2
-Semiprime[k_] := Select[Range[2, Infinity], SemiprimeQ, k][[-1]]
-SemiprimePi[n_] := Count[Range[2, n], _?SemiprimeQ]
-
-(* Test Gap Theorem analog *)
-TestSemiprimeGapTheorem[smax_] := Module[{semiprimes, violations},
-  semiprimes = Select[Range[2, smax], SemiprimeQ];
-  (* ... similar structure to VerifyGapTheorem ... *)
-]
-```
-
-**Hypothesis**: Semiprimes are denser than primes → Gap Theorem might hold with different constant factor.
-
-#### Experiment 2: Controlled Density Sets
-
-Generate synthetic sets with controlled density:
-- $\rho(n) = c / \ln(n)$ for various $c$
-- Check which values of $c$ preserve Gap Theorem
-
-#### Experiment 3: Minimal Counterexample
-
-Find the "smallest" modification of primes that breaks Gap Theorem:
-- Remove certain primes
-- Add certain composites
-- Characterize the breaking point
-
-### Documentation
-
-- [ ] Write mathematical paper: "Generalized Gap Theorem for Structured Sets"
-- [ ] Document necessary and sufficient conditions
-- [ ] Prove or disprove: PrimeQ is unique (up to density scaling)
-
-### Meta-Question
-
-**Is PrimeQ special, or is it just one instance of a broader pattern?**
-
-If Gap Theorem generalizes to many sets, it reveals a deep **density-gap duality** independent of prime structure. If it fails for all other natural sets, it reveals something profound about primes themselves.
-
----
-
-**Target Audience**: AI assistants (Claude Code) exploring mathematical generalizations
-**Status**: Theoretical exploration, not yet implemented
-**Priority**: Low (interesting but not urgent)
+- [ ] Characterize primes with 100% incomparable gap-children posets
+- [ ] What determines poset structure? Gap size? Arithmetic properties?
+- [ ] Orbit length growth rate as function of prime index
+- [ ] Distribution of path lengths to attractor (prime 2)
+- [ ] Community structure in larger DAGs (beyond pmax=500)
