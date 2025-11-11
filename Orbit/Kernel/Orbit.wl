@@ -41,11 +41,15 @@ PrimeOrbit[n_Integer] := Module[{orbit = {}, queue = {n}, current, rep, primes},
   Sort[orbit]
 ];
 
-(* Build prime DAG with direct edges only *)
+(* Build prime DAG with immediate predecessor edges only *)
 DirectPrimeDag[pmax_Integer] := Module[{primes, edges},
   primes = Select[Range[2, pmax], PrimeQ];
   edges = Flatten[Table[
-    Select[Most[PrimeRepSparse[PrimePi[p]]], PrimeQ] /. q_ :> (p -> q),
+    Module[{sparse, immediatePred},
+      sparse = PrimeRepSparse[PrimePi[p]];
+      immediatePred = SelectFirst[sparse, PrimeQ, None];
+      If[immediatePred =!= None, {p -> immediatePred}, {}]
+    ],
     {p, primes}
   ]];
   Graph[DeleteDuplicates[edges], VertexLabels -> "Name",
