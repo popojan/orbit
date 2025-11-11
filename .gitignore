@@ -2,6 +2,7 @@
 reports/*.md
 reports/*.png
 reports/*.pdf
+reports/*.svg
 
 # Wolfram Language cache
 .wl_cache/
