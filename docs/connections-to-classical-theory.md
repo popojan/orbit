@@ -10,46 +10,44 @@ The Gap Theorem establishes a precise relationship between prime gaps and the st
 
 **Prime Number Theorem (Hadamard & de la Vallée Poussin, 1896):**
 
-The number of primes less than or equal to x is asymptotically:
+The number of primes less than or equal to $x$ is asymptotically:
 
-```
-π(x) ~ x / ln(x)
-```
+$$\pi(x) \sim \frac{x}{\ln(x)}$$
 
 **Immediate consequence for average gaps:**
 
-The average gap between consecutive primes near p is approximately ln(p).[^1]
+The average gap between consecutive primes near $p$ is approximately $\ln(p)$.[^1]
 
 **Connection to Gap Theorem:**
 
-Our theorem shows that each gap g after prime p corresponds to exactly g primes having p in their orbit. Combined with the average gap result:
-- Average gap ~ ln(p)
-- Average number of primes influenced by p ~ ln(p)
+Our theorem shows that each gap $g$ after prime $p$ corresponds to exactly $g$ primes having $p$ in their orbit. Combined with the average gap result:
+
+- Average gap $\sim \ln(p)$
+- Average number of primes influenced by $p$ $\sim \ln(p)$
 - Thus the "reach" of a prime in the DAG scales logarithmically
 
 ### Cramér's Conjecture (1936)
 
 **Statement:**
 
-Harald Cramér conjectured that the maximal gap g_n between consecutive primes satisfies:[^2]
+Harald Cramér conjectured that the maximal gap $g_n$ between consecutive primes satisfies:[^2]
 
-```
-lim sup (g_n / (log p_n)²) = 1
-```
+$$\limsup_{n \to \infty} \frac{g_n}{(\log p_n)^2} = 1$$
 
-In other words, the largest gaps grow roughly as (log p)².
+In other words, the largest gaps grow roughly as $(\log p)^2$.
 
 **Current Status:**
 
 - Cramér's original heuristic suggested the conjecture based on probabilistic models
-- Granville (1995) argued the conjecture might be false, suggesting a corrected form with an additional factor of 2e^(-γ) ≈ 1.12[^3]
-- The best proven unconditional bound is g_n ≤ p_n^0.525 (Baker, Harman, Pintz, 2001)[^4]
+- Granville (1995) argued the conjecture might be false, suggesting a corrected form with an additional factor of $2e^{-\gamma} \approx 1.12$[^3]
+- The best proven unconditional bound is $g_n \leq p_n^{0.525}$ (Baker, Harman, Pintz, 2001)[^4]
 
 **Connection to Gap Theorem:**
 
 Primes with large gaps are **structural hubs** in our DAG:
-- A prime p with gap g has in-degree exactly g
-- If gaps can be as large as O((log p)²), then some primes have in-degree O((log p)²)
+
+- A prime $p$ with gap $g$ has in-degree exactly $g$
+- If gaps can be as large as $O((\log p)^2)$, then some primes have in-degree $O((\log p)^2)$
 - These primes are exceptionally central to the recursive decomposition structure
 - The Gap Theorem quantifies hub centrality exactly: hub-ness = gap size
 
@@ -65,15 +63,17 @@ While the Erdős-Kac theorem describes the distribution of the number of prime f
 
 **Exponential Distribution Heuristic:**
 
-Gaps between primes behave approximately like an exponential distribution with mean ln(p).[^7] Under this model:
-- Most gaps are close to ln(p)
-- Gaps much larger than ln(p) are rare
-- The largest gap among n primes is expected to be ~ (log n)²
+Gaps between primes behave approximately like an exponential distribution with mean $\ln(p)$.[^7] Under this model:
+
+- Most gaps are close to $\ln(p)$
+- Gaps much larger than $\ln(p)$ are rare
+- The largest gap among $n$ primes is expected to be $\sim (\log n)^2$
 
 **Connection to Gap Theorem:**
 
 In the DAG structure:
-- Most primes have in-degree ~ ln(p) (typical influence)
+
+- Most primes have in-degree $\sim \ln(p)$ (typical influence)
 - Hub primes with large gaps are rare but structurally critical
 - The distribution of in-degrees in the DAG mirrors the distribution of gaps
 
@@ -85,24 +85,27 @@ In the DAG structure:
 
 **DAG view:** Gaps are exact measures of structural influence
 
-A prime p with gap g:
-- Has exactly g primes in its "immediate neighborhood" (indices π(p) through π(p)+g-1)
-- Acts as a mandatory waypoint for all g of those primes' recursive decompositions
+A prime $p$ with gap $g$:
+
+- Has exactly $g$ primes in its "immediate neighborhood" (indices $\pi(p)$ through $\pi(p)+g-1$)
+- Acts as a mandatory waypoint for all $g$ of those primes' recursive decompositions
 - Has higher Betweenness Centrality in the DAG
 
 ### Hub Primes
 
-**Definition:** Primes with gaps significantly larger than ln(p)
+**Definition:** Primes with gaps significantly larger than $\ln(p)$
 
 **Examples (computational):**
-- 89: gap = 8 (ln(89) ≈ 4.5)
-- 113: gap = 14 (ln(113) ≈ 4.7)
-- 523: gap = 18 (ln(523) ≈ 6.3)
-- 1327: gap = 34 (ln(1327) ≈ 7.2)
-- 31397: gap = 72 (ln(31397) ≈ 10.4)
+
+- $89 \to 97$: gap = $8$ ($\ln(89) \approx 4.5$)
+- $113 \to 127$: gap = $14$ ($\ln(113) \approx 4.7$)
+- $523 \to 541$: gap = $18$ ($\ln(523) \approx 6.3$)
+- $1327 \to 1361$: gap = $34$ ($\ln(1327) \approx 7.2$)
+- $31397 \to 31469$: gap = $72$ ($\ln(31397) \approx 10.4$)
 
 **Properties:**
-1. Hub primes have in-degree >> average
+
+1. Hub primes have in-degree $\gg$ average
 2. Many paths in the DAG flow through hubs
 3. Hubs correspond to local sparsity in the prime sequence
 4. The gap quantifies exactly how many primes "depend" on the hub
@@ -111,19 +114,21 @@ A prime p with gap g:
 
 **Twin primes (gap = 2):**
 
-When consecutive primes p and p+2 form a twin prime pair:
-- Prime p has in-degree = 2 (exactly two primes have p in their orbit)
+When consecutive primes $p$ and $p+2$ form a twin prime pair:
+
+- Prime $p$ has in-degree = $2$ (exactly two primes have $p$ in their orbit)
 - Minimal influence in the DAG
 - Locally dense prime distribution
 
 **Connection to Twin Prime Conjecture:**
 
 The Twin Prime Conjecture asserts infinitely many twin primes exist.[^8] In DAG terms:
-- Infinitely many primes with in-degree = 2
+
+- Infinitely many primes with in-degree = $2$
 - Infinitely many local density peaks in the prime sequence
 - The DAG has infinitely many "low-influence" nodes
 
-Recent progress (Zhang 2013, Maynard 2013, Polymath project) proves bounded gaps occur infinitely often, currently bounded at 246.[^9]
+Recent progress (Zhang 2013, Maynard 2013, Polymath project) proves bounded gaps occur infinitely often, currently bounded at $246$.[^9]
 
 ## Computational Verification
 
@@ -136,14 +141,14 @@ Recent progress (Zhang 2013, Maynard 2013, Polymath project) proves bounded gaps
 
 **Largest gaps in range [2, 1,000,000]:**
 
-| Prime      | Gap | In-Degree | Merit (gap/ln(p)) |
-|------------|-----|-----------|-------------------|
-| 31397      | 72  | 72        | 7.03              |
-| 1327       | 34  | 34        | 4.72              |
-| 523        | 18  | 18        | 2.85              |
-| 113        | 14  | 14        | 2.98              |
+| Prime      | Gap | In-Degree | Merit $g/\ln(p)$ |
+|------------|-----|-----------|------------------|
+| 31397      | 72  | 72        | 7.03             |
+| 1327       | 34  | 34        | 4.72             |
+| 523        | 18  | 18        | 2.85             |
+| 113        | 14  | 14        | 2.98             |
 
-Merit is the ratio gap/ln(p), measuring how exceptional a gap is relative to the average.[^10]
+Merit is the ratio $g/\ln(p)$, measuring how exceptional a gap is relative to the average.[^10]
 
 ### Implications for Future Work
 
@@ -164,9 +169,9 @@ The Gap Theorem creates a bridge between:
 **Classical Prime Theory** | **Prime Index DAG**
 --- | ---
 Prime gaps | In-degree centrality
-Average gap ~ ln(p) | Average in-degree ~ ln(p)
+Average gap $\sim \ln(p)$ | Average in-degree $\sim \ln(p)$
 Large gaps rare | Hub primes rare
-Cramér's O((log p)²) | Max in-degree O((log p)²)
+Cramér's $O((\log p)^2)$ | Max in-degree $O((\log p)^2)$
 Twin primes | Minimal influence nodes
 Gap distribution | In-degree distribution
 

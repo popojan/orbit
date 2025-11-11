@@ -6,6 +6,12 @@ reports/*.pdf
 # Wolfram Language cache
 .wl_cache/
 
+# HTML previews
+preview/
+
+# Private notes
+reading.md
+
 # System files
 .DS_Store
 *~
