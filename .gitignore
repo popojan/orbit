@@ -1,0 +1,11 @@
+# Generated reports
+reports/*.md
+reports/*.png
+reports/*.pdf
+
+# Wolfram Language cache
+.wl_cache/
+
+# System files
+.DS_Store
+*~
