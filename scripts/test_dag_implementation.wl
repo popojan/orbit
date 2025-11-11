@@ -9,7 +9,7 @@ PacletDirectoryLoad["Orbit"];
 Needs["Orbit`"];
 
 (* Configuration *)
-pmax = 500;
+pmax = 750;  (* Need ≥701 to include Prime[126] for in-degree of 113 *)
 
 Print["Testing DAG Implementation"];
 Print["Prime range: 2 to ", pmax];
