@@ -22,11 +22,12 @@ maxGap1 = Max[Values[gaps1]];
 
 vis1 = Graph[dag1,
   VertexLabels -> Placed["Name", Center],
-  VertexSize -> Table[p -> (gaps1[p] + 2)/2, {p, primes1}],
+  VertexSize -> Table[p -> 0.3 + 0.05 * gaps1[p], {p, primes1}],
   VertexStyle -> Table[
     p -> ColorData["Rainbow"][gaps1[p] / maxGap1],
     {p, primes1}
   ],
+  VertexLabelStyle -> Directive[FontSize -> 14, Bold, Black],
   GraphLayout -> {"LayeredDigraphEmbedding", "Orientation" -> Top},
   ImageSize -> 1200,
   PlotLabel -> Style["Prime DAG: Immediate Predecessor Structure\n(Primes up to 50, colored by gap size)", 16, Bold]
@@ -38,14 +39,15 @@ Print["✓ Exported reports/dag_small_layered.svg"];
 (* Radial layout from prime 2 *)
 vis2 = Graph[dag1,
   VertexLabels -> Placed["Name", Center],
-  VertexSize -> Table[p -> (gaps1[p] + 2)/2, {p, primes1}],
+  VertexSize -> Table[p -> 0.3 + 0.05 * gaps1[p], {p, primes1}],
   VertexStyle -> Table[
     p -> ColorData["Rainbow"][gaps1[p] / maxGap1],
     {p, primes1}
   ],
+  VertexLabelStyle -> Directive[FontSize -> 14, Bold, Black],
   GraphLayout -> {"RadialEmbedding", "RootVertex" -> 2},
   ImageSize -> 1200,
-  PlotLabel -> Style["Prime DAG: Radial View from Attractor (Prime 2)\n(Vertex size = gap size)", 16, Bold]
+  PlotLabel -> Style["Prime DAG: Radial View from Attractor (Prime 2)\n(Vertex size proportional to gap)", 16, Bold]
 ];
 
 Export["reports/dag_small_radial.svg", vis2];
@@ -77,6 +79,7 @@ vis3 = Graph[dag2,
     ],
     {p, primes2}
   ],
+  VertexLabelStyle -> Directive[FontSize -> 16, Bold, Black],
   GraphLayout -> {"LayeredDigraphEmbedding", "Orientation" -> Top},
   ImageSize -> 1400,
   PlotLabel -> Style["Prime DAG: Hub Primes Highlighted (gap ≥ 10)\n(Primes up to 200)", 16, Bold]
@@ -94,12 +97,16 @@ pmax3 = 500;
 primes3 = Select[Range[2, pmax3], PrimeQ];
 gaps3 = Table[NextPrime[p] - p, {p, primes3}];
 
+(* Use consistent binning for comparison *)
+maxVal = Max[Max[gaps3], 20];  (* Ensure we capture reasonable range *)
+binSpec = {0, maxVal, 2};  (* Bins: 0-2, 2-4, 4-6, etc. *)
+
 gapHist = Histogram[gaps3,
-  Automatic,
-  "PDF",
+  binSpec,
   ChartStyle -> Directive[EdgeForm[Black], ColorData[97, 1]],
   PlotLabel -> Style["Distribution of Prime Gaps (up to 500)", 16, Bold],
-  FrameLabel -> {"Gap Size", "Probability Density"},
+  FrameLabel -> {"Gap Size", "Count"},
+  PlotRange -> {{0, maxVal}, All},
   ImageSize -> 800,
   Frame -> True
 ];
@@ -112,10 +119,11 @@ dag3 = DirectPrimeDag[pmax3];
 inDegrees3 = VertexInDegree[dag3];
 
 inDegHist = Histogram[inDegrees3,
-  Automatic,
+  binSpec,
   ChartStyle -> Directive[EdgeForm[Black], ColorData[97, 2]],
   PlotLabel -> Style["Distribution of In-Degrees in DAG (up to 500)", 16, Bold],
   FrameLabel -> {"In-Degree", "Count"},
+  PlotRange -> {{0, maxVal}, All},
   ImageSize -> 800,
   Frame -> True
 ];
@@ -169,7 +177,7 @@ report = StringJoin[{
   "**Vertex size proportional to gap**\n\n",
   "### Radial Layout (from Prime 2)\n\n",
   "![DAG Radial](dag_small_radial.svg)\n\n",
-  "Prime 2 is the **attractor** — all paths eventually lead to 2.\n\n",
+  "Prime 2 is the **attractor** &mdash; all paths eventually lead to 2.\n\n",
 
   "## Hub Primes (Primes up to 200)\n\n",
   "![DAG with Hubs](dag_medium_hubs.svg)\n\n",

@@ -15,10 +15,11 @@ Print["Analyzing partial order structure on gap-children..."];
 Print["Prime range: up to ", pmax];
 Print[""];
 
-(* Find primes with significant gaps *)
+(* Find primes with significant gaps (≥2 for meaningful poset analysis) *)
 primes = Select[Range[2, pmax], PrimeQ];
 gaps = Table[{p, NextPrime[p] - p}, {p, primes}];
-hubPrimes = TakeLargest[gaps, sampleSize, Last][[All, 1]];
+gapsFiltered = Select[gaps, Last[#] >= 2 &];  (* Need at least 2 gap-children for pairs *)
+hubPrimes = TakeLargest[gapsFiltered, sampleSize, Last][[All, 1]];
 
 Print["Analyzing ", Length[hubPrimes], " primes with largest gaps"];
 Print["Gaps range: ", MinMax[hubPrimes /. p_ :> NextPrime[p] - p]];
@@ -32,13 +33,18 @@ results = Table[PosetStatistics[p], {p, hubPrimes}];
 incompPercentages = #["Incomparable %"] & /@ results;
 gapSizes = #["Gap"] & /@ results;
 
+(* Safely compute statistics, handling edge cases *)
+SafeMean[x_] := If[Length[x] > 0, N[Mean[x]], 0];
+SafeStdDev[x_] := If[Length[x] > 1, N[StandardDeviation[x]], 0];
+SafeCorr[x_, y_] := If[Length[x] > 1 && Length[y] > 1, N[Correlation[x, y]], 0];
+
 summary = {
   "Total primes analyzed" -> Length[results],
-  "Mean incomparability %" -> N[Mean[incompPercentages]],
-  "Std dev incomparability %" -> N[StandardDeviation[incompPercentages]],
-  "Min incomparability %" -> Min[incompPercentages],
-  "Max incomparability %" -> Max[incompPercentages],
-  "Correlation (gap vs incomp %)" -> N[Correlation[gapSizes, incompPercentages]]
+  "Mean incomparability %" -> SafeMean[incompPercentages],
+  "Std dev incomparability %" -> SafeStdDev[incompPercentages],
+  "Min incomparability %" -> If[Length[incompPercentages] > 0, Min[incompPercentages], 0],
+  "Max incomparability %" -> If[Length[incompPercentages] > 0, Max[incompPercentages], 0],
+  "Correlation (gap vs incomp %)" -> SafeCorr[gapSizes, incompPercentages]
 };
 
 (* Identify interesting cases *)
