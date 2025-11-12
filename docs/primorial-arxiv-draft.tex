@@ -25,7 +25,7 @@ We present a computational discovery: the primorial $p\#$ (product of all primes
 \[
 \text{den}\left(\frac{1}{2} \sum_{k=1}^{\lfloor(m-1)/2\rfloor} \frac{(-1)^k \cdot k!}{2k+1}\right) = \prod_{\substack{p \text{ prime} \\ p \leq m}} p
 \]
-where $\text{den}(q)$ denotes the denominator of rational $q$ in lowest terms. The formula has been verified computationally for $m$ up to 100,000. A rigorous proof has not yet been established. The primary theoretical challenge concerns a systematic cancellation: although the individual denominators $\{2k+1\}$ contain prime powers ($9 = 3^2$, $25 = 5^2$, $27 = 3^3$, \ldots), the final reduced denominator contains only first powers of primes. We formulate this as an open problem about $p$-adic valuations and discuss possible theoretical connections.
+where $\text{den}(q)$ denotes the denominator of rational $q$ in lowest terms. The formula has been verified computationally for $m$ up to 1,000,000. A rigorous proof has not yet been established. The primary theoretical challenge concerns a systematic cancellation: although the individual denominators $\{2k+1\}$ contain prime powers ($9 = 3^2$, $25 = 5^2$, $27 = 3^3$, \ldots), the final reduced denominator contains only first powers of primes. We formulate this as an open problem about $p$-adic valuations and discuss possible theoretical connections.
 \end{abstract}
 
 \section{Introduction}
@@ -164,7 +164,8 @@ $m$ & $\pi(m)$ & Primorial digits \\ \hline
 100 & 25 & 37 \\
 1{,}000 & 168 & 416 \\
 10{,}000 & 1{,}229 & 3{,}393 \\
-100{,}000 & 9{,}592 & 43{,}293
+100{,}000 & 9{,}592 & 43{,}293 \\
+1{,}000{,}000 & 78{,}498 & 433{,}637
 \end{tabular}
 \caption{Verification checkpoints. All values tested exhaustively (every $m$ from 3 onwards).}
 \label{tab:verification}
