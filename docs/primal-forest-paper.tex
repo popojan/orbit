@@ -84,33 +84,29 @@ Let's unpack this:
 
 \subsection{Why This Coordinate Choice?}
 
-The y-coordinate $kx + 1$ isn't arbitrary---it creates a \textbf{regular, square-like forest}. As we plot points for different values of $k$ and $x$, they form a symmetric grid pattern. In fact, if we reflect the entire forest across the x-axis (flipping $y \to -y$), the positions where primes are visible remain unchanged! This symmetry reveals the deep regularity in how composites are distributed.
+The y-coordinate $kx + 1$ isn't arbitrary---it creates a \textbf{regular, square-like forest}. As we plot points for different values of $k$ and $x$, they form a symmetric grid pattern. In fact, if we reflect the entire forest across the x-axis (flipping $y \to -y$), the gaps (prime positions) remain unchanged! This symmetry reveals the deep regularity in how factorizations are distributed.
+
+\textbf{Note}: We could also plot the case $x=1$ (which gives the sequence $k+1$ along the main diagonal), but omitting it makes the pattern clearer: \emph{every dot is a factorization, and primes are the absences}. This forces active reasoning rather than passive recognition.
 
 \section{The Forest Emerges}
 
-Figure~\ref{fig:forest} shows the primal forest for composites up to $n=31$.
+Figure~\ref{fig:forest} shows the primal forest for the range $n \leq 31$. We plot only factorizations with $x \geq 2$---the pure factorization lattice.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.8\textwidth]{../visualizations/prime-grid-demo.png}
-\caption{The Primal Forest (top-down view). Each blue dot represents a factorization: a composite at x-coordinate $n = x(x+k)$ with smaller factor $x \geq 2$. Orange dots mark the main diagonal where $x=1$, revealing primes directly. Vertical lines connect orange dots to the primes on the x-axis. Prime numbers are the x-coordinates with no dots above them---gaps in the factor forest.}
+\caption{The Primal Forest: a top-down view of the factorization lattice. Each blue dot represents a factorization $n = x(x+k)$ with $x \geq 2$, plotted at coordinates $(kx+x^2, kx+1)$. Prime numbers are the x-coordinates with \emph{no dots above them}---gaps in the factor forest where you can see through to the ground.}
 \label{fig:forest}
 \end{figure}
 
 \subsection{What Are We Seeing?}
 
 \begin{itemize}
-\item \textbf{Blue dots}: Each dot represents a \emph{factorization}. Specifically, a dot at $(kx+x^2, kx+1)$ shows that the number $n = x(x+k)$ has $x$ as a factor. The more dots above a given x-coordinate, the more factorizations that number has. These dots form the dense ``forest'' blocking your view down to the primes.
+\item \textbf{Blue dots}: Each dot represents a \emph{factorization}. Specifically, a dot at $(kx+x^2, kx+1)$ shows that the number $n = x(x+k)$ has $x$ as a factor (with $x \geq 2$). The more dots above a given x-coordinate, the more factorizations that number has. These dots form the dense ``forest'' blocking your view down to the primes.
 
-\item \textbf{Orange dots}: Special positions where $x=1$. When $x=1$, the coordinates become:
-\[
-(k \cdot 1 + 1^2,\, k \cdot 1 + 1) = (k+1, k+1)
-\]
-So we get points at $(2,2), (3,3), (4,4), (5,5), \ldots$ along the \textbf{main diagonal} $y=x$ of the square forest. The orange dots highlight when $k+1$ is \textbf{prime}---these are ``see-through'' positions where you can look down directly to the prime on the x-axis.
+\item \textbf{Gaps on the x-axis}: Look at the x-coordinates. Most values have blue dots above them---at least one factorization exists. But some x-coordinates have \emph{no dots at all}. These are the \textbf{primes}! They're clearings in the forest---numbers with zero factorizations.
 
-\item \textbf{Vertical lines}: Drop from orange points to the x-axis, showing which prime they sit above.
-
-\item \textbf{Gaps on the x-axis}: Look at the x-coordinates: most values have blue or orange dots above them (composites). But some x-coordinates have \emph{no points at all}---these are the \textbf{primes}! They're gaps in the forest.
+\item \textbf{The viewing exercise}: Stand at any x-coordinate on the ground and look straight up. If you see blue dots (trees), that number is composite. If you see clear sky---nothing blocking your view---that number is prime.
 \end{itemize}
 
 \subsection{The Core Insight}
@@ -230,6 +226,49 @@ A: Yes! Primes are precisely the gaps in the regular factor lattice. The pattern
 
 \paragraph{Q: Why does the probability of finding a prime decrease?}
 A: As numbers grow larger, each position on the x-axis has more potential factors. The forest grows denser because there are simply more ways to factor larger numbers. Geometrically, more trees block your sight, so gaps (primes) become rarer.
+
+\section{The Regularity Paradox}
+
+\begin{center}
+\fbox{\begin{minipage}{0.9\textwidth}
+\vspace{0.5em}
+\textbf{A Profound Mystery Made Visible}
+
+The Primal Forest reveals a stunning paradox at the heart of prime distribution:
+
+\begin{itemize}
+\item \textbf{Input}: Perfectly regular diagonal patterns
+  \begin{itemize}
+  \item Multiples of 2: evenly spaced at intervals of 2
+  \item Multiples of 3: evenly spaced at intervals of 3
+  \item Multiples of 5: evenly spaced at intervals of 5
+  \item Each prime generates its own perfectly uniform lattice
+  \end{itemize}
+
+\item \textbf{Transformation}: Simple quadratic offset $x^2 + kx$
+  \begin{itemize}
+  \item Completely deterministic
+  \item No randomness, no chaos in the rule itself
+  \item Just shifts each diagonal row by a parabolic curve
+  \end{itemize}
+
+\item \textbf{Output}: The mysterious distribution of primes
+  \begin{itemize}
+  \item Gaps of 2, 4, 6, 14, 34, 72, \ldots
+  \item Twin primes appearing unpredictably
+  \item The subject of the Riemann Hypothesis
+  \item One of mathematics' deepest unsolved problems
+  \end{itemize}
+\end{itemize}
+
+\textbf{The question}: How can overlaying infinitely many perfectly regular patterns, offset by a simple quadratic, create something as complex and mysterious as the prime distribution?
+
+You can \emph{see} the regular structure. Each factor creates predictable rows. The overlay is deterministic. Yet the gaps---the primes---resist prediction. This visualization doesn't resolve the mystery; it \emph{reveals} it. Perhaps that's the deepest lesson: \textbf{simple geometric rules can generate irreducible complexity.}
+
+This is why the geometric view, despite its clarity, doesn't unlock new computational shortcuts for finding primes. The gaps are what remain after infinite superposition of regular patterns---a non-local, globally emergent phenomenon. Each prime's existence depends on escaping \emph{all} factor rows, which is equivalent to the original primality question, just visualized geometrically.
+\vspace{0.5em}
+\end{minipage}}
+\end{center}
 
 \section{A Note for Educators: Left-Brain Algorithms, Right-Brain Patterns}
 
