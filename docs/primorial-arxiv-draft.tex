@@ -25,7 +25,7 @@ We present a computational discovery: the primorial $p\#$ (product of all primes
 \[
 \text{den}\left(\frac{1}{2} \sum_{k=1}^{\lfloor(m-1)/2\rfloor} \frac{(-1)^k \cdot k!}{2k+1}\right) = \prod_{\substack{p \text{ prime} \\ p \leq m}} p
 \]
-where $\text{den}(q)$ denotes the denominator of rational $q$ in lowest terms. The formula has been verified computationally for $m$ up to 5000, yet a rigorous proof remains elusive. The central mystery is a systematic cancellation: although the individual denominators $\{2k+1\}$ contain prime powers ($9 = 3^2$, $25 = 5^2$, $27 = 3^3$, \ldots), the final reduced denominator contains only first powers of primes. We formulate this as an open problem about $p$-adic valuations and discuss possible theoretical connections.
+where $\text{den}(q)$ denotes the denominator of rational $q$ in lowest terms. The formula has been verified computationally for $m$ up to 100,000, yet a rigorous proof remains elusive. The central mystery is a systematic cancellation: although the individual denominators $\{2k+1\}$ contain prime powers ($9 = 3^2$, $25 = 5^2$, $27 = 3^3$, \ldots), the final reduced denominator contains only first powers of primes. We formulate this as an open problem about $p$-adic valuations and discuss possible theoretical connections.
 \end{abstract}
 
 \section{Introduction}
@@ -139,7 +139,7 @@ The alternating factor $(-1)^k$ is essential. Without it, the formula loses the 
 
 \section{Computational Verification}
 
-The formula has been verified computationally for all $m$ from 3 to 1,000,000.
+The formula has been verified exhaustively for all $m$ from 3 to 100,000, testing every integer value (both composite and prime). At $m = 100{,}000$, the primorial has 43,293 digits; all denominators match exactly.
 
 \subsection{Iterative Formulation}
 
@@ -155,23 +155,22 @@ where the state is $S_n = \{n, a_n, b_n\}$. After $h = \lfloor(m-1)/2\rfloor$ it
 \text{Primorial}(m) = 2 \cdot \text{den}(b_h - 1)
 \]
 
-This recurrence allows $O(m)$ arithmetic operations instead of $O(m)$ factorial computations, enabling verification at scale.
+The equivalence between the direct sum (\ref{eq:main}) and this recurrence can be established by induction; the recurrence tracks $b_n = 1 + 2S_n$, and the factor of 2 is unwrapped by the extraction formula. This enables $O(m)$ arithmetic operations and facilitates verification at scale. Table~\ref{tab:verification} shows key verification checkpoints:
 
-\subsection{Performance and Verification Range}
+\begin{table}[h]
+\centering
+\begin{tabular}{r|r|r}
+$m$ & $\pi(m)$ & Primorial digits \\ \hline
+100 & 25 & 37 \\
+1{,}000 & 168 & 416 \\
+10{,}000 & 1{,}229 & 3{,}393 \\
+100{,}000 & 9{,}592 & 43{,}293
+\end{tabular}
+\caption{Verification checkpoints. All values tested exhaustively (every $m$ from 3 onwards).}
+\label{tab:verification}
+\end{table}
 
-Using the iterative method:
-\begin{itemize}
-\item $m = 100$: $<1$ms (37-digit primorial)
-\item $m = 1{,}000$: $\approx 2$ms (416-digit primorial)
-\item $m = 10{,}000$: $\approx 15$ms (3{,}393-digit primorial)
-\item $m = 100{,}000$: $\approx 2$s (33{,}907-digit primorial)
-\item $m = 1{,}000{,}000$: $\approx 3$min (339{,}070-digit primorial)
-\end{itemize}
-
-All values have been verified against the standard primorial computation. The iterative formulation and verification scripts are publicly available:
-\begin{center}
-\url{https://github.com/popojan/orbit}
-\end{center}
+The iterative formulation and verification scripts are publicly available at \url{https://github.com/popojan/orbit}.
 
 \section{Open Questions}
 
