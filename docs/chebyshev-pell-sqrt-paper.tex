@@ -228,7 +228,7 @@ A remarkable property of $\sigma_2$ emerged during our investigation: it is \emp
 \end{equation}
 Symbolic verification confirms this equivalence holds for all rational $d, n$ with $n^2 \neq d$.
 
-Intriguingly, this property is \emph{unique} to $\sigma_2$: systematic verification establishes that $\sigma_m$ for $m \in \{1, 3, 4, 5, 6, 8\}$ does \emph{not} coincide with $m$ iterations of the Babylonian method. The differences simplify to expressions involving $(d - n^2)$ in the numerator, vanishing only at the trivial fixed point where the root is already exact. This demonstrates that while $\sigma_m$ shares structural connections with classical iterative methods through its Chebyshev polynomial foundation, it represents a genuinely distinct operator family rather than an alternative formulation of Newton's method.
+Intriguingly, this property appears \emph{unique} to $\sigma_2$: computational verification for $m \in \{1, 3, 4, 5, 6, 8\}$ reveals that $\sigma_m \neq m$ Babylonian iterations. The symbolic differences simplify to expressions with $(d - n^2)$ in the numerator, vanishing only when $n^2 = d$ (the trivial fixed point where convergence is already achieved). While this limited sampling suggests $\sigma_m$ forms a genuinely distinct operator family rather than merely encoding iterated Newton steps, a complete theoretical characterization of the relationship remains an open question.
 \end{remark}
 
 \section{The Nested Iteration Framework}
