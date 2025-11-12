@@ -56,8 +56,18 @@ LoadState[] := If[FileExistsQ[stateFile],
   {2, 2, {0, 0, 1}, 0, AbsoluteTime[]} (* {lastM, standardPrimorial, sieveState, failureCount, startTime} *)
 ];
 
-SaveState[lastM_, standardPrimorial_, sieveState_, failureCount_, startTime_] :=
-  Export[stateFile, {lastM, standardPrimorial, sieveState, failureCount, startTime}, "MX"];
+SaveState[lastM_, standardPrimorial_, sieveState_, failureCount_, startTime_] := Module[{result},
+  result = Quiet[Check[
+    Export[stateFile, {lastM, standardPrimorial, sieveState, failureCount, startTime}, "MX"],
+    $Failed
+  ]];
+  If[result === $Failed,
+    Print["\n*** WARNING: State save failed at m=", lastM, " ***\n"];,
+    (* Success - print to stderr so it doesn't mess up progress bar *)
+    WriteString["stderr", "(saved m=", lastM, ") "];
+  ];
+  result
+];
 
 (* Main verification *)
 Print["================================================================="];
