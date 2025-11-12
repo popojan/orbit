@@ -129,12 +129,17 @@ While the connection between Chebyshev polynomials and Pell equations has been e
 The nested Chebyshev-Pell method presented in this paper evolved from earlier explorations in Egyptian fraction representations of square roots \cite{egypt_repo}. The original approach, implemented in the \texttt{egypt} computational toolkit, combines Pell equation solutions with Chebyshev polynomial series to express square roots as sums of rational terms amenable to Egyptian fraction decomposition.
 
 \begin{definition}[Original Egyptian Fraction Method]
-Given the fundamental Pell solution $(x_0, y_0)$ to $x^2 - dy^2 = 1$, define the base approximation $b = (x_0 - 1)/y_0$ and the Chebyshev term:
+Given the fundamental Pell solution $(x_0, y_0)$ to $x^2 - dy^2 = 1$, define the base approximation $b = (x_0 - 1)/y_0$ and approximation terms. The original formulation from the \texttt{egypt} toolkit employs factorial-based terms:
+\begin{equation}
+\label{eq:factorial_term}
+\tau_j^{(\text{factorial})}(x) = \frac{1}{1 + \sum_{i=1}^{j} \frac{2^{i-1} x^i \cdot (j+i)!}{(j-i)! \cdot (2i)!}}
+\end{equation}
+This factorial expression admits an elegant closed-form simplification via Chebyshev polynomials:
 \begin{equation}
 \label{eq:original_term}
 \tau_k(x) = \frac{1}{T_{\lceil k/2\rceil}(x+1) \cdot (U_{\lfloor k/2\rfloor}(x+1) - U_{\lfloor k/2\rfloor - 1}(x+1))}
 \end{equation}
-Then the approximation:
+The two representations are equivalent through generating function identities connecting factorials to Chebyshev polynomials. Then the approximation:
 \begin{equation}
 \sqrt{d} \approx b \cdot \left(1 + \sum_{k=1}^{n} \tau_k(x_0 - 1)\right)
 \end{equation}
