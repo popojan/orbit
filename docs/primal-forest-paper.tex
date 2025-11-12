@@ -94,26 +94,26 @@ Figure~\ref{fig:forest} shows the primal forest for the range $n \leq 31$. We pl
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.8\textwidth]{../visualizations/prime-grid-demo.png}
-\caption{The Primal Forest: a top-down view of the factorization lattice. Each blue dot represents a factorization $n = p(p+k)$ with $p \geq 2$, plotted at coordinates $(kp+p^2, kp+1)$. Prime numbers are the x-coordinates with \emph{no dots above them}---gaps in the factor forest where you can see through to the ground.}
+\includegraphics[width=0.8\textwidth]{../visualizations/primal-forest-31.pdf}
+\caption{The Primal Forest: a top-down view of the factorization lattice. Each dot represents a factorization $n = p(p+k)$ with $p \geq 2$, plotted at coordinates $(kp+p^2, kp+1)$. Prime numbers are the x-coordinates with \emph{no dots above them}---gaps in the factor forest where you can see through to the ground.}
 \label{fig:forest}
 \end{figure}
 
 \subsection{What Are We Seeing?}
 
 \begin{itemize}
-\item \textbf{Blue dots}: Each dot represents a \emph{factorization}. Specifically, a dot at $(kp+p^2, kp+1)$ shows that the number $n = p(p+k)$ has $p$ as a factor (with $p \geq 2$). The more dots above a given x-coordinate, the richer the divisor structure of that number. These dots form the dense ``forest'' blocking your view down to the primes.
+\item \textbf{Dots}: Each dot represents a \emph{factorization}. Specifically, a dot at $(kp+p^2, kp+1)$ shows that the number $n = p(p+k)$ has $p$ as a factor (with $p \geq 2$). The more dots above a given x-coordinate, the richer the divisor structure of that number. These dots form the dense ``forest'' blocking your view down to the primes.
 
-\item \textbf{Gaps on the x-axis}: Look at the x-coordinates. Most values have blue dots above them---at least one factorization exists. But some x-coordinates have \emph{no dots at all}. These are the \textbf{primes}! They're clearings in the forest---numbers with zero factorizations.
+\item \textbf{Gaps on the x-axis}: Look at the x-coordinates. Most values have dots above them---at least one factorization exists. But some x-coordinates have \emph{no dots at all}. These are the \textbf{primes}! They're clearings in the forest---numbers with zero factorizations.
 
-\item \textbf{The viewing exercise}: Stand at any x-coordinate on the ground and look straight up. If you see blue dots (trees), that number is composite. If you see clear sky---nothing blocking your view---that number is prime.
+\item \textbf{The viewing exercise}: Stand at any x-coordinate on the ground and look straight up. If you see dots (trees), that number is composite. If you see clear sky---nothing blocking your view---that number is prime.
 \end{itemize}
 
 \subsection{The Core Insight}
 
 \begin{quote}
-\textbf{Each blue dot represents a factorization: ``the number $p(p+k)$ has $p$ as a factor.'' Primes have no such factorizations, so they have no dots above them---they're gaps in the factor forest.}
-\end{quote}
+\textbf{Each dot represents a factorization: ``the number $p(p+k)$ has $p$ as a factor.'' Primes have no such factorizations, so they have no dots above them---they're gaps in the factor forest.}
+\end{quote>
 
 In this view, a composite number may have \emph{multiple} dots above it (one for each distinct factorization), while a prime has \emph{zero} dots. The forest isn't just showing which numbers are composite---it's showing \emph{how they factor}.
 
@@ -219,7 +219,7 @@ A: Look at the forest---primes are the only numbers with \emph{no tree above the
 A: See how the forest gets denser as numbers increase (the parabolic curve)? More composites crowd the larger regions, leaving bigger gaps between primes.
 
 \paragraph{Q: What does factorization mean geometrically?}
-A: Each blue dot is a composite, positioned according to its factors $p$ and $k+p$. Primes can't be positioned this way---they have no factorization.
+A: Each dot is a composite, positioned according to its factors $p$ and $k+p$. Primes can't be positioned this way---they have no factorization.
 
 \paragraph{Q: Is there a pattern to primes?}
 A: Yes! Primes are precisely the gaps in the regular factor lattice. The pattern is visible once we map factorizations to 2D.
