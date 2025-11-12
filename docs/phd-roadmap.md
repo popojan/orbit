@@ -130,23 +130,22 @@
 Document these as **additional computational NT explorations**:
 
 - [ ] **Egyptian fractions work** (in `github.com/popojan/egypt`)
+  - **Full Wolfram Language paclet**: `Egypt.wl` with multiple algorithms
+    - `EgyptianFractions[q]` - convert rationals to Egyptian representation
+    - `EgyptianSqrtApproximate[n]` - square root approximation via Egyptian fractions
+    - Connection to **continued fractions** (CF integration)
+    - Modular arithmetic and algorithmic optimizations
+  - **Rust implementation**: `src/main.rs` - dual language implementation shows depth
   - Square root computation via Egyptian fraction sums
   - Connection to **Pell equations** $x^2 - ny^2 = 1$
   - Recursive formula $a(n,i)$ with convergence to $\sqrt{n}$
   - Example doc: `egypt/doc/sqrt.pdf` (clean presentation style!)
-  - Shows: computational approach + classical NT (Pell) + algebraic numbers
+  - **Shows**: computational approach + classical NT (Pell, CF) + algorithmic number theory + dual-language implementation
 
-- [ ] **Continued fractions (CF) connection**
-  - Relationship to Egyptian fractions
-  - Any interesting patterns/formulas
-  - Computational tools built
-  - Rust implementation in egypt repo?
-
-- [ ] **Ratio package**
-  - What it does
-  - Where it lives (separate repo?)
-  - Brief documentation
-  - Connection to NT if any
+- [ ] **Other materials to inventory**
+  - Check `egypt/sqrt/` directory (factor.pdf, other work?)
+  - Check if there are other repos with NT explorations
+  - Any notebooks with interesting results?
 
 **Format**: Could be:
 - Separate GitHub repos (linked in CV/application)
