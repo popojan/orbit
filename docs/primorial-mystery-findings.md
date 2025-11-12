@@ -159,9 +159,13 @@ Perhaps viewing this mod p for each prime reveals why p² cancels:
    - Term $k!/(2k+1)$ reduces to an **integer**
    - No new denominator factors enter at all!
 
-4. **The alternating sign is essential**:
-   - WITHOUT $(-1)^k$: Formula fails at $k=4$, loses factor of 3
+4. **The alternating sign is essential (discovery insight)**:
+   - WITHOUT $(-1)^k$: Formula loses factor of 3 at $k=4$, never recovers
    - Result becomes $\text{Primorial}/3$ for all $m \ge 9$
+   - Two potential fixes discovered:
+     - *Ad-hoc*: Replace $\frac{1}{2}$ with $\frac{1}{6}$ (works but inelegant)
+     - *Elegant*: Keep $\frac{1}{2}$ + add alternating sign $(-1)^k$ ✓
+   - The "omnipresent half" from physics preferred over arbitrary $\frac{1}{6}$
    - The alternating sign controls numerator structure to prevent over-cancellation
 
 5. **Legendre's formula connection**:
