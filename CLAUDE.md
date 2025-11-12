@@ -1,6 +1,90 @@
+# Mathematical Explorations - Orbit Paclet
+
+This repository contains computational tools for various recreational and research mathematical explorations implemented as a Wolfram Language paclet.
+
+## Repository Structure
+
+### Orbit Paclet (Version 0.3.0)
+
+The paclet is organized into modular subpackages for different mathematical topics:
+
+```
+Orbit/
+  ├── PacletInfo.wl          # Paclet metadata
+  └── Kernel/
+      ├── Orbit.wl                    # Main loader (imports all submodules)
+      ├── PrimeOrbits.wl              # Prime DAG and orbit analysis
+      ├── Primorials.wl               # Primorial computation via rational sums
+      ├── SemiprimeFactorization.wl   # Closed-form semiprime factorization
+      └── ModularFactorials.wl        # Efficient factorial mod p computation
+```
+
+### Loading the Paclet
+
+```mathematica
+<< Orbit`
+```
+
+This automatically loads all submodules. Functions from all modules are available in the `Orbit`  context.
+
+## Current Modules
+
+### 1. Prime Orbits & DAG Analysis
+
+Tools for exploring prime structure through greedy additive decomposition and directed acyclic graphs.
+
+**See below for detailed documentation on this module.**
+
+### 2. Primorial Computation
+
+Computes primorials (products of consecutive primes) using a surprising rational sum formula.
+
+**See:** `docs/primorial-formula.md` for detailed documentation.
+
+**Quick example:**
+```mathematica
+(* Primorial of all primes up to 13 *)
+Primorial0[13]  (* Returns: 30030 = 2*3*5*7*11*13 *)
+```
+
+### 3. Semiprime Factorization
+
+Closed-form factorization of semiprimes (products of two primes) using fractional parts of Pochhammer sums. Works for all semiprimes where the smaller factor p ≥ 3.
+
+**See:** `docs/semiprime-factorization.md` for detailed documentation.
+
+**Quick example:**
+```mathematica
+(* Factor 77 = 7 × 11 *)
+FactorizeSemiprime[77]  (* Returns: {7, 11} *)
+
+(* The formula extracts the smaller factor from fractional parts *)
+ForFactiMod[77]  (* Returns: 6/7 = (7-1)/7 *)
+```
+
+### 4. Modular Factorials
+
+Efficient computation of n! mod p using the predictable structure of ((p-1)/2)! mod p. The half-factorial equals ±1 for p ≡ 3 (mod 4), or ±√(-1) for p ≡ 1 (mod 4), connected to Gauss sums and the Stickelberger relation.
+
+**See:** `docs/modular-factorials.md` for detailed documentation.
+
+**Quick example:**
+```mathematica
+(* Compute 10! mod 13 efficiently *)
+FactorialMod[10, 13]  (* Returns: 6 *)
+
+(* Find sqrt(-1) mod p for p ≡ 1 (mod 4) *)
+SqrtMod[13]  (* Returns: {True, {5, 8}} *)
+
+(* Half-factorial base value *)
+HalfFactorialMod[13]  (* Returns: 5 (which is 6! mod 13) *)
+```
+
+---
+
 # Prime DAG Computational Exploration Guide
 
-This guide is for using Claude Code (or similar computational assistants) to explore the prime index DAG structure systematically.
+This section provides guidance for exploring the prime index DAG structure systematically.
 
 ## Core Implementation
 

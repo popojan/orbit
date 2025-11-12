@@ -1,10 +1,10 @@
 PacletObject[
   <|
     "Name" -> "Orbit",
-    "Version" -> "0.1.0",
+    "Version" -> "0.3.0",
     "WolframVersion" -> "12.0+",
-    "Description" -> "Computational tools for exploring prime orbits via greedy additive decomposition and the prime index DAG",
-    "Creator" -> "Prime DAG Research",
+    "Description" -> "A collection of computational tools for recreational and research mathematical explorations: prime orbits and DAG analysis, primorial computation via rational sums, closed-form semiprime factorization using Pochhammer symbols, and efficient modular factorial computation via Gauss sums",
+    "Creator" -> "Mathematical Explorations",
     "Extensions" -> {
       {
         "Kernel",
