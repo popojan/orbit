@@ -1,173 +1,123 @@
-# Orbit: Prime DAG Computational Explorer
+# Orbit: Computational Mathematical Explorations
 
-Computational tools for exploring the prime index DAG structure via greedy additive decomposition.
+A Wolfram Language paclet for recreational and research mathematical explorations, focusing on prime structure, factorial computations, and alternative number representations.
 
-**Gap Theorem:** The gap after prime $p$ equals the number of primes with $p$ as immediate predecessor when recursively applying unique greedy decomposition to prime indices $\pi(q)$.
+**Headline Discovery:** A novel formula computing primorials (products of consecutive primes) through alternating factorial sums with mysterious cancellation properties.
 
-## The Gap Theorem
+## Version 0.3.0 — Four Modules
 
-### Definitions
+### 1. Primorial Computation ⭐ (Most Recent)
 
-**1. Greedy Prime Decomposition (Sparse Representation)**
+**Computes primorials via alternating rational sums** — a surprising formula with deep unexplained structure:
 
-For any natural number $n \geq 2$, define $\text{Sparse}(n)$ as the sequence obtained by the greedy algorithm:
+$$\text{Primorial}(m) = \text{Denominator}\left[\frac{1}{2} \sum_{k=1}^{\lfloor(m-1)/2\rfloor} \frac{(-1)^k \cdot k!}{2k+1}\right]$$
 
-```
-r ← n, result ← []
-while r ≥ 2:
-    p ← largest prime ≤ r
-    append p to result
-    r ← r - p
-append r to result  (where r ∈ {0, 1})
-```
+**Example:** For $m = 13$:
+$$\text{Primorial}(13) = 2 \times 3 \times 5 \times 7 \times 11 \times 13 = 30030$$
 
-**Properties:**
+The denominator systematically accumulates **only first powers** of primes, despite the sum containing terms with denominators $3, 5, 7, 9, 11, 13, 15, \ldots$ (including prime powers like $9 = 3^2$).
 
-- **Unique:** The greedy choice is deterministic, yielding a unique decomposition for each $n$
-- **Well-defined:** Always terminates with remainder $r \in \{0, 1\}$
+**The Mystery:** Why do numerators cancel all higher prime powers through GCD reduction? This is an **open problem** with connections to p-adic valuations, Legendre's formula, and primorial structure.
 
-**Example:** $\text{Sparse}(100) = [97, 3, 0]$
+**See:** `docs/primorial-formula.md` and `docs/primorial-mystery-findings.md`
 
-**2. Prime Index Function**
-
-Let $\pi : \mathbb{P} \to \mathbb{N}$ denote the prime index function:
-
-$$\pi(2) = 1, \quad \pi(3) = 2, \quad \pi(5) = 3, \quad \pi(7) = 4, \quad \ldots$$
-
-Conversely, let $\text{Prime}(i)$ denote the $i$-th prime.
-
-**3. Immediate Predecessor**
-
-Prime $p$ is the **immediate predecessor** of prime $q$ if $p$ is the largest prime not exceeding $\pi(q)$:
-
-$$p = \max\{r \in \mathbb{P} : r \leq \pi(q)\}$$
-
-Equivalently, $p$ is the first prime in $\text{Sparse}(\pi(q))$.
-
-**Example:** For prime $q = 11$:
-
-- $\pi(11) = 5$
-- Largest prime $\leq 5$ is $5$
-- Therefore, the immediate predecessor of $11$ is $5$
-
-**4. Prime Orbit (for DAG exploration)**
-
-For any natural number $n$, define $\text{Orbit}(n)$ as the set of all primes encountered when recursively applying:
-
-1. Compute $\text{Sparse}(n)$
-2. For each prime $p$ in $\text{Sparse}(n)$, recursively compute $\text{Orbit}(\pi(p))$
-
-Formally, $\text{Orbit}(n)$ is the smallest set satisfying:
-
-- For each prime $p \in \text{Sparse}(n)$: $p \in \text{Orbit}(n)$
-- For each prime $p \in \text{Sparse}(n)$: $\text{Orbit}(\pi(p)) \subseteq \text{Orbit}(n)$
-
-**Example:** For prime $q = 11$:
-
-- $\pi(11) = 5$
-- $\text{Sparse}(5) = [5, 0]$, so $5 \in \text{Orbit}(11)$
-- $\pi(5) = 3$
-- $\text{Sparse}(3) = [3, 0]$, so $3 \in \text{Orbit}(11)$
-- $\pi(3) = 2$
-- $\text{Sparse}(2) = [2, 0]$, so $2 \in \text{Orbit}(11)$
-- Therefore: $\text{Orbit}(11) = \{2, 3, 5, 11\}$ (sorted)
-
-The immediate predecessor of $11$ is $5$ (the second-to-last element).
-
-**Note:** Orbits are not unique — different numbers may have the same orbit. Only sparse representations are unique.
-
-### Gap Theorem Statement
-
-**Theorem:** Let $p$ be a prime and let $g = \text{NextPrime}(p) - p$ be the gap after $p$.
-
-Define:
-
-$$S_p = \{ q \in \mathbb{P} : p \text{ is the immediate predecessor of } q \}$$
-
-Then:
-
-$$|S_p| = g$$
-
-**In words:** Exactly $g$ primes have $p$ as their immediate predecessor.
-
-### Proof Sketch
-
-Prime $q$ has $p$ as immediate predecessor if and only if $p$ is the largest prime $\leq \pi(q)$.
-
-This occurs if and only if:
-
-$$p \leq \pi(q) < \text{NextPrime}(p) = p + g$$
-
-The primes $q$ satisfying $\pi(q) \in [p, p+g)$ are:
-
-$$\{\text{Prime}(p), \text{Prime}(p+1), \ldots, \text{Prime}(p+g-1)\}$$
-
-which is a set of exactly $g$ primes. □
-
-See [docs/prime-dag-gap-theorem.md](docs/prime-dag-gap-theorem.md) for the complete proof.
-
-### Computational Verification
-
-The theorem has been verified for all 78,498 primes up to 1,000,000 with zero violations.
-
-The verification checks that for each prime $p$:
-
-```wolfram
-gap = NextPrime[p] - p
-orbits = PrimeOrbit /@ Prime[Range[p, p + gap]]
-count = Length @ Select[orbits, Length[#] >= 2 && #[[Length[#]-1]] == p &]
-gap == count  (* Always True *)
+**Quick start:**
+```mathematica
+<< Orbit`
+Primorial0[13]  (* Returns: 30030 = 2×3×5×7×11×13 *)
 ```
 
-### Implications
+### 2. Semiprime Factorization
 
-**Prime gaps encode structural centrality:**
+**Closed-form factorization of semiprimes** using fractional parts of Pochhammer sums:
 
-- Large gap after $p$ → many primes have $p$ as immediate predecessor → structural hub
-- Small gap → minimal influence → local density in prime sequence
+$$p = \left\lfloor \frac{1}{\text{FractionalPart}\left[\sum_{k=1}^{n-1} \frac{1}{k}\right]} \right\rfloor + 1$$
 
-**Notable hub primes:**
+where $n$ is the semiprime. Works for all semiprimes $n = p \times q$ where $p \geq 3$ is the smaller factor.
 
-- Prime 113 (next prime: 127)
-  - Gap: 14
-  - Fourteen primes have 113 as immediate predecessor
+**Example:**
+```mathematica
+FactorizeSemiprime[77]  (* Returns: {7, 11} *)
+ForFactiMod[77]         (* Returns: 6/7, revealing factor (7-1)/7 *)
+```
 
-- Prime 523 (next prime: 541)
-  - Gap: 18
-  - Eighteen primes have 523 as immediate predecessor
+**See:** `docs/semiprime-factorization.md`
 
-- Prime 1327 (next prime: 1361)
-  - Gap: 34
-  - Thirty-four primes have 1327 as immediate predecessor
+### 3. Modular Factorials
 
-**Connection to classical theory:**
+**Efficient factorial mod p computation** using the predictable structure of half-factorials:
 
-The Gap Theorem provides a graph-theoretic interpretation of prime gaps. See [docs/connections-to-classical-theory.md](docs/connections-to-classical-theory.md) for connections to:
+$$\left(\frac{p-1}{2}\right)! \equiv \begin{cases}
+\pm 1 \pmod{p} & \text{if } p \equiv 3 \pmod{4} \\
+\pm i \pmod{p} & \text{if } p \equiv 1 \pmod{4}
+\end{cases}$$
 
-- Cramér's conjecture on maximal gaps
-- Average gap ~ $\ln(p)$ from the Prime Number Theorem
-- Twin primes and bounded gaps
+Connected to Gauss sums and the Stickelberger relation.
+
+**Example:**
+```mathematica
+FactorialMod[10, 13]   (* Returns: 6 *)
+SqrtMod[13]            (* Returns: {True, {5, 8}} — sqrt(-1) mod 13 *)
+HalfFactorialMod[13]   (* Returns: 5 (which is 6! mod 13) *)
+```
+
+**See:** `docs/modular-factorials.md`
+
+### 4. Prime Orbits & DAG Analysis
+
+**Prime structure via greedy additive decomposition** and directed acyclic graphs.
+
+**Gap Theorem:** The gap after prime $p$ equals the number of primes having $p$ as immediate predecessor under recursive greedy decomposition of prime indices.
+
+Verified for all 78,498 primes up to 1,000,000.
+
+**Example:**
+```mathematica
+PrimeOrbit[11]        (* Returns: {2, 3, 5, 11} *)
+DirectPrimeDag[100]   (* Builds DAG for primes up to 100 *)
+```
+
+**See:** `docs/prime-dag-gap-theorem.md` and `CLAUDE.md` for detailed exploration guide
 
 ## Documentation
 
-- **[docs/prime-dag-gap-theorem.md](docs/prime-dag-gap-theorem.md)** — Complete mathematical framework with detailed proof
-- **[docs/connections-to-classical-theory.md](docs/connections-to-classical-theory.md)** — Relationship to classical prime gap theory
-- **[CLAUDE.md](CLAUDE.md)** — Computational exploration guide for AI assistants
+### Primorial Formula (Active Research)
+- **[docs/primorial-formula.md](docs/primorial-formula.md)** — Formula derivation and verification
+- **[docs/primorial-mystery-findings.md](docs/primorial-mystery-findings.md)** — The open cancellation problem
+- **[docs/recursive-formulation-analysis.md](docs/recursive-formulation-analysis.md)** — Recursive sieve formulation
+- **[docs/phd-roadmap.md](docs/phd-roadmap.md)** — Publication and PhD application plan
+
+### Other Modules
+- **[docs/semiprime-factorization.md](docs/semiprime-factorization.md)** — Semiprime factorization details
+- **[docs/modular-factorials.md](docs/modular-factorials.md)** — Modular factorial computation
+- **[docs/prime-dag-gap-theorem.md](docs/prime-dag-gap-theorem.md)** — Gap Theorem proof
+
+### For AI Assistants
+- **[CLAUDE.md](CLAUDE.md)** — Computational exploration guide and usage instructions
 
 ## Repository Structure
 
 ```
 orbit/
-├── Orbit/                 # Local paclet with core functions
-│   ├── PacletInfo.wl      # Paclet metadata
+├── Orbit/                          # Paclet (version 0.3.0)
+│   ├── PacletInfo.wl               # Paclet metadata
 │   └── Kernel/
-│       └── Orbit.wl       # Core functions (PrimeOrbit, DirectPrimeDag, etc.)
-├── scripts/               # Exploration scripts (.wl files)
-│   ├── verify_gap_theorem.wl
-│   ├── analyze_hubs.wl
-│   └── explore_gap.wl
-├── reports/               # Generated markdown reports (gitignored)
-└── docs/                  # Mathematical documentation
+│       ├── Orbit.wl                # Main loader (imports all submodules)
+│       ├── PrimeOrbits.wl          # Prime DAG and orbit analysis
+│       ├── Primorials.wl           # Primorial computation via rational sums
+│       ├── SemiprimeFactorization.wl  # Closed-form semiprime factorization
+│       └── ModularFactorials.wl    # Efficient factorial mod p computation
+├── scripts/                        # Exploration scripts
+│   ├── verify_gap_theorem.wl       # Gap theorem verification
+│   ├── track_padic_valuations.wl   # P-adic analysis for primorials
+│   ├── visualize_sieve_process.wl  # Recursive sieve visualization
+│   └── test_*.wl                   # Various module tests
+├── reports/                        # Generated analysis reports (gitignored)
+└── docs/                           # Mathematical documentation
+    ├── primorial-formula.md
+    ├── primorial-mystery-findings.md
+    ├── recursive-formulation-analysis.md
+    └── *.md                        # Other module docs
 ```
 
 ## Prerequisites
@@ -178,81 +128,43 @@ orbit/
 wolframscript --version
 ```
 
-## Usage Workflow
+## Quick Start
 
-### 1. Explore with Scripts
+### Load the Paclet
 
-Run exploration scripts from the repository root:
+```mathematica
+<< Orbit`
+```
+
+This automatically loads all four modules. All functions are in the `Orbit`  context.
+
+### Examples
+
+```mathematica
+(* Primorial computation *)
+Primorial0[13]                    (* 30030 = 2×3×5×7×11×13 *)
+PrimorialExplicitSum[13]          (* Shows the alternating sum *)
+
+(* Semiprime factorization *)
+FactorizeSemiprime[77]            (* {7, 11} *)
+
+(* Modular factorials *)
+FactorialMod[10, 13]              (* 6 *)
+
+(* Prime orbits *)
+PrimeOrbit[11]                    (* {2, 3, 5, 11} *)
+DirectPrimeDag[100]               (* Build DAG *)
+```
+
+### Run Exploration Scripts
 
 ```bash
 cd /path/to/orbit
-wolframscript scripts/verify_gap_theorem.wl
+wolframscript scripts/visualize_sieve_process.wl
+wolframscript scripts/track_padic_valuations.wl
 ```
 
-Scripts automatically:
-
-- Load the local `Orbit` paclet
-- Run computational analyses
-- Export markdown reports to `reports/`
-- Generate visualizations (PNG/PDF)
-
-### 2. Available Scripts
-
-**`verify_gap_theorem.wl`** — Verify the Gap Theorem for primes up to a specified limit
-
-**`analyze_hubs.wl`** — Identify primes with high in-degree (hubs) and analyze their properties
-
-**`explore_gap.wl`** — Deep dive into a specific prime's gap structure with visualizations
-
-### 3. Create Custom Scripts
-
-Create new `.wl` scripts in `scripts/` that import the Orbit paclet:
-
-```wolfram
-#!/usr/bin/env wolframscript
-
-(* Load local Orbit paclet *)
-SetDirectory[ParentDirectory[DirectoryName[$InputFileName]]];
-PacletDirectoryLoad["Orbit"];
-Needs["Orbit`"];
-
-(* Your exploration code *)
-primes = Select[Range[2, 100], PrimeQ];
-orbits = PrimeOrbit /@ primes;
-
-(* Export results *)
-Export["reports/my_analysis.md", "# My Analysis\n\n...", "Text"];
-```
-
-### 4. Promote Functions to Paclet
-
-When a function proves valuable, add it to `Orbit/Kernel/Orbit.wl` and increment the version in `Orbit/PacletInfo.wl`.
-
-## Core Functions (Orbit Paclet)
-
-### Basic Functions
-
-- **`PrimeRepSparse[n]`** — Greedy prime decomposition of $n$
-- **`PrimeOrbit[n]`** — All primes in recursive decomposition of $n$
-- **`DirectPrimeDag[pmax]`** — Build prime DAG for primes up to $p_{\text{max}}$
-
-### Analysis Functions
-
-- **`VerifyGapTheorem[pmax]`** — Verify Gap Theorem for all primes up to $p_{\text{max}}$
-- **`AnalyzeGapOrbits[p]`** — Analyze orbit lengths for gap-children after prime $p$
-- **`PosetStatistics[p]`** — Partial order statistics for gap-children
-- **`AnalyzeJumps[p]`** — Identify and analyze jump points in orbit lengths
-
-### Graph Functions
-
-- **`ComputeInDegrees[pmax]`** — Compute in-degrees for all primes in DAG
-- **`FindHubs[pmax, minDegree]`** — Find primes with in-degree $\geq$ minDegree
-
-### Visualization
-
-- **`PlotOrbitLengths[p]`** — Plot orbit lengths for gap after prime $p$
-
-## System-Wide Installation (Optional)
+## Installation (Optional)
 
 To install the Orbit paclet system-wide:
 
@@ -261,11 +173,11 @@ cd orbit/
 wolframscript -code 'PacletInstall["Orbit"]'
 ```
 
-Then use in any notebook or script:
+Then use anywhere:
 
-```wolfram
+```mathematica
 Needs["Orbit`"];
-PrimeOrbit[100]
+Primorial0[17]
 ```
 
 To uninstall:
@@ -274,18 +186,37 @@ To uninstall:
 wolframscript -code 'PacletUninstall["Orbit"]'
 ```
 
-## Related Work
+## Current Research Focus
 
-This project is part of a series exploring alternative number representations:
+**Primorial Formula Investigation** — Understanding why the alternating factorial sum produces primorials:
 
-- **Ratio** — Egyptian fractions and rationalization techniques
-- **Orbit** — Prime orbits and the prime index DAG
+1. **P-adic valuation structure:** Proven computationally that $\nu_p(\text{denominator}) = 1$ always
+2. **Two cancellation mechanisms identified:** GCD reduction (small k) and integer terms (large k)
+3. **Alternating sign necessity:** Essential to prevent over-cancellation at $k=4$
+4. **Legendre's formula connection:** Explains when terms become integers
+
+**Open Problem:** Rigorous proof of why this construction systematically generates primorials.
+
+**Target:** arXiv preprint, PhD application to Charles University (Prague), contact with Prof. Vít Kala.
+
+## Related Projects
+
+- **egypt** — Egyptian fractions and Pell equation exploration (Rust implementation)
+- **ratio** — Rationalization techniques and number representations
 
 ## Status
 
-**Version:** 0.1.0
+**Version:** 0.3.0
 
-**Gap Theorem:** Proven and computationally verified for all primes up to 1,000,000
+**Modules:**
+- ✅ Primorials (active research, open problems)
+- ✅ Semiprime Factorization (complete)
+- ✅ Modular Factorials (complete)
+- ✅ Prime Orbits & Gap Theorem (proven and verified)
+
+**Publication Status:**
+- Primorial formula: Under investigation, preparing for arXiv
+- Gap Theorem: Verified for primes up to 1,000,000
 
 ## License
 
