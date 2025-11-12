@@ -31,14 +31,23 @@ Anonymous Author\\
 \maketitle
 
 \begin{abstract}
-We present a novel method for computing ultra-high precision rational approximations to square roots of non-square integers by synthesizing Pell equation solutions with nested Chebyshev polynomial iterations. Our approach achieves remarkable super-quadratic convergence, delivering approximately 10-fold precision gain per iteration in balanced mode and up to 6000-fold in optimized configurations. For precision requirements exceeding 200 digits, the method surpasses Mathematica's continued fraction-based \texttt{Rationalize} function by factors of 3--10×, computing 1555-digit approximations in merely 1.5 milliseconds while maintaining only 2× denominator overhead relative to optimal convergents. We demonstrate the method's extraordinary reach with practical computations exceeding 62 million digits---a regime far beyond the computational feasibility of classical continued fraction methods. The underlying mathematical framework unveils profound connections between Pell equations, Chebyshev polynomials, and iterative refinement schemes, yielding optimized closed-form expressions for low-order cases that eliminate symbolic computation overhead. Although the method generates denominators larger than the minimal continued fraction convergents, this trade-off enables dramatically superior computational performance for applications demanding extreme precision in symbolic computation and exact rational arithmetic.
+We present a novel method for computing ultra-high precision rational approximations to square roots of non-square integers by synthesizing Pell equation solutions with nested Chebyshev polynomial iterations. Our approach achieves remarkable super-quadratic convergence, delivering approximately 10-fold precision gain per iteration in balanced mode and up to 6000-fold in optimized configurations. The method is built upon an elegant refinement operation with closed-form expressions such as:
+\begin{equation*}
+\sigma_1(d, n) = \frac{n(3n^2 + d)}{n^2 + 3d}
+\end{equation*}
+which, when nested iteratively, produces increasingly accurate rational approximations. For precision requirements exceeding 200 digits, the method surpasses Mathematica's continued fraction-based \texttt{Rationalize} function by factors of 3--10×, computing 1555-digit approximations in merely 1.5 milliseconds while maintaining only 2× denominator overhead relative to optimal convergents. We demonstrate the method's extraordinary reach with practical computations exceeding 62 million digits---a regime far beyond the computational feasibility of classical continued fraction methods. The underlying mathematical framework unveils profound connections between Pell equations, Chebyshev polynomials, and iterative refinement schemes. Although the method generates denominators larger than the minimal continued fraction convergents, this trade-off enables dramatically superior computational performance for applications demanding extreme precision in symbolic computation and exact rational arithmetic.
 \end{abstract}
 
 \section{Introduction}
 
 \subsection{Motivation}
 
-The computation of rational approximations to algebraic irrationals, particularly square roots, constitutes a fundamental challenge in computational number theory with far-reaching applications across symbolic computation, interval arithmetic, and cryptographic protocols. While floating-point approximations adequately serve most numerical applications, certain specialized domains demand \emph{exact} rational representations with precisely controllable accuracy.
+The computation of rational approximations to algebraic irrationals, particularly square roots, constitutes a fundamental challenge in computational number theory with far-reaching applications across symbolic computation, interval arithmetic, and cryptographic protocols. For instance, approximating $\sqrt{13}$ begins naturally with the Pell equation $x^2 - 13y^2 = 1$, whose fundamental solution $(649, 180)$ yields:
+\begin{equation}
+\left|\sqrt{13} - \frac{649}{180}\right| < \frac{1}{180^2} \approx 3.09 \times 10^{-5}
+\end{equation}
+
+While floating-point approximations adequately serve most numerical applications, certain specialized domains demand \emph{exact} rational representations with precisely controllable accuracy.
 
 The classical continued fraction approach yields \emph{optimal} rational approximants---those possessing minimal denominators for a given precision threshold---yet becomes computationally prohibitive at extreme precisions spanning thousands to millions of digits. When computational speed takes precedence over representation minimality, alternative methodologies warrant careful investigation.
 
@@ -134,26 +143,26 @@ converges to $\sqrt{d}$ as $n \to \infty$, with each $\tau_k$ decomposable into 
 
 This original method exhibits linear convergence, adding approximately 3--5 decimal digits of precision per term. While elegant and theoretically illuminating, the computational cost of evaluating increasingly complex Chebyshev polynomial expressions limits its practical utility for extreme precision.
 
-The critical insight leading to our nested method was recognizing that a \emph{different} Chebyshev-based refinement formula (equation \eqref{eq:sqrttrf}), when combined with symmetrization and nesting, achieves dramatically superior convergence rates while eliminating the need for summing large numbers of terms. The two methods share the foundational use of Pell solutions and Chebyshev polynomials but diverge fundamentally in their iterative structure and convergence behavior.
+The critical insight leading to our nested method was recognizing that a \emph{different} Chebyshev-based refinement formula (the operator $\sigma_m$ defined in equation \eqref{eq:sigma}), when combined with symmetrization and nesting, achieves dramatically superior convergence rates while eliminating the need for summing large numbers of terms. The two methods share the foundational use of Pell solutions and Chebyshev polynomials but diverge fundamentally in their iterative structure and convergence behavior.
 
 \section{The Core Refinement Formula and Imaginary Cancellation Phenomenon}
 
 \subsection{The Chebyshev-Pell Refinement Operation}
 
-Given an initial rational approximation $n \approx \sqrt{d}$, we introduce the fundamental \emph{Chebyshev-Pell refinement}:
+Given an initial rational approximation $n \approx \sqrt{d}$, we introduce the fundamental \emph{Chebyshev-Pell refinement operation} $\sigma_m(d,n)$:
 
 \begin{definition}
-For $d, n \in \mathbb{Q}$ with $n^2 \neq d$, and $m \in \mathbb{Z}^+$, define:
+For $d, n \in \mathbb{Q}$ with $n^2 \neq d$, and $m \in \mathbb{Z}^+$, define the refinement operator $\sigma_m : \mathbb{Q}^2 \to \mathbb{Q}$ (implemented as \texttt{sqrttrf} in the computational realization):
 \begin{equation}
-\label{eq:sqrttrf}
-\text{sqrttrf}(d, n, m) = \frac{n^2 + d}{2n} + \frac{n^2 - d}{2n} \cdot \frac{U_{m-1}\left(\sqrt{\frac{d}{-(n^2-d)}}\right)}{U_{m+1}\left(\sqrt{\frac{d}{-(n^2-d)}}\right)}
+\label{eq:sigma}
+\sigma_m(d, n) = \frac{n^2 + d}{2n} + \frac{n^2 - d}{2n} \cdot \frac{U_{m-1}(\alpha)}{U_{m+1}(\alpha)}
 \end{equation}
-where $U_k$ denotes the Chebyshev polynomial of the second kind.
+where $U_k$ denotes the Chebyshev polynomial of the second kind and $\alpha = \sqrt{\frac{d}{-(n^2-d)}}$.
 \end{definition}
 
 \subsection{The Remarkable Imaginary Cancellation Mechanism}
 
-At first glance, formula \eqref{eq:sqrttrf} presents a puzzling paradox: when $n^2 < d$ (indicating that $n$ underestimates $\sqrt{d}$), the argument to the Chebyshev polynomials becomes:
+At first glance, formula \eqref{eq:sigma} presents a puzzling paradox: when $n^2 < d$ (indicating that $n$ underestimates $\sqrt{d}$), the argument to the Chebyshev polynomials becomes:
 \begin{equation}
 \alpha = \sqrt{\frac{d}{-(n^2-d)}} = \sqrt{\frac{d}{d-n^2}} \cdot \sqrt{-1} = i\sqrt{\frac{d}{d-n^2}}
 \end{equation}
@@ -166,7 +175,7 @@ U_k(i\beta) = i^{k+1} \cdot \text{SinhChebyshevU}_k(i\beta)
 the ratio $U_{m-1}(i\alpha)/U_{m+1}(i\alpha)$ exhibits perfect cancellation of the imaginary unit, producing not merely a real result, but a fully rational value when both $n$ and $d$ are rational.
 
 \begin{proposition}
-For rational $d, n$ with $n^2 < d$, the expression $\text{sqrttrf}(d, n, m)$ evaluates to a rational number, despite involving complex intermediate quantities.
+For rational $d, n$ with $n^2 < d$, the expression $\sigma_m(d, n)$ evaluates to a rational number, despite involving complex intermediate quantities.
 \end{proposition}
 
 \begin{proof}[Proof sketch]
@@ -181,21 +190,21 @@ This extraordinary \emph{imaginary cancellation} mechanism lies at the heart of 
 
 \subsection{Optimized Closed-Form Expressions for Low Orders}
 
-For small values of $m$, we derive elegant closed-form expressions for \eqref{eq:sqrttrf} that entirely circumvent the computational burden of Chebyshev polynomial evaluation:
+For small values of $m$, we derive elegant closed-form expressions for $\sigma_m$ that entirely circumvent the computational burden of Chebyshev polynomial evaluation:
 
 \begin{proposition}
 \label{prop:optimized}
 The following closed forms hold:
 \begin{align}
-\text{sqrttrf}(d, n, 1) &= \frac{n(3n^2 + d)}{n^2 + 3d} \label{eq:m1} \\
-\text{sqrttrf}(d, n, 2) &= \frac{n^4 + 6n^2d + d^2}{4n(n^2 + d)} \label{eq:m2}
+\sigma_1(d, n) &= \frac{n(3n^2 + d)}{n^2 + 3d} \label{eq:m1} \\
+\sigma_2(d, n) &= \frac{n^4 + 6n^2d + d^2}{4n(n^2 + d)} \label{eq:m2}
 \end{align}
 \end{proposition}
 
 \begin{proof}
-For $m=1$, we employ the fundamental Chebyshev identities $U_0(x) = 1$ and $U_2(x) = 4x^2 - 1$. Substituting these into \eqref{eq:sqrttrf} yields:
+For $m=1$, we employ the fundamental Chebyshev identities $U_0(x) = 1$ and $U_2(x) = 4x^2 - 1$. Substituting these into \eqref{eq:sigma} yields:
 \begin{align*}
-\text{sqrttrf}(d, n, 1) &= \frac{n^2 + d}{2n} + \frac{n^2 - d}{2n} \cdot \frac{1}{4\alpha^2 - 1} \\
+\sigma_1(d, n) &= \frac{n^2 + d}{2n} + \frac{n^2 - d}{2n} \cdot \frac{1}{4\alpha^2 - 1} \\
 &= \frac{n^2 + d}{2n} + \frac{n^2 - d}{2n} \cdot \frac{1}{4 \cdot \frac{d}{-(n^2-d)} - 1}
 \end{align*}
 Through careful algebraic manipulation (details omitted for conciseness), we arrive at the elegant form \eqref{eq:m1}. The derivation for $m=2$ proceeds analogously, utilizing $U_1(x) = 2x$ and $U_3(x) = 8x^3 - 4x$.
@@ -209,12 +218,12 @@ These optimized expressions eliminate both symbolic Chebyshev evaluation and com
 
 \subsection{Symmetrization for Enhanced Convergence}
 
-To dramatically accelerate convergence, we introduce a symmetrization operation that follows each refinement step:
+To dramatically accelerate convergence, we introduce a symmetrization operation $\tau_m$ that follows each refinement step:
 
 \begin{definition}
-For $d, n \in \mathbb{Q}$ and $m \in \mathbb{Z}^+$, the \emph{symmetrization operation} is defined as:
+For $d, n \in \mathbb{Q}$ and $m \in \mathbb{Z}^+$, the \emph{symmetrization operation} $\tau_m : \mathbb{Q}^2 \to \mathbb{Q}$ (implemented as \texttt{sym}) is defined as:
 \begin{equation}
-\text{sym}(d, n, m) = \frac{1}{2}\left(\frac{d}{x} + x\right), \quad \text{where } x = \text{sqrttrf}(d, n, m)
+\tau_m(d, n) = \frac{1}{2}\left(\frac{d}{x} + x\right), \quad \text{where } x = \sigma_m(d, n)
 \end{equation}
 \end{definition}
 
@@ -223,24 +232,24 @@ This operation bears structural similarity to the averaging step in the classica
 \subsection{The Complete Nested Algorithm}
 
 \begin{definition}
-The \emph{nested Chebyshev-Pell square root approximation} is defined as:
+The \emph{nested Chebyshev-Pell square root approximation} operator $\nu_{m_1,m_2} : \mathbb{Q}^2 \to \mathbb{Q}$ (implemented as \texttt{nestqrt}) is defined as:
 \begin{equation}
-\text{nestqrt}(d, n_0, \{m_1, m_2\}) = \underbrace{\text{sym}(d, \cdots \text{sym}(d, n_0, m_1) \cdots, m_1)}_{m_2 \text{ iterations}}
+\nu_{m_1,m_2}(d, n_0) = \underbrace{\tau_{m_1}(d, \cdots \tau_{m_1}(d, n_0) \cdots)}_{m_2 \text{ iterations}}
 \end{equation}
 \end{definition}
 
-More precisely, beginning with the initial approximation $n_0$, we iteratively apply the symmetrization operation $\text{sym}(d, \cdot, m_1)$ exactly $m_2$ times, each application refining the previous result.
+More precisely, beginning with the initial approximation $n_0$, we iteratively apply the symmetrization operation $\tau_{m_1}(d, \cdot)$ exactly $m_2$ times, each application refining the previous result.
 
 \begin{algorithm}
-\caption{Nested Chebyshev-Pell Square Root}
+\caption{Nested Chebyshev-Pell Square Root: $\nu_{m_1,m_2}(d, n_0)$}
 \begin{algorithmic}[1]
 \Require Non-square integer $d > 1$, parameters $m_1, m_2 \in \mathbb{Z}^+$
 \Ensure Rational approximation to $\sqrt{d}$
 \State Solve Pell equation $x^2 - dy^2 = 1$ for fundamental solution $(x_0, y_0)$
 \State $n \gets (x_0 - 1)/y_0$ \Comment{Pell-based starting point}
 \For{$i = 1$ to $m_2$}
-    \State $x \gets \text{sqrttrf}(d, n, m_1)$ \Comment{Use optimized forms if $m_1 \in \{1,2\}$}
-    \State $n \gets d/(2x) + x/2$ \Comment{Symmetrization}
+    \State $x \gets \sigma_{m_1}(d, n)$ \Comment{Use closed forms \eqref{eq:m1}, \eqref{eq:m2} if $m_1 \in \{1,2\}$}
+    \State $n \gets d/(2x) + x/2$ \Comment{Symmetrization: $\tau_{m_1}(d, n) = (d/x + x)/2$}
 \EndFor
 \Return $n$
 \end{algorithmic}
@@ -289,7 +298,7 @@ Precision is quantified through $\log_{10}|d - n^2|$, where negative values indi
 
 \begin{table}[h]
 \centering
-\caption{Performance comparison for $\sqrt{13}$ approximation}
+\caption{Performance comparison for $\sqrt{13}$ approximation. ``Overhead'' indicates the ratio of denominator digits to the optimal CF convergent denominator achieving the same precision (e.g., 1556/779 $\approx$ 2.0x for 1555-digit precision).}
 \label{tab:sqrt13}
 \begin{tabular}{@{}lcccccc@{}}
 \toprule
@@ -376,7 +385,7 @@ Establish a rigorous theoretical foundation for Theorem \ref{thm:convergence}. D
 \subsection{The Imaginary Cancellation Phenomenon}
 
 \begin{problem}
-Develop a complete algebraic theory of the imaginary cancellation mechanism in formula \eqref{eq:sqrttrf}. Does there exist a closed-form expression for $\text{sqrttrf}(d, n, m)$ that operates entirely within real arithmetic, avoiding complex intermediate values?
+Develop a complete algebraic theory of the imaginary cancellation mechanism in the refinement operator $\sigma_m$ (formula \eqref{eq:sigma}). Does there exist a closed-form expression for $\sigma_m(d, n)$ that operates entirely within real arithmetic, avoiding complex intermediate values?
 \end{problem}
 
 \subsection{Optimality of Denominator Growth}
