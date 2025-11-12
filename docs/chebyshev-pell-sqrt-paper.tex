@@ -31,11 +31,11 @@ Anonymous Author\\
 \maketitle
 
 \begin{abstract}
-We present a novel method for computing ultra-high precision rational approximations to square roots of non-square integers by synthesizing Pell equation solutions with nested Chebyshev polynomial iterations. Our approach achieves remarkable super-quadratic convergence, delivering approximately 10-fold precision gain per iteration in balanced mode and up to 6000-fold in optimized configurations. The method is built upon an elegant refinement operation with closed-form expressions such as:
+We present a novel method for computing ultra-high precision rational approximations to square roots of non-square integers by synthesizing Pell equation solutions with nested Chebyshev polynomial iterations. Our approach achieves remarkable super-quadratic convergence, delivering approximately 10-fold precision gain per iteration in balanced mode and up to 6000-fold in optimized configurations. The method is built upon an elegant refinement operation:
 \begin{equation*}
-\sigma_1(d, n) = \frac{n(3n^2 + d)}{n^2 + 3d}
+\sigma_m(d, n) = \frac{n^2 + d}{2n} + \frac{n^2 - d}{2n} \cdot \frac{U_{m-1}(\alpha)}{U_{m+1}(\alpha)}, \quad \alpha = \sqrt{\frac{d}{-(n^2-d)}}
 \end{equation*}
-which, when nested iteratively, produces increasingly accurate rational approximations. For precision requirements exceeding 200 digits, the method surpasses Mathematica's continued fraction-based \texttt{Rationalize} function by factors of 3--10×, computing 1555-digit approximations in merely 1.5 milliseconds while maintaining only 2× denominator overhead relative to optimal convergents. We demonstrate the method's extraordinary reach with practical computations exceeding 62 million digits---a regime far beyond the computational feasibility of classical continued fraction methods. The underlying mathematical framework unveils profound connections between Pell equations, Chebyshev polynomials, and iterative refinement schemes. Although the method generates denominators larger than the minimal continued fraction convergents, this trade-off enables dramatically superior computational performance for applications demanding extreme precision in symbolic computation and exact rational arithmetic.
+where $U_k$ denotes the Chebyshev polynomial of the second kind. Despite involving seemingly complex intermediate values, the ratio of Chebyshev polynomials undergoes remarkable imaginary cancellation, yielding purely rational results. When nested iteratively, this produces increasingly accurate rational approximations. For precision requirements exceeding 200 digits, the method surpasses Mathematica's continued fraction-based \texttt{Rationalize} function by factors of 3--10×, computing 1555-digit approximations in merely 1.5 milliseconds while maintaining only 2× denominator overhead relative to optimal convergents. We demonstrate the method's extraordinary reach with practical computations exceeding 62 million digits---a regime far beyond the computational feasibility of classical continued fraction methods. The underlying mathematical framework unveils profound connections between Pell equations, Chebyshev polynomials, and iterative refinement schemes. Although the method generates denominators larger than the minimal continued fraction convergents, this trade-off enables dramatically superior computational performance for applications demanding extreme precision in symbolic computation and exact rational arithmetic.
 \end{abstract}
 
 \section{Introduction}
@@ -212,6 +212,18 @@ Through careful algebraic manipulation (details omitted for conciseness), we arr
 
 \begin{remark}
 These optimized expressions eliminate both symbolic Chebyshev evaluation and complex arithmetic entirely, yielding approximately 20-fold performance improvements per iteration relative to the general formula. This optimization proves crucial for achieving the extreme precision demonstrated in our benchmarks.
+\end{remark}
+
+\begin{remark}[A Unique Coincidence with Newton's Method]
+\label{rem:sigma2-newton}
+A remarkable property of $\sigma_2$ emerged during our investigation: it is \emph{algebraically identical} to two successive applications of Newton's method (the classical Babylonian algorithm $x \mapsto (x + d/x)/2$):
+\begin{equation}
+\label{eq:sigma2-newton}
+\underbrace{(x_1 + d/x_1)/2}_{\text{where } x_1 = (n+d/n)/2} = \frac{n^4 + 6n^2d + d^2}{4n(n^2 + d)} = \sigma_2(d,n)
+\end{equation}
+Symbolic verification confirms this equivalence holds for all rational $d, n$ with $n^2 \neq d$.
+
+Intriguingly, this property is \emph{unique} to $\sigma_2$: systematic verification establishes that $\sigma_m$ for $m \in \{1, 3, 4, 5, 6, 8\}$ does \emph{not} coincide with $m$ iterations of the Babylonian method. The differences simplify to expressions involving $(d - n^2)$ in the numerator, vanishing only at the trivial fixed point where the root is already exact. This demonstrates that while $\sigma_m$ shares structural connections with classical iterative methods through its Chebyshev polynomial foundation, it represents a genuinely distinct operator family rather than an alternative formulation of Newton's method.
 \end{remark}
 
 \section{The Nested Iteration Framework}
