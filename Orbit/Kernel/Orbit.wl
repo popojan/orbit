@@ -10,6 +10,7 @@ Get["Orbit`PrimeOrbits`"];
 Get["Orbit`Primorials`"];
 Get["Orbit`SemiprimeFactorization`"];
 Get["Orbit`ModularFactorials`"];
+Get["Orbit`SquareRootRationalizations`"];
 
 (* The package context is now populated with symbols from submodules *)
 (* All usage messages and definitions are in the respective submodule files *)
