@@ -24,59 +24,59 @@
 \maketitle
 
 \begin{abstract}
-Představujeme výpočetní objev: primoriál $p\#$ (součin všech prvočísel až do $p$) lze extrahovat jako jmenovatele specifického střídavého faktoriálového součtu. Pro $m \geq 3$ máme
+Představujeme výpočetní objev: primoriál $p\#$ (součin všech prvočísel až do $p$) lze získat jako jmenovatel určitého střídavého faktoriálového součtu. Pro $m \geq 3$ platí
 \[
 \text{den}\left(\frac{1}{2} \sum_{k=1}^{\lfloor(m-1)/2\rfloor} \frac{(-1)^k \cdot k!}{2k+1}\right) = \prod_{\substack{p \text{ prvočíslo} \\ p \leq m}} p
 \]
-kde $\text{den}(q)$ značí jmenovatele racionálního čísla $q$ v nejnižších číslech. Vzorec byl ověřen výpočetně pro $m$ až do 100\,000, avšak rigorózní důkaz zůstává nepolapitelný. Ústřední záhadou je systematické krácení: ačkoli jednotlivé jmenovatele $\{2k+1\}$ obsahují mocniny prvočísel ($9 = 3^2$, $25 = 5^2$, $27 = 3^3$, \ldots), konečný zkrácený jmenovatel obsahuje pouze první mocniny prvočísel. Formulujeme toto jako otevřený problém o $p$-adických valuacích a diskutujeme možné teoretické souvislosti.
+kde $\text{den}(q)$ označuje jmenovatel racionálního čísla $q$ v základním tvaru. Vzorec byl výpočetně ověřen pro všechna $m$ až do 100\,000, přesto však jeho rigorózní důkaz zatím chybí. Ústředním tajemstvím je systematické krácení: ačkoliv jednotlivé jmenovatele $\{2k+1\}$ obsahují mocniny prvočísel ($9 = 3^2$, $25 = 5^2$, $27 = 3^3$, \ldots), výsledný jmenovatel po zkrácení obsahuje pouze první mocniny prvočísel. Tento jev formulujeme jako otevřený problém týkající se $p$-adických valuací a diskutujeme možné teoretické souvislosti.
 \end{abstract}
 
 \section{Úvod}
 
-Funkce primoriál, definovaná jako součin všech prvočísel až do dané hranice, se přirozeně vyskytuje v teorii čísel, od odhadů v analytické teorii čísel až po konstrukci vysoce složených čísel. Zatímco primoriály jsou typicky počítány přímým násobením, objevili jsme nečekanou alternativu: vznikají jako jmenovatelé střídavých faktoriálových součtů.
+Funkce primoriál, definovaná jako součin všech prvočísel do dané hranice, se v teorii čísel objevuje zcela přirozeně – od odhadů v analytické teorii čísel po konstrukci vysoce složených čísel. Primoriály se obvykle počítají přímým násobením, my jsme však objevili překvapivou alternativu: vystupují jako jmenovatele střídavých faktoriálových součtů.
 
-Tento objev vznikl prostřednictvím výpočetního experimentování s rozklady na egyptské zlomky a faktoriálovými řadami. Při zkoumání různých vzorců racionálních součtů jsme pozorovali, že určité střídavé součty vykazují jmenovatele s pozoruhodnou strukturou---po zkrácení na nejnižší čísla se objevují pouze součiny různých prvočísel. Systematické testování odhalilo vzorec prezentovaný zde.
+Tento objev vzešel z výpočetních experimentů s egyptskými zlomky a faktoriálovými řadami. Při zkoumání různých vzorců pro racionální součty jsme si všimli, že některé střídavé součty mají jmenovatele s pozoruhodnou vlastností – po zkrácení na základní tvar obsahují výhradně součiny různých prvočísel. Systematické testování pak vedlo k vzorci, který zde prezentujeme.
 
-Vzorec je snadno formulovatelný a výpočetně ověřitelný, avšak pochopení \emph{proč} funguje vyžaduje vysvětlení jemného mechanismu krácení. Čitatele, konstruované z faktoriálů, systematicky eliminují všechny vyšší mocniny prvočísel z naivního nejmenšího společného násobku jmenovatelů. Tento článek prezentuje vzorec, poskytuje výpočetní důkazy a formuluje krácení jako formální otevřený problém.
+Samotný vzorec je jednoduchý a snadno ověřitelný výpočtem, ale pochopit \emph{proč} funguje, vyžaduje objasnění subtilního mechanismu krácení. Čitatelé, vytvořené z faktoriálů, totiž systematicky odstraňují všechny vyšší mocniny prvočísel z naivně očekávaného nejmenšího společného násobku jmenovatelů. V tomto článku vzorec prezentujeme, uvádíme výpočetní důkazy a formulujeme problém krácení jako otevřenou matematickou otázku.
 
 \section{Vzorec}
 
 \begin{theorem}[Výpočetní]
-Pro libovolné celé číslo $m \geq 3$ definujme racionální číslo
+Pro libovolné celé číslo $m \geq 3$ definujeme racionální číslo
 \begin{equation}\label{eq:main}
 S_m = \frac{1}{2} \sum_{k=1}^{h} \frac{(-1)^k \cdot k!}{2k+1}
 \end{equation}
-kde $h = \lfloor(m-1)/2\rfloor$. Pak jmenovatel $S_m$ v nejnižších číslech se rovná $m$-primoriálu:
+kde $h = \lfloor(m-1)/2\rfloor$. Pak jmenovatel $S_m$ v základním tvaru je roven $m$-primoriálu:
 \[
 \text{den}(S_m) = \prod_{\substack{p \text{ prvočíslo} \\ p \leq m}} p
 \]
 \end{theorem}
 
 \begin{remark}
-Případ $m = 2$ vyžaduje speciální zacházení a vrací přímo $2$. Pro $m \geq 3$ se vzorec aplikuje univerzálně.
+Případ $m = 2$ vyžaduje speciální přístup a dává přímo hodnotu $2$. Pro $m \geq 3$ platí vzorec univerzálně.
 \end{remark}
 
 \begin{example}
-Pro $m = 13$ máme $h = 6$ a počítáme:
+Pro $m = 13$ dostáváme $h = 6$ a vypočítáme:
 \begin{align*}
 S_{13} &= \frac{1}{2}\left(-\frac{1!}{3} + \frac{2!}{5} - \frac{3!}{7} + \frac{4!}{9} - \frac{5!}{11} + \frac{6!}{13}\right)\\
 &= \frac{695971}{30030}
 \end{align*}
-Jmenovatel $30030 = 2 \times 3 \times 5 \times 7 \times 11 \times 13$ je přesně součin všech prvočísel až do 13.
+Jmenovatel $30030 = 2 \times 3 \times 5 \times 7 \times 11 \times 13$ je přesně roven součinu všech prvočísel až do 13.
 \end{example}
 
-\subsection{Objevení vzoru}
+\subsection{Struktura objeveného vzoru}
 
-Klíčovým pozorováním je, že jmenovatel roste akumulací nových prvočíselných faktorů:
+Klíčové pozorování spočívá v tom, že jmenovatel roste postupným přidáváním nových prvočíselných faktorů:
 
 \begin{proposition}
-Nechť $S_k = \frac{1}{2} \sum_{i=1}^{k} \frac{(-1)^i \cdot i!}{2i+1}$ značí dílčí součet. Pak
+Označme $S_k = \frac{1}{2} \sum_{i=1}^{k} \frac{(-1)^i \cdot i!}{2i+1}$ částečný součet. Potom
 \[
 \text{den}(S_k) = 2 \times \prod_{\substack{p \text{ prvočíslo} \\ 3 \leq p \leq 2k+1}} p
 \]
 \end{proposition}
 
-Jmenovatele se stabilizují, když $2k+1$ je složené. Nová prvočísla vstupují pouze tehdy, když $2k+1$ samo je prvočíslem. Tabulka~\ref{tab:example} ilustruje toto pro $m = 13$:
+Jmenovatelé zůstávají konstantní, pokud je $2k+1$ složené číslo. Nová prvočísla přibývají pouze tehdy, je-li $2k+1$ samo prvočíslem. Tabulka~\ref{tab:example} ukazuje tento jev pro $m = 13$:
 
 \begin{table}[h]
 \centering
@@ -89,120 +89,120 @@ $k$ & $2k+1$ & Prvočíslo? & $\text{den}(S_k)$ \\ \hline
 5 & 11 & \checkmark & $2 \times 3 \times 5 \times 7 \times 11$ \\
 6 & 13 & \checkmark & $2 \times 3 \times 5 \times 7 \times 11 \times 13$
 \end{tabular}
-\caption{Růst jmenovatele pro $m = 13$. Všimněte si, že jmenovatel zůstává nezměněn při $k = 4$ navzdory $9 = 3^2$.}
+\caption{Růst jmenovatele pro $m = 13$. Povšimněte si, že při $k = 4$ zůstává jmenovatel nezměněn, přestože $9 = 3^2$.}
 \label{tab:example}
 \end{table}
 
 \section{Problém krácení}
 
-Ústřední záhadou je toto: sekvence $\{2k+1\}_{k=1}^{h}$ obsahuje mocniny prvočísel a složená čísla:
+Centrální záhada spočívá v následujícím: posloupnost $\{2k+1\}_{k=1}^{h}$ obsahuje mocniny prvočísel i složená čísla:
 \[
 3, 5, 7, 9=3^2, 11, 13, 15=3 \times 5, 17, 19, 21=3 \times 7, 23, 25=5^2, 27=3^3, \ldots
 \]
 
-Naivně, při výpočtu $\text{LCM}(3, 5, 7, 9, 11, \ldots)$ bychom si ponechali $3^2$ z 9, $3^3$ z 27, $5^2$ z 25, a tak dále. Avšak po sečtení a zkrácení (\ref{eq:main}) na nejnižší čísla obsahuje jmenovatel \emph{pouze první mocniny} prvočísel.
+Při naivním výpočtu $\text{NSN}(3, 5, 7, 9, 11, \ldots)$ bychom očekávali výskyt $3^2$ kvůli 9, $3^3$ kvůli 27, $5^2$ kvůli 25, a tak dále. Přesto po sečtení výrazu (\ref{eq:main}) a zkrácení na základní tvar obsahuje jmenovatel \emph{pouze první mocniny} prvočísel.
 
-\subsection{Formulace p-adických valuací}
+\subsection{Formulace pomocí p-adických valuací}
 
-Nechť $\nu_p(n)$ značí $p$-adickou valuaci (exponent $p$ v prvočíselném rozkladu $n$). Naše výpočetní vyšetřování odhaluje:
+Označme $\nu_p(n)$ $p$-adickou valuaci čísla $n$ (exponent prvočísla $p$ v prvočíselném rozkladu $n$). Naše výpočetní zkoumání ukazuje:
 
 \begin{conjecture}\label{conj:main}
-Pro všechna prvočísla $p$ s $3 \leq p \leq 2k+1$ máme
+Pro všechna prvočísla $p$ splňující $3 \leq p \leq 2k+1$ platí
 \[
 \nu_p\left(\text{den}(S_k)\right) = 1
 \]
-a
+a zároveň
 \[
 \nu_p\left(\text{čit}(S_k)\right) = 0
 \]
-kde $\text{čit}(q)$ značí čitatele $q$ v nejnižších číslech.
+kde $\text{čit}(q)$ označuje čitatel čísla $q$ v základním tvaru.
 \end{conjecture}
 
-Toto je jádrem problému: dokázat, že čitatele systematicky obsahují přesně správné prvočíselné faktory pro zkrácení všech $p^j$ s $j > 1$ prostřednictvím redukce největším společným dělitelem.
+V tom spočívá jádro problému: dokázat, že čitatelé obsahují právě takové prvočíselné faktory, které při redukci největším společným dělitelem odstraní všechny mocniny $p^j$ pro $j > 1$.
 
 \subsection{Dva mechanismy krácení}
 
-Výpočetní vyšetřování odhaluje dva odlišné režimy:
+Výpočetní analýza odhaluje dva různé režimy chování:
 
-\textbf{Malé $k$ (krácení pomocí NSD):} Když $\nu_p(k!) < \nu_p(2k+1)$ pro nějaké prvočíslo $p$ dělící $2k+1$, kombinovaný čitatel po sčítání obsahuje faktory $p$ a redukce pomocí NSD eliminuje přesně nadbytečné mocniny.
+\textbf{Malá $k$ (krácení pomocí NSD):} Pokud platí $\nu_p(k!) < \nu_p(2k+1)$ pro nějaké prvočíslo $p$ dělící $2k+1$, pak kombinovaný čitatel po sečtení obsahuje faktory $p$, přičemž redukce pomocí NSD odstraní právě nadbytečné mocniny.
 
-\textbf{Příklad:} Při $k = 4$ máme $2k+1 = 9 = 3^2$, ale $\nu_3(4!) = 1 < 2$. Čitatel po kombinaci s předchozími členy obsahuje přesně jeden faktor 3, redukující $3^2 \to 3^1$ ve jmenovateli.
+\textbf{Příklad:} Pro $k = 4$ máme $2k+1 = 9 = 3^2$, ale $\nu_3(4!) = 1 < 2$. Čitatel po zkombinování s předchozími členy obsahuje právě jeden faktor 3, což vede k redukci $3^2 \to 3^1$ ve jmenovateli.
 
-\textbf{Velké $k$ (celočíselné členy):} Pro dostatečně velké $k$ Legendrův vzorec
+\textbf{Velká $k$ (celočíselné členy):} Pro dostatečně velká $k$ zaručuje Legendreův vzorec
 \[
 \nu_p(k!) = \sum_{i=1}^{\infty} \left\lfloor \frac{k}{p^i} \right\rfloor
 \]
-zajišťuje, že $\nu_p(k!) \geq \nu_p(2k+1)$ pro všechna $p | (2k+1)$. V těchto případech se člen $\frac{k!}{2k+1}$ redukuje na \emph{celé číslo} a žádné nové jmenovatelové faktory nevstupují.
+že platí $\nu_p(k!) \geq \nu_p(2k+1)$ pro všechna $p | (2k+1)$. V těchto případech je zlomek $\frac{k!}{2k+1}$ již \emph{celé číslo} a nepřidává žádné nové faktory do jmenovatele.
 
-\textbf{Příklad:} Při $k = 12$ máme $2k+1 = 25 = 5^2$ a $\nu_5(12!) = 2 \geq 2$, takže člen je již celé číslo.
+\textbf{Příklad:} Pro $k = 12$ máme $2k+1 = 25 = 5^2$ a $\nu_5(12!) = 2 \geq 2$, takže příslušný člen je celé číslo.
 
-\subsection{Úloha střídavého znaménka}
+\subsection{Role střídavého znaménka}
 
-Střídavý faktor $(-1)^k$ je podstatný. Bez něj vzorec ztrácí faktor 3 při $k = 4$ a nikdy se nezotaví, vydávajíc $\text{Primoriál}/3$ pro všechna $m \geq 9$. Střídavé znaménko řídí strukturu čitatele, aby zabránilo nadměrnému krácení v kritických krocích.
+Střídavý faktor $(-1)^k$ je naprosto zásadní. Bez něj vzorec při $k = 4$ ztratí faktor 3 a již ho nikdy nezíská zpět, takže pro všechna $m \geq 9$ dává výsledek $\text{Primoriál}/3$. Střídání znamének ovlivňuje strukturu čitatele tak, že zabraňuje nadměrnému krácení v kritických bodech.
 
 \section{Výpočetní ověření}
 
-Vzorec byl ověřen vyčerpávajícím způsobem pro všechna $m$ od 3 do 100\,000, testujíc každou celočíselnou hodnotu (jak složenou, tak prvočíselnou). Při $m = 100{,}000$ má primoriál 43\,293 číslic; všechny jmenovatele se přesně shodují.
+Vzorec jsme vyčerpávajícím způsobem ověřili pro všechna $m$ od 3 do 100\,000, přičemž jsme testovali každou celočíselnou hodnotu (složenou i prvočíselnou). Pro $m = 100{,}000$ má primoriál 43\,293 cifer; všechny jmenovatele se přesně shodují.
 
 \subsection{Iterativní formulace}
 
-Pro umožnění rozsáhlého ověření jsme odvodili efektivní iterativní formulaci. Vycházejíc z přímého součtu (\ref{eq:main}) mohou být dílčí součty počítány prostřednictvím tříprvkové rekurence:
+Pro efektivní ověření ve velkém měřítku jsme odvodili iterativní formulaci. Z přímého součtu (\ref{eq:main}) lze částečné součty počítat pomocí tříčlenné rekurence:
 
 \begin{align}
 S_0 &= \{0, 0, 1\}\\
 S_{n+1} &= \{n+1, b_n, b_n + (a_n - b_n)\cdot\left(n + \frac{1}{3+2n}\right)\}
 \end{align}
 
-kde stav je $S_n = \{n, a_n, b_n\}$. Po $h = \lfloor(m-1)/2\rfloor$ iteracích je primoriál extrahován jako:
+kde stav je reprezentován jako $S_n = \{n, a_n, b_n\}$. Po $h = \lfloor(m-1)/2\rfloor$ iteracích získáme primoriál jako:
 \[
 \text{Primoriál}(m) = 2 \cdot \text{den}(b_h - 1)
 \]
 
-Ekvivalence mezi přímým součtem (\ref{eq:main}) a touto rekurencí může být ustanovena indukcí; rekurence sleduje $b_n = 1 + 2S_n$ a faktor 2 je odstaven extrakčním vzorcem. Rigorózní důkaz ekvivalence je poskytnut v doprovodném dokumentu. Toto umožňuje $O(m)$ aritmetických operací a usnadňuje ověření ve velkém měřítku. Tabulka~\ref{tab:verification} ukazuje klíčové kontrolní body ověření:
+Ekvivalenci mezi přímým součtem (\ref{eq:main}) a touto rekurencí lze dokázat indukcí; rekurence sleduje veličinu $b_n = 1 + 2S_n$ a faktor 2 se extrahuje ve finálním vzorci. To umožňuje provést výpočet v $O(m)$ aritmetických operacích a značně usnadňuje ověření pro velké hodnoty. Tabulka~\ref{tab:verification} shrnuje klíčové kontrolní body:
 
 \begin{table}[h]
 \centering
 \begin{tabular}{r|r|r}
-$m$ & $\pi(m)$ & Počet číslic primoriálu \\ \hline
+$m$ & $\pi(m)$ & Počet cifer primoriálu \\ \hline
 100 & 25 & 37 \\
 1{,}000 & 168 & 416 \\
 10{,}000 & 1{,}229 & 3{,}393 \\
 100{,}000 & 9{,}592 & 43{,}293
 \end{tabular}
-\caption{Kontrolní body ověření. Všechny hodnoty testovány vyčerpávajícím způsobem (každé $m$ od 3 dále).}
+\caption{Kontrolní body ověření. Všechny mezilehlé hodnoty byly rovněž testovány (každé $m$ od 3 výše).}
 \label{tab:verification}
 \end{table}
 
 \section{Otevřené otázky}
 
-Zatímco vzor je výpočetně robustní, několik teoretických otázek zůstává:
+Přestože je vzorec výpočetně ověřen pro obrovský rozsah hodnot, zůstává několik teoretických otázek nezodpovězených:
 
 \begin{enumerate}
-\item \textbf{Rigorózní důkaz:} Dokázat Hypotézu~\ref{conj:main} pomocí $p$-adické analýzy nebo jiných technik.
+\item \textbf{Rigorózní důkaz:} Dokázat Hypotézu~\ref{conj:main} pomocí $p$-adické analýzy nebo jiných matematických metod.
 
-\item \textbf{Souvislost s vytvořující funkcí:} Má tento součet interpretaci jako vytvořující funkce pro primoriály? Struktura naznačuje hlubší kombinatorický nebo analytický rámec.
+\item \textbf{Souvislost s vytvořující funkcí:} Má tento součet interpretaci jako vytvořující funkce pro primoriály? Struktura naznačuje existenci hlubšího kombinatorického či analytického rámce.
 
-\item \textbf{Zobecnění:} Co se stane, když modifikujeme vzorec? Například:
+\item \textbf{Zobecnění:} Co se stane při modifikaci vzorce? Například:
 \begin{itemize}
 \item Změna koeficientu: $\frac{1}{2} \to \frac{1}{c}$ pro jiné konstanty $c$
-\item Modifikace jmenovatelů: $2k+1 \to ak+b$ pro jiné posloupnosti
-\item Změna čitatelů: $k! \to (2k)!$ nebo jiné faktoriálové posloupnosti
+\item Úprava jmenovatelů: $2k+1 \to ak+b$ pro jiné aritmetické posloupnosti
+\item Změna čitatelů: $k! \to (2k)!$ nebo jiné faktoriálové výrazy
 \end{itemize}
 
-\item \textbf{Souvislost s jinými identitami:} Existují spojení s Wilsonovou větou, Wolstenholmeovou větou nebo jmenovateli harmonických čísel (které také zahrnují primoriály)?
+\item \textbf{Souvislost s klasickými větami:} Existuje spojení s Wilsonovou větou, Wolstenholmeovou větou nebo s jmenovateli harmonických čísel (které rovněž obsahují primoriály)?
 
-\item \textbf{Složitost:} Jaká je výpočetní složitost tohoto vzorce ve srovnání s přímým výpočtem primoriálu? Iterativní formulace může sloužit jako paměťově efektivní prvočíselné síto bez testování primalit.
+\item \textbf{Výpočetní složitost:} Jaká je složitost tohoto vzorce ve srovnání s přímým výpočtem primoriálu? Iterativní formulace by mohla sloužit jako paměťově efektivní metoda pro generování prvočísel bez explicitního testování primality.
 \end{enumerate}
 
 \section{Závěr}
 
-Představili jsme výpočetně ověřený vzorec vyjadřující primoriály jako jmenovatele střídavých faktoriálových součtů. Systematické krácení vyšších mocnin prvočísel zůstává nevysvětleno, naznačujíc hlubokou číselně-teoretickou strukturu. Tento problém je vhodný pro formální důkazové asistenty a mohl by profitovat z technik v $p$-adické analýze, vytvořujících funkcích nebo modulární aritmetice.
+Představili jsme výpočetně ověřený vzorec, který vyjadřuje primoriály jako jmenovatele střídavých faktoriálových součtů. Systematické krácení vyšších mocnin prvočísel zůstává nevysvětlené a naznačuje existenci hlubokých číselně-teoretických struktur. Problém se zdá být vhodný pro formální důkazové asistenty a mohl by těžit z metod $p$-adické analýzy, teorie vytvořujících funkcí nebo modulární aritmetiky.
 
-Doufáme, že tento objev inspiruje teoretické vyšetřování a vítáme spolupráci na důkazu Hypotézy~\ref{conj:main} nebo zkoumání širších otázek zde nastolených.
+Věříme, že tento objev podnítí další teoretický výzkum. Budeme rádi za jakoukoli spolupráci směřující k důkazu Hypotézy~\ref{conj:main} nebo k prozkoumání širších souvislostí zde naznačených.
 
 \section*{Poděkování}
 
-Tato práce vzešla z výpočetních průzkumů používajících Wolfram Language. Děkuji online matematické komunitě za předběžné diskuse a zpětnou vazbu k raným verzím tohoto výsledku.
+Tato práce vznikla při výpočetních experimentech v prostředí Wolfram Language. Děkuji online matematické komunitě za cenné diskuse a připomínky k raným verzím tohoto výsledku.
 
 \begin{thebibliography}{9}
 
