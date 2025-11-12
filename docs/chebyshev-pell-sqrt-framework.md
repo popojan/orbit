@@ -167,6 +167,28 @@ For applications requiring interval arithmetic or certified bounds, this framewo
 - **Newton/Rationalize**: Quadratic convergence = doubles precision per iteration (~12 iterations for 3000 digits)
 - **sqrttrf nested**: Super-quadratic = ~10x precision per iteration (**3 iterations for 3000 digits**)
 
+### Comparison with Continued Fraction Convergents
+
+Mathematica's `Rationalize` uses continued fraction (CF) convergents, which provide the **optimal rational approximation**: the smallest denominator for a given precision. This is a fundamental property proven by Lagrange.
+
+**Denominator size comparison** (sqrt(13) at ~1500 digit sqrt precision):
+
+| Method | Denominator digits | Overhead vs CF |
+|--------|-------------------|----------------|
+| CF convergents (Rationalize) | 779 | 1.0x (optimal) |
+| Nested + Pell base | 1556 | **2.0x** |
+| Nested + crude start | 5189 | **6.7x** |
+
+**Key finding**: Our method produces denominators approximately **2x larger** than the minimal CF convergents when starting from Pell base.
+
+**Tradeoff analysis**:
+- **CF convergents (Rationalize)**: Optimal representation, but slower to compute at extreme precision
+- **Chebyshev-Pell (our method)**: 2x denominator overhead, but 1000x+ faster computation
+
+For applications where **speed > minimality** (symbolic computation, numerical verification, benchmarking), this tradeoff is favorable.
+
+**Credit where due**: Mathematica's Rationalize provides optimal denominators. Our advantage is purely computational speed, not representation efficiency.
+
 ### Implementation in FLINT
 
 The sqrttrf algorithm was also implemented in FLINT (Fast Library for Number Theory) using the same low-level GMP arithmetic as FLINT's native square root.
