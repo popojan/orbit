@@ -31,11 +31,7 @@ Anonymous Author\\
 \maketitle
 
 \begin{abstract}
-We present a novel method for computing ultra-high precision rational approximations to square roots of non-square integers by synthesizing Pell equation solutions with nested Chebyshev polynomial iterations. Our approach achieves remarkable super-quadratic convergence, delivering approximately 10-fold precision gain per iteration in balanced mode and up to 6000-fold in optimized configurations. The method employs a two-parameter nested refinement scheme $\nu_{m_1,m_2}$ with immediate feedback: starting from a Pell-based approximation $n_0$, we iteratively apply $m_2$ times:
-\begin{equation*}
-n_{k+1} = \tau_{m_1}(d, n_k) = \frac{1}{2}\left(\frac{d}{\sigma_{m_1}(d, n_k)} + \sigma_{m_1}(d, n_k)\right)
-\end{equation*}
-where parameter $m_1$ controls the Chebyshev polynomial order within each refinement (using ratios $U_{m_1-1}(\alpha)/U_{m_1+1}(\alpha)$ with remarkable imaginary cancellation), while $m_2$ controls the iteration count. This parameterization enables strategic trade-offs: small $m_1$ with large $m_2$ uses optimized closed forms for speed, while large $m_1$ with small $m_2$ achieves faster convergence per step. By orchestrating Pell equations and Chebyshev polynomials through iterative refinement, the method achieves practical computations exceeding 62 million digits---far beyond classical continued fraction methods---while accepting roughly 2× denominator overhead as the price for this extraordinary reach. This framework reveals a fundamentally different approach to rational approximation where computational efficiency emerges from algebraic structure rather than denominator minimality.
+We present a method for computing high-precision rational approximations to square roots by combining Pell equation solutions with nested Chebyshev polynomial iterations. The approach achieves super-quadratic convergence through a two-parameter scheme $(m_1, m_2)$ that controls both the Chebyshev polynomial order per refinement step and the iteration count, enabling trade-offs between per-step complexity and convergence rate. The method exploits cancellation of imaginary components when evaluating Chebyshev polynomial ratios at complex arguments, yielding purely rational results despite intermediate complex values. We provide optimized closed forms for low-order cases and demonstrate practical computation of 62-million-digit rational approximations, substantially exceeding continued fraction methods in computational efficiency while accepting approximately 2× denominator overhead. This reveals a fundamentally different approach to rational approximation where computational efficiency emerges from algebraic structure rather than denominator minimality.
 \end{abstract}
 
 \section{Introduction}
@@ -63,15 +59,15 @@ The classical continued fraction approach yields \emph{optimal} rational approxi
 
 \subsection{Our Contribution}
 
-Building upon earlier investigations in Egyptian fraction representations of square roots using Pell-Chebyshev methods \cite{egypt_repo}, we present a significantly evolved approach that achieves dramatic computational improvements through nested iteration. Our synthesis of classical mathematical structures yields a novel iterative framework with remarkable computational properties:
+Building upon earlier investigations in Egyptian fraction representations of square roots using Pell-Chebyshev methods \cite{egypt_repo}, we present a nested iteration approach that achieves substantial computational improvements. Our synthesis of classical mathematical structures yields a novel iterative framework with the following properties:
 
 \begin{enumerate}
-\item \textbf{Super-quadratic convergence:} The method achieves approximately 10-fold precision gain per iteration in balanced mode, escalating to an extraordinary 6000-fold gain in optimized configurations.
-\item \textbf{Superior computational efficiency:} For precision requirements exceeding 200 digits, our implementation outperforms Mathematica's \texttt{Rationalize} function by factors of 3--10×.
-\item \textbf{Unprecedented precision capability:} We demonstrate practical computation of a 62-million-digit rational approximation to $\sqrt{13}$, establishing new benchmarks for exact arithmetic computation.
-\item \textbf{Elegant closed-form optimizations:} We derive pre-simplified expressions for orders $m=1$ and $m=2$, entirely eliminating the computational burden of symbolic Chebyshev polynomial evaluation.
-\item \textbf{Transparent performance trade-offs:} The method incurs approximately 2× denominator overhead relative to optimal continued fraction convergents, a deliberate exchange for dramatically enhanced computational speed.
-\item \textbf{Deep theoretical insights:} We unveil a novel characterization of Pell equation solutions through the rationality properties of Chebyshev series, suggesting unexplored connections in classical number theory.
+\item \textbf{Super-quadratic convergence:} The method achieves approximately 10-fold precision gain per iteration in balanced mode, increasing to 6000-fold gain in optimized configurations.
+\item \textbf{Computational efficiency:} For precision requirements exceeding 200 digits, our implementation outperforms Mathematica's \texttt{Rationalize} function by factors of 3--10×.
+\item \textbf{High-precision capability:} We demonstrate practical computation of a 62-million-digit rational approximation to $\sqrt{13}$.
+\item \textbf{Closed-form optimizations:} We derive simplified expressions for orders $m=1$ and $m=2$, eliminating symbolic Chebyshev polynomial evaluation for these cases.
+\item \textbf{Performance trade-offs:} The method incurs approximately 2× denominator overhead relative to optimal continued fraction convergents, a deliberate exchange for enhanced computational speed.
+\item \textbf{Theoretical insights:} We identify connections between Pell equation solutions and Chebyshev polynomial rationality properties, suggesting unexplored relationships in classical number theory.
 \end{enumerate}
 
 Our framework is ideally suited for implementation in modern symbolic computation systems (Mathematica, SageMath, SymPy) and applications demanding massive rational precision where traditional continued fraction methods become computationally intractable.
@@ -165,19 +161,19 @@ For $d, n \in \mathbb{Q}$ with $n^2 \neq d$, and $m \in \mathbb{Z}^+$, define th
 where $U_k$ denotes the Chebyshev polynomial of the second kind and $\alpha = \sqrt{\frac{d}{-(n^2-d)}}$.
 \end{definition}
 
-\subsection{The Remarkable Imaginary Cancellation Mechanism}
+\subsection{The Imaginary Cancellation Mechanism}
 
-At first glance, formula \eqref{eq:sigma} presents a puzzling paradox: when $n^2 < d$ (indicating that $n$ underestimates $\sqrt{d}$), the argument to the Chebyshev polynomials becomes:
+When $n^2 < d$ (indicating that $n$ underestimates $\sqrt{d}$), the argument to the Chebyshev polynomials in formula \eqref{eq:sigma} becomes:
 \begin{equation}
 \alpha = \sqrt{\frac{d}{-(n^2-d)}} = \sqrt{\frac{d}{d-n^2}} \cdot \sqrt{-1} = i\sqrt{\frac{d}{d-n^2}}
 \end{equation}
-This argument is purely imaginary, suggesting the presence of complex arithmetic in our ostensibly rational computation.
+This argument is purely imaginary, suggesting complex arithmetic despite our goal of rational computation.
 
-Remarkably, the \emph{ratio} of Chebyshev polynomials evaluated at this imaginary argument undergoes a profound simplification, yielding a purely rational expression. Through the fundamental identity:
+However, the \emph{ratio} of Chebyshev polynomials evaluated at this imaginary argument simplifies to a purely rational expression. Through the fundamental identity:
 \begin{equation}
 U_k(i\beta) = i^{k+1} \cdot \text{SinhChebyshevU}_k(i\beta)
 \end{equation}
-the ratio $U_{m-1}(i\alpha)/U_{m+1}(i\alpha)$ exhibits perfect cancellation of the imaginary unit, producing not merely a real result, but a fully rational value when both $n$ and $d$ are rational.
+the ratio $U_{m-1}(i\alpha)/U_{m+1}(i\alpha)$ exhibits complete cancellation of the imaginary unit, producing a fully rational value when both $n$ and $d$ are rational.
 
 \begin{proposition}
 For rational $d, n$ with $n^2 < d$, the expression $\sigma_m(d, n)$ evaluates to a rational number, despite involving complex intermediate quantities.
@@ -191,7 +187,7 @@ The Chebyshev polynomials $U_k(x)$ possess integer coefficients throughout. When
 This expression is manifestly real. Furthermore, since $\alpha^2 = d/(d-n^2)$ is rational whenever $d$ and $n$ are rational, the polynomials $r_k$ necessarily evaluate to rational values, establishing the desired result.
 \end{proof}
 
-This extraordinary \emph{imaginary cancellation} mechanism lies at the heart of our method's computational power and appears to be a previously unexploited phenomenon in the context of square root approximation.
+This \emph{imaginary cancellation} mechanism is central to the method's computational viability.
 
 \subsection{Optimized Closed-Form Expressions for Low Orders}
 
