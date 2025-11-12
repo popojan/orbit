@@ -142,7 +142,7 @@ The Chebyshev form provides exact evaluation of the factorial sum without explic
 converges to $\sqrt{d}$ as $n \to \infty$, with each $\tau_k$ decomposable into Egyptian fractions.
 \end{definition}
 
-This original method exhibits linear convergence, adding approximately 3--5 decimal digits of precision per term. While elegant and theoretically illuminating, the computational cost of evaluating increasingly complex Chebyshev polynomial expressions limits its practical utility for extreme precision.
+While this method demonstrates convergence to $\sqrt{d}$, the computational cost of evaluating increasingly complex Chebyshev polynomial expressions limits its practical utility for extreme precision. The convergence rate depends on the magnitude of the fundamental Pell solution; computational experiments suggest quadratic or faster convergence, though a rigorous theoretical characterization remains open.
 
 The critical insight leading to our nested method was recognizing that a \emph{different} Chebyshev-based refinement formula (the operator $\sigma_m$ defined in equation \eqref{eq:sigma}), when combined with symmetrization and nesting, achieves dramatically superior convergence rates while eliminating the need for summing large numbers of terms. The two methods share the foundational use of Pell solutions and Chebyshev polynomials but diverge fundamentally in their iterative structure and convergence behavior.
 
@@ -339,7 +339,7 @@ Nested (extreme) & 1 & 10 & 100 & 62,749,264 & 31,374,632 & 2.0x \\
 
 The classical Newton-Raphson method (Babylonian algorithm) exhibits well-known quadratic convergence: $\epsilon_{n+1} \approx \epsilon_n^2$, effectively doubling precision with each iteration. Achieving $10^{6}$ digits of precision requires approximately $\log_2(10^6) \approx 20$ iterations.
 
-In striking contrast, our method with $m_1=1$ achieves extraordinary super-quadratic convergence: $\epsilon_{n+1} \approx \epsilon_n^{6000}$, requiring merely $\log_{6000}(10^6) \approx 1.7$ iterations to reach comparable precision. While each individual iteration incurs greater computational cost, the dramatic reduction in iteration count yields superior overall performance.
+In striking contrast, our method with $m_1=1$ achieves extraordinary super-quadratic convergence, with empirically observed precision growth suggesting $\epsilon_{n+1} \approx \epsilon_n^{6000}$ (see Theorem \ref{thm:convergence}), requiring merely $\log_{6000}(10^6) \approx 1.7$ iterations to reach comparable precision. While each individual iteration incurs greater computational cost, the dramatic reduction in iteration count yields superior overall performance.
 
 A crucial distinction emerges in the arithmetic domain: Newton's method excels for \emph{floating-point} approximations, benefiting from hardware-optimized arithmetic operations. However, for \emph{exact rational} approximations---our primary focus---the nested Chebyshev-Pell method demonstrates clear superiority.
 
