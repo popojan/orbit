@@ -4,6 +4,15 @@ reports/*.png
 reports/*.pdf
 reports/*.svg
 
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
 # Wolfram Language cache
 .wl_cache/
 

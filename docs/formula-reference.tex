@@ -1,7 +1,7 @@
 \documentclass[10pt,a4paper,twocolumn]{article}
 \usepackage[margin=1.5cm]{geometry}
 \usepackage{amsmath,amssymb}
-\usepackage{mathtools}
+%\usepackage{mathtools}
 \usepackage[colorlinks=true,linkcolor=blue]{hyperref}
 
 \title{\textbf{Orbit Paclet: Formula Reference}\\
@@ -41,29 +41,33 @@ t &= a + 2b + c\\
 b = \frac{x-1}{y} \quad \text{where } (x,y) \text{ is Pell solution}
 \end{equation}
 
-\textbf{Fast refinement (sqrttrf):}
-\begin{multline}
-\text{sqrttrf}(d, n, m) = \frac{n^2 + d}{2n} + \frac{n^2 - d}{2n} \cdot\\
-\frac{U_{m-1}\left(\sqrt{\frac{d}{-(n^2-d)}}\right)}{U_{m+1}\left(\sqrt{\frac{d}{-(n^2-d)}}\right)}
-\end{multline}
+\textbf{Chebyshev ratio trick:} % core refinement
+\begin{equation}
+R_m(z) = \frac{U_{m-1}(z)}{U_{m+1}(z)}
+\end{equation}
+
+\textbf{Fast refinement:} % sqrttrf in code
+\begin{equation}
+\rho(d, n, m) = \frac{n^2 + d}{2n} + \frac{n^2 - d}{2n} \cdot R_m\left(\sqrt{\frac{d}{-(n^2-d)}}\right)
+\end{equation}
 
 where $U_k$ is Chebyshev polynomial of second kind.
 
-\textbf{Symmetric step:}
+\textbf{Symmetric step:} % sym in code
 \begin{equation}
-\text{sym}(d, n, m) = \frac{d}{2x} + \frac{x}{2}, \quad x = \text{sqrttrf}(d, n, m)
+\sigma(d, n, m) = \frac{d}{2x} + \frac{x}{2}, \quad x = \rho(d, n, m)
 \end{equation}
 
-\textbf{Nested iteration:}
+\textbf{Nested iteration:} % nestqrt in code
 \begin{equation}
-\text{nestqrt}(d, n_0, \{m_1, m_2\}) = \underbrace{\text{sym}(\cdots\text{sym}(d, n_0, m_1)\cdots, m_1)}_{m_2 \text{ times}}
+N(d, n_0, \{m_1, m_2\}) = \underbrace{\sigma(\cdots\sigma(d, n_0, m_1)\cdots, m_1)}_{m_2 \text{ times}}
 \end{equation}
 
-\subsection*{m1=1 Optimization}
+\subsection*{$m_1=1$ Optimization}
 
-When $m_1 = 1$, sqrttrf simplifies dramatically:
+When $m_1 = 1$, $\rho$ simplifies dramatically:
 \begin{equation}
-\text{sqrttrf}(d, n, 1) = \frac{n^2 + d}{2n}
+\rho(d, n, 1) = \frac{d(3n^2 + d)}{n(n^2 + 3d)}
 \end{equation}
 
 Convergence: $\sim$6000$\times$ precision per iteration!
@@ -72,13 +76,15 @@ Convergence: $\sim$6000$\times$ precision per iteration!
 
 \textbf{Quadratic error:}
 \begin{equation}
-E_{\text{quad}} = \log_{10}|d - \text{approx}^2|
+E = \log_{10}|d - r^2|
 \end{equation}
 
 \textbf{Sqrt precision} (decimal places):
 \begin{equation}
-P_{\text{sqrt}} = -\frac{E_{\text{quad}}}{2}
+P = -\frac{E}{2}
 \end{equation}
+
+where $r$ is the rational approximation.
 
 \section*{Primorial Computation}
 
@@ -89,8 +95,9 @@ p\# = \prod_{\text{primes } q \leq p} q
 
 \subsection*{Rational Sum Formula}
 \begin{equation}
-p\# = \left\lfloor \frac{1}{\sum_{k=1}^{p} \frac{1}{k!}} \right\rfloor
+p\# = \text{den}\left(\frac{1}{2} \sum_{k=0}^{\lfloor(p-1)/2\rfloor} \frac{(-1)^k \cdot k!}{2k+1}\right)
 \end{equation}
+where $\text{den}(q)$ is the denominator of rational $q$ in lowest terms.
 
 \subsection*{Recursive Sieve Formulation}
 \begin{align}
@@ -108,19 +115,20 @@ p\# = S_p(p)
 
 For semiprime $n = p \cdot q$ where $p < q$:
 
-\subsection*{Pochhammer Sum}
+\subsection*{Pochhammer Sum} % ForFactiMod in code
 \begin{equation}
-\text{ForFactiMod}(n) = \text{FractionalPart}\left(\sum_{k=1}^{n-1} \frac{(n-1)!}{(k-1)! \cdot k \cdot n}\right)
+\Phi(n) = \sum_{i=1}^{m} \left\{\frac{(-1)^i \cdot (1-n)_i \cdot (1+n)_i}{1+2i}\right\}
 \end{equation}
+where $m = \lfloor(\sqrt{n}-1)/2\rfloor$, $(a)_i$ is the Pochhammer symbol, and $\{x\}$ denotes the fractional part.
 
 \subsection*{Factor Extraction}
 \begin{equation}
-\text{ForFactiMod}(n) = \frac{p-1}{p}
+\Phi(n) = \frac{p-1}{p}
 \end{equation}
 
 Therefore:
 \begin{equation}
-p = \frac{1}{1 - \text{ForFactiMod}(n)}
+p = \frac{1}{1 - \Phi(n)}
 \end{equation}
 
 \section*{Modular Factorials}
@@ -241,7 +249,13 @@ $\pi(n)$ & Prime counting function (index of prime $n$)\\
 $p\#$ & Primorial (product of primes $\leq p$)\\
 $T_k(x)$ & Chebyshev polynomial, first kind\\
 $U_k(x)$ & Chebyshev polynomial, second kind\\
+$\rho(d,n,m)$ & Chebyshev refinement step (sqrttrf in code)\\
+$\sigma(d,n,m)$ & Symmetric step (sym in code)\\
+$N(d,n_0,\{m_1,m_2\})$ & Nested iteration (nestqrt in code)\\
+$\Phi(n)$ & Semiprime factor extractor (ForFactiMod in code)\\
 $\lfloor x \rfloor$ & Floor function\\
+$\{x\}$ & Fractional part: $x - \lfloor x \rfloor$\\
+$\text{den}(q)$ & Denominator of rational $q$ in lowest terms\\
 $a \equiv b \pmod{n}$ & $a$ congruent to $b$ modulo $n$\\
 $\binom{n}{k}$ & Binomial coefficient\\
 $(n)_k$ & Pochhammer symbol (falling factorial)
