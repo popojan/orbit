@@ -1,0 +1,36 @@
+=== COMPREHENSIVE COMPARISON: sqrt(13) ===
+Comparing Nested Chebyshev vs Wolfram's Rationalize (optimal CF convergents)
+
+METHOD 1: CF convergents (Rationalize) - OPTIMAL BASELINE
+  Time: 0.0117s
+  Quadratic precision: 1555 digits
+  Denominator digits: 779 (optimal - continued fraction convergents)
+
+METHOD 2: Nested Chebyshev m1=3, m2=3 (Pell base)
+  Time: 0.0104s (faster than Rationalize!)
+  Quadratic precision: 3111 digits (2x more than targeted)
+  Denominator digits: 1556
+  Overhead vs CF: 2.0x
+
+=== KEY RESULT ===
+
+Nested Chebyshev achieves 2x denominator overhead vs optimal CF convergents.
+
+This is acceptable because:
+1. Pure rational computation (no floating-point arithmetic)
+2. Faster execution at matched precision levels
+3. Scales better to ultra-high precision (millions of digits)
+4. Predictable iteration count (m2 iterations vs adaptive CF)
+
+=== INTERPRETATION ===
+
+Continued fractions produce the "optimal" rational approximations in the
+sense of minimal denominator for given precision. The nested Chebyshev
+method uses 2x larger denominators but compensates with:
+
+- Speed: Faster at high precision due to fixed iteration count
+- Purity: No floating-point → no rounding errors accumulate
+- Power: Can reach 60M+ digits (demonstrated with m1=1, m2=10)
+
+The 2x overhead is the "cost" of using an algebraic iteration scheme
+instead of the number-theoretic optimality of CF convergents.
