@@ -4,7 +4,7 @@ A Wolfram Language paclet for recreational and research mathematical exploration
 
 **Headline Discovery:** A novel formula computing primorials (products of consecutive primes) through alternating factorial sums with mysterious cancellation properties.
 
-## Version 0.3.0 — Four Modules
+## Version 0.5.0 — Five Modules + Visualizations
 
 ### 1. Primorial Computation ⭐ (Most Recent)
 
@@ -63,7 +63,29 @@ HalfFactorialMod[13]   (* Returns: 5 (which is 6! mod 13) *)
 
 **See:** `docs/modular-factorials.md`
 
-### 4. Prime Orbits & DAG Analysis
+### 4. Square Root Rationalization ⭐ (Performance Breakthrough)
+
+**High-precision rational approximations to square roots** via Chebyshev polynomials and Pell equations:
+
+$$\text{sqrttrf}(d, n, m) = \frac{n^2 + d}{2n} + \frac{n^2 - d}{2n} \cdot \frac{U_{m-1}\left(\sqrt{\frac{d}{-(n^2-d)}}\right)}{U_{m+1}\left(\sqrt{\frac{d}{-(n^2-d)}}\right)}$$
+
+**Performance:** Beats Mathematica's Rationalize by **1548x** at 31,000 digits, **>1400x** at 311,000 digits.
+
+**Key properties:**
+- Super-quadratic convergence: ~10x precision per iteration
+- Guaranteed lower bound (monotone increasing from below)
+- Pell solution characterization: Chebyshev terms always rational, but dividing by y (from unit norm) requires Pell solution for rational result
+
+**Example:**
+```mathematica
+(* High-precision √13 to 3000+ digits in 3 iterations *)
+{x, y} = PellSolution[13];
+nestqrt[13, (x-1)/y, {3, 3}]  (* 3111 decimal places in 0.011s *)
+```
+
+**See:** `docs/chebyshev-pell-sqrt-framework.md`
+
+### 5. Prime Orbits & DAG Analysis
 
 **Prime structure via greedy additive decomposition** and directed acyclic graphs.
 
@@ -79,6 +101,22 @@ DirectPrimeDag[100]   (* Builds DAG for primes up to 100 *)
 
 **See:** `docs/prime-dag-gap-theorem.md` and `CLAUDE.md` for detailed exploration guide
 
+## Visualizations
+
+### Chebyshev Curves: "Infinite Interference"
+
+**Beautiful family of curves** inscribed in the unit circle, each touching at regular polygon vertices:
+
+$$f_k(x) = T_{k+1}(x) - x \cdot T_k(x)$$
+
+- Contact points at angles: $\theta_i = -\frac{\pi}{2k} + \frac{2\pi}{k+1} \cdot i$
+- Unit integral norm: $\int |f_k(\cos\theta)| d\theta = 1$ for all $k$
+- Creates n-star patterns with deep polynomial structure
+
+**Shadertoy demo:** https://www.shadertoy.com/view/MXc3Rj
+
+**See:** `docs/chebyshev-visualization.md` and `visualizations/` directory
+
 ## Documentation
 
 ### Primorial Formula (Active Research)
@@ -86,6 +124,11 @@ DirectPrimeDag[100]   (* Builds DAG for primes up to 100 *)
 - **[docs/primorial-mystery-findings.md](docs/primorial-mystery-findings.md)** — The open cancellation problem
 - **[docs/recursive-formulation-analysis.md](docs/recursive-formulation-analysis.md)** — Recursive sieve formulation
 - **[docs/phd-roadmap.md](docs/phd-roadmap.md)** — Publication and PhD application plan
+
+### Square Root Rationalization (Performance Breakthrough)
+- **[docs/chebyshev-pell-sqrt-framework.md](docs/chebyshev-pell-sqrt-framework.md)** — Complete mathematical framework
+- **[docs/chebyshev-visualization.md](docs/chebyshev-visualization.md)** — "Infinite Interference" visualization theory
+- **[visualizations/](visualizations/)** — GLSL source, images, and animation scripts
 
 ### Other Modules
 - **[docs/semiprime-factorization.md](docs/semiprime-factorization.md)** — Semiprime factorization details
@@ -95,28 +138,39 @@ DirectPrimeDag[100]   (* Builds DAG for primes up to 100 *)
 ### For AI Assistants
 - **[CLAUDE.md](CLAUDE.md)** — Computational exploration guide and usage instructions
 
+### Session Notes
+- **[docs/session-2025-11-12.md](docs/session-2025-11-12.md)** — Comprehensive summary of Nov 12 discoveries
+
 ## Repository Structure
 
 ```
 orbit/
-├── Orbit/                          # Paclet (version 0.3.0)
+├── Orbit/                          # Paclet (version 0.5.0)
 │   ├── PacletInfo.wl               # Paclet metadata
 │   └── Kernel/
 │       ├── Orbit.wl                # Main loader (imports all submodules)
 │       ├── PrimeOrbits.wl          # Prime DAG and orbit analysis
 │       ├── Primorials.wl           # Primorial computation via rational sums
 │       ├── SemiprimeFactorization.wl  # Closed-form semiprime factorization
-│       └── ModularFactorials.wl    # Efficient factorial mod p computation
+│       ├── ModularFactorials.wl    # Efficient factorial mod p computation
+│       └── SquareRootRationalizations.wl  # High-precision sqrt via Chebyshev-Pell
 ├── scripts/                        # Exploration scripts
 │   ├── verify_gap_theorem.wl       # Gap theorem verification
 │   ├── track_padic_valuations.wl   # P-adic analysis for primorials
+│   ├── fair_benchmark.wl           # Sqrt rationalization benchmark
 │   ├── visualize_sieve_process.wl  # Recursive sieve visualization
 │   └── test_*.wl                   # Various module tests
+├── visualizations/                 # Chebyshev curve visualizations
+│   ├── README.md                   # Visualization quick reference
+│   ├── infinite_interference.glsl  # Shadertoy GLSL source
+│   ├── regular-235.png             # Static visualization (k=2,3,5)
+│   └── chebyshev_star_animation.wl # Animation generator
 ├── reports/                        # Generated analysis reports (gitignored)
 └── docs/                           # Mathematical documentation
     ├── primorial-formula.md
     ├── primorial-mystery-findings.md
-    ├── recursive-formulation-analysis.md
+    ├── chebyshev-pell-sqrt-framework.md
+    ├── chebyshev-visualization.md
     └── *.md                        # Other module docs
 ```
 
@@ -136,7 +190,7 @@ wolframscript --version
 << Orbit`
 ```
 
-This automatically loads all four modules. All functions are in the `Orbit`  context.
+This automatically loads all five modules. All functions are in the `Orbit`  context.
 
 ### Examples
 
@@ -150,6 +204,10 @@ FactorizeSemiprime[77]            (* {7, 11} *)
 
 (* Modular factorials *)
 FactorialMod[10, 13]              (* 6 *)
+
+(* Square root rationalization *)
+{x, y} = PellSolution[13];
+nestqrt[13, (x-1)/y, {3, 3}]      (* 3111 decimal places *)
 
 (* Prime orbits *)
 PrimeOrbit[11]                    (* {2, 3, 5, 11} *)
@@ -206,16 +264,21 @@ wolframscript -code 'PacletUninstall["Orbit"]'
 
 ## Status
 
-**Version:** 0.3.0
+**Version:** 0.5.0
 
 **Modules:**
 - ✅ Primorials (active research, open problems)
 - ✅ Semiprime Factorization (complete)
 - ✅ Modular Factorials (complete)
+- ✅ Square Root Rationalization (performance breakthrough, 1548x speedup)
 - ✅ Prime Orbits & Gap Theorem (proven and verified)
+
+**Visualizations:**
+- ✅ Chebyshev "Infinite Interference" curves (Shadertoy + documentation)
 
 **Publication Status:**
 - Primorial formula: Under investigation, preparing for arXiv
+- Chebyshev-Pell framework: Performance verified, theoretical analysis ongoing
 - Gap Theorem: Verified for primes up to 1,000,000
 
 ## License

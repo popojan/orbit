@@ -178,6 +178,136 @@ Document these as **additional computational NT explorations**:
 
 ---
 
+## Additional Publication-Ready Topics (New)
+
+Beyond the primorial formula, several other discoveries have emerged with publication potential:
+
+### 1. Chebyshev-Pell Square Root Rationalization **✨ Performance Breakthrough**
+
+**Status**: Ready for writeup, needs theoretical analysis
+
+**What it is**:
+- High-precision rational approximations to square roots via Chebyshev polynomials and Pell equations
+- **Performance**: Beats Mathematica's Rationalize by 1548x at 31k digits, >1400x at 311k digits
+- Super-quadratic convergence: ~10x precision per iteration (vs 2x for Newton)
+- Guaranteed lower bound (monotone increasing from below)
+
+**Mathematical novelty**:
+- Chebyshev-Pell connection: Pell solutions as special points where division by y preserves rationality
+- Imaginary cancellation mechanism: ChebyshevU ratio with complex arguments is algebraically real
+- Lower bound proof: All Chebyshev terms positive → monotone convergence from below
+
+**Documentation**: `docs/chebyshev-pell-sqrt-framework.md`
+
+**Publication angle**:
+- Computational mathematics / symbolic computation conference (ISSAC, CASC)
+- Comparison with FLINT native (which still wins) vs Mathematica (which loses badly)
+- Could be theoretical paper on Chebyshev-Pell connection
+- Or practical paper on implementation and benchmarks
+
+**Timeline**: Could be arXiv-ready in 1-2 weeks after primorial paper
+
+### 2. Chebyshev Visualization: "Infinite Interference" **🎨 Mathematical Art**
+
+**Status**: Fully documented, ready for visualization-focused publication
+
+**What it is**:
+- Family of curves $f_k(x) = T_{k+1}(x) - x \cdot T_k(x)$ inscribed in unit circle
+- Each curve touches at exactly k+1 points (regular polygon vertices)
+- Contact points rotated by -π/(2k) from standard position
+- Unit integral norm: ∫|f_k| dθ = 1 for all k
+
+**Mathematical novelty**:
+- Explicit rotation angle formula (not arbitrary - intrinsic to polynomial structure)
+- Complex number formulation via conjugate differences (Binet-like)
+- Connection to cyclotomic polynomials and DFT
+- Beautiful n-star patterns with deep theory
+
+**Documentation**: `docs/chebyshev-visualization.md`
+**Live demo**: https://www.shadertoy.com/view/MXc3Rj
+
+**Publication angle**:
+- Mathematical visualization journal (Journal of Mathematics and the Arts)
+- Recreational mathematics (American Mathematical Monthly notes section)
+- Could accompany Chebyshev-Pell paper as "companion piece"
+- Gallery/poster submission to JMM or similar conference
+
+**Timeline**: Gallery-ready now, paper could be written in days
+
+### 3. Semiprime Factorization via Pochhammer Sums
+
+**Status**: Complete, clean closed form
+
+**What it is**:
+- Closed-form factorization of semiprimes using fractional parts
+- Works for all semiprimes n = p×q where p ≥ 3
+- Uses Pochhammer symbol structure
+
+**Documentation**: `docs/semiprime-factorization.md`
+
+**Publication angle**:
+- Experimental mathematics journal
+- Could be note in Integers or similar
+- Possibly interesting to cryptography community (though not practical for RSA)
+
+**Timeline**: Could be written up quickly if needed
+
+### 4. Modular Factorial Computation
+
+**Status**: Complete, efficient algorithm
+
+**What it is**:
+- Efficient n! mod p using half-factorial structure
+- Connection to Gauss sums and Stickelberger relation
+
+**Documentation**: `docs/modular-factorials.md`
+
+**Publication angle**:
+- Algorithmic number theory venue
+- Could be combined with other modular arithmetic work
+
+**Timeline**: Lower priority, many existing algorithms in this space
+
+### 5. Prime DAG and Gap Theorem
+
+**Status**: Proven and verified for primes up to 1M
+
+**What it is**:
+- Prime structure via greedy additive decomposition
+- Gap Theorem: gap after p equals children in DAG
+
+**Documentation**: `docs/prime-dag-gap-theorem.md`, `CLAUDE.md`
+
+**Publication angle**:
+- More exploratory, might need deeper theoretical framework
+- Could be part of broader "computational prime structure" paper
+
+**Timeline**: Longer-term research program
+
+---
+
+## Recommended Publication Strategy
+
+**Immediate (next 4 weeks)**:
+1. **Primorial formula** - arXiv → PhD application centerpiece
+2. **Chebyshev-Pell framework** - arXiv preprint (computational focus)
+
+**Medium-term (2-3 months)**:
+3. **Chebyshev visualization** - Gallery/poster submission + short paper
+4. **Semiprime factorization** - Brief note or combined paper
+
+**Longer-term (6-12 months, during PhD if accepted)**:
+5. **Prime DAG structure** - Deeper exploration with advisor
+6. **Comprehensive "computational explorations" paper** - Umbrella publication
+
+**Rationale**:
+- Lead with strongest discovery (primorial) for PhD application
+- Follow with performance breakthrough (Chebyshev-Pell) to show breadth
+- Save visualization for "fun" publication that shows creativity
+- Other topics can be combined or developed with PhD advisor
+
+---
+
 ## Further Mathematical Exploration (Ongoing)
 
 While waiting for responses, continue exploring:
