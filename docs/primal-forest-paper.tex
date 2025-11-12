@@ -231,6 +231,92 @@ A: Yes! Primes are precisely the gaps in the regular factor lattice. The pattern
 \paragraph{Q: Why does the probability of finding a prime decrease?}
 A: As numbers grow larger, each position on the x-axis has more potential factors. The forest grows denser because there are simply more ways to factor larger numbers. Geometrically, more trees block your sight, so gaps (primes) become rarer.
 
+\section{A Note for Educators: Left-Brain Algorithms, Right-Brain Patterns}
+
+\subsection{Why Isn't This Taught in Schools?}
+
+The Sieve of Eratosthenes is a staple of mathematics education, yet it's almost universally presented as a \emph{linear, sequential algorithm}: list the numbers 2, 3, 4, 5, \ldots on a line, then systematically cross out multiples. This approach engages \textbf{left-brain sequential processing}---step 1, step 2, follow the procedure, arrive at the answer.
+
+The Primal Forest offers something fundamentally different: a \textbf{right-brain spatial pattern} where the entire structure is visible at once. Instead of "cross out the next composite," students see "composites form a regular lattice; primes are the gaps."
+
+So why hasn't this geometric view entered the mainstream curriculum?
+
+\paragraph{Historical Inertia}
+Mathematics education evolved from oral and written traditions where you could only show one number at a time. The linear sequence 2, 3, 4, 5, 6, \ldots is what fits on papyrus, a chalkboard line, or a printed page. Two-dimensional visualizations require tools (graph paper, plotting, color) that weren't readily available until recently.
+
+\paragraph{Computational Bias}
+The sieve is traditionally taught as an \emph{algorithm}---a method for computing primes efficiently. Schools emphasize ``how to find primes'' (a procedural skill) over ``why primes behave this way'' (conceptual understanding). The linear method is indeed easier to implement by hand.
+
+\paragraph{Assessment Compatibility}
+Linear algorithms are straightforward to test: ``Did the student cross out the correct numbers? Did they identify all primes up to 100?'' Spatial understanding is harder to assess: ``Does the student recognize why gaps form? Can they explain the pattern geometrically?'' Traditional testing favors procedural tasks.
+
+\paragraph{Teacher Preparation}
+Most mathematics teachers learned the linear sieve themselves and may never have encountered geometric alternatives. Teaching what you know perpetuates the algorithmic tradition. Introducing new visualizations requires professional development, updated materials, and comfort with computational tools.
+
+\subsection{The Educational Opportunity}
+
+The tragedy is that the linear sieve answers \emph{how} questions, while the geometric view answers \emph{why} questions:
+
+\begin{center}
+\begin{tabular}{p{6cm}|p{6cm}}
+\textbf{Linear Sieve (How)} & \textbf{Primal Forest (Why)} \\ \hline
+Cross out multiples of 2 & Multiples form a regular row pattern \\
+Cross out multiples of 3 & Each prime generates its own row \\
+Primes are what remain & Primes are numbers with no factorization \\
+Prime gaps grow larger & Factor density increases with size \\
+Keep crossing out\ldots & See the complete structure at once \\
+\end{tabular}
+\end{center}
+
+These are exactly the questions curious students ask:
+\begin{itemize}
+\item ``Why do primes thin out?'' $\rightarrow$ The forest grows denser (more factors block your view)
+\item ``Why are primes 'special'?'' $\rightarrow$ They're gaps in the factor lattice (no factorizations exist)
+\item ``Is there a pattern to primes?'' $\rightarrow$ Yes! Composites form a regular geometric structure; primes are the gaps left behind
+\end{itemize}
+
+The linear sieve doesn't answer these questions---it just says ``keep following the algorithm until you're done.''
+
+\subsection{Complementary Approaches, Not Replacement}
+
+We're not suggesting the linear sieve should be abandoned. Rather, \textbf{both approaches should be taught}:
+
+\begin{enumerate}
+\item \textbf{Linear sieve first}: Hands-on, algorithmic, easy to implement with paper and pencil. Builds procedural fluency and pattern recognition.
+
+\item \textbf{Geometric view second}: Visual, conceptual, reveals structural properties. Deepens understanding and connects to broader mathematical thinking (coordinate systems, function graphs, geometric reasoning).
+
+\item \textbf{Discussion}: Why do both methods work? What does each reveal about primes? Which approach feels more natural to you?
+\end{enumerate}
+
+Different students think differently. Some will ``get'' primes from the algorithm. Others will ``get'' them from the visualization. Some need both. Why force everyone into a single mode?
+
+\subsection{Tools Make It Possible}
+
+With modern computational tools---Wolfram Language, Python with matplotlib, GeoGebra, Desmos, interactive notebooks---creating and exploring these visualizations is now \emph{trivial}. Students can:
+\begin{itemize}
+\item Generate forests for different ranges
+\item Zoom in on specific regions
+\item Experiment with modified coordinates
+\item Create animations showing how the pattern builds
+\item Discover patterns on their own
+\end{itemize}
+
+The barrier isn't technology anymore. It's \emph{awareness} that such visualizations exist and \emph{permission} to deviate from the traditional curriculum.
+
+\subsection{A Call to Action}
+
+If you're an educator reading this, consider:
+\begin{itemize}
+\item Showing the Primal Forest alongside the linear sieve
+\item Asking students which view makes more sense to them
+\item Using the forest to answer ``why'' questions about prime distribution
+\item Encouraging students to explore variations and make their own discoveries
+\item Sharing what works with colleagues and curriculum developers
+\end{itemize}
+
+The goal isn't to add another topic to an already crowded curriculum. It's to \emph{deepen understanding} of a topic already being taught, by engaging both algorithmic and spatial thinking.
+
 \section{Conclusion}
 
 The Primal Forest transforms the abstract notion of ``sieving out composites'' into a concrete visual experience. By mapping factorizations to coordinates, we see composites form a regular geometric pattern, while primes emerge as the gaps---numbers that don't fit the pattern.
