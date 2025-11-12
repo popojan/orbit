@@ -1,0 +1,252 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage[margin=1in]{geometry}
+\usepackage{listings}
+
+\title{The Primal Forest:\\
+A Bird's Eye View of the Sieve of Eratosthenes}
+
+\author{Jan Pospíšil}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We present an educational visualization that transforms the classical Sieve of Eratosthenes from a one-dimensional list into a two-dimensional ``primal forest.'' By mapping composite numbers $n = x(x+k)$ to coordinates $\{kx + x^2, kx + 1\}$, we create a top-down view where composites form a regular pattern like trees in a forest. Prime numbers become visible as gaps---positions on the number line that no composite point lies above. Special ``see-through'' positions occur when $x=1$, creating windows that reveal primes directly. This geometric perspective makes the structure of the sieve visually intuitive and provides an engaging introduction to multiplicative structure in number theory.
+\end{abstract}
+
+\section{Introduction: Why Are Primes So Hard to Find?}
+
+Prime numbers are the atoms of arithmetic---every whole number breaks down into a unique product of primes. Yet despite their fundamental importance, primes seem to appear unpredictably along the number line:
+
+\[
+2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, \ldots
+\]
+
+The gaps between consecutive primes vary: sometimes just 2 (twin primes like 11 and 13), sometimes much larger (there's a gap of 14 between 113 and 127). Is there a pattern hidden in this chaos?
+
+The ancient Greeks developed a clever algorithm---the \emph{Sieve of Eratosthenes}---that systematically finds all primes by eliminating composites. But working through the sieve on a linear list can feel mechanical. \textbf{What if we could \emph{see} the structure?}
+
+Enter the \textbf{Primal Forest}: a geometric transformation that turns the sieve into a visual landscape where composites form regular patterns and primes appear as gaps. Imagine you're a bird flying over a forest, looking down at the trees below. The trees are composites, blocking your view. But in the gaps between trees, you can see down to the primes on the ground.
+
+\section{The Classical Sieve (Linear View)}
+
+Let's briefly recall how the Sieve of Eratosthenes works in its traditional form. We list all integers starting from 2:
+
+\[
+2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, \ldots
+\]
+
+Then we repeatedly:
+\begin{enumerate}
+\item Mark the first unmarked number as prime
+\item Cross out all its multiples (composites)
+\item Repeat
+\end{enumerate}
+
+For example:
+\begin{itemize}
+\item Mark 2 as prime, cross out 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, \ldots
+\item Mark 3 as prime, cross out 6, 9, 12, 15, 18, 21, 24, \ldots
+\item Mark 5 as prime, cross out 10, 15, 20, 25, \ldots
+\item And so on\ldots
+\end{itemize}
+
+The numbers that remain unmarked are the primes. This works beautifully, but it's a one-dimensional view. Every composite disappears into a crossed-out symbol. Can we visualize the \emph{structure} of why composites get eliminated?
+
+\section{The Geometric Transformation}
+
+Here's the key insight: every composite number can be written as $n = x(x+k)$ for some positive integers $x$ and $k \geq 0$. For example:
+\begin{align*}
+4 &= 2 \times 2 = 2(2+0) \quad \text{(so } x=2, k=0\text{)} \\
+6 &= 2 \times 3 = 2(2+1) \quad \text{(so } x=2, k=1\text{)} \\
+8 &= 2 \times 4 = 2(2+2) \quad \text{(so } x=2, k=2\text{)} \\
+9 &= 3 \times 3 = 3(3+0) \quad \text{(so } x=3, k=0\text{)}
+\end{align*}
+
+Now, instead of placing these composites on a line, we'll place them in a 2D plane using this mapping:
+
+\[
+\boxed{n = x(x+k) \quad \mapsto \quad \text{point at } (kx + x^2,\, kx + 1)}
+\]
+
+Let's unpack this:
+\begin{itemize}
+\item \textbf{x-coordinate}: $kx + x^2 = x(k+x)$ is exactly the composite number $n$ itself
+\item \textbf{y-coordinate}: $kx + 1$ is chosen to spread the points vertically in a regular pattern
+\end{itemize}
+
+\subsection{Why This Coordinate Choice?}
+
+The y-coordinate $kx + 1$ isn't arbitrary---it creates a \textbf{regular, square-like forest}. As we plot points for different values of $k$ and $x$, they form a symmetric grid pattern. In fact, if we reflect the entire forest across the x-axis (flipping $y \to -y$), the positions where primes are visible remain unchanged! This symmetry reveals the deep regularity in how composites are distributed.
+
+\section{The Forest Emerges}
+
+Figure~\ref{fig:forest} shows the primal forest for composites up to $n=31$.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{../visualizations/prime-grid-demo.png}
+\caption{The Primal Forest (top-down view). Each blue dot represents a factorization: a composite at x-coordinate $n = x(x+k)$ with smaller factor $x \geq 2$. Orange dots mark the main diagonal where $x=1$, revealing primes directly. Vertical lines connect orange dots to the primes on the x-axis. Prime numbers are the x-coordinates with no dots above them---gaps in the factor forest.}
+\label{fig:forest}
+\end{figure}
+
+\subsection{What Are We Seeing?}
+
+\begin{itemize}
+\item \textbf{Blue dots}: Each dot represents a \emph{factorization}. Specifically, a dot at $(kx+x^2, kx+1)$ shows that the number $n = x(x+k)$ has $x$ as a factor. The more dots above a given x-coordinate, the more factorizations that number has. These dots form the dense ``forest'' blocking your view down to the primes.
+
+\item \textbf{Orange dots}: Special positions where $x=1$. When $x=1$, the coordinates become:
+\[
+(k \cdot 1 + 1^2,\, k \cdot 1 + 1) = (k+1, k+1)
+\]
+So we get points at $(2,2), (3,3), (4,4), (5,5), \ldots$ along the \textbf{main diagonal} $y=x$ of the square forest. The orange dots highlight when $k+1$ is \textbf{prime}---these are ``see-through'' positions where you can look down directly to the prime on the x-axis.
+
+\item \textbf{Vertical lines}: Drop from orange points to the x-axis, showing which prime they sit above.
+
+\item \textbf{Gaps on the x-axis}: Look at the x-coordinates: most values have blue or orange dots above them (composites). But some x-coordinates have \emph{no points at all}---these are the \textbf{primes}! They're gaps in the forest.
+\end{itemize}
+
+\subsection{The Core Insight}
+
+\begin{quote}
+\textbf{Each blue dot represents a factorization: ``the number $x(x+k)$ has $x$ as a factor.'' Primes have no such factorizations, so they have no dots above them---they're gaps in the factor forest.}
+\end{quote}
+
+In this view, a composite number may have \emph{multiple} dots above it (one for each distinct factorization), while a prime has \emph{zero} dots. The forest isn't just showing which numbers are composite---it's showing \emph{how they factor}.
+
+\section{Exploring the Forest}
+
+\subsection{Why Do Composites Form This Pattern?}
+
+Each row $k = \text{const}$ represents all composites of the form $x(x+k)$:
+\begin{itemize}
+\item $k=0$: Perfect squares $x^2$ at positions $(x^2, 1)$
+\item $k=1$: Products $x(x+1)$ at positions $(x^2+x, x+1)$
+\item $k=2$: Products $x(x+2)$ at positions $(x^2+2x, 2x+1)$
+\item And so on\ldots
+\end{itemize}
+
+Each column $x = \text{const}$ represents all composites with $x$ as the smaller factor.
+
+\subsection{What About Prime Powers?}
+
+Prime powers like $4 = 2^2$, $8 = 2^3$, $9 = 3^2$ appear multiple times in the forest! For example:
+\begin{itemize}
+\item $9 = 3 \times 3 = 3(3+0)$ appears at $(9, 1)$ (the $k=0$ row)
+\item $9 = 9 \times 1$ would be $(9, \ldots)$ if we extended to $x < k$ cases
+\end{itemize}
+
+This redundancy shows that some numbers have multiple factorizations, while primes have none.
+
+\subsection{The Parabolic Curve and Growing Gaps}
+
+Notice how the forest curves upward as numbers grow? The x-coordinate $kx + x^2$ has a quadratic term $x^2$, creating a parabolic arrangement. This reveals a profound truth about prime distribution:
+
+\begin{quote}
+\textbf{The higher the x-coordinate (the larger the number), the higher the probability that some factor (tree) blocks your sight down to that position.}
+\end{quote}
+
+As we move right along the number line, more and more factor dots accumulate above each position. The chance of finding a gap---a prime---decreases. This geometric view makes the Prime Number Theorem intuitive: \emph{primes thin out} because the ``forest of factors'' grows denser.
+
+\section{Try It Yourself}
+
+Here's the Wolfram Language code that generates the forest:
+
+\begin{lstlisting}[language=Mathematica, basicstyle=\small\ttfamily]
+(* Generate all composite points up to n *)
+comp1[m_, n_] := Join @@ Table[
+  {k*x + x^2, k*x + 1},
+  {k, 0, n},
+  {x, Max[1, Ceiling[1/2 (-k + Sqrt[k^2 + 4*m])]],
+      Floor[1/2 (-k + Sqrt[k^2 + 4*n])]}
+]
+
+(* Visualize the forest *)
+lpl[hi_] := ListPlot[
+  GatherBy[#, PrimeQ@*First],
+  PlotRange -> {Automatic, {-1/2, Automatic}},
+  AxesOrigin -> {0, 0},
+  AspectRatio -> 1,
+  PlotMarkers -> {Automatic, Large},
+  GridLines -> {Range@hi - 1/2, Range[0, hi] - 1/2},
+  Epilog -> {Thick, ColorData[97, "ColorList"][[2]],
+    Line[{#, {First@#, 0}}] & /@
+      Select[#, PrimeQ@*First]}
+] &@ comp1[1, hi]
+
+(* Generate the plot *)
+lpl@31
+\end{lstlisting}
+
+\subsection{Exercises}
+
+\begin{enumerate}
+\item \textbf{Predict the pattern}: Before running the code, can you predict which x-coordinates will have no points above them for $n \leq 20$?
+
+\item \textbf{Modify the transformation}: What happens if you change the y-coordinate to $kx + 2$ or $kx + k$? Does the forest remain regular?
+
+\item \textbf{Count the trees}: For a given range, how many composite points appear? How does this compare to the number of primes?
+
+\item \textbf{Twin primes}: Can you identify twin primes (primes differing by 2) in the forest? What pattern do they form?
+
+\item \textbf{Reflection symmetry}: Implement the reflection across the x-axis (plot points at negative y-coordinates too). Verify that the see-through positions remain symmetric.
+\end{enumerate}
+
+\section{Connections to Other Visualizations}
+
+The Primal Forest joins a family of geometric prime visualizations:
+
+\begin{itemize}
+\item \textbf{Ulam Spiral} (1963): Arrange integers in a spiral; primes cluster along diagonal lines
+\item \textbf{Sacks Spiral}: Arrange integers on an Archimedean spiral; primes form curved patterns
+\item \textbf{Prime Grids}: Various 2D arrangements revealing structure
+\item \textbf{Primal Forest}: Composites as a regular lattice, primes as gaps
+\end{itemize}
+
+Each visualization highlights different aspects of prime distribution. The forest metaphor is particularly intuitive: \textbf{primes aren't randomly scattered---they're the gaps left behind when composites are systematically placed.}
+
+\section{Educational Value}
+
+This visualization helps answer common student questions:
+
+\paragraph{Q: Why are primes ``special''?}
+A: Look at the forest---primes are the only numbers with \emph{no tree above them}. They're fundamentally different from composites.
+
+\paragraph{Q: Why do prime gaps grow?}
+A: See how the forest gets denser as numbers increase (the parabolic curve)? More composites crowd the larger regions, leaving bigger gaps between primes.
+
+\paragraph{Q: What does factorization mean geometrically?}
+A: Each blue dot is a composite, positioned according to its factors $x$ and $k+x$. Primes can't be positioned this way---they have no factorization.
+
+\paragraph{Q: Is there a pattern to primes?}
+A: Yes! Primes are precisely the gaps in the regular factor lattice. The pattern is visible once we map factorizations to 2D.
+
+\paragraph{Q: Why does the probability of finding a prime decrease?}
+A: As numbers grow larger, each position on the x-axis has more potential factors. The forest grows denser because there are simply more ways to factor larger numbers. Geometrically, more trees block your sight, so gaps (primes) become rarer.
+
+\section{Conclusion}
+
+The Primal Forest transforms the abstract notion of ``sieving out composites'' into a concrete visual experience. By mapping factorizations to coordinates, we see composites form a regular geometric pattern, while primes emerge as the gaps---numbers that don't fit the pattern.
+
+This approach has pedagogical value at multiple levels:
+\begin{itemize}
+\item \textbf{Elementary}: Visual intuition before algorithms
+\item \textbf{Secondary}: Connection between factorization and geometry
+\item \textbf{University}: Coordinate transformations reveal structure
+\item \textbf{Research}: Alternative perspectives may inspire new approaches
+\end{itemize}
+
+The next time you think about primes, imagine flying over a forest. The trees are composites, neatly arranged by their factors. And in the clearings between the trees? That's where the primes are hiding.
+
+\section*{Acknowledgments}
+
+This visualization emerged from recreational explorations in computational number theory. Thanks to the Wolfram Language community for tools that make such experiments delightful.
+
+\end{document}
