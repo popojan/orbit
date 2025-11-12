@@ -129,22 +129,24 @@
 
 Document these as **additional computational NT explorations**:
 
-- [ ] **Ratio package**
-  - What it does
-  - Where it lives (separate repo?)
-  - Brief documentation
-  - Connection to NT if any
-
-- [ ] **Egyptian fractions work**
-  - What you explored
-  - Algorithms/approaches
-  - Any computational discoveries
-  - Connection to continued fractions
+- [ ] **Egyptian fractions work** (in `github.com/popojan/egypt`)
+  - Square root computation via Egyptian fraction sums
+  - Connection to **Pell equations** $x^2 - ny^2 = 1$
+  - Recursive formula $a(n,i)$ with convergence to $\sqrt{n}$
+  - Example doc: `egypt/doc/sqrt.pdf` (clean presentation style!)
+  - Shows: computational approach + classical NT (Pell) + algebraic numbers
 
 - [ ] **Continued fractions (CF) connection**
   - Relationship to Egyptian fractions
   - Any interesting patterns/formulas
   - Computational tools built
+  - Rust implementation in egypt repo?
+
+- [ ] **Ratio package**
+  - What it does
+  - Where it lives (separate repo?)
+  - Brief documentation
+  - Connection to NT if any
 
 **Format**: Could be:
 - Separate GitHub repos (linked in CV/application)
