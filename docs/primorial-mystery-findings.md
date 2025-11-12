@@ -133,15 +133,66 @@ Perhaps viewing this mod p for each prime reveals why p² cancels:
    - The factorial structure?
    - The denominators (2k+1)?
 
+## Recent Discoveries (2025-11-12)
+
+### P-adic Valuation Analysis
+
+**Key findings from computational investigation:**
+
+1. **Denominator valuations are always exactly 1**:
+   $$\nu_p(\text{Denominator}[S_k]) = 1 \text{ for all primes } 3 \le p \le 2k+1$$
+   Never 0, never greater than 1. This is the primorial structure.
+
+2. **Numerator valuations are always 0**:
+   $$\nu_p(\text{Numerator}[S_k]) = 0 \text{ for all primes } p$$
+   All numerators are coprime to their denominators!
+
+3. **Two distinct cancellation mechanisms**:
+
+   **For small $k$** (when $\nu_p(k!) < \nu_p(2k+1)$ for some prime $p$):
+   - Example: $k=4$, $2k+1 = 9 = 3^2$
+   - Combined numerator contains factor $p$
+   - GCD reduction cancels exactly one power: $p^2 \to p^1$
+
+   **For large $k$** (when $\nu_p(k!) \ge \nu_p(2k+1)$ for all $p | (2k+1)$):
+   - Example: $k=12$, $2k+1 = 25 = 5^2$, but $\nu_5(12!) = 2 \ge 2$
+   - Term $k!/(2k+1)$ reduces to an **integer**
+   - No new denominator factors enter at all!
+
+4. **The alternating sign is essential**:
+   - WITHOUT $(-1)^k$: Formula fails at $k=4$, loses factor of 3
+   - Result becomes $\text{Primorial}/3$ for all $m \ge 9$
+   - The alternating sign controls numerator structure to prevent over-cancellation
+
+5. **Legendre's formula connection**:
+   $$\nu_p(k!) = \sum_{i=1}^{\infty} \left\lfloor \frac{k}{p^i} \right\rfloor$$
+   For large enough $k$, $\nu_p(k!)$ exceeds $\nu_p(2k+1)$, making the term an integer.
+
+### What This Explains vs. What Remains Open
+
+**Now understood:**
+- Why terms eventually become integers (Legendre's formula)
+- Why alternating sign is necessary (controls GCD at critical steps)
+- Where the two cancellation mechanisms apply
+
+**Still requires rigorous proof:**
+- Why this specific construction generates primorials
+- Why the partial sum denominator stabilizes at exactly primorial
+- Deeper theoretical framework (generating functions? modular forms?)
+
 ## Status
 
-**Current Understanding**: Computational verification complete; rigorous proof needed.
+**Current Understanding**: Computational patterns identified; partial mechanism understood; rigorous proof needed.
 
 - ✓ Computational pattern confirmed for all tested values
 - ✓ Denominator structure identified: $D_k = 2 \times \prod_{\substack{p \text{ prime} \\ 3 \le p \le 2k+1}} p$
 - ✓ Prime introduction mechanism understood: new primes enter when $2k+1$ is prime
-- ❌ **Rigorous proof missing**: Why $\nu_p(\text{Denominator}) = 1$ for all primes $p \le 2k+1$
-- ❌ **GCD cancellation unexplained**: Mechanism by which numerators eliminate $p^j$ ($j > 1$)
+- ✓ **P-adic valuations tracked**: $\nu_p(\text{denom}) = 1$, $\nu_p(\text{num}) = 0$ always
+- ✓ **Two cancellation mechanisms identified**: GCD reduction (small k) + integer terms (large k)
+- ✓ **Alternating sign necessity proven**: Essential to prevent over-cancellation at $k=4$
+- ⚠️  **Legendre connection established**: But doesn't fully explain WHY this construction works
+- ❌ **Rigorous proof missing**: Why this specific sum generates primorials
+- ❌ **Theoretical framework unclear**: Generating function? Deeper structure?
 
 **Formal Problem Statement**:
 
