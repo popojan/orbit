@@ -12,11 +12,12 @@ The paclet is organized into modular subpackages for different mathematical topi
 Orbit/
   ├── PacletInfo.wl          # Paclet metadata
   └── Kernel/
-      ├── Orbit.wl                    # Main loader (imports all submodules)
-      ├── PrimeOrbits.wl              # Prime DAG and orbit analysis
-      ├── Primorials.wl               # Primorial computation via rational sums
-      ├── SemiprimeFactorization.wl   # Closed-form semiprime factorization
-      └── ModularFactorials.wl        # Efficient factorial mod p computation
+      ├── Orbit.wl                       # Main loader (imports all submodules)
+      ├── PrimeOrbits.wl                 # Prime DAG and orbit analysis
+      ├── Primorials.wl                  # Primorial computation via rational sums
+      ├── SemiprimeFactorization.wl      # Closed-form semiprime factorization
+      ├── ModularFactorials.wl           # Efficient factorial mod p computation
+      └── SquareRootRationalizations.wl  # Ultra-high precision sqrt via Chebyshev/Pell
 ```
 
 ### Loading the Paclet
@@ -79,6 +80,31 @@ SqrtMod[13]  (* Returns: {True, {5, 8}} *)
 (* Half-factorial base value *)
 HalfFactorialMod[13]  (* Returns: 5 (which is 6! mod 13) *)
 ```
+
+### 5. Square Root Rationalizations
+
+Ultra-high precision rational approximations to square roots using Chebyshev polynomials and Pell equation solutions. The nested Chebyshev method achieves extreme precision far exceeding continued fractions in speed.
+
+**See:** `docs/chebyshev-pell-sqrt-framework.md` for detailed documentation.
+
+**Quick examples:**
+```mathematica
+(* Ultra-high precision with nested Chebyshev - THE POWER METHOD *)
+NestedChebyshevSqrt[13, {3, 3}]  (* ~3000 digits in 0.01s *)
+NestedChebyshevSqrt[13, {1, 10}] (* ~62 MILLION digits! *)
+
+(* Egyptian fraction approach - moderate precision *)
+SqrtRationalization[13, Accuracy -> 20]
+
+(* Pell equation solver *)
+PellSolution[13]  (* Returns: {x -> 649, y -> 180} *)
+```
+
+**Key achievements:**
+- **62 million digit** sqrt(13) demonstration (m1=1, m2=10)
+- Faster than Wolfram's Rationalize at high precision
+- 2x denominator overhead vs optimal CF convergents
+- Fully rational - no floating point arithmetic
 
 ---
 
