@@ -105,15 +105,17 @@ The formula is efficient for moderate values of m:
 
 The connection between this alternating factorial sum and primorials is non-obvious and beautiful. The formula encodes the primorial in the common denominator that arises when the sum is reduced to a single rational.
 
-### Why This Works (Open Question!)
+### Why This Works (Open Problem!)
 
-The deep question: **Why do all prime powers greater than 1 cancel from the denominator?**
-
-When computing:
+**The cancellation phenomenon**: When computing the sum and reducing to lowest terms:
 
 $$\frac{1}{2} \sum_{k=1}^{\lfloor(m-1)/2\rfloor} \frac{(-1)^k \cdot k!}{2k+1}$$
 
-The denominator of the fully reduced rational contains exactly the primorial (first power of each prime up to $m$), with no higher prime powers. The mechanism of this cancellation is mysterious!
+The individual denominators $2k+1$ include prime powers ($9=3^2$, $25=5^2$, $27=3^3$, ...) and composites ($15=3 \times 5$, $21=3 \times 7$, ...). Naively, the LCM would retain these higher powers.
+
+**Yet** the final denominator contains exactly the primorial: only the **first power** of each prime up to $m$.
+
+**Open question**: Why do the numerators (containing factorials $k!$) have precisely the right prime factors to cancel all $p^j$ (for $j > 1$) through GCD reduction? The mechanism of this systematic cancellation requires rigorous proof!
 
 ### Theoretical Connections
 

@@ -42,41 +42,47 @@ $$D_k = 2 \times \prod_{\substack{p \text{ prime} \\ 3 \le p \le 2k+1}} p$$
 
 **Final result**: 30030 = primorial of primes up to 13 ✓
 
-## The Deep Mystery (UNSOLVED)
+## The Open Problem (UNSOLVED)
 
-### What We Know
+### What We Have Verified Computationally
 
 ✓ The denominators systematically accumulate prime factors
-✓ Only the FIRST power of each prime appears
+✓ Only the FIRST power of each prime appears in the final denominator
 ✓ The 2k+1 sequence introduces primes at the right times
-✓ The pattern is 100% consistent
+✓ The pattern is 100% consistent across all tested values
 
-### What We DON'T Know
+### The Cancellation Problem
 
-❓ **WHY do higher prime powers from $k!$ cancel out?**
+**Individual term denominators** are consecutive odd numbers $2k+1 \in \{3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, \ldots\}$
 
-In the numerators, we have factorials $k!$ which contain higher powers of primes:
-- $4! = 24 = 2^3 \times 3$
-- $5! = 120 = 2^3 \times 3 \times 5$
-- $6! = 720 = 2^4 \times 3^2 \times 5$
+These include **prime powers** and **composites**:
+- Prime powers: $9 = 3^2$, $25 = 5^2$, $27 = 3^3$, $49 = 7^2$, ...
+- Composites: $15 = 3 \times 5$, $21 = 3 \times 7$, $35 = 5 \times 7$, ...
 
-Yet when we sum these rational terms, somehow the $2^3, 2^4, 3^2$, etc. all cancel, leaving only:
-- $2^1 \times 3^1 \times 5^1 \times 7^1 \times \cdots$ (the primorial!)
+**Naively**, when computing $\text{LCM}(3, 5, 7, 9, 11, 13, 15, \ldots, 2k+1)$, we would retain:
+- $3^2$ from denominator 9
+- $3^3$ from denominator 27
+- $5^2$ from denominator 25
+- etc.
 
-### The Cancellation Mechanism
+**Yet** when we sum $\frac{1}{2} \sum_{i=1}^{k} \frac{(-1)^i \cdot i!}{2i+1}$ and reduce to lowest terms, the denominator contains **only first powers**: $2 \times 3 \times 5 \times 7 \times 11 \times \cdots$
+
+❓ **The Open Question**: Why do the numerators (containing factorials $k!$) have precisely the right prime factors to **cancel all higher prime powers** $p^j$ (for $j > 1$) through GCD reduction?
+
+### Evidence of the Cancellation
 
 Looking at the partial sums (reduced rationals):
 
 ```
-k=1: -1/6           (numerator: -1)
-k=2: 1/30           (numerator: 1)
-k=3: -83/210        (numerator: -83 = prime!)
-k=4: 197/210        (numerator: 197 = prime!)
-k=5: -10433/2310    (numerator: -10433 = prime!)
-k=6: 695971/30030   (numerator: 29×103×233)
+k=1: -1/6           (numerator: -1,         denominator: 2×3)
+k=2: 1/30           (numerator: 1,          denominator: 2×3×5)
+k=3: -83/210        (numerator: -83,        denominator: 2×3×5×7)
+k=4: 197/210        (numerator: 197,        denominator: 2×3×5×7)  [no change despite 9=3²]
+k=5: -10433/2310    (numerator: -10433,     denominator: 2×3×5×7×11)
+k=6: 695971/30030   (numerator: 29×103×233, denominator: 2×3×5×7×11×13)
 ```
 
-The **numerators** appear to be absorbing the extra prime powers somehow!
+At $k=4$, the denominator $2k+1 = 9 = 3^2$ introduces a potential $3^2$ factor, yet the reduced denominator remains $2 \times 3 \times 5 \times 7$ (only $3^1$). The numerators systematically absorb the extraneous prime powers.
 
 ## Possible Explanations (Speculation)
 
@@ -129,18 +135,26 @@ Perhaps viewing this mod p for each prime reveals why p² cancels:
 
 ## Status
 
-**Understanding Level**: ★★☆☆☆
+**Current Understanding**: Computational verification complete; rigorous proof needed.
 
-- ✓ We know WHAT happens (pattern confirmed)
-- ✓ We know WHERE primes enter (from 2k+1)
-- ✓ We know WHEN changes occur (prime vs composite 2k+1)
-- ❌ We DON'T know WHY higher powers cancel
-- ❌ We DON'T have a proof
+- ✓ Computational pattern confirmed for all tested values
+- ✓ Denominator structure identified: $D_k = 2 \times \prod_{\substack{p \text{ prime} \\ 3 \le p \le 2k+1}} p$
+- ✓ Prime introduction mechanism understood: new primes enter when $2k+1$ is prime
+- ❌ **Rigorous proof missing**: Why $\nu_p(\text{Denominator}) = 1$ for all primes $p \le 2k+1$
+- ❌ **GCD cancellation unexplained**: Mechanism by which numerators eliminate $p^j$ ($j > 1$)
 
-This remains a genuine mathematical mystery worthy of deeper investigation!
+**Formal Problem Statement**:
+
+Given the alternating sum $S_k = \frac{1}{2} \sum_{i=1}^{k} \frac{(-1)^i \cdot i!}{2i+1}$, prove that for any prime $p$ with $3 \le p \le 2k+1$:
+
+$$\nu_p\left(\text{Denominator}[S_k]\right) = 1$$
+
+where $\nu_p(n)$ is the $p$-adic valuation of $n$.
+
+This would rigorously establish the primorial formula and explain the systematic cancellation of higher prime powers from the denominators $\{2k+1\}_{k=1}^{h}$.
 
 ---
 
 *Investigation started: 2025-11-12*
 *Key pattern discovered: Denominator = 2 × (product of odd primes up to 2k+1)*
-*Deep mystery: Cancellation mechanism for higher prime powers*
+*Open problem: Rigorous proof of $p$-adic valuation structure*
