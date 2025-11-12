@@ -182,30 +182,76 @@ Document these as **additional computational NT explorations**:
 
 Beyond the primorial formula, several other discoveries have emerged with publication potential:
 
-### 1. Chebyshev-Pell Square Root Rationalization **✨ Performance Breakthrough**
+### 1. Chebyshev-Pell Square Root Rationalization **✨ Performance Breakthrough** ✅ PAPER COMPLETE
 
-**Status**: Ready for writeup, needs theoretical analysis
+**Status**: ✅ Academic paper drafted and ready for submission (November 2025)
 
 **What it is**:
-- High-precision rational approximations to square roots via Chebyshev polynomials and Pell equations
-- **Performance**: Beats Mathematica's Rationalize by 1548x at 31k digits, >1400x at 311k digits
-- Super-quadratic convergence: ~10x precision per iteration (vs 2x for Newton)
-- Guaranteed lower bound (monotone increasing from below)
+- Ultra-high precision rational approximations to square roots via nested Chebyshev polynomials and Pell equations
+- **Performance**: Beats Mathematica's Rationalize by 3-10× for precision >200 digits
+- Super-quadratic convergence: ~10x precision per iteration (balanced), up to 6000x (optimized)
+- **Extreme precision demonstrated**: 62 million digit rational approximation to √13
 
 **Mathematical novelty**:
-- Chebyshev-Pell connection: Pell solutions as special points where division by y preserves rationality
-- Imaginary cancellation mechanism: ChebyshevU ratio with complex arguments is algebraically real
-- Lower bound proof: All Chebyshev terms positive → monotone convergence from below
+- Novel sqrttrf formula with **imaginary cancellation mechanism** (ChebyshevU ratio with complex arguments yields rational)
+- Optimized closed forms for m=1,2 (20x speedup, eliminate symbolic computation)
+- Fixed-point characterization of Pell solutions via Chebyshev series rationality
+- Evolved from earlier Egyptian fraction explorations (egypt repository)
 
-**Documentation**: `docs/chebyshev-pell-sqrt-framework.md`
+**Documentation**:
+- Full LaTeX paper: `docs/chebyshev-pell-sqrt-paper.tex`
+- Technical docs: `docs/chebyshev-pell-sqrt-framework.md`
+- Summary: `docs/chebyshev-pell-sqrt-paper-summary.md`
+- Build: `make chebyshev-sqrt` (in docs/)
 
-**Publication angle**:
-- Computational mathematics / symbolic computation conference (ISSAC, CASC)
-- Comparison with FLINT native (which still wins) vs Mathematica (which loses badly)
-- Could be theoretical paper on Chebyshev-Pell connection
-- Or practical paper on implementation and benchmarks
+**Submission venues** (in priority order):
 
-**Timeline**: Could be arXiv-ready in 1-2 weeks after primorial paper
+**Primary targets:**
+1. **arXiv cs.SC (Symbolic Computation)** - Fastest path, computational focus
+   - Alternative: arXiv math.NT (Number Theory) - More theoretical emphasis
+   - Timeline: Can submit immediately after local review
+
+2. **Journal of Symbolic Computation** - Top venue for this work
+   - Focus: Computational efficiency, algorithm design
+   - Impact factor: 0.6, but highly respected in community
+   - Review time: ~4-6 months
+
+3. **Mathematics of Computation** - Prestigious computational math journal
+   - Focus: Rigorous analysis + practical performance
+   - Impact factor: 2.0
+   - Review time: ~6-9 months
+   - Note: May require more theoretical convergence proofs
+
+**Secondary targets:**
+4. **ACM Communications in Computer Algebra** - Quick publication
+   - Focus: Implementation and benchmarks
+   - Format: Short papers (4-8 pages)
+   - Review time: ~2-3 months
+
+5. **Experimental Mathematics** - Empirical discoveries
+   - Focus: Computational exploration + conjectures
+   - Good fit for fixed-point characterization
+   - Review time: ~4-6 months
+
+**Conference options:**
+6. **ISSAC (International Symposium on Symbolic and Algebraic Computation)** - Premier conference
+   - Deadline: Usually January for July conference
+   - Proceedings published by ACM
+   - Highly competitive but high visibility
+
+7. **CASC (Computer Algebra in Scientific Computing)** - European conference
+   - Less competitive than ISSAC
+   - Published in Springer LNCS
+   - Good audience for this work
+
+**Recommended strategy:**
+1. **Immediate**: Submit to arXiv (cs.SC or math.NT)
+2. **Week 1-2**: Compile locally, final review, arXiv submission
+3. **Week 2-3**: Submit to Journal of Symbolic Computation (primary target)
+4. **Backup**: If rejected, try Mathematics of Computation or Experimental Mathematics
+5. **Conference**: Submit to ISSAC 2026 if timing works out
+
+**Timeline**: arXiv-ready NOW, journal submission within 2 weeks
 
 ### 2. Chebyshev Visualization: "Infinite Interference" **🎨 Mathematical Art**
 
@@ -288,9 +334,16 @@ Beyond the primorial formula, several other discoveries have emerged with public
 
 ## Recommended Publication Strategy
 
-**Immediate (next 4 weeks)**:
-1. **Primorial formula** - arXiv → PhD application centerpiece
-2. **Chebyshev-Pell framework** - arXiv preprint (computational focus)
+**Immediate (next 2-4 weeks)** - ✅ IN PROGRESS:
+1. ✅ **Chebyshev-Pell sqrt paper** - COMPLETE, ready for arXiv submission
+   - Target: arXiv cs.SC → Journal of Symbolic Computation
+   - Shows: Computational expertise, algorithmic innovation, performance optimization
+   - Status: Paper drafted, polished, committed to repository
+
+2. **Primorial formula** - arXiv → PhD application centerpiece (NEXT)
+   - Target: arXiv math.NT → journal TBD after proof progress
+   - Shows: Mathematical discovery, problem formulation, open questions
+   - Status: Awaiting draft
 
 **Medium-term (2-3 months)**:
 3. **Chebyshev visualization** - Gallery/poster submission + short paper
@@ -300,11 +353,12 @@ Beyond the primorial formula, several other discoveries have emerged with public
 5. **Prime DAG structure** - Deeper exploration with advisor
 6. **Comprehensive "computational explorations" paper** - Umbrella publication
 
-**Rationale**:
-- Lead with strongest discovery (primorial) for PhD application
-- Follow with performance breakthrough (Chebyshev-Pell) to show breadth
-- Save visualization for "fun" publication that shows creativity
-- Other topics can be combined or developed with PhD advisor
+**Updated rationale**:
+- **Chebyshev-Pell now ready first** - Strong computational contribution, clear performance results
+- Lead with concrete achievement (working algorithm, benchmarked)
+- Follow with primorial formula (open problem, but shows discovery process)
+- Two papers demonstrate both problem-solving AND problem-finding abilities
+- Shows versatility: algorithmic optimization + mathematical discovery
 
 ---
 

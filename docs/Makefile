@@ -1,8 +1,8 @@
 # Makefile for LaTeX/OpTeX documents
 
-.PHONY: all clean formula gap primorial proof primorial-cs
+.PHONY: all clean formula gap primorial proof primorial-cs chebyshev-sqrt
 
-all: formula-reference.pdf gap-theorem.pdf primorial-arxiv-draft.pdf primorial-recurrence-proof.pdf primorial-arxiv-draft-cs.pdf
+all: formula-reference.pdf gap-theorem.pdf primorial-arxiv-draft.pdf primorial-recurrence-proof.pdf primorial-arxiv-draft-cs.pdf chebyshev-pell-sqrt-paper.pdf
 
 # Standard LaTeX document
 formula-reference.pdf: formula-reference.tex
@@ -34,12 +34,19 @@ primorial-arxiv-draft-cs.pdf: primorial-arxiv-draft-cs.tex
 	pdflatex -interaction=nonstopmode primorial-arxiv-draft-cs.tex
 	@echo "Generated: primorial-arxiv-draft-cs.pdf"
 
+# Chebyshev-Pell square root paper
+chebyshev-pell-sqrt-paper.pdf: chebyshev-pell-sqrt-paper.tex
+	pdflatex -interaction=nonstopmode chebyshev-pell-sqrt-paper.tex
+	pdflatex -interaction=nonstopmode chebyshev-pell-sqrt-paper.tex
+	@echo "Generated: chebyshev-pell-sqrt-paper.pdf"
+
 # Individual targets
 formula: formula-reference.pdf
 gap: gap-theorem.pdf
 primorial: primorial-arxiv-draft.pdf
 proof: primorial-recurrence-proof.pdf
 primorial-cs: primorial-arxiv-draft-cs.pdf
+chebyshev-sqrt: chebyshev-pell-sqrt-paper.pdf
 
 # Clean auxiliary files
 clean:
@@ -48,5 +55,5 @@ clean:
 
 # Clean everything including PDFs
 distclean: clean
-	rm -f formula-reference.pdf gap-theorem.pdf primorial-arxiv-draft.pdf primorial-recurrence-proof.pdf primorial-arxiv-draft-cs.pdf
+	rm -f formula-reference.pdf gap-theorem.pdf primorial-arxiv-draft.pdf primorial-recurrence-proof.pdf primorial-arxiv-draft-cs.pdf chebyshev-pell-sqrt-paper.pdf
 	@echo "Cleaned all generated files"
