@@ -25,16 +25,16 @@ We present a computational discovery: the primorial $p\#$ (product of all primes
 \[
 \text{den}\left(\frac{1}{2} \sum_{k=1}^{\lfloor(m-1)/2\rfloor} \frac{(-1)^k \cdot k!}{2k+1}\right) = \prod_{\substack{p \text{ prime} \\ p \leq m}} p
 \]
-where $\text{den}(q)$ denotes the denominator of rational $q$ in lowest terms. The formula has been verified computationally for $m$ up to 100,000, yet a rigorous proof remains elusive. The central mystery is a systematic cancellation: although the individual denominators $\{2k+1\}$ contain prime powers ($9 = 3^2$, $25 = 5^2$, $27 = 3^3$, \ldots), the final reduced denominator contains only first powers of primes. We formulate this as an open problem about $p$-adic valuations and discuss possible theoretical connections.
+where $\text{den}(q)$ denotes the denominator of rational $q$ in lowest terms. The formula has been verified computationally for $m$ up to 100,000. A rigorous proof has not yet been established. The primary theoretical challenge concerns a systematic cancellation: although the individual denominators $\{2k+1\}$ contain prime powers ($9 = 3^2$, $25 = 5^2$, $27 = 3^3$, \ldots), the final reduced denominator contains only first powers of primes. We formulate this as an open problem about $p$-adic valuations and discuss possible theoretical connections.
 \end{abstract}
 
 \section{Introduction}
 
 The primorial function, defined as the product of all primes up to a given bound, appears naturally in number theory, from bounds in analytic number theory to the construction of highly composite numbers. While primorials are typically computed by direct multiplication, we have discovered an unexpected alternative: they emerge as denominators of alternating factorial sums.
 
-This discovery arose through computational experimentation with Egyptian fraction decompositions and factorial series. While investigating various rational sum patterns, we observed that certain alternating sums exhibited denominators with remarkable structure---after reduction to lowest terms, only products of distinct primes appeared. Systematic testing revealed the formula presented here.
+This discovery arose through computational experimentation with Egyptian fraction decompositions and factorial series. While investigating various rational sum patterns, we observed that certain alternating sums exhibited denominators containing only products of distinct primes after reduction to lowest terms. Systematic testing revealed the formula presented here.
 
-The formula is easily stated and computationally verified, yet understanding \emph{why} it works requires explaining a subtle cancellation mechanism. The numerators, built from factorials, systematically eliminate all higher prime powers from the naive least common multiple of the denominators. This paper presents the formula, provides computational evidence, and formulates the cancellation as a formal open problem.
+While the formula admits a concise statement and computational verification is straightforward, the underlying cancellation mechanism requires careful analysis. The numerators, built from factorials, systematically eliminate all higher prime powers from the naive least common multiple of the denominators. This paper presents the formula, provides computational evidence, and formulates the cancellation as a formal open problem.
 
 \section{The Formula}
 
@@ -92,12 +92,12 @@ $k$ & $2k+1$ & Prime? & $\text{den}(S_k)$ \\ \hline
 
 \section{The Cancellation Problem}
 
-The central mystery is this: the sequence $\{2k+1\}_{k=1}^{h}$ contains prime powers and composites:
+The primary theoretical challenge is as follows: the sequence $\{2k+1\}_{k=1}^{h}$ contains prime powers and composites:
 \[
 3, 5, 7, 9=3^2, 11, 13, 15=3 \times 5, 17, 19, 21=3 \times 7, 23, 25=5^2, 27=3^3, \ldots
 \]
 
-Naively, when computing $\text{LCM}(3, 5, 7, 9, 11, \ldots)$, we would retain $3^2$ from 9, $3^3$ from 27, $5^2$ from 25, and so on. Yet after summing and reducing (\ref{eq:main}) to lowest terms, the denominator contains \emph{only first powers} of primes.
+A direct computation of $\text{LCM}(3, 5, 7, 9, 11, \ldots)$ would retain $3^2$ from 9, $3^3$ from 27, $5^2$ from 25, and so on. Yet after summing and reducing (\ref{eq:main}) to lowest terms, the denominator contains \emph{only first powers} of primes.
 
 \subsection{P-adic Valuation Formulation}
 
@@ -115,7 +115,7 @@ and
 where $\text{num}(q)$ denotes the numerator of $q$ in lowest terms.
 \end{conjecture}
 
-This is the heart of the problem: proving that the numerators systematically contain exactly the right prime factors to cancel all $p^j$ with $j > 1$ through GCD reduction.
+This represents the fundamental theoretical question: proving that the numerators systematically contain exactly the right prime factors to cancel all $p^j$ with $j > 1$ through GCD reduction.
 
 \subsection{Two Cancellation Mechanisms}
 
@@ -155,7 +155,7 @@ where the state is $S_n = \{n, a_n, b_n\}$. After $h = \lfloor(m-1)/2\rfloor$ it
 \text{Primorial}(m) = 2 \cdot \text{den}(b_h - 1)
 \]
 
-The equivalence between the direct sum (\ref{eq:main}) and this recurrence can be established by induction; the recurrence tracks $b_n = 1 + 2S_n$, and the factor of 2 is unwrapped by the extraction formula. This enables $O(m)$ arithmetic operations and facilitates verification at scale. Table~\ref{tab:verification} shows key verification checkpoints:
+The recurrence tracks $b_n = 1 + 2S_n$, and the factor of 2 is unwrapped by the extraction formula. This enables $O(m)$ arithmetic operations and facilitates verification at scale. Table~\ref{tab:verification} shows key verification checkpoints:
 
 \begin{table}[h]
 \centering
@@ -172,12 +172,12 @@ $m$ & $\pi(m)$ & Primorial digits \\ \hline
 
 \section{Open Questions}
 
-While the pattern is computationally robust, several theoretical questions remain:
+Several theoretical questions remain:
 
 \begin{enumerate}
 \item \textbf{Rigorous proof:} Prove Conjecture~\ref{conj:main} using $p$-adic analysis or other techniques.
 
-\item \textbf{Generating function connection:} Does this sum have an interpretation as a generating function for primorials? The structure suggests a deeper combinatorial or analytical framework.
+\item \textbf{Generating function connection:} Does this sum have an interpretation as a generating function for primorials?
 
 \item \textbf{Generalization:} What happens if we modify the formula? For instance:
 \begin{itemize}
@@ -193,9 +193,7 @@ While the pattern is computationally robust, several theoretical questions remai
 
 \section{Conclusion}
 
-We have presented a computationally verified formula expressing primorials as denominators of alternating factorial sums. The systematic cancellation of higher prime powers remains unexplained, suggesting deep number-theoretic structure. This problem is well-suited for formal proof assistants and could benefit from techniques in $p$-adic analysis, generating functions, or modular arithmetic.
-
-We hope this discovery will inspire theoretical investigation and welcome collaboration on proving Conjecture~\ref{conj:main} or exploring the broader questions raised here.
+We have presented a computationally verified formula expressing primorials as denominators of alternating factorial sums. The systematic cancellation of higher prime powers remains unexplained. Techniques from $p$-adic analysis, generating functions, or modular arithmetic may provide insight into the underlying mechanism.
 
 \section*{Acknowledgments}
 
