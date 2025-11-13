@@ -104,15 +104,10 @@ A direct computation of $\text{LCM}(3, 5, 7, 9, 11, \ldots)$ would retain $3^2$ 
 Let $\nu_p(n)$ denote the $p$-adic valuation (exponent of $p$ in the prime factorization of $n$). Our computational investigations reveal:
 
 \begin{conjecture}\label{conj:main}
-For all primes $p$ with $3 \leq p \leq 2k+1$, we have
+Let $S_k$ be as defined above. Express $S_k$ in lowest terms as $S_k = n/d$ where $\gcd(n,d) = 1$ and $d > 0$. Then for all primes $p$ with $3 \leq p \leq 2k+1$, we have
 \[
-\nu_p\left(\text{den}(S_k)\right) = 1
+\nu_p(d) = 1 \quad \text{and} \quad \nu_p(n) = 0
 \]
-and
-\[
-\nu_p\left(\text{num}(S_k)\right) = 0
-\]
-where $\text{num}(q)$ denotes the numerator of $q$ in lowest terms.
 \end{conjecture}
 
 This represents the fundamental theoretical question: proving that the numerators systematically contain exactly the right prime factors to cancel all $p^j$ with $j > 1$ through GCD reduction.
