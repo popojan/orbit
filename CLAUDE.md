@@ -417,3 +417,57 @@ Results from computational exploration should feed back to:
 **Target:** Claude Code or similar computational assistant with WolframScript
 **Goal:** Systematic exploration of prime DAG structure through computational experiments
 **Approach:** Question-driven, with emphasis on pattern discovery and statistical analysis
+
+## LaTeX and Mathematical Writing Style Preferences
+
+When writing LaTeX documents or mathematical papers for this project, follow these guidelines:
+
+### Clean, Rigorous Mathematical Exposition
+
+- **Pure mathematics**: Write proofs as self-contained mathematical arguments
+- **No computational exploration details**: Omit references to verification scripts, test cases, data files, or computational discovery process
+- **No numerical evidence**: Remove statements like "tested for 1000 cases", "zero counterexamples found", etc.
+- **No tool mentions**: Exclude references to Wolfram Language, WolframScript, implementation details
+- **No data tables from experiments**: Keep only theoretical results and definitions
+
+### Structure
+
+- **Derive from first principles**: Prove all recurrence relations, update formulas, etc. from the original definitions
+- **No circular reasoning**: Don't assume what you're trying to prove; build up from axioms and definitions
+- **Clean lemma structure**: State key inequalities and subresults as formal lemmas with complete proofs
+- **Proper theorem environments**: Use `\begin{theorem}`, `\begin{lemma}`, `\begin{proof}` consistently
+
+### Example
+
+**Avoid:**
+```latex
+We verified computationally for 769 jumps across 4 primes...
+Table 1 shows that 99.5% of cases follow Pattern 2a...
+Using our Wolfram Language script, we found...
+```
+
+**Prefer:**
+```latex
+\begin{lemma}
+For all primes $p \geq 3$ and integers $k \geq 1$...
+\end{lemma}
+
+\begin{proof}
+By Legendre's formula, we have...
+\end{proof}
+```
+
+### When to Break These Rules
+
+These guidelines apply to **formal mathematical papers** intended for publication or rigorous presentation. For:
+- Exploratory markdown documents (e.g., `docs/*-exploration.md`)
+- Computational notebooks
+- Internal research notes
+- README files
+
+...it's appropriate to include computational details, verification results, and implementation references.
+
+### Reference Example
+
+See `docs/primorial-proof-clean.tex` for the preferred style: rigorous, self-contained, no computational baggage.
+

@@ -1,8 +1,8 @@
 # Makefile for LaTeX/OpTeX documents
 
-.PHONY: all clean formula gap primorial proof primorial-cs chebyshev-sqrt primal-forest
+.PHONY: all clean formula gap primorial proof primorial-cs chebyshev-sqrt primal-forest primorial-valuation primorial-valuation-clean
 
-all: formula-reference.pdf gap-theorem.pdf primorial-arxiv-draft.pdf primorial-recurrence-proof.pdf primorial-arxiv-draft-cs.pdf chebyshev-pell-sqrt-paper.pdf primal-forest-paper.pdf
+all: formula-reference.pdf gap-theorem.pdf primorial-arxiv-draft.pdf primorial-recurrence-proof.pdf primorial-arxiv-draft-cs.pdf chebyshev-pell-sqrt-paper.pdf primal-forest-paper.pdf primorial-proof.pdf primorial-proof-clean.pdf
 
 # Standard LaTeX document
 formula-reference.pdf: formula-reference.tex
@@ -46,6 +46,18 @@ primal-forest-paper.pdf: primal-forest-paper.tex
 	pdflatex -interaction=nonstopmode primal-forest-paper.tex
 	@echo "Generated: primal-forest-paper.pdf"
 
+# Primorial p-adic valuation proof
+primorial-proof.pdf: primorial-proof.tex
+	pdflatex -interaction=nonstopmode primorial-proof.tex
+	pdflatex -interaction=nonstopmode primorial-proof.tex
+	@echo "Generated: primorial-proof.pdf"
+
+# Primorial p-adic valuation proof (clean version)
+primorial-proof-clean.pdf: primorial-proof-clean.tex
+	pdflatex -interaction=nonstopmode primorial-proof-clean.tex
+	pdflatex -interaction=nonstopmode primorial-proof-clean.tex
+	@echo "Generated: primorial-proof-clean.pdf"
+
 # Individual targets
 formula: formula-reference.pdf
 gap: gap-theorem.pdf
@@ -54,6 +66,8 @@ proof: primorial-recurrence-proof.pdf
 primorial-cs: primorial-arxiv-draft-cs.pdf
 chebyshev-sqrt: chebyshev-pell-sqrt-paper.pdf
 primal-forest: primal-forest-paper.pdf
+primorial-valuation: primorial-proof.pdf
+primorial-valuation-clean: primorial-proof-clean.pdf
 
 # Clean auxiliary files
 clean:
@@ -62,5 +76,5 @@ clean:
 
 # Clean everything including PDFs
 distclean: clean
-	rm -f formula-reference.pdf gap-theorem.pdf primorial-arxiv-draft.pdf primorial-recurrence-proof.pdf primorial-arxiv-draft-cs.pdf chebyshev-pell-sqrt-paper.pdf primal-forest-paper.pdf
+	rm -f formula-reference.pdf gap-theorem.pdf primorial-arxiv-draft.pdf primorial-recurrence-proof.pdf primorial-arxiv-draft-cs.pdf chebyshev-pell-sqrt-paper.pdf primal-forest-paper.pdf primorial-proof.pdf primorial-proof-clean.pdf
 	@echo "Cleaned all generated files"
