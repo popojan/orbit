@@ -38,7 +38,7 @@ Staří Řekové vyvinuli chytrý algoritmus---\emph{Eratosthenovo síto}---kter
 
 Představujeme \textbf{Prvolesí}: geometrickou transformaci, která mění síto na vizuální krajinu, kde složená čísla tvoří pravidelné vzorce a prvočísla se objevují jako průhledy. Představte si, že stojíte na jižním okraji rozsáhlého lesa a díváte se na sever mezi stromy. Můžete chodit na západ nebo východ podél tohoto okraje (osa x), a na každé pozici se podívat přímo na sever. Stromy jsou složená čísla, rozptýlená v různých hloubkách lesa. Na určitých pozicích podél jižního okraje máte dokonale čistý průhled---žádné stromy vám neblokují výhled v žádné hloubce. Tyto čisté koridory odhalují prvočísla.
 
-Tento geometrický pohled skrývá hlubší tajemství: když pečlivě měříme vzdálenosti k těmto stromům, objevíme, že prvorodost existuje na spojitém spektru, s prvočísly na hranici a složenými čísly stratifikovanými podle jejich faktorizační složitosti.
+Tento geometrický pohled skrývá hlubší tajemství: když pečlivě měříme vzdálenosti k těmto stromům, objevíme, že prvočíselnost existuje na spojitém spektru, s prvočísly na hranici a složenými čísly stratifikovanými podle jejich faktorizační složitosti.
 
 \section{Klasické síto (lineární pohled)}
 
@@ -111,7 +111,7 @@ Obrázek~\ref{fig:forest} ukazuje prvolesí pro rozsah $n \leq 31$. Vykreslujeme
 
 \item \textbf{Vaše pozice}: Stojíte na pozici $(x, 0)$ na jižním okraji---doslova na y=0. Můžete chodit západo-východně a zvolit si, kterou x-souřadnici chcete testovat, pak se podívat přímo na sever do lesa. Většina pozic má alespoň jeden strom někde na sever od vás. Ale některé pozice \emph{nemají žádné stromy v žádné hloubce na sever}. To jsou \textbf{prvočísla}! Jsou to čisté koridory---čísla, která nelze zapsat jako $p(p+k)$ pro žádné $p \geq 2$.
 
-\item \textbf{Test prvorodosti}: Postavte se na libovolnou x-souřadnici podél jižního okraje a podívejte se přímo na sever. Pokud vidíte stromy blokující váš výhled v nějaké hloubce, toto číslo je složené. Pokud máte dokonale čistý průhled celou cestou skrz les---nic neblokuje váš výhled v žádné vzdálenosti na sever---toto číslo je prvočíslo.
+\item \textbf{Test prvočíselnosti}: Postavte se na libovolnou x-souřadnici podél jižního okraje a podívejte se přímo na sever. Pokud vidíte stromy blokující váš výhled v nějaké hloubce, toto číslo je složené. Pokud máte dokonale čistý průhled celou cestou skrz les---nic neblokuje váš výhled v žádné vzdálenosti na sever---toto číslo je prvočíslo.
 \end{itemize}
 
 \subsection{Klíčový poznatek}
@@ -271,7 +271,7 @@ Prvolesí odhaluje ohromující paradox v srdci rozložení prvočísel:
 
 Můžete \emph{vidět} pravidelnou strukturu. Každý činitel vytváří předvídatelné řádky. Překrytí je deterministické. Přesto mezery---prvočísla---odolávají předpovědi. Tato vizualizace tajemství neřeší; \emph{odhaluje} ho. Snad to je nejhlubší poučení: \textbf{jednoduchá geometrická pravidla mohou generovat neredukovatelnou složitost.}
 
-Proto geometrický pohled, navzdory své jasnosti, neodemyká nové výpočetní zkratky pro nalezení prvočísel. Mezery jsou to, co zbude po nekonečné superpozici pravidelných vzorců---neloká lní, globálně emergentní fenomén. Existence každého prvočísla závisí na úniku \emph{všem} faktorovým řádkům, což je ekvivalentní původní otázce prvorodosti, jen vizualizované geometricky.
+Proto geometrický pohled, navzdory své jasnosti, neodemyká nové výpočetní zkratky pro nalezení prvočísel. Mezery jsou to, co zbude po nekonečné superpozici pravidelných vzorců---neloká lní, globálně emergentní fenomén. Existence každého prvočísla závisí na úniku \emph{všem} faktorovým řádkům, což je ekvivalentní původní otázce prvočíselnosti, jen vizualizované geometricky.
 \vspace{0.5em}
 \end{minipage}}
 \end{center}
@@ -380,13 +380,13 @@ Přesto má les ještě jedno tajemství k odhalení. Místo otázky ``blokovan�
 
 \appendix
 
-\section{Spojité spektrum prvorodosti}
+\section{Spojité spektrum prvočíselnosti}
 
 Prvolesí odhaluje prvočísla jako mezery v diskrétní mřížce---pozice s dokonale čistými průhledy. Ale tento binární pohled (čistý nebo blokovaný) přehlíží bohatší strukturu. Co kdybychom se místo toho zeptali: \emph{jak daleko} jsou nejbližší stromy v každé hloubce?
 
-Tento přesun od binárního k spojitému měření odhaluje něco nečekaného: prvorodost existuje na spektru. Když vypočítáme skóre založené na vzdálenosti pro každé celé číslo, prvočísla povstávají a tvoří hladkou horní obálku, zatímco složená čísla se rozptylují níže, stratifikovaná podle své faktorizační složitosti. Mocniny prvočísel se shlukují poblíž obálky, polprvočísla spadají dále a vysoce složená čísla klesají ke dnu.
+Tento přesun od binárního k spojitému měření odhaluje něco nečekaného: prvočíselnost existuje na spektru. Když vypočítáme skóre založené na vzdálenosti pro každé celé číslo, prvočísla povstávají a tvoří hladkou horní obálku, zatímco složená čísla se rozptylují níže, stratifikovaná podle své faktorizační složitosti. Mocniny prvočísel se shlukují poblíž obálky, polprvočísla spadají dále a vysoce složená čísla klesají ke dnu.
 
-To je více než vizualizační trik. Spojité skóre prvorodosti poskytuje geometrickou míru ``jak složené'' číslo je, s prvočísly jako limitním případem. Zatímco vzdělávací hodnota je jasná, tato perspektiva může nabídnout číslo-teoretické poznatky o vztahu mezi faktorizační strukturou a rozložením prvočísel.
+To je více než vizualizační trik. Spojité skóre prvočíselnosti poskytuje geometrickou míru ``jak složené'' číslo je, s prvočísly jako limitním případem. Zatímco vzdělávací hodnota je jasná, tato perspektiva může nabídnout číslo-teoretické poznatky o vztahu mezi faktorizační strukturou a rozložením prvočísel.
 
 \subsection{Od diskrétních mezer ke spojitým vzdálenostem}
 
@@ -405,7 +405,7 @@ d_p^{\text{soft}}(x) = -\beta \log \sum_{k=0}^{\lfloor x/p \rfloor} \exp\left(-\
 
 Když $\beta \to 0$, toto se blíží skutečné minimální vzdálenosti. Pro mírné $\beta$ (jako $\beta = 1/7$) poskytuje hladkou aproximaci.
 
-Celkové skóre prvorodosti je součin přes všechny $p$:
+Celkové skóre prvočíselnosti je součin přes všechny $p$:
 
 \begin{equation}
 S(x) = \prod_{p=2}^{x} d_p^{\text{soft}}(x)
@@ -420,7 +420,7 @@ Obrázek~\ref{fig:envelope} ukazuje pozoruhodný objev: když vykreslíme toto s
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.7\textwidth]{../visualizations/soft-distance-envelope-127.pdf}
-\caption{Spektrum prvorodosti: prvočísla (oranžová) tvoří hladkou obálku, složená čísla (modrá) se rozptylují níže. Vzdálenost každého složeného čísla od obálky kóduje jeho faktorizační strukturu.}
+\caption{Spektrum prvočíselnosti: prvočísla (oranžová) tvoří hladkou obálku, složená čísla (modrá) se rozptylují níže. Vzdálenost každého složeného čísla od obálky kóduje jeho faktorizační strukturu.}
 \label{fig:envelope}
 \end{figure}
 
@@ -441,7 +441,7 @@ Obrázek~\ref{fig:stratification} odhaluje hlubší strukturu: složená čísla
 \item \textbf{3+ činitelů}: Klesají postupně níže
 \end{itemize}
 
-Mezera od obálky roste s faktorizační složitostí: více činitelů $\Rightarrow$ nižší skóre $\Rightarrow$ dále od ``prvorodosti.''
+Mezera od obálky roste s faktorizační složitostí: více činitelů $\Rightarrow$ nižší skóre $\Rightarrow$ dále od ``prvočíselnosti.''
 
 \subsection{Proč je geometrický pohled podstatný}
 
@@ -464,7 +464,7 @@ DistanceProductSoft[x_, beta_: 1/7] :=
     {p, 2, x}
   ]
 
-(* Vykresli spektrum prvorodosti *)
+(* Vykresli spektrum prvočíselnosti *)
 pp[hi_] :=
   Table[{k, Log[1 + DistanceProductSoft[k, 1/7]]}, {k, 1, hi}] //
     ListLinePlot[
@@ -480,7 +480,7 @@ pp[127]  (* Vygeneruj graf *)
 
 \subsection{Vzdělávací hodnota}
 
-Toto spojité spektrum prvorodosti nabízí komplementární poznatky k diskrétnímu lesu:
+Toto spojité spektrum prvočíselnosti nabízí komplementární poznatky k diskrétnímu lesu:
 
 \begin{itemize}
 \item Les ukazuje \emph{proč} složená čísla existují (faktorizace umisťují tečky)
@@ -508,11 +508,11 @@ Přístup měkkého minima činí diskrétní problém spojitým, což je krásn
 
 \subsection{Závěr dodatku}
 
-Prvolesí ukazuje prvočísla jako absence---mezery v pravidelné mřížce. Součin měkkých vzdáleností ukazuje prvočísla jako \emph{extrémy}---horní hranici spojité krajiny prvorodosti. Oba pohledy vycházejí ze stejné geometrické transformace, odhalující různé fasetky stejné základní struktury.
+Prvolesí ukazuje prvočísla jako absence---mezery v pravidelné mřížce. Součin měkkých vzdáleností ukazuje prvočísla jako \emph{extrémy}---horní hranici spojité krajiny prvočíselnosti. Oba pohledy vycházejí ze stejné geometrické transformace, odhalující různé fasetky stejné základní struktury.
 
 To je síla geometrické reformulace: ne řešit problém rychleji, ale vidět ho z úhlů, které odhalují skryté vzorce. Paradox pravidelnosti přetrvává---jednoduchá pravidla, neredukovatelná složitost---ale nyní vidíme, že složitost má \emph{vrstvy}, spojité spektrum od prvočísla k vysoce složenému.
 
-Vizualizace neodpovídá \emph{jak} najít prvočísla efektivně, ale odpovídá \emph{co} prvorodost vypadá, když je viděna prizmatem geometrické vzdálenosti. A někdy je vidění vzorce jasně objev sám o sobě.
+Vizualizace neodpovídá \emph{jak} najít prvočísla efektivně, ale odpovídá \emph{co} prvočíselnost vypadá, když je viděna prizmatem geometrické vzdálenosti. A někdy je vidění vzorce jasně objev sám o sobě.
 
 \section*{Poděkování}
 
