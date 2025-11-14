@@ -1,0 +1,60 @@
+================================================================
+COMPREHENSIVE SQRT METHOD COMPARISON: sqrt(13)
+Target precision: ~150 digits (modest)
+Using RepeatedTiming for accurate short-duration measurements
+================================================================
+
+METHOD 1: Wolfram Rationalize (CF convergents) - BASELINE
+  Time: 0.0003262412109375s (RepeatedTiming)
+  Sqrt precision: 154 digits
+  Denom digits: 78 (optimal by definition)
+
+METHOD 2: Nested Chebyshev m1=3, m2=2 (Pell base)
+  Time: 0.00014256396484375s (RepeatedTiming)
+  Sqrt precision: 309 digits
+  Denom digits: 155
+  Overhead vs CF: 1.9871794871794871795`3.x
+  Speed vs WM: 2.288384805340257x
+
+METHOD 3: Binet-like formula k=7 (Pell base)
+  Time: 0.00003591839599609375s (RepeatedTiming)
+  Sqrt precision: 20 digits
+  Denom digits: 11
+  Overhead vs CF: 0.1410256410256410256`3.x
+  Speed vs WM: 9.082844650773934x
+
+METHOD 4: Babylonian (Newton) 8 iters (crude start)
+  Time: 0.000019530670166015626s (RepeatedTiming)
+  Sqrt precision: 263 digits
+  Denom digits: 133
+  Overhead vs CF: 1.7051282051282051282`3.x
+  Speed vs WM: 16.704045901362697x
+
+METHOD 5: Original Chebyshev-Pell 10 terms (Pell base)
+  Time: 0.000138449462890625s (RepeatedTiming)
+  Sqrt precision: 32 digits
+  Denom digits: 17
+  Overhead vs CF: 0.2179487179487179487`3.x
+  Speed vs WM: 2.356392030175158x
+
+METHOD 6: ALFEE k=7 (Pell base) - returns {lower, upper} bounds
+  Time: 0.0000579132080078125s (RepeatedTiming)
+  Lower bound precision: 20 digits
+  Upper bound precision: 20 digits
+  Lower denom digits: 11
+  Upper denom digits: 11
+  Bracket width: -2.3233285253456589610049142687044639027`10.*^-21
+  Speed vs WM: 5.633278178848079x
+
+================================================================
+SUMMARY TABLE
+================================================================
+Method               | Prec | Time(s) | Denom | Overhead | Speed
+------------------------------------------------------------------
+Wolfram Rationalize  | 154 | 0.0003262412109375 | 78 | 1.0x | 1.0x
+Nested Chebyshev     | 309 | 0.00014256396484375 | 155 | 1.9871794871794871795`2.x | 2.288384805340257x
+Binet k=7            | 20 | 0.00003591839599609375 | 11 | 0.1410256410256410256`2.x | 9.082844650773934x
+Babylonian 8 iters   | 263 | 0.000019530670166015626 | 133 | 1.7051282051282051282`2.x | 16.704045901362697x
+Original Cheb-Pell   | 32 | 0.000138449462890625 | 17 | 0.2179487179487179487`2.x | 2.356392030175158x
+ALFEE k=7 (lower)    | 20 | 0.0000579132080078125 | 11 | 0.1410256410256410256`2.x | 5.633278178848079x
+ALFEE k=7 (upper)    | 20 | 0.0000579132080078125 | 11 | 0.1410256410256410256`2.x | 5.633278178848079x

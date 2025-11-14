@@ -1,0 +1,42 @@
+================================================================
+CONVERGENCE: m1=1 vs m1=2
+================================================================
+
+m1=1 precision progression:
+  m2=1: 16 digits
+  m2=2: 110 digits
+  m2=3: 670 digits
+  m2=4: 4033 digits
+  m2=5: 24207 digits
+
+m1=2 precision progression:
+  m2=1: 23 digits
+  m2=2: 197 digits
+  m2=3: 1592 digits
+  m2=4: 12750 digits
+  m2=5: 102014 digits
+
+================================================================
+SPEED COMPARISON at similar precision levels
+================================================================
+
+TEST 1: ~100 digits
+  m1=1, m2=2: 110 digits in 0.00001823199462890625s
+  m1=2, m2=1: 23 digits in 8.78338623046875*^-6s
+  Winner: m1=2 (2.07574x)
+
+TEST 2: ~1k digits
+  m1=1, m2=3: 670 digits in 0.0000335758056640625s
+  m1=2, m2=2: 197 digits in 0.00003498486328125s
+  Winner: m1=1 (1.04197x)
+
+TEST 3: ~10k digits
+  m1=1, m2=4: 4033 digits in 0.0000775196533203125s
+  m1=2, m2=3: 1592 digits in 0.000061224853515625s
+  Winner: m1=2 (1.26615x)
+
+TEST 4: ~100k digits
+  m1=1, m2=5: 24207 digits in 0.0005374873046875s
+  m1=2, m2=4: 12750 digits in 0.00030277685546875s
+  Winner: m1=2 (1.77519x)
+Null

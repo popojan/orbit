@@ -1,0 +1,65 @@
+================================================================
+EXTENDED PRECISION TEST: Speedup scaling analysis
+================================================================
+
+TEST m2=3:
+----------------------------------------
+Optimized Nested m1=1, m2=3:
+  Time: 0.00003297515869140625s
+  Precision: 670 digits
+Babylonian (8 iters):
+  Time: 0.000024855224609375s
+  Precision: 795 digits
+
+SPEEDUP: Babylonian wins 1.32669x faster
+
+
+TEST m2=4:
+----------------------------------------
+Optimized Nested m1=1, m2=4:
+  Time: 0.00007670556640625s
+  Precision: 4033 digits
+Babylonian (11 iters):
+  Time: 0.0001292265625s
+  Precision: 6374 digits
+
+SPEEDUP: Nested wins 1.68471x faster
+
+
+TEST m2=5:
+----------------------------------------
+Optimized Nested m1=1, m2=5:
+  Time: 0.0005344658203125s
+  Precision: 24207 digits
+Babylonian (13 iters):
+  Time: 0.0006988642578125s
+  Precision: 25502 digits
+
+SPEEDUP: Nested wins 1.30759x faster
+
+
+TEST m2=6:
+----------------------------------------
+Optimized Nested m1=1, m2=6:
+  Time: 0.0073543125s
+  Precision: 145251 digits
+Babylonian (16 iters):
+  Time: 0.014302234375s
+  Precision: 204029 digits
+
+SPEEDUP: Nested wins 1.94474x faster
+
+
+TEST m2=7:
+----------------------------------------
+Optimized Nested m1=1, m2=7:
+  Time: 0.087675625s
+  Precision: 871515 digits
+Babylonian (19 iters):
+  Time: 0.237476s
+  Precision: 1632250 digits
+
+SPEEDUP: Nested wins 2.70857x faster
+
+
+Null

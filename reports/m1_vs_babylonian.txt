@@ -1,0 +1,25 @@
+=== NESTED m1=1 vs BABYLONIAN (no Wolfram - too slow) ===
+
+Test 1: ~1000 digits
+  Nested m1=1,m2=5: 24207 digits in 0.01989453125s
+  Babylonian 11 iters: 6374 digits in 0.00013232080078125s
+
+If::argb: If called with 7 arguments; between 2 and 4 arguments are expected.
+  Winner: If[False, Nested m1=1 (, N[time2/time1, 2], x faster), Babylonian (, N[time1/time2, 2], x faster)]
+
+Test 2: ~10k digits
+  Nested m1=1,m2=6: 145251 digits in 0.127477s
+  Babylonian 15 iters: 102014 digits in 0.0053464765625s
+
+If::argb: If called with 7 arguments; between 2 and 4 arguments are expected.
+  Winner: If[False, Nested m1=1 (, N[time4/time3, 2], x faster), Babylonian (, N[time3/time4, 2], x faster)]
+
+Test 3: Medium precision ~300 digits
+  Nested m1=1,m2=4: 4033 digits in 0.0034326171875s
+  Babylonian 9 iters: 1592 digits in 0.000034936767578125s
+
+If::argb: If called with 7 arguments; between 2 and 4 arguments are expected.
+
+General::stop: Further output of If::argb will be suppressed during this calculation.
+  Winner: If[False, Nested m1=1 (, N[time6/time5, 2], x faster), Babylonian (, N[time5/time6, 2], x faster)]
+Null

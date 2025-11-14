@@ -1,0 +1,53 @@
+================================================================
+OPTIMIZED SPEED TEST: Pre-simplified m1=1 vs Babylonian
+Using closed-form m1=1 (no ChebyshevU evaluation!)
+Both seeded with Pell base
+================================================================
+
+TEST 1: ~100 digits
+----------------------------------------
+Optimized Nested m1=1, m2=2:
+  Time: 0.000017596588134765626s
+  Precision: 110 digits
+Babylonian (6 iters):
+  Time: 0.000014481185913085937s
+  Precision: 197 digits
+
+RESULT: Babylonian wins 1.21513x faster
+
+
+TEST 2: ~1000 digits
+----------------------------------------
+Optimized Nested m1=1, m2=3:
+  Time: 0.00003356475830078125s
+  Precision: 670 digits
+Babylonian (8 iters):
+  Time: 0.000024072540283203124s
+  Precision: 795 digits
+
+RESULT: Babylonian wins 1.39432x faster
+
+
+TEST 3: ~4000 digits
+----------------------------------------
+Optimized Nested m1=1, m2=4:
+  Time: 0.00007527294921875s
+  Precision: 4033 digits
+Babylonian (11 iters):
+  Time: 0.0001287958984375s
+  Precision: 6374 digits
+
+RESULT: Nested wins 1.71105x faster!
+
+
+TEST 4: ~24000 digits
+----------------------------------------
+Optimized Nested m1=1, m2=5:
+  Time: 0.000534509765625s
+  Precision: 24207 digits
+Babylonian (13 iters):
+  Time: 0.000697640625s
+  Precision: 25502 digits
+
+RESULT: Nested wins 1.3052x faster!
+

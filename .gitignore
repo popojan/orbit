@@ -12,6 +12,8 @@ reports/*.svg
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+*.pdf
+!visualizations/*.pdf
 
 # Wolfram Language cache
 .wl_cache/
@@ -25,3 +27,12 @@ reading.md
 # System files
 .DS_Store
 *~
+
+# Mathematica checkpoint/state files
+*.mx
+
+# Large verification text logs
+verification_*.txt
+
+# Miscellaneous/scratch files
+misc/

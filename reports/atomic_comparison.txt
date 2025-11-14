@@ -1,0 +1,43 @@
+================================================================
+ATOMIC COMPARISON: sqrt(13)
+Using clean abstraction pattern: cmp[d, ourFunc]
+================================================================
+
+METHOD 1: Nested Chebyshev m1=3, m2=2
+  Precision: 309 digits
+  Our time: 0.00014737353515625s
+  WM time: 0.0007552041015625s
+  Denom overhead: 1.`3.x
+  Speedup: 5.124421428595094x
+
+METHOD 2: Babylonian 8 iters
+  Precision: 263 digits
+  Our time: 0.0000197294921875s
+  WM time: 0.0006408994140625s
+  Denom overhead: 1.0075757575757575758`3.x
+  Speedup: 32.48433400980053x
+
+METHOD 3: Original Chebyshev-Pell 10 terms
+  Precision: 32 digits
+  Our time: 0.000139919921875s
+  WM time: 0.00005836273193359375s
+  Denom overhead: 1.0625`3.x
+  Speedup: 0.417115241000014x
+
+METHOD 4: ALFEE k=7 (dual bounds)
+  Precision: 20 digits
+  Bracket width: -2.3233285253456589610049142687044639027`10.*^-21
+  Our time: 0.00005823974609375s
+  WM time: 0.00004005078125s
+  Denom overhead: 1.`3.x
+  Speedup: 0.6876881156990149x
+
+================================================================
+SUMMARY TABLE
+================================================================
+Method               | Prec | Speedup | Overhead
+--------------------------------------------------
+Nested m1=3,m2=2     | 309 | 5.124421428595094x | 1.`3.x
+Babylonian 8 iters   | 263 | 32.48433400980053x | 1.0075757575757575758`3.x
+Original Cheb-Pell   | 32 | 0.417115241000014x | 1.0625`3.x
+ALFEE k=7            | 20 | 0.6876881156990149x | 1.`3.x

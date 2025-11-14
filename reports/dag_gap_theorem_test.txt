@@ -1,0 +1,11 @@
+DAG Gap Theorem Test Results
+============================
+
+Prime range: 2 to 1000
+Total primes: 168
+
+Test 1 (Gap Theorem): FAIL
+Test 2 (In-degree = Gap): FAIL
+Test 3 (Edge structure): PASS
+
+Overall: SOME TESTS FAILED

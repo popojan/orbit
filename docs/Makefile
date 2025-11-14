@@ -1,73 +1,37 @@
 # Makefile for LaTeX/OpTeX documents
+# Automatically compiles all .tex files in the directory
 
-.PHONY: all clean formula gap primorial proof primorial-cs chebyshev-sqrt primal-forest primorial-valuation primorial-valuation-clean
+.PHONY: all clean distclean
 
-all: formula-reference.pdf gap-theorem.pdf primorial-arxiv-draft.pdf primorial-recurrence-proof.pdf primorial-arxiv-draft-cs.pdf chebyshev-pell-sqrt-paper.pdf primal-forest-paper.pdf primorial-proof.pdf primorial-proof-clean.pdf
+# Find all .tex files in the current directory
+TEX_SOURCES := $(wildcard *.tex)
 
-# Standard LaTeX document
-formula-reference.pdf: formula-reference.tex
-	pdflatex -interaction=nonstopmode formula-reference.tex
-	@echo "Generated: formula-reference.pdf"
+# Exclude gap-theorem.tex (uses OpTeX, not pdflatex)
+PDFLATEX_SOURCES := $(filter-out gap-theorem.tex, $(TEX_SOURCES))
 
-# OpTeX document (requires OpTeX v1.18+)
-# Compile with: luahbtex -fmt optex gap-theorem
+# Generate PDF targets
+PDFLATEX_TARGETS := $(PDFLATEX_SOURCES:.tex=.pdf)
+OPTEX_TARGETS := gap-theorem.pdf
+
+# All targets
+ALL_TARGETS := $(PDFLATEX_TARGETS) $(OPTEX_TARGETS)
+
+# Default target: compile all
+all: $(ALL_TARGETS)
+
+# Pattern rule for standard LaTeX documents (two passes for references)
+%.pdf: %.tex
+	@echo "Compiling $< (pass 1/2)..."
+	@pdflatex -interaction=nonstopmode $< > /dev/null
+	@echo "Compiling $< (pass 2/2)..."
+	@pdflatex -interaction=nonstopmode $< > /dev/null
+	@echo "✓ Generated: $@"
+
+# Special rule for OpTeX document (requires OpTeX v1.18+)
 gap-theorem.pdf: gap-theorem.tex
 	@echo "Compiling with OpTeX v1.18..."
-	luahbtex -fmt optex gap-theorem.tex
-	@echo "Generated: gap-theorem.pdf"
-
-# Primorial preprint
-primorial-arxiv-draft.pdf: primorial-arxiv-draft.tex
-	pdflatex -interaction=nonstopmode primorial-arxiv-draft.tex
-	pdflatex -interaction=nonstopmode primorial-arxiv-draft.tex
-	@echo "Generated: primorial-arxiv-draft.pdf"
-
-# Primorial recurrence proof
-primorial-recurrence-proof.pdf: primorial-recurrence-proof.tex
-	pdflatex -interaction=nonstopmode primorial-recurrence-proof.tex
-	pdflatex -interaction=nonstopmode primorial-recurrence-proof.tex
-	@echo "Generated: primorial-recurrence-proof.pdf"
-
-# Primorial preprint (Czech)
-primorial-arxiv-draft-cs.pdf: primorial-arxiv-draft-cs.tex
-	pdflatex -interaction=nonstopmode primorial-arxiv-draft-cs.tex
-	pdflatex -interaction=nonstopmode primorial-arxiv-draft-cs.tex
-	@echo "Generated: primorial-arxiv-draft-cs.pdf"
-
-# Chebyshev-Pell square root paper
-chebyshev-pell-sqrt-paper.pdf: chebyshev-pell-sqrt-paper.tex
-	pdflatex -interaction=nonstopmode chebyshev-pell-sqrt-paper.tex
-	pdflatex -interaction=nonstopmode chebyshev-pell-sqrt-paper.tex
-	@echo "Generated: chebyshev-pell-sqrt-paper.pdf"
-
-# Primal Forest educational paper
-primal-forest-paper.pdf: primal-forest-paper.tex
-	pdflatex -interaction=nonstopmode primal-forest-paper.tex
-	pdflatex -interaction=nonstopmode primal-forest-paper.tex
-	@echo "Generated: primal-forest-paper.pdf"
-
-# Primorial p-adic valuation proof
-primorial-proof.pdf: primorial-proof.tex
-	pdflatex -interaction=nonstopmode primorial-proof.tex
-	pdflatex -interaction=nonstopmode primorial-proof.tex
-	@echo "Generated: primorial-proof.pdf"
-
-# Primorial p-adic valuation proof (clean version)
-primorial-proof-clean.pdf: primorial-proof-clean.tex
-	pdflatex -interaction=nonstopmode primorial-proof-clean.tex
-	pdflatex -interaction=nonstopmode primorial-proof-clean.tex
-	@echo "Generated: primorial-proof-clean.pdf"
-
-# Individual targets
-formula: formula-reference.pdf
-gap: gap-theorem.pdf
-primorial: primorial-arxiv-draft.pdf
-proof: primorial-recurrence-proof.pdf
-primorial-cs: primorial-arxiv-draft-cs.pdf
-chebyshev-sqrt: chebyshev-pell-sqrt-paper.pdf
-primal-forest: primal-forest-paper.pdf
-primorial-valuation: primorial-proof.pdf
-primorial-valuation-clean: primorial-proof-clean.pdf
+	@luahbtex -fmt optex gap-theorem.tex > /dev/null
+	@echo "✓ Generated: gap-theorem.pdf"
 
 # Clean auxiliary files
 clean:
@@ -76,5 +40,15 @@ clean:
 
 # Clean everything including PDFs
 distclean: clean
-	rm -f formula-reference.pdf gap-theorem.pdf primorial-arxiv-draft.pdf primorial-recurrence-proof.pdf primorial-arxiv-draft-cs.pdf chebyshev-pell-sqrt-paper.pdf primal-forest-paper.pdf primorial-proof.pdf primorial-proof-clean.pdf
+	rm -f $(ALL_TARGETS)
 	@echo "Cleaned all generated files"
+
+# Show what would be compiled
+list:
+	@echo "LaTeX sources (pdflatex):"
+	@for src in $(PDFLATEX_SOURCES); do echo "  - $$src"; done
+	@echo "OpTeX sources:"
+	@echo "  - gap-theorem.tex"
+	@echo ""
+	@echo "Targets:"
+	@for tgt in $(ALL_TARGETS); do echo "  - $$tgt"; done

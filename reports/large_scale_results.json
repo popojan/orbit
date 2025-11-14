@@ -1,0 +1,34 @@
+[
+	{
+		"Name":"Primes",
+		"SeqLength":9592,
+		"Tested":168,
+		"Passed":168,
+		"Violations":0,
+		"GapTheorem?":true
+	},
+	{
+		"Name":"Semiprimes",
+		"SeqLength":23378,
+		"Tested":299,
+		"Passed":299,
+		"Violations":0,
+		"GapTheorem?":true
+	},
+	{
+		"Name":"3-almost primes",
+		"SeqLength":25556,
+		"Tested":247,
+		"Passed":247,
+		"Violations":0,
+		"GapTheorem?":true
+	},
+	{
+		"Name":"4-almost primes",
+		"SeqLength":18744,
+		"Tested":149,
+		"Passed":149,
+		"Violations":0,
+		"GapTheorem?":true
+	}
+]

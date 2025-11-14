@@ -1,0 +1,62 @@
+================================================================
+OPTIMIZED m1=1 vs m1=2 COMPARISON
+================================================================
+
+Formula complexity:
+  m1=1: (nn*(3*n^2 + nn))/(n*(n^2 + 3*nn))
+  m1=2: (n^4 + 6*n^2*nn + nn^2)/(4*n*(n^2 + nn))
+
+Convergence comparison (same total iterations):
+----------------------------------------------------------------
+
+STRATEGY 1: Target ~5 total iterations worth of work
+  m1=1, m2=5: 24207 digits
+  m1=2, m2=2: 197 digits (2 iters)
+  m1=2, m2=3: 1592 digits (3 iters)
+
+Performance at matched precision:
+----------------------------------------------------------------
+
+
+Set::write: Tag Times in 2 _ (m2_for) is Protected.
+
+                                                                                                   18
+Nest::intnm: Non-negative machine-sized integer expected at position 3 in Nest[symOpt2[13, #1] & , --, 2 _ (m2_for)].
+                                                                                                   5
+
+                                                                                                   18
+Nest::intnm: Non-negative machine-sized integer expected at position 3 in Nest[symOpt2[13, #1] & , --, 2 _ (m2_for)].
+                                                                                                   5
+
+                                                                                                   18
+Nest::intnm: Non-negative machine-sized integer expected at position 3 in Nest[symOpt2[13, #1] & , --, 2 _ (m2_for)].
+                                                                                                   5
+
+General::stop: Further output of Nest::intnm will be suppressed during this calculation.
+TEST: m1=1 with m2=3
+  m1=1: 670 digits in 0.000033903076171875s
+  m1=2: Floor[-(Log[Abs[13 - Nest[symOpt2[13, #1] & , 18/5, 2*_*(m2_for)]^2]]/Log[10])] digits in 3.6928443908691404*^-6s (m2=2*_*(m2_for))
+  Winner: m1=2 (9.18075x faster)
+
+
+Set::write: Tag Times in 2 _ (m2_for) is Protected.
+TEST: m1=1 with m2=4
+  m1=1: 4033 digits in 0.0000781640625s
+  m1=2: Floor[-(Log[Abs[13 - Nest[symOpt2[13, #1] & , 18/5, 2*_*(m2_for)]^2]]/Log[10])] digits in 3.707122802734375*^-6s (m2=2*_*(m2_for))
+  Winner: m1=2 (21.0848x faster)
+
+
+Set::write: Tag Times in 2 _ (m2_for) is Protected.
+
+General::stop: Further output of Set::write will be suppressed during this calculation.
+TEST: m1=1 with m2=5
+  m1=1: 24207 digits in 0.00053564453125s
+  m1=2: Floor[-(Log[Abs[13 - Nest[symOpt2[13, #1] & , 18/5, 2*_*(m2_for)]^2]]/Log[10])] digits in 3.6563453674316408*^-6s (m2=2*_*(m2_for))
+  Winner: m1=2 (146.497x faster)
+
+TEST: m1=1 with m2=6
+  m1=1: 145251 digits in 0.007413625s
+  m1=2: Floor[-(Log[Abs[13 - Nest[symOpt2[13, #1] & , 18/5, 2*_*(m2_for)]^2]]/Log[10])] digits in 3.6758308410644533*^-6s (m2=2*_*(m2_for))
+  Winner: m1=2 (2016.86x faster)
+
+Null

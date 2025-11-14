@@ -1,0 +1,47 @@
+[
+	{
+		"Name":"Ulam numbers",
+		"Length":126,
+		"Density":0.126,
+		"Tested":29,
+		"Passed":25,
+		"Success%":8.620689655172414e1,
+		"GapTheorem?":false
+	},
+	{
+		"Name":"Lucky numbers",
+		"Length":153,
+		"Density":0.153,
+		"Tested":31,
+		"Passed":30,
+		"Success%":9.67741935483871e1,
+		"GapTheorem?":false
+	},
+	{
+		"Name":"Twin primes",
+		"Length":69,
+		"Density":6.9e-2,
+		"Tested":12,
+		"Passed":12,
+		"Success%":1.0e2,
+		"GapTheorem?":true
+	},
+	{
+		"Name":"Prime powers",
+		"Length":193,
+		"Density":0.193,
+		"Tested":57,
+		"Passed":57,
+		"Success%":1.0e2,
+		"GapTheorem?":true
+	},
+	{
+		"Name":"Squarefree numbers",
+		"Length":608,
+		"Density":0.608,
+		"Tested":122,
+		"Passed":119,
+		"Success%":9.754098360655738e1,
+		"GapTheorem?":false
+	}
+]

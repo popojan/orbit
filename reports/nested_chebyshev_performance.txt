@@ -1,0 +1,25 @@
+NESTED CHEBYSHEV SQRT PERFORMANCE TABLE
+sqrt(13) precision achieved by various m1/m2 combinations
+
+Method        | âDigits | Time     | Denom Digits | Notes
+---------------------------------------------------------------------------
+m1=3,m2=1 (Pel|      14 | .008975s |           15 | 
+m1=3,m2=2 (Pel|     154 | .000245s |          155 | 
+m1=3,m2=3 (Pel|    1555 | .001449s |         1556 | High
+m1=3,m2=4 (Pel|   15565 | .014362s |        15566 | Very high
+m1=2,m2=3 (Pel|     796 | .000994s |          797 | 
+m1=2,m2=4 (Pel|    6375 | .007364s |         6376 | High
+m1=2,m2=5 (Pel|   51007 | .062273s |        51008 | Very high
+m1=1,m2=7 (Pel|  435757 | 1.21302s |       435758 | EXTREME
+m1=1,m2=8 (Pel| 2614551 | 8.15089s |      2614552 | EXTREME
+m1=1,m2=9 (Pel| 5687315 | 54.7517s |     15687316 | EXTREME
+m1=3,m2=2 (Cru|      51 | .000218s |           52 | 
+m1=3,m2=3 (Cru|     518 | .000731s |          519 | 
+
+KEY FINDINGS:
+- Precision grows exponentially with m2 (iteration count)
+- m1=3 is fastest per iteration
+- Pell base gives slightly more precision than crude
+- Denominator overhead vs optimal CF: ~2x
+- Method approaches from ABOVE (overshoots sqrt)
+Null

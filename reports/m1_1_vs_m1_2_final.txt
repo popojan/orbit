@@ -1,0 +1,89 @@
+================================================================
+OPTIMIZED m1=1 vs m1=2: SAME ITERATION COUNT
+================================================================
+
+Comparing formula overhead per iteration
+Both use same m2 value - so comparing per-iteration cost
+
+Formula complexity:
+  m1=1: (nn*(3*n^2 + nn))/(n*(n^2 + 3*nn))  [9 arithmetic ops]
+  m1=2: (n^4 + 6*n^2*nn + nn^2)/(4*n*(n^2 + nn))  [11 arithmetic ops]
+
+================================================================
+SAME m2 TESTS - Measuring per-iteration overhead
+================================================================
+
+TEST m2=2 (2 iterations each)
+----------------------------------------
+  m1=1: Floor[-(Log[Abs[13 - Orbit`Private`NestedChebyshevSqrt[13, {1, 2}]^2]]/Log[10])] digits in 1.*^-6s
+  m1=2: Floor[-(Log[Abs[13 - Orbit`Private`NestedChebyshevSqrt[13, {2, 2}]^2]]/Log[10])] digits in 0.s
+
+                                 1
+Power::infy: Infinite expression -- encountered.
+                                 0.
+  Winner: m1=2 (ComplexInfinityx faster) - higher convergence wins!
+
+TEST m2=3 (3 iterations each)
+----------------------------------------
+  m1=1: Floor[-(Log[Abs[13 - Orbit`Private`NestedChebyshevSqrt[13, {1, 3}]^2]]/Log[10])] digits in 1.*^-6s
+  m1=2: Floor[-(Log[Abs[13 - Orbit`Private`NestedChebyshevSqrt[13, {2, 3}]^2]]/Log[10])] digits in 0.s
+
+                                 1
+Power::infy: Infinite expression -- encountered.
+                                 0.
+  Winner: m1=2 (ComplexInfinityx faster)
+
+TEST m2=4 (4 iterations each)
+----------------------------------------
+  m1=1: Floor[-(Log[Abs[13 - Orbit`Private`NestedChebyshevSqrt[13, {1, 4}]^2]]/Log[10])] digits in 1.*^-6s
+  m1=2: Floor[-(Log[Abs[13 - Orbit`Private`NestedChebyshevSqrt[13, {2, 4}]^2]]/Log[10])] digits in 0.s
+
+                                 1
+Power::infy: Infinite expression -- encountered.
+                                 0.
+
+General::stop: Further output of Power::infy will be suppressed during this calculation.
+  Winner: m1=2 (ComplexInfinityx faster)
+
+TEST m2=5 (5 iterations each)
+----------------------------------------
+  m1=1: Floor[-(Log[Abs[13 - Orbit`Private`NestedChebyshevSqrt[13, {1, 5}]^2]]/Log[10])] digits in 1.*^-6s
+  m1=2: Floor[-(Log[Abs[13 - Orbit`Private`NestedChebyshevSqrt[13, {2, 5}]^2]]/Log[10])] digits in 1.*^-6s
+  Winner: m1=2 (1.x faster)
+
+TEST m2=6 (6 iterations each)
+----------------------------------------
+  m1=1: Floor[-(Log[Abs[13 - Orbit`Private`NestedChebyshevSqrt[13, {1, 6}]^2]]/Log[10])] digits in 0.s
+  m1=2: Floor[-(Log[Abs[13 - Orbit`Private`NestedChebyshevSqrt[13, {2, 6}]^2]]/Log[10])] digits in 0.s
+
+Infinity::indet: Indeterminate expression 0. ComplexInfinity encountered.
+  Winner: m1=2 (Indeterminatex faster)
+
+TEST m2=7 (7 iterations each)
+----------------------------------------
+  m1=1: Floor[-(Log[Abs[13 - Orbit`Private`NestedChebyshevSqrt[13, {1, 7}]^2]]/Log[10])] digits in 1.*^-6s
+  m1=2: Floor[-(Log[Abs[13 - Orbit`Private`NestedChebyshevSqrt[13, {2, 7}]^2]]/Log[10])] digits in 0.s
+  Winner: m1=2 (ComplexInfinityx faster)
+
+================================================================
+SUMMARY
+================================================================
+
+
+Infinity::indet: Indeterminate expression 0. ComplexInfinity encountered.
+Speedup factor (m1=2 time / m1=1 time):
+  m2=2: m1=2 wins by ComplexInfinityx
+  m2=3: m1=2 wins by ComplexInfinityx
+  m2=4: m1=2 wins by ComplexInfinityx
+  m2=5: m1=2 wins by 1.x
+  m2=7: m1=2 wins by ComplexInfinityx
+
+Average speedup: Indeterminatex
+Trend: m1=2 catching up (arithmetic cost dominates less at high precision)
+
+Per-iteration overhead comparison:
+  m1=1 avg per-iteration: 2.3769841269841268*^-7s
+  m1=2 avg per-iteration: 3.3333333333333334*^-8s
+  Ratio: 0.14023372287145244x
+
+Conclusion:

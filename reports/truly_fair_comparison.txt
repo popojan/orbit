@@ -1,0 +1,68 @@
+================================================================
+TRULY FAIR SQRT METHOD COMPARISON: sqrt(13)
+Strategy: Each algo runs, then Wolfram matches ITS precision
+================================================================
+
+METHOD 1: Nested Chebyshev m1=3, m2=2 (Pell base)
+  STEP 1: Run our method
+    Our time: 0.000148203369140625s
+    Our precision: 309 sqrt digits
+    Our denom digits: 155
+  STEP 2: Run Wolfram at SAME precision (309 digits)
+    WM time: 0.0007709052734375s
+    WM denom digits: 155 (optimal)
+  RESULT:
+    Overhead: 1.`3.x
+    Speed: 5.201671715749018x (>1 means we're faster)
+
+METHOD 2: Babylonian (Newton) 8 iters (crude start)
+  STEP 1: Run our method
+    Our time: 0.000020114593505859375s
+    Our precision: 263 sqrt digits
+    Our denom digits: 133
+  STEP 2: Run Wolfram at SAME precision (263 digits)
+    WM time: 0.0006159833984375s
+    WM denom digits: 132 (optimal)
+  RESULT:
+    Overhead: 1.0075757575757575758`3.x
+    Speed: 30.623706030055452x (>1 means we're faster)
+
+METHOD 3: Original Chebyshev-Pell 10 terms (Pell base)
+  STEP 1: Run our method
+    Our time: 0.000138591796875s
+    Our precision: 32 sqrt digits
+    Our denom digits: 17
+  STEP 2: Run Wolfram at SAME precision (32 digits)
+    WM time: 0.0000574007568359375s
+    WM denom digits: 16 (optimal)
+  RESULT:
+    Overhead: 1.0625`3.x
+    Speed: 0.41417138770275796x (>1 means we're faster)
+
+METHOD 4: ALFEE k=7 (Pell base) - dual bounds
+  STEP 1: Run our method
+    Our time: 0.000058058837890625s
+    Our precision: 20/20 sqrt digits (lower/upper)
+    Our denom digits: 11/11 (avg: 11.`4.)
+    Bracket width: -2.3233285253456589610049142687044639027`10.*^-21
+  STEP 2: Run Wolfram at SAME precision (20 digits)
+    WM time: 0.000039953369140625s
+    WM denom digits: 11 (optimal)
+  RESULT:
+    Overhead: 1.`3.x
+    Speed: 0.6881530976539997x (>1 means we're faster)
+
+================================================================
+SUMMARY TABLE
+================================================================
+Method               | Prec | Our Time | WM Time | Denom OH | Speed
+----------------------------------------------------------------------
+Nested m1=3,m2=2     | 309 | 0.000148203369140625 | 0.0007709052734375 | 1.`2.x | 5.201671715749018x
+Babylonian 8 iters   | 263 | 0.000020114593505859375 | 0.0006159833984375 | 1.0075757575757575758`2.x | 30.623706030055452x
+Original Cheb-Pell   | 32 | 0.000138591796875 | 0.0000574007568359375 | 1.0625`2.x | 0.41417138770275796x
+ALFEE k=7            | 20 | 0.000058058837890625 | 0.000039953369140625 | 1.`2.x | 0.6881530976539997x
+
+Notes:
+- Each method compared at ITS OWN precision vs Wolfram
+- Denom OH = our denominator / Wolfram optimal (>1 means overhead)
+- Speed = WM time / our time (>1 means we're faster)

@@ -1,0 +1,38 @@
+[
+	{
+		"Name":"Primes",
+		"Generated":9592,
+		"Tested":1183,
+		"Passed":1183,
+		"Violations":0,
+		"Success%":1.0e2,
+		"GapTheorem?":true
+	},
+	{
+		"Name":"Semiprimes",
+		"Generated":23378,
+		"Tested":2625,
+		"Passed":2625,
+		"Violations":0,
+		"Success%":1.0e2,
+		"GapTheorem?":true
+	},
+	{
+		"Name":"3-almost primes",
+		"Generated":25556,
+		"Tested":2569,
+		"Passed":2569,
+		"Violations":0,
+		"Success%":1.0e2,
+		"GapTheorem?":true
+	},
+	{
+		"Name":"4-almost primes",
+		"Generated":18744,
+		"Tested":1712,
+		"Passed":1712,
+		"Violations":0,
+		"Success%":1.0e2,
+		"GapTheorem?":true
+	}
+]

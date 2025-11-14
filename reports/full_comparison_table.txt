@@ -1,0 +1,17 @@
+COMPREHENSIVE COMPARISON TABLE
+Nested Chebyshev vs Wolfram Rationalize for sqrt(13)
+
+Method         | âDigits | Our Time | Our Denom | WM Time  | WM Denom | Overhead | Speed Ratio
+====================================================================================================
+m1=3,m2=1      |      14 | 0.009005s |        15 | 0.000062s |        7 |     2.14x |  0.00688506x
+m1=3,m2=2      |     154 | 0.000426s |       155 | 0.000387s |       77 |     2.01x |    0.908451x
+m1=3,m2=3      |    1555 | 0.001458s |      1556 | 0.011028s |      778 |     2.00x |     7.56379x
+m1=2,m2=3      |     796 | 0.001022s |       797 | 0.003163s |      398 |     2.00x |     3.09491x
+m1=2,m2=4      |    6375 | 0.007677s |      6376 |   (too high precision for WM comparison)
+m1=1,m2=6      |   72625 | 0.127172s |     72626 |   (too high precision for WM comparison)
+m1=1,m2=7      |  435757 |  1.21318s |    435758 |   (too high precision for WM comparison)
+
+
+ToExpression::sntx: Invalid syntax in or before "Print["EXTREME PRECISION TESTS (no WM comparison):");".
+                                                                                                     ^
+$Failed

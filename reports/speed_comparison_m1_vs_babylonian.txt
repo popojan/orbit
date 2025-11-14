@@ -1,0 +1,79 @@
+================================================================
+SPEED & CONVERGENCE: Nested m1=1 vs Babylonian
+Both using Wolfram 14.3, both seeded with Pell base
+================================================================
+
+Pell base: 18/5 = 3.6`10.
+
+================================================================
+MATCHED PRECISION TESTS
+================================================================
+
+TEST 1: Target ~100 digits
+----------------------------------------
+Nested m1=1, m2=2:
+  Time: 0.000094519775390625s
+  Precision: 110 digits
+  Digits/sec: 1.1637776279662044*^6
+
+Babylonian (6 iters to match):
+  Time: 0.000014699920654296874s
+  Precision: 197 digits
+  Digits/sec: 1.3401432880688082*^7
+
+WINNER: Babylonian (6.42995x faster)
+
+
+TEST 2: Target ~1000 digits
+----------------------------------------
+Nested m1=1, m2=3:
+  Time: 0.00063133203125s
+  Precision: 670 digits
+  Digits/sec: 1.061248228881148*^6
+
+Babylonian (8 iters to match):
+  Time: 0.00002467205810546875s
+  Precision: 795 digits
+  Digits/sec: 3.2222686757688127*^7
+
+WINNER: Babylonian (25.5889x faster)
+
+
+TEST 3: Target ~4000 digits
+----------------------------------------
+Nested m1=1, m2=4:
+  Time: 0.003373484375s
+  Precision: 4033 digits
+  Digits/sec: 1.195499830942599*^6
+
+Babylonian (11 iters to match):
+  Time: 0.00012938330078125s
+  Precision: 6374 digits
+  Digits/sec: 4.926447201077829*^7
+
+WINNER: Babylonian (26.0736x faster)
+
+
+TEST 4: Target ~24000 digits
+----------------------------------------
+Nested m1=1, m2=5:
+  Time: 0.0195965625s
+  Precision: 24207 digits
+  Digits/sec: 1.2352676649284791*^6
+
+Babylonian (13 iters to match):
+  Time: 0.00071076171875s
+  Precision: 25502 digits
+  Digits/sec: 3.5879816438130304*^7
+
+WINNER: Babylonian (27.5712x faster)
+
+
+================================================================
+CONCLUSION
+================================================================
+Both algorithms implemented in Wolfram Language 14.3
+Both seeded with optimal Pell base
+Nested m1=1 has superior convergence rate (~6x per iter)
+Babylonian has simpler arithmetic per iteration
+At what precision does Nested overtake Babylonian in speed?

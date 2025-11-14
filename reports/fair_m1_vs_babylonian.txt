@@ -1,0 +1,36 @@
+=== FAIR COMPARISON: Nested m1=1 vs Babylonian ===
+Strategy: Match precision levels for fair comparison
+
+TEST 1: Nested m1=1, m2=3
+  Nested: 670 digits in 0.0006339375s, denom=336
+  Babylonian 8 iters: 795 digits in 0.00002511871337890625s, denom=398
+
+If::argb: If called with 7 arguments; between 2 and 4 arguments are expected.
+  Winner: If[False, Nested (, N[bab1Time/nest3Time, 2], x), Babylonian (, N[nest3Time/bab1Time, 2], x)]
+
+TEST 2: Nested m1=1, m2=4
+  Nested: 4033 digits in 0.003434859375s, denom=2017
+  Babylonian 12 iters: 12750 digits in 0.000292923828125s, denom=6376
+
+If::argb: If called with 7 arguments; between 2 and 4 arguments are expected.
+  Winner: If[False, Nested (, N[bab2Time/nest4Time, 2], x), Babylonian (, N[nest4Time/bab2Time, 2], x)]
+
+TEST 3: Nested m1=1, m2=5
+  Nested: 24207 digits in 0.01985s, denom=12104
+  Babylonian 15 iters: 102014 digits in 0.0053519453125s, denom=51008
+
+If::argb: If called with 7 arguments; between 2 and 4 arguments are expected.
+
+General::stop: Further output of If::argb will be suppressed during this calculation.
+  Winner: If[False, Nested (, N[bab3Time/nest5Time, 2], x), Babylonian (, N[nest5Time/bab3Time, 2], x)]
+
+SUMMARY: Babylonian precision per iteration
+  8 iters: 795 digits
+  12 iters: 12750 digits
+  15 iters: 102014 digits
+
+SUMMARY: Nested m1=1 precision per m2
+  m2=3: 670 digits
+  m2=4: 4033 digits
+  m2=5: 24207 digits
+Null

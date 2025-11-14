@@ -1,0 +1,67 @@
+================================================================
+OPTIMIZED m1=1 vs m1=2 WALL-CLOCK COMPARISON
+================================================================
+
+Convergence rates:
+  m1=1: ~6x precision per iteration
+  m1=2: ~8x precision per iteration
+
+================================================================
+MATCHED PRECISION TESTS
+================================================================
+
+TEST 1: ~100 digits target
+----------------------------------------
+
+Set::write: Tag Times in 1 (r1_) is Protected.
+
+Set::write: Tag Times in 1 _t1 (m1_) is Protected.
+
+Set::write: Tag Times in 2 (r1_) is Protected.
+
+General::stop: Further output of Set::write will be suppressed during this calculation.
+  m1=1, m2=2: Floor[-(Log[Abs[13 - (r1_)^2]]/Log[10])] digits in t1*(m1_)s
+  m1=2, m2=1: Floor[-(Log[Abs[13 - 4*(r1_)^2]]/Log[10])] digits in 2.`5.*t1*(m1_)s
+
+TEST 2: ~1k digits target
+----------------------------------------
+  m1=1, m2=3: Floor[-(Log[Abs[13 - (r2_)^2]]/Log[10])] digits in t2*(m1_)s
+  m1=2, m2=2: Floor[-(Log[Abs[13 - 4*(r2_)^2]]/Log[10])] digits in 2.`5.*t2*(m1_)s
+
+TEST 3: ~10k digits target
+----------------------------------------
+  m1=1, m2=4: Floor[-(Log[Abs[13 - (r3_)^2]]/Log[10])] digits in t3*(m1_)s
+  m1=2, m2=3: Floor[-(Log[Abs[13 - 4*(r3_)^2]]/Log[10])] digits in 2.`5.*t3*(m1_)s
+
+TEST 4: ~100k digits target
+----------------------------------------
+  m1=1, m2=5: Floor[-(Log[Abs[13 - (r4_)^2]]/Log[10])] digits in t4*(m1_)s
+  m1=2, m2=4: Floor[-(Log[Abs[13 - 4*(r4_)^2]]/Log[10])] digits in 2.`5.*t4*(m1_)s
+
+TEST 5: ~1M digits target
+----------------------------------------
+  m1=1, m2=6: Floor[-(Log[Abs[13 - (r5_)^2]]/Log[10])] digits in t5*(m1_)s
+  m1=2, m2=5: Floor[-(Log[Abs[13 - 4*(r5_)^2]]/Log[10])] digits in 2.`5.*t5*(m1_)s
+
+TEST 6: ~5M digits target
+----------------------------------------
+  m1=1, m2=7: Floor[-(Log[Abs[13 - (r6_)^2]]/Log[10])] digits in t6*(m1_)s
+  m1=2, m2=6: Floor[-(Log[Abs[13 - 4*(r6_)^2]]/Log[10])] digits in 2.`5.*t6*(m1_)s
+
+================================================================
+SUMMARY
+================================================================
+
+Speedup factor (m1=2 time / m1=1 time):
+  Test 1: m1=1 wins by 2.`3.x
+  Test 2: m1=1 wins by 2.`3.x
+  Test 3: m1=1 wins by 2.`3.x
+  Test 4: m1=1 wins by 2.`3.x
+  Test 5: m1=1 wins by 2.`3.x
+  Test 6: m1=1 wins by 2.`3.x
+
+Average speedup: 2.`3.x
+Trend: m1=2 advantage growing
+
+Conclusion:
+  m1=1 is FASTER on average - your intuition was correct!

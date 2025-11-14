@@ -1,0 +1,80 @@
+================================================================
+CONVERGENCE RATE COMPARISON: Nested m1=1 vs Babylonian
+Focus: Digits gained per iteration
+================================================================
+
+Test d = 13
+Pell base: 18/5 = 3.6`10.
+Crude start: 4
+
+================================================================
+SEEDING: Pell base (optimal rational start)
+================================================================
+
+NESTED m1=1 convergence (Pell seed):
+Iteration | m2 | Digits | Gain per iteration
+-----------------------------------------------
+Base      | 0  | 1 | --
+Nested    | 1  | 16 | 15.`4. digits/iter
+Nested    | 2  | 110 | 54.5`4. digits/iter
+Nested    | 3  | 670 | 223.`4. digits/iter
+Nested    | 4  | 4033 | 1008.`4. digits/iter
+Nested    | 5  | 24207 | 4841.2`4. digits/iter
+
+BABYLONIAN convergence (Pell seed):
+Iteration | iters | Digits | Gain per iteration
+-----------------------------------------------
+Base      | 0     | 1 | --
+Babylonian| 1     | 4 | 3.`4. digits/iter
+Babylonian| 2     | 10 | 4.5`4. digits/iter
+Babylonian| 3     | 23 | 7.3333333333333333333`4. digits/iter
+Babylonian| 4     | 48 | 11.75`4. digits/iter
+Babylonian| 5     | 97 | 19.2`4. digits/iter
+
+
+================================================================
+SEEDING: Ceiling[Sqrt[d]] (crude integer start)
+================================================================
+
+NESTED m1=1 convergence (crude seed):
+Iteration | m2 | Digits | Gain per iteration
+-----------------------------------------------
+Base      | 0  | -1 | --
+Nested    | 1  | 5 | 6.`4. digits/iter
+Nested    | 2  | 44 | 22.5`4. digits/iter
+Nested    | 3  | 275 | 92.`4. digits/iter
+Nested    | 4  | 1663 | 416.`4. digits/iter
+Nested    | 5  | 9991 | 1998.4`4. digits/iter
+
+BABYLONIAN convergence (crude seed):
+Iteration | iters | Digits | Gain per iteration
+-----------------------------------------------
+Base      | 0     | -1 | --
+Babylonian| 1     | 0 | 1.`4. digits/iter
+Babylonian| 2     | 3 | 2.`4. digits/iter
+Babylonian| 3     | 8 | 3.`4. digits/iter
+Babylonian| 4     | 18 | 4.75`4. digits/iter
+Babylonian| 5     | 39 | 8.`4. digits/iter
+
+
+================================================================
+CONVERGENCE RATE SUMMARY
+================================================================
+
+Pell base seeding:
+  Nested m1=1: 4841.2`4. digits/iteration (average over 5 iters)
+  Babylonian:  19.2`4. digits/iteration (average over 5 iters)
+  Ratio (Bab/Nest): 0.0039659588531768978`3.x
+
+Crude ceiling seeding:
+  Nested m1=1: 1998.4`4. digits/iteration (average over 5 iters)
+  Babylonian:  8.`4. digits/iteration (average over 5 iters)
+  Ratio (Bab/Nest): 0.0040032025620496399`3.x
+
+================================================================
+CONCLUSION
+================================================================
+
+The algorithm with higher digits/iteration has better convergence.
+Note: Babylonian doubles precision each iteration asymptotically.
+Note: Nested Chebyshev m1=1 has different convergence pattern.
