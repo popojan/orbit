@@ -309,25 +309,27 @@ Lineární síto na tyto otázky neodpovídá---pouze říká: provádějte algo
 
 \subsection{Doplňující materiál, ne náhrada}
 
-Netvrdíme, že by algoritmické Eratosthenovo síto nemělo být vyučováno---ba právě naopak. Navrhujeme postupné vrstvení obou přístupů:
+Netvrdíme, že by algoritmické Eratosthenovo síto nemělo být vyučováno---ba právě naopak. Klíčový poznatek: \textbf{různí studenti myslí různě}. Někteří pochopí prvočísla z algoritmu, jiní z vizualizace, někteří potřebují obojí. Proč se snažit všechny směstnat do jediné šablony?
+
+Navrhujeme kombinaci obou přístupů. Pořadí může být flexibilní:
 
 \begin{enumerate}
-\item \textbf{Nejprve algoritmus}: Studenti se seznámí s klasickým lineárním sítem. Naučí se proceduru: vypište čísla, škrtejte násobky, opakujte. Tím získají praktickou dovednost---umí najít prvočísla do 100 tužkou a papírem. Budují také procedurální plynulost a učí se rozpoznávat vzorce opakování.
+\item \textbf{Tradiční cesta (algoritmus → vizualizace)}: Začnete klasickým sítem---škrtáním násobků. To je konkrétní, snadno proveditelné tužkou a papírem. Pak nabídnete překvapivý obrat: ``Co kdybychom tu samou strukturu viděli geometricky?'' Vizualizace odhaluje \emph{proč} algoritmus funguje. Výhoda: jednoduchost na začátku. Riziko: struktura se může ztratit v mechanickém škrtání.
 
-\item \textbf{Pak geometrický pohled}: Když už algoritmus ovládají, nabídneme překvapivý obrat---``Co kdybychom tu samou strukturu viděli geometricky?'' Prvolesí odhaluje \emph{proč} algoritmus funguje: složená čísla tvoří pravidelnou mřížku, prvočísla jsou mezery. Tento vizuální pohled prohlubuje porozumění a spojuje síto s geometrickým myšlením (souřadnice, grafy, prostorové uvažování).
+\item \textbf{Alternativní cesta (vizualizace → algoritmus)}: Začnete geometrickou strukturou---les složených čísel, průseky jsou prvočísla. Studenti vidí \emph{proč} prvočísla existují dřív, než se naučí \emph{jak} je najít. Pak algoritmus jako praktický nástroj. Výhoda: struktura hned viditelná. Riziko: abstraktnější vstup, 2D souřadnice mohou být náročnější.
 
-\item \textbf{Diskuse a reflexe}: Proč obě metody fungují? Co každý přístup odhaluje o prvočíslech? Který vám připadá přirozenější? Někteří studenti ``dostanou'' prvočísla z algoritmu, jiní z vizualizace. Proč nutit všechny do jediného módu?
+\item \textbf{Diskuse a reflexe}: Ať už zvolíte jakékoli pořadí, zahrňte diskusi: Proč obě metody fungují? Co každá odhaluje? Který přístup vám připadá přirozenější? Cíl není vybrat jeden správný přístup, ale poskytnout různé pohledy pro různé myšlení.
 \end{enumerate}
 
 \subsection{Nástroje to umožňují}
 
-S moderními výpočetními nástroji---Wolfram Language, Python s matplotlib, GeoGebra, Desmos, interaktivní notebooky---je vytváření a zkoumání těchto vizualizací nyní \emph{triviální}. Studenti mohou:
+S moderními výpočetními nástroji---Wolfram Language, Python s matplotlib, GeoGebra, Desmos, interaktivními notebooky---je vytváření a zkoumání těchto vizualizací nyní \emph{jednoduché}. Studenti mohou:
 \begin{itemize}
 \item Generovat lesy pro různé rozsahy
-\item Přiblížit se na specifické oblasti
+\item Zaměřit se na konkrétní oblasti
 \item Experimentovat s modifikovanými souřadnicemi
-\item Vytvořit animace ukazující, jak se vzorec buduje
-\item Objevovat vzorce sami
+\item Vytvořit animace ukazující, jak se struktura buduje
+\item Objevovat vzory sami
 \end{itemize}
 
 Bariéra už není technologie. Je to \emph{povědomí}, že takové vizualizace existují, a \emph{povolení} odchýlit se od tradičního učebního plánu.
@@ -336,11 +338,11 @@ Bariéra už není technologie. Je to \emph{povědomí}, že takové vizualizace
 
 Pokud jste pedagog čtoucí toto, zvažte:
 \begin{itemize}
-\item Ukázání Prvolesí vedle lineárního síta
-\item Zeptání se studentů, který pohled jim dává větší smysl
-\item Použití lesa k odpovědi na otázky ``proč'' o rozložení prvočísel
-\item Povzbuzení studentů prozkoumat variace a dělat vlastní objevy
-\item Sdílení toho, co funguje, s kolegy a tvůrci učebních plánů
+\item Ukázat Prvolesí vedle lineárního síta
+\item Zeptat se studentů, který pohled jim dává větší smysl
+\item Použít les k odpovědi na otázky ``proč'' o rozložení prvočísel
+\item Povzbudit studenty prozkoumat variace a dělat vlastní objevy
+\item Sdílet to, co funguje, s kolegy a tvůrci učebních plánů
 \end{itemize}
 
 Cílem není přidat další téma do již přeplněného učebního plánu. Je to \emph{prohloubit porozumění} tématu, které se už vyučuje, zapojením algoritmického i prostorového myšlení.
