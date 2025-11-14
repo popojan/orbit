@@ -368,22 +368,26 @@ Přesto má les mnohá další tajemství k odhalení. Jeden z možných směrů
 
 \section{Spojité skóre prvočíselnosti}
 
-Prvolesí odhaluje prvočísla jako mezery v diskrétní mřížce---pozice s dokonale čistými průhledy. Ale tento binární pohled (čistý nebo blokovaný) přehlíží bohatší strukturu. Co kdybychom se místo toho zeptali: \emph{jak daleko} jsou nejbližší stromy v každé hloubce?
+Klasická charakterizace prvočísel je binární: číslo $n \in \mathbb{N}$, $n \geq 2$, je buď prvočíslo, nebo složené. Geometrická konstrukce z hlavního textu umisťuje složená čísla $kp + p^2$ (kde $p$ je prvočíslo, $k \in \mathbb{N}_0$) do bodové mřížky v rovině; číslo $n$ je prvočíslo právě tehdy, když přímka $x = n$ neprotíná žádný bod této mřížky.
 
-Tento přesun od binárního k spojitému měření odhaluje něco nečekaného: prvočíselnost existuje na spektru. Když vypočítáme skóre založené na vzdálenosti pro každé celé číslo, prvočísla povstávají a tvoří hladkou horní obálku, zatímco složená čísla se rozptylují níže, stratifikovaná podle své faktorizační složitosti. Mocniny prvočísel se shlukují poblíž obálky, polprvočísla spadají dále a vysoce složená čísla klesají ke dnu.
+Tuto diskrétní charakterizaci lze zobecnit na spojitou míru definováním vzdálenosti přímky $x = n$ k nejbližším bodům mřížky v každé hloubce $p$. Součin těchto vzdáleností poskytuje \emph{spojité skóre prvočíselnosti}.
 
-To je více než vizualizační trik. Spojité skóre prvočíselnosti poskytuje geometrickou míru ``jak složené'' číslo je, s prvočísly jako limitním případem. Zatímco vzdělávací hodnota je jasná, tato perspektiva může nabídnout číslo-teoretické poznatky o vztahu mezi faktorizační strukturou a rozložením prvočísel.
+\subsection{Definice}
 
-\subsection{Od diskrétních mezer ke spojitým vzdálenostem}
+\begin{definition}[Vzdálenost v hloubce]
+\label{def:depth-distance}
+Pro celé číslo $n \geq 2$ a prvočíslo $p \leq n$ definujeme \textbf{vzdálenost v hloubce $p$} jako
+\begin{equation}
+d_p(n) = \min_{0 \leq k \leq \lfloor n/p \rfloor} |n - (kp + p^2)|.
+\end{equation}
+Geometricky je to vzdálenost (v ose $x$) přímky $x = n$ od nejbližšího bodu tvaru $(kp + p^2, p)$ v mřížce složených čísel.
+\end{definition}
 
-V hlavní vizualizaci je číslo prvočíslem, pokud máte dokonale čistý průhled na sever. Můžeme to přeformulovat geometricky: pro každý horizontální ``řádek'' v hloubce $p$ v mřížce změřme \textbf{horizontální vzdálenost} od vaší pozice na $x$ k nejbližšímu stromu v této hloubce.
+Platí: $d_p(n) = 0$ právě tehdy, když existuje $k$ takové, že $n = kp + p^2$, tj. $p \mid (n - p^2)$. Pro prvočíslo $n$ je $d_p(n) > 0$ pro všechna $p < n$.
 
-Pro prvočíslo $x$: všechny vzdálenosti jsou kladné (žádné stromy přímo na sever od vás v žádné hloubce)\\
-Pro složené $x$: alespoň jedna vzdálenost je nulová (alespoň jeden strom blokuje váš průhled)
-
-\subsection{Trik měkkého minima}
-
-Místo vzít i přesné minimální vzdálenosti (což zahrnuje diskrétní operace zaokrouhlení dolů) můžeme použít \textbf{měkké minimum} s teplotním parametrem $\beta$:
+\begin{definition}[Soft-minimum aproximace]
+\label{def:soft-min}
+Pro $\beta > 0$ definujeme \textbf{soft-minimum aproximaci} vzdálenosti $d_p(n)$ předpisem
 
 \begin{equation}
 d_p^{\text{soft}}(x) = -\beta \log \sum_{k=0}^{\lfloor x/p \rfloor} \exp\left(-\frac{|x - (kp + p^2)|}{\beta}\right)
