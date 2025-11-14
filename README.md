@@ -1,10 +1,37 @@
 # Orbit: Computational Mathematical Explorations
 
-A Wolfram Language paclet for recreational and research mathematical explorations, focusing on prime structure, factorial computations, and alternative number representations.
+A Wolfram Language paclet for recreational and research mathematical explorations, featuring computational number theory modules and educational visualizations.
 
-**Headline Discovery:** A novel formula computing primorials (products of consecutive primes) through alternating factorial sums with mysterious cancellation properties.
+**Highlights:**
+- 🌲 **Primal Forest** — Educational paper revealing primes through geometric visualization, with unexpected continuous primality score
+- 🔢 **Primorial Formula** — Computing primorials via alternating factorial sums (open research problem)
+- 🎯 **Four Computational Modules** — Semiprime factorization, modular factorials, square root rationalization, primorials
 
-## Version 0.5.0 — Five Modules + Visualizations
+## Contents
+
+### Educational Paper: The Primal Forest
+
+**`docs/papers/primal-forest-paper.tex`** — A complete educational paper transforming the Sieve of Eratosthenes into an intuitive geometric visualization.
+
+**The Core Idea:** Map composite numbers $n = p(p+k)$ to 2D coordinates $(kp+p^2, kp+1)$. Primes appear as **gaps in the forest** — positions with no dots above them.
+
+**The Unexpected Revelation (Appendix):** By computing soft-distance products from integers to the factorization lattice, we discover that:
+- **Primes form a smooth upper envelope**
+- **Composites stratify by factorization complexity** — prime powers near the top, highly composite numbers at the bottom
+- **Factorization structure becomes continuous** — a "primality score" that measures how close any integer is to being prime
+
+This continuous primality spectrum emerges naturally from the geometric view, revealing structure invisible in the classical 1D sieve.
+
+**Visualizations:** See `visualizations/` for primal forest plots and soft-distance envelope diagrams.
+
+**Educational Value:**
+- Makes prime gaps visually intuitive
+- Connects factorization to geometry
+- Reveals the "regularity paradox" — simple patterns creating irreducible complexity
+
+---
+
+## Computational Modules (Version 0.5.0)
 
 ### 1. Primorial Computation ⭐ (Most Recent)
 
@@ -85,25 +112,22 @@ nestqrt[13, (x-1)/y, {3, 3}]  (* 3111 decimal places in 0.011s *)
 
 **See:** `docs/chebyshev-pell-sqrt-framework.md`
 
-### 5. Prime Orbits & DAG Analysis
-
-**Prime structure via greedy additive decomposition** and directed acyclic graphs.
-
-**Gap Theorem:** The gap after prime $p$ equals the number of primes having $p$ as immediate predecessor under recursive greedy decomposition of prime indices.
-
-Verified for all 78,498 primes up to 1,000,000.
-
-**Example:**
-```mathematica
-PrimeOrbit[11]        (* Returns: {2, 3, 5, 11} *)
-DirectPrimeDag[100]   (* Builds DAG for primes up to 100 *)
-```
-
-**See:** `docs/prime-dag-gap-theorem.md` and `CLAUDE.md` for detailed exploration guide
 
 ## Visualizations
 
-### Chebyshev Curves: "Infinite Interference"
+### 1. Primal Forest: Geometric Prime Sieve
+
+**Educational visualization** showing composites as dots in 2D space, primes as gaps.
+
+**Key files:**
+- `visualizations/primal-forest-31.pdf` — The forest view (composites form regular patterns)
+- `visualizations/soft-distance-envelope-127.pdf` — Continuous primality spectrum
+- `visualizations/soft-distance-composite-types.pdf` — Stratification by factorization structure
+- `visualizations/prime-grid-demo.wl` — Code to generate the visualization
+
+**See:** `docs/papers/primal-forest-paper.tex` for complete educational exposition
+
+### 2. Chebyshev Curves: "Infinite Interference"
 
 **Beautiful family of curves** inscribed in the unit circle, each touching at regular polygon vertices:
 
@@ -113,33 +137,42 @@ $$f_k(x) = T_{k+1}(x) - x \cdot T_k(x)$$
 - Unit integral norm: $\int |f_k(\cos\theta)| d\theta = 1$ for all $k$
 - Creates n-star patterns with deep polynomial structure
 
-**Shadertoy demo:** https://www.shadertoy.com/view/MXc3Rj
+**Key files:**
+- `visualizations/regular-235.png` — Static visualization showing k=2,3,5
+- `visualizations/infinite_interference.glsl` — Shadertoy GLSL implementation
+- **Live demo:** https://www.shadertoy.com/view/MXc3Rj
 
-**See:** `docs/chebyshev-visualization.md` and `visualizations/` directory
+**See:** `docs/archive/chebyshev-visualization.md` for mathematical details
 
 ## Documentation
 
-### Primorial Formula (Active Research)
-- **[docs/primorial-formula.md](docs/primorial-formula.md)** — Formula derivation and verification
-- **[docs/primorial-mystery-findings.md](docs/primorial-mystery-findings.md)** — The open cancellation problem
-- **[docs/recursive-formulation-analysis.md](docs/recursive-formulation-analysis.md)** — Recursive sieve formulation
-- **[docs/phd-roadmap.md](docs/phd-roadmap.md)** — Publication and PhD application plan
+### Papers (`docs/papers/`)
 
-### Square Root Rationalization (Performance Breakthrough)
-- **[docs/chebyshev-pell-sqrt-framework.md](docs/chebyshev-pell-sqrt-framework.md)** — Complete mathematical framework
-- **[docs/chebyshev-visualization.md](docs/chebyshev-visualization.md)** — "Infinite Interference" visualization theory
-- **[visualizations/](visualizations/)** — GLSL source, images, and animation scripts
+- **[primal-forest-paper.tex](docs/papers/primal-forest-paper.tex)** — Geometric visualization of the Sieve of Eratosthenes with continuous primality score revelation
+- **[primorial-proof-clean.tex](docs/papers/primorial-proof-clean.tex)** — Rigorous proof of primorial formula via alternating factorial sums
+- **[primorial-arxiv-draft.tex](docs/papers/primorial-arxiv-draft.tex)** / **[-cs.tex](docs/papers/primorial-arxiv-draft-cs.tex)** — ArXiv submission drafts (English/Czech)
+- **[chebyshev-pell-sqrt-paper.tex](docs/papers/chebyshev-pell-sqrt-paper.tex)** — Square root rationalization via Chebyshev polynomials and Pell equations
+- **[semiprime-formula-complete-proof.tex](docs/papers/semiprime-formula-complete-proof.tex)** — Closed-form semiprime factorization formula
+- **[half-factorial-numerator-theorem.tex](docs/papers/half-factorial-numerator-theorem.tex)** — Structure of half-factorial numerators mod p
+- **[factorial-chaos-unification.tex](docs/papers/factorial-chaos-unification.tex)** — Unifying factorial and fractional part approaches
+- **[gcd-formula-proof.tex](docs/papers/gcd-formula-proof.tex)** — GCD formula for factorial-based expressions
 
-### Other Modules
-- **[docs/semiprime-factorization.md](docs/semiprime-factorization.md)** — Semiprime factorization details
-- **[docs/modular-factorials.md](docs/modular-factorials.md)** — Modular factorial computation
-- **[docs/prime-dag-gap-theorem.md](docs/prime-dag-gap-theorem.md)** — Gap Theorem proof
+### Module Documentation (`docs/modules/`)
+- **[primorial-formula.md](docs/modules/primorial-formula.md)** — Primorial computation details
+- **[chebyshev-pell-sqrt-framework.md](docs/modules/chebyshev-pell-sqrt-framework.md)** — Square root rationalization
+- **[semiprime-factorization.md](docs/modules/semiprime-factorization.md)** — Semiprime factorization
+- **[modular-factorials.md](docs/modules/modular-factorials.md)** — Modular factorial computation
+
+### Active Research (`docs/active/`)
+- **[phd-roadmap.md](docs/active/phd-roadmap.md)** — Publication and PhD application plan
+- **[proof-development-plan.md](docs/active/proof-development-plan.md)** — Current proof development strategy
+- **[primorial-duality.tex](docs/active/primorial-duality.tex)** — Work-in-progress primorial duality analysis
 
 ### For AI Assistants
-- **[CLAUDE.md](CLAUDE.md)** — Computational exploration guide and usage instructions
+- **[CLAUDE.md](CLAUDE.md)** — Computational exploration guide, technical notes, and project instructions
 
-### Session Notes
-- **[docs/session-2025-11-12.md](docs/session-2025-11-12.md)** — Comprehensive summary of Nov 12 discoveries
+### Archive
+- **[docs/archive/](docs/archive/)** — Historical session notes, investigation summaries, and deprecated analyses
 
 ## Repository Structure
 
@@ -154,24 +187,43 @@ orbit/
 │       ├── SemiprimeFactorization.wl  # Closed-form semiprime factorization
 │       ├── ModularFactorials.wl    # Efficient factorial mod p computation
 │       └── SquareRootRationalizations.wl  # High-precision sqrt via Chebyshev-Pell
-├── scripts/                        # Exploration scripts
-│   ├── verify_gap_theorem.wl       # Gap theorem verification
-│   ├── track_padic_valuations.wl   # P-adic analysis for primorials
-│   ├── fair_benchmark.wl           # Sqrt rationalization benchmark
-│   ├── visualize_sieve_process.wl  # Recursive sieve visualization
-│   └── test_*.wl                   # Various module tests
-├── visualizations/                 # Chebyshev curve visualizations
-│   ├── README.md                   # Visualization quick reference
-│   ├── infinite_interference.glsl  # Shadertoy GLSL source
-│   ├── regular-235.png             # Static visualization (k=2,3,5)
-│   └── chebyshev_star_animation.wl # Animation generator
-├── reports/                        # Generated analysis reports (gitignored)
-└── docs/                           # Mathematical documentation
-    ├── primorial-formula.md
-    ├── primorial-mystery-findings.md
-    ├── chebyshev-pell-sqrt-framework.md
-    ├── chebyshev-visualization.md
-    └── *.md                        # Other module docs
+│
+├── docs/                           # Documentation and papers
+│   ├── papers/                     # LaTeX papers (educational + research)
+│   │   ├── primal-forest-paper.tex # Geometric sieve visualization ⭐
+│   │   ├── primorial-*.tex         # Primorial formula proofs & drafts
+│   │   ├── chebyshev-pell-sqrt-paper.tex
+│   │   ├── semiprime-*.tex
+│   │   └── *.tex                   # Additional proofs
+│   ├── modules/                    # Module documentation (markdown)
+│   │   ├── primorial-formula.md
+│   │   ├── chebyshev-pell-sqrt-framework.md
+│   │   ├── semiprime-factorization.md
+│   │   ├── modular-factorials.md
+│   │   └── prime-dag-gap-theorem.md
+│   ├── active/                     # Active research documents
+│   │   ├── phd-roadmap.md
+│   │   ├── proof-development-plan.md
+│   │   └── primorial-duality.tex
+│   └── archive/                    # Historical notes and explorations
+│
+├── scripts/                        # Computational exploration scripts
+│   ├── verify_*.wl                 # Verification scripts
+│   ├── test_*.wl                   # Module tests
+│   ├── analyze_*.wl                # Analysis tools
+│   └── compare_*.wl                # Comparison benchmarks
+│
+├── visualizations/                 # Visual outputs and generation code
+│   ├── primal-forest-*.pdf/png     # Prime sieve visualizations
+│   ├── soft-distance-*.pdf/png     # Continuous primality spectrum
+│   ├── regular-235.png             # Chebyshev curves
+│   ├── infinite_interference.glsl  # Shadertoy GLSL
+│   └── *.wl                        # Visualization generators
+│
+├── reports/                        # Generated analysis reports
+├── CLAUDE.md                       # AI assistant instructions
+├── README.md                       # This file
+└── Makefile                        # Build targets for papers
 ```
 
 ## Prerequisites
