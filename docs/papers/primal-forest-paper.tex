@@ -35,6 +35,8 @@ The ancient Greeks developed a clever algorithm---the \emph{Sieve of Eratosthene
 
 Enter the \textbf{Primal Forest}: a geometric transformation that turns the sieve into a visual landscape where composites form regular patterns and primes appear as clearings. Imagine standing at the southern edge of a vast forest, looking northward into the trees. You can walk west or east along this edge (the x-axis), and at each position, look straight north. The trees are composites, scattered at various depths into the forest. At certain positions along the southern edge, you have a perfectly clear sight line---no trees block your view at any depth. These clear corridors reveal the primes.
 
+This geometric view holds a deeper secret: when we measure distances to these trees carefully, we discover that primality exists on a continuous spectrum, with primes at the boundary and composites stratified by their factorization complexity.
+
 \section{The Classical Sieve (Linear View)}
 
 Let's briefly recall how the Sieve of Eratosthenes works in its traditional form. We list all integers starting from 2:
@@ -140,14 +142,7 @@ Each column $p = \text{const}$ represents all composites with $p$ as the smaller
 
 \subsection{Numbers with Multiple Trees}
 
-Highly composite numbers have multiple trees blocking the view. For instance:
-\begin{itemize}
-\item $12 = 2 \times 6 = 3 \times 4$: has divisors $\{2, 3\}$ in $[2, \sqrt{12}]$, so \textbf{2 trees} at different depths
-\item $24 = 2 \times 12 = 3 \times 8 = 4 \times 6$: has divisors $\{2, 3, 4\}$ in $[2, \sqrt{24}]$, so \textbf{3 trees} blocking your sight line
-\item $36 = 2 \times 18 = 3 \times 12 = 4 \times 9 = 6 \times 6$: has divisors $\{2, 3, 4, 6\}$ in $[2, \sqrt{36}]$, so \textbf{4 trees} scattered at various depths
-\end{itemize}
-
-Prime powers like $9 = 3^2$ or $25 = 5^2$ have exactly \textbf{1 tree} (from their prime factor), while primes have \textbf{no trees---clear sight lines}.
+The more ways a number can factor, the more trees block your view. Prime powers like $9 = 3^2$ or $25 = 5^2$ have exactly one tree. Semiprimes like $15 = 3 \times 5$ have two. But highly composite numbers create dense groves: $24 = 2 \times 12 = 3 \times 8 = 4 \times 6$ has three trees at different depths, while $36$ has four. The number of trees equals the count of divisors in $[2, \sqrt{n}]$, making highly composite numbers appear as thick barriers. Primes, with no such divisors, remain as open meadows---completely clear sight lines.
 
 \subsection{The Parabolic Curve and Growing Gaps}
 
@@ -192,15 +187,15 @@ lpl@31
 \subsection{Exercises}
 
 \begin{enumerate}
-\item \textbf{Predict the pattern}: Before running the code, can you predict which x-coordinates will have completely clear sight lines (no trees at any depth) for $n \leq 20$?
+\item \textbf{The Twin Prime Hunt}: Stand at position 11 (a prime with a clear sight line). Walk east slowly. The next clear corridor is at 13---just 2 steps away (twin primes!). Keep walking and find more twin pairs. Can you predict where twins might appear by studying the forest structure? Is there a pattern to how twin primes are spaced?
 
-\item \textbf{Modify the transformation}: What happens if you change the y-coordinate to $kx + 2$ or $kx + k$? Does the forest remain regular?
+\item \textbf{The Goldbach Exploration}: Pick an even number's position, say 20. Can you find two prime positions (clear corridors) that sum to 20? For example, positions 3 and 17 both have clear sight lines, and $3+17=20$. Try other even numbers. Does this always work? What does the forest tell you about additive structure?
 
-\item \textbf{Count the trees}: For a given range, how many composite points appear? How does this compare to the number of primes?
+\item \textbf{Modify the Forest}: What if you included $p=1$ trees in the visualization? Or what if you plotted only odd composites? Build these variations and describe what changes. Does removing certain trees make patterns more or less obvious? What does this tell you about the role of small primes?
 
-\item \textbf{Twin primes}: Can you identify twin primes (primes differing by 2) in the forest? What pattern do they form?
+\item \textbf{Visual Prediction Challenge}: Without computing factorizations, look at the forest pattern for $n \leq 30$ and predict: will position 91 have a clear sight line? What about 97? Explain your reasoning using only what the visual pattern shows you. Then check your predictions.
 
-\item \textbf{Reflection symmetry}: Implement the reflection across the x-axis (plot points at negative y-coordinates too). Verify that the see-through positions remain symmetric.
+\item \textbf{The Density Investigation}: Count how many trees appear in regions 1-30, 31-60, and 61-90. Plot trees-per-unit as a function of position. What trend do you observe? Can you explain why the forest density changes this way? How does this relate to the Prime Number Theorem?
 \end{enumerate}
 
 \section{Connections to Other Visualizations}
@@ -378,11 +373,17 @@ This approach has pedagogical value at multiple levels:
 
 The next time you think about primes, imagine standing at the southern edge of a vast forest, walking along trying different positions. At most spots, trees block your view northward at some depth. But occasionally, you find a perfectly clear corridor---no trees at any distance. That's a prime. The forest is regular, but the clearings are mysterious.
 
+Yet the forest has one more secret to reveal. Instead of asking "blocked or clear?", we can ask "how far to the nearest trees?" This continuous perspective transforms our binary classification into a spectrum---and what emerges is worth exploring.
+
 \appendix
 
 \section{A Continuous Primality Spectrum}
 
-The Primal Forest reveals primes as gaps in a discrete lattice. But what if we could create a \emph{continuous} measure of primality? This appendix explores a surprising extension: using the geometric distance structure to create a primality score that stratifies all integers.
+The Primal Forest reveals primes as gaps in a discrete lattice---positions with completely clear sight lines. But this binary view (clear or blocked) overlooks a richer structure. What if we instead asked: \emph{how far} are the nearest trees at each depth?
+
+This shift from binary to continuous measurement reveals something unexpected: primality exists on a spectrum. When we compute a distance-based score for each integer, primes rise to form a smooth upper envelope, while composites scatter below, stratified by their factorization complexity. Prime powers cluster near the envelope, semiprimes fall further, and highly composite numbers sink to the bottom.
+
+This is more than a visualization trick. The continuous primality score provides a geometric measure of "how composite" a number is, with primes as the limiting case. While the educational value is clear, this perspective may offer number-theoretic insights into the relationship between factorization structure and prime distribution.
 
 \subsection{From Discrete Gaps to Continuous Distances}
 
