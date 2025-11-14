@@ -157,35 +157,16 @@ Všimněte si diagonálních řad stromů stoupajících na severovýchod? Každ
 
 Jak kráčíme na východ podél jižního okraje (zvyšující se x), les se zahušťuje a rozprostírá se dále na sever. Více činitelů znamená více stromů, rozptýlených napříč větším rozsahem hloubek. Šance najít dokonale čistý koridor---prvočíslo---se snižuje. Tento geometrický pohled činí Větu o prvočíslech intuitivní: \emph{prvočísla řídnou}, protože ``les činitelů'' se zahušťuje a prohlubuje.
 
-\section{Vyzkoušejte si to sami}
+\section{Průzkum a cvičení}
 
-Zde je kód ve Wolfram Language, který generuje les:
-
-\begin{lstlisting}[language=Mathematica, basicstyle=\small\ttfamily]
-(* Generuj vsechna slozena cisla az do n *)
-comp1[m_, n_] := Join @@ Table[
-  {k*p + p^2, k*p + 1},
-  {k, 0, n},
-  {p, Max[1, Ceiling[1/2 (-k + Sqrt[k^2 + 4*m])]],
-      Floor[1/2 (-k + Sqrt[k^2 + 4*n])]}
-]
-
-(* Vizualizuj les *)
-lpl[hi_] := ListPlot[
-  GatherBy[#, PrimeQ@*First],
-  PlotRange -> {Automatic, {-1/2, Automatic}},
-  AxesOrigin -> {0, 0},
-  AspectRatio -> 1,
-  PlotMarkers -> {Automatic, Large},
-  GridLines -> {Range@hi - 1/2, Range[0, hi] - 1/2},
-  Epilog -> {Thick, ColorData[97, "ColorList"][[2]],
-    Line[{#, {First@#, 0}}] & /@
-      Select[#, PrimeQ@*First]}
-] &@ comp1[1, hi]
-
-(* Vygeneruj graf *)
-lpl@31
-\end{lstlisting}
+\begin{figure}[h]
+\centering
+% TODO: Vložit primal-forest-100.pdf (nebo jiný větší rozsah)
+% \includegraphics[width=\textwidth]{../visualizations/primal-forest-100.pdf}
+\fbox{\parbox{0.9\textwidth}{\centering\vspace{2cm}[Zde bude vizualizace prvolesí pro větší rozsah, např. $n \leq 100$]\vspace{2cm}}}
+\caption{Prvolesí pro větší rozsah: Diagonální řady se překrývají, les se zahušťuje směrem na východ a sever. Průseky (prvočísla) se stávají vzácnějšími.}
+\label{fig:forest-large}
+\end{figure}
 
 \subsection{Cvičení}
 
@@ -196,7 +177,7 @@ lpl@31
 
 \item \textbf{Modifikace lesa}: Co kdybyste zahrnuli stromy s $p=1$ do vizualizace? Nebo co kdybyste vykreslili pouze lichá složená čísla? Vytvořte tyto varianty a popište, co se změní. Činí odstranění určitých stromů vzorce zřetelnějšími nebo méně zřetelnými? Co vám to říká o roli malých prvočísel?
 
-\item \textbf{Vizuální předpovědní výzva}: Bez výpočtu faktorizací se podívejte na vzorec lesa pro $n \leq 30$ a předpovězte: bude mít pozice 91 čistý průhled? A co 97? Vysvětlete své uvažování pouze pomocí toho, co ukazuje vizuální vzorec. Pak své předpovědi ověřte.
+\item \textbf{Vizuální předpovědní výzva}: Prostudujte vizualizaci lesa pro $n \leq 30$. Zkuste odhadnout, zda budou pozice 91 a 97 prvočísla (čisté průhledy). Vysvětlete své uvažování pouze z toho, co vidíte v diagramu---diagonální řady, hustota stromů---bez faktorizací. Pak ověřte výpočtem.
 
 \item \textbf{Vyšetřování hustoty}: Spočítejte, kolik stromů se objevuje v oblastech 1-30, 31-60 a 61-90. Vynesete stromy na jednotku jako funkci pozice. Jaký trend pozorujete? Můžete vysvětlit, proč se hustota lesa mění tímto způsobem? Jak to souvisí s Větou o prvočíslech?
 \end{enumerate}
@@ -517,5 +498,7 @@ Vizualizace neodpovídá \emph{jak} najít prvočísla efektivně, ale odpovíd�
 \section*{Poděkování}
 
 Tato vizualizace vznikla z rekreačních zkoumání ve výpočetní teorii čísel. Děkuji komunitě Wolfram Language za nástroje, které dělají takové experimenty potěšením.
+
+\paragraph{Kód a reprodukovatelnost:} Wolfram Language kód pro generování vizualizací je k dispozici na vyžádání. Kontaktujte autora pro zdrojové soubory.\footnote{Kód a další materiály budou dostupné v repozitáři: \texttt{https://github.com/popojan/orbit}}
 
 \end{document}
