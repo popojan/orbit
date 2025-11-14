@@ -10,6 +10,12 @@ wolframscript -file script.wl  # Correct
 wolframscript script.wl        # May hang in interactive mode
 ```
 
+**LaTeX Compilation**: Always run pdflatex **twice** to resolve cross-references:
+```bash
+pdflatex -interaction=nonstopmode document.tex  # First pass
+pdflatex -interaction=nonstopmode document.tex  # Second pass (resolves references)
+```
+
 ## Repository Structure
 
 ### Orbit Paclet (Version 0.3.0)
