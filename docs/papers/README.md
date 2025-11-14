@@ -9,6 +9,7 @@ This directory contains LaTeX papers documenting mathematical discoveries and pr
 
 ### Primorial Formula
 - **`primorial-proof-clean.tex`** ⭐ — **PRIMARY VERSION** - Rigorous proof following publication standards, clean exposition
+- **`primorial-duality.tex`** — **REFRAMING** - Prime-composite duality perspective on the same result, emphasizes GCD structure and computational circularity
 - **`primorial-arxiv-draft.tex`** — ArXiv submission draft (English)
 - **`primorial-arxiv-draft-cs.tex`** — ArXiv submission draft (Czech translation)
 
@@ -73,6 +74,7 @@ pdflatex -interaction=nonstopmode paper.tex
 |-------|--------|-------|
 | primal-forest-paper.tex | ✅ Complete | Educational, ready for use |
 | primorial-proof-clean.tex | ✅ Complete | Publication-ready proof |
+| primorial-duality.tex | ✅ Complete | Alternative perspective, emphasizes circularity |
 | primorial-arxiv-draft.tex | 🔄 Draft | For ArXiv submission |
 | chebyshev-pell-sqrt-paper.tex | ✅ Complete | Research paper ready |
 | semiprime-formula-complete-proof.tex | ✅ Complete | Primary proof version |
