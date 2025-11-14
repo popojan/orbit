@@ -150,6 +150,7 @@ $$f_k(x) = T_{k+1}(x) - x \cdot T_k(x)$$
 
 - **[primal-forest-paper.tex](docs/papers/primal-forest-paper.tex)** — Geometric visualization of the Sieve of Eratosthenes with continuous primality score revelation
 - **[primorial-proof-clean.tex](docs/papers/primorial-proof-clean.tex)** — Rigorous proof of primorial formula via alternating factorial sums
+- **[primorial-duality.tex](docs/papers/primorial-duality.tex)** — Prime-composite duality and computational circularity in factorial sums
 - **[primorial-arxiv-draft.tex](docs/papers/primorial-arxiv-draft.tex)** / **[-cs.tex](docs/papers/primorial-arxiv-draft-cs.tex)** — ArXiv submission drafts (English/Czech)
 - **[chebyshev-pell-sqrt-paper.tex](docs/papers/chebyshev-pell-sqrt-paper.tex)** — Square root rationalization via Chebyshev polynomials and Pell equations
 - **[semiprime-formula-complete-proof.tex](docs/papers/semiprime-formula-complete-proof.tex)** — Closed-form semiprime factorization formula
@@ -166,7 +167,7 @@ $$f_k(x) = T_{k+1}(x) - x \cdot T_k(x)$$
 ### Active Research (`docs/active/`)
 - **[phd-roadmap.md](docs/active/phd-roadmap.md)** — Publication and PhD application plan
 - **[proof-development-plan.md](docs/active/proof-development-plan.md)** — Current proof development strategy
-- **[primorial-duality.tex](docs/active/primorial-duality.tex)** — Work-in-progress primorial duality analysis
+- **[primorial-duality-correction.tex](docs/active/primorial-duality-correction.tex)** — Correction notes for primorial duality analysis
 
 ### For AI Assistants
 - **[CLAUDE.md](CLAUDE.md)** — Computational exploration guide, technical notes, and project instructions
@@ -191,7 +192,9 @@ orbit/
 ├── docs/                           # Documentation and papers
 │   ├── papers/                     # LaTeX papers (educational + research)
 │   │   ├── primal-forest-paper.tex # Geometric sieve visualization ⭐
-│   │   ├── primorial-*.tex         # Primorial formula proofs & drafts
+│   │   ├── primorial-proof-clean.tex   # Primorial proof (primary)
+│   │   ├── primorial-duality.tex   # Primorial duality reframing
+│   │   ├── primorial-arxiv-*.tex   # ArXiv drafts (EN/CS)
 │   │   ├── chebyshev-pell-sqrt-paper.tex
 │   │   ├── semiprime-*.tex
 │   │   └── *.tex                   # Additional proofs
@@ -204,7 +207,7 @@ orbit/
 │   ├── active/                     # Active research documents
 │   │   ├── phd-roadmap.md
 │   │   ├── proof-development-plan.md
-│   │   └── primorial-duality.tex
+│   │   └── primorial-duality-correction.tex
 │   └── archive/                    # Historical notes and explorations
 │
 ├── scripts/                        # Computational exploration scripts
