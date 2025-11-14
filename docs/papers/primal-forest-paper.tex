@@ -7,7 +7,7 @@
 \usepackage{listings}
 
 \title{The Primal Forest:\\
-A Bird's Eye View of the Sieve of Eratosthenes}
+A Journey Through the Sieve of Eratosthenes}
 
 \author{Jan Popelka}
 
@@ -18,8 +18,8 @@ A Bird's Eye View of the Sieve of Eratosthenes}
 \maketitle
 
 \begin{abstract}
-We present an educational visualization that transforms the classical Sieve of Eratosthenes from a one-dimensional list into a two-dimensional ``primal forest.'' By mapping composite numbers $n = x(x+k)$ to coordinates $\{kx + x^2, kx + 1\}$, we create a top-down view where composites form a regular pattern like trees in a forest. Prime numbers become visible as gaps---positions on the number line that no composite point lies above. Special ``see-through'' positions occur when $x=1$, creating windows that reveal primes directly. This geometric perspective makes the structure of the sieve visually intuitive and provides an engaging introduction to multiplicative structure in number theory.
-\end{abstract}
+We present an educational visualization that transforms the classical Sieve of Eratosthenes from a one-dimensional list into a two-dimensional ``primal forest.'' By mapping composite numbers $n = p(p+k)$ to coordinates $(kp+p^2, kp+1)$, we create an immersive view where you stand at the forest's southern edge looking northward, with composites appearing as trees at various depths. Prime numbers become visible as clear sight lines---positions where no composite blocks your view through the forest. This geometric perspective makes the structure of the sieve visually intuitive and provides an engaging introduction to multiplicative structure in number theory.
+\end{abstract>
 
 \section{Introduction: Why Are Primes So Hard to Find?}
 
@@ -33,7 +33,7 @@ The gaps between consecutive primes vary: sometimes just 2 (twin primes like 11 
 
 The ancient Greeks developed a clever algorithm---the \emph{Sieve of Eratosthenes}---that systematically finds all primes by eliminating composites. But working through the sieve on a linear list can feel mechanical. \textbf{What if we could \emph{see} the structure?}
 
-Enter the \textbf{Primal Forest}: a geometric transformation that turns the sieve into a visual landscape where composites form regular patterns and primes appear as gaps. Imagine you're a bird flying over a forest, looking down at the trees below. The trees are composites, blocking your view. But in the gaps between trees, you can see down to the primes on the ground.
+Enter the \textbf{Primal Forest}: a geometric transformation that turns the sieve into a visual landscape where composites form regular patterns and primes appear as clearings. Imagine standing at the southern edge of a vast forest, looking northward into the trees. You can walk west or east along this edge (the x-axis), and at each position, look straight north. The trees are composites, scattered at various depths into the forest. At certain positions along the southern edge, you have a perfectly clear sight line---no trees block your view at any depth. These clear corridors reveal the primes.
 
 \section{The Classical Sieve (Linear View)}
 
@@ -95,31 +95,31 @@ Figure~\ref{fig:forest} shows the primal forest for the range $n \leq 31$. We pl
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.8\textwidth]{../visualizations/primal-forest-31.pdf}
-\caption{The Primal Forest: a top-down view of the factorization lattice. Each dot represents a factorization $n = p(p+k)$ with $p \geq 2$, plotted at coordinates $(kp+p^2, kp+1)$. Prime numbers are the x-coordinates with \emph{no dots above them}---gaps in the factor forest where you can see through to the ground.}
+\caption{The Primal Forest: You stand at the southern edge (bottom of diagram, y=0) and can walk west-east (left-right, x-axis). At each position, you look straight north (upward in diagram, y-axis). Each dot represents a factorization $n = p(p+k)$ with $p \geq 2$, plotted at coordinates $(kp+p^2, kp+1)$. Prime numbers are the x-coordinates with \emph{clear sight lines}---no composite trees block your view at any depth northward.}
 \label{fig:forest}
 \end{figure}
 
 \subsection{What Are We Seeing?}
 
 \begin{itemize}
-\item \textbf{Dots}: Each dot represents a way to write n as a product of two factors where the smaller factor is at least 2. Specifically, a dot at $(kp+p^2, kp+1)$ shows the factorization $n = p \times (p+k)$ where $p \geq 2$ is the smaller factor. The number of dots above x-coordinate n equals the number of divisors of n in the range $[2, \sqrt{n}]$. These dots form the ``forest'' blocking your view down to the primes.
+\item \textbf{Trees (dots)}: Each dot represents a way to write n as a product of two factors where the smaller factor is at least 2. Specifically, a tree at $(kp+p^2, kp+1)$ shows the factorization $n = p \times (p+k)$ where $p \geq 2$ is the smaller factor. The y-coordinate $(kp+1)$ represents how deep into the forest this particular factorization stands. The number of trees at x-coordinate n (across all depths) equals the number of divisors of n in the range $[2, \sqrt{n}]$. These trees form the ``forest'' that may block your sight line.
 
-\item \textbf{Gaps on the x-axis}: Look at the x-coordinates. Most values have dots above them---at least one such factorization exists. But some x-coordinates have \emph{no dots at all}. These are the \textbf{primes}! They're clearings in the forest---numbers that cannot be written as $p(p+k)$ for any $p \geq 2$.
+\item \textbf{Your position}: You stand at position $(x, 0)$ on the southern edge---literally at y=0. You can walk west-east to choose which x-coordinate to test, then look straight north into the forest. Most positions have at least one tree somewhere north of you. But some positions have \emph{no trees at any depth northward}. These are the \textbf{primes}! They're clear corridors---numbers that cannot be written as $p(p+k)$ for any $p \geq 2$.
 
-\item \textbf{The viewing exercise}: Stand at any x-coordinate on the ground and look straight up. If you see dots (trees), that number is composite. If you see clear sky---nothing blocking your view---that number is prime.
+\item \textbf{The primality test}: Stand at any x-coordinate along the southern edge and look straight north. If you see trees blocking your view at any depth, that number is composite. If you have a perfectly clear sight line all the way through the forest---nothing blocking your view at any distance northward---that number is prime.
 \end{itemize}
 
 \subsection{The Core Insight}
 
 \begin{quote}
-\textbf{The number of dots above n equals the number of divisors of n in the range $[2, \sqrt{n}]$. Primes have zero such divisors, so they have no dots above them---they're gaps in the factor forest.}
+\textbf{The number of trees at position n (across all depths) equals the number of divisors of n in the range $[2, \sqrt{n}]$. Primes have zero such divisors, so they have no trees blocking the sight line---they're clear corridors through the factor forest.}
 \end{quote}
 
 For example:
 \begin{itemize}
-\item $n = 18 = 2 \times 9 = 3 \times 6$: divisors in $[2, \sqrt{18}] = [2, 4.24]$ are $\{2, 3\}$, so \textbf{2 dots}
-\item $n = 16 = 2 \times 8 = 4 \times 4$: divisors in $[2, \sqrt{16}] = [2, 4]$ are $\{2, 4\}$, so \textbf{2 dots}
-\item $n = 13$ (prime): no divisors in $[2, \sqrt{13}] = [2, 3.6]$, so \textbf{0 dots}
+\item $n = 18 = 2 \times 9 = 3 \times 6$: divisors in $[2, \sqrt{18}] = [2, 4.24]$ are $\{2, 3\}$, so \textbf{2 trees} block your view
+\item $n = 16 = 2 \times 8 = 4 \times 4$: divisors in $[2, \sqrt{16}] = [2, 4]$ are $\{2, 4\}$, so \textbf{2 trees} block your view
+\item $n = 13$ (prime): no divisors in $[2, \sqrt{13}] = [2, 3.6]$, so \textbf{clear sight line}
 \end{itemize}
 
 The forest isn't just showing which numbers are composite---it's counting their small divisors geometrically.
@@ -138,26 +138,26 @@ Each row $k = \text{const}$ represents all composites of the form $p(p+k)$:
 
 Each column $p = \text{const}$ represents all composites with $p$ as the smaller factor.
 
-\subsection{Numbers with Multiple Dots}
+\subsection{Numbers with Multiple Trees}
 
-Highly composite numbers have multiple dots above them. For instance:
+Highly composite numbers have multiple trees blocking the view. For instance:
 \begin{itemize}
-\item $12 = 2 \times 6 = 3 \times 4$: has divisors $\{2, 3\}$ in $[2, \sqrt{12}]$, giving \textbf{2 dots}
-\item $24 = 2 \times 12 = 3 \times 8 = 4 \times 6$: has divisors $\{2, 3, 4\}$ in $[2, \sqrt{24}]$, giving \textbf{3 dots}
-\item $36 = 2 \times 18 = 3 \times 12 = 4 \times 9 = 6 \times 6$: has divisors $\{2, 3, 4, 6\}$ in $[2, \sqrt{36}]$, giving \textbf{4 dots}
+\item $12 = 2 \times 6 = 3 \times 4$: has divisors $\{2, 3\}$ in $[2, \sqrt{12}]$, so \textbf{2 trees} at different depths
+\item $24 = 2 \times 12 = 3 \times 8 = 4 \times 6$: has divisors $\{2, 3, 4\}$ in $[2, \sqrt{24}]$, so \textbf{3 trees} blocking your sight line
+\item $36 = 2 \times 18 = 3 \times 12 = 4 \times 9 = 6 \times 6$: has divisors $\{2, 3, 4, 6\}$ in $[2, \sqrt{36}]$, so \textbf{4 trees} scattered at various depths
 \end{itemize}
 
-Prime powers like $9 = 3^2$ or $25 = 5^2$ have exactly \textbf{1 dot} (their prime factor), while primes have \textbf{0 dots}.
+Prime powers like $9 = 3^2$ or $25 = 5^2$ have exactly \textbf{1 tree} (from their prime factor), while primes have \textbf{no trees---clear sight lines}.
 
 \subsection{The Parabolic Curve and Growing Gaps}
 
-Notice how the forest curves upward as numbers grow? The x-coordinate $kp + p^2$ has a quadratic term $p^2$, creating a parabolic arrangement. This reveals a profound truth about prime distribution:
+Notice how the forest extends deeper (further north) as numbers grow? The x-coordinate $kp + p^2$ has a quadratic term $p^2$, creating a parabolic arrangement. This reveals a profound truth about prime distribution:
 
 \begin{quote}
-\textbf{The higher the x-coordinate (the larger the number), the higher the probability that some factor (tree) blocks your sight down to that position.}
+\textbf{The higher the x-coordinate (the larger the number), the deeper the forest extends northward. More trees at various depths means higher probability that some tree blocks your sight line.}
 \end{quote}
 
-As we move right along the number line, more and more factor dots accumulate above each position. The chance of finding a gap---a prime---decreases. This geometric view makes the Prime Number Theorem intuitive: \emph{primes thin out} because the ``forest of factors'' grows denser.
+As we walk east along the southern edge (increasing x), the forest grows denser and extends further north. More factors mean more trees, scattered across a greater depth range. The chance of finding a completely clear corridor---a prime---decreases. This geometric view makes the Prime Number Theorem intuitive: \emph{primes thin out} because the ``forest of factors'' grows denser and deeper.
 
 \section{Try It Yourself}
 
@@ -192,7 +192,7 @@ lpl@31
 \subsection{Exercises}
 
 \begin{enumerate}
-\item \textbf{Predict the pattern}: Before running the code, can you predict which x-coordinates will have no points above them for $n \leq 20$?
+\item \textbf{Predict the pattern}: Before running the code, can you predict which x-coordinates will have completely clear sight lines (no trees at any depth) for $n \leq 20$?
 
 \item \textbf{Modify the transformation}: What happens if you change the y-coordinate to $kx + 2$ or $kx + k$? Does the forest remain regular?
 
@@ -221,10 +221,10 @@ Each visualization highlights different aspects of prime distribution. The fores
 This visualization helps answer common student questions:
 
 \paragraph{Q: Why are primes ``special''?}
-A: Look at the forest---primes are the only numbers with \emph{no tree above them}. They're fundamentally different from composites.
+A: Look at the forest---primes are the only numbers with \emph{perfectly clear sight lines}. No trees block your view northward at any depth. They're fundamentally different from composites.
 
 \paragraph{Q: Why do prime gaps grow?}
-A: See how the forest gets denser as numbers increase (the parabolic curve)? More composites crowd the larger regions, leaving bigger gaps between primes.
+A: See how the forest extends deeper northward and grows denser as numbers increase? More composites at more depths crowd the larger x-regions, making clear sight lines rarer. The gaps between primes naturally widen.
 
 \paragraph{Q: What does factorization mean geometrically?}
 A: Each dot is a composite, positioned according to its factors $p$ and $k+p$. Primes can't be positioned this way---they have no factorization.
@@ -233,7 +233,7 @@ A: Each dot is a composite, positioned according to its factors $p$ and $k+p$. P
 A: Yes! Primes are precisely the gaps in the regular factor lattice. The pattern is visible once we map factorizations to 2D.
 
 \paragraph{Q: Why does the probability of finding a prime decrease?}
-A: As numbers grow larger, each position on the x-axis has more potential factors. The forest grows denser because there are simply more ways to factor larger numbers. Geometrically, more trees block your sight, so gaps (primes) become rarer.
+A: As numbers grow larger, each position on the x-axis (southern edge) has more potential factors. The forest extends deeper northward and becomes denser because there are simply more ways to factor larger numbers. Geometrically, more trees at more depths block your sight lines, so completely clear corridors (primes) become rarer.
 
 \section{The Regularity Paradox}
 
@@ -376,7 +376,7 @@ This approach has pedagogical value at multiple levels:
 \item \textbf{Research}: Alternative perspectives may inspire new approaches
 \end{itemize}
 
-The next time you think about primes, imagine flying over a forest. The trees are composites, neatly arranged by their factors. And in the clearings between the trees? That's where the primes are hiding.
+The next time you think about primes, imagine standing at the southern edge of a vast forest, walking along trying different positions. At most spots, trees block your view northward at some depth. But occasionally, you find a perfectly clear corridor---no trees at any distance. That's a prime. The forest is regular, but the clearings are mysterious.
 
 \appendix
 
@@ -386,10 +386,10 @@ The Primal Forest reveals primes as gaps in a discrete lattice. But what if we c
 
 \subsection{From Discrete Gaps to Continuous Distances}
 
-In the main visualization, a number is prime if no dots appear above it. We can reformulate this geometrically: for each row $p$ in the lattice, measure the \textbf{distance} from the vertical line at $x$ to the nearest dot in that row.
+In the main visualization, a number is prime if you have a completely clear sight line northward. We can reformulate this geometrically: for each horizontal "row" at depth $p$ in the lattice, measure the \textbf{horizontal distance} from your position at $x$ to the nearest tree at that depth.
 
-For prime $x$: all distances are positive\\
-For composite $x$: at least one distance is zero
+For prime $x$: all distances are positive (no trees directly north of you at any depth)\\
+For composite $x$: at least one distance is zero (at least one tree blocks your sight line)
 
 \subsection{The Soft-Min Trick}
 
