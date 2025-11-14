@@ -365,7 +365,7 @@ Přesto má les ještě jedno tajemství k odhalení. Místo otázky ``blokovan�
 
 \appendix
 
-\section{Spojité spektrum prvočíselnosti}
+\section{Spojité skóre prvočíselnosti}
 
 Prvolesí odhaluje prvočísla jako mezery v diskrétní mřížce---pozice s dokonale čistými průhledy. Ale tento binární pohled (čistý nebo blokovaný) přehlíží bohatší strukturu. Co kdybychom se místo toho zeptali: \emph{jak daleko} jsou nejbližší stromy v každé hloubce?
 
@@ -434,34 +434,21 @@ Zajímavě, definování součinu měkkých vzdáleností pomocí klasické modu
 
 To naznačuje, že 2D souřadnicová transformace zachycuje něco zásadního o faktorizační struktuře, co není viditelné v klasickém 1D pohledu.
 
-\subsection{Implementace}
+\subsection{Výpočet skóre}
 
-Zde je kód ve Wolfram Language:
+Spojité skóre prvočíselnosti pro celé číslo $x$ s teplotním parametrem $\beta$ (typicky $\beta = 1/7$) definujeme jako součin měkkých vzdáleností přes všechny hloubky:
 
-\begin{lstlisting}[language=Mathematica, basicstyle=\small\ttfamily]
-(* Soucin mekkych vzdalenosti s teplotou beta *)
-DistanceProductSoft[x_, beta_: 1/7] :=
-  Product[
-    -beta * Log @ Sum[
-      Exp[-Abs[x - (k*p + p^2)]/beta],
-      {k, 0, Floor[x/p]}
-    ],
-    {p, 2, x}
-  ]
+\begin{equation}
+S(x, \beta) = \prod_{p=2}^{x} d_p^{\text{soft}}(x, \beta)
+\end{equation}
 
-(* Vykresli spektrum prvočíselnosti *)
-pp[hi_] :=
-  Table[{k, Log[1 + DistanceProductSoft[k, 1/7]]}, {k, 1, hi}] //
-    ListLinePlot[
-      GatherBy[#, PrimeQ@*First],
-      PlotMarkers -> Automatic,
-      GridLines -> {Prime @ Range @ PrimePi @ hi, None},
-      Frame -> True,
-      FrameLabel -> {"n", "skore"}
-    ] &
+kde měkká vzdálenost v hloubce $p$ je dána soft-min trikem:
 
-pp[127]  (* Vygeneruj graf *)
-\end{lstlisting}
+\begin{equation}
+d_p^{\text{soft}}(x, \beta) = -\beta \log \sum_{k=0}^{\lfloor x/p \rfloor} \exp\left(-\frac{|x - (kp + p^2)|}{\beta}\right)
+\end{equation}
+
+Pro vizualizaci vykreslujeme $\log(1 + S(x, \beta))$ pro každé celé $x$ v požadovaném rozsahu, s odlišením prvočísel a složených čísel barvou.
 
 \subsection{Vzdělávací hodnota}
 
