@@ -15,8 +15,8 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
-\title{The p-adic Valuation Structure of a Primorial Sum Formula}
-\author{}
+\title{A Primorial Formula via Alternating Factorial Sums}
+\author{Jan Popelka}
 \date{November 2025}
 
 \begin{document}
@@ -24,9 +24,9 @@
 \maketitle
 
 \begin{abstract}
-We present a complete rigorous proof of an unexpected formula: the primorial $p\#$ (product of all primes up to $p$) emerges as the denominator of a specific alternating factorial sum. For odd $m \geq 3$, the rational number
+This paper establishes a rigorous proof of an unexpected formula: the primorial $p\#$ (product of all primes up to $p$) emerges as the denominator of a specific alternating factorial sum. For odd $m \geq 3$, the rational number
 $S_m = \frac{1}{2} \sum_{k=1}^{(m-1)/2} \frac{(-1)^k \cdot k!}{2k+1}$
-has denominator exactly equal to $\prod_{p \text{ prime}, p \leq m} p$ when reduced to lowest terms. This formula, initially discovered through computational exploration, revealed a hidden $p$-adic structure: each prime $p \leq m$ appears with valuation exactly 1 in the reduced denominator, despite higher powers appearing in individual terms. We establish this through elementary analysis of recurrence relations combined with Legendre's formula for factorial valuations, proving that the unreduced representation maintains the precise invariant $\nu_p(D_k) - \nu_p(N_k) = 1$ for all applicable primes.
+has denominator exactly equal to $\prod_{p \text{ prime}, p \leq m} p$ when reduced to lowest terms. This formula reveals a hidden $p$-adic structure: each prime $p \leq m$ appears with valuation exactly 1 in the reduced denominator, despite higher powers appearing in individual terms. The proof combines elementary analysis of recurrence relations with Legendre's formula for factorial valuations, establishing that the unreduced representation maintains the precise invariant $\nu_p(D_k) - \nu_p(N_k) = 1$ for all applicable primes.
 \end{abstract}
 
 \section{Introduction and Statement}
@@ -42,12 +42,12 @@ For $k \geq 1$, define the $k$-th partial sum:
 \[
 S_k = \frac{1}{2} \sum_{j=1}^{k} \frac{(-1)^j \cdot j!}{2j+1}
 \]
-Write $S_k = N_k / D_k$ where $N_k$ and $D_k$ are integers with $D_k > 0$, computed as follows:
+Writing $S_k = N_k / D_k$ where $N_k$ and $D_k$ are integers with $D_k > 0$, the components are computed as:
 \begin{itemize}
 \item $D_k$ is the product of denominators without reduction: $D_k = 2 \cdot \prod_{j=1}^{k} (2j+1)$
 \item $N_k$ is the corresponding numerator when expressing $S_k$ with denominator $D_k$ (unreduced form)
 \end{itemize}
-We call $(N_k, D_k)$ the \emph{unreduced representation} of $S_k$.
+The pair $(N_k, D_k)$ is called the \emph{unreduced representation} of $S_k$.
 \end{definition}
 
 \begin{remark}
@@ -85,7 +85,7 @@ By definition of $S_k$:
 S_{k+1} = S_k + \frac{1}{2} \cdot \frac{(-1)^{k+1} \cdot (k+1)!}{2(k+1)+1}
 \]
 
-Write $S_k = N_k / D_k$ and $S_{k+1} = N_{k+1} / D_{k+1}$. Since $D_{k+1}$ multiplies all previous denominators and $(2k+3)$ (unreduced):
+Writing $S_k = N_k / D_k$ and $S_{k+1} = N_{k+1} / D_{k+1}$, the unreduced denominator multiplies all previous denominators by $(2k+3)$:
 \[
 D_{k+1} = D_k \cdot (2k+3)
 \]
@@ -96,7 +96,7 @@ For the numerator, we need a common denominator:
 &= \frac{N_k \cdot (2k+3)}{D_k \cdot (2k+3)} + \frac{(-1)^{k+1} \cdot (k+1)! \cdot D_k}{2 \cdot (2k+3) \cdot D_k}
 \end{align*}
 
-Since $D_k = 2 \cdot (\text{odd products})$, we have $D_k/2 = \text{odd products}$, and:
+Since $D_k = 2 \cdot (\text{odd products})$, this yields:
 \[
 \frac{N_{k+1}}{D_{k+1}} = \frac{N_k \cdot (2k+3) + (-1)^{k+1} \cdot (k+1)! \cdot D_k}{D_k \cdot (2k+3)}
 \]
@@ -120,7 +120,7 @@ For all primes $p \geq 3$ and integers $k \geq 1$ such that $p \mid (2k+1)$ and 
 \begin{proof}
 Let $\alpha = \nu_p(2k+1) \geq 1$, so $2k+1 = p^\alpha \cdot r$ where $\gcd(r, p) = 1$.
 
-Since $p \neq 2k+1$, we have $p^\alpha < 2k+1$, which gives:
+Since $p \neq 2k+1$, the inequality $p^\alpha < 2k+1$ yields:
 \begin{equation}
 k \geq \frac{p^\alpha - 1}{2}
 \label{eq:k-bound}
@@ -132,7 +132,7 @@ By Legendre's formula:
 \label{eq:legendre}
 \end{equation}
 
-We prove $\lfloor k/p \rfloor \geq \alpha - 1$ by cases on $\alpha$.
+The inequality $\lfloor k/p \rfloor \geq \alpha - 1$ follows by cases on $\alpha$.
 
 \textbf{Case 1:} $\alpha = 1$
 
@@ -167,25 +167,25 @@ In all cases, $\nu_p(k!) \geq \alpha - 1 = \nu_p(2k+1) - 1$.
 \section{Proof of Main Theorem}
 
 \begin{proof}[Proof of Theorem~\ref{thm:main}]
-We proceed by strong induction on $k$.
+The proof proceeds by strong induction on $k$.
 
 \subsection*{Base Case}
 
-For $k = 0$: $D_0 = 2$, $N_0 = 0$. For $p = 2$: $\nu_2(D_0) = 1$, $\nu_2(N_0) = \infty$ by convention. We interpret this as the statement holding vacuously for $k=0$.
+For $k = 0$: $D_0 = 2$, $N_0 = 0$. For $p = 2$: $\nu_2(D_0) = 1$, $\nu_2(N_0) = \infty$ by convention. This vacuously satisfies the statement for $k=0$.
 
 For $k = 1$: $D_1 = 2 \cdot 3 = 6$, and from the recurrence:
 \[
 N_1 = 0 \cdot 3 + (-1)^1 \cdot 1! \cdot 2 = -2
 \]
 
-Thus $S_1 = -2/6 = -1/3$ (but we keep the unreduced form $N_1 = -2$, $D_1 = 6$).
+Thus $S_1 = -2/6 = -1/3$ in reduced form, while the unreduced representation is $N_1 = -2$, $D_1 = 6$.
 
 For $p = 2$: $\nu_2(6) - \nu_2(-2) = 1 - 1 = 0 \neq 1$.
 
 For $p = 3$: $\nu_3(6) - \nu_3(-2) = 1 - 0 = 1$. \checkmark
 
 \begin{remark}
-The case $p = 2$ requires special handling as 2 is the only even prime. The main result holds for all odd primes $p \geq 3$.
+The case $p = 2$ requires special handling due to its uniqueness as an even prime. The main result holds for all odd primes $p \geq 3$.
 \end{remark}
 
 \subsection*{Inductive Step}
@@ -201,9 +201,9 @@ From the recurrence \eqref{eq:denom-rec} and \eqref{eq:num-rec}:
 
 Let $\alpha = \nu_p(2k+3)$.
 
-\textbf{Case A: Prime Entry} ($\alpha \geq 1$ and $p$ did not divide any $2j+1$ for $j \leq k$)
+\textbf{Case A: Prime Entry} ($\alpha \geq 1$ and $p$ does not divide any $2j+1$ for $j \leq k$)
 
-This occurs when $p = 2k+3$. Then:
+This occurs precisely when $p = 2k+3$. Then:
 \begin{itemize}
 \item $\nu_p(D_k) = 0$ (prime not yet present)
 \item $\nu_p(N_k) = 0$ (by induction hypothesis vacuously, or by inspection for small $k$)
@@ -222,9 +222,9 @@ Therefore: $\nu_p(D_{k+1}) - \nu_p(N_{k+1}) = 1 - 0 = 1$. \checkmark
 
 \textbf{Case B: Synchronized Jumps} ($\alpha \geq 1$ and $p$ already divides some $2j+1$ for $j \leq k$)
 
-By the induction hypothesis: $\nu_p(N_k) = \nu_p(D_k) - 1$.
+By the induction hypothesis, $\nu_p(N_k) = \nu_p(D_k) - 1$.
 
-Consider the two terms in \eqref{eq:num-rec}:
+The two terms in \eqref{eq:num-rec} have valuations:
 \begin{align*}
 \text{Term 1:} \quad &\nu_p(N_k \cdot (2k+3)) = \nu_p(N_k) + \alpha = (\nu_p(D_k) - 1) + \alpha \\
 \text{Term 2:} \quad &\nu_p((k+1)! \cdot D_k) = \nu_p((k+1)!) + \nu_p(D_k)
@@ -240,7 +240,7 @@ Thus:
 \text{Term 2 valuation} \geq (\alpha - 1) + \nu_p(D_k) = \nu_p(D_k) + \alpha - 1
 \]
 
-Since Term 1 has valuation $\nu_p(D_k) - 1 + \alpha$ and Term 2 has valuation $\geq \nu_p(D_k) + \alpha - 1$, and these are equal only when $\nu_p((k+1)!) = \alpha - 1$ exactly, we have two subcases:
+Since Term 1 has valuation $\nu_p(D_k) - 1 + \alpha$ and Term 2 has valuation $\geq \nu_p(D_k) + \alpha - 1$, with equality holding only when $\nu_p((k+1)!) = \alpha - 1$ exactly, two subcases arise:
 
 \textbf{Subcase B1:} Term 1 valuation $<$ Term 2 valuation (the generic case)
 
@@ -257,9 +257,9 @@ Therefore:
 
 \textbf{Subcase B2:} Term 1 valuation $=$ Term 2 valuation (the boundary case)
 
-When $\nu_p((k+1)!) = \alpha - 1$ exactly, both terms in \eqref{eq:num-rec} have the same $p$-adic valuation $v = \nu_p(D_k) + \alpha - 1$. We must verify the invariant is preserved.
+When $\nu_p((k+1)!) = \alpha - 1$ exactly, both terms in \eqref{eq:num-rec} have the same $p$-adic valuation $v = \nu_p(D_k) + \alpha - 1$. Verification of the invariant requires additional analysis.
 
-Factor out $p^v$ from both terms:
+Factoring out $p^v$ from both terms:
 \begin{align*}
 N_k \cdot (2k+3) &= p^v \cdot n \quad \text{where } \gcd(n, p) = 1\\
 (k+1)! \cdot D_k &= p^v \cdot s \quad \text{where } \gcd(s, p) = 1
@@ -270,7 +270,7 @@ From \eqref{eq:num-rec}:
 N_{k+1} = p^v \cdot (n + (-1)^{k+1} \cdot s)
 \]
 
-If $p \mid (n + (-1)^{k+1} \cdot s)$, additional cancellation would occur, potentially violating the invariant.
+Additional cancellation occurs if $p \mid (n + (-1)^{k+1} \cdot s)$, potentially violating the invariant.
 
 \begin{lemma}[Boundary Case Elimination for $p \geq 5$]
 \label{lem:boundary}
@@ -290,9 +290,9 @@ For $p \geq 5$:
 \frac{p}{2} - \frac{1}{2p} \geq \frac{5}{2} - \frac{1}{10} = 2.4
 \]
 
-Therefore $\lfloor (k+1)/p \rfloor \geq 2$, which gives $\nu_p((k+1)!) \geq 2 > 1 = \alpha - 1$.
+Therefore $\lfloor (k+1)/p \rfloor \geq 2$, giving $\nu_p((k+1)!) \geq 2 > 1 = \alpha - 1$.
 
-This means Subcase B2 (equal valuations) cannot occur for any prime $p \geq 5$.
+Thus Subcase B2 (equal valuations) cannot occur for any prime $p \geq 5$.
 \end{proof}
 
 \begin{corollary}
@@ -300,7 +300,7 @@ The boundary case Subcase B2 can occur only for $p = 3$ at $k = 3$.
 \end{corollary}
 
 \begin{proof}
-By Lemma~\ref{lem:boundary}, only $p = 3$ can reach the boundary. For $p = 3$ and $k = 3$ (so $2k+3 = 9 = 3^2$), we verify directly:
+By Lemma~\ref{lem:boundary}, only $p = 3$ can reach the boundary. For $p = 3$ and $k = 3$ (so $2k+3 = 9 = 3^2$), direct verification yields:
 \begin{align*}
 \nu_3(4!) = \nu_3(24) &= 1 = \alpha - 1 \quad \text{(boundary case occurs)}\\
 N_4 &= 9 \cdot (-166) + 9 \cdot 560 = 9 \cdot 394
@@ -316,7 +316,7 @@ The invariant is preserved in the unique boundary case.
 
 \textbf{Case C:} $\alpha = 0$ (prime $p$ does not divide $2k+3$)
 
-Then $\nu_p(D_{k+1}) = \nu_p(D_k)$ and the numerator update doesn't introduce new factors of $p$, so $\nu_p(N_{k+1}) = \nu_p(N_k)$ by the induction hypothesis structure. The difference is preserved.
+Then $\nu_p(D_{k+1}) = \nu_p(D_k)$, and the numerator update introduces no new factors of $p$, so $\nu_p(N_{k+1}) = \nu_p(N_k)$ by the induction hypothesis structure. The difference is preserved.
 
 This completes the induction.
 \end{proof}
@@ -335,20 +335,20 @@ For $m \in \{3, 5, 7\}$, the non-alternating formula with factor $1/6$ yields de
 \begin{proof}
 The transition at $m = 9$ corresponds to the boundary case analyzed for prime $p = 3$ in the main proof. For $m \geq 9$, the sum $(2k+3) \geq 11 > 3^2$, ensuring that the $p = 3$ boundary condition (Subcase B2) no longer occurs.
 
-When we replace the alternating sign with a constant positive sign and adjust the initial factor from $1/2$ to $1/6$, we introduce an additional factor of $3$ in the denominator. For $m \geq 9$, the systematic cancellation mechanism ensures this extra factor of $3$ is absorbed into the existing valuation structure, maintaining the invariant $\nu_p(D_k) - \nu_p(N_k) = 1$ for all primes $p \leq m$.
+Replacing the alternating sign with a constant positive sign and adjusting the initial factor from $1/2$ to $1/6$ introduces an additional factor of $3$ in the denominator. For $m \geq 9$, the systematic cancellation mechanism absorbs this extra factor of $3$ into the existing valuation structure, maintaining the invariant $\nu_p(D_k) - \nu_p(N_k) = 1$ for all primes $p \leq m$.
 
 For smaller values $m \in \{3, 5, 7\}$, the boundary effects at $p = 3$ prevent complete cancellation of the extra factor, resulting in denominator $3 \cdot \text{Primorial}(m)$.
 \end{proof}
 
 \begin{remark}[Open Problem: Numerator Structure]
 \label{rem:numerator}
-While the denominator structure of the alternating sum $S_m$ exhibits the elegant primorial formula, the numerator sequence remains mysterious. Computational investigation reveals that many numerators are themselves prime numbers, but no simple closed form, recurrence relation, or generating function has been identified.
+While the denominator structure of the alternating sum $S_m$ exhibits the elegant primorial formula, the numerator sequence remains mysterious. Observation reveals that many numerators are themselves prime numbers, but no simple closed form, recurrence relation, or generating function has been identified.
 
-The numerator sequence begins: $-1, 23, 719, 5039, 40319, \ldots$ for $m = 3, 5, 7, 9, 11, \ldots$, where notably $23$, $719$, $5039$ are all prime. This suggests an intriguing number-theoretic structure that merits further investigation. Understanding why certain factorial combinations yield prime numerators, and characterizing the growth and distribution of these numerators, presents an interesting open problem connecting factorial sums to prime number theory.
+The numerator sequence begins: $-1, 23, 719, 5039, 40319, \ldots$ for $m = 3, 5, 7, 9, 11, \ldots$, where notably $23$, $719$, $5039$ are all prime. This suggests an intriguing number-theoretic structure meriting further investigation. Understanding why certain factorial combinations yield prime numerators, and characterizing the growth and distribution of these numerators, presents an open problem connecting factorial sums to prime number theory.
 \end{remark}
 
 \section{Conclusion}
 
-We have established that the alternating sum \eqref{eq:sum}, when expressed in unreduced form, maintains a precise $p$-adic structure: each odd prime $p$ appears exactly once more in the denominator than in the numerator. This result follows from elementary analysis of the factorial inequality combined with the recurrence structure.
+The alternating sum \eqref{eq:sum}, when expressed in unreduced form, maintains a precise $p$-adic structure: each odd prime $p$ appears exactly once more in the denominator than in the numerator. This result follows from elementary analysis of the factorial inequality combined with the recurrence structure.
 
 \end{document}

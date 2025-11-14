@@ -2,6 +2,14 @@
 
 This repository contains computational tools for various recreational and research mathematical explorations implemented as a Wolfram Language paclet.
 
+## Technical Notes
+
+**WolframScript Execution**: Always run WolframScript with the `-file` flag to execute scripts non-interactively:
+```bash
+wolframscript -file script.wl  # Correct
+wolframscript script.wl        # May hang in interactive mode
+```
+
 ## Repository Structure
 
 ### Orbit Paclet (Version 0.3.0)
