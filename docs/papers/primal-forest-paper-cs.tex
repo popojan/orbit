@@ -14,7 +14,7 @@
   bookmarksnumbered=true
 }
 
-\title{Prvolesí:\\
+\title{Prvoles:\\
 Cesta skrz Eratosthenovo síto}
 
 \author{Jan Popelka}
@@ -41,7 +41,7 @@ Mezery mezi po sobě jdoucími prvočísly se liší: někdy jen 2 (dvojčata ja
 
 Staří Řekové vyvinuli chytrý algoritmus---\emph{Eratosthenovo síto}---který systematicky nachází všechna prvočísla odstraněním složených čísel. Ale procházení sítem na lineárním seznamu může působit mechanicky. \textbf{Co kdybychom mohli tu strukturu \emph{vidět}?}
 
-Představujeme \textbf{Prvolesí}: geometrickou transformaci, která mění síto na vizuální krajinu, kde složená čísla tvoří pravidelné vzorce a prvočísla se objevují jako průhledy. Představte si, že stojíte na jižním okraji rozsáhlého lesa a díváte se na sever mezi stromy. Můžete chodit na západ nebo východ podél tohoto okraje (osa x), a na každé pozici se podívat přímo na sever. Stromy jsou složená čísla, rozptýlená v různých hloubkách lesa. Na určitých pozicích podél jižního okraje máte dokonale čistý průhled---žádné stromy vám neblokují výhled v žádné hloubce. Tyto čisté koridory odhalují prvočísla.
+Představujeme \textbf{Prvoles}: geometrickou transformaci, která mění síto na vizuální krajinu, kde složená čísla tvoří pravidelné vzorce a prvočísla se objevují jako průhledy. Představte si, že stojíte na jižním okraji rozsáhlého lesa a díváte se na sever mezi stromy. Můžete chodit na západ nebo východ podél tohoto okraje (osa x), a na každé pozici se podívat přímo na sever. Stromy jsou složená čísla, rozptýlená v různých hloubkách lesa. Na určitých pozicích podél jižního okraje máte dokonale čistý průhled---žádné stromy vám neblokují výhled v žádné hloubce. Tyto čisté koridory odhalují prvočísla.
 
 Tento geometrický pohled skrývá hlubší tajemství: když pečlivě měříme vzdálenosti k těmto stromům, objevíme, že prvočíselnost existuje na spojitém spektru, s prvočísly na hranici a složenými čísly stratifikovanými podle jejich faktorizační složitosti.
 
@@ -105,7 +105,7 @@ Obrázek~\ref{fig:forest} ukazuje prvolesí pro rozsah $n \leq 31$. Vykreslujeme
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.8\textwidth]{../visualizations/primal-forest-31.pdf}
-\caption{Prvolesí: Stojíte na jižním okraji (spodek diagramu, y=0) a můžete chodit západo-východně (vlevo-vpravo, osa x). Na každé pozici se díváte přímo na sever (nahoru v diagramu, osa y). Každá tečka představuje faktorizaci $n = p(p+k)$ s $p \geq 2$, vykreslenou v souřadnicích $(kp+p^2, kp+1)$. Prvočísla jsou x-souřadnice s \emph{čistými průhledy}---žádné složené stromy neblokují váš výhled v žádné hloubce na sever.}
+\caption{Prvoles: Stojíte na jižním okraji (spodek diagramu, y=0) a můžete chodit západo-východně (vlevo-vpravo, osa x). Na každé pozici se díváte přímo na sever (nahoru v diagramu, osa y). Každá tečka představuje faktorizaci $n = p(p+k)$ s $p \geq 2$, vykreslenou v souřadnicích $(kp+p^2, kp+1)$. Prvočísla jsou x-souřadnice s \emph{čistými průhledy}---žádné složené stromy neblokují váš výhled v žádné hloubce na sever.}
 \label{fig:forest}
 \end{figure}
 
@@ -169,7 +169,7 @@ Jak kráčíme na východ podél jižního okraje (zvyšující se x), les se za
 % TODO: Vložit primal-forest-100.pdf (nebo jiný větší rozsah)
 % \includegraphics[width=\textwidth]{../visualizations/primal-forest-100.pdf}
 \fbox{\parbox{0.9\textwidth}{\centering\vspace{2cm}[Zde bude vizualizace prvolesí pro větší rozsah, např. $n \leq 100$]\vspace{2cm}}}
-\caption{Prvolesí pro větší rozsah: Diagonální řady se překrývají, les se zahušťuje směrem na východ a sever. Průseky (prvočísla) se stávají vzácnějšími.}
+\caption{Prvoles pro větší rozsah: Diagonální řady se překrývají, les se zahušťuje směrem na východ a sever. Průseky (prvočísla) se stávají vzácnějšími.}
 \label{fig:forest-large}
 \end{figure}
 
@@ -225,7 +225,7 @@ A: Jak čísla rostou, každá pozice na ose x (jižní okraj) má více potenci
 \vspace{0.5em}
 \textbf{Hluboké tajemství poodhaleno}
 
-Prvolesí odhaluje ohromující paradox v srdci rozložení prvočísel:
+Prvoles odhaluje ohromující paradox v srdci rozložení prvočísel:
 
 \begin{itemize}
 \item \textbf{Vstup}: Dokonale pravidelné diagonální vzorce
@@ -267,7 +267,7 @@ Proto geometrický pohled, navzdory své jasnosti, nenabízí výpočetní zjedn
 
 Matematické vzdělávání tradičně upřednostňuje algoritmické postupy před vizuálním porozuměním. Eratosthenovo síto je typickým příkladem: přestože je základem výuky prvočísel, je téměř univerzálně prezentováno jako \emph{lineární, sekvenční algoritmus}: vypište čísla 2, 3, 4, 5, \ldots na řádek, pak systematicky škrtejte násobky. Tento přístup zapojuje \textbf{sekvenční zpracování levou hemisférou}\footnote{Poznámka: Rozdělení na "levou analytickou" a "pravou kreativní" hemisféru je zjednodušený populárně-naučný model. V realitě obě hemisféry intenzivně spolupracují na většině kognitivních úkolů. Jde zde o pedagogickou metaforu. Viz \href{https://cs.wikipedia.org/wiki/Lateralizace_mozku}{cs.wikipedia.org}}---krok 1, krok 2, následujte postup, dojděte k odpovědi.
 
-Prvolesí nabízí něco zásadně odlišného: \textbf{prostorové vnímání pravou hemisférou}, kde je celá struktura viditelná najednou. Místo ``vyškrtněte další složené číslo'' studenti vidí ``složená čísla tvoří pravidelnou mřížku; prvočísla jsou mezery.''
+Prvoles nabízí něco zásadně odlišného: \textbf{prostorové vnímání pravou hemisférou}, kde je celá struktura viditelná najednou. Místo ``vyškrtněte další složené číslo'' studenti vidí ``složená čísla tvoří pravidelnou mřížku; prvočísla jsou mezery.''
 
 Proč geometrické vizualizace prvočísel zůstávají raritou ve výuce? S moderními výpočetními nástroji---GeoGebra, Python, Wolfram, interaktivní notebooky---je jejich vytváření a zkoumání triviální. Ulamova spirála existuje od roku 1963, přesto se neučí. Proč vzdělávání setrvává u lineárního algoritmu?
 
@@ -289,7 +289,7 @@ Lineární síto odpovídá na otázky \emph{jak}, zatímco geometrický pohled 
 
 \begin{center}
 \begin{tabular}{p{6cm}|p{6cm}}
-\textbf{Lineární síto (Jak)} & \textbf{Prvolesí (Proč)} \\ \hline
+\textbf{Lineární síto (Jak)} & \textbf{Prvoles (Proč)} \\ \hline
 Vyškrtněte násobky 2 & Násobky tvoří diagonální řady s pravidelnými rozestupy \\
 Vyškrtněte násobky 3 & Každé prvočíslo vytváří svoji diagonální řadu \\
 Prvočísla jsou to, co zbylo & Prvočísla se nedají rozložit na menší činitele \\
@@ -338,7 +338,7 @@ Bariéra už není technologie. Bariérou je nedostatek \emph{povědomí}, že t
 
 Pokud jste pedagog a čtete toto, zvažte:
 \begin{itemize}
-\item Zkuste ukázat Prvolesí jako doplněk algoritmického síta
+\item Zkuste ukázat Prvoles jako doplněk algoritmického síta
 \item Zeptejte se žáků a studentů, který pohled jim dává větší smysl
 \item Použijte vizualizace k odpovědi na otázky ``proč'' o rozložení prvočísel
 \item Povzbuďte žáky a studenty ke zkoušení variací a k vlastním objevům
@@ -349,7 +349,7 @@ Cílem není přidat další téma do již přeplněného učebního plánu. Cí
 
 \section{Závěr}
 
-Navržená vizualizace Prvolesí transformuje linární algoritmus mechanického vyškrtávání násobků na konkrétní vizuální zkušenost.
+Navržená vizualizace Prvoles transformuje linární algoritmus mechanického vyškrtávání násobků na konkrétní vizuální zkušenost.
 
 Tento přístup je pedagogicky hodnotný na různých stupních:
 \begin{itemize}
