@@ -1,0 +1,521 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage[margin=1in]{geometry}
+\usepackage{listings}
+
+\title{Prvolesí:\\
+Cesta skrz Eratosthenovo síto}
+
+\author{Jan Popelka}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Představujeme vzdělávací vizualizaci, která transformuje klasické Eratosthenovo síto z jednorozměrného seznamu do dvourozměrného ``prvolesí.'' Mapováním složených čísel $n = p(p+k)$ do souřadnic $(kp+p^2, kp+1)$ vytváříme pohlcující pohled, kdy stojíte na jižním okraji lesa a díváte se na sever, přičemž složená čísla se objevují jako stromy v různých hloubkách. Prvočísla se stanou viditelnými jako průhledy---pozice, kde žádné složené číslo neblokuje váš výhled skrz les. Tato geometrická perspektiva činí strukturu síta vizuálně intuitivní a poskytuje poutavý úvod do multiplikativní struktury v teorii čísel.
+\end{abstract}
+
+\section{Úvod: Proč je tak těžké najít prvočísla?}
+
+Prvočísla jsou atomy aritmetiky---každé celé číslo se rozpadá na jedinečný součin prvočísel. Přesto se, navzdory své fundamentální důležitosti, prvočísla zdají objevovat na číselné ose nepředvídatelně:
+
+\[
+2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, \ldots
+\]
+
+Mezery mezi po sobě jdoucími prvočísly se liší: někdy jen 2 (dvojčata jako 11 a 13), někdy mnohem více (mezi 113 a 127 je mezera 14). Je v tomto chaosu skrytý vzorec?
+
+Staří Řekové vyvinuli chytrý algoritmus---\emph{Eratosthenovo síto}---který systematicky nachází všechna prvočísla odstraněním složených čísel. Ale procházení sítem na lineárním seznamu může působit mechanicky. \textbf{Co kdybychom mohli tu strukturu \emph{vidět}?}
+
+Představujeme \textbf{Prvolesí}: geometrickou transformaci, která mění síto na vizuální krajinu, kde složená čísla tvoří pravidelné vzorce a prvočísla se objevují jako průhledy. Představte si, že stojíte na jižním okraji rozsáhlého lesa a díváte se na sever mezi stromy. Můžete chodit na západ nebo východ podél tohoto okraje (osa x), a na každé pozici se podívat přímo na sever. Stromy jsou složená čísla, rozptýlená v různých hloubkách lesa. Na určitých pozicích podél jižního okraje máte dokonale čistý průhled---žádné stromy vám neblokují výhled v žádné hloubce. Tyto čisté koridory odhalují prvočísla.
+
+Tento geometrický pohled skrývá hlubší tajemství: když pečlivě měříme vzdálenosti k těmto stromům, objevíme, že prvorodost existuje na spojitém spektru, s prvočísly na hranici a složenými čísly stratifikovanými podle jejich faktorizační složitosti.
+
+\section{Klasické síto (lineární pohled)}
+
+Připomeňme si stručně, jak Eratosthenovo síto funguje v tradičním provedení. Vypíšeme všechna celá čísla počínaje od 2:
+
+\[
+2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, \ldots
+\]
+
+Pak opakovaně:
+\begin{enumerate}
+\item Označíme první neoznačené číslo jako prvočíslo
+\item Vyškrtneme všechny jeho násobky (složená čísla)
+\item Opakujeme
+\end{enumerate}
+
+Například:
+\begin{itemize}
+\item Označíme 2 jako prvočíslo, vyškrtneme 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, \ldots
+\item Označíme 3 jako prvočíslo, vyškrtneme 6, 9, 12, 15, 18, 21, 24, \ldots
+\item Označíme 5 jako prvočíslo, vyškrtneme 10, 15, 20, 25, \ldots
+\item A tak dále\ldots
+\end{itemize}
+
+Čísla, která zůstanou neoznačená, jsou prvočísla. To funguje krásně, ale je to jednorozměrný pohled. Každé složené číslo zmizí v přeškrtnutém symbolu. Můžeme vizualizovat \emph{strukturu} toho, proč jsou složená čísla odstraňována?
+
+\section{Geometrická transformace}
+
+Zde je klíčový poznatek: každé složené číslo lze zapsat jako $n = p(p+k)$ pro nějaká kladná celá čísla $p$ a $k \geq 0$. Například:
+\begin{align*}
+4 &= 2 \times 2 = 2(2+0) \quad \text{(tedy } p=2, k=0\text{)} \\
+6 &= 2 \times 3 = 2(2+1) \quad \text{(tedy } p=2, k=1\text{)} \\
+8 &= 2 \times 4 = 2(2+2) \quad \text{(tedy } p=2, k=2\text{)} \\
+9 &= 3 \times 3 = 3(3+0) \quad \text{(tedy } p=3, k=0\text{)}
+\end{align*}
+
+Nyní, místo umístění těchto složených čísel na čáru, je umístíme do 2D roviny pomocí tohoto mapování:
+
+\[
+\boxed{n = p(p+k) \quad \mapsto \quad \text{bod v } (kp + p^2,\, kp + 1)}
+\]
+
+Pojďme to rozebrat:
+\begin{itemize}
+\item \textbf{x-souřadnice}: $kp + p^2 = p(k+p)$ je přesně složené číslo $n$ samo o sobě
+\item \textbf{y-souřadnice}: $kp + 1$ je zvolena tak, aby body rozmístila vertikálně v pravidelném vzorci
+\end{itemize}
+
+\subsection{Proč tato volba souřadnic?}
+
+Souřadnice y jako $kp + 1$ není svévolná---vytváří \textbf{pravidelný les}. Když vykreslíme body pro různé hodnoty $k$ a $p$, tvoří symetrický mřížkový vzorec. Tato symetrie odhaluje hlubokou pravidelnost v tom, jak jsou faktorizace rozděleny.
+
+\textbf{Poznámka}: Mohli bychom vykreslit i případ $p=1$ (který dává posloupnost $k+1$ podél hlavní diagonály), ale jeho vynechání činí vzorec jasnějším: \emph{každá tečka je faktorizace a prvočísla jsou absence}. To vyžaduje aktivní uvažování spíše než pasivní rozpoznávání.
+
+\section{Les se objevuje}
+
+Obrázek~\ref{fig:forest} ukazuje prvolesí pro rozsah $n \leq 31$. Vykreslujeme pouze faktorizace s $p \geq 2$---čistou faktorizační mřížku.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{../visualizations/primal-forest-31.pdf}
+\caption{Prvolesí: Stojíte na jižním okraji (spodek diagramu, y=0) a můžete chodit západo-východně (vlevo-vpravo, osa x). Na každé pozici se díváte přímo na sever (nahoru v diagramu, osa y). Každá tečka představuje faktorizaci $n = p(p+k)$ s $p \geq 2$, vykreslenou v souřadnicích $(kp+p^2, kp+1)$. Prvočísla jsou x-souřadnice s \emph{čistými průhledy}---žádné složené stromy neblokují váš výhled v žádné hloubce na sever.}
+\label{fig:forest}
+\end{figure}
+
+\subsection{Co vidíme?}
+
+\begin{itemize}
+\item \textbf{Stromy (tečky)}: Každá tečka představuje způsob, jak zapsat n jako součin dvou činitelů, kde menší činitel je alespoň 2. Konkrétně strom na pozici $(kp+p^2, kp+1)$ ukazuje faktorizaci $n = p \times (p+k)$, kde $p \geq 2$ je menší činitel. Y-souřadnice $(kp+1)$ představuje, jak hluboko v lese tato konkrétní faktorizace stojí. Počet stromů na x-souřadnici n (napříč všemi hloubkami) se rovná počtu dělitelů n v rozsahu $[2, \sqrt{n}]$. Tyto stromy tvoří ``les'', který může blokovat váš průhled.
+
+\item \textbf{Vaše pozice}: Stojíte na pozici $(x, 0)$ na jižním okraji---doslova na y=0. Můžete chodit západo-východně a zvolit si, kterou x-souřadnici chcete testovat, pak se podívat přímo na sever do lesa. Většina pozic má alespoň jeden strom někde na sever od vás. Ale některé pozice \emph{nemají žádné stromy v žádné hloubce na sever}. To jsou \textbf{prvočísla}! Jsou to čisté koridory---čísla, která nelze zapsat jako $p(p+k)$ pro žádné $p \geq 2$.
+
+\item \textbf{Test prvorodosti}: Postavte se na libovolnou x-souřadnici podél jižního okraje a podívejte se přímo na sever. Pokud vidíte stromy blokující váš výhled v nějaké hloubce, toto číslo je složené. Pokud máte dokonale čistý průhled celou cestou skrz les---nic neblokuje váš výhled v žádné vzdálenosti na sever---toto číslo je prvočíslo.
+\end{itemize}
+
+\subsection{Klíčový poznatek}
+
+\begin{quote}
+\textbf{Počet stromů na pozici n (napříč všemi hloubkami) se rovná počtu dělitelů n v rozsahu $[2, \sqrt{n}]$. Prvočísla mají nula takových dělitelů, takže nemají žádné stromy blokující průhled---jsou to čisté koridory skrz faktorový les.}
+\end{quote}
+
+Například:
+\begin{itemize}
+\item $n = 18 = 2 \times 9 = 3 \times 6$: dělitelé v $[2, \sqrt{18}] = [2, 4{,}24]$ jsou $\{2, 3\}$, takže \textbf{2 stromy} blokují váš výhled
+\item $n = 16 = 2 \times 8 = 4 \times 4$: dělitelé v $[2, \sqrt{16}] = [2, 4]$ jsou $\{2, 4\}$, takže \textbf{2 stromy} blokují váš výhled
+\item $n = 13$ (prvočíslo): žádné dělitele v $[2, \sqrt{13}] = [2, 3{,}6]$, takže \textbf{čistý průhled}
+\end{itemize}
+
+Les neukazuje pouze která čísla jsou složená---geometricky počítá jejich malé dělitele.
+
+\section{Průzkum lesa}
+
+\subsection{Proč složená čísla tvoří tento vzorec?}
+
+Každý řádek $k = \text{konst}$ představuje všechna složená čísla tvaru $p(p+k)$:
+\begin{itemize}
+\item $k=0$: Druhé mocniny $p^2$ na pozicích $(p^2, 1)$
+\item $k=1$: Součiny $p(p+1)$ na pozicích $(p^2+p, p+1)$
+\item $k=2$: Součiny $p(p+2)$ na pozicích $(p^2+2p, 2p+1)$
+\item A tak dále\ldots
+\end{itemize}
+
+Každý sloupec $p = \text{konst}$ představuje všechna složená čísla s $p$ jako menším činitelem.
+
+\subsection{Čísla s více stromy}
+
+Čím více způsobů se číslo dá faktorizovat, tím více stromů blokuje váš výhled. Mocniny prvočísel jako $9 = 3^2$ nebo $25 = 5^2$ mají přesně jeden strom. Polprvočísla jako $15 = 3 \times 5$ mají dva. Ale vysoce složená čísla vytvářejí husté háje: $24 = 2 \times 12 = 3 \times 8 = 4 \times 6$ má tři stromy v různých hloubkách, zatímco $36$ má čtyři. Počet stromů se rovná počtu dělitelů v $[2, \sqrt{n}]$, což činí vysoce složená čísla hustými překážkami. Prvočísla, bez takových dělitelů, zůstávají jako otevřené louky---dokonale čisté průhledy.
+
+\subsection{Parabolická křivka a rostoucí mezery}
+
+Všimněte si, jak se les rozšiřuje hlouběji (dále na sever), jak čísla rostou? X-souřadnice $kp + p^2$ má kvadratický člen $p^2$, který vytváří parabolické uspořádání. To odhaluje hlubokou pravdu o rozložení prvočísel:
+
+\begin{quote}
+\textbf{Čím vyšší je x-souřadnice (čím větší číslo), tím hlouběji se les rozšiřuje na sever. Více stromů v různých hloubkách znamená vyšší pravděpodobnost, že nějaký strom zablokuje váš průhled.}
+\end{quote}
+
+Jak kráčíme na východ podél jižního okraje (zvyšující se x), les se zahušťuje a rozprostírá se dále na sever. Více činitelů znamená více stromů, rozptýlených napříč větším rozsahem hloubek. Šance najít dokonale čistý koridor---prvočíslo---se snižuje. Tento geometrický pohled činí Větu o prvočíslech intuitivní: \emph{prvočísla řídnou}, protože ``les činitelů'' se zahušťuje a prohlubuje.
+
+\section{Vyzkoušejte si to sami}
+
+Zde je kód ve Wolfram Language, který generuje les:
+
+\begin{lstlisting}[language=Mathematica, basicstyle=\small\ttfamily]
+(* Generuj vsechna slozena cisla az do n *)
+comp1[m_, n_] := Join @@ Table[
+  {k*p + p^2, k*p + 1},
+  {k, 0, n},
+  {p, Max[1, Ceiling[1/2 (-k + Sqrt[k^2 + 4*m])]],
+      Floor[1/2 (-k + Sqrt[k^2 + 4*n])]}
+]
+
+(* Vizualizuj les *)
+lpl[hi_] := ListPlot[
+  GatherBy[#, PrimeQ@*First],
+  PlotRange -> {Automatic, {-1/2, Automatic}},
+  AxesOrigin -> {0, 0},
+  AspectRatio -> 1,
+  PlotMarkers -> {Automatic, Large},
+  GridLines -> {Range@hi - 1/2, Range[0, hi] - 1/2},
+  Epilog -> {Thick, ColorData[97, "ColorList"][[2]],
+    Line[{#, {First@#, 0}}] & /@
+      Select[#, PrimeQ@*First]}
+] &@ comp1[1, hi]
+
+(* Vygeneruj graf *)
+lpl@31
+\end{lstlisting}
+
+\subsection{Cvičení}
+
+\begin{enumerate}
+\item \textbf{Lov prvočíselných dvojčat}: Postavte se na pozici 11 (prvočíslo s čistým průhledem). Jděte pomalu na východ. Další čistý koridor je na 13---jen 2 kroky daleko (prvočíselná dvojčata!). Pokračujte v chůzi a najděte další dvojčata. Můžete předpovědět, kde by se dvojčata mohla objevit, studiem struktury lesa? Je nějaký vzorec v rozestupu prvočíselných dvojčat?
+
+\item \textbf{Goldbachův průzkum}: Vyberte si pozici sudého čísla, řekněme 20. Můžete najít dvě prvočíselné pozice (čisté koridory), které se sčítají na 20? Například pozice 3 a 17 obě mají čisté průhledy a $3+17=20$. Zkuste jiná sudá čísla. Funguje to vždy? Co vám les říká o aditivní struktuře?
+
+\item \textbf{Modifikace lesa}: Co kdybyste zahrnuli stromy s $p=1$ do vizualizace? Nebo co kdybyste vykreslili pouze lichá složená čísla? Vytvořte tyto varianty a popište, co se změní. Činí odstranění určitých stromů vzorce zřetelnějšími nebo méně zřetelnými? Co vám to říká o roli malých prvočísel?
+
+\item \textbf{Vizuální předpovědní výzva}: Bez výpočtu faktorizací se podívejte na vzorec lesa pro $n \leq 30$ a předpovězte: bude mít pozice 91 čistý průhled? A co 97? Vysvětlete své uvažování pouze pomocí toho, co ukazuje vizuální vzorec. Pak své předpovědi ověřte.
+
+\item \textbf{Vyšetřování hustoty}: Spočítejte, kolik stromů se objevuje v oblastech 1-30, 31-60 a 61-90. Vynesete stromy na jednotku jako funkci pozice. Jaký trend pozorujete? Můžete vysvětlit, proč se hustota lesa mění tímto způsobem? Jak to souvisí s Větou o prvočíslech?
+\end{enumerate}
+
+\section{Spojení s jinými vizualizacemi}
+
+Prvolesí se přidává k rodině geometrických vizualizací prvočísel:
+
+\begin{itemize}
+\item \textbf{Ulamova spirála} (1963): Uspořádání celých čísel do spirály; prvočísla se shlukují podél diagonálních čar
+\item \textbf{Sacksova spirála}: Uspořádání celých čísel na Archimedově spirále; prvočísla tvoří zakřivené vzorce
+\item \textbf{Prvočíselné mřížky}: Různá 2D uspořádání odhalující strukturu
+\item \textbf{Prvolesí}: Složená čísla jako pravidelná mřížka, prvočísla jako mezery
+\end{itemize}
+
+Každá vizualizace zdůrazňuje různé aspekty rozložení prvočísel. Metafora lesa je zvláště intuitivní: \textbf{prvočísla nejsou náhodně rozptýlená---jsou to mezery zanechané, když jsou složená čísla systematicky umístěna.}
+
+\section{Vzdělávací hodnota}
+
+Tato vizualizace pomáhá odpovědět na časté studentské otázky:
+
+\paragraph{O: Proč jsou prvočísla ``speciální''?}
+A: Podívejte se na les---prvočísla jsou jediná čísla s \emph{dokonale čistými průhledy}. Žádné stromy neblokují váš výhled na sever v žádné hloubce. Jsou zásadně odlišná od složených čísel.
+
+\paragraph{O: Proč mezery mezi prvočísly rostou?}
+A: Vidíte, jak se les rozprostírá hlouběji na sever a zahušťuje se, jak čísla rostou? Více složených čísel v více hloubkách přeplňuje větší x-oblasti, činíc čisté průhledy vzácnějšími. Mezery mezi prvočísly se přirozeně rozšiřují.
+
+\paragraph{O: Co faktorizace znamená geometricky?}
+A: Každá tečka je složené číslo, umístěné podle svých činitelů $p$ a $k+p$. Prvočísla nemohou být takto umístěna---nemají faktorizaci.
+
+\paragraph{O: Je nějaký vzorec v prvočíslech?}
+A: Ano! Prvočísla jsou přesně mezery v pravidelné faktorové mřížce. Vzorec je viditelný, jakmile zmapujeme faktorizace do 2D.
+
+\paragraph{O: Proč se pravděpodobnost nalezení prvočísla snižuje?}
+A: Jak čísla rostou, každá pozice na ose x (jižní okraj) má více potenciálních činitelů. Les se rozprostírá hlouběji na sever a zahušťuje se, protože existuje jednoduše více způsobů, jak faktorizovat větší čísla. Geometricky více stromů ve více hloubkách blokuje vaše průhledy, takže dokonale čisté koridory (prvočísla) se stávají vzácnějšími.
+
+\section{Paradox pravidelnosti}
+
+\begin{center}
+\fbox{\begin{minipage}{0.9\textwidth}
+\vspace{0.5em}
+\textbf{Hluboké tajemství učiněné viditelným}
+
+Prvolesí odhaluje ohromující paradox v srdci rozložení prvočísel:
+
+\begin{itemize}
+\item \textbf{Vstup}: Dokonale pravidelné diagonální vzorce
+  \begin{itemize}
+  \item Násobky 2: rovnoměrně rozložené v intervalech 2
+  \item Násobky 3: rovnoměrně rozložené v intervalech 3
+  \item Násobky 5: rovnoměrně rozložené v intervalech 5
+  \item Každé prvočíslo generuje svou vlastní dokonale uniformní mřížku
+  \end{itemize}
+
+\item \textbf{Transformace}: Jednoduchý kvadratický posun $p^2 + kp$
+  \begin{itemize}
+  \item Zcela deterministické
+  \item Žádná náhodnost, žádný chaos v samotném pravidle
+  \item Pouze posunuje každý diagonální řádek parabolickou křivkou
+  \end{itemize}
+
+\item \textbf{Výstup}: Tajemné rozložení prvočísel
+  \begin{itemize}
+  \item Mezery 2, 4, 6, 14, 34, 72, \ldots
+  \item Prvočíselná dvojčata se objevující nepředvídatelně
+  \item Předmět Riemannovy hypotézy
+  \item Jeden z nejhlubších nevyřešených problémů matematiky
+  \end{itemize}
+\end{itemize}
+
+\textbf{Otázka}: Jak může překrývání nekonečně mnoha dokonale pravidelných vzorců, posunutých jednoduchým kvadratickým členem, vytvořit něco tak složitého a tajemného, jako je rozložení prvočísel?
+
+Můžete \emph{vidět} pravidelnou strukturu. Každý činitel vytváří předvídatelné řádky. Překrytí je deterministické. Přesto mezery---prvočísla---odolávají předpovědi. Tato vizualizace tajemství neřeší; \emph{odhaluje} ho. Snad to je nejhlubší poučení: \textbf{jednoduchá geometrická pravidla mohou generovat neredukovatelnou složitost.}
+
+Proto geometrický pohled, navzdory své jasnosti, neodemyká nové výpočetní zkratky pro nalezení prvočísel. Mezery jsou to, co zbude po nekonečné superpozici pravidelných vzorců---neloká lní, globálně emergentní fenomén. Existence každého prvočísla závisí na úniku \emph{všem} faktorovým řádkům, což je ekvivalentní původní otázce prvorodosti, jen vizualizované geometricky.
+\vspace{0.5em}
+\end{minipage}}
+\end{center}
+
+\section{Poznámka pro pedagogy: Levomozkové algoritmy, pravomozkové vzorce}
+
+\subsection{Proč se to neučí ve školách?}
+
+Eratosthenovo síto je základem matematického vzdělávání, přesto je téměř univerzálně prezentováno jako \emph{lineární, sekvenční algoritmus}: vypište čísla 2, 3, 4, 5, \ldots na řádek, pak systematicky škrtejte násobky. Tento přístup zapojuje \textbf{levomozkové sekvenční zpracování}---krok 1, krok 2, následujte postup, dojděte k odpovědi.
+
+Prvolesí nabízí něco zásadně odlišného: \textbf{pravomozkový prostorový vzorec}, kde je celá struktura viditelná najednou. Místo ``vyškrtněte další složené číslo'' studenti vidí ``složená čísla tvoří pravidelnou mřížku; prvočísla jsou mezery.''
+
+Proč tedy tento geometrický pohled nevstoupil do hlavního vzdělávacího proudu?
+
+\paragraph{Historická setrvačnost}
+Matematické vzdělávání se vyvinulo z ústních a písemných tradic, kde jste mohli ukázat pouze jedno číslo najednou. Lineární posloupnost 2, 3, 4, 5, 6, \ldots je to, co se vejde na papyrus, řádek tabule nebo tištěnou stránku. Dvourozměrné vizualizace vyžadují nástroje (milimetrový papír, vykreslování, barvu), které nebyly snadno dostupné až do nedávna.
+
+\paragraph{Výpočetní zaujatost}
+Síto se tradičně učí jako \emph{algoritmus}---metoda pro efektivní výpočet prvočísel. Školy zdůrazňují ``jak najít prvočísla'' (procedurální dovednost) nad ``proč se prvočísla chovají tímto způsobem'' (konceptuální porozumění). Lineární metoda je skutečně snazší implementovat ručně.
+
+\paragraph{Kompatibilita s hodnocením}
+Lineární algoritmy je snadné testovat: ``Vyškrtal student správná čísla? Identifikoval všechna prvočísla do 100?'' Prostorové porozumění je těžší hodnotit: ``Rozpoznává student, proč se tvoří mezery? Dokáže vysvětlit vzorec geometricky?'' Tradiční testování upřednostňuje procedurální úkoly.
+
+\paragraph{Příprava učitelů}
+Většina učitelů matematiky se sama naučila lineární síto a možná se nikdy nesetkala s geometrickými alternativami. Vyučování toho, co znáte, udržuje algoritmickou tradici. Zavedení nových vizualizací vyžaduje profesní rozvoj, aktualizované materiály a pohodlí s výpočetními nástroji.
+
+\subsection{Vzdělávací příležitost}
+
+Tragédie je, že lineární síto odpovídá na otázky \emph{jak}, zatímco geometrický pohled odpovídá na otázky \emph{proč}:
+
+\begin{center}
+\begin{tabular}{p{6cm}|p{6cm}}
+\textbf{Lineární síto (Jak)} & \textbf{Prvolesí (Proč)} \\ \hline
+Vyškrtněte násobky 2 & Násobky tvoří pravidelný řádkový vzorec \\
+Vyškrtněte násobky 3 & Každé prvočíslo generuje svůj vlastní řádek \\
+Prvočísla jsou to, co zbylo & Prvočísla jsou čísla bez faktorizace \\
+Mezery mezi prvočísly rostou & Hustota činitelů roste s velikostí \\
+Pokračujte ve škrtání\ldots & Uvidíte kompletní strukturu najednou \\
+\end{tabular}
+\end{center}
+
+To jsou přesně otázky, které zvídaví studenti kladou:
+\begin{itemize}
+\item ``Proč prvočísla řídnou?'' $\rightarrow$ Les se zahušťuje (více činitelů blokuje váš výhled)
+\item ``Proč jsou prvočísla `speciální'?'' $\rightarrow$ Jsou to mezery ve faktorové mřížce (neexistují faktorizace)
+\item ``Je nějaký vzorec v prvočíslech?'' $\rightarrow$ Ano! Složená čísla tvoří pravidelnou geometrickou strukturu; prvočísla jsou mezery zanechané pozadu
+\end{itemize}
+
+Lineární síto na tyto otázky neodpovídá---pouze říká ``pokračujte v následování algoritmu, dokud neskončíte.''
+
+\subsection{Komplementární přístupy, ne nahrazení}
+
+Nenavrh ujeme, že by lineární síto mělo být opuštěno. Spíše by měly být \textbf{oba přístupy vyučovány}:
+
+\begin{enumerate}
+\item \textbf{Nejprve lineární síto}: Praktické, algoritmické, snadno implementovatelné tužkou a papírem. Buduje procedurální plynulost a rozpoznávání vzorců.
+
+\item \textbf{Pak geometrický pohled}: Vizuální, konceptuální, odhaluje strukturální vlastnosti. Prohlubuje porozumění a spojuje s širším matematickým myšlením (souřadnicové systémy, grafy funkcí, geometrické uvažování).
+
+\item \textbf{Diskuse}: Proč obě metody fungují? Co každá odhaluje o prvočíslech? Který přístup vám připadá přirozenější?
+\end{enumerate}
+
+Různí studenti myslí různě. Někteří ``dostanou'' prvočísla z algoritmu. Jiní je ``dostanou'' z vizualizace. Někteří potřebují obojí. Proč nutit všechny do jediného módu?
+
+\subsection{Nástroje to umožňují}
+
+S moderními výpočetními nástroji---Wolfram Language, Python s matplotlib, GeoGebra, Desmos, interaktivní notebooky---je vytváření a zkoumání těchto vizualizací nyní \emph{triviální}. Studenti mohou:
+\begin{itemize}
+\item Generovat lesy pro různé rozsahy
+\item Přiblížit se na specifické oblasti
+\item Experimentovat s modifikovanými souřadnicemi
+\item Vytvořit animace ukazující, jak se vzorec buduje
+\item Objevovat vzorce sami
+\end{itemize}
+
+Bariéra už není technologie. Je to \emph{povědomí}, že takové vizualizace existují, a \emph{povolení} odchýlit se od tradičního učebního plánu.
+
+\subsection{Výzva k akci}
+
+Pokud jste pedagog čtoucí toto, zvažte:
+\begin{itemize}
+\item Ukázání Prvolesí vedle lineárního síta
+\item Zeptání se studentů, který pohled jim dává větší smysl
+\item Použití lesa k odpovědi na otázky ``proč'' o rozložení prvočísel
+\item Povzbuzení studentů prozkoumat variace a dělat vlastní objevy
+\item Sdílení toho, co funguje, s kolegy a tvůrci učebních plánů
+\end{itemize}
+
+Cílem není přidat další téma do již přeplněného učebního plánu. Je to \emph{prohloubit porozumění} tématu, které se už vyučuje, zapojením algoritmického i prostorového myšlení.
+
+\section{Závěr}
+
+Prvolesí transformuje abstraktní pojem ``prosévání složených čísel'' na konkrétní vizuální zkušenost. Mapováním faktorizací do souřadnic vidíme, jak složená čísla tvoří pravidelný geometrický vzorec, zatímco prvočísla se objevují jako mezery---čísla, která se do vzorce nehodí.
+
+Tento přístup má pedagogickou hodnotu na více úrovních:
+\begin{itemize}
+\item \textbf{Základní škola}: Vizuální intuice před algoritmy
+\item \textbf{Střední škola}: Spojení mezi faktorizací a geometrií
+\item \textbf{Univerzita}: Souřadnicové transformace odhalují strukturu
+\item \textbf{Výzkum}: Alternativní perspektivy mohou inspirovat nové přístupy
+\end{itemize}
+
+Příště, když budete přemýšlet o prvočíslech, představte si, že stojíte na jižním okraji rozsáhlého lesa, procházíte se a zkoušíte různé pozice. Na většině míst stromy blokují váš výhled na sever v nějaké hloubce. Ale občas najdete dokonale čistý koridor---žádné stromy v žádné vzdálenosti. To je prvočíslo. Les je pravidelný, ale průhledy jsou tajemné.
+
+Přesto má les ještě jedno tajemství k odhalení. Místo otázky ``blokovaný nebo čistý?'' se můžeme zeptat ``jak daleko jsou nejbližší stromy?'' Tato spojitá perspektiva transformuje naši binární klasifikaci na spektrum---a to, co se objeví, stojí za prozkoumání.
+
+\appendix
+
+\section{Spojité spektrum prvorodosti}
+
+Prvolesí odhaluje prvočísla jako mezery v diskrétní mřížce---pozice s dokonale čistými průhledy. Ale tento binární pohled (čistý nebo blokovaný) přehlíží bohatší strukturu. Co kdybychom se místo toho zeptali: \emph{jak daleko} jsou nejbližší stromy v každé hloubce?
+
+Tento přesun od binárního k spojitému měření odhaluje něco nečekaného: prvorodost existuje na spektru. Když vypočítáme skóre založené na vzdálenosti pro každé celé číslo, prvočísla povstávají a tvoří hladkou horní obálku, zatímco složená čísla se rozptylují níže, stratifikovaná podle své faktorizační složitosti. Mocniny prvočísel se shlukují poblíž obálky, polprvočísla spadají dále a vysoce složená čísla klesají ke dnu.
+
+To je více než vizualizační trik. Spojité skóre prvorodosti poskytuje geometrickou míru ``jak složené'' číslo je, s prvočísly jako limitním případem. Zatímco vzdělávací hodnota je jasná, tato perspektiva může nabídnout číslo-teoretické poznatky o vztahu mezi faktorizační strukturou a rozložením prvočísel.
+
+\subsection{Od diskrétních mezer ke spojitým vzdálenostem}
+
+V hlavní vizualizaci je číslo prvočíslem, pokud máte dokonale čistý průhled na sever. Můžeme to přeformulovat geometricky: pro každý horizontální ``řádek'' v hloubce $p$ v mřížce změřme \textbf{horizontální vzdálenost} od vaší pozice na $x$ k nejbližšímu stromu v této hloubce.
+
+Pro prvočíslo $x$: všechny vzdálenosti jsou kladné (žádné stromy přímo na sever od vás v žádné hloubce)\\
+Pro složené $x$: alespoň jedna vzdálenost je nulová (alespoň jeden strom blokuje váš průhled)
+
+\subsection{Trik měkkého minima}
+
+Místo vzít i přesné minimální vzdálenosti (což zahrnuje diskrétní operace zaokrouhlení dolů) můžeme použít \textbf{měkké minimum} s teplotním parametrem $\beta$:
+
+\begin{equation}
+d_p^{\text{soft}}(x) = -\beta \log \sum_{k=0}^{\lfloor x/p \rfloor} \exp\left(-\frac{|x - (kp + p^2)|}{\beta}\right)
+\end{equation}
+
+Když $\beta \to 0$, toto se blíží skutečné minimální vzdálenosti. Pro mírné $\beta$ (jako $\beta = 1/7$) poskytuje hladkou aproximaci.
+
+Celkové skóre prvorodosti je součin přes všechny $p$:
+
+\begin{equation}
+S(x) = \prod_{p=2}^{x} d_p^{\text{soft}}(x)
+\end{equation}
+
+Vykreslujeme $\log(1 + S(x))$ pro kompresi exponenciálního růstu.
+
+\subsection{Struktura obálky}
+
+Obrázek~\ref{fig:envelope} ukazuje pozoruhodný objev: když vykreslíme toto skóre pro všechna celá čísla, \textbf{prvočísla tvoří hladkou horní obálku}, zatímco složená čísla se rozptylují pod ní ve stratifikovaných vrstvách.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{../visualizations/soft-distance-envelope-127.pdf}
+\caption{Spektrum prvorodosti: prvočísla (oranžová) tvoří hladkou obálku, složená čísla (modrá) se rozptylují níže. Vzdálenost každého složeného čísla od obálky kóduje jeho faktorizační strukturu.}
+\label{fig:envelope}
+\end{figure}
+
+\subsection{Faktorizace jako hloubka}
+
+Obrázek~\ref{fig:stratification} odhaluje hlubší strukturu: složená čísla se stratifikují podle jejich počtu prvočíselných činitelů (počítajíc násobnost).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{../visualizations/soft-distance-composite-types.pdf}
+\caption{Složená čísla stratifikovaná podle typu: mocniny prvočísel nejblíže k obálce, polprvočísla dále dolů, mnohočinitelová složená čísla na dně. Faktorizační složitost je viditelná jako vertikální pozice.}
+\label{fig:stratification}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Mocniny prvočísel} ($p^2, p^3, \ldots$): Nejblíže k obálce
+\item \textbf{Polprvočísla} ($pq$): Střední hloubka
+\item \textbf{3+ činitelů}: Klesají postupně níže
+\end{itemize}
+
+Mezera od obálky roste s faktorizační složitostí: více činitelů $\Rightarrow$ nižší skóre $\Rightarrow$ dále od ``prvorodosti.''
+
+\subsection{Proč je geometrický pohled podstatný}
+
+Zajímavě, definování součinu měkkých vzdáleností pomocí klasické modulární aritmetiky (vzdálenost k násobkům $p$) produkuje zcela odlišné chování---vůbec nevytváří strukturu obálky! \textbf{Geometrická mřížková formulace} $(kp + p^2, kp+1)$ je podstatná pro fungování této vizualizace.
+
+To naznačuje, že 2D souřadnicová transformace zachycuje něco zásadního o faktorizační struktuře, co není viditelné v klasickém 1D pohledu.
+
+\subsection{Implementace}
+
+Zde je kód ve Wolfram Language:
+
+\begin{lstlisting}[language=Mathematica, basicstyle=\small\ttfamily]
+(* Soucin mekkych vzdalenosti s teplotou beta *)
+DistanceProductSoft[x_, beta_: 1/7] :=
+  Product[
+    -beta * Log @ Sum[
+      Exp[-Abs[x - (k*p + p^2)]/beta],
+      {k, 0, Floor[x/p]}
+    ],
+    {p, 2, x}
+  ]
+
+(* Vykresli spektrum prvorodosti *)
+pp[hi_] :=
+  Table[{k, Log[1 + DistanceProductSoft[k, 1/7]]}, {k, 1, hi}] //
+    ListLinePlot[
+      GatherBy[#, PrimeQ@*First],
+      PlotMarkers -> Automatic,
+      GridLines -> {Prime @ Range @ PrimePi @ hi, None},
+      Frame -> True,
+      FrameLabel -> {"n", "skore"}
+    ] &
+
+pp[127]  (* Vygeneruj graf *)
+\end{lstlisting}
+
+\subsection{Vzdělávací hodnota}
+
+Toto spojité spektrum prvorodosti nabízí komplementární poznatky k diskrétnímu lesu:
+
+\begin{itemize}
+\item Les ukazuje \emph{proč} složená čísla existují (faktorizace umisťují tečky)
+\item Spektrum ukazuje \emph{jak blízko} je každé číslo k tomu být prvočíslem
+\item Mocniny prvočísel jsou ``téměř prvočísla'' (vysoká skóre)
+\item Vysoce složená čísla jsou ``velmi složená'' (nízká skóre)
+\item Hladká obálka odhaluje pravidelnost v rozložení prvočísel
+\end{itemize}
+
+\subsection{Poznámka o výpočetní složitosti}
+
+Jak bylo zdůrazněno v hlavním textu, tato vizualizace neposkytuje výpočetní zkratky. Výpočet $S(x)$ stále vyžaduje kontrolu všech $p$ od $2$ do $x$, což je $O(x)$ operací---horší než standardní Eratosthenovo síto s $O(x \log \log x)$.
+
+Přístup měkkého minima činí diskrétní problém spojitým, což je krásné pro vizualizaci a matematickou analýzu, ale nesnižuje výpočetní složitost. Geometrická reformulace odhaluje strukturu; nerozpouští výpočetní obtížnost.
+
+\subsection{Otevřené otázky}
+
+\begin{enumerate}
+\item Jaká je rychlost růstu prvočíselné obálky? Může být vyjádřena v uzavřené formě?
+\item Je stratifikace podle $\Omega(n)$ (počet prvočíselných činitelů) přesná, nebo se vrstvy překrývají?
+\item Má obálka spojení s Riemannovou funkcí zeta nebo jinými klasickými funkcemi rozložení prvočísel?
+\item Může být spojité skóre použito k definování smysluplné ``metriky vzdálenosti'' na celých číslech?
+\item Existují jiné souřadnicové transformace, které produkují odlišná, ale stejně zajímavá spojitá spektra?
+\end{enumerate}
+
+\subsection{Závěr dodatku}
+
+Prvolesí ukazuje prvočísla jako absence---mezery v pravidelné mřížce. Součin měkkých vzdáleností ukazuje prvočísla jako \emph{extrémy}---horní hranici spojité krajiny prvorodosti. Oba pohledy vycházejí ze stejné geometrické transformace, odhalující různé fasetky stejné základní struktury.
+
+To je síla geometrické reformulace: ne řešit problém rychleji, ale vidět ho z úhlů, které odhalují skryté vzorce. Paradox pravidelnosti přetrvává---jednoduchá pravidla, neredukovatelná složitost---ale nyní vidíme, že složitost má \emph{vrstvy}, spojité spektrum od prvočísla k vysoce složenému.
+
+Vizualizace neodpovídá \emph{jak} najít prvočísla efektivně, ale odpovídá \emph{co} prvorodost vypadá, když je viděna prizmatem geometrické vzdálenosti. A někdy je vidění vzorce jasně objev sám o sobě.
+
+\section*{Poděkování}
+
+Tato vizualizace vznikla z rekreačních zkoumání ve výpočetní teorii čísel. Děkuji komunitě Wolfram Language za nástroje, které dělají takové experimenty potěšením.
+
+\end{document}
