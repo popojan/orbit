@@ -110,7 +110,7 @@ Obrázek~\ref{fig:forest} ukazuje prvolesí pro rozsah $n \leq 31$. Vykreslujeme
 \begin{itemize}
 \item \textbf{Stromy (tečky)}: Každá tečka představuje způsob, jak zapsat n jako součin dvou činitelů, kde menší činitel je alespoň 2. Konkrétně strom na pozici $(kp+p^2, kp+1)$ ukazuje faktorizaci $n = p \times (p+k)$, kde $p \geq 2$ je menší činitel. Y-souřadnice $(kp+1)$ představuje, jak hluboko v lese tato konkrétní faktorizace stojí. Počet stromů na x-souřadnici n (napříč všemi hloubkami) se rovná počtu dělitelů n v rozsahu $[2, \sqrt{n}]$. Tyto stromy tvoří ``les'', který může blokovat váš průhled.
 
-\item \textbf{Vaše pozice}: Stojíte na pozici $(x, 0)$ na jižním okraji---doslova na y=0. Můžete chodit západo-východně a zvolit si, kterou x-souřadnici chcete testovat, pak se podívat přímo na sever do lesa. Většina pozic má alespoň jeden strom někde na sever od vás. Ale některé pozice \emph{nemají žádné stromy v žádné hloubce na sever}. To jsou \textbf{prvočísla}! Jsou to čisté koridory---čísla, která nelze zapsat jako $p(p+k)$ pro žádné $p \geq 2$.
+\item \textbf{Vaše pozice}: Stojíte na pozici $(x, 0)$ na jižním okraji---doslova na y=0. Můžete chodit západo-východně a zvolit si, kterou x-souřadnici chcete testovat, pak se podívat přímo na sever do lesa. Většina pozic má alespoň jeden strom někde na sever od vás. Ale některé pozice \emph{nemají žádné stromy v žádné hloubce na sever}. To jsou \textbf{prvočísla}! Jsou to čisté průseky---čísla, která nelze zapsat jako $p(p+k)$ pro žádné $p \geq 2$.
 
 \item \textbf{Test prvočíselnosti}: Postavte se na libovolnou x-souřadnici podél jižního okraje a podívejte se přímo na sever. Pokud vidíte stromy blokující váš výhled v nějaké hloubce, toto číslo je složené. Pokud máte dokonale čistý průhled celou cestou skrz les---nic neblokuje váš výhled v žádné vzdálenosti na sever---toto číslo je prvočíslo.
 \end{itemize}
@@ -118,7 +118,7 @@ Obrázek~\ref{fig:forest} ukazuje prvolesí pro rozsah $n \leq 31$. Vykreslujeme
 \subsection{Klíčový poznatek}
 
 \begin{quote}
-\textbf{Počet stromů na pozici n (napříč všemi hloubkami) se rovná počtu dělitelů n v rozsahu $[2, \sqrt{n}]$. Prvočísla mají nula takových dělitelů, takže nemají žádné stromy blokující průhled---jsou to čisté koridory skrz faktorový les.}
+\textbf{Počet stromů na pozici n (napříč všemi hloubkami) se rovná počtu dělitelů n v rozsahu $[2, \sqrt{n}]$. Prvočísla mají nula takových dělitelů, takže nemají žádné stromy blokující průhled---jsou to čisté průseky skrz faktorový les.}
 \end{quote}
 
 Například:
@@ -156,7 +156,7 @@ Všimněte si diagonálních řad stromů stoupajících na severovýchod? Každ
 \textbf{Čím vyšší je x-souřadnice (čím větší číslo), tím hlouběji se les rozšiřuje na sever. Více stromů v různých hloubkách znamená vyšší pravděpodobnost, že nějaký strom zablokuje váš průhled.}
 \end{quote}
 
-Jak kráčíme na východ podél jižního okraje (zvyšující se x), les se zahušťuje a rozprostírá se dále na sever. Více činitelů znamená více stromů, rozptýlených napříč větším rozsahem hloubek. Šance najít dokonale čistý koridor---prvočíslo---se snižuje. Tento geometrický pohled činí Větu o prvočíslech intuitivní: \emph{prvočísla řídnou}, protože ``les činitelů'' se zahušťuje a prohlubuje.
+Jak kráčíme na východ podél jižního okraje (zvyšující se x), les se zahušťuje a rozprostírá se dále na sever. Více činitelů znamená více stromů, rozptýlených napříč větším rozsahem hloubek. Šance najít dokonale čistý průsek---prvočíslo---se snižuje. Tento geometrický pohled činí Větu o prvočíslech intuitivní: \emph{prvočísla řídnou}, protože ``les činitelů'' se zahušťuje a prohlubuje.
 
 \section{Průzkum a cvičení}
 
@@ -193,7 +193,7 @@ Existují další geometrické vizualizace prvočísel, z nichž každá zdůraz
 \item \textbf{Prvočíselné mřížky}: Různá 2D uspořádání odhalující strukturu
 \end{itemize}
 
-Metafora lesa je zvláště intuitivní: \textbf{prvočísla nejsou náhodně rozptýlená---jsou to mezery zanechané, když jsou složená čísla systematicky umístěna.}
+Metafora lesa je zvláště intuitivní: \textbf{prvočísla nejsou náhodně rozptýlená---jsou to průseky, které zůstanou po systematickém vysazení stromů.}
 
 \section{Vzdělávací hodnota}
 
@@ -212,14 +212,14 @@ A: Každá tečka je složené číslo, umístěné podle svých činitelů $p$ 
 A: Ano! Prvočísla jsou přesně mezery v pravidelné faktorové mřížce. Vzorec je viditelný, jakmile zmapujeme faktorizace do 2D.
 
 \paragraph{O: Proč se pravděpodobnost nalezení prvočísla snižuje?}
-A: Jak čísla rostou, každá pozice na ose x (jižní okraj) má více potenciálních činitelů. Les se rozprostírá hlouběji na sever a zahušťuje se, protože existuje jednoduše více způsobů, jak faktorizovat větší čísla. Geometricky více stromů ve více hloubkách blokuje vaše průhledy, takže dokonale čisté koridory (prvočísla) se stávají vzácnějšími.
+A: Jak čísla rostou, každá pozice na ose x (jižní okraj) má více potenciálních činitelů. Les se rozprostírá hlouběji na sever a zahušťuje se, protože existuje jednoduše více způsobů, jak faktorizovat větší čísla. Geometricky více stromů ve více hloubkách blokuje vaše průhledy, takže dokonale čisté průseky (prvočísla) se stávají vzácnějšími.
 
 \section{Paradox pravidelnosti}
 
 \begin{center}
 \fbox{\begin{minipage}{0.9\textwidth}
 \vspace{0.5em}
-\textbf{Hluboké tajemství učiněné viditelným}
+\textbf{Hluboké tajemství poodhaleno}
 
 Prvolesí odhaluje ohromující paradox v srdci rozložení prvočísel:
 
@@ -355,7 +355,7 @@ Tento přístup má pedagogickou hodnotu na více úrovních:
 \item \textbf{Výzkum}: Alternativní perspektivy mohou inspirovat nové přístupy
 \end{itemize}
 
-Příště, když budete přemýšlet o prvočíslech, představte si, že stojíte na jižním okraji rozsáhlého lesa, procházíte se a zkoušíte různé pozice. Na většině míst stromy blokují váš výhled na sever v nějaké hloubce. Ale občas najdete dokonale čistý koridor---žádné stromy v žádné vzdálenosti. To je prvočíslo. Les je pravidelný, ale průhledy jsou tajemné.
+Příště, když budete přemýšlet o prvočíslech, představte si, že stojíte na jižním okraji rozsáhlého lesa, procházíte se a zkoušíte různé pozice. Na většině míst stromy blokují váš výhled na sever v nějaké hloubce. Ale občas najdete dokonale čistý průsek---žádné stromy v žádné vzdálenosti. To je prvočíslo. Les je pravidelný, ale průhledy jsou tajemné.
 
 Přesto má les ještě jedno tajemství k odhalení. Místo otázky ``blokovaný nebo čistý?'' se můžeme zeptat ``jak daleko jsou nejbližší stromy?'' Tato spojitá perspektiva transformuje naši binární klasifikaci na spektrum---a to, co se objeví, stojí za prozkoumání.
 
