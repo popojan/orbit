@@ -75,7 +75,7 @@ orbit/
 
 This work demonstrates a collaborative approach to mathematical research:
 
-**Human** (Jan Pospíšil):
+**Human** (Jan Popelka):
 - Geometric intuition (primal forest - developed over years since childhood)
 - Critical verification of each step
 - Recognition of important patterns
@@ -218,8 +218,8 @@ Please open GitHub issues or pull requests.
 If you use this work (at your own risk!), please cite:
 
 ```bibtex
-@misc{pospisil2025orbit,
-  author = {Pospíšil, Jan and Claude (Anthropic)},
+@misc{popelka2025orbit,
+  author = {Popelka, Jan and Claude (Anthropic)},
   title = {Orbit: Geometric Explorations in Prime Number Theory},
   year = {2025},
   publisher = {GitHub},

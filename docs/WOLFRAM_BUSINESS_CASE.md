@@ -4,7 +4,7 @@
 
 **Date**: November 15, 2025
 
-**Author**: Jan Pospíšil (with AI assistance)
+**Author**: Jan Popelka (with AI assistance)
 
 ---
 

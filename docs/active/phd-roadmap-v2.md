@@ -278,7 +278,7 @@ Questions:
 I would be happy to meet in person (I'm in Prague) to discuss further.
 
 Best regards,
-Jan Pospíšil
+Jan Popelka
 popojan@protonmail.com
 github.com/popojan/orbit
 
