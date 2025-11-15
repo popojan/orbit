@@ -151,7 +151,7 @@ Composite numbers with multiple factorizations appear multiple times. For exampl
 
 \subsection{Numbers with Multiple Trees}
 
-The more ways a number can factor, the more trees block your view. Prime powers like $9 = 3^2$ or $25 = 5^2$ have exactly one tree. Semiprimes like $15 = 3 \times 5$ have two. But highly composite numbers create dense groves: $24 = 2 \times 12 = 3 \times 8 = 4 \times 6$ has three trees at different depths, while $36$ has four. The number of trees equals the count of divisors in $[2, \sqrt{n}]$, making highly composite numbers appear as thick barriers. Primes, with no such divisors, remain as open meadows---completely clear sight lines.
+The more ways a number can factor, the more trees block your view. Prime powers ($9, 25$) have one tree, semiprimes ($15$) two, highly composite numbers ($36$) four. Primes have no such divisors and offer clear sight lines.
 
 \subsection{The Parabolic Curve and Growing Gaps}
 
@@ -196,9 +196,9 @@ lpl@31
 \subsection{Exercises}
 
 \begin{enumerate}
-\item \textbf{The Twin Prime Hunt}: Stand at position 11 (a prime with a clear sight line). Walk east slowly. The next clear sight line is at 13---just 2 steps away (twin primes!). Keep walking and find more twin pairs. Can you predict where twins might appear by studying the forest structure? Is there a pattern to how twin primes are spaced?
+\item \textbf{The Twin Prime Hunt}: Stand at position 11. Walk east slowly. The next clear sight line is at 13---just 2 steps away (twin primes!). Keep walking and find more twin pairs. Can you predict where twins might appear by studying the forest structure? Is there a pattern to how twin primes are spaced?
 
-\item \textbf{The Goldbach Exploration}: Pick an even number's position, say 20. Can you find two prime positions (clear sight lines) that sum to 20? For example, positions 3 and 17 both have clear sight lines, and $3+17=20$. Try other even numbers. Does this always work? What does the forest tell you about additive structure?
+\item \textbf{The Goldbach Exploration}: Pick an even number's position, say 20. Can you find two prime positions that sum to 20? For example, $3+17=20$. Try other even numbers. Does this always work? What does the forest tell you about additive structure?
 
 \item \textbf{Modify the Forest}: What if you included $p=1$ trees in the visualization? Or what if you plotted only odd composites? Build these variations and describe what changes. Does removing certain trees make patterns more or less obvious? What does this tell you about the role of small primes?
 
@@ -225,19 +225,16 @@ Each visualization highlights different aspects of prime distribution. The fores
 This visualization helps answer common student questions:
 
 \paragraph{Q: Why are primes ``special''?}
-A: Look at the forest---primes are the only numbers with \emph{perfectly clear sight lines}. No trees block your view northward at any depth. They're fundamentally different from composites.
+A: Primes are the only numbers with clear sight lines. They're fundamentally different from composites.
 
 \paragraph{Q: Why do prime gaps grow?}
-A: See how the forest extends deeper northward and grows denser as numbers increase? More composites at more depths crowd the larger x-regions, making clear sight lines rarer. The gaps between primes naturally widen.
-
-\paragraph{Q: What does factorization mean geometrically?}
-A: Each dot is a composite, positioned according to its factors $p$ and $k+p$. Primes can't be positioned this way---they have no factorization.
+A: The forest extends deeper and grows denser as numbers increase. Sight lines become rarer, and gaps between primes naturally widen.
 
 \paragraph{Q: Is there a pattern to primes?}
 A: Yes! Primes are precisely the gaps in the regular factor lattice. The pattern is visible once we map factorizations to 2D.
 
 \paragraph{Q: Why does the probability of finding a prime decrease?}
-A: As numbers grow larger, each position on the x-axis (southern edge) has more potential factors. The forest extends deeper northward and becomes denser because there are simply more ways to factor larger numbers. Geometrically, more trees at more depths block your sight lines, so completely clear sight lines (primes) become rarer.
+A: As numbers grow, they have more factors. The forest extends deeper and becomes denser. More trees at more depths block sight lines, so primes become rarer.
 
 \section{The Regularity Paradox}
 

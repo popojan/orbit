@@ -164,7 +164,7 @@ Složené číslo s více děliteli se objeví vícekrát. Například $24 = 2 \
 
 \subsection{Čísla s více stromy}
 
-Čím více dělitelů má číslo, tím více stromů blokuje váš výhled. Mocniny prvočísel jako $9 = 3^2$ nebo $25 = 5^2$ mají přesně jeden strom. Polprvočísla jako $15 = 3 \times 5$ mají dva. Vysoce složená čísla jako $36$ mají čtyři stromy v různých hloubkách. Prvočísla, bez dělitelů v rozsahu $[2, \sqrt{n}]$, nabízejí dokonale čisté průhledy.
+Čím více dělitelů má číslo, tím více stromů blokuje váš výhled. Mocniny prvočísel ($9, 25$) mají jeden strom, polprvočísla ($15$) dva, vysoce složená čísla ($36$) čtyři. Prvočísla nabízejí čisté průhledy.
 
 \subsection{Diagonální řady a rostoucí mezery}
 
@@ -174,7 +174,7 @@ Všimněte si diagonálních řad stromů stoupajících na severovýchod? Každ
 \textbf{Čím vyšší je x-souřadnice (čím větší číslo), tím hlouběji se les rozšiřuje na sever. Více stromů v různých hloubkách znamená vyšší pravděpodobnost, že nějaký strom zablokuje váš průhled.}
 \end{quote}
 
-Jak kráčíme na východ podél jižního okraje (zvyšující se x), les se zahušťuje a rozprostírá se dále na sever. Více dělitelů znamená více stromů, rozptýlených napříč větším rozsahem hloubek. Šance najít čistý průhled---prvočíslo---se snižuje. Tento geometrický pohled činí Větu o prvočíslech intuitivní: \emph{prvočísla řídnou}, protože les dělitelů se zahušťuje a prohlubuje.
+Jak kráčíme na východ podél jižního okraje, les se zahušťuje a rozprostírá se dále na sever. Více stromů v různých hloubkách snižuje šanci najít čistý průhled. Tento geometrický pohled činí Větu o prvočíslech intuitivní: \emph{prvočísla řídnou}, protože les se zahušťuje a prohlubuje.
 
 \section{Průzkum a cvičení}
 
@@ -190,7 +190,7 @@ Jak kráčíme na východ podél jižního okraje (zvyšující se x), les se za
 \begin{enumerate}
 \item \textbf{Hledání prvočíselných dvojčat}: Postavte se na pozici 11 (prvočíslo s čistým průhledem). Jděte pomalu na východ. Další čistý průhled je na 13---jen 2 kroky daleko (prvočíselná dvojčata!). Pokračujte v chůzi a najděte další dvojčata v rozsahu do 100. Kolik jich je? Studiem struktury lesa zkuste odhadnout, proč jsou některé oblasti ``bohatší'' na dvojčata než jiné. (Poznámka: Předpovědět přesný vzorec rozložení dvojčat je otevřený výzkumný problém!)\footnote{Pro zájemce: Viz \emph{Domněnka o prvočíselných dvojčatech} na \href{https://cs.wikipedia.org/wiki/Prvo\%C4\%8D\%C3\%ADseln\%C3\%A1_dvoj\%C4\%8Data}{cs.wikipedia.org}}
 
-\item \textbf{Goldbachův průzkum}: Vyberte si pozici sudého čísla, řekněme 20. Můžete najít dvě prvočíselné pozice (čisté průhledy), která v součtu dají 20? Například pozice 3 a 17 obě mají čisté průhledy a $3+17=20$. Zkuste jiná sudá čísla do 50. Vždy najdete alespoň jeden takový pár? Co vám les říká o aditivní struktuře? (Poznámka: Otázka ``funguje to pro všechna sudá čísla?'' je slavná Goldbachova domněnka, dosud nedokázaná!)\footnote{Pro zájemce: Více o \emph{Goldbachově domněnce} na \href{https://cs.wikipedia.org/wiki/Goldbachova_dom\%C4\%9B\%C5\%88ka}{cs.wikipedia.org}}
+\item \textbf{Goldbachův průzkum}: Vyberte si pozici sudého čísla, řekněme 20. Můžete najít dvě prvočíselné pozice, která v součtu dají 20? Například $3+17=20$. Zkuste jiná sudá čísla do 50. Vždy najdete alespoň jeden takový pár? (Poznámka: Otázka ``funguje to pro všechna sudá čísla?'' je slavná Goldbachova domněnka, dosud nedokázaná!)\footnote{Pro zájemce: Více o \emph{Goldbachově domněnce} na \href{https://cs.wikipedia.org/wiki/Goldbachova_dom\%C4\%9B\%C5\%88ka}{cs.wikipedia.org}}
 
 \item \textbf{Modifikace lesa}: Co kdybyste zahrnuli stromy s $p=1$ do vizualizace? Nebo co kdybyste vykreslili pouze lichá složená čísla? Vytvořte tyto varianty a popište, co se změní. Činí odstranění určitých stromů vzorce zřetelnějšími nebo méně zřetelnými? Co vám to říká o roli malých prvočísel?
 
@@ -216,19 +216,16 @@ Metafora lesa je zvláště intuitivní: \textbf{prvočísla nejsou náhodně ro
 Tato vizualizace pomáhá odpovědět na časté studentské otázky:
 
 \paragraph{Proč jsou prvočísla ``speciální''?}
-A: Podívejte se na les---prvočísla jsou jediná čísla s \emph{dokonale čistými průhledy}. Žádné stromy neblokují váš výhled na sever v žádné hloubce. Jsou zásadně odlišná od složených čísel.
+A: Prvočísla jsou jediná čísla s čistými průhledy. Jsou zásadně odlišná od složených čísel.
 
 \paragraph{Proč mezery mezi prvočísly rostou?}
-A: Vidíte, jak se les rozprostírá hlouběji na sever a zahušťuje se, jak čísla rostou? Více složených čísel v více hloubkách přeplňuje větší x-oblasti, činíc čisté průhledy vzácnějšími. Mezery mezi prvočísly se přirozeně rozšiřují.
-
-\paragraph{Co dělitelé znamenají geometricky?}
-A: Každý strom odpovídá děliteli složeného čísla. Prvočísla nemají takové stromy---nemají dělitele v rozsahu $[2, \sqrt{n}]$.
+A: Les se rozprostírá hlouběji a zahušťuje se s rostoucími čísly. Průhledy se stávají vzácnějšími, mezery mezi prvočísly se přirozeně rozšiřují.
 
 \paragraph{Je nějaký vzorec v prvočíslech?}
 A: Ano! Prvočísla jsou přesně mezery v pravidelné mřížce dělitelů. Vzorec je viditelný, jakmile vysázíme stromy do 2D.
 
 \paragraph{Proč se pravděpodobnost nalezení prvočísla snižuje?}
-A: Jak čísla rostou, každá pozice na ose x (jižní okraj) má více potenciálních dělitelů. Les se rozprostírá hlouběji na sever a zahušťuje se, protože větší čísla mají jednoduše více dělitelů. Geometricky více stromů ve více hloubkách blokuje vaše průhledy, takže čisté průhledy (prvočísla) se stávají vzácnějšími.
+A: Jak čísla rostou, mají více dělitelů. Les se rozprostírá hlouběji a zahušťuje se. Více stromů ve více hloubkách blokuje průhledy, takže prvočísla se stávají vzácnějšími.
 
 \section{Paradox pravidelnosti}
 
