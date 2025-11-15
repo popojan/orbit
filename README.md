@@ -1,341 +1,269 @@
-# Orbit: Computational Mathematical Explorations
+# Orbit: Mathematical Explorations in Number Theory
 
-A Wolfram Language paclet for recreational and research mathematical explorations, featuring computational number theory modules and educational visualizations.
+**Status**: 🚧 Active Research - Work in Progress (November 2025)
 
-**Highlights:**
-- 🌲 **Primal Forest** — Educational paper revealing primes through geometric visualization, with unexpected continuous primality score
-- 🔢 **Primorial Formula** — Computing primorials via alternating factorial sums (open research problem)
-- 🎯 **Four Computational Modules** — Semiprime factorization, modular factorials, square root rationalization, primorials
+This repository documents an ongoing mathematical exploration of prime number structure through geometric visualization and computational methods.
 
-## Contents
+## ⚠️ Important Disclaimer
 
-### Educational Paper: The Primal Forest
+**This is unpublished, non-peer-reviewed research.** All mathematical claims beyond the geometric foundation are conjectural until formally verified by the mathematical community. Use at your own discretion.
 
-**`docs/papers/primal-forest-paper.tex`** — A complete educational paper transforming the Sieve of Eratosthenes into an intuitive geometric visualization.
+- Papers in `docs/papers/` are preprints (not yet submitted for peer review)
+- Proofs may contain errors or gaps
+- Numerical verifications provide evidence but not proof
+- We welcome scrutiny, corrections, and independent verification
 
-**The Core Idea:** Map composite numbers $n = p(p+k)$ to 2D coordinates $(kp+p^2, kp+1)$. Primes appear as **gaps in the forest** — positions with no dots above them.
+## What's Here
 
-**The Unexpected Revelation (Appendix):** By computing soft-distance products from integers to the factorization lattice, we discover that:
-- **Primes form a smooth upper envelope**
-- **Composites stratify by factorization complexity** — prime powers near the top, highly composite numbers at the bottom
-- **Factorization structure becomes continuous** — a "primality score" that measures how close any integer is to being prime
+This repository contains:
 
-This continuous primality spectrum emerges naturally from the geometric view, revealing structure invisible in the classical 1D sieve.
+1. **Geometric Foundation** - "Primal Forest" visualization mapping prime relationships to 2D coordinate geometry (years of development)
+2. **Epsilon-Pole Residue Theorem** - Proven local result about divisor count regularization
+3. **Closed Form Discovery** - Conjectured global formula for non-multiplicative Dirichlet series L_M(s) (Nov 15, 2025)
+4. **Trinity Methodology** - Documentation of human-AI-computational collaboration process
+5. **Complete Exploration History** - All scripts, experiments, and "aha moments" preserved
 
-**Visualizations:** See `visualizations/` for primal forest plots and soft-distance envelope diagrams.
+### Key Mathematical Objects
 
-**Educational Value:**
-- Makes prime gaps visually intuitive
-- Connects factorization to geometry
-- Reveals the "regularity paradox" — simple patterns creating irreducible complexity
+- **M(n)**: Count of divisors d where 2 ≤ d ≤ √n (equals ⌊(τ(n)-1)/2⌋)
+- **L_M(s)**: Dirichlet series Σ M(n)/n^s (non-multiplicative!)
+- **F_n(α,ε)**: Regularized sum over primal forest distances
+- **G(s,α,ε)**: Three-parameter global function (analytic for ε > 0)
 
----
-
-## Computational Modules (Version 0.5.0)
-
-### 1. Primorial Computation ⭐ (Most Recent)
-
-**Computes primorials via alternating rational sums** — a surprising formula with deep unexplained structure:
-
-$$\text{Primorial}(m) = \text{Denominator}\left[\frac{1}{2} \sum_{k=1}^{\lfloor(m-1)/2\rfloor} \frac{(-1)^k \cdot k!}{2k+1}\right]$$
-
-**Example:** For $m = 13$:
-$$\text{Primorial}(13) = 2 \times 3 \times 5 \times 7 \times 11 \times 13 = 30030$$
-
-The denominator systematically accumulates **only first powers** of primes, despite the sum containing terms with denominators $3, 5, 7, 9, 11, 13, 15, \ldots$ (including prime powers like $9 = 3^2$).
-
-**The Mystery:** Why do numerators cancel all higher prime powers through GCD reduction? This is an **open problem** with connections to p-adic valuations, Legendre's formula, and primorial structure.
-
-**See:** `docs/primorial-formula.md` and `docs/primorial-mystery-findings.md`
-
-**Quick start:**
-```mathematica
-<< Orbit`
-Primorial0[13]  (* Returns: 30030 = 2×3×5×7×11×13 *)
+**Central Conjecture** (Nov 15, 2025):
 ```
-
-### 2. Semiprime Factorization
-
-**Closed-form factorization of semiprimes** using fractional parts of Pochhammer sums:
-
-$$p = \left\lfloor \frac{1}{\text{FractionalPart}\left[\sum_{k=1}^{n-1} \frac{1}{k}\right]} \right\rfloor + 1$$
-
-where $n$ is the semiprime. Works for all semiprimes $n = p \times q$ where $p \geq 3$ is the smaller factor.
-
-**Example:**
-```mathematica
-FactorizeSemiprime[77]  (* Returns: {7, 11} *)
-ForFactiMod[77]         (* Returns: 6/7, revealing factor (7-1)/7 *)
+L_M(s) = ζ(s)[ζ(s) - 1] - Σ_{j=2}^∞ H_{j-1}(s)/j^s
 ```
+where H_j(s) = Σ_{k=1}^j k^(-s) are partial zeta sums, for Re(s) > 1.
 
-**See:** `docs/semiprime-factorization.md`
-
-### 3. Modular Factorials
-
-**Efficient factorial mod p computation** using the predictable structure of half-factorials:
-
-$$\left(\frac{p-1}{2}\right)! \equiv \begin{cases}
-\pm 1 \pmod{p} & \text{if } p \equiv 3 \pmod{4} \\
-\pm i \pmod{p} & \text{if } p \equiv 1 \pmod{4}
-\end{cases}$$
-
-Connected to Gauss sums and the Stickelberger relation.
-
-**Example:**
-```mathematica
-FactorialMod[10, 13]   (* Returns: 6 *)
-SqrtMod[13]            (* Returns: {True, {5, 8}} — sqrt(-1) mod 13 *)
-HalfFactorialMod[13]   (* Returns: 5 (which is 6! mod 13) *)
-```
-
-**See:** `docs/modular-factorials.md`
-
-### 4. Square Root Rationalization ⭐ (Performance Breakthrough)
-
-**High-precision rational approximations to square roots** via Chebyshev polynomials and Pell equations:
-
-$$\text{sqrttrf}(d, n, m) = \frac{n^2 + d}{2n} + \frac{n^2 - d}{2n} \cdot \frac{U_{m-1}\left(\sqrt{\frac{d}{-(n^2-d)}}\right)}{U_{m+1}\left(\sqrt{\frac{d}{-(n^2-d)}}\right)}$$
-
-**Performance:** Beats Mathematica's Rationalize by **1548x** at 31,000 digits, **>1400x** at 311,000 digits.
-
-**Key properties:**
-- Super-quadratic convergence: ~10x precision per iteration
-- Guaranteed lower bound (monotone increasing from below)
-- Pell solution characterization: Chebyshev terms always rational, but dividing by y (from unit norm) requires Pell solution for rational result
-
-**Example:**
-```mathematica
-(* High-precision √13 to 3000+ digits in 3 iterations *)
-{x, y} = PellSolution[13];
-nestqrt[13, (x-1)/y, {3, 3}]  (* 3111 decimal places in 0.011s *)
-```
-
-**See:** `docs/chebyshev-pell-sqrt-framework.md`
-
-
-## Visualizations
-
-### 1. Primal Forest: Geometric Prime Sieve
-
-**Educational visualization** showing composites as dots in 2D space, primes as gaps.
-
-**Key files:**
-- `visualizations/primal-forest-31.pdf` — The forest view (composites form regular patterns)
-- `visualizations/soft-distance-envelope-127.pdf` — Continuous primality spectrum
-- `visualizations/soft-distance-composite-types.pdf` — Stratification by factorization structure
-- `visualizations/prime-grid-demo.wl` — Code to generate the visualization
-
-**See:** `docs/papers/primal-forest-paper.tex` for complete educational exposition
-
-### 2. Chebyshev Curves: "Infinite Interference"
-
-**Beautiful family of curves** inscribed in the unit circle, each touching at regular polygon vertices:
-
-$$f_k(x) = T_{k+1}(x) - x \cdot T_k(x)$$
-
-- Contact points at angles: $\theta_i = -\frac{\pi}{2k} + \frac{2\pi}{k+1} \cdot i$
-- Unit integral norm: $\int |f_k(\cos\theta)| d\theta = 1$ for all $k$
-- Creates n-star patterns with deep polynomial structure
-
-**Key files:**
-- `visualizations/regular-235.png` — Static visualization showing k=2,3,5
-- `visualizations/infinite_interference.glsl` — Shadertoy GLSL implementation
-- **Live demo:** https://www.shadertoy.com/view/MXc3Rj
-
-**See:** `docs/archive/chebyshev-visualization.md` for mathematical details
-
-## Documentation
-
-### Papers (`docs/papers/`)
-
-- **[primal-forest-paper.tex](docs/papers/primal-forest-paper.tex)** — Geometric visualization of the Sieve of Eratosthenes with continuous primality score revelation
-- **[primorial-proof-clean.tex](docs/papers/primorial-proof-clean.tex)** — Rigorous proof of primorial formula via alternating factorial sums
-- **[primorial-duality.tex](docs/papers/primorial-duality.tex)** — Prime-composite duality and computational circularity in factorial sums
-- **[primorial-arxiv-draft.tex](docs/papers/primorial-arxiv-draft.tex)** / **[-cs.tex](docs/papers/primorial-arxiv-draft-cs.tex)** — ArXiv submission drafts (English/Czech)
-- **[chebyshev-pell-sqrt-paper.tex](docs/papers/chebyshev-pell-sqrt-paper.tex)** — Square root rationalization via Chebyshev polynomials and Pell equations
-- **[semiprime-formula-complete-proof.tex](docs/papers/semiprime-formula-complete-proof.tex)** — Closed-form semiprime factorization formula
-- **[half-factorial-numerator-theorem.tex](docs/papers/half-factorial-numerator-theorem.tex)** — Structure of half-factorial numerators mod p
-- **[factorial-chaos-unification.tex](docs/papers/factorial-chaos-unification.tex)** — Unifying factorial and fractional part approaches
-- **[gcd-formula-proof.tex](docs/papers/gcd-formula-proof.tex)** — GCD formula for factorial-based expressions
-
-### Module Documentation (`docs/modules/`)
-- **[primorial-formula.md](docs/modules/primorial-formula.md)** — Primorial computation details
-- **[chebyshev-pell-sqrt-framework.md](docs/modules/chebyshev-pell-sqrt-framework.md)** — Square root rationalization
-- **[semiprime-factorization.md](docs/modules/semiprime-factorization.md)** — Semiprime factorization
-- **[modular-factorials.md](docs/modules/modular-factorials.md)** — Modular factorial computation
-
-### Active Research (`docs/active/`)
-- **[phd-roadmap.md](docs/active/phd-roadmap.md)** — Publication and PhD application plan
-- **[proof-development-plan.md](docs/active/proof-development-plan.md)** — Current proof development strategy
-- **[primorial-duality-correction.tex](docs/active/primorial-duality-correction.tex)** — Correction notes for primorial duality analysis
-
-### For AI Assistants
-- **[CLAUDE.md](CLAUDE.md)** — Computational exploration guide, technical notes, and project instructions
-
-### Archive
-- **[docs/archive/](docs/archive/)** — Historical session notes, investigation summaries, and deprecated analyses
+**Status**: Numerically verified to high precision, formal proof written but not peer-reviewed.
 
 ## Repository Structure
 
 ```
 orbit/
-├── Orbit/                          # Paclet (version 0.5.0)
-│   ├── PacletInfo.wl               # Paclet metadata
-│   └── Kernel/
-│       ├── Orbit.wl                # Main loader (imports all submodules)
-│       ├── PrimeOrbits.wl          # Prime DAG and orbit analysis
-│       ├── Primorials.wl           # Primorial computation via rational sums
-│       ├── SemiprimeFactorization.wl  # Closed-form semiprime factorization
-│       ├── ModularFactorials.wl    # Efficient factorial mod p computation
-│       └── SquareRootRationalizations.wl  # High-precision sqrt via Chebyshev-Pell
+├── docs/
+│   ├── papers/           # LaTeX preprints
+│   │   ├── primal-forest-paper-cs.tex          # Geometric foundation ⭐
+│   │   ├── epsilon-pole-residue-theorem.tex    # Local residue result
+│   │   ├── dirichlet-series-closed-form.tex    # Closed form conjecture ⭐
+│   │   └── trinity-methodology.tex             # AI collaboration methodology ⭐
+│   └── *.md              # Supporting documentation
 │
-├── docs/                           # Documentation and papers
-│   ├── papers/                     # LaTeX papers (educational + research)
-│   │   ├── primal-forest-paper.tex # Geometric sieve visualization ⭐
-│   │   ├── primorial-proof-clean.tex   # Primorial proof (primary)
-│   │   ├── primorial-duality.tex   # Primorial duality reframing
-│   │   ├── primorial-arxiv-*.tex   # ArXiv drafts (EN/CS)
-│   │   ├── chebyshev-pell-sqrt-paper.tex
-│   │   ├── semiprime-*.tex
-│   │   └── *.tex                   # Additional proofs
-│   ├── modules/                    # Module documentation (markdown)
-│   │   ├── primorial-formula.md
-│   │   ├── chebyshev-pell-sqrt-framework.md
-│   │   ├── semiprime-factorization.md
-│   │   ├── modular-factorials.md
-│   │   └── prime-dag-gap-theorem.md
-│   ├── active/                     # Active research documents
-│   │   ├── phd-roadmap.md
-│   │   ├── proof-development-plan.md
-│   │   └── primorial-duality-correction.tex
-│   └── archive/                    # Historical notes and explorations
+├── scripts/              # Wolfram Language exploration scripts
+│   ├── tail_zeta_*.wl                          # Discovery scripts ⭐
+│   ├── explore_G_*.wl                          # Three-parameter function analysis
+│   ├── euler_product_*.wl                      # Failed approach (documented)
+│   └── (50+ experimental variants from Nov 15)
 │
-├── scripts/                        # Computational exploration scripts
-│   ├── verify_*.wl                 # Verification scripts
-│   ├── test_*.wl                   # Module tests
-│   ├── analyze_*.wl                # Analysis tools
-│   └── compare_*.wl                # Comparison benchmarks
+├── misc/                 # "Aha moments" from discovery process ⭐
+│   ├── trinity.txt       # Trinity framework insight (22:49)
+│   ├── kladivo.txt       # AI confidence assessment 8/10 (23:08)
+│   ├── duvera.txt        # Trust dynamics 95% vs 80% (23:30)
+│   ├── luck.txt          # "Don't want to sleep" (22:41)
+│   ├── dukaz.txt         # Proof breakthrough (21:25)
+│   └── (complete chronological discovery log Nov 15, 2025)
 │
-├── visualizations/                 # Visual outputs and generation code
-│   ├── primal-forest-*.pdf/png     # Prime sieve visualizations
-│   ├── soft-distance-*.pdf/png     # Continuous primality spectrum
-│   ├── regular-235.png             # Chebyshev curves
-│   ├── infinite_interference.glsl  # Shadertoy GLSL
-│   └── *.wl                        # Visualization generators
-│
-├── reports/                        # Generated analysis reports
-├── CLAUDE.md                       # AI assistant instructions
-├── README.md                       # This file
-└── Makefile                        # Build targets for papers
+└── Orbit/                # Wolfram paclet (other explorations)
+    └── Kernel/
+        ├── Primorials.wl               # Primorial computation
+        ├── SemiprimeFactorization.wl   # Semiprime factorization
+        └── (other modules)
 ```
 
-## Prerequisites
+## The Trinity Methodology
 
-**WolframScript** 1.13.0+ (or any Wolfram Language environment)
+This work demonstrates a collaborative approach to mathematical research:
+
+**Human** (Jan Pospíšil):
+- Geometric intuition (primal forest - developed over years since childhood)
+- Critical verification of each step
+- Recognition of important patterns
+- Strategic direction
+
+**AI** (Claude Code / Anthropic):
+- Rapid iteration (50+ script variants in one evening)
+- Formalization (LaTeX, rigorous proofs)
+- Tireless exploration without fatigue
+- Honest uncertainty assessment (8/10 confidence)
+
+**Computational Tools** (Wolfram Language):
+- Numerical verification (catches errors early)
+- Symbolic manipulation
+- High-precision arithmetic
+- Independent confirmation
+
+**Key insight**: None of these components alone would have made this discovery. The synergy is essential.
+
+## Timeline: November 15, 2025
+
+A case study in rapid mathematical discovery:
+
+- **11:00** - Initial reflections on AI collaboration
+- **18:16** - Connection between primality and Pell equations
+- **18:26** - Synthesis of multiple mathematical threads
+- **19:01** - Frustration with Euler product approach (failed due to non-multiplicativity)
+- **21:25** - Breakthrough: tail zeta function approach
+- **22:41** - "Don't want to sleep, too exciting"
+- **22:49** - Closed form discovered, numerically verified
+- **23:08** - Confidence assessment: AI 8/10, Human 95/100
+- **23:30** - Trust reflection: why 95% > 80% matters
+
+Complete emotional and technical arc preserved in `misc/*.txt`.
+
+## Why Open Source Now?
+
+Traditional mathematics often loses the discovery process:
+
+- **Riemann** (1859): How did he discover the functional equation? Lost to history.
+- **Ramanujan** (1920s): Thousands of formulas, no explanations of origin.
+- **Fermat** (1637): "Wonderful proof, but margin too small" - lost forever.
+
+**Our approach**: Radical transparency.
+
+- Complete git history (every iteration, every error, every fix)
+- Aha moments captured in real-time (not reconstructed)
+- Failed approaches documented (Euler product, etc.)
+- Methodology explicit (Trinity framework)
+
+**Two outcomes possible**:
+
+1. **If correct**: Community has unprecedented insight into discovery process
+2. **If incorrect**: Still valuable as methodology case study, no harm done
+
+**Timestamp proof**: Git commits establish priority, regardless of publication timeline.
+
+## How to Use This Repository
+
+### For Mathematicians
+
+- Read `docs/papers/primal-forest-paper-cs.tex` for geometric foundation
+- Check `docs/papers/dirichlet-series-closed-form.tex` for main conjecture
+- Verify claims independently - scripts in `scripts/` are reproducible
+- **Please report errors!** Open GitHub issue
+
+### For AI Researchers
+
+- See `docs/papers/trinity-methodology.tex` for collaboration framework
+- Study `misc/*.txt` for real-time human-AI dynamics
+- Note honest confidence levels and verification protocols
+
+### For Students
+
+- Explore `scripts/` to see iterative discovery process
+- Notice that breakthrough came after ~20 failed attempts (Euler product, etc.)
+- Demystification of "genius" - this is systematic work, not magic
+
+### Running the Code
+
+All scripts require Wolfram Language (Mathematica or free Wolfram Engine):
 
 ```bash
-wolframscript --version
+# Example: Verify closed form numerically
+wolframscript -file scripts/tail_zeta_simplification.wl
+
+# Example: Explore three-parameter function
+wolframscript -file scripts/explore_G_three_parameter.wl
+
+# Example: Complex zero search
+wolframscript -file scripts/explore_G_complex.wl
 ```
 
-## Quick Start
+See `CLAUDE.md` for technical details.
 
-### Load the Paclet
+## Current Status (Nov 15, 2025)
 
-```mathematica
-<< Orbit`
+### Proven Results
+1. ✅ Primal forest geometric construction (years of development)
+2. ✅ Epsilon-pole residue theorem (local, rigorous proof)
+
+### Conjectured Results
+1. 🔄 Closed form for L_M(s) (high numerical confidence, proof written but not peer-reviewed)
+2. 🔄 G(s,α,ε) zero-free for ε > 0 (under investigation tonight)
+
+### Open Questions
+- Analytic continuation of L_M(s) beyond Re(s) > 1
+- Functional equation (if any)
+- Connection to Riemann zeta zeros
+- Path to Riemann Hypothesis (extremely difficult, probably out of reach)
+
+## Confidence Levels
+
+Being honest about uncertainty:
+
+- **Geometric construction**: 10/10 (years of validation)
+- **Epsilon-pole residue theorem**: 9/10 (rigorous proof, numerically verified)
+- **Closed form for L_M(s)**: AI 8/10, Human 95/100
+  - Discrepancy reflects AI's awareness of systematic blind spots
+  - Human confidence boosted by having verified every step personally
+  - Mutual reinforcement through Trinity collaboration
+- **RH connection**: 1/10 (wildly optimistic, realistically 0.1/10)
+
+We **strongly recommend** independent verification before building on these results.
+
+## Contributing
+
+We welcome:
+
+- ✅ Independent verification (numerical or theoretical)
+- ✅ Error reports (no matter how small)
+- ✅ Extensions or generalizations
+- ✅ Alternative proofs
+- ✅ Computational experiments
+
+Please open GitHub issues or pull requests.
+
+## Citation
+
+If you use this work (at your own risk!), please cite:
+
+```bibtex
+@misc{pospisil2025orbit,
+  author = {Pospíšil, Jan and Claude (Anthropic)},
+  title = {Orbit: Geometric Explorations in Prime Number Theory},
+  year = {2025},
+  publisher = {GitHub},
+  url = {https://github.com/[username]/orbit},
+  note = {Unpublished research, non-peer-reviewed}
+}
 ```
-
-This automatically loads all five modules. All functions are in the `Orbit`  context.
-
-### Examples
-
-```mathematica
-(* Primorial computation *)
-Primorial0[13]                    (* 30030 = 2×3×5×7×11×13 *)
-PrimorialExplicitSum[13]          (* Shows the alternating sum *)
-
-(* Semiprime factorization *)
-FactorizeSemiprime[77]            (* {7, 11} *)
-
-(* Modular factorials *)
-FactorialMod[10, 13]              (* 6 *)
-
-(* Square root rationalization *)
-{x, y} = PellSolution[13];
-nestqrt[13, (x-1)/y, {3, 3}]      (* 3111 decimal places *)
-
-(* Prime orbits *)
-PrimeOrbit[11]                    (* {2, 3, 5, 11} *)
-DirectPrimeDag[100]               (* Build DAG *)
-```
-
-### Run Exploration Scripts
-
-```bash
-cd /path/to/orbit
-wolframscript scripts/visualize_sieve_process.wl
-wolframscript scripts/track_padic_valuations.wl
-```
-
-## Installation (Optional)
-
-To install the Orbit paclet system-wide:
-
-```bash
-cd orbit/
-wolframscript -code 'PacletInstall["Orbit"]'
-```
-
-Then use anywhere:
-
-```mathematica
-Needs["Orbit`"];
-Primorial0[17]
-```
-
-To uninstall:
-
-```bash
-wolframscript -code 'PacletUninstall["Orbit"]'
-```
-
-## Current Research Focus
-
-**Primorial Formula Investigation** — Understanding why the alternating factorial sum produces primorials:
-
-1. **P-adic valuation structure:** Proven computationally that $\nu_p(\text{denominator}) = 1$ always
-2. **Two cancellation mechanisms identified:** GCD reduction (small k) and integer terms (large k)
-3. **Alternating sign necessity:** Essential to prevent over-cancellation at $k=4$
-4. **Legendre's formula connection:** Explains when terms become integers
-
-**Open Problem:** Rigorous proof of why this construction systematically generates primorials.
-
-**Target:** arXiv preprint, PhD application to Charles University (Prague), contact with Prof. Vít Kala.
-
-## Related Projects
-
-- **egypt** — Egyptian fractions and Pell equation exploration (Rust implementation)
-- **ratio** — Rationalization techniques and number representations
-
-## Status
-
-**Version:** 0.5.0
-
-**Modules:**
-- ✅ Primorials (active research, open problems)
-- ✅ Semiprime Factorization (complete)
-- ✅ Modular Factorials (complete)
-- ✅ Square Root Rationalization (performance breakthrough, 1548x speedup)
-- ✅ Prime Orbits & Gap Theorem (proven and verified)
-
-**Visualizations:**
-- ✅ Chebyshev "Infinite Interference" curves (Shadertoy + documentation)
-
-**Publication Status:**
-- Primorial formula: Under investigation, preparing for arXiv
-- Chebyshev-Pell framework: Performance verified, theoretical analysis ongoing
-- Gap Theorem: Verified for primes up to 1,000,000
 
 ## License
 
-Research exploration project. Code provided as-is for computational number theory experiments.
+MIT License (code) / CC-BY 4.0 (documentation and papers)
+
+Free to use, modify, and build upon with attribution. We encourage independent verification and extension.
+
+## Contact
+
+- **GitHub Issues**: For mathematical questions or error reports
+- **Methodology questions**: See `docs/papers/trinity-methodology.tex`
+
+## Acknowledgments
+
+This work was enabled by:
+
+- **Wolfram Research**: Wolfram Language computational environment
+- **Anthropic**: Claude Code AI assistant
+- **Open source mathematics community**: Inspiration from Polymath projects, Lean/Mathlib
+
+Special thanks to the mathematical community for its tradition of skeptical but open-minded inquiry. We hope this transparency helps build trust in AI-augmented mathematical research.
+
+---
+
+**Remember**: Extraordinary claims require extraordinary evidence. We provide complete computational evidence and claimed proofs, but **peer review is essential**. Proceed with appropriate skepticism.
+
+**Last updated**: November 15, 2025, 23:50 (research ongoing)
+
+---
+
+## Other Modules in Orbit Paclet
+
+This repository also contains work on:
+
+- **Primorials** - Proven computation via alternating factorial sums (p-adic valuations, elementary proof)
+- **Semiprime Factorization** - Closed-form formulas
+- **Modular Factorials** - Efficient computation via half-factorials
+- **Square Root Rationalization** - High-precision via Chebyshev-Pell
+
+See `CLAUDE.md` for details on these modules. Current focus is on L_M(s) discovery (Nov 15, 2025).
