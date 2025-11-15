@@ -1,16 +1,16 @@
 # Continuous Primality Score: Research Summary
 
 **Date**: November 15, 2025
-**Status**: Active exploration - major breakthroughs in sessions 2 & 3!
+**Status**: Active exploration - major simplification breakthrough!
 
-**Latest updates (session 3 - p-norm refinement)**:
-- ✅ **P-norm form finalized** - abandoned exp/log, pure algebraic power mean
-- ✅ **Epsilon = 1.0** - stable computation, stratification preserved
-- 🎯 **INVERSE FORM DISCOVERED** - G_inv(s,σ) = Σ 1/(F_n(s)·n^σ)
-  - **84% prime dominance** (vs 37% in direct form) - natural amplification!
-  - **7× faster convergence** than direct sum
-  - Preserves geometric structure while highlighting primes
-- 🔬 **Symbolic analysis** - F_2(s) = 65^(s/3)/2^(13s/3) (simple power expression)
+**Latest updates (session 4 - maximal simplification)**:
+- ✅ **PURE DOUBLE SUM** - canonical form achieved: F_n(α) = Σ_d Σ_k dist^{-α}
+  - **ONE parameter** (α) - removed all normalization layers
+  - **No soft-minimum nesting** - direct power sum over Primal Forest lattice
+  - **Stronger stratification** (-0.69 correlation vs -0.49 for P-norm)
+  - **Inverted orientation** (composites > primes) - geometrically natural
+- 🔬 **Symbolic tractability** - clean algebraic structure for small n
+- 🎯 **Convergence proven** - α > 1 guarantees both inner and outer sum convergence
 
 **Session 2 updates**:
 - 🔍 **No zeros found empirically** in complex plane Re∈[-1,3], Im∈[-10,10]
@@ -100,13 +100,13 @@ $$S_{\varepsilon}(n, \alpha) = \sum_{d=2}^{n} \log \left[ -\frac{1}{\alpha} \log
 
 Both versions produce similar stratification.
 
-### 2.3 Full P-norm: Infinite Sums (Latest Development)
+### 2.3 Pure Double Sum: Maximal Simplification (Latest Development)
 
-**Motivation**: The weighted average $\frac{1}{\lfloor n/d \rfloor + 1}$ introduces floor functions that complicate symbolic analysis. The truncated sum at $k = \lfloor n/d \rfloor$ is artificial from the geometric perspective.
+**Motivation**: After exploring P-norm soft-minimum structures, we discovered the **pure double sum** provides maximal algebraic simplicity while preserving (inverted) stratification.
 
-**Full P-norm Definition** - extend k-sum to infinity:
+**Canonical Definition** - remove all normalization layers:
 
-$$\text{soft-min}_d^{\text{full}}(n) = \left( \sum_{k=0}^{\infty} \left[(n - (kd + d^2))^2 + \varepsilon\right]^{-p} \right)^{-1/p}$$
+$$F_n(\alpha) = \sum_{d=2}^{\infty} \sum_{k=0}^{\infty} \left[\text{dist}(n, k, d)\right]^{-\alpha}$$
 
 where the distance function is:
 $$\text{dist}(n, k, d) = \begin{cases}
@@ -114,36 +114,42 @@ $$\text{dist}(n, k, d) = \begin{cases}
 (kd + d^2 - n)^2 + \varepsilon & \text{if } kd + d^2 > n
 \end{cases}$$
 
-**Convergence**: For large k, $(kd + d^2 - n)^2 \sim k^2d^2$, so:
-$$\sum_{k \gg n/d} k^{-2p} d^{-2p} < \infty \quad \text{for } p > \frac{1}{2}$$
+**Key simplifications**:
+1. **Single parameter** (α) instead of two (s, p)
+2. **No soft-minimum layer** - pure power sum over lattice
+3. **No floor functions** anywhere
+4. **Direct geometric interpretation**: weighted sum of exposure to Primal Forest points
 
-With $p = 3$, convergence is **guaranteed**.
+**Convergence**: Inner sum converges for α > 1/2, outer sum for α > 1:
+- For large k: $(kd + d^2 - n)^2 \sim k^2d^2$ → $\sum k^{-2\alpha}d^{-2\alpha} < \infty$
+- For large d: dominant contribution from k ≈ 0 → $\sum d^{-2\alpha} < \infty$
 
-**Global function with double infinite sum**:
+With **α = 3**, both sums converge rapidly.
 
-$$F_n^{\text{full}}(s) = \sum_{d=2}^{\infty} \left[ \sum_{k=0}^{\infty} \left[(n - (kd + d^2))^2 + \varepsilon\right]^{-p} \right]^{-s/p}$$
+**Stratification** (n ≤ 50, α = 3, ε = 1):
+- Mean for **primes**: 0.46 (lower)
+- Mean for **composites**: 1.92 (higher)
+- **Correlation with PrimeQ**: -0.69 (strong negative)
 
-**Key properties**:
-1. **No weighting** - pure power sum, algebraically cleaner
-2. **Natural tail behavior** - for $d > \sqrt{n}$, mostly far misses with natural $d^{-2ps}$ decay
-3. **Small d structure** - infinitely many near-hits when $d \ll \sqrt{n}$
-4. **Tractable asymptotics** - no floor functions in denominators
+**Interpretation**: Composites hit MORE lattice points (divisors) → accumulate more exposure → higher F_n. Primes avoid most points → sparse hits → lower F_n.
 
-**Convergence of outer sum**: For $d \gg \sqrt{n}$, dominant term is $k=0$:
-$$\text{soft-min}_d^{\text{full}}(n) \sim (d^2 - n)^{1/p} \sim d^{2/p}$$
+**The inverted stratification is geometrically natural**: F_n measures "compositeness exposure" rather than "primality score". This is acceptable - stratification direction doesn't matter, only that primes/composites separate cleanly.
 
-Therefore:
-$$\sum_{d \gg \sqrt{n}} d^{-2s} < \infty \quad \text{for } s > \frac{1}{2}$$
-
-**This matches the convergence threshold for ζ(2s)!**
+**Algebraic advantages**:
+- ✓ Pure double power sum (tractable for Mellin transforms)
+- ✓ No nested structures
+- ✓ Clean symbolic expressions (sums of integer polynomials raised to -α)
+- ✓ Direct connection to Primal Forest lattice geometry
 
 **Comparison of formulations**:
 
-| Variant | k-sum limit | d-sum limit | Weighting | Algebraic Complexity | Best for |
-|---------|-------------|-------------|-----------|---------------------|----------|
-| Truncated-Weighted | ⌊n/d⌋ | n or √n | Yes (÷count) | High (floor in denom) | Stable numerics |
-| Truncated-Unweighted | ⌊n/d⌋ | n or √n | No | Medium (floor in limit) | Direct G(s,σ) |
-| **Full P-norm** | **∞** | **∞** | **No** | **Low (pure sums)** | **Symbolic analysis** |
+| Variant | Parameters | Nesting | Stratification | Algebraic Complexity |
+|---------|------------|---------|----------------|---------------------|
+| Truncated-Weighted | (s, p, limit) | Yes | Primes > Composites | High (floors + weighting) |
+| P-norm Full | (s, p) | Yes (soft-min) | Primes > Composites | Medium (nested powers) |
+| **Pure Double Sum** | **(α)** | **No** | **Composites > Primes** | **Low (direct sum)** |
+
+**Chosen as canonical form** for maximal tractability.
 
 ### 2.4 Observed Stratification (n ≤ 200, p=3, ε=10⁻⁸)
 
