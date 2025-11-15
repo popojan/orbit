@@ -1,9 +1,11 @@
 # Documentation Index
 
-**Generated:** 2025-11-15 22:13:45
+**Generated:** 2025-11-15 22:20:13
 
 ## Recent Documents (by edit time)
 
+- [CLOSED FORM for L_M(s) - DISCOVERED!](closed-form-L_M-RESULT.md) *(2025-11-15)*
+- [Evening Session Summary - November 15, 2025](session-summary-nov15-evening.md) *(2025-11-15)*
 - [Global Dirichlet Series for M(n)](global-dirichlet-series.md) *(2025-11-15)*
 - [Euler Product for Sum[M(n)/n^s]](euler-product-formula.md) *(2025-11-15)*
 - [Residue Theorem: Complete Proof](residue-theorem-proof.md) *(2025-11-15)*
