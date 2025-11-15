@@ -31,7 +31,7 @@
 \maketitle
 
 \begin{abstract}
-Představujeme vzdělávací vizualizaci, která transformuje klasické Eratosthenovo síto z jednorozměrného seznamu do dvourozměrného ``prvolesa.'' Mapováním dělitelů čísel podle vzorce $n = p(p+k)$ do souřadnic $(kp+p^2, kp+1)$ vytváříme pohlcující pohled, kdy stojíte na jižním okraji lesa a díváte se na sever, přičemž dělitelé složených čísel se objevují jako stromy v různých hloubkách. Prvočísla se stanou viditelnými jako průhledy---pozice, kde žádný strom neblokuje váš výhled skrz les. Tato geometrická perspektiva činí strukturu síta vizuálně intuitivní a poskytuje poutavý úvod do multiplikativní struktury v teorii čísel.
+Představujeme geometrickou vizualizaci, která transformuje klasické Eratosthenovo síto z jednorozměrného seznamu do dvourozměrného ``prvolesa.'' Mapováním dělitelů čísel podle vzorce $n = p(p+k)$ do souřadnic $(kp+p^2, kp+1)$ vytváříme pohlcující pohled, kdy stojíte na jižním okraji lesa a díváte se na sever, přičemž dělitelé složených čísel se objevují jako stromy v různých hloubkách. Prvočísla se stanou viditelnými jako průhledy---pozice, kde žádný strom neblokuje váš výhled skrz les. Tato perspektiva nabízí nový způsob, jak vidět strukturu prvočísel.
 \end{abstract}
 
 \section{Úvod: Proč je tak těžké najít prvočísla?}
@@ -52,28 +52,9 @@ Tento geometrický pohled skrývá hlubší tajemství: když pečlivě měřím
 
 \section{Klasické síto (lineární pohled)}
 
-Připomeňme si stručně, jak Eratosthenovo síto funguje v tradičním provedení. Vypíšeme všechna celá čísla počínaje od 2:
+Eratosthenovo síto najde prvočísla vyškrtáváním násobků: označíme 2 a vyškrtneme 4, 6, 8, \ldots; označíme 3 a vyškrtneme 6, 9, 12, \ldots; označíme 5 a vyškrtneme 10, 15, 20, \ldots; a tak dále. Co zbyde, jsou prvočísla.
 
-\[
-2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, \ldots
-\]
-
-Pak opakovaně:
-\begin{enumerate}
-\item Označíme první neoznačené číslo jako prvočíslo
-\item Vyškrtneme všechny jeho násobky (složená čísla)
-\item Opakujeme
-\end{enumerate}
-
-Například:
-\begin{itemize}
-\item Označíme 2 jako prvočíslo, vyškrtneme 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, \ldots
-\item Označíme 3 jako prvočíslo, vyškrtneme 6, 9, 12, 15, 18, 21, 24, \ldots
-\item Označíme 5 jako prvočíslo, vyškrtneme 10, 15, 20, 25, \ldots
-\item A tak dále\ldots
-\end{itemize}
-
-Čísla, která zůstanou neoznačená, jsou prvočísla. To funguje krásně, ale je to jednorozměrný pohled. Každé složené číslo zmizí v přeškrtnutém symbolu. Můžeme vizualizovat \emph{strukturu} toho, proč jsou složená čísla odstraňována?
+To funguje, ale je to jednorozměrný pohled. Můžeme vidět \emph{strukturu}, proč jsou složená čísla odstraňována?
 
 \section{Geometrická transformace}
 
@@ -105,12 +86,12 @@ Souřadnice y jako $kp + 1$ není svévolná---vytváří \textbf{pravidelný le
 
 \section{Les se objevuje}
 
-Obrázek~\ref{fig:forest} ukazuje prvoles pro rozsah $n \leq 31$. Vysazujeme pouze stromy pro $p \geq 2$---čistou mřížku dělitelů.
+Obrázek~\ref{fig:forest} ukazuje prvoles pro rozsah $n \leq 31$. Vysazujeme pouze stromy pro $p \geq 2$---čistou mřížku dělitelů. Šedá křivka zvýrazňuje vrstvu $k=1$ (body tvaru $n = p + p^2$).
 
-\begin{figure}[h]
+\begin{figure}[!ht]
 \centering
-\includegraphics[width=0.8\textwidth]{visualizations/primal-forest-31.pdf}
-\caption{Prvoles: Stojíte na jižním okraji (spodek diagramu, y=0) a můžete chodit západo-východně (vlevo-vpravo, osa x). Na každé pozici se díváte přímo na sever (nahoru v diagramu, osa y). Každý strom odpovídá děliteli $p$ čísla $n = p(p+k)$ s $p \geq 2$, vysazenému v souřadnicích $(kp+p^2, kp+1)$. Prvočísla jsou x-souřadnice s \emph{čistými průhledy}.}
+\includegraphics[width=\textwidth]{visualizations/primal-forest-100-parabola.pdf}
+\caption{Prvoles: Stojíte na jižním okraji (spodek diagramu, y=0) a můžete chodit západo-východně (vlevo-vpravo, osa x). Na každé pozici se díváte přímo na sever (nahoru v diagramu, osa y). Každý strom odpovídá děliteli $p$ čísla $n = p(p+k)$ s $p \geq 2$, vysazenému v souřadnicích $(kp+p^2, kp+1)$. Prvočísla jsou x-souřadnice s \emph{čistými průhledy} (čárkované šipky). Šedá křivka ukazuje vrstvu $k=1$.}
 \label{fig:forest}
 \end{figure}
 
@@ -141,7 +122,7 @@ Les neukazuje pouze která čísla jsou složená---geometricky počítá jejich
 
 \section{Průzkum lesa}
 
-\subsection{Geometrie lesa: Pravidelné diagonály z parabolických vrstev}
+\subsection{Geometrie lesa: Pravidelné diagonály ze zakřivených vrstev}
 
 Klíčový nápad této vizualizace spočívá v překvapivém geometrickém paradoxu. Zatímco klasické Eratosthenovo síto postupně škrtá násobky prvočísel, Prvoles zasazuje \textbf{každé číslo $p \geq 2$} do pravidelné diagonální řady:
 
@@ -158,7 +139,7 @@ Například:
 \item $p=5$: diagonála $(25,1)$, $(30,6)$, $(35,11)$, $(40,16)$, \ldots s rozestupy $(5,5)$
 \end{itemize}
 
-\textbf{Paradox}: Horizontální ``vrstvy'' (body s pevným $k$) tvoří \emph{parabolické řady}---druhé mocniny $p^2$ pro $k=0$, posunuté paraboly pro $k>0$. Přesto se z těchto parabolických vrstev poskládá dokonale \emph{pravidelná diagonální struktura} se sklonem 1!
+\textbf{Paradox}: Horizontální ``vrstvy'' (body s pevným $k$) tvoří zakřivené řady. Například vrstva $k=1$ (zvýrazněná růžově) sleduje body $(x,y)$ splňující $x = y^2 - y$, tedy diskrétní odmocninnou funkci. Přesto se z těchto zakřivených vrstev poskládá dokonale \emph{pravidelná diagonální struktura} se sklonem 1!
 
 Složené číslo s více děliteli se objeví vícekrát. Například $24 = 2 \times 12 = 3 \times 8 = 4 \times 6$ leží na třech různých diagonálách ($p=2,3,4$) jako tři stromy v různých hloubkách.
 
@@ -177,13 +158,6 @@ Všimněte si diagonálních řad stromů stoupajících na severovýchod? Každ
 Jak kráčíme na východ podél jižního okraje, les se zahušťuje a rozprostírá se dále na sever. Více stromů v různých hloubkách snižuje šanci najít čistý průhled. Tento geometrický pohled činí Větu o prvočíslech intuitivní: \emph{prvočísla řídnou}, protože les se zahušťuje a prohlubuje.
 
 \section{Průzkum a cvičení}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=\textwidth]{visualizations/primal-forest-100.pdf}
-\caption{Prvoles pro větší rozsah: Diagonální řady se překrývají, les se zahušťuje směrem na východ a sever. Průhledy (prvočísla) se stávají vzácnějšími.}
-\label{fig:forest-large}
-\end{figure}
 
 \subsection{Cvičení}
 
@@ -211,58 +185,31 @@ Existují další geometrické vizualizace prvočísel, z nichž každá zdůraz
 
 Metafora lesa je zvláště intuitivní: \textbf{prvočísla nejsou náhodně rozptýlená---jsou to průhledy, které zůstanou po systematickém vysazení stromů.}
 
-\section{Vzdělávací hodnota}
+\section{Časté otázky}
 
-Tato vizualizace pomáhá odpovědět na časté studentské otázky:
+Vizualizace nabízí odpovědi na otázky, které se často objevují:
 
 \paragraph{Proč jsou prvočísla ``speciální''?}
-A: Prvočísla jsou jediná čísla s čistými průhledy. Jsou zásadně odlišná od složených čísel.
+Prvočísla jsou jediná čísla s čistými průhledy. Jsou zásadně odlišná od složených čísel.
 
 \paragraph{Proč mezery mezi prvočísly rostou?}
-A: Les se rozprostírá hlouběji a zahušťuje se s rostoucími čísly. Průhledy se stávají vzácnějšími, mezery mezi prvočísly se přirozeně rozšiřují.
+Les se rozprostírá hlouběji a zahušťuje se s rostoucími čísly. Průhledy se stávají vzácnějšími, mezery mezi prvočísly se přirozeně rozšiřují.
 
 \paragraph{Je nějaký vzorec v prvočíslech?}
-A: Ano! Prvočísla jsou přesně mezery v pravidelné mřížce dělitelů. Vzorec je viditelný, jakmile vysázíme stromy do 2D.
+Ano! Prvočísla jsou přesně mezery v pravidelné mřížce dělitelů. Vzorec je viditelný, jakmile vysázíme stromy do 2D.
 
 \paragraph{Proč se pravděpodobnost nalezení prvočísla snižuje?}
-A: Jak čísla rostou, mají více dělitelů. Les se rozprostírá hlouběji a zahušťuje se. Více stromů ve více hloubkách blokuje průhledy, takže prvočísla se stávají vzácnějšími.
+Jak čísla rostou, mají více dělitelů. Les se rozprostírá hlouběji a zahušťuje se. Více stromů ve více hloubkách blokuje průhledy, takže prvočísla se stávají vzácnějšími.
 
 \section{Paradox pravidelnosti}
 
-\begin{center}
-\fbox{\begin{minipage}{0.9\textwidth}
-\vspace{0.5em}
-\textbf{Hluboké tajemství poodhaleno}
+\textbf{Hluboké tajemství:} Prvoles odhaluje ohromující paradox v srdci rozložení prvočísel.
 
-Prvoles odhaluje ohromující paradox v srdci rozložení prvočísel:
+\textbf{Vstup} jsou dokonale pravidelné diagonální vzorce---násobky 2 v intervalech 2, násobky 3 v intervalech 3, násobky 5 v intervalech 5. Každé prvočíslo generuje svou vlastní dokonale uniformní mřížku.
 
-\begin{itemize}
-\item \textbf{Vstup}: Dokonale pravidelné diagonální vzorce
-  \begin{itemize}
-  \item Násobky 2: rovnoměrně rozložené v intervalech 2
-  \item Násobky 3: rovnoměrně rozložené v intervalech 3
-  \item Násobky 5: rovnoměrně rozložené v intervalech 5
-  \item Každé prvočíslo generuje svou vlastní dokonale uniformní mřížku
-  \end{itemize}
+\textbf{Transformace} je jednoduchý kvadratický posun $p^2 + kp$, zcela deterministický, bez náhodnosti. Pouze posunuje každý diagonální řádek na pozici určenou druhou mocninou.
 
-\item \textbf{Transformace}: Jednoduchý kvadratický posun $p^2 + kp$
-  \begin{itemize}
-  \item Zcela deterministické
-  \item Žádná náhodnost, žádný chaos v samotném pravidle
-  \item Pouze posunuje každý diagonální řádek na pozici určenou druhou mocninou
-  \end{itemize}
-
-\item \textbf{Výstup}: Tajemné rozložení prvočísel
-  \begin{itemize}
-  \item Mezery mezi prvočísly: 1, 2, 2, 4, 2, 4, 2, 4, 6, 2, 6, 4, 2, 4, 6, 6, \ldots---chaoticky kolísají a celkově rostou\footnote{Pro zájemce: Maximální velikost mezer mezi po sobě jdoucími prvočísly souvisí s \emph{Cramérovou domněnkou}. Viz anglická Wikipedie: \href{https://en.wikipedia.org/wiki/Cram\%C3\%A9r\%27s_conjecture}{Cramér's conjecture}}
-  \item Prvočíselná dvojčata se objevující nepředvídatelně
-  \item Předmět Riemannovy hypotézy\footnote{\emph{Riemannova hypotéza}, formulovaná v roce 1859, zůstává nevyřešena již přes 165 let a je jedním z Millennium Prize Problems s odměnou \$1 milion. Viz česká Wikipedie: \href{https://cs.wikipedia.org/wiki/Riemannova_hypot\%C3\%A9za}{Riemannova hypotéza}}
-  \item Jeden z nejhlubších nevyřešených problémů matematiky
-  \end{itemize}
-\end{itemize}
-\vspace{0.5em}
-\end{minipage}}
-\end{center}
+\textbf{Výstup} je tajemné rozložení prvočísel: mezery mezi nimi chaoticky kolísají (1, 2, 2, 4, 2, 4, 2, 4, 6, 2, 6, 4, \ldots), prvočíselná dvojčata se objevují nepředvídatelně, a celá struktura je předmětem Riemannovy hypotézy---jednoho z nejhlubších nevyřešených problémů matematiky.\footnote{Pro zájemce: Maximální velikost mezer souvisí s \emph{Cramérovou domněnkou} (\href{https://en.wikipedia.org/wiki/Cram\%C3\%A9r\%27s_conjecture}{en.wikipedia.org}), a \emph{Riemannova hypotéza}, formulovaná 1859, zůstává nevyřešena přes 165 let (\href{https://cs.wikipedia.org/wiki/Riemannova_hypot\%C3\%A9za}{cs.wikipedia.org}).}
 
 \textbf{Otázka}: Jak může sjednocení nekonečně mnoha dokonale pravidelných vzorů, systematicky posunutých, vytvořit něco tak složitého a tajemného, jako je rozložení prvočísel?
 
@@ -270,113 +217,10 @@ Struktura je dokonale pravidelná, předvídatelná---a přesto se průhledy vym
 
 Proto geometrický pohled, navzdory své jasnosti, nenabízí výpočetní zjednodušení. Průhledy jsou globální jev---prvočíslo se musí vyhnout \emph{všem} pravidelným vzorům najednou. Test prvočíselnosti zůstává stejně obtížný, jen vidíme jeho geometrickou podstatu.
 
-\section{Poznámka pro pedagogy}
-
-\subsection{Proč se to neučí ve školách?}
-
-Matematické vzdělávání tradičně upřednostňuje algoritmické postupy před vizuálním porozuměním. Eratosthenovo síto je typickým příkladem: přestože je základem výuky prvočísel, je téměř univerzálně prezentováno jako \emph{lineární, sekvenční algoritmus}: vypište čísla 2, 3, 4, 5, \ldots na řádek, pak systematicky škrtejte násobky. Tento přístup zapojuje \textbf{sekvenční zpracování levou hemisférou}---krok 1, krok 2, následujte postup, dojděte k odpovědi.
-
-Prvoles nabízí něco zásadně odlišného: \textbf{prostorové vnímání pravou hemisférou}\footnote{Poznámka: Rozdělení na "levou analytickou" a "pravou kreativní" hemisféru je zjednodušený populárně-naučný model. V realitě obě hemisféry intenzivně spolupracují na většině kognitivních úkolů. Jde zde o pedagogickou metaforu. Viz \href{https://cs.wikipedia.org/wiki/Lateralizace_mozku}{cs.wikipedia.org}}, kde je celá struktura viditelná najednou. Místo ``vyškrtněte další složené číslo'' studenti vidí ``složená čísla tvoří pravidelnou mřížku; prvočísla jsou mezery.''
-
-Proč geometrické vizualizace prvočísel zůstávají raritou ve výuce? S moderními výpočetními nástroji---GeoGebra, Python, Wolfram, interaktivní notebooky---je jejich vytváření a zkoumání triviální. Ulamova spirála existuje od roku 1963, přesto se neučí. Proč vzdělávání setrvává u lineárního algoritmu?
-
-\paragraph{Historická setrvačnost}
-Matematické vzdělávání se vyvinulo z ústních a písemných tradic, kde jste mohli ukázat pouze jedno číslo najednou. Lineární posloupnost 2, 3, 4, 5, 6, \ldots je to, co se vejde na papyrus, řádek tabule nebo tištěnou stránku. Dvourozměrné vizualizace vyžadují nástroje (milimetrový papír, vykreslování, barvu), které nebyly snadno dostupné až do nedávna.
-
-\paragraph{Výpočetní zaujatost}
-Síto se tradičně učí jako \emph{algoritmus}---metoda pro efektivní výpočet prvočísel. Školy zdůrazňují ``jak najít prvočísla'' (procedurální dovednost) nad ``proč se prvočísla chovají tímto způsobem'' (konceptuální porozumění). Lineární metoda je skutečně snazší implementovat ručně.
-
-\paragraph{Kompatibilita s hodnocením}
-Lineární algoritmy je snadné testovat: ``Vyškrtal student správná čísla? Identifikoval všechna prvočísla do 100?'' Prostorové porozumění je těžší hodnotit: ``Rozpoznává student, proč se tvoří mezery? Dokáže vysvětlit vzorec geometricky?'' Tradiční testování upřednostňuje procedurální úkoly.
-
-\paragraph{Příprava učitelů}
-Většina učitelů matematiky se sama naučila lineární síto a možná se nikdy nesetkala s geometrickými alternativami. Vyučování toho, co znáte, udržuje algoritmickou tradici. Zavedení nových vizualizací vyžaduje profesní rozvoj, aktualizované materiály a zvládnutí výpočetních nástrojů.
-
-\subsection{Vzdělávací příležitost}
-
-Lineární síto odpovídá na otázky \emph{jak}, zatímco geometrický pohled odpovídá na otázky \emph{proč}. Lineární síto je užitečný nástroj. Škoda je, když zůstane jediným setkáním žáků s prvočísly, protože pro zvídavé žáky algoritmus sám nevybízí k hlubšímu zkoumání a kladení otázek \emph{proč}:
-
-\begin{center}
-\begin{tabular}{p{6cm}|p{6cm}}
-\textbf{Lineární síto (Jak)} & \textbf{Prvoles (Proč)} \\ \hline
-Vyškrtněte násobky 2 & Násobky tvoří diagonální řady s pravidelnými rozestupy \\
-Vyškrtněte násobky 3 & Každé prvočíslo vytváří svoji diagonální řadu \\
-Prvočísla jsou to, co zbylo & Prvočísla se nedají rozložit na menší činitele \\
-Mezery mezi prvočísly rostou & Hustota složených čísel roste s velikostí \\
-Pokračujte ve škrtání\ldots & Přehlédnete celou strukturu jedním pohledem \\
-\end{tabular}
-\end{center}
-
-To jsou přesně otázky, které zvídaví studenti kladou:
-\begin{itemize}
-\item ``Proč prvočísla řídnou?'' $\rightarrow$ Les se zahušťuje (více činitelů blokuje váš výhled)
-\item ``Proč jsou prvočísla `speciální'?'' $\rightarrow$ Jsou to mezery v mřížce dělitelů (nemají dělitele)
-\item ``Je nějaký vzorec v prvočíslech?'' $\rightarrow$ Ano i ne---prvočísla jsou to, co zůstane, když odstraníme pravidelnost
-\end{itemize}
-
-Lineární síto na tyto otázky neodpovídá---pouze říká: provádějte algoritmus až do konce.
-
-\subsection{Doplňující materiál, ne náhrada}
-
-Netvrdíme, že by algoritmické Eratosthenovo síto nemělo být vyučováno---ba právě naopak. Klíčový poznatek: \textbf{různí studenti myslí různě}. Někteří pochopí prvočísla z algoritmu, jiní z vizualizace, někteří potřebují obojí. Proč se snažit všechny směstnat do jediné šablony?
-
-Navrhujeme kombinaci obou přístupů. Pořadí může být flexibilní:
-
-\begin{enumerate}
-\item \textbf{Tradiční cesta (algoritmus → vizualizace)}: Začnete klasickým sítem---škrtáním násobků. To je konkrétní, snadno proveditelné tužkou a papírem. Pak nabídnete překvapivý obrat: ``Co kdybychom tu samou strukturu viděli geometricky?'' Vizualizace odhaluje \emph{proč} algoritmus funguje. Výhoda: jednoduchost na začátku. Riziko: struktura se může ztratit v mechanickém škrtání.
-
-\item \textbf{Alternativní cesta (vizualizace → algoritmus)}: Začnete geometrickou strukturou---les dělitelů, průhledy jsou prvočísla. Studenti vidí \emph{proč} prvočísla existují dřív, než se naučí \emph{jak} je najít. Pak algoritmus jako praktický nástroj. Výhoda: struktura hned viditelná. Riziko: abstraktnější vstup, 2D souřadnice mohou být náročnější.
-
-\item \textbf{Diskuse a reflexe}: Ať už zvolíte jakékoli pořadí, zahrňte diskusi: Proč obě metody fungují? Co každá odhaluje? Který přístup vám připadá přirozenější? Cíl není vybrat jeden správný přístup, ale poskytnout různé pohledy pro různé myšlení.
-\end{enumerate}
-
-\subsection{Nástroje to umožňují}
-
-S moderními výpočetními nástroji---Wolfram Language, Python s matplotlib, GeoGebra, Desmos, interaktivními notebooky---je vytváření a zkoumání těchto vizualizací nyní \emph{jednoduché}. Studenti mohou:
-\begin{itemize}
-\item Vykreslovat vizualizace pro různé rozsahy čísel
-\item Zaměřit se na konkrétní oblasti
-\item Experimentovat s úpravami souřadnic
-\item Animovat vznikající vzor
-\item Objevovat další vzory sami
-\end{itemize}
-
-Bariéra už není technologie. Bariérou může být nedostatek povědomí, že takové vizualizace existují, či nechuť odchýlit se od tradičního učebního plánu.
-
-\subsection{Výzva k akci}
-
-Pokud jste pedagog a čtete toto, nabízíme následující:
-\begin{itemize}
-\item Zkuste ukázat Prvoles jako doplněk algoritmického síta.
-\item Zeptejte se žáků a studentů, který pohled jim dává větší smysl.
-\item Použijte vizualizace k odpovědi na otázky ``proč'' o rozložení prvočísel.
-\item Povzbuďte žáky a studenty ke zkoušení variací a k vlastním objevům.
-\item Sdílejte s kolegy funkční přístupy a podílejte se na tvorbě učebních plánů.
-\end{itemize}
-
-Cílem není přidat další téma do již přeplněného učebního plánu. Cílem je prohloubit porozumění důležitému tématu v souvislostech, zapojením jak algoritmického tak prostorového myšlení.
-
 \section{Závěr}
 
-Navržená vizualizace Prvoles transformuje linární algoritmus mechanického vyškrtávání násobků na konkrétní vizuální zkušenost. Tento geometrický pohled činí strukturu síta viditelnou a poskytuje intuitivní odpovědi na otázky ``proč'', které lineární algoritmus nechává nezodpovězené.
+Vizualizace Prvoles transformuje lineární algoritmus Eratosthenova síta do geometrického pohledu, kde prvočísla nejsou to, co zbyde po škrtání, ale průhledy skrz pravidelnou mřížku dělitelů.
 
-\subsection{Pedagogická hodnota}
-
-Tento přístup je pedagogicky hodnotný na různých stupních:
-\begin{itemize}
-\item \textbf{Základní škola}: Vizuální intuice důležitější než přesné algoritmy---les a průhledy jsou srozumitelné i bez formální matematiky
-\item \textbf{Střední škola}: Propojení dělitelnosti čísel s geometrickým chápáním---viditelné odpovědi na otázky ``proč prvočísla řídnou?''
-\item \textbf{Univerzita}: Transformace souřadnic odhalují strukturu---počátek hlubšího zkoumání
-\item \textbf{Výzkum}: Alternativní perspektivy mohou inspirovat nové přístupy
-\end{itemize}
-
-Nejcennější je snad to, že vizualizace umožňuje různým typům myšlení vidět stejnou strukturu různými způsoby. Někdo potřebuje algoritmus, někdo potřebuje obrázek. Proč bychom měli nabízet jen jedno?
-
-
-\subsection{Otevřená pozvánka}
-
-Příště, až budete přemýšlet o prvočíslech, představte si, že stojíte na jižním okraji rozsáhlého lesa a rozhodujete se, kudy do něj vstoupit. Na většině míst stromy blokují váš výhled na sever, ale občas narazíte na dokonale čistý průhled, kterým vidíte až do nekonečna. To je prvočíslo. Les je pravidelný, ale průhledy jsou tajemné.
-
-Tato geometrická představa nejen nabízí novou perspektivu na starou otázku, ale může být také výchozím bodem pro hlubší matematické zkoumání struktury přirozených čísel.
+Je zajímavé, jak stejná struktura může oslovit různé typy myšlení---někdo vidí algoritmus, někdo geometrický vzorec, někdo vizuální krajinu. A to je právě krása matematiky.
 
 \end{document}
