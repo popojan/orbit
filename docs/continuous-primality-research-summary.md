@@ -100,7 +100,52 @@ $$S_{\varepsilon}(n, \alpha) = \sum_{d=2}^{n} \log \left[ -\frac{1}{\alpha} \log
 
 Both versions produce similar stratification.
 
-### 2.3 Observed Stratification (n ≤ 200, p=3, ε=10⁻⁸)
+### 2.3 Full P-norm: Infinite Sums (Latest Development)
+
+**Motivation**: The weighted average $\frac{1}{\lfloor n/d \rfloor + 1}$ introduces floor functions that complicate symbolic analysis. The truncated sum at $k = \lfloor n/d \rfloor$ is artificial from the geometric perspective.
+
+**Full P-norm Definition** - extend k-sum to infinity:
+
+$$\text{soft-min}_d^{\text{full}}(n) = \left( \sum_{k=0}^{\infty} \left[(n - (kd + d^2))^2 + \varepsilon\right]^{-p} \right)^{-1/p}$$
+
+where the distance function is:
+$$\text{dist}(n, k, d) = \begin{cases}
+(n - kd - d^2)^2 + \varepsilon & \text{if } kd + d^2 \leq n \\
+(kd + d^2 - n)^2 + \varepsilon & \text{if } kd + d^2 > n
+\end{cases}$$
+
+**Convergence**: For large k, $(kd + d^2 - n)^2 \sim k^2d^2$, so:
+$$\sum_{k \gg n/d} k^{-2p} d^{-2p} < \infty \quad \text{for } p > \frac{1}{2}$$
+
+With $p = 3$, convergence is **guaranteed**.
+
+**Global function with double infinite sum**:
+
+$$F_n^{\text{full}}(s) = \sum_{d=2}^{\infty} \left[ \sum_{k=0}^{\infty} \left[(n - (kd + d^2))^2 + \varepsilon\right]^{-p} \right]^{-s/p}$$
+
+**Key properties**:
+1. **No weighting** - pure power sum, algebraically cleaner
+2. **Natural tail behavior** - for $d > \sqrt{n}$, mostly far misses with natural $d^{-2ps}$ decay
+3. **Small d structure** - infinitely many near-hits when $d \ll \sqrt{n}$
+4. **Tractable asymptotics** - no floor functions in denominators
+
+**Convergence of outer sum**: For $d \gg \sqrt{n}$, dominant term is $k=0$:
+$$\text{soft-min}_d^{\text{full}}(n) \sim (d^2 - n)^{1/p} \sim d^{2/p}$$
+
+Therefore:
+$$\sum_{d \gg \sqrt{n}} d^{-2s} < \infty \quad \text{for } s > \frac{1}{2}$$
+
+**This matches the convergence threshold for ζ(2s)!**
+
+**Comparison of formulations**:
+
+| Variant | k-sum limit | d-sum limit | Weighting | Algebraic Complexity | Best for |
+|---------|-------------|-------------|-----------|---------------------|----------|
+| Truncated-Weighted | ⌊n/d⌋ | n or √n | Yes (÷count) | High (floor in denom) | Stable numerics |
+| Truncated-Unweighted | ⌊n/d⌋ | n or √n | No | Medium (floor in limit) | Direct G(s,σ) |
+| **Full P-norm** | **∞** | **∞** | **No** | **Low (pure sums)** | **Symbolic analysis** |
+
+### 2.4 Observed Stratification (n ≤ 200, p=3, ε=10⁻⁸)
 
 **Envelope structure**: Primes form upper envelope
 **Layers below**:
