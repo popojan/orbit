@@ -17,7 +17,7 @@ This repository documents an ongoing mathematical exploration of prime number st
 
 This repository contains:
 
-1. **Geometric Foundation** - "Primal Forest" visualization mapping prime relationships to 2D coordinate geometry (years of development)
+1. **Geometric Foundation** - "Primal Forest" visualization mapping prime relationships to 2D coordinate geometry
 2. **Epsilon-Pole Residue Theorem** - Proven local result about divisor count regularization
 3. **Closed Form Discovery** - Conjectured global formula for non-multiplicative Dirichlet series L_M(s) (Nov 15, 2025)
 4. **Trinity Methodology** - Documentation of human-AI-computational collaboration process
