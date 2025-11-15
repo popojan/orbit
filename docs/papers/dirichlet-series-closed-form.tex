@@ -1,0 +1,279 @@
+\documentclass[11pt]{amsart}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title[Closed Form for the Dirichlet Series $L_M(s)$]{A Closed Form for the Dirichlet Series of Divisor Counts:\\
+Connection to the Riemann Zeta Function}
+
+\author{Jan Popelka}
+\address{Prague, Czech Republic}
+\email{popojan@protonmail.com}
+
+\date{November 15, 2025}
+
+\begin{document}
+
+\begin{abstract}
+We establish a closed form expression for the Dirichlet series $L_M(s) = \sum_{n=2}^{\infty} M(n)/n^s$, where $M(n)$ counts the divisors of $n$ in the range $[2, \sqrt{n}]$. Despite the non-multiplicative nature of $M(n)$---which precludes a standard Euler product---we prove that $L_M(s)$ can be expressed entirely in terms of the Riemann zeta function $\zeta(s)$ and partial harmonic sums. Specifically, we show:
+\[
+L_M(s) = \zeta(s)[\zeta(s) - 1] - \sum_{j=2}^{\infty} \frac{H_{j-1}(s)}{j^s}
+\]
+where $H_j(s) = \sum_{k=1}^{j} k^{-s}$ are partial zeta sums. This result connects geometric factorization structure to classical analytic number theory.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+\subsection{Geometric Motivation: The Primal Forest}
+
+The study of prime numbers and factorization has long benefited from geometric intuition. In \cite{primal-forest}, we introduced a two-dimensional visualization of the Sieve of Eratosthenes called the \emph{Primal Forest}, where composite numbers $n = p(p+k)$ are mapped to coordinates $(kp + p^2, kp + 1)$. This transformation reveals divisors as ``trees'' in a geometric landscape, with primes appearing as positions with clear sight lines.
+
+The depth coordinate $y = kp + 1$ naturally stratifies factorizations by their complexity. When we measure distances in this forest using the $p$-norm
+\[
+\text{dist}_p(n; d, k) = \left[(n - kd - d^2)^2 + \varepsilon\right]^{1/2}
+\]
+and sum over all potential factorizations with a regularization parameter $\varepsilon > 0$, we obtain a function
+\[
+F_n(\alpha, \varepsilon) = \sum_{d=2}^{\infty} \sum_{k=0}^{\infty} \left[(n - kd - d^2)^2 + \varepsilon\right]^{-\alpha}
+\]
+that encodes the factorization structure of $n$ through its pole at $\varepsilon = 0$.
+
+\subsection{From Local to Global: The Dirichlet Series}
+
+In \cite{epsilon-pole}, we proved the \emph{Epsilon-Pole Residue Theorem}:
+
+\begin{theorem}[Residue Formula, \cite{epsilon-pole}]
+\label{thm:residue}
+For $\alpha > 1/2$ and $n \geq 2$,
+\[
+\lim_{\varepsilon \to 0^+} \varepsilon^\alpha \cdot F_n(\alpha, \varepsilon) = M(n)
+\]
+where $M(n) = \#\{d : d \mid n, \, 2 \leq d \leq \sqrt{n}\}$.
+\end{theorem}
+
+This local result characterizes individual integers through their divisor structure. A natural question arises: \emph{can we construct a global function that connects all integers simultaneously to the Riemann zeta function?}
+
+The classical approach would be to form the Dirichlet series
+\[
+L_M(s) = \sum_{n=2}^{\infty} \frac{M(n)}{n^s}
+\]
+and seek an Euler product representation. However, a fundamental obstruction emerges: $M(n)$ is \textbf{not multiplicative}. For instance, $M(6) = 1$ (divisor: 2) while $M(2) \cdot M(3) = 0 \cdot 0 = 0$. This failure stems from the $\sqrt{n}$ boundary, which does not respect products.
+
+Despite this obstacle, we prove that $L_M(s)$ nevertheless admits a closed form in terms of $\zeta(s)$.
+
+\subsection{Main Result}
+
+\begin{theorem}[Closed Form for $L_M(s)$]
+\label{thm:main}
+For $s > 1$, the Dirichlet series $L_M(s) = \sum_{n=2}^{\infty} M(n)/n^s$ satisfies
+\[
+\boxed{L_M(s) = \zeta(s)[\zeta(s) - 1] - \sum_{j=2}^{\infty} \frac{H_{j-1}(s)}{j^s}}
+\]
+where $H_j(s) = \sum_{k=1}^{j} k^{-s}$ denotes the $j$-th partial zeta sum.
+\end{theorem}
+
+\begin{remark}
+The correction term $\sum_{j=2}^{\infty} H_{j-1}(s)/j^s$ accounts for the non-multiplicative nature of $M(n)$. As $j \to \infty$, $H_j(s) \to \zeta(s)$, so the sum converges rapidly.
+\end{remark}
+
+\section{Preliminaries}
+
+\subsection{The Function $M(n)$}
+
+\begin{definition}
+For $n \geq 2$, define
+\[
+M(n) = \#\{d \in \mathbb{Z} : d \mid n, \, 2 \leq d \leq \sqrt{n}\}.
+\]
+\end{definition}
+
+\begin{lemma}[Closed Form for $M(n)$]
+\label{lem:M-closed-form}
+For $n \geq 2$,
+\[
+M(n) = \left\lfloor \frac{\tau(n) - 1}{2} \right\rfloor
+\]
+where $\tau(n) = \sum_{d \mid n} 1$ is the divisor function.
+\end{lemma}
+
+\begin{proof}
+The divisors of $n$ come in pairs $(d, n/d)$ with $d \cdot (n/d) = n$. Divisors $d$ with $2 \leq d \leq \sqrt{n}$ correspond to the ``lower half'' of these pairs (excluding 1). If $n$ is a perfect square, $d = \sqrt{n}$ pairs with itself. The count follows from the floor function accounting for parity.
+\end{proof}
+
+\subsection{Non-Multiplicativity}
+
+\begin{proposition}
+The function $M(n)$ is not multiplicative.
+\end{proposition}
+
+\begin{proof}
+We exhibit a counterexample. For $n = 6 = 2 \times 3$ with $\gcd(2, 3) = 1$:
+\begin{align*}
+M(6) &= \#\{d : d \mid 6, \, 2 \leq d \leq \sqrt{6}\} = \#\{2\} = 1 \\
+M(2) &= 0 \quad (\text{since } 2 > \sqrt{2}) \\
+M(3) &= 0 \quad (\text{since } 2 \not\mid 3 \text{ and } 3 > \sqrt{3})
+\end{align*}
+Thus $M(6) = 1 \neq 0 = M(2) \cdot M(3)$.
+\end{proof}
+
+This immediately implies that the standard Euler product factorization
+\[
+L_M(s) \stackrel{?}{=} \prod_{p \text{ prime}} \left(1 + \sum_{k=1}^{\infty} \frac{M(p^k)}{p^{ks}}\right)
+\]
+\textbf{does not equal} the direct sum $\sum_{n=2}^{\infty} M(n)/n^s$, even though local Euler factors can be computed. We must pursue a different approach.
+
+\section{Proof of the Main Theorem}
+
+\subsection{Double Sum Representation}
+
+We begin by rewriting $L_M(s)$ as a double sum over divisors.
+
+\begin{lemma}[Double Sum Formula]
+\label{lem:double-sum}
+For $s > 1$,
+\[
+L_M(s) = \sum_{d=2}^{\infty} \frac{1}{d^s} \sum_{k=d}^{\infty} \frac{1}{k^s}.
+\]
+\end{lemma}
+
+\begin{proof}
+Starting from the definition,
+\[
+L_M(s) = \sum_{n=2}^{\infty} \frac{M(n)}{n^s} = \sum_{n=2}^{\infty} \frac{1}{n^s} \sum_{\substack{d \mid n \\ 2 \leq d \leq \sqrt{n}}} 1.
+\]
+Interchanging the order of summation (valid for $s > 1$ by absolute convergence),
+\[
+= \sum_{d=2}^{\infty} \sum_{\substack{n : d \mid n \\ d \leq \sqrt{n}}} \frac{1}{n^s}.
+\]
+For fixed $d$, the condition ``$d \mid n$ and $d \leq \sqrt{n}$'' means $n = kd$ for some integer $k$ with
+\[
+d \leq \sqrt{kd} \implies d^2 \leq kd \implies d \leq k.
+\]
+Thus
+\[
+\sum_{\substack{n : d \mid n \\ d \leq \sqrt{n}}} \frac{1}{n^s} = \sum_{k=d}^{\infty} \frac{1}{(kd)^s} = \frac{1}{d^s} \sum_{k=d}^{\infty} \frac{1}{k^s}. \qedhere
+\]
+\end{proof}
+
+\subsection{Tail Zeta Functions}
+
+\begin{definition}
+For $m \geq 1$ and $s > 1$, define the \emph{tail zeta function}
+\[
+\zeta_{\geq m}(s) = \sum_{k=m}^{\infty} \frac{1}{k^s}.
+\]
+\end{definition}
+
+\begin{lemma}[Tail Zeta via Partial Sums]
+\label{lem:tail-zeta}
+For $m \geq 1$ and $s > 1$,
+\[
+\zeta_{\geq m}(s) = \zeta(s) - H_{m-1}(s)
+\]
+where $H_j(s) = \sum_{k=1}^{j} k^{-s}$ is the $j$-th partial zeta sum.
+\end{lemma}
+
+\begin{proof}
+By definition,
+\[
+\zeta(s) = \sum_{k=1}^{\infty} k^{-s} = \sum_{k=1}^{m-1} k^{-s} + \sum_{k=m}^{\infty} k^{-s} = H_{m-1}(s) + \zeta_{\geq m}(s). \qedhere
+\]
+\end{proof}
+
+\subsection{Derivation of the Closed Form}
+
+Using Lemma~\ref{lem:double-sum} and Lemma~\ref{lem:tail-zeta},
+\begin{align*}
+L_M(s) &= \sum_{d=2}^{\infty} \frac{\zeta_{\geq d}(s)}{d^s} \\
+&= \sum_{d=2}^{\infty} \frac{\zeta(s) - H_{d-1}(s)}{d^s} \\
+&= \zeta(s) \sum_{d=2}^{\infty} \frac{1}{d^s} - \sum_{d=2}^{\infty} \frac{H_{d-1}(s)}{d^s} \\
+&= \zeta(s) \left[\zeta(s) - 1\right] - \sum_{d=2}^{\infty} \frac{H_{d-1}(s)}{d^s}.
+\end{align*}
+Reindexing the sum with $j = d$, we obtain
+\[
+L_M(s) = \zeta(s)[\zeta(s) - 1] - \sum_{j=2}^{\infty} \frac{H_{j-1}(s)}{j^s}.
+\]
+This completes the proof of Theorem~\ref{thm:main}. \qed
+
+\section{Discussion}
+
+\subsection{Relationship to Classical Dirichlet Series}
+
+For comparison, consider well-known multiplicative functions:
+
+\begin{center}
+\begin{tabular}{lll}
+\hline
+Function & Dirichlet Series & Closed Form \\
+\hline
+$\tau(n)$ (divisor count) & $\sum \tau(n)/n^s$ & $\zeta(s)^2$ \\
+$\varphi(n)$ (Euler totient) & $\sum \varphi(n)/n^s$ & $\zeta(s-1)/\zeta(s)$ \\
+$M(n)$ (our function) & $\sum M(n)/n^s$ & $\zeta(s)[\zeta(s)-1] - \sum H_{j-1}(s)/j^s$ \\
+\hline
+\end{tabular}
+\end{center}
+
+Our result is more complex due to non-multiplicativity, yet is \emph{expressible using only fundamental objects}: the Riemann zeta function $\zeta(s)$ and finite partial sums $H_j(s)$. No exotic special functions are required.
+
+\subsection{Asymptotic Analysis}
+
+For large $j$, we have
+\[
+H_j(s) = \zeta(s) - \sum_{k=j+1}^{\infty} k^{-s} \approx \zeta(s) - \frac{j^{1-s}}{s-1}
+\]
+by the Euler-Maclaurin formula. Thus the correction term behaves like
+\[
+\sum_{j=2}^{\infty} \frac{H_{j-1}(s)}{j^s} \approx \zeta(s)[\zeta(s)-1] - \frac{1}{s-1} \sum_{j=2}^{\infty} \frac{j^{1-s}}{j^s} = \zeta(s)[\zeta(s)-1] - \frac{\zeta(2s-1)}{s-1}.
+\]
+This confirms the structural form and provides an asymptotic expansion.
+
+\subsection{Open Questions}
+
+\begin{enumerate}
+\item \textbf{Further simplification}: Can the sum $\sum_{j=2}^{\infty} H_{j-1}(s)/j^s$ be expressed via known special functions (e.g., polylogarithms, Hurwitz zeta)?
+
+\item \textbf{Analytic continuation}: Can $L_M(s)$ be continued to $\text{Re}(s) \leq 1$? What is its behavior near $s = 1$?
+
+\item \textbf{Functional equation}: Does $L_M(s)$ satisfy a functional equation relating $L_M(s)$ to $L_M(1-s)$ (or similar)?
+
+\item \textbf{Zeros}: Are there any non-trivial zeros in the critical strip? How do they relate to prime distribution?
+
+\item \textbf{Connection to modular forms}: Does $L_M$ have an interpretation in the theory of $L$-functions or automorphic forms?
+\end{enumerate}
+
+\section{Conclusion}
+
+We have established that the Dirichlet series $L_M(s)$ of the non-multiplicative divisor count function $M(n)$ admits a closed form entirely in terms of the Riemann zeta function and partial harmonic sums. This demonstrates that even non-multiplicative arithmetic functions arising from geometric factorization can exhibit rich analytic structure.
+
+The connection between the geometric Primal Forest visualization, the epsilon-pole residue structure, and the global Dirichlet series reveals a coherent framework for studying factorization through both local (individual $n$) and global (all $n$ simultaneously) lenses.
+
+\begin{thebibliography}{99}
+
+\bibitem{primal-forest}
+J.~Popelka,
+\emph{The Primal Forest: A Journey Through the Sieve of Eratosthenes},
+Unpublished manuscript, 2025.
+
+\bibitem{epsilon-pole}
+J.~Popelka,
+\emph{Epsilon-Pole Residues and Prime Factorization Structure},
+Unpublished manuscript, 2025.
+
+\end{thebibliography}
+
+\bigskip
+
+\noindent\textbf{Acknowledgments.} This research was conducted in collaboration with Claude (Anthropic), an AI assistant that contributed to formulation of conjectures, derivation of proofs, numerical verification, and manuscript preparation. All mathematical content has been verified by the author.
+
+\end{document}
