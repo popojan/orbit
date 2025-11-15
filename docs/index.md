@@ -1,9 +1,14 @@
 # Documentation Index
 
-**Generated:** 2025-11-15 21:13:09
+**Generated:** 2025-11-15 22:13:45
 
 ## Recent Documents (by edit time)
 
+- [Global Dirichlet Series for M(n)](global-dirichlet-series.md) *(2025-11-15)*
+- [Euler Product for Sum[M(n)/n^s]](euler-product-formula.md) *(2025-11-15)*
+- [Residue Theorem: Complete Proof](residue-theorem-proof.md) *(2025-11-15)*
+- [Lemma 1: Regular Part Vanishes at ε=0](lemma1-regular-part-vanishes.md) *(2025-11-15)*
+- [Residue Conjecture: Proof Strategy via Double Sum Reorganization](residue-proof-strategy.md) *(2025-11-15)*
 - [Epsilon Poles and Residue Theory: Quantifying Compositeness](epsilon-pole-residue-theory.md) *(2025-11-15)*
 - [M(n) Function: Connection to Divisor Function τ(n)](m-function-divisor-connection.md) *(2025-11-15)*
 - [Bug Report: kMax Scaling Issue in Residue Tests](bug-report-kmax-scaling.md) *(2025-11-15)*

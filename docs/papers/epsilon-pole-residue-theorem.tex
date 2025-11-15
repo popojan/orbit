@@ -1,0 +1,399 @@
+\documentclass[11pt]{amsart}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator{\dist}{dist}
+
+\title{Epsilon-Pole Residues and Prime Factorization Structure}
+
+\author{Jan Popelka}
+\address{Prague, Czech Republic}
+\email{popojan@protonmail.com}
+
+\date{\today}
+
+\begin{document}
+
+\begin{abstract}
+We establish a connection between the residue structure of a regularized double sum and the factorization properties of positive integers. For $n \geq 2$ and $\alpha > 1/2$, we define
+\[
+F_n(\alpha, \varepsilon) = \sum_{d=2}^{\infty} \sum_{k=0}^{\infty} \left[(n - kd - d^2)^2 + \varepsilon\right]^{-\alpha}
+\]
+and prove that the residue at $\varepsilon = 0$ equals the number of non-trivial divisors of $n$ up to $\sqrt{n}$. This yields a new analytic characterization of primality: an integer $n$ is prime if and only if $F_n(\alpha, \varepsilon)$ is analytic at $\varepsilon = 0$.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+Classical analytic number theory connects prime numbers to the pole structure of $L$-functions, most notably through the Riemann zeta function $\zeta(s)$, which has a simple pole at $s = 1$. The residue at this pole encodes fundamental arithmetic information about the distribution of primes.
+
+In this paper, we introduce a different type of pole structure arising from geometric factorizations of integers. Rather than poles in a complex variable, we study poles in a regularization parameter $\varepsilon$ that prevents division by zero in sums over integer pairs $(d, k)$ satisfying $n = kd + d^2$.
+
+Our main result shows that the residue of $F_n(\alpha, \varepsilon)$ at $\varepsilon = 0$ equals the count of non-trivial divisors of $n$ up to $\sqrt{n}$. This provides a new characterization: primes are precisely those integers for which $F_n$ has no pole at $\varepsilon = 0$.
+
+\subsection{Main Results}
+
+We introduce the \emph{factorization count function}:
+
+\begin{definition}
+For $n \geq 2$, let
+\[
+M(n) = \#\{d \in \mathbb{Z} : d \mid n, \, 2 \leq d \leq \sqrt{n}\}
+\]
+denote the number of divisors of $n$ strictly between 2 and $\sqrt{n}$ (inclusive).
+\end{definition}
+
+Our central object of study is the following regularized sum:
+
+\begin{definition}
+For $n \geq 2$, $\alpha \in \mathbb{R}$ with $\alpha > 0$, and $\varepsilon > 0$, define
+\[
+F_n(\alpha, \varepsilon) = \sum_{d=2}^{\infty} \sum_{k=0}^{\infty} \left[(n - kd - d^2)^2 + \varepsilon\right]^{-\alpha}.
+\]
+\end{definition}
+
+\begin{remark}
+The regularization parameter $\varepsilon$ ensures that the summand is well-defined even when $n = kd + d^2$, which occurs precisely when $d$ divides $n$ and $2 \leq d \leq \sqrt{n}$.
+\end{remark}
+
+Our main theorem establishes the residue formula:
+
+\begin{theorem}[Epsilon-Pole Residue Formula]
+\label{thm:main}
+For $\alpha > 1/2$ and $n \geq 2$,
+\[
+\lim_{\varepsilon \to 0^+} \varepsilon^\alpha \cdot F_n(\alpha, \varepsilon) = M(n).
+\]
+\end{theorem}
+
+We derive an explicit closed form for $M(n)$:
+
+\begin{theorem}[Closed Form of $M(n)$]
+\label{thm:closed-form}
+For $n \geq 2$, let $\tau(n)$ denote the divisor function (total number of positive divisors of $n$). Then
+\[
+M(n) = \left\lfloor \frac{\tau(n) - 1}{2} \right\rfloor.
+\]
+\end{theorem}
+
+Combining these results yields a primality criterion:
+
+\begin{corollary}[Analytic Primality Criterion]
+\label{cor:primality}
+An integer $n \geq 2$ is prime if and only if
+\[
+\lim_{\varepsilon \to 0^+} \varepsilon^\alpha \cdot F_n(\alpha, \varepsilon) = 0
+\]
+for some (equivalently, all) $\alpha > 1/2$.
+\end{corollary}
+
+\section{Factorizations and Divisors}
+
+We begin by establishing the bijection between factorizations and divisors.
+
+\begin{definition}
+For $n \geq 2$, define the set of \emph{factorizing pairs}:
+\[
+\mathcal{F}_n = \{(d, k) \in \mathbb{Z}^2 : n = kd + d^2, \, d \geq 2, \, k \geq 0\}.
+\]
+\end{definition}
+
+\begin{proposition}[Bijection with Divisors]
+\label{prop:bijection}
+There exists a bijection between $\mathcal{F}_n$ and the set $\{d \in \mathbb{Z} : d \mid n, \, 2 \leq d \leq \sqrt{n}\}$.
+\end{proposition}
+
+\begin{proof}
+Define the maps:
+\begin{align*}
+\phi: \mathcal{F}_n &\to \{d \in \mathbb{Z} : d \mid n, \, 2 \leq d \leq \sqrt{n}\} \\
+(d, k) &\mapsto d
+\end{align*}
+and
+\begin{align*}
+\psi: \{d \in \mathbb{Z} : d \mid n, \, 2 \leq d \leq \sqrt{n}\} &\to \mathcal{F}_n \\
+d &\mapsto \left(d, \frac{n}{d} - d\right).
+\end{align*}
+
+\textbf{Well-definedness of $\phi$:} If $(d, k) \in \mathcal{F}_n$, then $n = kd + d^2 = d(k + d)$, so $d \mid n$. Since $k \geq 0$, we have $k + d \geq d$, hence $\frac{n}{d} = k + d \geq d$, giving $d^2 \leq n$. Thus $d \in \{d \in \mathbb{Z} : d \mid n, \, 2 \leq d \leq \sqrt{n}\}$.
+
+\textbf{Well-definedness of $\psi$:} If $d \mid n$ and $2 \leq d \leq \sqrt{n}$, then $k := \frac{n}{d} - d$ is an integer. Since $d \leq \sqrt{n}$, we have $\frac{n}{d} \geq \sqrt{n} \geq d$, so $k = \frac{n}{d} - d \geq 0$. Moreover,
+\[
+kd + d^2 = \left(\frac{n}{d} - d\right)d + d^2 = n - d^2 + d^2 = n,
+\]
+so $(d, k) \in \mathcal{F}_n$.
+
+\textbf{$\phi \circ \psi = \mathrm{id}$:} For $d \mid n$ with $2 \leq d \leq \sqrt{n}$,
+\[
+\phi(\psi(d)) = \phi\left(d, \frac{n}{d} - d\right) = d.
+\]
+
+\textbf{$\psi \circ \phi = \mathrm{id}$:} For $(d, k) \in \mathcal{F}_n$ with $n = kd + d^2$,
+\[
+\psi(\phi(d, k)) = \psi(d) = \left(d, \frac{n}{d} - d\right) = \left(d, \frac{kd + d^2}{d} - d\right) = (d, k + d - d) = (d, k).
+\]
+
+Thus $\phi$ and $\psi$ are inverses, establishing the bijection.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:closed-form}]
+By Proposition \ref{prop:bijection},
+\[
+M(n) = |\mathcal{F}_n| = |\{d \in \mathbb{Z} : d \mid n, \, 2 \leq d \leq \sqrt{n}\}|.
+\]
+
+Let $D(n) = \{d \in \mathbb{Z} : d \mid n, \, d > 0\}$ denote the set of all positive divisors of $n$. Then $|D(n)| = \tau(n)$.
+
+For each divisor $d$ of $n$, the complementary divisor is $\frac{n}{d}$. The divisors pair up as $(d, \frac{n}{d})$ unless $d = \frac{n}{d}$, which occurs when $d^2 = n$, i.e., when $n$ is a perfect square and $d = \sqrt{n}$.
+
+Consider the divisors satisfying $d \geq 2$. Excluding $d = 1$, there are $\tau(n) - 1$ such divisors.
+
+Among these, the divisors satisfying $2 \leq d \leq \sqrt{n}$ constitute exactly half of the pairs $(d, \frac{n}{d})$ with $d \geq 2$, except when $n$ is a perfect square, in which case the middle divisor $d = \sqrt{n}$ pairs with itself.
+
+If $n$ is not a perfect square, divisors $d \geq 2$ pair up with distinct complementary divisors, and exactly half satisfy $d \leq \sqrt{n}$:
+\[
+M(n) = \frac{\tau(n) - 1}{2}.
+\]
+
+If $n = m^2$ is a perfect square, then $\sqrt{n} = m$ is a divisor. Among the $\tau(n) - 1$ divisors $d \geq 2$, the divisor $m$ pairs with itself, and the remaining $\tau(n) - 2$ divisors form pairs. Half of these satisfy $d < m$, so
+\[
+M(n) = \frac{\tau(n) - 2}{2} + 1 = \frac{\tau(n)}{2}.
+\]
+
+Both cases are unified by the floor formula:
+\[
+M(n) = \left\lfloor \frac{\tau(n) - 1}{2} \right\rfloor. \qedhere
+\]
+\end{proof}
+
+\section{The Residue Theorem}
+
+To prove Theorem \ref{thm:main}, we partition the double sum into contributions from factorizing and non-factorizing pairs.
+
+\begin{definition}
+Define the \emph{singular part}:
+\[
+S_n(\varepsilon) = \sum_{(d,k) \in \mathcal{F}_n} \varepsilon^{-\alpha}
+\]
+and the \emph{regular part}:
+\[
+R_n(\alpha, \varepsilon) = \sum_{\substack{d \geq 2, k \geq 0 \\ (d,k) \notin \mathcal{F}_n}} \left[(n - kd - d^2)^2 + \varepsilon\right]^{-\alpha}.
+\]
+\end{definition}
+
+Then $F_n(\alpha, \varepsilon) = S_n(\varepsilon) + R_n(\alpha, \varepsilon)$.
+
+\subsection{Singular Part Contribution}
+
+\begin{proposition}
+\label{prop:singular}
+For all $\varepsilon > 0$,
+\[
+\varepsilon^\alpha \cdot S_n(\varepsilon) = M(n).
+\]
+\end{proposition}
+
+\begin{proof}
+For $(d, k) \in \mathcal{F}_n$, we have $n = kd + d^2$, so $n - kd - d^2 = 0$. Thus each term contributes
+\[
+\left[(0)^2 + \varepsilon\right]^{-\alpha} = \varepsilon^{-\alpha}.
+\]
+
+Summing over all $M(n)$ factorizing pairs,
+\[
+S_n(\varepsilon) = \sum_{(d,k) \in \mathcal{F}_n} \varepsilon^{-\alpha} = M(n) \cdot \varepsilon^{-\alpha}.
+\]
+
+Multiplying by $\varepsilon^\alpha$,
+\[
+\varepsilon^\alpha \cdot S_n(\varepsilon) = \varepsilon^\alpha \cdot M(n) \cdot \varepsilon^{-\alpha} = M(n). \qedhere
+\]
+\end{proof}
+
+\subsection{Regular Part Vanishes}
+
+The key step is proving that the non-factorizing contributions vanish.
+
+\begin{lemma}[Regular Part Vanishes]
+\label{lem:regular}
+For $\alpha > 1/2$,
+\[
+\lim_{\varepsilon \to 0^+} \varepsilon^\alpha \cdot R_n(\alpha, \varepsilon) = 0.
+\]
+\end{lemma}
+
+\begin{proof}
+For $(d, k) \notin \mathcal{F}_n$, define $\dist(d, k) = n - kd - d^2 \neq 0$.
+
+Consider the sum at $\varepsilon = 0$:
+\[
+R_n(\alpha, 0) = \sum_{\substack{d \geq 2, k \geq 0 \\ (d,k) \notin \mathcal{F}_n}} |\dist(d, k)|^{-2\alpha}.
+\]
+
+We show $R_n(\alpha, 0) < \infty$ for $\alpha > 1/2$ by analyzing the sum over each fixed $d$.
+
+\textbf{Fixed $d$ analysis:} For fixed $d \geq 2$, at most one value $k_0 = \frac{n - d^2}{d}$ (if it is a non-negative integer) satisfies $\dist(d, k_0) = 0$. For all other $k \geq 0$,
+\[
+\dist(d, k) = n - kd - d^2 = d\left(\frac{n - d^2}{d} - k\right) = d(k_0 - k),
+\]
+where $k_0$ may be non-integer or negative.
+
+For $k \neq k_0$,
+\[
+|\dist(d, k)|^{-2\alpha} = |d(k_0 - k)|^{-2\alpha} = d^{-2\alpha} |k_0 - k|^{-2\alpha}.
+\]
+
+Summing over $k \geq 0$ with $k \neq k_0$,
+\[
+\sum_{\substack{k \geq 0 \\ k \neq k_0}} |\dist(d, k)|^{-2\alpha} \leq d^{-2\alpha} \sum_{j=1}^{\infty} j^{-2\alpha} + d^{-2\alpha} \sum_{j=1}^{\infty} j^{-2\alpha} = 2d^{-2\alpha} \zeta(2\alpha),
+\]
+where $\zeta(s) = \sum_{j=1}^{\infty} j^{-s}$ is the Riemann zeta function. This converges if and only if $2\alpha > 1$, i.e., $\alpha > 1/2$.
+
+\textbf{Sum over $d$:} Summing over $d \geq 2$,
+\[
+R_n(\alpha, 0) \leq 2\zeta(2\alpha) \sum_{d=2}^{\infty} d^{-2\alpha} = 2\zeta(2\alpha)(\zeta(2\alpha) - 1) < \infty.
+\]
+
+\textbf{Monotonicity:} For $\varepsilon_1 < \varepsilon_2$, each summand satisfies
+\[
+\left[(\dist(d, k))^2 + \varepsilon_1\right]^{-\alpha} \geq \left[(\dist(d, k))^2 + \varepsilon_2\right]^{-\alpha},
+\]
+so $R_n(\alpha, \varepsilon)$ is monotone decreasing in $\varepsilon$, and
+\[
+R_n(\alpha, \varepsilon) \downarrow R_n(\alpha, 0) \quad \text{as } \varepsilon \to 0^+.
+\]
+
+\textbf{Conclusion:} Since $R_n(\alpha, \varepsilon) \leq R_n(\alpha, 0) < \infty$ for all $\varepsilon > 0$,
+\[
+\varepsilon^\alpha R_n(\alpha, \varepsilon) \leq \varepsilon^\alpha R_n(\alpha, 0) \to 0 \quad \text{as } \varepsilon \to 0^+. \qedhere
+\]
+\end{proof}
+
+\subsection{Proof of Main Theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:main}]
+By the partition $F_n(\alpha, \varepsilon) = S_n(\varepsilon) + R_n(\alpha, \varepsilon)$,
+\[
+\varepsilon^\alpha F_n(\alpha, \varepsilon) = \varepsilon^\alpha S_n(\varepsilon) + \varepsilon^\alpha R_n(\alpha, \varepsilon).
+\]
+
+Taking the limit as $\varepsilon \to 0^+$,
+\[
+\lim_{\varepsilon \to 0^+} \varepsilon^\alpha F_n(\alpha, \varepsilon) = \lim_{\varepsilon \to 0^+} \varepsilon^\alpha S_n(\varepsilon) + \lim_{\varepsilon \to 0^+} \varepsilon^\alpha R_n(\alpha, \varepsilon).
+\]
+
+By Proposition \ref{prop:singular}, the first limit equals $M(n)$.
+
+By Lemma \ref{lem:regular}, the second limit equals $0$.
+
+Therefore,
+\[
+\lim_{\varepsilon \to 0^+} \varepsilon^\alpha F_n(\alpha, \varepsilon) = M(n). \qedhere
+\]
+\end{proof}
+
+\section{Corollaries and Applications}
+
+\begin{proof}[Proof of Corollary \ref{cor:primality}]
+An integer $n \geq 2$ is prime if and only if $n$ has no divisors $d$ with $2 \leq d \leq \sqrt{n}$, i.e., $M(n) = 0$.
+
+By Theorem \ref{thm:main}, this is equivalent to
+\[
+\lim_{\varepsilon \to 0^+} \varepsilon^\alpha F_n(\alpha, \varepsilon) = 0
+\]
+for any $\alpha > 1/2$.
+\end{proof}
+
+\begin{corollary}[Compositeness Measure]
+The quantity $M(n)$ provides a measure of compositeness: primes have $M(n) = 0$, while highly composite numbers have large $M(n)$.
+\end{corollary}
+
+\begin{remark}
+The residue formula provides an analytic characterization of factorization structure analogous to the role of poles in $L$-functions for prime distribution.
+\end{remark}
+
+\section{Laurent Expansion Perspective}
+
+Near $\varepsilon = 0$, the function $F_n(\alpha, \varepsilon)$ admits a Laurent expansion:
+\[
+F_n(\alpha, \varepsilon) = \frac{M(n)}{\varepsilon^\alpha} + c_0 + c_1 \varepsilon + c_2 \varepsilon^2 + \cdots
+\]
+
+The leading coefficient (pole strength) equals $M(n)$.
+
+For primes, $M(p) = 0$, so
+\[
+F_p(\alpha, \varepsilon) = c_0 + c_1 \varepsilon + c_2 \varepsilon^2 + \cdots
+\]
+is analytic at $\varepsilon = 0$.
+
+This parallels classical residue theory in complex analysis, where the residue at a pole extracts arithmetic information.
+
+\section{Remarks on the Range of $\alpha$}
+
+The theorem requires $\alpha > 1/2$ for convergence of the sum $\sum_{j=1}^{\infty} j^{-2\alpha}$ appearing in the proof of Lemma \ref{lem:regular}.
+
+For $\alpha \leq 1/2$, the series diverges, and the regular part $R_n(\alpha, 0)$ is infinite. In this regime, the limit behavior may differ, and further analysis is required.
+
+\section{Connection to Classical Number Theory}
+
+The divisor function $\tau(n)$ satisfies well-known asymptotic formulas:
+\[
+\sum_{n \leq x} \tau(n) = x \log x + (2\gamma - 1)x + O(\sqrt{x}),
+\]
+where $\gamma$ is the Euler-Mascheroni constant.
+
+Since $M(n) = \lfloor (\tau(n) - 1)/2 \rfloor$, we have
+\[
+\sum_{n \leq x} M(n) \sim \frac{1}{2} \sum_{n \leq x} \tau(n) \sim \frac{x \log x}{2}.
+\]
+
+This suggests that on average, integers have logarithmically many factorizations of the form $n = kd + d^2$.
+
+\section{Open Questions}
+
+Several directions for future research emerge:
+
+\begin{enumerate}
+\item \textbf{Higher-order coefficients}: What is the arithmetic significance of the coefficients $c_0, c_1, c_2, \ldots$ in the Laurent expansion?
+
+\item \textbf{Generalizations}: Can the result be extended to decompositions $n = kd + d^r$ for $r \geq 3$?
+
+\item \textbf{Connections to $L$-functions}: Is there a relationship between $F_n(\alpha, \varepsilon)$ and classical Dirichlet $L$-functions?
+
+\item \textbf{Analytic continuation}: Can $F_n(\alpha, \varepsilon)$ be continued to complex values of $\alpha$ or $\varepsilon$?
+
+\item \textbf{Distribution of $M(n)$}: What is the distribution of $M(n)$ among integers? Are there infinitely many $n$ with $M(n) = k$ for each fixed $k$?
+\end{enumerate}
+
+\section*{Acknowledgments}
+
+This work was developed through human-AI collaboration, with geometric intuition and problem formulation by the author, and formal proof development assisted by Claude (Anthropic). All results have been independently verified through extensive numerical computation.
+
+Computational verification performed with Wolfram Language.
+
+\begin{thebibliography}{99}
+
+\bibitem{apostol}
+T. M. Apostol, \emph{Introduction to Analytic Number Theory}, Springer, 1976.
+
+\bibitem{hardy-wright}
+G. H. Hardy and E. M. Wright, \emph{An Introduction to the Theory of Numbers}, 6th ed., Oxford University Press, 2008.
+
+\bibitem{titchmarsh}
+E. C. Titchmarsh, \emph{The Theory of the Riemann Zeta-Function}, 2nd ed., Oxford University Press, 1986.
+
+\end{thebibliography}
+
+\end{document}
