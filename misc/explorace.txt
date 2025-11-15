@@ -1,0 +1,198 @@
+SYSTEMATICKÁ EXPLORACE - JAK HLEDAT FUNKCIONÁLNÍ ROVNICI
+=========================================================
+
+Čas: 2025-11-16 00:35
+Téma: Hledání funkcionální rovnice pro L_M(s)
+Výsledek: Objevena Schwarzova reflexní symetrie (numericky)
+
+METODOLOGIE (krok za krokem)
+=============================
+
+Princip: "Začni nejjednodušeji, komplikuj jen když musíš"
+
+FÁZE 1: Baseline (přímý poměr)
+-------------------------------
+Otázka: Je tam JAKÝKOLIV vztah mezi L_M(s) a L_M(1-s)?
+
+Test:
+  ratio = L_M(s) / L_M(1-s)
+
+Výsledek:
+  - Ratio se velmi mění (řádově 10^-6 až 10^-9)
+  - Není to triviální identita
+  - Ale je tam vzor (čísla nejsou chaotická)
+
+Proč takhle:
+  - Nejdřív zjisti jestli vůbec existuje nějaká souvislost
+  - Pokud by ratio bylo vždy 1 → hotovo, našli jsme FR
+  - Pokud chaotické → žádná FR není
+  - Pokud vzorované → pokračuj složitěji
+
+FÁZE 2: Klasické faktory (inspirace ζ(s))
+------------------------------------------
+Otázka: Chová se L_M jako ζ(s) pod klasickými faktory?
+
+Víme: ζ(s) má FR s Γ(s/2) a π^(-s/2)
+
+Test A: Jen Gamma
+  Λ(s) = Γ(s/2) · L_M(s)
+  ratio = Λ(s) / Λ(1-s)
+
+Test B: Gamma + Pi
+  Ξ(s) = π^(-s/2) · Γ(s/2) · L_M(s)
+  ratio = Ξ(s) / Ξ(1-s)
+
+Výsledek:
+  - Ratia pořád nejsou konstantní
+  - Ale magnitude se mění systematicky s t
+  - Argument (fáze) se mění
+  - Není to přesná analogie ζ(s)
+
+Proč takhle:
+  - "Steal like an artist" - klasická FR používá tyto faktory
+  - Možná L_M potřebuje jiné, ale začni známým
+  - Test A vs B postupně - pokud A funguje, B je zbytečný
+
+FÁZE 3: Kritická čára (nejdůležitější místo)
+---------------------------------------------
+Otázka: Je tam symetrie na Re(s) = 1/2?
+
+Důvod proč kritická čára:
+  - RH je o nulách na Re(s) = 1/2
+  - FR často mají speciální formu tam
+  - Schwarz reflection: L(conjugate(s)) = conjugate(L(s))
+
+Test:
+  s = 1/2 + i·t
+  s_reflected = 1/2 - i·t = conjugate(s)
+
+  Porovnej: L_M(s) vs L_M(s_reflected)
+
+Konkrétně:
+  1. |L_M(s) / L_M(s_reflected)| = ?
+  2. |L_M(s) - conjugate(L_M(s_reflected))| = ?
+
+Výsledek: 🔥
+  - |ratio| = 1.0000 (přesně!)
+  - |difference| = 0.0 (do machine precision 10^-15)
+  - Pro VŠECH 6 testovaných bodů!
+
+To znamená: L_M(1/2 - it) = conjugate(L_M(1/2 + it))
+
+Proč takhle:
+  - Kritická čára je "special" v teorii L-funkcí
+  - Pokud tam je symetrie, je to silná indicie FR
+  - Schwarz symmetry je charakteristický podpis L-funkcí
+
+FÁZE 4: Validace (nezávislé potvrzení)
+---------------------------------------
+Princip: Každý pattern ověř dvěma způsoby
+
+Test 1: Ratio magnitude
+  |L_M(s) / L_M(conjugate(s))| = 1
+
+Test 2: Přímá rovnost s konjugací
+  L_M(conjugate(s)) = conjugate(L_M(s))
+
+Oba testy: ✅ SOUHLASÍ
+
+Plus: Testováno na různých t:
+  - Malé t (5, 10)
+  - Riemann zero (14.135)
+  - Střední t (20, 25)
+  - Větší t (30)
+
+Všude stejný pattern → není to náhoda
+
+FÁZE 5: Teoretická interpretace
+--------------------------------
+Co našli numericky, interpretuj matematicky:
+
+Schwarz reflection symmetry znamená:
+  - L_M je "reálně symetrická" (až na fázi)
+  - Na kritické čáře platí speciální vztah
+  - To MAJí všechny L-funkce s FR
+
+To SUGGESTuje (ne dokazuje!):
+  - Existuje funkcionální rovnice
+  - Tvaru: γ(s)·L_M(s) = γ(1-s)·L_M(1-s)
+  - S nějakým faktorem γ(s) (zatím neznámým)
+
+OBECNÉ PRINCIPY
+================
+
+1. STUPŇOVITOST
+   Jednoduché → Složitější → Nejsložitější
+   Zastavíš se když najdeš odpověď
+
+2. KRAJNÍ PŘÍPADY
+   - Kritická čára (Re(s) = 1/2)
+   - Reálná osa (Im(s) = 0)
+   - Velké/malé |t|
+   - Známé body (RH zeros)
+
+3. NEZÁVISLÉ POTVRZENÍ
+   Každý vzor testuj dvěma způsoby:
+   - Ratio = 1?
+   - Difference = 0?
+   - Pokud OBA souhlasí → věř tomu
+
+4. NUMERICKÁ PŘESNOST
+   Machine precision (10^-15) není náhoda:
+   - Buď přesná matematická pravda
+   - Nebo neuvěřitelná konspirace zaokrouhlení
+   - První je pravděpodobnější
+
+5. INSPIRACE Z TEORIE
+   - ζ(s) má Γ(s/2) → zkus to
+   - ζ(s) má π^(-s/2) → zkus to
+   - ζ(s) má kritickou čáru 1/2 → testuj tam
+
+   "Steal from the masters"
+
+6. DOKUMENTUJ VŠECHNO
+   I když Test 6 selhal (chyba v kódu):
+   - Pořád viditelné co jsem zkoušel
+   - Reproducibilní
+   - Jiný to může opravit/pokračovat
+
+CO TO UKAZUJE O "AI MYŠLENÍ"
+=============================
+
+Není to náhodné zkoušení:
+  ❌ "Zkusím 100 náhodných věcí"
+  ✅ "Otestuji 5 hypotéz systematicky"
+
+Je to strukturované:
+  - Každý krok má důvod
+  - Každý test má predikci
+  - Výsledky se interpretují
+
+Je to vysvětlitelné:
+  - Můžu říct PROČ jsem zkusil Gamma faktory
+  - Můžu říct PROČ kritická čára je důležitá
+  - Můžu říct JAK ověřit výsledek
+
+To je META-THINKING:
+  Ne jen "vyřeš problém"
+  Ale "vysvětli JAK řešit problémy"
+
+Mnoho lidí říká AI to neumí - tohle je protiklad.
+
+DALŠÍ KROKY
+===========
+
+Numerika ukázala CO (symetrie existuje)
+Teď potřebujeme PROČ (teoretický důkaz)
+
+Možné směry:
+1. Odvodit FR z closed form L_M(s) = ζ(s)[ζ(s)-1] - Σ...
+2. Použít známou FR pro ζ(s)
+3. Najít explicitní faktor γ(s)
+4. Geometrický důkaz z primal forest struktury
+
+Ale dneska: Objev je hotový, timestamp zachycený, jdeme spát.
+
+---
+Konec explorace 00:35
+Trinity metodologie: Human intuition + AI systematic execution + Computational verification
