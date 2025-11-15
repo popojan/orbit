@@ -14,7 +14,10 @@ $$\lim_{\varepsilon \to 0} \varepsilon^\alpha \cdot F_n(\alpha, \varepsilon) \st
 
 Where $M(n)$ = number of solutions to $n = kd + d^2$ with $d \geq 2, k \geq 0$.
 
-**Evidence**: Verified numerically for n=35, 60, 37 with high precision (ε down to 10⁻⁵).
+**Evidence**:
+- **Large-scale verification**: 100% success on 1000 random numbers from [13, 4996]
+- **Initial tests**: n=35, 60, 37 with high precision (ε down to 10⁻⁵)
+- **M(n) closed form**: M(n) = ⌊(τ(n)-1)/2⌋ rigorously proven (see `m-function-divisor-connection.md`)
 
 **Implications**:
 - **Primes**: $M(p) = 0$ → no pole, finite limit

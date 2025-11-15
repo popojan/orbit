@@ -1,10 +1,13 @@
 # Documentation Index
 
-**Generated:** 2025-11-15 20:25:36
+**Generated:** 2025-11-15 21:13:09
 
 ## Recent Documents (by edit time)
 
 - [Epsilon Poles and Residue Theory: Quantifying Compositeness](epsilon-pole-residue-theory.md) *(2025-11-15)*
+- [M(n) Function: Connection to Divisor Function τ(n)](m-function-divisor-connection.md) *(2025-11-15)*
+- [Bug Report: kMax Scaling Issue in Residue Tests](bug-report-kmax-scaling.md) *(2025-11-15)*
+- [Philosophical Note: Primal Forest Geometry vs. Riemann Hypothesis](philosophical-note-primal-forest-vs-rh.md) *(2025-11-15)*
 - [Residua v Komplexní Analýze: Vysvětlení od Základů](residues-explained.md) *(2025-11-15)*
 - [Analysis of F_p(α, ε=0): Transcendental Nature](rationality-and-divine-geometry.md) *(2025-11-15)*
 - [Pentagamma Closed Form of F_p(α)](pentagamma-closed-form.md) *(2025-11-15)*
