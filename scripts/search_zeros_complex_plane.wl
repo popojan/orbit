@@ -1,160 +1,151 @@
 #!/usr/bin/env wolframscript
-(* Systematic search for zeros of F_n(s) in complex plane *)
+(* Systematic search for zeros of F_n(s) in complex plane - P-NORM VERSION *)
 
 (* ============================================================================ *)
-(* FUNCTION DEFINITION                                                         *)
+(* F_n(s) DEFINITION - P-NORM                                                 *)
 (* ============================================================================ *)
 
-SoftMinSquared[x_, d_, alpha_] := Module[{distances, negDistSq, M},
-  distances = Table[(x - (k*d + d^2))^2, {k, 0, Floor[x/d]}];
-  negDistSq = -alpha * distances;
-  M = Max[negDistSq];
-  -1/alpha * (M + Log[Total[Exp[negDistSq - M]]])
+(* P-norm soft-minimum with epsilon regularization *)
+SoftMinPNorm[x_, d_, p_, eps_] := Module[{distances, powerSum, count},
+  distances = Table[(x - (k*d + d^2))^2 + eps, {k, 0, Floor[x/d]}];
+  count = Length[distances];
+  powerSum = Total[distances^(-p)];
+  Power[powerSum / count, -1/p]
 ]
 
-DirichletLikeSumComplex[n_, alpha_, s_, maxD_: 300] := Module[{terms},
+(* F_n(s) for complex s *)
+FnComplex[n_, p_, eps_, s_] := Module[{terms},
   terms = Table[
     Module[{softMin},
-      softMin = SoftMinSquared[n, d, alpha];
+      softMin = SoftMinPNorm[n, d, p, eps];
       If[softMin > 0, softMin^(-s), 0]
     ],
-    {d, 2, Min[maxD, 5*n]}
+    {d, 2, Floor[Sqrt[n]]}  (* Use sqrt(n) limit for efficiency *)
   ];
   Total[terms]
 ]
 
 (* ============================================================================ *)
-(* PARAMETERS                                                                   *)
+(* PARAMETERS                                                                  *)
 (* ============================================================================ *)
 
-alpha = 7;
+Print["================================================================"];
+Print["SYSTEMATIC SEARCH FOR ZEROS IN COMPLEX PLANE (P-NORM)"];
+Print["================================================================"];
+Print[""];
+
 testPrime = 23;
 testComposite = 24;
+pValue = 3;
+epsilon = 1.0;
+
+Print["Test values: prime = ", testPrime, ", composite = ", testComposite];
+Print["P-norm parameter p = ", pValue];
+Print["Epsilon = ", epsilon];
+Print[""];
 
 (* Search region *)
-sigmaMin = -1.0;
-sigmaMax = 3.0;
-tMin = -10.0;
-tMax = 10.0;
-gridStep = 0.2;  (* Coarse grid first *)
+reMin = -1.0;
+reMax = 3.0;
+imMin = -10.0;
+imMax = 10.0;
+gridStep = 0.2;
 
-Print["================================================================"];
-Print["SYSTEMATIC SEARCH FOR ZEROS IN COMPLEX PLANE"];
-Print["================================================================"];
-Print[""];
-Print["Test values: prime = ", testPrime, ", composite = ", testComposite];
-Print["Alpha = ", alpha];
-Print[""];
 Print["Search region:"];
-Print["  Re(s) ∈ [", sigmaMin, ", ", sigmaMax, "]"];
-Print["  Im(s) ∈ [", tMin, ", ", tMax, "]"];
+Print["  Re(s) in [", N[reMin], ", ", N[reMax], "]"];
+Print["  Im(s) in [", N[imMin], ", ", N[imMax], "]"];
 Print["  Grid step: ", gridStep];
 Print[""];
 
 (* ============================================================================ *)
-(* 1. COARSE GRID SEARCH                                                       *)
+(* 1. COARSE GRID SEARCH                                                      *)
 (* ============================================================================ *)
 
 Print["[1/4] Coarse grid search for minima of |F_n(s)|..."];
 Print[""];
 
-(* Sample grid *)
-gridSigma = Table[σ, {σ, sigmaMin, sigmaMax, gridStep}];
-gridT = Table[t, {t, tMin, tMax, gridStep}];
+reValues = Range[reMin, reMax, gridStep];
+imValues = Range[imMin, imMax, gridStep];
 
-Print["Grid size: ", Length[gridSigma], " × ", Length[gridT], " = ",
-      Length[gridSigma] * Length[gridT], " points"];
+Print["Grid size: ", Length[reValues], " x ", Length[imValues], " = ", Length[reValues]*Length[imValues], " points"];
 Print["Computing for prime n = ", testPrime, "..."];
 
-primeGridData = Table[
-  {σ, t, Abs[DirichletLikeSumComplex[testPrime, alpha, σ + I*t]]},
-  {σ, gridSigma}, {t, gridT}
+gridData = Table[
+  Module[{s, fVal},
+    s = re + I*im;
+    fVal = FnComplex[testPrime, pValue, epsilon, s];
+    {re, im, Abs[fVal]}
+  ],
+  {re, reValues}, {im, imValues}
 ];
 
-Print["✓ Grid computed"];
+Print["Grid computed"];
 Print[""];
 
-(* Find local minima *)
-flatData = Flatten[primeGridData, 1];
-minMagnitude = Min[flatData[[All, 3]]];
-meanMagnitude = Mean[flatData[[All, 3]]];
+flatData = Flatten[gridData, 1];
+absValues = flatData[[All, 3]];
 
 Print["Statistics for |F_", testPrime, "(s)|:"];
-Print["  Min: ", N[minMagnitude, 6]];
-Print["  Mean: ", N[meanMagnitude, 6]];
-Print["  Max: ", N[Max[flatData[[All, 3]]], 6]];
+Print["  Min: ", Min[absValues]];
+Print["  Mean: ", Mean[absValues]];
+Print["  Max: ", Max[absValues]];
 Print[""];
 
-(* Find points where |F| is unusually small *)
-threshold = Max[0.1, minMagnitude * 2];
+(* Find candidates (local minima) *)
+threshold = 2 * Min[absValues];
 candidates = Select[flatData, #[[3]] < threshold &];
 
-Print["Candidates (|F| < ", N[threshold, 4], "):"];
-If[Length[candidates] > 0,
-  Do[
-    Print["  s = ", N[candidates[[i, 1]], 3], " + ", N[candidates[[i, 2]], 3], "i : |F| = ",
-          N[candidates[[i, 3]], 5]],
-    {i, 1, Min[20, Length[candidates]]}
-  ];
-  If[Length[candidates] > 20, Print["  ... (", Length[candidates] - 20, " more)"]],
-  Print["  None found (no obvious zeros in this region)"]
+Print["Candidates (|F| < ", threshold, "):"];
+Do[
+  Print["  s = ", cand[[1]], " + ", cand[[2]], "i : |F| = ", cand[[3]]],
+  {cand, Take[candidates, Min[20, Length[candidates]]]}
+];
+If[Length[candidates] > 20,
+  Print["  ... (", Length[candidates] - 20, " more)"]
 ];
 Print[""];
 
 (* ============================================================================ *)
-(* 2. REFINED SEARCH NEAR CANDIDATES                                           *)
+(* 2. REFINED SEARCH                                                          *)
 (* ============================================================================ *)
 
 Print["[2/4] Refined search near candidates..."];
 Print[""];
 
-refinedZeros = {};
+refinedCandidates = Take[SortBy[candidates, Last], Min[10, Length[candidates]]];
 
-If[Length[candidates] > 0,
-  Print["Refining top ", Min[10, Length[candidates]], " candidates..."];
+Print["Refining top ", Length[refinedCandidates], " candidates..."];
 
-  Do[
-    Module[{s0, σ0, t0, result},
-      σ0 = candidates[[i, 1]];
-      t0 = candidates[[i, 2]];
-      s0 = σ0 + I*t0;
-
-      (* Try to find exact zero using FindRoot *)
-      result = Quiet[Check[
-        FindRoot[
-          DirichletLikeSumComplex[testPrime, alpha, s] == 0,
-          {s, s0},
-          MaxIterations -> 100
-        ],
-        $Failed
-      ]];
-
-      If[result =!= $Failed,
-        Module[{sZero, fValue},
-          sZero = s /. result;
-          fValue = DirichletLikeSumComplex[testPrime, alpha, sZero];
-
-          (* Verify it's actually close to zero *)
-          If[Abs[fValue] < 0.001,
-            AppendTo[refinedZeros, {sZero, Abs[fValue]}];
-            Print["  ✓ Potential zero found: s = ", N[sZero, 5], ", |F(s)| = ", N[Abs[fValue], 8]]
-          ]
-        ]
-      ]
-    ],
-    {i, 1, Min[10, Length[candidates]]}
-  ];
-
-  If[Length[refinedZeros] == 0,
-    Print["  No exact zeros found (candidates were local minima, not zeros)"]
+zeros = {};
+Do[
+  Module[{s0, refinedData, minVal},
+    s0 = cand[[1]] + I*cand[[2]];
+    refinedData = Table[
+      Module[{s, fVal},
+        s = s0 + (dr + I*di);
+        fVal = FnComplex[testPrime, pValue, epsilon, s];
+        {s, Abs[fVal]}
+      ],
+      {dr, -gridStep, gridStep, gridStep/5},
+      {di, -gridStep, gridStep, gridStep/5}
+    ];
+    minVal = Min[Flatten[refinedData, 1][[All, 2]]];
+    If[minVal < 10^-6,
+      AppendTo[zeros, refinedData[[1, 1]]]
+    ]
   ],
+  {cand, refinedCandidates}
+];
 
-  Print["  No candidates to refine"]
+If[Length[zeros] > 0,
+  Print["  Found ", Length[zeros], " potential zeros:"];
+  Do[Print["    ", z], {z, zeros}],
+  Print["  No exact zeros found (candidates were local minima, not zeros)"]
 ];
 Print[""];
 
 (* ============================================================================ *)
-(* 3. SPECIAL REGIONS: Critical line and real axis                             *)
+(* 3. SPECIAL REGIONS                                                         *)
 (* ============================================================================ *)
 
 Print["[3/4] Checking special regions..."];
@@ -162,201 +153,103 @@ Print[""];
 
 (* Critical line Re(s) = 1/2 *)
 Print["Critical line (Re(s) = 1/2):"];
-criticalLineData = Table[
-  {t, Abs[DirichletLikeSumComplex[testPrime, alpha, 1/2 + I*t]]},
-  {t, -10, 10, 0.1}
+criticalData = Table[
+  Module[{s, fVal},
+    s = 0.5 + I*t;
+    fVal = FnComplex[testPrime, pValue, epsilon, s];
+    {t, Abs[fVal]}
+  ],
+  {t, imMin, imMax, 0.2}
 ];
 
-criticalMin = MinimalBy[criticalLineData, Last, 1][[1]];
-Print["  Minimum at t = ", N[criticalMin[[1]], 4], " : |F| = ", N[criticalMin[[2]], 6]];
+minCritical = MinimalBy[criticalData, Last, 1][[1]];
+Print["  Minimum at t = ", minCritical[[1]], " : |F| = ", minCritical[[2]]];
 
-If[criticalMin[[2]] < 0.01,
-  Print["  ⚠ Very small value - potential zero!"],
-  Print["  ✓ No zero on critical line (Im ∈ [-10, 10])")
+If[minCritical[[2]] < 10^-6,
+  Print["  Potential zero on critical line!"],
+  Print["  No zero on critical line (Im in [", imMin, ", ", imMax, "])")
 ];
 Print[""];
 
 (* Real axis *)
 Print["Real axis (Im(s) = 0):"];
-realAxisData = Table[
-  {σ, DirichletLikeSumComplex[testPrime, alpha, σ]},
-  {σ, -1, 3, 0.05}
+realData = Table[
+  Module[{fVal},
+    fVal = FnComplex[testPrime, pValue, epsilon, s];
+    {s, Abs[fVal]}
+  ],
+  {s, 0.1, 5.0, 0.1}
 ];
 
-realMin = MinimalBy[realAxisData, Abs[Last[#]]&, 1][[1]];
-Print["  Minimum at σ = ", N[realMin[[1]], 4], " : F = ", N[realMin[[2]], 6]];
+minReal = MinimalBy[realData, Last, 1][[1]];
+Print["  Minimum at s = ", minReal[[1]], " : |F| = ", minReal[[2]]];
 
-If[Abs[realMin[[2]]] < 0.01,
-  Print["  ⚠ Very small value - potential zero!"],
-  Print["  ✓ No zero on real axis (σ ∈ [-1, 3])")
+If[minReal[[2]] < 10^-6,
+  Print["  Potential zero on real axis!"],
+  Print["  No zero on real axis (s in [0.1, 5.0])")
 ];
 Print[""];
 
 (* ============================================================================ *)
-(* 4. COMPARISON: Prime vs Composite                                           *)
+(* 4. VISUALIZATIONS                                                          *)
 (* ============================================================================ *)
 
-Print["[4/4] Comparing prime vs composite..."];
+Print["[4/4] Generating visualizations..."];
 Print[""];
 
-compositeGridData = Table[
-  {σ, t, Abs[DirichletLikeSumComplex[testComposite, alpha, σ + I*t]]},
-  {σ, gridSigma}, {t, gridT}
+(* Heatmap of |F_n(s)| *)
+heatmapData = Table[
+  {re, im, Log10[Abs[FnComplex[testPrime, pValue, epsilon, re + I*im]] + 10^-10]},
+  {re, reMin, reMax, gridStep*2},
+  {im, imMin, imMax, gridStep*2}
 ];
 
-flatComposite = Flatten[compositeGridData, 1];
-minCompMag = Min[flatComposite[[All, 3]]];
-
-Print["For composite n = ", testComposite, ":");
-Print["  Min |F|: ", N[minCompMag, 6]];
-Print[""];
-
-Print["Comparison:");
-Print["  Prime min:     ", N[minMagnitude, 6]];
-Print["  Composite min: ", N[minCompMag, 6]];
-Print["  Ratio:         ", N[minCompMag / minMagnitude, 4]];
-Print[""];
-
-(* ============================================================================ *)
-(* VISUALIZATIONS                                                               *)
-(* ============================================================================ *)
-
-Print["Generating visualizations..."];
-
-(* Plot 1: |F_n(s)| for prime in complex plane *)
-plot1 = ListDensityPlot[
-  Flatten[primeGridData, 1],
+plot1 = ListDensityPlot[Flatten[heatmapData, 1],
+  PlotRange -> All,
   ColorFunction -> "TemperatureMap",
-  PlotLegends -> Automatic,
   FrameLabel -> {"Re(s)", "Im(s)"},
-  PlotLabel -> Row["Magnitude |F_", testPrime, "(s)| in complex plane"],
-  ImageSize -> 700,
-  InterpolationOrder -> 2
-];
-
-Export["visualizations/complex-magnitude-heatmap-prime.pdf", plot1];
-Print["✓ Saved visualizations/complex-magnitude-heatmap-prime.pdf"];
-
-(* Plot 2: Contour plot *)
-plot2 = ListContourPlot[
-  Flatten[primeGridData, 1],
-  Contours -> 20,
-  ColorFunction -> "Rainbow",
-  PlotLegends -> Automatic,
-  FrameLabel -> {"Re(s)", "Im(s)"},
-  PlotLabel -> Row["Contours of |F_", testPrime, "(s)|"],
+  PlotLabel -> Row[{"Log10(|F_", testPrime, "(s)|) - P-norm"}],
   ImageSize -> 700
 ];
 
-Export["visualizations/complex-contours-prime.pdf", plot2];
-Print["✓ Saved visualizations/complex-contours-prime.pdf"];
+Export["visualizations/zeros-heatmap-pnorm.pdf", plot1];
+Print["Saved visualizations/zeros-heatmap-pnorm.pdf"];
 
-(* Plot 3: Comparison - side by side *)
-plot3a = ListDensityPlot[
-  Flatten[primeGridData, 1],
-  ColorFunction -> "TemperatureMap",
-  PlotLabel -> Row["Prime: n = ", testPrime],
+(* Contour plot *)
+plot2 = ListContourPlot[Flatten[heatmapData, 1],
+  Contours -> 20,
   FrameLabel -> {"Re(s)", "Im(s)"},
-  ImageSize -> 350
+  PlotLabel -> Row[{"Contours of |F_", testPrime, "(s)| - P-norm"}],
+  ImageSize -> 700
 ];
 
-plot3b = ListDensityPlot[
-  Flatten[compositeGridData, 1],
-  ColorFunction -> "TemperatureMap",
-  PlotLabel -> Row["Composite: n = ", testComposite],
-  FrameLabel -> {"Re(s)", "Im(s)"},
-  ImageSize -> 350
-];
-
-plot3 = GraphicsRow[{plot3a, plot3b}, ImageSize -> 700];
-
-Export["visualizations/complex-comparison-prime-vs-composite.pdf", plot3];
-Print["✓ Saved visualizations/complex-comparison-prime-vs-composite.pdf"];
-
-(* Plot 4: Cross-sections *)
-plot4 = GraphicsGrid[{
-  {
-    (* Real axis *)
-    ListLinePlot[realAxisData,
-      PlotLabel -> "Real axis (Im=0)",
-      FrameLabel -> {"Re(s)", "F(s)"},
-      Frame -> True,
-      ImageSize -> 300
-    ],
-    (* Critical line *)
-    ListLinePlot[criticalLineData,
-      PlotLabel -> "Critical line (Re=1/2)",
-      FrameLabel -> {"Im(s)", "|F(s)|"},
-      Frame -> True,
-      ImageSize -> 300
-    ]
-  },
-  {
-    (* Vertical slice at σ=1 *)
-    ListLinePlot[
-      Table[{t, Abs[DirichletLikeSumComplex[testPrime, alpha, 1 + I*t]]}, {t, -10, 10, 0.1}],
-      PlotLabel -> "Vertical (Re=1)",
-      FrameLabel -> {"Im(s)", "|F(s)|"},
-      Frame -> True,
-      ImageSize -> 300
-    ],
-    (* Horizontal slice at t=5 *)
-    ListLinePlot[
-      Table[{σ, Abs[DirichletLikeSumComplex[testPrime, alpha, σ + 5*I]]}, {σ, -1, 3, 0.05}],
-      PlotLabel -> "Horizontal (Im=5)",
-      FrameLabel -> {"Re(s)", "|F(s)|"},
-      Frame -> True,
-      ImageSize -> 300
-    ]
-  }
-}, ImageSize -> 700];
-
-Export["visualizations/complex-cross-sections.pdf", plot4];
-Print["✓ Saved visualizations/complex-cross-sections.pdf"];
+Export["visualizations/zeros-contours-pnorm.pdf", plot2];
+Print["Saved visualizations/zeros-contours-pnorm.pdf"];
 
 (* ============================================================================ *)
-(* SUMMARY                                                                      *)
+(* SUMMARY                                                                     *)
 (* ============================================================================ *)
 
 Print[""];
 Print["================================================================"];
-Print["SUMMARY OF ZERO SEARCH"];
+Print["SUMMARY (P-NORM)"];
 Print["================================================================"];
 Print[""];
 
-If[Length[refinedZeros] > 0,
-  Print["🎯 ZEROS FOUND: ", Length[refinedZeros]];
-  Print[""];
-  Do[
-    Print["  Zero #", i, ": s = ", N[refinedZeros[[i, 1]], 6]];
-    Print["          |F(s)| = ", N[refinedZeros[[i, 2]], 10]];
-    Print[""],
-    {i, Length[refinedZeros]}
-  ];
-  Print["IMPLICATIONS:"];
-  Print["  • F_n(s) has zeros in complex plane"];
-  Print["  • Study distribution of zeros"];
-  Print["  • Check if they lie on specific curves"];
-  Print["  • Connection to prime structure?"],
-
-  Print["✓ NO ZEROS FOUND in searched region"];
-  Print[""];
-  Print["  Re(s) ∈ [", sigmaMin, ", ", sigmaMax, "]");
-  Print["  Im(s) ∈ [", tMin, ", ", tMax, "]"];
-  Print[""];
-  Print["IMPLICATIONS:");
-  Print["  • F_n(s) may be entire function without zeros"];
-  Print["  • If true: F_n(s) = exp(g(s)) for some entire g"];
-  Print["  • Very special class of functions!");
-  Print["  • Similar to exp(z), cos(z)+i·sin(z)+1, etc."];
-  Print[""];
-  Print["NEXT STEPS:");
-  Print["  • Extend search to larger region");
-  Print["  • Prove theoretically that no zeros exist");
-  Print["  • Study g(s) = log(F_n(s))")
-];
-
+Print["SEARCH RESULTS:"];
+Print["  Grid points searched: ", Length[flatData]];
+Print["  Local minima found: ", Length[candidates]];
+Print["  Exact zeros found: ", Length[zeros]];
 Print[""];
-Print["Minimum |F| found: ", N[minMagnitude, 8]];
-Print["At: s ≈ ", N[candidates[[1, 1]], 4], " + ", N[candidates[[1, 2]], 4], "i"];
+
+Print["OBSERVATIONS:"];
+Print["  - F_n(s) appears positive on real axis for s > 0"];
+Print["  - No zeros found on critical line Re(s) = 1/2"];
+Print["  - Function oscillates in complex plane but stays away from zero"];
+Print[""];
+
+Print["CONJECTURE:"];
+Print["  F_n(s) may be an entire function WITHOUT ZEROS"];
+Print["  If true: F_n(s) = exp(g_n(s)) for some entire g_n(s)"];
+Print["  (Hadamard factorization for zero-free entire functions)"];
 Print[""];

@@ -1,13 +1,21 @@
 # Continuous Primality Score: Research Summary
 
 **Date**: November 15, 2025
-**Status**: Active exploration - major breakthroughs today!
+**Status**: Active exploration - major breakthroughs in sessions 2 & 3!
 
-**Latest updates (session 2)**:
+**Latest updates (session 3 - p-norm refinement)**:
+- ✅ **P-norm form finalized** - abandoned exp/log, pure algebraic power mean
+- ✅ **Epsilon = 1.0** - stable computation, stratification preserved
+- 🎯 **INVERSE FORM DISCOVERED** - G_inv(s,σ) = Σ 1/(F_n(s)·n^σ)
+  - **84% prime dominance** (vs 37% in direct form) - natural amplification!
+  - **7× faster convergence** than direct sum
+  - Preserves geometric structure while highlighting primes
+- 🔬 **Symbolic analysis** - F_2(s) = 65^(s/3)/2^(13s/3) (simple power expression)
+
+**Session 2 updates**:
 - 🔍 **No zeros found empirically** in complex plane Re∈[-1,3], Im∈[-10,10]
-- ✅ **√n limit validated** - preserves primality test, faster computation
-- ✅ **Global function G(s,σ)** constructed - shows prime dominance (63% from primes)
-- 🤔 **Conjecture**: F_n(s) may be entire function without zeros (needs proof!)
+- ✅ **√n limit validated** - preserves primality test, O(n^{3/2}) complexity
+- 🤔 **Conjecture**: F_n(s) may be entire function without zeros
 
 ---
 
@@ -391,6 +399,77 @@ DirichletLikeSum[n_, alpha_, s_, maxD_] := Sum[
 
 ---
 
+## 8. Inverse Form Discovery (Session 3)
+
+### 8.1 Motivation
+
+Direct sum G(s,σ) = Σ F_n(s)/n^σ shows composite dominance (63%).
+
+**Key insight**: Inverting amplifies primes because F_p(s) is smaller for primes!
+
+### 8.2 Definition
+
+$$G_{inv}(s, \sigma) = \sum_{n=2}^{\infty} \frac{1}{F_n(s) \cdot n^\sigma}$$
+
+### 8.3 Empirical Results (p=3, ε=1.0, n≤50, s=1.0, σ=1.5)
+
+| Property | Direct G | Inverse G_inv |
+|----------|----------|---------------|
+| **Prime contribution** | 36.7% | **84.4%** |
+| **Composite contribution** | 63.3% | 15.6% |
+| **Convergence rate** | 12.2% | **1.6%** (7× faster) |
+
+**Key finding**: Inverse form naturally amplifies prime contribution **without** artificial weighting.
+
+### 8.4 Power Inverse Variants
+
+$$G_p(s, \sigma, p) = \sum_{n=2}^{\infty} \frac{1}{F_n(s)^p \cdot n^\sigma}$$
+
+Results for s=1.0, σ=1.5:
+- p=1: 1.64% convergence
+- p=2: 0.12% convergence
+- p=3: 0.018% convergence
+
+Higher powers → even faster convergence.
+
+### 8.5 Geometric Interpretation
+
+**Why inverse works:**
+- Primes have **small** F_p(s) → 1/F_p is **large**
+- Composites have **large** F_c(s) → 1/F_c is **small**
+- Natural amplification from geometric structure!
+
+**Preserves Primal Forest structure**: All n contribute, but with weights derived from geometric distances.
+
+### 8.6 Research Directions
+
+**Path A: Connection to Prime Distribution**
+- Does G_inv relate to π(x) (prime counting)?
+- Logarithmic derivative: d/ds log G_inv(s,σ) = ?
+- Compare with von Mangoldt: -ζ'/ζ = Σ Λ(n)/n^s
+
+**Path B: Intrinsic Value**
+- Geometric visualization tool (Primal Forest)
+- New primality characterization (closed-form test)
+- Pedagogical: "See" divisibility structure
+- Stratification by complexity Ω(n)
+
+**Both paths are valuable** - we don't force connections to RH, but remain open to discovering them naturally.
+
+### 8.7 Symbolic Structure (preliminary)
+
+From symbolic analysis:
+```mathematica
+F_2(s) = 65^(s/3) / 2^(13s/3)    (* Simple power law! *)
+F_3(s) = 365^(s/3)/9^s + 793^(s/3)/(2^(7s/3)·81^s)
+```
+
+**Observation**: F_n(s) has algebraically clean form - sum of power terms.
+
+**Implication**: g_n(s) = log F_n(s) might be polynomial-like in s.
+
+---
+
 ## Appendix A: Timeline of Discovery
 
 1. **Primal Forest visualization** - Geometric sieve as point cloud
@@ -398,11 +477,15 @@ DirichletLikeSum[n_, alpha_, s_, maxD_] := Sum[
 3. **P-norm simplification** - Algebraic cleanup, squared distances
 4. **Division by zero discovery** - Closed-form primality characterization
 5. **Epsilon regularization** - Computational tractability + stratification
-6. **Infinite sum generalization** - Dirichlet series connection
-7. **Asymptotic primality test** - lim(s→∞) dichotomy
-8. **Analytic continuation** - Complex plane structure (ongoing)
+6. **Infinite sum generalization** - Dirichlet series connection F_n(s)
+7. **√n limit optimization** - O(n^{3/2}) complexity, preserved test
+8. **Zero search** - No zeros found empirically in complex plane
+9. **P-norm finalization** - Abandoned exp/log, epsilon=1.0
+10. **Inverse form discovery** - G_inv amplifies primes to 84%
+11. **Symbolic structure** - F_2(s) = simple power law
+12. **Research directions** - Two paths: RH connection vs intrinsic value
 
-Each step built on the previous, with algebraic simplification (step 3) being the critical catalyst.
+Each step built on the previous, with **inverse form** (step 10) revealing natural prime amplification.
 
 ---
 
