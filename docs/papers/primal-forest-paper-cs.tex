@@ -109,7 +109,7 @@ Obrázek~\ref{fig:forest} ukazuje prvoles pro rozsah $n \leq 31$. Vysazujeme pou
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.8\textwidth]{../../visualizations/primal-forest-31.pdf}
+\includegraphics[width=0.8\textwidth]{visualizations/primal-forest-31.pdf}
 \caption{Prvoles: Stojíte na jižním okraji (spodek diagramu, y=0) a můžete chodit západo-východně (vlevo-vpravo, osa x). Na každé pozici se díváte přímo na sever (nahoru v diagramu, osa y). Každý strom odpovídá děliteli $p$ čísla $n = p(p+k)$ s $p \geq 2$, vysazenému v souřadnicích $(kp+p^2, kp+1)$. Prvočísla jsou x-souřadnice s \emph{čistými průhledy}.}
 \label{fig:forest}
 \end{figure}
@@ -180,7 +180,7 @@ Jak kráčíme na východ podél jižního okraje, les se zahušťuje a rozprost
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{../../visualizations/primal-forest-100.pdf}
+\includegraphics[width=\textwidth]{visualizations/primal-forest-100.pdf}
 \caption{Prvoles pro větší rozsah: Diagonální řady se překrývají, les se zahušťuje směrem na východ a sever. Průhledy (prvočísla) se stávají vzácnějšími.}
 \label{fig:forest-large}
 \end{figure}
@@ -358,132 +358,25 @@ Cílem není přidat další téma do již přeplněného učebního plánu. Cí
 
 \section{Závěr}
 
-Navržená vizualizace Prvoles transformuje linární algoritmus mechanického vyškrtávání násobků na konkrétní vizuální zkušenost.
+Navržená vizualizace Prvoles transformuje linární algoritmus mechanického vyškrtávání násobků na konkrétní vizuální zkušenost. Tento geometrický pohled činí strukturu síta viditelnou a poskytuje intuitivní odpovědi na otázky ``proč'', které lineární algoritmus nechává nezodpovězené.
+
+\subsection{Pedagogická hodnota}
 
 Tento přístup je pedagogicky hodnotný na různých stupních:
 \begin{itemize}
-\item \textbf{Základní škola}: Vizuální intuice důležitější než přesné algoritmy
-\item \textbf{Střední škola}: Propojení dělitelnosti čísel s geometrickým chápáním
-\item \textbf{Univerzita}: Transformace souřadnic odhalují strukturu
-\item \textbf{Výzkum}: Alternativní perspektivy snad mohou inspirovat nové přístupy
+\item \textbf{Základní škola}: Vizuální intuice důležitější než přesné algoritmy---les a průhledy jsou srozumitelné i bez formální matematiky
+\item \textbf{Střední škola}: Propojení dělitelnosti čísel s geometrickým chápáním---viditelné odpovědi na otázky ``proč prvočísla řídnou?''
+\item \textbf{Univerzita}: Transformace souřadnic odhalují strukturu---počátek hlubšího zkoumání
+\item \textbf{Výzkum}: Alternativní perspektivy mohou inspirovat nové přístupy
 \end{itemize}
+
+Nejcennější je snad to, že vizualizace umožňuje různým typům myšlení vidět stejnou strukturu různými způsoby. Někdo potřebuje algoritmus, někdo potřebuje obrázek. Proč bychom měli nabízet jen jedno?
+
+
+\subsection{Otevřená pozvánka}
 
 Příště, až budete přemýšlet o prvočíslech, představte si, že stojíte na jižním okraji rozsáhlého lesa a rozhodujete se, kudy do něj vstoupit. Na většině míst stromy blokují váš výhled na sever, ale občas narazíte na dokonale čistý průhled, kterým vidíte až do nekonečna. To je prvočíslo. Les je pravidelný, ale průhledy jsou tajemné.
 
-Přesto má les mnohá další tajemství k odhalení. Jeden z možných směrů pro další nezvyklé bádání nabízíme v příloze A.
-
-\clearpage
-\appendix
-
-\section{Spojité skóre prvočíselnosti}
-
-Klasická charakterizace prvočísel je binární: číslo $n \in \mathbb{N}$, $n \geq 2$, je buď prvočíslo, nebo složené. Geometrická konstrukce z hlavního textu umisťuje složená čísla $kp + p^2$ (kde $p$ je prvočíslo, $k \in \mathbb{N}_0$) do bodové mřížky v rovině; číslo $n$ je prvočíslo právě tehdy, když přímka $x = n$ neprotíná žádný bod této mřížky.
-
-Tuto diskrétní charakterizaci lze zobecnit na spojitou míru definováním vzdálenosti přímky $x = n$ k nejbližším bodům mřížky v každé hloubce $p$. Součin těchto vzdáleností poskytuje \emph{spojité skóre prvočíselnosti}.
-
-\subsection{Definice}
-
-\begin{definition}[Vzdálenost v hloubce]
-\label{def:depth-distance}
-Pro celé číslo $n \geq 2$ a prvočíslo $p \leq n$ definujeme \textbf{vzdálenost v hloubce $p$} jako
-\begin{equation}
-d_p(n) = \min_{0 \leq k \leq \lfloor n/p \rfloor} |n - (kp + p^2)|.
-\end{equation}
-Geometricky je to vzdálenost (v ose $x$) přímky $x = n$ od nejbližšího bodu tvaru $(kp + p^2, p)$ v mřížce složených čísel.
-\end{definition}
-
-Platí: $d_p(n) = 0$ právě tehdy, když existuje $k$ takové, že $n = kp + p^2$, tj. $p \mid (n - p^2)$. Pro prvočíslo $n$ je $d_p(n) > 0$ pro všechna $p < n$.
-
-\begin{definition}[Soft-minimum aproximace]
-\label{def:soft-min}
-Pro $\beta > 0$ definujeme \textbf{soft-minimum aproximaci} vzdálenosti $d_p(n)$ předpisem
-\begin{equation}
-d_p^{\text{soft}}(n, \beta) = -\beta \log \sum_{k=0}^{\lfloor n/p \rfloor} \exp\left(-\frac{|n - (kp + p^2)|}{\beta}\right).
-\end{equation}
-\end{definition}
-
-Jde o hladkou aproximaci funkce $\min$, známou jako \emph{log-sum-exp} trik.
-
-\begin{definition}[Spojité skóre prvočíselnosti]
-\label{def:primality-score}
-Pro celé číslo $n \geq 2$ a parametr $\beta > 0$ definujeme \textbf{spojité skóre prvočíselnosti} jako
-\begin{equation}
-S(n, \beta) = \prod_{p \text{ prvočíslo}, \, 2 \leq p \leq n} d_p^{\text{soft}}(n, \beta).
-\end{equation}
-\end{definition}
-
-Pro účely vizualizace se často používá logaritmická komprese $\log(1 + S(n, \beta))$.
-
-\begin{observation}[Limitní chování]
-\label{obs:limit}
-Pro pevné $n$ platí $\lim_{\beta \to 0^+} d_p^{\text{soft}}(n, \beta) = d_p(n)$, a tedy
-\begin{equation}
-\lim_{\beta \to 0^+} S(n, \beta) = \prod_{p \leq n} d_p(n).
-\end{equation}
-Pro prvočíslo $n$ je tento součin kladný; pro složené $n$ existuje $p$ s $d_p(n) = 0$, takže limitní součin je nulový.
-\end{observation}
-
-\subsection{Empirická pozorování}
-
-\begin{observation}[Obálková struktura]
-\label{obs:envelope}
-Pro pevné $\beta > 0$ (např. $\beta = 1/7$) funkce $n \mapsto \log(1 + S(n, \beta))$ vykazuje následující empirickou strukturu (viz Obrázek~\ref{fig:envelope}):
-\begin{enumerate}
-\item Prvočísla tvoří přibližně hladkou horní obálku.
-\item Složená čísla leží pod touto obálkou, stratifikovaná podle faktorizační struktury.
-\end{enumerate}
-\end{observation}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.7\textwidth]{../../visualizations/soft-distance-envelope-127.pdf}
-\caption{Spektrum prvočíselnosti: prvočísla (oranžová) tvoří hladkou obálku, složená čísla (modrá) se rozptylují níže. Vzdálenost každého složeného čísla od obálky kóduje jeho faktorizační strukturu.}
-\label{fig:envelope}
-\end{figure}
-
-\begin{observation}[Stratifikace podle $\Omega(n)$]
-\label{obs:stratification}
-Empiricky se složená čísla stratifikují podle počtu prvočíselných činitelů s násobností, $\Omega(n) = \sum_{p^k \| n} k$ (viz Obrázek~\ref{fig:stratification}):
-\begin{enumerate}
-\item Mocniny prvočísel ($p^2, p^3, \ldots$) s $\Omega(n) = 2, 3, \ldots$ leží nejblíže obálce.
-\item Polprvočísla ($pq$ s $p \neq q$) s $\Omega(n) = 2$ leží ve střední hloubce.
-\item Čísla s $\Omega(n) \geq 3$ leží hlouběji pod obálkou.
-\end{enumerate}
-Obecně: hodnota $S(n, \beta)$ klesá s rostoucím $\Omega(n)$.
-\end{observation}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.7\textwidth]{../../visualizations/soft-distance-composite-types.pdf}
-\caption{Stratifikace složených čísel podle $\Omega(n)$: mocniny prvočísel (zelená) nejblíže k obálce, polprvočísla (modrá) níže, čísla s $\Omega(n) \geq 3$ (červená) na dně.}
-\label{fig:stratification}
-\end{figure}
-
-\begin{observation}[Závislost na geometrické formulaci]
-\label{obs:geometric}
-Empiricky: definování analogického součinu měkkých vzdáleností pomocí klasické modulární aritmetiky (vzdálenost k násobkům $p$) neprodukuje obálkovou strukturu. Geometrická formulace $(kp + p^2, p)$ je podstatná pro pozorovanou stratifikaci.
-\end{observation}
-
-\subsection{Výpočetní složitost}
-
-Výpočet $S(n, \beta)$ vyžaduje vyhodnocení $d_p^{\text{soft}}(n, \beta)$ pro všechna prvočísla $p \leq n$. Pro každé $p$ je třeba sečíst $\lfloor n/p \rfloor$ členů, celkově tedy $\Theta(n \log \log n)$ operací.
-
-Tato složitost je srovnatelná s Eratosthenovým sítem, ale poskytuje spojitou míru místo binární klasifikace. Metoda nenabízí algoritmické zrychlení pro rozhodování prvočíselnosti.
-
-\subsection{Otevřené problémy}
-
-Následující otázky zůstávají otevřené (není však jasné, zda mají netriviální odpovědi):
-
-\begin{enumerate}
-\item Lze asymptotické chování obálky $\max_{p \leq n, \, p \text{ prvočíslo}} S(p, \beta)$ vyjádřit explicitně?
-\item Je stratifikace podle $\Omega(n)$ ostrá, nebo se vrstvy překrývají?
-\item Existuje spojitost s klasickými funkcemi rozložení prvočísel (Riemannova zeta, $\pi(x)$, atd.)?
-\end{enumerate}
-
-\section*{Poděkování}
-
-Tato vizualizace vznikla z rekreačních zkoumání ve výpočetní teorii čísel. Děkuji komunitě Wolfram Language za nástroje, které dělají takové experimenty potěšením.
-
-\paragraph{Kód a reprodukovatelnost:} Wolfram Language kód pro generování vizualizací je k dispozici na vyžádání. Kontaktujte autora pro zdrojové soubory.\footnote{Kód a další materiály budou dostupné v repozitáři: \texttt{https://github.com/popojan/orbit}}
+Tato geometrická představa nejen nabízí novou perspektivu na starou otázku, ale může být také výchozím bodem pro hlubší matematické zkoumání struktury přirozených čísel.
 
 \end{document}
