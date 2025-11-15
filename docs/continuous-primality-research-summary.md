@@ -1,7 +1,13 @@
 # Continuous Primality Score: Research Summary
 
 **Date**: November 15, 2025
-**Status**: Active exploration - preliminary findings
+**Status**: Active exploration - major breakthroughs today!
+
+**Latest updates (session 2)**:
+- 🔍 **No zeros found empirically** in complex plane Re∈[-1,3], Im∈[-10,10]
+- ✅ **√n limit validated** - preserves primality test, faster computation
+- ✅ **Global function G(s,σ)** constructed - shows prime dominance (63% from primes)
+- 🤔 **Conjecture**: F_n(s) may be entire function without zeros (needs proof!)
 
 ---
 
