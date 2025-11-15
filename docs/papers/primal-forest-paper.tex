@@ -18,8 +18,8 @@ A Journey Through the Sieve of Eratosthenes}
 \maketitle
 
 \begin{abstract}
-We present an educational visualization that transforms the classical Sieve of Eratosthenes from a one-dimensional list into a two-dimensional ``primal forest.'' By mapping composite numbers $n = p(p+k)$ to coordinates $(kp+p^2, kp+1)$, we create an immersive view where you stand at the forest's southern edge looking northward, with composites appearing as trees at various depths. Prime numbers become visible as clear sight lines---positions where no composite blocks your view through the forest. This geometric perspective makes the structure of the sieve visually intuitive and provides an engaging introduction to multiplicative structure in number theory.
-\end{abstract>
+We present an educational visualization that transforms the classical Sieve of Eratosthenes from a one-dimensional list into a two-dimensional ``primal forest.'' By mapping divisors according to $n = p(p+k)$ to coordinates $(kp+p^2, kp+1)$, we create an immersive view where you stand at the forest's southern edge looking northward, with divisors of composite numbers appearing as trees at various depths. Prime numbers become visible as clear sight lines---positions where no tree blocks your view through the forest. This geometric perspective makes the structure of the sieve visually intuitive and provides an engaging introduction to multiplicative structure in number theory.
+\end{abstract}
 
 \section{Introduction: Why Are Primes So Hard to Find?}
 
@@ -33,7 +33,7 @@ The gaps between consecutive primes vary: sometimes just 2 (twin primes like 11 
 
 The ancient Greeks developed a clever algorithm---the \emph{Sieve of Eratosthenes}---that systematically finds all primes by eliminating composites. But working through the sieve on a linear list can feel mechanical. \textbf{What if we could \emph{see} the structure?}
 
-Enter the \textbf{Primal Forest}: a geometric transformation that turns the sieve into a visual landscape where composites form regular patterns and primes appear as clearings. Imagine standing at the southern edge of a vast forest, looking northward into the trees. You can walk west or east along this edge (the x-axis), and at each position, look straight north. The trees are composites, scattered at various depths into the forest. At certain positions along the southern edge, you have a perfectly clear sight line---no trees block your view at any depth. These clear corridors reveal the primes.
+Enter the \textbf{Primal Forest}: a geometric transformation that turns the sieve into a visual landscape where divisors form regular patterns and primes appear as clearings. Imagine standing at the southern edge of a vast forest, looking northward into the trees. You can walk west or east along this edge (the x-axis), and at each position, look straight north. Trees represent divisors of numbers at the corresponding x-coordinates, scattered at various depths into the forest. At certain positions along the southern edge, you have a perfectly clear sight line---these are the primes.
 
 This geometric view holds a deeper secret: when we measure distances to these trees carefully, we discover that primality exists on a continuous spectrum, with primes at the boundary and composites stratified by their factorization complexity.
 
@@ -75,7 +75,7 @@ Here's the key insight: every composite number can be written as $n = p(p+k)$ fo
 Now, instead of placing these composites on a line, we'll place them in a 2D plane using this mapping:
 
 \[
-\boxed{n = p(p+k) \quad \mapsto \quad \text{point at } (kp + p^2,\, kp + 1)}
+\boxed{n = p(p+k) \quad \mapsto \quad \text{tree at } (kp + p^2,\, kp + 1)}
 \]
 
 Let's unpack this:
@@ -96,7 +96,7 @@ Figure~\ref{fig:forest} shows the primal forest for the range $n \leq 31$. We pl
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.8\textwidth]{../visualizations/primal-forest-31.pdf}
+\includegraphics[width=0.8\textwidth]{../../visualizations/primal-forest-31.pdf}
 \caption{The Primal Forest: You stand at the southern edge (bottom of diagram, y=0) and can walk west-east (left-right, x-axis). At each position, you look straight north (upward in diagram, y-axis). Each dot represents a factorization $n = p(p+k)$ with $p \geq 2$, plotted at coordinates $(kp+p^2, kp+1)$. Prime numbers are the x-coordinates with \emph{clear sight lines}---no composite trees block your view at any depth northward.}
 \label{fig:forest}
 \end{figure}
@@ -104,17 +104,17 @@ Figure~\ref{fig:forest} shows the primal forest for the range $n \leq 31$. We pl
 \subsection{What Are We Seeing?}
 
 \begin{itemize}
-\item \textbf{Trees (dots)}: Each dot represents a way to write n as a product of two factors where the smaller factor is at least 2. Specifically, a tree at $(kp+p^2, kp+1)$ shows the factorization $n = p \times (p+k)$ where $p \geq 2$ is the smaller factor. The y-coordinate $(kp+1)$ represents how deep into the forest this particular factorization stands. The number of trees at x-coordinate n (across all depths) equals the number of divisors of n in the range $[2, \sqrt{n}]$. These trees form the ``forest'' that may block your sight line.
+\item \textbf{Trees}: Each tree corresponds to one divisor $p$ of a number $n$, where $2 \leq p \leq \sqrt{n}$. Specifically, for $n = p \times (p+k)$, a tree is planted at position $(kp+p^2, kp+1)$. The y-coordinate $(kp+1)$ represents how deep into the forest this divisor stands. The number of trees at x-coordinate $n$ equals the number of divisors of $n$ in the range $[2, \sqrt{n}]$. These trees form the forest that may block your sight line.
 
-\item \textbf{Your position}: You stand at position $(x, 0)$ on the southern edge---literally at y=0. You can walk west-east to choose which x-coordinate to test, then look straight north into the forest. Most positions have at least one tree somewhere north of you. But some positions have \emph{no trees at any depth northward}. These are the \textbf{primes}! They're clear corridors---numbers that cannot be written as $p(p+k)$ for any $p \geq 2$.
+\item \textbf{Your position}: You stand at position $(x, 0)$ on the southern edge---literally at y=0. You can walk west-east to choose which x-coordinate to test, then look straight north into the forest. Most positions have at least one tree somewhere north of you. But some positions have \emph{no trees at any depth northward}. These are the \textbf{primes}! They're numbers with clear sight lines through the forest.
 
-\item \textbf{The primality test}: Stand at any x-coordinate along the southern edge and look straight north. If you see trees blocking your view at any depth, that number is composite. If you have a perfectly clear sight line all the way through the forest---nothing blocking your view at any distance northward---that number is prime.
+\item \textbf{The primality test}: Stand at any x-coordinate along the southern edge and look straight north. If you see trees blocking your view at any depth, that number is composite. If you have a perfectly clear sight line through the forest, that number is prime.
 \end{itemize}
 
 \subsection{The Core Insight}
 
 \begin{quote}
-\textbf{The number of trees at position n (across all depths) equals the number of divisors of n in the range $[2, \sqrt{n}]$. Primes have zero such divisors, so they have no trees blocking the sight line---they're clear corridors through the factor forest.}
+\textbf{The number of trees at position n (across all depths) equals the number of divisors of n in the range $[2, \sqrt{n}]$. Primes have zero such divisors, so they offer clear sight lines through the forest.}
 \end{quote}
 
 For example:
@@ -128,17 +128,26 @@ The forest isn't just showing which numbers are composite---it's counting their 
 
 \section{Exploring the Forest}
 
-\subsection{Why Do Composites Form This Pattern?}
+\subsection{Forest Geometry: Regular Diagonals from Parabolic Layers}
 
-Each row $k = \text{const}$ represents all composites of the form $p(p+k)$:
+The key insight of this visualization lies in a surprising geometric paradox. While the classical Sieve of Eratosthenes progressively crosses out multiples of primes, the Primal Forest plants \textbf{every number $p \geq 2$} into a regular diagonal row:
+
+\begin{quote}
+Each $p$ (prime or composite) generates a diagonal of factorizations $p(p+k)$ for $k = 0, 1, 2, \ldots$\\
+Points: $(p^2, 1)$, $(p^2+p, p+1)$, $(p^2+2p, 2p+1)$, $(p^2+3p, 3p+1)$, \ldots\\
+Spacing: constant $(p, p)$ in both directions $\Rightarrow$ \textbf{slope exactly 1} (45° angle)
+\end{quote}
+
+For example:
 \begin{itemize}
-\item $k=0$: Perfect squares $p^2$ at positions $(p^2, 1)$
-\item $k=1$: Products $p(p+1)$ at positions $(p^2+p, p+1)$
-\item $k=2$: Products $p(p+2)$ at positions $(p^2+2p, 2p+1)$
-\item And so on\ldots
+\item $p=2$: diagonal $(4,1)$, $(6,3)$, $(8,5)$, $(10,7)$, \ldots with spacing $(2,2)$
+\item $p=3$: diagonal $(9,1)$, $(12,4)$, $(15,7)$, $(18,10)$, \ldots with spacing $(3,3)$
+\item $p=5$: diagonal $(25,1)$, $(30,6)$, $(35,11)$, $(40,16)$, \ldots with spacing $(5,5)$
 \end{itemize}
 
-Each column $p = \text{const}$ represents all composites with $p$ as the smaller factor.
+\textbf{The paradox}: Horizontal ``layers'' (points with fixed $k$) form \emph{parabolic sequences}---perfect squares $p^2$ for $k=0$, shifted parabolas for $k>0$. Yet from these parabolic layers emerges a perfectly \emph{regular diagonal structure} with slope 1!
+
+Composite numbers with multiple factorizations appear multiple times. For example, $24 = 2 \times 12 = 3 \times 8 = 4 \times 6$ lies on three different diagonals ($p=2,3,4$) as three trees at different depths.
 
 \subsection{Numbers with Multiple Trees}
 
@@ -152,7 +161,7 @@ Notice how the forest extends deeper (further north) as numbers grow? The x-coor
 \textbf{The higher the x-coordinate (the larger the number), the deeper the forest extends northward. More trees at various depths means higher probability that some tree blocks your sight line.}
 \end{quote}
 
-As we walk east along the southern edge (increasing x), the forest grows denser and extends further north. More factors mean more trees, scattered across a greater depth range. The chance of finding a completely clear corridor---a prime---decreases. This geometric view makes the Prime Number Theorem intuitive: \emph{primes thin out} because the ``forest of factors'' grows denser and deeper.
+As we walk east along the southern edge (increasing x), the forest grows denser and extends further north. More factors mean more trees, scattered across a greater depth range. The chance of finding a completely clear sight line---a prime---decreases. This geometric view makes the Prime Number Theorem intuitive: \emph{primes thin out} because the ``forest of factors'' grows denser and deeper.
 
 \section{Try It Yourself}
 
@@ -187,9 +196,9 @@ lpl@31
 \subsection{Exercises}
 
 \begin{enumerate}
-\item \textbf{The Twin Prime Hunt}: Stand at position 11 (a prime with a clear sight line). Walk east slowly. The next clear corridor is at 13---just 2 steps away (twin primes!). Keep walking and find more twin pairs. Can you predict where twins might appear by studying the forest structure? Is there a pattern to how twin primes are spaced?
+\item \textbf{The Twin Prime Hunt}: Stand at position 11 (a prime with a clear sight line). Walk east slowly. The next clear sight line is at 13---just 2 steps away (twin primes!). Keep walking and find more twin pairs. Can you predict where twins might appear by studying the forest structure? Is there a pattern to how twin primes are spaced?
 
-\item \textbf{The Goldbach Exploration}: Pick an even number's position, say 20. Can you find two prime positions (clear corridors) that sum to 20? For example, positions 3 and 17 both have clear sight lines, and $3+17=20$. Try other even numbers. Does this always work? What does the forest tell you about additive structure?
+\item \textbf{The Goldbach Exploration}: Pick an even number's position, say 20. Can you find two prime positions (clear sight lines) that sum to 20? For example, positions 3 and 17 both have clear sight lines, and $3+17=20$. Try other even numbers. Does this always work? What does the forest tell you about additive structure?
 
 \item \textbf{Modify the Forest}: What if you included $p=1$ trees in the visualization? Or what if you plotted only odd composites? Build these variations and describe what changes. Does removing certain trees make patterns more or less obvious? What does this tell you about the role of small primes?
 
@@ -228,7 +237,7 @@ A: Each dot is a composite, positioned according to its factors $p$ and $k+p$. P
 A: Yes! Primes are precisely the gaps in the regular factor lattice. The pattern is visible once we map factorizations to 2D.
 
 \paragraph{Q: Why does the probability of finding a prime decrease?}
-A: As numbers grow larger, each position on the x-axis (southern edge) has more potential factors. The forest extends deeper northward and becomes denser because there are simply more ways to factor larger numbers. Geometrically, more trees at more depths block your sight lines, so completely clear corridors (primes) become rarer.
+A: As numbers grow larger, each position on the x-axis (southern edge) has more potential factors. The forest extends deeper northward and becomes denser because there are simply more ways to factor larger numbers. Geometrically, more trees at more depths block your sight lines, so completely clear sight lines (primes) become rarer.
 
 \section{The Regularity Paradox}
 
@@ -371,7 +380,7 @@ This approach has pedagogical value at multiple levels:
 \item \textbf{Research}: Alternative perspectives may inspire new approaches
 \end{itemize}
 
-The next time you think about primes, imagine standing at the southern edge of a vast forest, walking along trying different positions. At most spots, trees block your view northward at some depth. But occasionally, you find a perfectly clear corridor---no trees at any distance. That's a prime. The forest is regular, but the clearings are mysterious.
+The next time you think about primes, imagine standing at the southern edge of a vast forest, walking along trying different positions. At most spots, trees block your view northward at some depth. But occasionally, you find a perfectly clear sight line---no trees at any distance. That's a prime. The forest is regular, but the clearings are mysterious.
 
 Yet the forest has one more secret to reveal. Instead of asking "blocked or clear?", we can ask "how far to the nearest trees?" This continuous perspective transforms our binary classification into a spectrum---and what emerges is worth exploring.
 
@@ -416,7 +425,7 @@ Figure~\ref{fig:envelope} shows a remarkable discovery: when we plot this score 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.7\textwidth]{../visualizations/soft-distance-envelope-127.pdf}
+\includegraphics[width=0.7\textwidth]{../../visualizations/soft-distance-envelope-127.pdf}
 \caption{The primality spectrum: primes (orange) form a smooth envelope, composites (blue) scatter below. Each composite's distance from the envelope encodes its factorization structure.}
 \label{fig:envelope}
 \end{figure}
@@ -427,7 +436,7 @@ Figure~\ref{fig:stratification} reveals the deeper structure: composites stratif
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.7\textwidth]{../visualizations/soft-distance-composite-types.pdf}
+\includegraphics[width=0.7\textwidth]{../../visualizations/soft-distance-composite-types.pdf}
 \caption{Composites stratified by type: prime powers closest to envelope, semiprimes further down, many-factor composites at the bottom. Factorization complexity is visible as vertical position.}
 \label{fig:stratification}
 \end{figure}
