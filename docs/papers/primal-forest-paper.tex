@@ -5,6 +5,7 @@
 \usepackage{tikz}
 \usepackage[margin=1in]{geometry}
 \usepackage{listings}
+\usepackage{hyperref}
 
 \title{The Primal Forest:\\
 A Journey Through the Sieve of Eratosthenes}
@@ -285,7 +286,7 @@ This is why the geometric view, despite its clarity, doesn't unlock new computat
 
 The Sieve of Eratosthenes is a staple of mathematics education, yet it's almost universally presented as a \emph{linear, sequential algorithm}: list the numbers 2, 3, 4, 5, \ldots on a line, then systematically cross out multiples. This approach engages \textbf{left-brain sequential processing}---step 1, step 2, follow the procedure, arrive at the answer.
 
-The Primal Forest offers something fundamentally different: a \textbf{right-brain spatial pattern} where the entire structure is visible at once. Instead of "cross out the next composite," students see "composites form a regular lattice; primes are the gaps."
+The Primal Forest offers something fundamentally different: a \textbf{right-brain spatial pattern}\footnote{Note: The division into "left analytical" and "right creative" hemispheres is a simplified popular-science model. In reality, both hemispheres work intensively together on most cognitive tasks. This is a pedagogical metaphor. See \href{https://en.wikipedia.org/wiki/Lateralization_of_brain_function}{en.wikipedia.org}} where the entire structure is visible at once. Instead of "cross out the next composite," students see "composites form a regular lattice; primes are the gaps."
 
 So why hasn't this geometric view entered the mainstream curriculum?
 
@@ -350,17 +351,17 @@ With modern computational tools---Wolfram Language, Python with matplotlib, GeoG
 \item Discover patterns on their own
 \end{itemize}
 
-The barrier isn't technology anymore. It's \emph{awareness} that such visualizations exist and \emph{permission} to deviate from the traditional curriculum.
+The barrier isn't technology anymore. The barrier may be lack of awareness that such visualizations exist, or reluctance to deviate from the traditional curriculum.
 
 \subsection{A Call to Action}
 
-If you're an educator reading this, consider:
+If you're an educator reading this, we suggest the following:
 \begin{itemize}
-\item Showing the Primal Forest alongside the linear sieve
-\item Asking students which view makes more sense to them
-\item Using the forest to answer ``why'' questions about prime distribution
-\item Encouraging students to explore variations and make their own discoveries
-\item Sharing what works with colleagues and curriculum developers
+\item Try showing the Primal Forest alongside the linear sieve
+\item Ask students which view makes more sense to them
+\item Use the forest to answer ``why'' questions about prime distribution
+\item Encourage students to explore variations and make their own discoveries
+\item Share what works with colleagues and curriculum developers
 \end{itemize}
 
 The goal isn't to add another topic to an already crowded curriculum. It's to \emph{deepen understanding} of a topic already being taught, by engaging both algorithmic and spatial thinking.
