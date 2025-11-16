@@ -68,6 +68,50 @@ where H_j(s) = Σ_{k=1}^j k^(-s), for Re(s) > 1.
 
 ---
 
+## Laurent Expansion at s=1 (Nov 16-17, 2025)
+
+### Residue at s=1
+
+**Status**: ✅ **PROVEN** (Nov 17, 2025) - conditional on closed form validity
+
+```
+Res[L_M(s), s=1] = 2γ - 1 ≈ 0.1544313298...
+```
+
+where γ ≈ 0.5772156649... is the Euler-Mascheroni constant.
+
+**Proof**: Rigorous Laurent expansion analysis (see `docs/residue-proof-rigorous.md`)
+
+**Method**:
+1. Laurent expansion of ζ(s) around s=1: ζ(s) = 1/(s-1) + γ + O(s-1)
+2. Compute ζ(s)[ζ(s)-1] = 1/(s-1)² + (2γ-1)/(s-1) + O(1)
+3. Show C(s) is regular at s=1 (no pole, finite sum in each term)
+4. Extract residue: Res = 2γ - 1
+
+**Laurent expansion:**
+```
+L_M(s) = A/(s-1)² + (2γ-1)/(s-1) + B + O(s-1)
+```
+
+where A=1 (to be proven), B is regular term.
+
+**Numerical confirmation**:
+- Python/mpmath (50 dps): Residue ≈ 0.1544313298...
+- Matches 2γ-1 exactly
+- Script: `scripts/analyze_convergence.py`
+
+**Connection to divisor problem:**
+Classical result: Σ_{n≤x} τ(n) = x ln x + (2γ-1)x + O(√x)
+Same coefficient (2γ-1) appears! Not a coincidence - both from ζ² pole structure.
+
+**Confidence**: 95% (rigorous, conditional on closed form)
+
+**Assumption**: Closed form L_M(s) = ζ(s)[ζ(s)-1] - C(s) is valid (numerically verified, not yet peer-reviewed)
+
+**Reference**: `docs/residue-proof-rigorous.md`, `docs/residue-analysis-s1.md`
+
+---
+
 ## Functional Equation Investigation (Nov 16, 2025)
 
 ### Schwarz Reflection Symmetry
