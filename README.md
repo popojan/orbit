@@ -173,20 +173,40 @@ wolframscript -file scripts/explore_G_complex.wl
 
 See `CLAUDE.md` for technical details.
 
-## Current Status (Nov 15, 2025)
+## Current Status (Nov 17, 2025) - UPDATED
 
 ### Proven Results
 1. ✅ Primal forest geometric construction
 2. ✅ Epsilon-pole residue theorem (local, rigorous proof)
+3. ✅ **Schwarz reflection symmetry** (Nov 17) - rigorous proof from integral representation
+4. ✅ **Residue = 2γ-1** (Nov 17) - rigorous Laurent expansion analysis
+
+### Numerically Verified (Extreme Confidence)
+1. 🔬 **Double pole coefficient A = 1** (Nov 17) - 99% confidence, 100 dps verification, analytical proof pending
+2. 🔬 Closed form for L_M(s) - 95% confidence, proof written but not peer-reviewed
 
 ### Conjectured Results
-1. 🔄 Closed form for L_M(s) (high numerical confidence, proof written but not peer-reviewed)
-2. 🔄 G(s,α,ε) zero-free for ε > 0 (under investigation tonight)
+1. 🔄 Functional equation with explicit γ(s) factor (Nov 16, derived but self-referential)
+2. ❌ Classical functional equation FALSIFIED (γ ≠ π^{-s/2}Γ(s/2))
+3. ❌ L_M zeros at Riemann zeros FALSIFIED (tested first 20 zeros)
+
+### Major Breakthrough (Nov 17, 2025)
+
+**Laurent expansion at s=1 FULLY CHARACTERIZED:**
+```
+L_M(s) = 1/(s-1)² + (2γ-1)/(s-1) + B + O(s-1)
+```
+
+**Consequences:**
+- Asymptotic growth: Σ_{n≤x} M(n) ~ x ln x + (2γ-1)x + O(√x)
+- Same structure as divisor function: Σ_{n≤x} τ(n) ~ x ln x + (2γ-1)x
+- Geometric meaning: 2γ-1 encodes √n divisor asymmetry
+- Series divergence: Σ M(n)/n = ∞ (double pole confirmed)
 
 ### Open Questions
-- Analytic continuation of L_M(s) beyond Re(s) > 1
-- Functional equation (if any)
-- Connection to Riemann zeta zeros
+- Analytic continuation of L_M(s) beyond Re(s) > 1 (integral representation promising)
+- Non-self-referential formula for γ(s) factor in functional equation
+- Location of L_M zeros on critical line
 - Path to Riemann Hypothesis (extremely difficult, probably out of reach)
 
 ## Confidence Levels

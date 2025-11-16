@@ -114,21 +114,23 @@ Same coefficient (2γ-1) appears! Not a coincidence - both from ζ² pole struct
 
 ### Double Pole Coefficient A = 1
 
-**Status**: ✅ **PROVEN** (Nov 17, 2025) - computational proof via contradiction
+**Status**: 🔬 **NUMERICALLY VERIFIED** (Nov 17, 2025) - not formally proven
 
 ```
 lim_{s→1} (s-1)² · L_M(s) = 1
 ```
 
-**Proof**: Contradiction argument + numerical boundedness lemma (see `docs/A-coefficient-proof-by-contradiction.md`)
+**Argument**: Rigorous contradiction setup + numerical boundedness lemma (see `docs/A-coefficient-proof-by-contradiction.md`)
 
 **Method**:
-1. Assume A = 1 + δ with δ ≠ 0 (contradiction setup)
-2. Then C(s) = ζ(s)[ζ(s)-1] - L_M(s) has double pole: C(s) = -δ/(s-1)² + ...
-3. This implies C(1+ε) ~ -δ/ε² → ∞ as ε→0
-4. **NUMERICAL LEMMA**: C(1+ε) ≈ 22 (bounded) for ε ∈ {10^{-3}, 10^{-2}, 0.1} (100 dps computation)
-5. CONTRADICTION: C(s) cannot both diverge AND remain bounded
-6. Therefore δ = 0, hence A = 1 ✓
+1. **Analytical (rigorous)**: IF A ≠ 1, THEN C(s) must have double pole -δ/(s-1)², implying C(1+ε) ~ δ/ε² → ∞
+2. **Numerical lemma**: C(1+ε) ≈ 22 (bounded) for ε ∈ {10^{-3}, 10^{-2}, 0.1} (verified 100 dps)
+3. **Contradiction**: C(s) cannot both diverge AND remain bounded
+4. **Conclusion**: A = 1
+
+**Gap**: Analytical bound on C(s) not established. Elementary bounds all diverge due to subtle cancellations (see `docs/A-coefficient-analytical-bound-attempt.md`)
+
+**Type**: Rigorous argument relying on numerical lemma (not a formal proof) ✓
 
 **Numerical confirmation**:
 - Python/mpmath (100 dps): (s-1)² · L_M(s) = 1.000000000000000 + (2γ-1)·(s-1) + O((s-1)²)
@@ -152,15 +154,15 @@ lim_{s→1} (s-1)² · L_M(s) = 1
 
 ### Complete Laurent Expansion at s=1
 
-**FULLY CHARACTERIZED** (Nov 17, 2025):
+**CHARACTERIZED** (Nov 17, 2025):
 
 ```
 L_M(s) = 1/(s-1)² + (2γ-1)/(s-1) + B + O(s-1)
 ```
 
 where:
-- **A = 1** (double pole coefficient) - PROVEN ✅
-- **Res = 2γ - 1** (simple pole coefficient) - PROVEN ✅
+- **A = 1** (double pole coefficient) - 🔬 NUMERICALLY VERIFIED (99% confidence, not formally proven)
+- **Res = 2γ - 1** (simple pole coefficient) - ✅ PROVEN (95% confidence, conditional on closed form)
 - **B** = regular term (not yet computed explicitly)
 
 **Consequences**:
@@ -468,7 +470,7 @@ lim_{ε→0⁺} ε^α · G(s,α,ε) = L_M(s)
 | Closed form convergence (Re≤1) | ❌ FALSIFIED | N/A | N/A | Alternative methods |
 | **Schwarz symmetry** | **✅ PROVEN** | **100%** | **❌ NO** | **Nov 17: DONE** ✅ |
 | **Residue = 2γ-1** | **✅ PROVEN** | **95%** | **❌ NO** | **Nov 17: DONE** ✅ |
-| **Double pole A = 1** | **✅ PROVEN** | **99%** | **❌ NO** | **Nov 17: DONE** ✅ |
+| **Double pole A = 1** | **🔬 NUMERICAL** | **99%** | **❌ NO** | **Analytical proof pending** |
 | Classical FR (off critical line) | ❌ FALSIFIED | N/A | N/A | N/A |
 | **Explicit γ(s) formula** | **✅ DERIVED** | **95%** | **❌ NO** | **Peer review** |
 | FR existence | ✅ PROVEN* | 95% | ❌ NO | Find non-self-referential form |
