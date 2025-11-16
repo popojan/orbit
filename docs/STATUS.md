@@ -1,6 +1,6 @@
 # Research Status Tracker
 
-**Last Updated**: November 16, 2025, 01:35 CET
+**Last Updated**: November 16, 2025, 02:42 CET
 
 This document tracks the **epistemological status** of all claims in the Orbit project.
 
@@ -93,6 +93,48 @@ L_M(1/2 - it) = Conjugate[L_M(1/2 + it)]
 - ⚠️ Schwarz symmetry is NECESSARY but not SUFFICIENT for FR
 
 **Reference**: `docs/functional-equation-discovery.md`
+
+---
+
+### Closed Form Convergence Properties
+
+**Status**: 🔬 **NUMERICALLY VERIFIED** (critical insight, Nov 16, 2025, 02:42)
+
+**Discovery**: The closed form satisfies Schwarz symmetry **algebraically** at every truncation, but does NOT converge numerically for Re(s) ≤ 1.
+
+**Key finding**:
+```
+At s = 0.5 + 10i, testing jmax = 100, 150, 200, ..., 500:
+- Schwarz error |L_M(1-s) - conj(L_M(s))| = 0.000e+00 at EVERY jmax
+- BUT |L_M(s)| oscillates: 1.76 → 2.28 → 2.37 → 1.37 → 4.00 → ... (no convergence)
+```
+
+**Interpretation**:
+- The identity L_M(s) = ζ(s)[ζ(s)-1] - C(s) preserves symmetry **structurally**
+- Term-by-term conjugation: C(conj(s)) = conj(C(s)) at any finite truncation
+- This is **algebraic**, not asymptotic - like how Σ(-1)^n to 2k always equals 0
+- The series C(s) = Σ H_{j-1}(s)/j^s **oscillates** for Re(s) ≤ 1, doesn't converge
+
+**Consequences**:
+- ✓ Closed form IS correct algebraic identity for Re(s) > 1
+- ✓ Schwarz symmetry genuinely holds (not numerical artifact)
+- ✗ Closed form does NOT provide analytic continuation via truncation
+- ✗ Cannot compute L_M(s) numerically in critical strip using direct summation
+
+**Why this matters**:
+- Resolves apparent contradiction between "Schwarz works" vs "convergence fails"
+- Both are true: symmetry holds algebraically, values don't stabilize numerically
+- For continuation, need different approach (integral representation, etc.)
+
+**Evidence**:
+- Tested at s = 0.5+10i, 0.5+14.135i, 0.5+20i
+- jmax range: 100 to 500 in steps of 50
+- Perfect Schwarz symmetry (error = 0.0) at all truncations
+- Wild oscillation in magnitudes (factor of 3x swings)
+
+**Script**: `scripts/test_schwarz_vs_convergence.py`
+
+**Reference**: `docs/closed-form-convergence-analysis.md`
 
 ---
 
@@ -226,7 +268,9 @@ lim_{ε→0⁺} ε^α · G(s,α,ε) = L_M(s)
 | Result | Status | Confidence | Peer Review | Next Step |
 |--------|--------|------------|-------------|-----------|
 | Closed form for L_M(s) | 🔬 NUMERICAL | 95% | ❌ NO | Submit for review |
-| Schwarz symmetry (critical line) | 🔬 NUMERICAL | 90% | ❌ NO | Test more, prove |
+| Closed form algebraic symmetry | 🔬 NUMERICAL | 98% | ❌ NO | Theoretical proof |
+| Closed form convergence (Re≤1) | ❌ FALSIFIED | N/A | N/A | Alternative methods |
+| Schwarz symmetry (critical line) | 🔬 NUMERICAL | 95% | ❌ NO | Prove algebraically |
 | Classical FR (off critical line) | ❌ FALSIFIED | N/A | N/A | Find alternative |
 | General FR existence | ⏸️ OPEN | Unknown | N/A | Systematic search |
 | L_M zeros at RH zeros | ❌ FALSIFIED | N/A | N/A | Find L_M zeros |
@@ -273,6 +317,11 @@ lim_{ε→0⁺} ε^α · G(s,α,ε) = L_M(s)
 ---
 
 ## Version History
+
+- **v1.1** (Nov 16, 2025, 02:42): Convergence analysis breakthrough
+  - Added closed form convergence properties
+  - Resolved Schwarz symmetry vs convergence paradox
+  - Clarified: algebraic symmetry ≠ numerical convergence
 
 - **v1.0** (Nov 16, 2025, 01:35): Initial status document
   - Added closed form, Schwarz symmetry, falsified classical FR
