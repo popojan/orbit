@@ -200,13 +200,14 @@ The **asymmetry of factor distribution** around √n is captured by how often Δ
 
 ### Unified View
 
-**Three manifestations of the same geometric phenomenon:**
+**Four manifestations of the same geometric phenomenon:**
 
 | Perspective | Boundary | Asymmetry Measure | Analytic Signature |
 |-------------|----------|-------------------|-------------------|
 | **Primal Forest** | d = √n split | (n-d²) mod d | Dominant term contribution |
 | **M(n) function** | Divisors < √n | Count vs √n | Residue 2γ-1 |
 | **Divisor Problem** | Diagonal d·e=n | Σ τ(n) correction | Coefficient 2γ-1 |
+| **Pell Equations** | √D best approx | \|x² - Dy²\| minimization | Exact zero only for squares |
 
 **Common structure:**
 ```
