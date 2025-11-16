@@ -43,12 +43,24 @@ This repository contains computational tools for various recreational and resear
 
 ### Documentation Standards
 
+**IMPORTANT: Avoid Documentation Bloat**
+- **DON'T create multiple overlapping documents** - this makes navigation harder
+- **DON'T repeat information** across multiple files
+- **DO update existing documents** rather than creating new ones
+- **DO check for duplicates** before creating new docs
+- **Principle**: One topic = One primary document (+ STATUS.md update)
+
 **When making mathematical discoveries:**
 1. Create script in `scripts/` with descriptive name
-2. Document in `docs/` as markdown (numerical) or LaTeX (proven)
-3. Update `docs/STATUS.md` with appropriate epistemic tag
+2. **Update existing** `docs/` file if topic exists, OR create ONE new document
+3. **Always update** `docs/STATUS.md` with appropriate epistemic tag
 4. Add entry to `misc/` for "aha moments" (user's responsibility)
 5. Commit with descriptive message mentioning discovery status
+
+**Document hierarchy** (avoid creating files outside this structure):
+- `STATUS.md` = master tracker (always update!)
+- `functional-equation-discovery.md` = ongoing FR work (append here!)
+- New docs only if fundamentally new topic
 
 **Epistemic Tags (from STATUS.md):**
 - ✅ PROVEN - Rigorous proof (but note: NOT peer-reviewed)
