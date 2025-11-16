@@ -1,6 +1,6 @@
 # Research Status Tracker
 
-**Last Updated**: November 16, 2025, 04:35 CET
+**Last Updated**: November 16, 2025, 21:00 CET
 
 This document tracks the **epistemological status** of all claims in the Orbit project.
 
@@ -514,6 +514,56 @@ lim_{ε→0⁺} ε^α · G(s,α,ε) = L_M(s)
 
 ---
 
+## Egypt.wl k=EVEN Pattern (Nov 16, 2025)
+
+**Status**: 🔬 **NUMERICALLY VERIFIED** (strong evidence + partial theory)
+
+**Claim**: For Pell solutions (x,y) with x² - n·y² = 1, the modular property
+
+```
+(x-1)/y · f(x-1, k) ≡ 0 (mod n)
+```
+
+holds **if and only if k is EVEN** (for non-special primes where n ∤ (x-1)).
+
+**Evidence**:
+- EVEN k approximates √n exponentially better than ODD k
+- n=13: EVEN is 1298× better (!!)
+- Factorial denominators have period mod n
+- Special primes {2,7,23} where n|(x-1): property holds for ALL k
+
+**Confidence**: 85% (numerical proof overwhelming, needs rigorous formalization)
+
+**Reference**: `docs/egypt-k-even-proof-complete.md`
+
+---
+
+## M(D) ↔ R(D) Anticorrelation (Nov 16, 2025)
+
+**Status**: 🤔 **HYPOTHESIS** → ✅ **EXPLAINED** (theoretical mechanism)
+
+**Observation**: M(D) anti-correlates with R(D) for square-free D
+- Correlation: r = -0.33 (negative)
+- Primes: M(D)=0, large R(D) (mean 12.78)
+- Composites: M(D)>0, small R(D) (mean 6.60)
+
+**Mechanism** (using proven M(n) = ⌊(τ(n)-1)/2⌋):
+```
+More divisors → τ(D) large → M(D) large
+              → Many rational √D approximations
+              → Short continued fraction
+              → Small Pell solution
+              → Small R(D)
+```
+
+**Refined conjecture**: E[R(D) | τ(D)=k] ≈ c/√k where c≈18
+
+**Confidence**: 85% (up from 65%) - now have theoretical explanation
+
+**Reference**: `docs/M-R-anticorrelation-explained.md`
+
+---
+
 ## Summary Table
 
 | Result | Status | Confidence | Peer Review | Next Step |
@@ -682,6 +732,13 @@ All three approaches:
 
 - **v1.0** (Nov 16, 2025, 01:35): Initial status document
   - Added closed form, Schwarz symmetry, falsified classical FR
+
+- **v1.1** (Nov 16, 2025, evening): Skeptical deflation + Egypt proof + M-R explanation
+  - DEFLATED: Dimensional analysis (metaphor, not theory)
+  - DEFLATED: ω(n)-1 geometric dimension (τ is much better: r=0.9989 vs r=0.7154)
+  - ADDED: Egypt k=EVEN pattern (numerical proof, 1298× better for n=13)
+  - ADDED: M(D) ↔ R(D) anticorrelation explained (theoretical mechanism)
+  - UPGRADED: M-R confidence 65% → 85% (now have theory, not just empirical)
 
 ---
 
