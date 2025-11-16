@@ -171,18 +171,26 @@ Define correction Δlog(s) = log|R(s)| - log|R_classical(s)| where:
 
 ### L_M Values at Riemann Zeros
 
-**Status**: 🤔 **HYPOTHESIS**
-
-**Known**: At Riemann zeros s₀ (where ζ(s₀) = 0):
-```
-L_M(s₀) = -Σ_{j=2}^∞ H_{j-1}(s₀)/j^s₀
-```
+**Status**: ❌ **TESTED AND FALSIFIED**
 
 **Question**: Does L_M(s₀) = 0 for Riemann zeros?
 
-**Status**: UNTESTED (need to compute sum numerically)
+**Result**: **NO** - L_M does NOT have zeros at Riemann zero heights
 
-**Significance**: If YES, would establish deep connection to RH
+**Test details** (Nov 16, 2025, 04:00):
+- Tested at first 20 Riemann zeros (t_k on Re(s) = 1/2)
+- Precision: 50 decimal places (mpmath)
+- |L_M(s_k)| ranges from 0.17 to 1.32 (NOT near zero)
+- ζ(s_k) correctly ≈ 0 (verified: |ζ| ~ 10^-15)
+
+**Conclusion**:
+- L_M has **independent zero structure** (not tied to ζ zeros)
+- Zeros of L_M on critical line remain to be found
+- No simple connection to Riemann Hypothesis via zero coincidence
+
+**Script**: `scripts/test_riemann_zero_connection.py`
+
+**Open question**: Where ARE the L_M zeros on Re(s) = 1/2?
 
 ---
 
@@ -221,7 +229,8 @@ lim_{ε→0⁺} ε^α · G(s,α,ε) = L_M(s)
 | Schwarz symmetry (critical line) | 🔬 NUMERICAL | 90% | ❌ NO | Test more, prove |
 | Classical FR (off critical line) | ❌ FALSIFIED | N/A | N/A | Find alternative |
 | General FR existence | ⏸️ OPEN | Unknown | N/A | Systematic search |
-| L_M zeros at RH zeros | 🤔 HYPOTHESIS | 5% | N/A | Numerical test |
+| L_M zeros at RH zeros | ❌ FALSIFIED | N/A | N/A | Find L_M zeros |
+| Antisymmetry pattern | 🔬 NUMERICAL | 90% | N/A | Prove or find γ(s) |
 | Epsilon-pole theorem | ✅ PROVEN* | 90% | ❌ NO | Submit for review |
 | Primal forest | ✅ PROVEN* | 100% | ❌ NO | Write for publication |
 
