@@ -1,0 +1,15 @@
+# ML Regulator Predictor Coefficients
+# Trained on D ∈ [2, 300]
+# Training error: 41.76%
+# Test error: 54.84%
+
+Intercept: 9.6053817043
+log(D): -3.0149312126
+M(D): -1.4418732248
+omega(D): 0.1255414877
+is_prime: -5.7898231743
+D%4: -1.8535046267
+D%8: 0.2550954293
+log(D)²: 0.7647609919
+M×log(D): -0.0302364471
+prime×log(D): 2.3526397281
