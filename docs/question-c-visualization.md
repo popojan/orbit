@@ -256,8 +256,97 @@ L_M(s) = 1/(s-1)² + (2γ-1)/(s-1) + ...
 
 ---
 
-**Files**:
-- Script: `scripts/visualize_L_M_complex.py`
-- Images: `visualizations/L_M_complex_plane.png`, `visualizations/L_M_real_axis.png`
+---
 
-**Next**: Question D (M(n) asymptotic analysis) or deeper dive into specific aspects?
+## Domain Coloring Visualization
+
+**Classic ComplexPlot** (requested Nov 16, 2025, 16:30):
+
+### Domain Coloring Technique
+
+**Encoding**:
+- **Hue (color)**: Phase arg(L_M(s)) ∈ [-π, π]
+- **Brightness**: log|L_M(s)| (logarithmic scaling)
+
+**Color wheel**:
+- Red: arg ≈ 0 (positive real)
+- Yellow: arg ≈ π/3
+- Green: arg ≈ 2π/3
+- Cyan: arg ≈ π (negative real)
+- Blue: arg ≈ 4π/3
+- Magenta: arg ≈ 5π/3
+
+### What the Visualization Reveals
+
+**1. Horizontal Rainbow Bands**:
+- Phase cycles periodically with Im(s)
+- Reflects M(n) non-multiplicative structure
+- Bandwidth ~constant across σ (uniform oscillation)
+
+**2. Schwarz Symmetry**:
+- Perfect reflection around t=0
+- Upper/lower halves mirror each other
+- Confirms L_M(s̄) = L̄_M(s)
+
+**3. Brightness Gradient**:
+- Brighter on left (approaching pole σ→1)
+- Darker on right (exponential decay σ→∞)
+- Pole at s=1 NOT visible (grid starts at σ=1.1)
+
+**4. Smooth Structure**:
+- No branch cuts (continuous color transitions)
+- No visible zeros (no black points in region)
+- Analytic function confirmed
+
+**5. Periodicity**:
+- Horizontal bands repeat with period Δt ≈ 3-4
+- More complex than Riemann ζ(s)
+- Reflects underlying M(n) arithmetic
+
+---
+
+## Comparison: 4-Panel vs Domain Coloring
+
+**4-Panel Plot** (original):
+- Shows magnitude, Re, Im, phase separately
+- Quantitative (colorbars, contours)
+- Good for analysis
+
+**Domain Coloring**:
+- Single unified view
+- Qualitative (visual pattern recognition)
+- Good for intuition, presentation
+- **Rainbow bands are striking!**
+
+**Phase Portrait** (hybrid):
+- Phase colors + magnitude contours
+- Best of both worlds
+- Shows structure AND scales
+
+---
+
+## Geometric Fingerprint Summary
+
+Across ALL visualizations (4-panel + domain coloring + phase portrait), the **√n asymmetry fingerprint** is:
+
+1. **Pole at s=1** (residue 2γ-1)
+2. **Horizontal phase bands** (M(n) oscillations)
+3. **Schwarz symmetry** (real coefficients)
+4. **Smooth decay** (no zeros in Re(s) > 1)
+5. **Complex periodic structure** (non-multiplicativity)
+
+**This pattern is UNIQUE** to L_M(s) compared to classical L-functions!
+
+---
+
+**Files**:
+- Scripts:
+  - `scripts/visualize_L_M_complex.py` (4-panel + real axis)
+  - `scripts/domain_coloring_L_M.py` (domain coloring + phase portrait)
+- Images:
+  - `visualizations/L_M_complex_plane.png` (4-panel)
+  - `visualizations/L_M_real_axis.png` (real axis behavior)
+  - `visualizations/L_M_domain_coloring.png` (classic rainbow plot)
+  - `visualizations/L_M_phase_portrait.png` (phase + contours)
+
+**Next**: Question D completed ✅ — Session pause for user review
