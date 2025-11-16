@@ -1,9 +1,12 @@
 # Documentation Index
 
-**Generated:** 2025-11-15 22:20:13
+**Generated:** 2025-11-16 00:44:00
 
 ## Recent Documents (by edit time)
 
+- [Functional Equation Discovery for L_M(s)](functional-equation-discovery.md) *(2025-11-16)*
+- [Wolfram Language: Business Case from Real Research](WOLFRAM_BUSINESS_CASE.md) *(2025-11-16)*
+- [Strategy and Implications: What's Next?](next-steps-strategy.md) *(2025-11-15)*
 - [CLOSED FORM for L_M(s) - DISCOVERED!](closed-form-L_M-RESULT.md) *(2025-11-15)*
 - [Evening Session Summary - November 15, 2025](session-summary-nov15-evening.md) *(2025-11-15)*
 - [Global Dirichlet Series for M(n)](global-dirichlet-series.md) *(2025-11-15)*
