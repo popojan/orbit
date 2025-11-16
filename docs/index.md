@@ -1,9 +1,10 @@
 # Documentation Index
 
-**Generated:** 2025-11-16 12:48:25
+**Generated:** 2025-11-16 22:21:08
 
 ## Recent Documents (by commit time)
 
+- [Mellin Puzzle Resolution: (γ-1) vs (2γ-1)](mellin-puzzle-resolution.md) *()*
 - [Research Status Tracker](STATUS.md) *(2025-11-16)*
 - [Pivot: Return to Primal Forest Geometry](pivot-to-primal-forest-geometry.md) *(2025-11-16)*
 - [Theta Function Truncation: Practical vs Theoretical Considerations](theta-truncation-insight.md) *(2025-11-16)*

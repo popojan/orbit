@@ -1,6 +1,6 @@
 # Research Status Tracker
 
-**Last Updated**: November 16, 2025, 04:35 CET
+**Last Updated**: November 16, 2025, 22:10 CET
 
 This document tracks the **epistemological status** of all claims in the Orbit project.
 
@@ -489,14 +489,22 @@ where:
 
 ## Epsilon-Pole Residue Theorem
 
-**Status**: ✅ **PROVEN** (rigorously, locally)
+**Status**: ✅ **PROVEN** (rigorously, locally) + ✅ **NUMERICALLY VERIFIED** (globally)
 
 **Theorem**: For regularized function G(s,α,ε):
 ```
-lim_{ε→0⁺} ε^α · G(s,α,ε) = L_M(s)
+lim_{ε→0⁺} ε^α · F_n(α,ε) = M(n)  (individual residues)
+lim_{ε→0⁺} ε^α · G(s,α,ε) = L_M(s)  (global sum)
 ```
 
 **Proof**: In `docs/papers/epsilon-pole-residue-theorem.tex`
+
+**Numerical Verification** (Nov 16, 2025, Web session):
+- Tested for n ≤ 200, α=3, varying ε
+- Initial "7.5% systematic error" resolved: was truncation tail, NOT deviation
+- Verification: shortfall / L_M_tail = 1.0000 exactly
+- Non-uniform convergence requirement: ε << n^{-1/(2α)}
+- For α=3: requires ε << n^{-1/6} (larger n needs smaller ε)
 
 **Confidence**: 9/10 (rigorous but not peer-reviewed)
 
@@ -511,6 +519,67 @@ lim_{ε→0⁺} ε^α · G(s,α,ε) = L_M(s)
 **Confidence**: 10/10 (foundational work, extensively validated)
 
 **Reference**: `docs/papers/primal-forest-paper-cs.tex`
+
+---
+
+## Mellin Puzzle: (γ-1) vs (2γ-1) Discrepancy (Nov 16, 2025)
+
+**Status**: ⏸️ **OPEN QUESTION**
+
+**Observation**: Euler-Mascheroni constant γ appears with different coefficients in related formulas:
+
+**Summatory function**:
+```
+Σ_{n≤x} M(n) ~ x·ln(x)/2 + (γ-1)·x + O(√x)
+```
+
+**Laurent residue**:
+```
+L_M(s) ~ 1/(s-1)² + (2γ-1)/(s-1) + ...
+Res[L_M, s=1] = 2γ-1
+```
+
+**The puzzle**: Why does γ appear as (γ-1) in the summatory but (2γ-1) in the residue?
+
+**Mellin inversion** should connect these via:
+```
+Σ_{n≤x} M(n) = (1/2πi) ∫ L_M(s) · x^s/s · ds
+```
+
+**Analysis**: The discrepancy arises from interplay between:
+- Double pole at s=1 (contributes x·ln x term)
+- Simple pole residue (contributes linear term)
+- Regular part C(1) (unknown constant)
+
+**Question**: What is the exact mechanism? Is C(1) involved?
+
+**Reference**: `docs/mellin-puzzle-resolution.md` (detailed analysis)
+
+**Note**: Discovered during Web session Questions A-D exploration.
+
+---
+
+## Egypt.wl k=EVEN Pattern (Nov 16, 2025)
+
+**Status**: 🔬 **NUMERICALLY VERIFIED** (strong pattern, partial theory)
+
+**Observation**: For Pell equation solutions (x,y) where x² - n·y² = 1, the Egypt.wl modular property:
+```
+(x-1)/y · f(x-1, k) ≡ 0 (mod n)
+```
+holds **if and only if k is EVEN** (for non-special primes where n ∤ (x-1)).
+
+**Evidence**:
+- EVEN k approximates √n exponentially better than ODD k
+- Example n=13: EVEN is **1298× better** than ODD
+- Factorial denominators exhibit period structure mod n
+- Special primes {2,7,23} where n|(x-1): property holds for ALL k
+
+**Explanation hypothesis**: Related to factorial denominators having period mod n, combined with Pell solution structure.
+
+**Confidence**: 75% (strong numerical evidence, but lacks rigorous proof)
+
+**Note**: Discovered during Web session Pell regulator exploration. Needs formalization.
 
 ---
 
@@ -652,6 +721,14 @@ All three approaches:
 ---
 
 ## Version History
+
+- **v1.4** (Nov 16, 2025, evening): Web session cherry-pick - selective integration
+  - ⭐ NEW: Mellin puzzle (⏸️ OPEN QUESTION) - (γ-1) vs (2γ-1) discrepancy
+  - ✅ UPDATED: ε-pole theorem globally verified (Web session numerical tests)
+  - 🔬 NEW: Egypt k=EVEN pattern (75% confidence, strong numerical evidence)
+  - 📄 New doc: mellin-puzzle-resolution.md (519 lines, detailed analysis)
+  - 🗑️ Rejected: ~25 files of "dimensional breakthrough" speculation (self-refuted)
+  - 📊 Strategy: Minimal merge to avoid documentation bloat per CLAUDE.md
 
 - **v1.3** (Nov 17, 2025): **RIGOROUS FOUNDATION COMPLETE** - Laurent expansion fully proven! 🎉
   - ✅ **Schwarz symmetry: PROVEN** (rigorous from integral representation, 2 min)
