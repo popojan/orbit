@@ -1,11 +1,12 @@
 # Documentation Index
 
-**Generated:** 2025-11-16 12:40:48
+**Generated:** 2025-11-16 12:48:25
 
 ## Recent Documents (by commit time)
 
-- [Theta Function Truncation: Practical vs Theoretical Considerations](theta-truncation-insight.md) *(2025-11-16)*
 - [Research Status Tracker](STATUS.md) *(2025-11-16)*
+- [Pivot: Return to Primal Forest Geometry](pivot-to-primal-forest-geometry.md) *(2025-11-16)*
+- [Theta Function Truncation: Practical vs Theoretical Considerations](theta-truncation-insight.md) *(2025-11-16)*
 - [Theta Function Transformation Test - Results](theta-transformation-test-results.md) *(2025-11-16)*
 - [Technika Odečtení Singularit - Vysvětlení](subtraction-technique-explained.md) *(2025-11-16)*
 - [Connection to Riemann's Seminal Paper (1859)](riemann-connection-analysis.md) *(2025-11-16)*
