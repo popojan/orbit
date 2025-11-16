@@ -77,9 +77,9 @@ This work demonstrates a collaborative approach to mathematical research:
 
 **Human** (Jan Popelka):
 - Geometric intuition (primal forest concept)
-- Critical verification of each step
-- Recognition of important patterns
-- Strategic direction
+- **Strategic research direction** (what to explore, when to pivot, when to abandon)
+- Critical verification and pattern recognition
+- Active navigation of exploration space
 
 **AI** (Claude Code / Anthropic):
 - Rapid iteration (50+ script variants in one evening)
@@ -87,13 +87,15 @@ This work demonstrates a collaborative approach to mathematical research:
 - Tireless exploration without fatigue
 - Honest uncertainty assessment (8/10 confidence)
 
-**Computational Tools** (Wolfram Language):
-- Numerical verification (catches errors early)
-- Symbolic manipulation
-- High-precision arithmetic
-- Independent confirmation
+**Wolfram Language** (computational partner):
+- Numerical verification (catches errors instantly)
+- Symbolic manipulation and high-precision arithmetic
+- Independent confirmation of conjectures
+- 30+ years of encoded mathematical knowledge
 
 **Key insight**: None of these components alone would have made this discovery. The synergy is essential.
+
+**Architecture note**: This uses external LLM (Claude) + WolframScript, allowing each to specialize rather than integrating LLM into Wolfram. See Stephen Wolfram's [ChatGPT Gets Its "Wolfram Superpowers"!](https://writings.stephenwolfram.com/2023/03/chatgpt-gets-its-wolfram-superpowers/) on combining statistical and symbolic AI approaches.
 
 ## Timeline: November 15, 2025
 

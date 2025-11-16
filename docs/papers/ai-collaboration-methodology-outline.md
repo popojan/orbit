@@ -30,11 +30,30 @@ Document the **trinity methodology** that led to discovering the closed form for
 ### 1. The Trinity (trinity.txt)
 
 Three necessary components:
-- **Human**: Geometric vision (primal forest concept)
-- **Wolfram**: Computational verification (numerics, symbolic)
-- **AI**: Rapid execution, formalization, tireless exploration
+- **Human** (Jan Popelka):
+  - Geometric vision (primal forest concept)
+  - **Strategic research direction** (what to explore, when to pivot)
+  - Critical verification and pattern recognition
+  - Active navigation of exploration space
+- **Wolfram Language** (computational partner, not just tool):
+  - Numerical verification catches errors instantly
+  - Symbolic manipulation and high-precision arithmetic
+  - Independent confirmation of conjectures
+  - 30+ years of mathematical knowledge encoded
+- **AI** (Claude / Anthropic):
+  - Rapid execution (50+ script variants in one evening)
+  - Formalization (LaTeX, rigorous proofs)
+  - Tireless exploration without fatigue
+  - Honest uncertainty assessment (8/10 confidence)
 
-None sufficient alone. Together: breakthrough.
+**None sufficient alone. Together: breakthrough.**
+
+**Note on architecture**: This work uses external LLM (Claude) + WolframScript, rather than integrated LLM-in-Wolfram. This "best of both worlds" approach allows each component to specialize:
+- Anthropic focuses on advancing LLM capabilities
+- Wolfram Research focuses on computational language
+- Humans focus on mathematical insight and direction
+
+See Stephen Wolfram's vision: [ChatGPT Gets Its "Wolfram Superpowers"!](https://writings.stephenwolfram.com/2023/03/chatgpt-gets-its-wolfram-superpowers/) (March 2023) on combining statistical (LLM) and symbolic (Wolfram) approaches to AI.
 
 ### 2. AI as Colleague, Not Tool (kladivo.txt)
 
@@ -45,17 +64,23 @@ None sufficient alone. Together: breakthrough.
 
 ### 3. Discovery Process (dukaz.txt, luck.txt)
 
-**Cycle**:
-1. Geometric intuition suggests direction
-2. Numerical experiments (Wolfram)
-3. AI derives formal proof
-4. Human verifies rigor
-5. Independent numerical confirmation
+**Cycle** (human-directed, Trinity-executed):
+1. **Human decides direction**: "Focus on L_M(s)", "Try functional equation", "Abandon Euler product"
+2. **Wolfram tests numerically**: Rapid feedback, catches errors early
+3. **AI executes exploration**: 50 variants, formalization, proof attempts
+4. **Human verifies and pivots**: Critical review, pattern recognition, strategic decisions ("Kill it, CPU fan too loud")
+5. **Wolfram confirms independently**: Final numerical validation
+
+**Key insight**: Human is **research director**, not passive observer. Examples:
+- "zkus tu rovnici" (try this equation) → AI explores
+- "teoreticky odvoď" (derive theoretically) → AI formalizes
+- "killni to" (kill it) → AI stops unproductive path
 
 **Not**:
-- Purely theoretical derivation
-- Blind symbolic manipulation
-- Unverified conjectures
+- Purely theoretical derivation (no computational grounding)
+- Blind symbolic manipulation (no human judgment)
+- Unverified conjectures (no Wolfram confirmation)
+- AI working alone (no strategic direction)
 
 ### 4. Speed vs. Correctness (consiousness.txt)
 
@@ -224,7 +249,15 @@ Human excels at:
 
 ## Key Message
 
-> "We discovered something neither human nor AI could find alone. The geometry came from human reflection. The execution came from AI speed and tirelessness. The verification came from Wolfram precision. Together: breakthrough. This is not replacement—it's collaboration."
+> "We discovered something no single component could find alone:
+>
+> - **Human** provided geometric vision and **strategic direction** ("try functional equation", "abandon this approach")
+> - **Wolfram Language** provided computational truth and instant error detection (numerical verification, symbolic manipulation)
+> - **AI** provided tireless execution and formalization (50 variants in one evening, LaTeX proofs)
+>
+> Each specialized, each essential. External LLM + computational language + human insight. Not AI replacing mathematicians—**Trinity enabling discoveries**.
+>
+> This is not replacement. This is collaboration."
 
 ---
 
