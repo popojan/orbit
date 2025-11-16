@@ -13,13 +13,16 @@ generate-index:
 	@echo "" >> docs/index.md
 	@echo "**Generated:** $$(date '+%Y-%m-%d %H:%M:%S')" >> docs/index.md
 	@echo "" >> docs/index.md
-	@echo "## Recent Documents (by edit time)" >> docs/index.md
+	@echo "## Recent Documents (by commit time)" >> docs/index.md
 	@echo "" >> docs/index.md
-	@for file in $$(ls -t docs/*.md 2>/dev/null | grep -v 'docs/index.md'); do \
+	@for file in $$(git ls-files docs/*.md 2>/dev/null | grep -v 'docs/index.md' | while read f; do \
+		COMMIT_TIME=$$(git log -1 --format=%ct "$$f" 2>/dev/null || echo 0); \
+		echo "$$COMMIT_TIME $$f"; \
+	done | sort -rn | cut -d' ' -f2-); do \
 		BASENAME=$$(basename "$$file" .md); \
 		TITLE=$$(grep -m1 '^# ' "$$file" 2>/dev/null | sed 's/^# //' || echo "$$BASENAME"); \
-		MTIME=$$(stat -c %y "$$file" 2>/dev/null | cut -d' ' -f1 || stat -f %Sm -t %Y-%m-%d "$$file" 2>/dev/null); \
-		echo "- [$$TITLE]($$BASENAME.md) *($${MTIME})*" >> docs/index.md; \
+		COMMIT_DATE=$$(git log -1 --format=%ci "$$file" 2>/dev/null | cut -d' ' -f1 || echo "unknown"); \
+		echo "- [$$TITLE]($$BASENAME.md) *($$COMMIT_DATE)*" >> docs/index.md; \
 	done
 	@echo "" >> docs/index.md
 	@echo "---" >> docs/index.md
