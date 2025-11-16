@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-11-16 06:15:33
+**Generated:** 2025-11-16 06:25:20
 
 ## Recent Documents (by commit time)
 

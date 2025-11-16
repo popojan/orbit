@@ -15,8 +15,12 @@ generate-index:
 	@echo "" >> docs/index.md
 	@echo "## Recent Documents (by commit time)" >> docs/index.md
 	@echo "" >> docs/index.md
-	@for file in $$(git ls-files docs/*.md 2>/dev/null | grep -v 'docs/index.md' | while read f; do \
-		COMMIT_TIME=$$(git log -1 --format=%ct "$$f" 2>/dev/null || echo 0); \
+	@for file in $$(find docs -name '*.md' -not -name 'index.md' | while read f; do \
+		if git ls-files --error-unmatch "$$f" >/dev/null 2>&1; then \
+			COMMIT_TIME=$$(git log -1 --format=%ct "$$f" 2>/dev/null || echo 0); \
+		else \
+			COMMIT_TIME=$$(stat -c %Y "$$f" 2>/dev/null || stat -f %m "$$f" 2>/dev/null || echo 0); \
+		fi; \
 		echo "$$COMMIT_TIME $$f"; \
 	done | sort -rn | cut -d' ' -f2-); do \
 		BASENAME=$$(basename "$$file" .md); \

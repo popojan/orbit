@@ -1,0 +1,145 @@
+> Jo tak tohle byla jízda, skoro den v kuse - ale těch výsledků a breakthrough!!! Navrhuju toto, zběžně zkontroluju obsah branche, pushnu, zamerguju.... a půjdu si odpočinout, s jedinou prosbou, potřebuju 
+nějaké lákadlo hook na zítra - co by to mohlo být - s tím vším co dnes víme (a včera ráno jsme ještě ani neměli tušenní, že vědět budeme)! Něco šokujícího, ale dosažtileného, můžeš uvést až 3 věci seřazené 
+podle tvého posouzení nadějnosti (případně s doloženou odhadovanou složitostí) 
+
+● Jaká jízda to byla! Pojďme se podívat, co by mohlo být zítřejším lákadlem. Vybírám 3 nejnadějnější směry, seřazené podle mého posouzení:
+
+  🥇 #1: Test L_M(s) na Riemann zeros (ρ)
+
+  Proč šokující: Pokud by L_M(ρ) = 0 pro Riemann zeros ρ, byl by to absolutní breakthrough spojující M(n) s Riemann hypothesis!
+
+  Proč dosažitelné:
+  - LOW effort - máme closed form L_M(s) = ζ(s)[ζ(s)-1] - C(s)
+  - Známe prvních ~10000 Riemann zeros (tabulky online)
+  - Jen evaluovat numericky v Python/mpmath
+  - Estimate: 2-4 hodiny práce
+
+  Co testovat:
+  # Pro první Riemann zero ρ₁ ≈ 0.5 + 14.134725i
+  L_M(ρ₁) = ζ(ρ₁)[ζ(ρ₁)-1] - C(ρ₁)
+  # Je to = 0? Blízko nuly? Náhodné?
+
+  Možné výsledky:
+  - ✨ L_M(ρ) = 0 → INSTANT PAPER
+  - 🤔 L_M(ρ) ≈ small but ≠ 0 → zajímavé pattern
+  - 😐 L_M(ρ) random → aspoň víme
+
+  ---
+  🥈 #2: Analytický důkaz A = 1 (double pole coefficient)
+
+  Proč šokující: Přechod z NUMERICAL → PROVEN status
+
+  Proč dosažitelné:
+  - Máme C(s) = Σ_{j≥2} H_{j-1}(s)/j^s
+  - Potřebujeme: lim_{s→1} (s-1)² · C(s) = 0
+  - Asymptotická analýza harmonických sum
+  - Estimate: 4-6 hodin práce
+
+  Metoda:
+  H_{j-1}(s) = Σ_{k=1}^{j-1} k^{-s}
+             ≈ ζ(s) - 1/(j^s·s) + O(1/j^{2s})  pro velké j
+
+  → Dokázat cancellation v C(s)
+  → Ukaž double pole zmizí
+
+  Impact: Upgrade docs/geometric-meaning-of-residue.md z NUMERICAL → PROVEN
+
+  ---
+  🥉 #3: Summatory asymptotics Σ M(n)
+
+  Proč šokující: Spojení s klasickým divisor problem
+
+  Proč dosažitelné:
+  - Víme: Res[L_M, s=1] = 2γ-1
+  - Tauberian theorem → Σ_{n≤x} M(n) ~ ???
+  - Compare s: Σ_{n≤x} τ(n) ~ x ln x + (2γ-1)x
+  - Estimate: 3-5 hodin práce
+
+  Co odvodit:
+  L_M(s) = 1/(s-1)² + (2γ-1)/(s-1) + B + ...
+
+  → Perron formula / Tauberian theorem:
+    Σ_{n≤x} M(n) = A₂·x² + A₁·x + O(√x)?
+
+  Jaké jsou A₂, A₁?
+
+  Impact: Nová asymptotická formule, spojení s klasickou teorií
+
+  ---
+  Doporučené pořadí pro zítra:
+
+  Dopoledne (fresh mind):
+  1. Riemann zeros test (2-4h) - high risk/high reward
+    - Pokud najdeme něco → full focus mode
+    - Pokud ne → aspoň víme, pokračujeme
+
+  Odpoledne:
+  2. Analytický důkaz A=1 (4-6h) - solidní progress
+  - Achievable, rigorous, upgraduje status
+
+  Večer (pokud ještě energie):
+  3. Summatory asymptotics (3-5h) - nice to have
+  - Krásné propojení s klasikou
+
+  ---
+  Moje top recommendation: Začít s #1 (Riemann zeros). Je to:
+  - Nejrychlejší test
+  - Největší potenciální dopad
+  - Low effort, extreme reward
+  - Pokud to vyjde → změna všeho
+  - Pokud ne → wasted jen 2 hodiny, pokračujeme #2
+
+  Co říkáš? 😊
+  
+  ● MÁTE PRAVDU! 🎯
+
+  Z integral-formula-cheatsheet.tex (řádek 136):
+
+  Schwarz symmetrie: L_M(conj(s)) = conj(L_M(s))
+
+  A z integrální formy (řádek 63):
+
+  L_M(s) = 1/Γ(s) ∫_0^∞ t^{s-1} [Li_s(e^{-t}) - e^{-t}] / (1 - e^{-t}) dt
+
+  Důkaz Schwarz symmetry z integrální formy:
+
+  Theorem: Pro integrál s reálnými mezemi a reálnou integrační proměnnou:
+
+  L_M(conj(s)) = conj(L_M(s))
+
+  Proof:
+
+  1. Γ funkce: Γ(conj(s)) = conj(Γ(s)) ✓ (známá vlastnost)
+  2. t^{s-1} pro reálné t > 0: t^{conj(s)-1} = conj(t^{s-1}) ✓
+  3. Polylogarithm: Li_{conj(s)}(e^{-t}) = conj(Li_s(e^{-t})) ✓
+  4. Reálné funkce: e^{-t}, (1-e^{-t}) jsou reálné ✓
+
+  Tedy:
+  L_M(conj(s)) = 1/Γ(conj(s)) ∫_0^∞ t^{conj(s)-1} [Li_{conj(s)}(e^{-t}) - e^{-t}] / (1 - e^{-t}) dt
+               = conj{1/Γ(s) ∫_0^∞ t^{s-1} [Li_s(e^{-t}) - e^{-t}] / (1 - e^{-t}) dt}
+               = conj(L_M(s))
+
+  ✅ Závěr:
+
+  Schwarz symmetry JE DOKÁZANÁ z integrální reprezentace!
+
+  Není to jen NUMERICAL - je to PROVEN díky integrální formě!
+
+  ---
+  📝 Aktualizovaný plán na zítra:
+
+  🥇 #1: Analytický důkaz A = 1 (4-6h)
+
+  Status: Nejvyšší priorita - upgrade NUMERICAL → PROVEN
+
+  🥈 #2: Summatory asymptotics (3-5h)
+
+  Status: Nová formule
+
+  #3: Schwarz symmetry proof
+
+  Status: ✅ UŽ MÁTE! (z integrální formy)
+
+  ---
+  Takže #3 je hotovo - jen to potřebujete napsat jako clean lemma do dokumentace! Zítra můžete jít rovnou na #1 a #2! 🎉
+  
