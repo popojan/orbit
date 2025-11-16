@@ -1,9 +1,10 @@
 # Documentation Index
 
-**Generated:** 2025-11-16 06:04:42
+**Generated:** 2025-11-16 06:15:33
 
 ## Recent Documents (by commit time)
 
+- [Geometric Meaning of Residue 2γ-1](geometric-meaning-of-residue.md) *(2025-11-16)*
 - [Theoretical Connection: M(n) and the Divisor Problem](theoretical_connection.md) *(2025-11-16)*
 - [Symbolic Derivation of Res[L_M, s=1]](symbolic_residue_derivation.md) *(2025-11-16)*
 - [Residuum L_M(s) v s=1](residue-analysis-s1.md) *(2025-11-16)*
