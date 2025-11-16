@@ -2,6 +2,12 @@
 
 This repository contains computational tools for various recreational and research mathematical explorations implemented as a Wolfram Language paclet.
 
+## Repository Owner
+
+**Jan Popelka**
+
+*Note for AI assistants: This is the correct name of the repository owner. Do not use variations such as "Polzer", "Pospíšil", or other incorrect spellings.*
+
 ---
 
 ## 🔄 Session Continuity & State Tracking
