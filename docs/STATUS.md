@@ -285,6 +285,56 @@ where `γ(s) = π^(-s/2) Γ(s/2)` (same as Riemann zeta)
 
 ---
 
+### Jacobi Theta Transformation
+
+**Status**: ❌ **FALSIFIED** (Nov 17, 2025, 11:20 CET)
+
+**Hypothesis tested**: Does M(n) have a theta function transformation like Riemann's ζ(s)?
+
+**Riemann's technique (1859)**:
+```
+ψ(x) = Σ e^{-n²πx}
+2ψ(x) + 1 = x^{-1/2} [2ψ(1/x) + 1]  (Jacobi transformation)
+```
+
+This led to ζ functional equation. We tested if similar works for M(n).
+
+**Tested variants**:
+
+1. **Quadratic:** Θ_M(x) = Σ M(n) e^{-n²πx}
+   - Looking for: Θ_M(1/x) = x^α Θ_M(x)
+   - α estimates: 109, 122, 150, 216 (mean 141, std dev 45)
+   - **Result**: ❌ NOT consistent power law
+
+2. **Linear:** Ψ_M(x) = Σ M(n) e^{-nπx}
+   - Looking for: Ψ_M(1/x) = x^α Ψ_M(x)
+   - α estimates: 27, 31, 38, 54 (mean 35.5, std dev 11.4)
+   - **Result**: ❌ Better but α still grows with x
+
+**Control** (Riemann's theta):
+- Ratio = 1.0000 exactly at all test points ✓
+- Confirms test methodology is correct
+
+**Implications**:
+- No simple theta transformation exists for L_M
+- This EXPLAINS why classical gamma factor failed
+- Non-multiplicativity has deep consequences
+- Need different approach for functional equation (if it exists)
+
+**Why this matters**:
+```
+Multiplicative (ζ, Dirichlet L) → theta transform → functional equation
+Non-multiplicative (L_M) → ??? → ???
+```
+
+**Script**: `scripts/test_theta_M_transformation.wl`
+
+**Reference**: `docs/theta-transformation-test-results.md`
+
+**Confidence**: 95% that simple theta transformation doesn't exist
+
+---
+
 ### General Functional Equation
 
 **Status**: ✅ **DERIVED** (Nov 16, 2025, 04:30) - but see caveats!

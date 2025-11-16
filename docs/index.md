@@ -1,15 +1,30 @@
 # Documentation Index
 
-**Generated:** 2025-11-16 07:01:51
+**Generated:** 2025-11-16 11:03:47
 
 ## Recent Documents (by commit time)
 
+- [Analytic Continuation via Integral Representation](analytic-continuation-via-integral.md) *()*
+- [Tracking Where Epsilon Disappeared](tracking-epsilon-loss.md) *(2025-11-16)*
+- [Research Status Tracker](STATUS.md) *(2025-11-16)*
+- [From Primal Forest to L_M(s): Geometric Journey](primal-forest-to-L_M-geometry.md) *(2025-11-16)*
+- [Functional Equation for L_M(s): Systematic Hunt](functional-equation-systematic-hunt.md) *(2025-11-16)*
+- [C(s) Series: Connection to Primal Forest Floor Structure](C-series-primal-forest-connection.md) *(2025-11-16)*
+- [C(s) Series: Functional Properties](C-series-functional-properties.md) *(2025-11-16)*
+- [A = 1: Analytical Bound Attempt](A-coefficient-analytical-bound-attempt.md) *(2025-11-16)*
+- [A = 1: Summation by Parts Approach](A-coefficient-summation-by-parts.md) *(2025-11-16)*
+- [A = 1: Proof by Contradiction](A-coefficient-proof-by-contradiction.md) *(2025-11-16)*
+- [A = 1: Final Rigorous Argument](A-coefficient-final-push.md) *(2025-11-16)*
+- [Double Pole Coefficient A=1 - Rigorous Proof](double-pole-coefficient-proof.md) *(2025-11-16)*
+- [A = 1 Proof via C(s) Regularity Argument](A-coefficient-regularity-argument.md) *(2025-11-16)*
+- [Residue at s=1 - Rigorous Proof](residue-proof-rigorous.md) *(2025-11-16)*
+- [Schwarz Reflection Symmetry - Rigorous Proof](schwarz-symmetry-proof.md) *(2025-11-16)*
+- [Rigorous Foundation Review - Co OPRAVDU máme dokázáno](rigorous-foundation-review.md) *(2025-11-16)*
 - [Theoretical Connection: M(n) and the Divisor Problem](theoretical_connection.md) *(2025-11-16)*
 - [Symbolic Derivation of Res[L_M, s=1]](symbolic_residue_derivation.md) *(2025-11-16)*
 - [Residuum L_M(s) v s=1](residue-analysis-s1.md) *(2025-11-16)*
 - [Geometric Meaning of Residue 2γ-1](geometric-meaning-of-residue.md) *(2025-11-16)*
 - [Theoretical Analysis of L_M Zeros from Closed Form](zero-analysis-theoretical.md) *(2025-11-16)*
-- [Research Status Tracker](STATUS.md) *(2025-11-16)*
 - [Session Final Summary - November 16, 2025](session-final-summary.md) *(2025-11-16)*
 - [Session Summary: Functional Equation Search (Nov 16, 2025)](session-2025-11-16-functional-equation-summary.md) *(2025-11-16)*
 - [What Can We Do With Schwarz Symmetry Alone?](schwarz-symmetry-applications.md) *(2025-11-16)*
