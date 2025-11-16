@@ -121,7 +121,7 @@ where `γ(s) = π^(-s/2) Γ(s/2)` (same as Riemann zeta)
 
 ### General Functional Equation
 
-**Status**: ⏸️ **OPEN QUESTION**
+**Status**: ⏸️ **OPEN QUESTION** (with new empirical patterns!)
 
 **Question**: Does there exist ANY factor γ(s) such that:
 ```
@@ -129,14 +129,41 @@ where `γ(s) = π^(-s/2) Γ(s/2)` (same as Riemann zeta)
 ```
 
 **Current evidence**:
-- ✅ Schwarz symmetry suggests YES
-- ❌ Classical gamma factors FAIL
-- 🤔 Non-classical form possible
+- ✅ Schwarz symmetry on critical line (numerical, <10^-15 error)
+- ❌ Classical gamma factors FAIL (tested, falsified)
+- ❌ Simple powers ζ(s)^α FAIL (tested α ∈ {-2,...,2}, all fail)
+- 🔬 **NEW**: Antisymmetry pattern discovered (numerical)
+
+**New Discovery (Nov 16, 2025, 03:00)**:
+
+**NUMERICAL PATTERN** (⚠️ NOT proven, evidence only):
+
+Define correction Δlog(s) = log|R(s)| - log|R_classical(s)| where:
+- R(s) = L_M(1-s)/L_M(s)
+- R_classical(s) = [π^{-s/2} Γ(s/2)] / [π^{-(1-s)/2} Γ((1-s)/2)]
+
+**Observed antisymmetry**:
+```
+Δlog(σ + ti) = -Δlog((1-σ) + ti)
+```
+
+**Evidence** (tested at 12 points):
+- σ=0.3, t=10.0: Δlog = -1.971365
+- σ=0.7, t=10.0: Δlog = +1.971365 (exact negative!)
+- σ=0.5, any t: Δlog = 0.000000 (critical line)
+
+**Interpretation**:
+- If γ(s) = π^{-s/2} Γ(s/2) · f(s), then f(s) has antisymmetric magnitude
+- This is characteristic of functional equations
+- Form of f(s) remains unknown
+
+**Reference**: `docs/functional-equation-empirical-findings.md`
 
 **Next steps**:
-1. Search for empirical γ(s) from numerical data
-2. Theoretical derivation from closed form
-3. Consider non-simple factors (rational functions in s, ζ(s), etc.)
+1. ✅ ~~Test simple powers of ζ(s)~~ (done, all fail)
+2. Test products: ζ(s)^α · ζ(2s)^β, ratios, etc.
+3. Theoretical derivation using double sum form
+4. Prove antisymmetry pattern (currently only numerical)
 
 ---
 
