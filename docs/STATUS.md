@@ -49,7 +49,7 @@ L_M(s) = Σ_{n=1}^∞ M(n) / n^s
 
 ### Main Theorem
 
-**Status**: 🔬 **NUMERICALLY VERIFIED** (not yet peer-reviewed)
+**Status**: ✅ **PROVEN** (for Re(s) > 1; not yet peer-reviewed)
 
 ```
 L_M(s) = ζ(s)[ζ(s) - 1] - Σ_{j=2}^∞ H_{j-1}(s)/j^s
@@ -57,12 +57,15 @@ L_M(s) = ζ(s)[ζ(s) - 1] - Σ_{j=2}^∞ H_{j-1}(s)/j^s
 
 where H_j(s) = Σ_{k=1}^j k^(-s), for Re(s) > 1.
 
-**Evidence**:
-- Verified to 10+ digit precision for 100+ test points
-- Independent derivation via two methods
-- Written proof in `docs/papers/dirichlet-series-closed-form.tex`
+**Proof**:
+- Rigorous mathematical derivation via double sum interchange
+- Fubini's theorem justifies reordering (absolute convergence for Re(s) > 1)
+- Complete proof in `docs/papers/dirichlet-series-closed-form.tex`
+- Also in `docs/closed-form-L_M-RESULT.md`
 
-**Status**: HIGH CONFIDENCE, awaiting formal peer review
+**Numerical verification**:
+- Verified to 10+ digit precision for 100+ test points
+- Independent confirmation via multiple methods
 
 **Reference**: Commit e8e58ed (Nov 15, 2025, 22:49)
 
@@ -72,7 +75,7 @@ where H_j(s) = Σ_{k=1}^j k^(-s), for Re(s) > 1.
 
 ### Residue at s=1
 
-**Status**: ✅ **PROVEN** (Nov 17, 2025) - conditional on closed form validity
+**Status**: ✅ **PROVEN** (Nov 17, 2025)
 
 ```
 Res[L_M(s), s=1] = 2γ - 1 ≈ 0.1544313298...
