@@ -1,0 +1,177 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{multicol}
+
+\title{\vspace{-2cm}Integrální Reprezentace $L_M(s)$ -- Tahák}
+\author{}
+\date{16. listopadu 2025}
+
+\begin{document}
+\maketitle
+\vspace{-1cm}
+
+\begin{multicols}{2}
+
+\section*{Základní Definice}
+
+\textbf{Childhood function:}
+\[
+M(n) = \left\lfloor \frac{\tau(n) - 1}{2} \right\rfloor
+\]
+kde $\tau(n) = |\{d : d|n\}|$ je počet dělitelů.
+
+\textbf{Dirichlet série:}
+\[
+L_M(s) = \sum_{n=1}^{\infty} \frac{M(n)}{n^s}
+\]
+
+\textbf{Closed form} (pro $\Re(s) > 1$):
+\[
+L_M(s) = \zeta(s)[\zeta(s) - 1] - C(s)
+\]
+\[
+C(s) = \sum_{j=2}^{\infty} \frac{H_{j-1}(s)}{j^s}, \quad H_j(s) = \sum_{k=1}^{j} k^{-s}
+\]
+
+\section*{Integrální Reprezentace}
+
+\subsection*{Odvození}
+
+Z definice:
+\[
+L_M(s) = \sum_{d=2}^{\infty} d^{-s} \zeta(s, d)
+\]
+
+Použijeme Hurwitz integrál:
+\[
+\zeta(s,a) = \frac{1}{\Gamma(s)} \int_0^{\infty} \frac{t^{s-1} e^{-at}}{1-e^{-t}} \, dt
+\]
+
+Dosadíme:
+\begin{align*}
+L_M(s) &= \frac{1}{\Gamma(s)} \int_0^{\infty} \frac{t^{s-1}}{1-e^{-t}} \sum_{d=2}^{\infty} d^{-s} e^{-dt} \, dt \\
+&= \frac{1}{\Gamma(s)} \int_0^{\infty} \frac{t^{s-1}}{1-e^{-t}} \left[\text{Li}_s(e^{-t}) - e^{-t}\right] dt
+\end{align*}
+
+kde $\text{Li}_s(z) = \sum_{k=1}^{\infty} z^k/k^s$ je polylogarithm.
+
+\subsection*{Hlavní Vzorec}
+
+\framebox[\columnwidth]{%
+\parbox{0.95\columnwidth}{%
+\vspace{0.2cm}
+\[
+L_M(s) = \frac{1}{\Gamma(s)} \int_0^{\infty} t^{s-1} \frac{\text{Li}_s(e^{-t}) - e^{-t}}{1-e^{-t}} \, dt
+\]
+\vspace{0.1cm}
+}%
+}
+
+\textit{Platí pro všechna $s \in \mathbb{C}$ kromě $s=1$ (pól $\zeta(s)$).}
+
+\section*{Separace Singularity}
+
+Pro $t \to 0$: integrand $\sim [\zeta(s)-1]/t$ (singularita!)
+
+\textbf{Řešení:} Vytáhnout analyticky
+\[
+L_M(s) = \frac{1}{\Gamma(s)} \left\{ \frac{\zeta(s)-1}{s-1} + \int_0^{\infty} t^{s-1} f_{\text{reg}}(t,s) \, dt \right\}
+\]
+
+kde regulární část:
+\[
+f_{\text{reg}}(t,s) = \frac{\text{Li}_s(e^{-t}) - e^{-t}}{1-e^{-t}} - \frac{\zeta(s)-1}{t}
+\]
+
+\section*{Funkcionální Rovnice}
+
+\subsection*{Gamma faktor}
+
+\framebox[\columnwidth]{%
+\parbox{0.95\columnwidth}{%
+\vspace{0.2cm}
+\[
+\gamma(s) = \pi^{-s/2} \Gamma(s/2) \sqrt{\frac{L_M(1-s)}{L_M(s)}}
+\]
+\vspace{0.1cm}
+}%
+}
+
+\subsection*{Rozšířená forma}
+
+\[
+\gamma(s) = \pi^{(1-3s)/2} \frac{\Gamma^2(s/2)}{\Gamma((1-s)/2)} \sqrt{\frac{R(s)^2 \zeta(s)^2 - R(s)\zeta(s) - C(1-s)}{\zeta(s)^2 - \zeta(s) - C(s)}}
+\]
+
+kde $R(s) = \pi^{(1-2s)/2} \Gamma(s/2)/\Gamma((1-s)/2)$.
+
+\subsection*{Funkcionální rovnice}
+
+\framebox[\columnwidth]{%
+\parbox{0.95\columnwidth}{%
+\vspace{0.2cm}
+\[
+\gamma(s) L_M(s) = \gamma(1-s) L_M(1-s)
+\]
+\vspace{0.1cm}
+}%
+}
+
+\section*{Porovnání s Klasikou}
+
+\begin{tabular}{l|c|c}
+Funkce & $\pi$ mocnina & $\Gamma$ struktura \\ \hline
+Riemann $\zeta$ & $\pi^{-s/2}$ & $\Gamma(s/2)$ \\
+Náš $L_M$ & $\pi^{(1-3s)/2}$ & $\displaystyle\frac{\Gamma^2(s/2)}{\Gamma((1-s)/2)}$ \\
+\end{tabular}
+
+\vspace{0.3cm}
+\textit{L\_M má fundamentálně jinou strukturu než klasické L-funkce!}
+
+\section*{Klíčové Vlastnosti}
+
+\begin{itemize}
+\item \textbf{Schwarz symmetrie:} $L_M(\bar{s}) = \overline{L_M(s)}$
+\item \textbf{Pure phase na $\Re(s)=1/2$:} $|\gamma(s)/\gamma(1-s)| = 1$
+\item \textbf{Antisymetrie:} $\log\gamma(s) - \log\gamma(1-s) = \log[L_M(1-s)/L_M(s)]$
+\item \textbf{Non-multiplicative:} $M(mn) \neq M(m)M(n)$ (obecně)
+\end{itemize}
+
+\section*{Numerická Implementace}
+
+\textbf{Pro $\Re(s) > 1$:}
+\begin{enumerate}
+\item Přímo série nebo integrál
+\item Ověř s closed form
+\end{enumerate}
+
+\textbf{Pro $\Re(s) < 1$:}
+\begin{enumerate}
+\item Integrální forma s separací singularity
+\item Nebo FR: $L_M(s) = \frac{\gamma(1-s)}{\gamma(s)} L_M(1-s)$
+\end{enumerate}
+
+\textbf{Kritická čára $s = 1/2 + it$:}
+\begin{enumerate}
+\item Integrál (opatrná quadrature)
+\item Ověř Schwarz: $|L_M(1/2+it) - \overline{L_M(1/2-it)}| < \epsilon$
+\end{enumerate}
+
+\section*{Status}
+
+\begin{itemize}
+\item[$\checkmark$] $\gamma(s)$ formula odvozená (constraint analysis)
+\item[$\checkmark$] Integrální forma odvozená (Hurwitz approach)
+\item[$\sim$] Numerická validace (Python OK, Wolfram debugging)
+\item[$\times$] Peer review (\textbf{vše nerecenzováno!})
+\end{itemize}
+
+\vspace{0.3cm}
+\hrule
+\vspace{0.2cm}
+\textit{\small Poznámka: Všechny výsledky jsou author-verified only. Treat as conjectures!}
+
+\end{multicols}
+\end{document}
