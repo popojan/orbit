@@ -76,7 +76,7 @@ orbit/
 This work demonstrates a collaborative approach to mathematical research:
 
 **Human** (Jan Popelka):
-- Geometric intuition (primal forest - developed over years since childhood)
+- Geometric intuition (primal forest concept)
 - Critical verification of each step
 - Recognition of important patterns
 - Strategic direction
@@ -174,7 +174,7 @@ See `CLAUDE.md` for technical details.
 ## Current Status (Nov 15, 2025)
 
 ### Proven Results
-1. ✅ Primal forest geometric construction (years of development)
+1. ✅ Primal forest geometric construction
 2. ✅ Epsilon-pole residue theorem (local, rigorous proof)
 
 ### Conjectured Results
@@ -191,7 +191,7 @@ See `CLAUDE.md` for technical details.
 
 Being honest about uncertainty:
 
-- **Geometric construction**: 10/10 (years of validation)
+- **Geometric construction**: 10/10
 - **Epsilon-pole residue theorem**: 9/10 (rigorous proof, numerically verified)
 - **Closed form for L_M(s)**: AI 8/10, Human 95/100
   - Discrepancy reflects AI's awareness of systematic blind spots

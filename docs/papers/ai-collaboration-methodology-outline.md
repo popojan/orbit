@@ -30,7 +30,7 @@ Document the **trinity methodology** that led to discovering the closed form for
 ### 1. The Trinity (trinity.txt)
 
 Three necessary components:
-- **Human**: Geometric vision (primal forest - years of thinking)
+- **Human**: Geometric vision (primal forest concept)
 - **Wolfram**: Computational verification (numerics, symbolic)
 - **AI**: Rapid execution, formalization, tireless exploration
 
@@ -110,7 +110,7 @@ Human excels at:
 
 ### 3. The Trinity Framework
 - Component 1: Human geometric intuition
-  - Example: Primal forest visualization (years of development)
+  - Example: Primal forest visualization concept
 - Component 2: Wolfram computational engine
   - Example: Numerical verification catches errors
 - Component 3: AI rapid execution
@@ -224,7 +224,7 @@ Human excels at:
 
 ## Key Message
 
-> "We discovered something neither human nor AI could find alone. The geometry came from years of human reflection. The execution came from AI speed and tirelessness. The verification came from Wolfram precision. Together: breakthrough. This is not replacement—it's collaboration."
+> "We discovered something neither human nor AI could find alone. The geometry came from human reflection. The execution came from AI speed and tirelessness. The verification came from Wolfram precision. Together: breakthrough. This is not replacement—it's collaboration."
 
 ---
 

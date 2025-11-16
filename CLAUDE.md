@@ -2,6 +2,117 @@
 
 This repository contains computational tools for various recreational and research mathematical explorations implemented as a Wolfram Language paclet.
 
+---
+
+## 🔄 Session Continuity & State Tracking
+
+**IMPORTANT**: This section provides instructions for maintaining consistency across multiple AI sessions.
+
+### Current Research Focus (as of Nov 16, 2025)
+
+**PRIMARY**: Functional equation for L_M(s) Dirichlet series
+- **Status**: Schwarz symmetry observed (numerical), classical FR falsified
+- **Key question**: Does a functional equation exist? If so, what is γ(s)?
+- **See**: `docs/STATUS.md` for epistemological status of all claims
+
+**SECONDARY**: Connection to Riemann zeta zeros
+- **Question**: Does L_M(s₀) = 0 at Riemann zeros?
+- **Status**: Untested
+
+### Living Documents (Always Keep Updated)
+
+1. **docs/STATUS.md** - Master epistemological tracker
+   - Update whenever claim status changes (PROVEN → NUMERICAL, HYPOTHESIS → FALSIFIED, etc.)
+   - Add new discoveries with proper status tags
+   - Update confidence levels and peer review status
+   - **CRITICAL**: Distinguish PROVEN vs NUMERICAL vs HYPOTHESIS
+
+2. **docs/index.md** - Auto-generated document index
+   - Regenerate when adding major new documents
+   - Keep sorted by date
+
+3. **README.md** - Repository overview
+   - Update "Current Status" section with latest discoveries
+   - Keep confidence levels synchronized with STATUS.md
+   - Update timeline when major events occur
+
+4. **docs/functional-equation-discovery.md** - FR exploration
+   - Add new test results (positive or negative!)
+   - Document failed approaches to avoid repetition
+   - Update open questions list
+
+### Documentation Standards
+
+**When making mathematical discoveries:**
+1. Create script in `scripts/` with descriptive name
+2. Document in `docs/` as markdown (numerical) or LaTeX (proven)
+3. Update `docs/STATUS.md` with appropriate epistemic tag
+4. Add entry to `misc/` for "aha moments" (user's responsibility)
+5. Commit with descriptive message mentioning discovery status
+
+**Epistemic Tags (from STATUS.md):**
+- ✅ PROVEN - Rigorous proof (but note: NOT peer-reviewed)
+- 🔬 NUMERICALLY VERIFIED - High computational confidence
+- 🤔 HYPOTHESIS - Conjecture needing verification
+- ❌ FALSIFIED - Tested and found false
+- ⏸️ OPEN QUESTION - Unknown, under investigation
+
+**Commit Message Format:**
+```
+type: brief description
+
+Details:
+- Change 1
+- Change 2
+
+Status: [NUMERICAL/PROVEN/HYPOTHESIS/FALSIFIED]
+Reference: docs/STATUS.md
+
+🤖 Generated with Claude Code
+Co-Authored-By: Claude <noreply@anthropic.com>
+```
+
+### Cross-Session Context
+
+**Mathematical Objects:**
+- M(n) = count of divisors d where 2 ≤ d ≤ √n
+- L_M(s) = Σ M(n)/n^s (non-multiplicative Dirichlet series)
+- Closed form: L_M(s) = ζ(s)[ζ(s)-1] - Σ_{j=2}^∞ H_{j-1}(s)/j^s
+- H_j(s) = Σ_{k=1}^j k^(-s) (partial zeta sums)
+
+**Key Discoveries:**
+1. Nov 15, 2025, 22:49: Closed form for L_M(s) (NUMERICAL, not proven)
+2. Nov 16, 2025, 00:35: Schwarz symmetry on critical line (NUMERICAL)
+3. Nov 16, 2025, 01:15: Classical FR FALSIFIED (γ(s) = π^(-s/2) Γ(s/2) doesn't work)
+
+**Falsified Approaches (don't retry without new insight):**
+- Euler product for L_M(s) (fails due to non-multiplicativity)
+- Classical gamma factor γ(s) = π^(-s/2) Γ(s/2)
+- Powers of classical gamma: α ∈ {0.5, 1, 1.5, 2, 2.5, 3}
+
+**Open Questions:**
+1. Does FR exist with non-classical γ(s)?
+2. Does L_M(s₀) = 0 at Riemann zeros?
+3. Geometric interpretation via primal forest?
+
+### File Organization Conventions
+
+- `docs/papers/*.tex` - Formal LaTeX papers (publication track)
+- `docs/*.md` - Working documents, explorations
+- `docs/STATUS.md` - Master status tracker (**ALWAYS UPDATE**)
+- `scripts/*.wl` - Wolfram Language exploration scripts
+- `misc/*.txt` - Aha moments (user creates, not AI)
+
+### Boundary Reminders
+
+- **DON'T push** unless explicitly asked (user does it)
+- **DON'T write** to misc/ for aha moments (user's domain)
+- **DO update** STATUS.md when making claims
+- **DO mark** numerical results as "NOT proven"
+- **DO commit** technical documentation and scripts
+
+---
+
 ## Technical Notes
 
 **WolframScript Execution**: Always run WolframScript with the `-file` flag to execute scripts non-interactively:
