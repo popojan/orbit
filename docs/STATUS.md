@@ -188,15 +188,17 @@ lim_{ε→0⁺} ε^α · G(s,α,ε) = L_M(s)
 
 ## Summary Table
 
-| Result | Status | Confidence | Next Step |
-|--------|--------|------------|-----------|
-| Closed form for L_M(s) | 🔬 NUMERICAL | 95% | Peer review |
-| Schwarz symmetry (critical line) | 🔬 NUMERICAL | 90% | Test more points, prove |
-| Classical FR (off critical line) | ❌ FALSIFIED | N/A | Find alternative |
-| General FR existence | ⏸️ OPEN | Unknown | Systematic search |
-| L_M zeros at RH zeros | 🤔 HYPOTHESIS | 5% | Numerical test |
-| Epsilon-pole theorem | ✅ PROVEN | 90% | Peer review |
-| Primal forest | ✅ PROVEN | 100% | - |
+| Result | Status | Confidence | Peer Review | Next Step |
+|--------|--------|------------|-------------|-----------|
+| Closed form for L_M(s) | 🔬 NUMERICAL | 95% | ❌ NO | Submit for review |
+| Schwarz symmetry (critical line) | 🔬 NUMERICAL | 90% | ❌ NO | Test more, prove |
+| Classical FR (off critical line) | ❌ FALSIFIED | N/A | N/A | Find alternative |
+| General FR existence | ⏸️ OPEN | Unknown | N/A | Systematic search |
+| L_M zeros at RH zeros | 🤔 HYPOTHESIS | 5% | N/A | Numerical test |
+| Epsilon-pole theorem | ✅ PROVEN* | 90% | ❌ NO | Submit for review |
+| Primal forest | ✅ PROVEN* | 100% | ❌ NO | Write for publication |
+
+**Note**: All "PROVEN" claims are author-verified but **NOT peer-reviewed**. Treat as conjectures until published.
 
 ---
 
