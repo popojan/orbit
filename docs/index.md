@@ -1,12 +1,15 @@
 # Documentation Index
 
-**Generated:** 2025-11-16 11:03:47
+**Generated:** 2025-11-16 12:00:02
 
 ## Recent Documents (by commit time)
 
-- [Analytic Continuation via Integral Representation](analytic-continuation-via-integral.md) *()*
-- [Tracking Where Epsilon Disappeared](tracking-epsilon-loss.md) *(2025-11-16)*
+- [Theta Function Transformation Test - Results](theta-transformation-test-results.md) *(2025-11-16)*
+- [Technika Odečtení Singularit - Vysvětlení](subtraction-technique-explained.md) *(2025-11-16)*
 - [Research Status Tracker](STATUS.md) *(2025-11-16)*
+- [Connection to Riemann's Seminal Paper (1859)](riemann-connection-analysis.md) *(2025-11-16)*
+- [Analytic Continuation via Integral Representation](analytic-continuation-via-integral.md) *(2025-11-16)*
+- [Tracking Where Epsilon Disappeared](tracking-epsilon-loss.md) *(2025-11-16)*
 - [From Primal Forest to L_M(s): Geometric Journey](primal-forest-to-L_M-geometry.md) *(2025-11-16)*
 - [Functional Equation for L_M(s): Systematic Hunt](functional-equation-systematic-hunt.md) *(2025-11-16)*
 - [C(s) Series: Connection to Primal Forest Floor Structure](C-series-primal-forest-connection.md) *(2025-11-16)*
