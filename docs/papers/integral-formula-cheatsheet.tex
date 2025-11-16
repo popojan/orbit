@@ -14,6 +14,28 @@
 
 \begin{multicols}{2}
 
+\section*{Geometrické Východisko}
+
+\subsection*{Primal Forest P-norm}
+
+\textbf{Původní formulace} (plná):
+\[
+F_n(\alpha,\varepsilon) = \sum_{d=2}^{\infty} \sum_{k=0}^{\infty} \left[(n - kd - d^2)^2 + \varepsilon\right]^{-\alpha}
+\]
+
+Pro $\alpha > 1/2$, měří vzdálenosti od $n$ k mřížce $\{kd+d^2\}$ v P-normě.
+
+\textbf{Dominant term zjednodušení:}
+\[
+F_n(\alpha,\varepsilon) \approx \sum_{d=2}^{\lfloor\sqrt{n}\rfloor} \left[r_d^2 + \varepsilon\right]^{-\alpha}
+\]
+kde $r_d = (n - d^2) \bmod d$ (bez Floor uvnitř!).
+
+\textbf{Epsilon-pole residue theorem} (rigorózně dokázáno):
+\[
+\lim_{\varepsilon \to 0^+} \varepsilon^\alpha \cdot F_n(\alpha,\varepsilon) = M(n)
+\]
+
 \section*{Základní Definice}
 
 \textbf{Childhood function:}
