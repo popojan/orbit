@@ -571,6 +571,86 @@ lim_{ε→0⁺} ε^α · G(s,α,ε) = L_M(s)
 
 ---
 
+## Analytic Continuation Attempts (Nov 16, 2025)
+
+### Status: ❌ **ALL METHODS FAILED** for Re(s) ≤ 1
+
+**Context**: After discovering closed form and Schwarz symmetry, attempted to extend L_M to critical line for potential RH connection.
+
+**Three approaches tested**:
+
+#### 1. Full Integral Form (Infinite Theta)
+**Method**: L_M(s) = (1/Γ(s)) ∫₀^∞ Θ_M(x) x^{s-1} dx where Θ_M(x) = Σ_{n=2}^∞ M(n) e^{-nx}
+
+**Results**:
+- s=3: 0.06% error ✓
+- s=1.5: 38% error ✗
+- s=1.2: 84% error ✗
+
+**Verdict**: ❌ Slow convergence, impractical for Re(s) < 1.5
+
+**Script**: `scripts/verify_integral_form.wl`
+
+#### 2. Direct Finite Sum
+**Method**: L_M^(N)(s) = Σ_{n=2}^N M(n)/n^s
+
+**Results** (critical line):
+- s=1/2+5i: 160% oscillations (nmax 500→1000) ✗
+- s=1/2+10i: 65% oscillations ✗
+
+**Verdict**: ❌ Diverges wildly, NOT analytic continuation
+
+**Script**: `scripts/test_direct_sum.wl`
+
+#### 3. Finite Theta with Mellin Integral
+**Method**: Θ_M^(N)(x) = Σ_{n=2}^N M(n) e^{-nx}, then integrate
+
+**Results** (critical line):
+- s=1/2+5i: +2.05→-3.40→+6.58 (wild oscillations) ✗
+- s=1/2+10i: 1683→4311→10511 (explodes!) ✗
+
+**Verdict**: ❌ WORSE than direct sum
+
+**Script**: `scripts/test_finite_theta.wl`
+
+### Conclusion
+
+**Critical line is numerically inaccessible** with truncation methods.
+
+All three approaches:
+- ✓ Work in convergent region (Re(s) > 1.5)
+- ✗ Fail in critical strip (Re(s) ≤ 1)
+- ✗ Cannot evaluate on Re(s) = 1/2
+
+**Root cause**: Inherited from double sum interchange in closed form derivation - introduced k→∞ for analytical elegance (ζ connection), but at cost of convergence.
+
+### Decision: Pivot to Primal Forest Geometry
+
+**Date**: Nov 16, 2025, 13:00 CET
+
+**Question** (user): "Do we even need complex extension if not attacking RH?"
+
+**Answer**: **NO** - Return to geometric foundations!
+
+**Rationale**:
+1. Original goal: Understand primal forest geometry (NOT attack RH)
+2. L_M emerged from ε-pole regularization of geometric distance measure
+3. AC pursuit was sidetrack driven by ζ(s) connection elegance
+4. All working results are in Re(s) > 1 anyway
+
+**New focus**:
+- ✅ Explore L_M as geometric probe (Re(s) > 1)
+- ✅ Asymptotic behavior of M(n)
+- ✅ Connection back to ε-pole framework
+- ✅ Visualization in convergent region
+- ❌ NOT pursuing: FR, AC, critical line, RH connection
+
+**Reference**: `docs/pivot-to-primal-forest-geometry.md`, `docs/theta-truncation-insight.md`
+
+**Meta-lesson**: Mathematical elegance (closed form with ζ) ≠ mathematical necessity (geometric insight). L_M is not ζ - it's a different object telling us about primal forest structure.
+
+---
+
 ## Version History
 
 - **v1.3** (Nov 17, 2025): **RIGOROUS FOUNDATION COMPLETE** - Laurent expansion fully proven! 🎉
