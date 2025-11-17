@@ -228,7 +228,9 @@ x₀ ≡ +1 (mod p)  ✓
 
 ### Medium Term
 
-4. ⏳ **Attempt genus theory proof** for p ≡ 1,3 (mod 8) cases
+4. ✅ **Attempt genus theory proof** for p ≡ 1,3 (mod 8) cases - **PARTIAL SUCCESS**
+   - **PROVEN**: p ≡ 1,5 (mod 8) via negative Pell squaring ✅
+   - **OPEN**: p ≡ 3 (mod 8) remains unproven (100% empirical)
 5. ⏳ **CF matrix analysis** mod 32 for period ≡ 0 (mod 4)
 6. ⏳ **Write clean paper** (hybrid approach, Option C)
 
@@ -248,9 +250,12 @@ x₀ ≡ +1 (mod p)  ✓
 - `scripts/analyze_x0_mod8_structure.py` - 2-adic valuation analysis
 - `scripts/large_sample_verification.py` - 300-prime verification suite
 - `scripts/verify_halfway_equation.py` - Halfway equation numerical test
+- `scripts/explore_p3_mod8_structure.py` - Deep structural analysis for p ≡ 3 (mod 8)
+- `scripts/analyze_halfway_to_fundamental.py` - CF halfway point investigation
 
 ### Documentation
 - `docs/genus-theory-proof-attempt.md` - Theoretical framework
+- `docs/genus-theory-proof-p13.md` - **Complete genus theory proof (3/4 cases proven)**
 - `docs/x0-mod8-breakthrough.md` - Initial x₀ mod 8 discovery
 - `docs/x0-mod8-rigorous-proof.md` - Elementary proofs (partial)
 - `docs/p-mod-7-rigorous-attempt.md` - Rigorous proof attempts for p≡7
