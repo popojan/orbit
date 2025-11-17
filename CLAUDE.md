@@ -78,6 +78,18 @@ Documentation: "Geometric shortcut hypothesis" (English, preserving Czech metaph
    - Now doing M(D) vs period (r=-0.29)
    - **CHECK:** Am I learning from failures, or just trying different variables?
 
+6. **"Am I overusing 'BREAKTHROUGH'?"** (Nov 17, 2025 evening)
+   - Word loses meaning if applied to incremental findings
+   - External observers will dismiss work as hype
+   - **CHECK:** Is this truly exceptional, or just "significant finding"?
+   - **RULE:** Reserve "BREAKTHROUGH" for results that fundamentally change understanding
+
+7. **"Did I test the boundaries?"** (Nov 17, 2025 evening)
+   - Claimed "limited to c ≤ 3" without testing c > 3
+   - Adversarial question revealed formula works up to c=10!
+   - **CHECK:** Am I being lazy, or did I find actual limitation?
+   - **RULE:** Always test where claims break, don't assume scope
+
 **Implementation:** Before claiming "discovery" or "pattern", run internal adversarial check. Present findings WITH the adversarial counterargument.
 
 **Format:**
