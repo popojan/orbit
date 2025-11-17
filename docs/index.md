@@ -1,14 +1,15 @@
 # Documentation Index
 
-**Generated:** 2025-11-17 13:58:43
+**Generated:** 2025-11-17 14:13:25
 
 ## Recent Documents (by commit time)
 
+- [Complete Structure of Pell Regulator R(n)](regulator-structure-complete.md) *()*
 - [Unified Regulator Theory: R(n) = f(n mod 8, M(n))](unified-regulator-theory.md) *(2025-11-17)*
+- [pellc & Egyptian Fractions: Fractal Research Directions](pellc-fractal-research-directions.md) *(2025-11-17)*
 - [Research Status Tracker](STATUS.md) *(2025-11-17)*
 - [Mod 8 Stratification of Regulator R(p)](mod8-regulator-stratification.md) *(2025-11-17)*
 - [Egypt.wl ↔ Primal Forest Connection](egypt-primal-forest-connection.md) *(2025-11-17)*
-- [pellc & Egyptian Fractions: Fractal Research Directions](pellc-fractal-research-directions.md) *()*
 - [pellc Rational Families - Novelty Analysis](pellc-rational-families-analysis.md) *(2025-11-17)*
 - [pellc: Closed Form Exploration (Archived)](pellc-exploration-note.md) *(2025-11-17)*
 - [Handoff Document: Mod 8 Classification Proof Attempt](handoff-web-cli-mod8-proof.md) *(2025-11-17)*
