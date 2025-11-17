@@ -236,12 +236,19 @@ For D = k² + c, c ∈ {-3,...,+3}, D prime:
 - c = -3: **0% accuracy** (all have a₁ = 1, Taylor predicts large values)
 
 **Interpretation:**
-- **Above k²**: First CF term a₁ = 2k/c EXACTLY (no floor needed for c ≤ 3!)
-- **Below k²**: Different structure - a₁ = 1 constantly for small |c|
+- **Above k²**: First CF term a₁ = floor(2k/c) EXACTLY when k ≥ c/2
+- **Extended test**: c ∈ {1..10} shows 100% accuracy for c ≤ 6 (all k tested)
+- **Boundary**: For c ≥ 7, errors only when k < c/2 (expected from Taylor)
+- **Below k²**: Completely different structure - a₁ ≈ 1 constantly for small |c|
 - **Geometric**: Sign of c determines CF behavior fundamentally
-- **"Vzdušná čára" realized**: For p = k²+c (c ∈ {1,2,3}), NO iteration needed for a₁!
+- **"Vzdušná čára" realized**: For p = k²+c (k ≥ c/2), NO iteration needed for a₁!
 
-**Status:** VALIDATED - Taylor works perfectly ABOVE k², fails BELOW k²
+**Corrected assessment (after adversarial testing):**
+- NOT "limited to c ≤ 3" - formula works for ALL c with k ≥ c/2
+- Tested up to c=10: 93%+ accuracy (49/49 perfect for c ≤ 6)
+- Limitation is k/c ratio, not absolute value of c
+
+**Status:** VALIDATED - Taylor works ABOVE k² for k ≥ c/2, fails BELOW k²
 
 ---
 

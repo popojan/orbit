@@ -30,8 +30,8 @@ GetFirstCFTerm[D_] := Module[{cf},
 Print["Testing prediction accuracy for p = k² + c with small |c|"];
 Print[];
 
-(* Test for c ∈ {1,2,3,-1,-2,-3} *)
-For[c = -3, c <= 3, c++,
+(* Test for c ∈ {1..10, -1..-10} to find boundary *)
+For[c = -10, c <= 10, c++,
   If[c == 0, Continue[]];
 
   cases = DeleteCases[Table[
