@@ -1,7 +1,8 @@
-# QR Ratio Criterion for Half Factorial Sign - DISCOVERY
+# QR Ratio Criterion for Half Factorial Sign - COMPUTATIONAL OBSERVATION
 
 **Date**: November 17, 2025
-**Status**: 🎯 **EMPIRICALLY VERIFIED** (24/24 primes, 100% correlation, 0 exceptions)
+**Status**: 🔬 **EMPIRICALLY OBSERVED** (24/24 primes, 100% correlation)
+**Likely Status**: ⚠️ Known result in literature (to be verified)
 
 ---
 
@@ -236,7 +237,24 @@ This is the **correct pairing structure** user intuited! 🎯
 
 ---
 
-🎯 **This is the breakthrough we needed!**
+## Disclaimer
+
+⚠️ **Important**: This criterion is **likely a known result** in classical number theory.
+
+**Reason**: If professional number theorists didn't know this, it would be highly improbable for it to be discovered computationally in a few hours.
+
+**Most likely scenarios**:
+1. Known result under different name/formulation
+2. Trivial consequence of Gauss sum theory
+3. Standard lemma in quadratic residue theory
+
+**Claim**: We "rediscovered" or "reformulated" an existing result, NOT discovered something novel.
+
+**TODO**: Find the classical reference before claiming any novelty.
+
+---
+
+🔬 **Computational observation documented for application to Pell problem**
 
 🤖 Generated with Claude Code
 Co-Authored-By: Claude <noreply@anthropic.com>
