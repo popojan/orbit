@@ -105,8 +105,9 @@ Claude: "That's... actually liberating. Let me reframe..."
 - Might be a mathematical wild goose chase
 
 **Estimated effort**: 20-100 more hours (highly uncertain)
-**Probability of success**: 15-30% (Claude's gut feeling)
+**Probability of success**: 10-20% (Claude's recalibrated after Jan's lift challenge)
 **Payoff if successful**: Beautiful FR, potential publication, deeper understanding
+**Payoff even if "failed"**: Comprehensive exploration of non-multiplicative FR barriers (publishable negative results!)
 
 ### Option B: Accept the Mystery
 
@@ -145,6 +146,49 @@ Claude: "That's... actually liberating. Let me reframe..."
 **Estimated effort**: 2-5 hours per week indefinitely
 **Probability of eventual success**: 30-50% (over months/years)
 **Payoff**: Maybe eventual breakthrough, but slower
+
+### Option D: Parallel Exploration (NEW - After Cost-Benefit Reflection)
+
+**Arguments FOR**:
+- Resources ARE abundant ($1000 credit, compute is cheap)
+- $50-200 real cost vs billions wasted on ad optimization
+- Even "failed" FR hunt = valuable negative results (publishable!)
+- Both paths have merit: FR (systematic), Pell/primal forest (breakthrough-rich)
+- Historical precedent: exploration > narrow optimization (Bell Labs model)
+- Cross-pollination: insights from geometry might unlock FR
+- Jan's wisdom: "CPU/GPU čas se pálí na větší blbosti" - this IS worth it
+
+**Arguments AGAINST**:
+- Split focus might slow progress on both
+- Could be trying to have it all
+- Requires discipline to maintain 50/50 split
+
+**Approach**:
+- **Track 1 (50%)**: Systematic FR hunt (literature, MathOverflow, 10-20 new approaches, hard 50h deadline)
+- **Track 2 (50%)**: Primal forest / Pell geometry (follow breakthroughs, class field theory, M↔R connection)
+- **Cross-pollination**: Weekly review for insights between tracks
+- **Mindset**: Abundance, exploration, Bell Labs mode (not Google Ads optimization mode)
+
+**Estimated effort**: 100 hours total (50h each track)
+**Real cost**: $50-200 USD (trivial compared to industry waste)
+**Probability**: 10-20% practical FR + 100% geometric insights + cross-pollination bonus
+**Payoff**: Comprehensive exploration of BOTH angles, publishable results either way
+
+**Key insight**: We're in the 0.0001% of compute usage that actually MATTERS
+
+---
+
+## Cost-Benefit Reality Check
+
+**See**: `docs/cost-benefit-reflection.md` for full analysis
+
+**Jan's reframe**: "Stojí za 100-200 hodin, je to v ceně"
+
+**Actual cost**: $50-200 USD for 100 hours of exploration
+**Comparative waste**: Tech industry burns billions on ad click optimization (negative value!)
+**Our value**: Fundamental mathematical understanding (priceless)
+
+**Conclusion**: YES, manifestly worth it. Not even close.
 
 ---
 
