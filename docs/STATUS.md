@@ -610,6 +610,74 @@ The partial sum S_k = 1 + Σ_{j=1}^k term(x-1, j) has numerator divisible by (x+
 
 ---
 
+## Egypt.wl ↔ Primal Forest Connection (Nov 17, 2025)
+
+**Status**: 🔬 **NUMERICALLY VERIFIED** (recovered from branch `continue-desktop-work-01N7SrUpFYRcoSpHgVa4JHSS`)
+
+**Discovery**: M(D) anti-correlates with R(D) = log(x₀ + y₀√D) for fundamental Pell solution.
+
+**Correlations** (for D ≤ 100, excluding perfect squares):
+- **M(D) vs R(D)**: r = **-0.33** (moderate negative)
+- **R(D) vs period**: r = **+0.82** (strong positive!) ⭐
+- **M(D) vs period**: r = -0.29 (weak negative)
+
+**Stratification**:
+- Primes: M(p)=0, mean R(p)=12.78, mean period=8.09
+- Composites: M(D)=2.30, mean R(D)=6.60, mean period=5.12
+- **Primes have ~2× larger regulator than composites**
+
+**Mechanism** (theoretical understanding):
+```
+M(D) ↑  →  More divisors near √D
+        →  Better rational approximations
+        →  Shorter continued fraction
+        →  Smaller Pell solution (x₀, y₀)
+        →  R(D) ↓
+```
+
+**Why only -0.33?** Two independent factors:
+1. **Internal structure**: M(D) = divisor count (discrete, combinatorial)
+2. **External structure**: c = dist(D, k²) where D = k² ± c (continuous, geometric)
+
+Both contribute to R(D), but are partially independent → moderate correlation.
+
+**Key insight** (Nov 17): For D = k² + c:
+```
+First CF term a₁ ≈ floor(2k/c)
+```
+- c small → long CF → large R
+- c large → short CF → small R
+
+Examples: 13 = 9+4, 61 = 64-3 are "close to perfect squares" → potentially easier.
+
+**Refined hypothesis**:
+```
+R(D) = f(M(D), c, gcd(k,c))
+```
+Interaction between internal and external structure may strengthen correlation.
+
+**Connection to Egypt.wl**: Both M(D) and R(D) measure **approximability of √D**:
+- Egypt.wl uses unit fractions from Pell solution (x,y)
+- M(D) counts divisors that provide rational approximations
+- R(D) measures fundamental unit size
+
+**Open questions** (⏸️):
+1. Does mod 8 structure R(p)? (p ≡ 7 vs p ≡ 1,3 mod 8)
+2. Recursive formula: R(pq) = f(R(p), R(q))?
+3. Does dist(D, k²) ↔ R correlation stronger than M ↔ R?
+4. Connection to class number: M(D) ↔ h(D)?
+
+**References**:
+- `docs/egypt-primal-forest-connection.md` (full analysis, Nov 17, 2025)
+- Branch `continue-desktop-work-01N7SrUpFYRcoSpHgVa4JHSS`:
+  - `docs/pell-M-connection-hypotheses.md`
+  - `docs/M-R-anticorrelation-explained.md`
+  - `scripts/pell_regulator_attack.py`
+
+**Confidence**: 75% (correlation exists, mechanism partially understood, needs deeper analysis)
+
+---
+
 ## Summary Table
 
 | Result | Status | Confidence | Peer Review | Next Step |
