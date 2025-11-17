@@ -1,11 +1,12 @@
 # Documentation Index
 
-**Generated:** 2025-11-17 14:25:08
+**Generated:** 2025-11-17 15:22:16
 
 ## Recent Documents (by commit time)
 
-- [Mersenne Primes & Pell Regulator Connection](mersenne-primes-regulator.md) *()*
+- [Sum of Two Squares: The Missing Link](sum-of-squares-breakthrough.md) *()*
 - [Complete Structure of Pell Regulator R(n)](regulator-structure-complete.md) *(2025-11-17)*
+- [Mersenne Primes & Pell Regulator Connection](mersenne-primes-regulator.md) *(2025-11-17)*
 - [Unified Regulator Theory: R(n) = f(n mod 8, M(n))](unified-regulator-theory.md) *(2025-11-17)*
 - [pellc & Egyptian Fractions: Fractal Research Directions](pellc-fractal-research-directions.md) *(2025-11-17)*
 - [Research Status Tracker](STATUS.md) *(2025-11-17)*
