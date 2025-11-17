@@ -458,6 +458,25 @@ where:
 3. ⏸️ Find practical method for analytic continuation (integral representation?)
 4. ⏸️ Peer review of theoretical derivation
 
+### ⏸️ DECISION POINT (Nov 17, 2025)
+
+**Status**: AT CROSSROADS
+
+After extensive investigation (Nov 16-17):
+- ✅ Schwarz symmetry: PROVEN
+- ✅ Explicit γ(s) formula: DERIVED (but self-referential, impractical)
+- ❌ Classical techniques: ALL FAILED (theta transformation, gamma powers, etc.)
+- ❓ **Open question**: Continue hunting for practical γ(s), or accept the mystery?
+
+**See**: `docs/functional-equation-crossroads.md` for full analysis and decision framework
+
+**Options**:
+- A: Keep hunting (20-100 hours commitment)
+- B: Accept mystery, return to primal forest geometry
+- C: Hybrid slow burn (5% FR, 95% geometry)
+
+**Decision pending**: Waiting for collaborative vote
+
 ---
 
 ## Connection to Riemann Hypothesis
