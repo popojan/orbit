@@ -1,10 +1,10 @@
 # Documentation Index
 
-**Generated:** 2025-11-17 15:22:16
+**Generated:** 2025-11-17 17:09:11
 
 ## Recent Documents (by commit time)
 
-- [Sum of Two Squares: The Missing Link](sum-of-squares-breakthrough.md) *()*
+- [Sum of Two Squares: The Missing Link](sum-of-squares-breakthrough.md) *(2025-11-17)*
 - [Complete Structure of Pell Regulator R(n)](regulator-structure-complete.md) *(2025-11-17)*
 - [Mersenne Primes & Pell Regulator Connection](mersenne-primes-regulator.md) *(2025-11-17)*
 - [Unified Regulator Theory: R(n) = f(n mod 8, M(n))](unified-regulator-theory.md) *(2025-11-17)*

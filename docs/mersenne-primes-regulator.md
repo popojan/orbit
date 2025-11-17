@@ -6,6 +6,20 @@
 
 ---
 
+## Research Context
+
+**Collaboration note**: This investigation was prompted by the observation that Lucas-Lehmer primality test for Mersenne numbers uses **repeated squaring** (S_{i+1} = S_i² - 2), which is fundamentally a Pell/Chebyshev dynamical system. The insight that this might connect to continued fraction structure and regulators came from recognizing that:
+
+1. Lucas-Lehmer is essentially iterating in Q(√3) (via x² - 3y² = 1)
+2. Our causal mechanism shows CF structure determines R(n)
+3. Mersenne numbers 2^p - 1 have special binary structure
+
+This led to investigating whether the LL test structure "encodes" information about R(M_p) through the repeated squaring dynamics.
+
+**Key insight** (collaborative): Don't just study R(M_p) in isolation - leverage the KNOWN structure of Mersenne primality testing, which already uses quadratic field iteration!
+
+---
+
 ## Discovery
 
 **Mersenne primes M_p = 2^p - 1 have EXPONENTIALLY growing regulators R(M_p).**
