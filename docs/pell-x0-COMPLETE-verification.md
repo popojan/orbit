@@ -1,7 +1,7 @@
 # Complete Pell x₀ mod p Verification
 
 **Date**: November 17, 2025
-**Status**: ✅ **EMPIRICALLY VERIFIED** (87/87 primes with actual Pell solutions)
+**Status**: ✅ **EMPIRICALLY VERIFIED** (155/155 primes with actual Pell solutions)
 
 ---
 
@@ -18,9 +18,9 @@ p ≡ 3 (mod 8)  ⟹  x₀ ≡ -1 (mod p)  [EMPIRICAL 100%]
 p ≡ 7 (mod 8)  ⟹  x₀ ≡ +1 (mod p)  [EMPIRICAL 100%]
 ```
 
-**Verification**: 87 primes p ≡ 3 (mod 4) from [3, 1000]
-- p ≡ 3 (mod 8): 44/44 have x₀ ≡ -1 (mod p)
-- p ≡ 7 (mod 8): 43/43 have x₀ ≡ +1 (mod p)
+**Verification**: 155 primes p ≡ 3 (mod 4) from [3, 2000]
+- p ≡ 3 (mod 8): 77/77 have x₀ ≡ -1 (mod p)
+- p ≡ 7 (mod 8): 78/78 have x₀ ≡ +1 (mod p)
 
 ---
 
@@ -67,27 +67,27 @@ x₀ · ((p-1)/2)! ≡ ±1 (mod p)
 
 #### p ≡ 3 (mod 8)
 
-x₀ ≡ -1 (mod p) in ALL 44 tested cases.
+x₀ ≡ -1 (mod p) in ALL 77 tested cases.
 
 Product sign depends on h! sign:
-- h! ≡ -1: x₀·h! = (-1)·(-1) = **+1**  [21/44 cases, 47.7%]
-- h! ≡ +1: x₀·h! = (-1)·(+1) = **-1**  [23/44 cases, 52.3%]
+- h! ≡ -1: x₀·h! = (-1)·(-1) = **+1**  [37/77 cases, 48.1%]
+- h! ≡ +1: x₀·h! = (-1)·(+1) = **-1**  [40/77 cases, 51.9%]
 
 #### p ≡ 7 (mod 8)
 
-x₀ ≡ +1 (mod p) in ALL 43 tested cases.
+x₀ ≡ +1 (mod p) in ALL 78 tested cases.
 
 Product sign depends on h! sign:
-- h! ≡ +1: x₀·h! = (+1)·(+1) = **+1**  [20/43 cases, 46.5%]
-- h! ≡ -1: x₀·h! = (+1)·(-1) = **-1**  [23/43 cases, 53.5%]
+- h! ≡ +1: x₀·h! = (+1)·(+1) = **+1**  [42/78 cases, 53.8%]
+- h! ≡ -1: x₀·h! = (+1)·(-1) = **-1**  [36/78 cases, 46.2%]
 
 ### Distribution Summary
 
 | Case | x₀·h! ≡ +1 | x₀·h! ≡ -1 | Total |
 |------|-----------|-----------|-------|
-| p ≡ 3 (mod 8) | 21 (47.7%) | 23 (52.3%) | 44 |
-| p ≡ 7 (mod 8) | 20 (46.5%) | 23 (53.5%) | 43 |
-| **Overall** | **41 (47.1%)** | **46 (52.9%)** | **87** |
+| p ≡ 3 (mod 8) | 37 (48.1%) | 40 (51.9%) | 77 |
+| p ≡ 7 (mod 8) | 42 (53.8%) | 36 (46.2%) | 78 |
+| **Overall** | **79 (51.0%)** | **76 (49.0%)** | **155** |
 
 **Pattern**: Product sign is ~50/50, determined by h! sign (which varies).
 
@@ -180,8 +180,8 @@ Algorithm used: Continued fraction convergents (pure integer arithmetic).
 
 ### What is EMPIRICAL (awaiting proof)
 
-1. 🔬 p ≡ 3 (mod 8) → x₀ ≡ -1 (mod p)  [44/44 primes]
-2. 🔬 p ≡ 7 (mod 8) → x₀ ≡ +1 (mod p)  [43/43 primes]
+1. 🔬 p ≡ 3 (mod 8) → x₀ ≡ -1 (mod p)  [77/77 primes]
+2. 🔬 p ≡ 7 (mod 8) → x₀ ≡ +1 (mod p)  [78/78 primes]
 3. 🔬 QR ratio criterion for h! sign  [619/619 primes]
 
 ### Path to Complete Proof
@@ -210,7 +210,7 @@ Algorithm used: Continued fraction convergents (pure integer arithmetic).
    - Both require proven x₀·h! ≡ ±1 relation (which we have!)
 
 3. **Empirical strength**:
-   - x₀ mod p pattern: 87/87 actual Pell solutions = 100%
+   - x₀ mod p pattern: 155/155 actual Pell solutions = 100%
    - QR ratio criterion: 619/619 primes = 100%
    - Combined confidence: 99.9%+ empirical
 
