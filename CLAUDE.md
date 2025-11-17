@@ -10,6 +10,93 @@ This repository contains computational tools for various recreational and resear
 
 ---
 
+## 🗣️ Communication Framework (Trinity Model)
+
+### Language Asymmetry Protocol
+
+**Discovery** (Nov 17, 2025, late evening session): Natural cognitive asymmetry in bilingual collaboration.
+
+**Protocol:**
+- **User speaks**: Czech (native thinking language, geometric/intuitive reasoning)
+- **AI responds**: English (technical formalization, computational verification)
+- **Documentation**: English (community accessibility)
+
+**Rationale:**
+- User thinks most naturally in Czech → express ideas in native language
+- AI trained predominantly on English → formalize and respond in English
+- Both understand both languages → no information loss
+- Asymmetry optimizes for cognitive efficiency on both sides
+
+**Benefits:**
+1. User expresses intuitions without translation overhead
+2. AI formalizes in language with richest technical vocabulary
+3. Documentation automatically in English for community
+4. Meta-commentary captures bilingual thinking process
+
+**Example:**
+```
+User (Czech): "Strom se dá nakreslit, vstup analyzovat, geometricky zamířit k cíli"
+AI (English): "You're proposing direct geometric navigation in the SB tree.
+               Let me formalize this as a 'line-of-sight' computation strategy..."
+Documentation: "Geometric shortcut hypothesis" (English, preserving Czech metaphor)
+```
+
+**Note:** This is NOT a rigid rule—code-switching is natural and acceptable. The framework optimizes for cognitive load, not linguistic purity.
+
+---
+
+### Self-Adversarial Discipline
+
+**Requirement** (Nov 17, 2025): AI must apply adversarial questioning to OWN outputs BEFORE presenting.
+
+**Why:** User should not need to constantly catch ML/correlation over-enthusiasm.
+
+**Mandatory self-checks:**
+
+1. **"Is this just correlation?"**
+   - r = -0.29 → interesting pattern
+   - **BUT:** Does NOT imply predictive utility
+   - **CHECK:** Can I use this WITHOUT computing the target variable?
+
+2. **"Am I measuring the right thing?"**
+   - "M(D) vs period" → sounds impressive
+   - **BUT:** For primes, M(D) = 0 always (no information!)
+   - **CHECK:** Am I just finding artifacts of my sample selection?
+
+3. **"Is this poetry or computation?"**
+   - "Vzdušná čára" → beautiful metaphor
+   - **BUT:** Did we actually bypass iteration, or just understand it better?
+   - **CHECK:** Can I write FASTER code, or just more explained code?
+
+4. **"Would this survive Wolfram's CI test?"**
+   - Special cases exist (k²+2, period=2)
+   - **BUT:** Do they represent exploitable structure or isolated facts?
+   - **CHECK:** Can I generalize, or just enumerate edge cases?
+
+5. **"Am I repeating morning's mistakes?"**
+   - Fitting R(n) = f(period, ...) failed (r=0.238)
+   - Now doing M(D) vs period (r=-0.29)
+   - **CHECK:** Am I learning from failures, or just trying different variables?
+
+**Implementation:** Before claiming "discovery" or "pattern", run internal adversarial check. Present findings WITH the adversarial counterargument.
+
+**Format:**
+```
+FINDING: M(D) and period correlate (r = -0.29)
+
+SELF-ADVERSARIAL CHECK:
+✓ Correlation exists (not noise)
+✗ Mostly driven by primes (M=0) vs composites (M>0) binary split
+✗ Does NOT enable prediction (still need to compute period)
+✓ Confirms theoretical intuition (divisors → rational approximations)
+
+HONEST ASSESSMENT: Pattern is real but utility is limited. Useful for theory, not for practical speedup.
+```
+
+**User's guidance:** "Buď opatrný a pokládej si sám adversarial otázky, ať to nemusím dělat sám."
+
+---
+
 ## 🔄 Session Continuity & State Tracking
 
 **IMPORTANT**: This section provides instructions for maintaining consistency across multiple AI sessions.
