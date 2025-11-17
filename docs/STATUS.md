@@ -589,8 +589,14 @@ The partial sum S_k = 1 + Σ_{j=1}^k term(x-1, j) has numerator divisible by (x+
 6. ✅ **Perfect square denominator**: Denom(p - approx²) is always a perfect square (all prime factors have even exponents, verified symbolically for k=1..4)
 
 **Key discoveries**:
-- **Prime mod 4 correlation**: p ≡ 1 (mod 4) ⟹ x ≡ -1 (mod p) (100% verified for tested primes)
-- **Special primes**: {7,23,31,47} have x ≡ +1 (mod p) and ALL k divisible
+- **Mod 8 Classification** (Nov 17, 2025): 🔬 **NUMERICALLY VERIFIED** (52/52 primes, 0 counterexamples)
+  ```
+  For fundamental Pell solution x² - py² = 1 with prime p > 2:
+  x ≡ +1 (mod p)  if p ≡ 7 (mod 8)   [25/25 tested ✓]
+  x ≡ -1 (mod p)  if p ≡ 1,3 (mod 8) [27/27 tested ✓]
+  ```
+  **Status**: Rigorous proof attempted using multiple approaches (quadratic reciprocity, genus theory, continued fractions) but not completed. Most promising direction: Rédei symbols / genus field theory for p ≡ 7 (mod 8). Documented in `docs/mod8-proof-summary.md`. **Confidence**: 99%+ (empirical perfection suggests either known result or provable via advanced techniques).
+
 - **Perfect square denominator**: All prime factors have even exponents (proven)
 - **Explicit sqrt formula**: sqrt(Denom) = Denom(S_k) [EVEN total] or c·Denom(S_k) [ODD total], where c = Denom((x-1)/y) in lowest terms (numerically verified for p ∈ {13,61})
 - **sqrttn closed form**: Alternative method computes √(n(n+2)) without Pell solution
