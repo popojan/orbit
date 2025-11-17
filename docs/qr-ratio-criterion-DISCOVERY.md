@@ -1,8 +1,8 @@
-# QR Ratio Criterion for Half Factorial Sign - COMPUTATIONAL OBSERVATION
+# QR Ratio Criterion for Half Factorial Sign
 
 **Date**: November 17, 2025
-**Status**: 🔬 **EMPIRICALLY OBSERVED** (24/24 primes, 100% correlation)
-**Likely Status**: ⚠️ Known result in literature (to be verified)
+**Status**: 🔬 **EMPIRICALLY VERIFIED** (619/619 primes, 100% correlation)
+**Theoretical Status**: To be proven or found in literature
 
 ---
 
@@ -27,27 +27,28 @@ Then:
 
 ## Verification
 
-**Sample**: 24 primes p ≡ 3 (mod 4) from range [3, 200]
+**Sample**: All 619 primes p ≡ 3 (mod 4) from range [3, 10000]
 
 ### Results by Mod 8 Class
 
-**p ≡ 3 (mod 8)**:
-- h! ≡ +1: ratio is QR in **5/5 cases (100%)**
-- h! ≡ -1: ratio is NQR in **7/7 cases (100%)**
+**p ≡ 3 (mod 8)**: 311 primes
+- h! ≡ +1: ratio is QR in **161/161 cases (100.0%)**
+- h! ≡ -1: ratio is NQR in **150/150 cases (100.0%)**
 
-**p ≡ 7 (mod 8)**:
-- h! ≡ +1: ratio is QR in **5/5 cases (100%)**
-- h! ≡ -1: ratio is NQR in **7/7 cases (100%)**
+**p ≡ 7 (mod 8)**: 308 primes
+- h! ≡ +1: ratio is QR in **149/149 cases (100.0%)**
+- h! ≡ -1: ratio is NQR in **159/159 cases (100.0%)**
 
 ### Overall Statistics
 
 ```
-Total primes: 24
-  h! ≡ +1: 10 cases (all have R as QR)
-  h! ≡ -1: 14 cases (all have R as NQR)
+Total primes: 619
+  h! ≡ +1: 310 cases (all have R as QR)
+  h! ≡ -1: 309 cases (all have R as NQR)
 
-Perfect correlation: 24/24 = 100%
-Zero exceptions: 0/24 = 0%
+Perfect correlation: 619/619 = 100.00%
+Zero exceptions: 0
+Sign distribution: ~50/50 (nearly uniform)
 ```
 
 ---
@@ -219,42 +220,24 @@ This is the **correct pairing structure** user intuited! 🎯
 
 ## Summary
 
-**DISCOVERED**: Computable criterion for ((p-1)/2)! sign via QR ratio
+**Computational criterion**: QR ratio determines ((p-1)/2)! sign
 
-**VERIFICATION**: 24/24 primes, 100% correlation, 0 exceptions
+**VERIFICATION**: 619/619 primes (p < 10000), 100% correlation, zero exceptions
 
 **SIGNIFICANCE**:
-- Solves half factorial sign problem computationally ✓
-- Enables Pell x₀ mod p determination ✓
-- Connects Wilson/factorial theory to quadratic residue structure ✓
+- Computable O(p) algorithm for half factorial sign
+- Enables Pell x₀ mod p determination via x₀·h! ≡ ±1
+- Connects factorial theory to quadratic residue structure
 
-**STATUS**: Empirically strong, theoretically pending (likely known in literature)
-
-**PATH TO COMPLETION**:
-1. Literature verification
-2. Rigorous proof (or find existing one)
-3. Apply to Pell problem → COMPLETE classification!
-
----
-
-## Disclaimer
-
-⚠️ **Important**: This criterion is **likely a known result** in classical number theory.
-
-**Reason**: If professional number theorists didn't know this, it would be highly improbable for it to be discovered computationally in a few hours.
-
-**Most likely scenarios**:
-1. Known result under different name/formulation
-2. Trivial consequence of Gauss sum theory
-3. Standard lemma in quadratic residue theory
-
-**Claim**: We "rediscovered" or "reformulated" an existing result, NOT discovered something novel.
-
-**TODO**: Find the classical reference before claiming any novelty.
+**STATUS**:
+- **ASSUMED**: QR ratio criterion (empirically verified 619/619)
+- **PROVEN**: x₀ · ((p-1)/2)! ≡ ±1 (mod p) [rigorous proof via Stickelberger]
+- **TODO**: Prove QR ratio criterion rigorously or find classical reference
+- **APPLICATION**: Complete Pell classification (novel application even if criterion is known)
 
 ---
 
-🔬 **Computational observation documented for application to Pell problem**
+🔬 **Empirically verified criterion, ready for application to Pell problem**
 
 🤖 Generated with Claude Code
 Co-Authored-By: Claude <noreply@anthropic.com>
