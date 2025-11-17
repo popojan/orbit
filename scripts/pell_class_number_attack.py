@@ -48,52 +48,37 @@ def class_number_quadratic(D):
     """
     Compute class number h(D) for Q(sqrt(D)) where D is squarefree.
 
-    For D < 0 (imaginary): use analytic formula
-    For D > 0 (real): use Dirichlet class number formula
-
-    This is approximate for large D, but exact for small D.
+    Uses PARI/GP's qfbclassno() function via subprocess.
     """
-    import math
-    from sympy import divisors, sqrt as sympy_sqrt
-    from sympy.ntheory import legendre_symbol
+    import subprocess
 
-    if D < 0:
-        # Imaginary quadratic - simpler case
-        # h(D) = w/2 * sqrt(|D|)/pi * L(1, chi_D)
-        # For small |D| we can compute exactly
+    try:
+        # Call PARI/GP to compute class number
+        # qfbclassno(D) computes class number for discriminant D
+        # For real quadratic field Q(sqrt(p)) where p ≡ 1 (mod 4): discriminant = p
+        # For p ≡ 3 (mod 4): discriminant = 4p
 
-        # Simplified for small |D| (this is not complete implementation)
-        # Just return 1 for now (placeholder - would need full implementation)
-        return 1
+        if D % 4 == 1:
+            disc = D
+        else:
+            disc = 4 * D
 
-    else:
-        # Real quadratic - use genus theory bounds or approximation
-        # For p prime, h(p) is usually small
+        result = subprocess.run(
+            ['gp', '-q', '-f'],
+            input=f'print(qfbclassno({disc}))\n',
+            capture_output=True,
+            text=True,
+            timeout=5
+        )
 
-        # Rough approximation: h(p) ~ sqrt(p) / log(p) for large p
-        # But for small p, compute exactly using reduction theory
+        if result.returncode == 0:
+            h = int(result.stdout.strip())
+            return h
+        else:
+            return None
 
-        # For primes p < 200, h(p) is usually 1, 2, or 4
-        # Exact computation requires reduction of binary quadratic forms
-
-        # For now, use sympy's built-in if available
-        try:
-            from sympy.ntheory.residue_ntheory import n_order
-            # This is placeholder - sympy doesn't have direct class number
-            # We'll use period length as proxy (correlated with h(p))
-
-            # For small primes, most have h(p) = 1
-            if D < 100:
-                return 1  # Approximate
-            else:
-                # Use period as proxy
-                cf = continued_fraction_periodic(0, 1, D)
-                tau = len(cf[1])
-                # h(p) often divides tau
-                return min(tau // 2, 4)  # Rough estimate
-
-        except:
-            return 1
+    except Exception as e:
+        return None
 
 def regulator(D):
     """Compute regulator R(D) = log(x₀ + y₀√D)."""
@@ -244,8 +229,7 @@ def analyze_class_number():
         print()
 
     print("=" * 80)
-    print("NOTE: Class number computation is APPROXIMATE for large p")
-    print("For rigorous results, need proper class number algorithm")
+    print("Class number computed using PARI/GP qfbclassno()")
     print("=" * 80)
 
     return results
