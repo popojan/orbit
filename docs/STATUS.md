@@ -1030,14 +1030,46 @@ x₀ · ((p-1)/2)! ≡ ±1 (mod p)
 
 **Key observation**: "Znaménko (taková 'banalita') je KLÍČ" → Absolutely correct!
 
-**Path forward**:
-- Determine sign of ((p-1)/2)! mod p for p ≡ 3,7 (mod 8)
-- Use Gauss sums, genus theory, or quadratic character formulas
-- This would COMPLETE the proof for remaining 2/4 cases!
-
 **Reference**: `docs/pell-halffact-BREAKTHROUGH.md`
 
-**Empirical verification**: 50/50 primes, 100% match
+#### QR Ratio Criterion for Half Factorial Sign
+
+**Status**: 🔬 **EMPIRICALLY VERIFIED** (619/619 primes, 100% correlation)
+
+**Criterion** (empirical):
+
+For prime p ≡ 3 (mod 4), partition [1, (p-1)/2] by quadratic character:
+```
+QR_prod  = ∏{k : (k/p) = +1}
+NQR_prod = ∏{k : (k/p) = -1}
+R = QR_prod / NQR_prod (mod p)
+```
+
+Then:
+```
+((p-1)/2)! ≡ +1 (mod p)  ⟺  R is quadratic residue
+((p-1)/2)! ≡ -1 (mod p)  ⟺  R is non-residue
+```
+
+**Verification**:
+- **619/619 primes** p ≡ 3 (mod 4) from [3, 10000]
+- **Zero exceptions**, 100.00% correlation
+- p ≡ 3 (mod 8): 161/161 (h!≡+1) + 150/150 (h!≡-1) = 311 matches
+- p ≡ 7 (mod 8): 149/149 (h!≡+1) + 159/159 (h!≡-1) = 308 matches
+- Sign distribution ~50/50 (nearly uniform across both mod 8 classes)
+
+**Theoretical status**: To be proven or found in literature (likely related to Gauss sums)
+
+**User insight**: "souvisí s párováním činitelů ve faktoriálu" → YES! QR vs NQR pairing!
+
+**Application**: Even if criterion is known, application to Pell x₀ mod p is novel
+
+**Reference**: `docs/qr-ratio-criterion-DISCOVERY.md`
+
+**Path forward**:
+- Prove QR ratio criterion rigorously (or find classical reference)
+- Prove sign resolution: x₀·h! ≡ +1 specifically (empirically holds 619/619)
+- Complete classification: use h! sign + x₀·h! ≡ +1 → get x₀ mod p
 
 ---
 
