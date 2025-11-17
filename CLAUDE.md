@@ -145,6 +145,15 @@ pdflatex -interaction=nonstopmode document.tex  # First pass
 pdflatex -interaction=nonstopmode document.tex  # Second pass (resolves references)
 ```
 
+**Available Python Utilities** (use these instead of rewriting):
+
+- **Pell Equation Solver**: `scripts/pell_solver_integer.py`
+  - Integer-only algorithm using continued fractions
+  - Solves x² - Dy² = 1 for fundamental solution (x₀, y₀)
+  - Usage: `from scripts.pell_solver_integer import pell_fundamental_solution`
+  - Tested on D = 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31 ✓
+  - Pure integer arithmetic, no floating point errors
+
 ## Repository Structure
 
 ### Orbit Paclet (Version 0.3.0)
