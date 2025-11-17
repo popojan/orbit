@@ -1,11 +1,17 @@
 # Documentation Index
 
-**Generated:** 2025-11-16 22:21:08
+**Generated:** 2025-11-17 08:57:36
 
 ## Recent Documents (by commit time)
 
-- [Mellin Puzzle Resolution: (γ-1) vs (2γ-1)](mellin-puzzle-resolution.md) *()*
+- [Proof of TOTAL-EVEN Divisibility Theorem](egypt-even-parity-proof.md) *()*
+- [Egypt.wl TOTAL-EVEN Pattern - Breakthrough Analysis](egypt-total-even-breakthrough.md) *()*
+- [Egypt.wl k=EVEN Pattern - Rigorous Proof Attempt](egypt-even-k-rigorous-attempt.md) *(2025-11-16)*
 - [Research Status Tracker](STATUS.md) *(2025-11-16)*
+- [Mellin Puzzle Resolution - Rigorous Derivation](mellin-puzzle-resolution-rigorous.md) *(2025-11-16)*
+- [Mellin Puzzle Resolution: (γ-1) vs (2γ-1)](mellin-puzzle-resolution.md) *(2025-11-16)*
+- [Diagonal Summation: Layer-by-Layer Analysis of L_M(s)](diagonal-summation-analysis.md) *(2025-11-16)*
+- [Diagonal Regularity Summation: Fourth Way to Compute L_M(s)](diagonal-regularity-summation.md) *(2025-11-16)*
 - [Pivot: Return to Primal Forest Geometry](pivot-to-primal-forest-geometry.md) *(2025-11-16)*
 - [Theta Function Truncation: Practical vs Theoretical Considerations](theta-truncation-insight.md) *(2025-11-16)*
 - [Theta Function Transformation Test - Results](theta-transformation-test-results.md) *(2025-11-16)*
