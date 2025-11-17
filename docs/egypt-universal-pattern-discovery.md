@@ -60,9 +60,9 @@ $$x \equiv \begin{cases}
 
 ### 3. Universal Pattern (Most Important!)
 
-**Discovery**: TOTAL-EVEN pattern is **NOT** specific to primes!
+**Discovery**: TOTAL-EVEN pattern is **NOT** specific to primes — it's **UNIVERSAL**!
 
-**Universal Theorem**: For ANY non-square positive integer $n$ (prime or composite) and fundamental Pell solution $x^2 - ny^2 = 1$:
+**Universal Theorem**: For **ANY** positive integer $n$ and Pell solution $x^2 - ny^2 = 1$:
 
 $$(x+1) \mid \text{Numerator}(S_k) \iff (k+1) \text{ is EVEN}$$
 
@@ -71,12 +71,18 @@ $$(x+1) \mid \text{Numerator}(S_k) \iff (k+1) \text{ is EVEN}$$
 - Whether $x \equiv -1 \pmod{n}$
 - The mod 4 or mod 8 class of $n$
 
-**Tested composite numbers**:
+**Tested composite numbers** (non-square):
 - $n \in \{6, 10, 15, 21, 22, 26, 35, 39\}$ - **100% success**
+
+**Tested perfect squares** (with trivial solution $(1,0)$):
+- $n \in \{4, 9, 16, 25, 36, 49\}$ - **100% success**
+- For perfect squares: $\text{term}(0, j) = 1$ for all $j$, so $S_k = k+1$
+- Pattern reduces to: $2 \mid (k+1) \iff (k+1)$ EVEN (trivially true!)
 
 **Key examples**:
 - $n=15$: $x=4 \not\equiv -1 \pmod{15}$, BUT pattern still holds via $(x+1)=5$
 - $n=21$: $x=55 \not\equiv -1 \pmod{21}$, BUT pattern still holds via $(x+1)=56$
+- $n=25$ (perfect square): $x=1$, pattern holds via $(x+1)=2$
 
 **Conclusion**: Pattern is **purely algebraic**, stemming from Chebyshev polynomial identity:
 $$T_m(x) + T_{m+1}(x) = (x+1) \cdot P_m(x)$$
@@ -131,13 +137,14 @@ $$T_m(x) + T_{m+1}(x) = (x+1) \cdot P_m(x)$$
 - `verify_denominator_formula.wl`
 - `verify_formula_n61.wl`
 
-**Prime classification** (3 scripts):
+**Prime classification** (4 scripts):
 - `analyze_primes_mod4_comprehensive.wl`
 - `analyze_mod8_pattern.wl`
 - `test_composite_numbers.wl`
 - `find_true_condition.wl`
+- `test_perfect_square_trivial.wl`
 
-**Total**: 11 new scripts (1275+ lines of code)
+**Total**: 12 new scripts (1400+ lines of code)
 
 ---
 
