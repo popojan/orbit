@@ -1,15 +1,23 @@
 # Documentation Index
 
-**Generated:** 2025-11-17 17:09:11
+**Generated:** 2025-11-17 18:36:18
 
 ## Recent Documents (by commit time)
 
+- [Research Status Tracker](STATUS.md) *(2025-11-17)*
+- [ML Approach to R(n) Prediction: Failed Experiment](regulator-ml-approach-failed.md) *(2025-11-17)*
+- [Reasoning Chain: Period Divisibility Discovery](reasoning-period-discovery.md) *(2025-11-17)*
+- [Universal Prime/Composite Bifurcation](prime-bifurcation-universal.md) *(2025-11-17)*
+- [CF Period Divisibility: Connection to Mod 8 Theorem](period-divisibility-discovery.md) *(2025-11-17)*
+- [Pell ±2 Connection to Period Divisibility](pell-plus-minus-2-connection.md) *(2025-11-17)*
+- [Mersenne Primes & Pell Regulator Connection](mersenne-primes-regulator.md) *(2025-11-17)*
+- [Genus Theory Approach to Period Divisibility](genus-theory-period-connection.md) *(2025-11-17)*
+- [Class Number vs Period Test](class-number-period-test.md) *(2025-11-17)*
+- [CF Center Convergent Pattern: Norm ±2](cf-center-norm-pattern.md) *(2025-11-17)*
 - [Sum of Two Squares: The Missing Link](sum-of-squares-breakthrough.md) *(2025-11-17)*
 - [Complete Structure of Pell Regulator R(n)](regulator-structure-complete.md) *(2025-11-17)*
-- [Mersenne Primes & Pell Regulator Connection](mersenne-primes-regulator.md) *(2025-11-17)*
 - [Unified Regulator Theory: R(n) = f(n mod 8, M(n))](unified-regulator-theory.md) *(2025-11-17)*
 - [pellc & Egyptian Fractions: Fractal Research Directions](pellc-fractal-research-directions.md) *(2025-11-17)*
-- [Research Status Tracker](STATUS.md) *(2025-11-17)*
 - [Mod 8 Stratification of Regulator R(p)](mod8-regulator-stratification.md) *(2025-11-17)*
 - [Egypt.wl ↔ Primal Forest Connection](egypt-primal-forest-connection.md) *(2025-11-17)*
 - [pellc Rational Families - Novelty Analysis](pellc-rational-families-analysis.md) *(2025-11-17)*
