@@ -18,14 +18,15 @@ This repository contains computational tools for various recreational and resear
 
 **Protocol:**
 - **User speaks**: Czech (native thinking language, geometric/intuitive reasoning)
-- **AI responds**: English (technical formalization, computational verification)
+- **AI responds**: Czech for results/findings, English for technical details (Nov 17 update)
 - **Documentation**: English (community accessibility)
 
 **Rationale:**
 - User thinks most naturally in Czech → express ideas in native language
-- AI trained predominantly on English → formalize and respond in English
+- AI presents findings in Czech → more fun, easier to detect when AI is "vyvedený z míry"
+- Technical formalization remains in English (documentation, code)
 - Both understand both languages → no information loss
-- Asymmetry optimizes for cognitive efficiency on both sides
+- Asymmetry optimizes for cognitive efficiency AND entertainment value
 
 **Benefits:**
 1. User expresses intuitions without translation overhead
@@ -36,9 +37,9 @@ This repository contains computational tools for various recreational and resear
 **Example:**
 ```
 User (Czech): "Strom se dá nakreslit, vstup analyzovat, geometricky zamířit k cíli"
-AI (English): "You're proposing direct geometric navigation in the SB tree.
-               Let me formalize this as a 'line-of-sight' computation strategy..."
-Documentation: "Geometric shortcut hypothesis" (English, preserving Czech metaphor)
+AI (Czech): "Zajímavá myšlenka! Zkusím to formalizovat jako 'vzdušná čára' v SB stromu..."
+AI (English in docs): "Geometric shortcut hypothesis" (preserving Czech metaphor)
+Documentation: English technical details, Czech insights preserved
 ```
 
 **Note:** This is NOT a rigid rule—code-switching is natural and acceptable. The framework optimizes for cognitive load, not linguistic purity.
