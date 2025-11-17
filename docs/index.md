@@ -1,13 +1,17 @@
 # Documentation Index
 
-**Generated:** 2025-11-17 09:54:33
+**Generated:** 2025-11-17 11:10:57
 
 ## Recent Documents (by commit time)
 
-- [Research Status Tracker](STATUS.md) *(2025-11-17)*
+- [Literature Search: Mod 8 Classification of Fundamental Pell Solutions](egypt-mod8-literature-search.md) *()*
+- [Handoff Document: Mod 8 Classification Proof Attempt](handoff-web-cli-mod8-proof.md) *()*
+- [Egypt.wl: Theoretical Implications and Novelty Assessment](egypt-theoretical-implications.md) *()*
+- [Egypt.wl Universal Pattern - Discovery Session](egypt-universal-pattern-discovery.md) *(2025-11-17)*
 - [Egypt.wl Unified Theorem: Complete Characterization](egypt-unified-theorem.md) *(2025-11-17)*
-- [Perfect Square Denominator Formula - Discovery](egypt-perfect-square-denominator.md) *(2025-11-17)*
 - [Proof of TOTAL-EVEN Divisibility Theorem](egypt-even-parity-proof.md) *(2025-11-17)*
+- [Research Status Tracker](STATUS.md) *(2025-11-17)*
+- [Perfect Square Denominator Formula - Discovery](egypt-perfect-square-denominator.md) *(2025-11-17)*
 - [Egypt.wl TOTAL-EVEN Pattern - Breakthrough Analysis](egypt-total-even-breakthrough.md) *(2025-11-17)*
 - [Egypt.wl k=EVEN Pattern - Rigorous Proof Attempt](egypt-even-k-rigorous-attempt.md) *(2025-11-16)*
 - [Mellin Puzzle Resolution - Rigorous Derivation](mellin-puzzle-resolution-rigorous.md) *(2025-11-16)*
