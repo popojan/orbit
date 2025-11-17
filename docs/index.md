@@ -1,11 +1,11 @@
 # Documentation Index
 
-**Generated:** 2025-11-17 11:37:12
+**Generated:** 2025-11-17 11:57:54
 
 ## Recent Documents (by commit time)
 
-- [pellc Rational Families - Novelty Analysis](pellc-rational-families-analysis.md) *()*
-- [pellc: Closed Form Exploration (Archived)](pellc-exploration-note.md) *()*
+- [pellc Rational Families - Novelty Analysis](pellc-rational-families-analysis.md) *(2025-11-17)*
+- [pellc: Closed Form Exploration (Archived)](pellc-exploration-note.md) *(2025-11-17)*
 - [Handoff Document: Mod 8 Classification Proof Attempt](handoff-web-cli-mod8-proof.md) *(2025-11-17)*
 - [Egypt.wl: Theoretical Implications and Novelty Assessment](egypt-theoretical-implications.md) *(2025-11-17)*
 - [Literature Search: Mod 8 Classification of Fundamental Pell Solutions](egypt-mod8-literature-search.md) *(2025-11-17)*
