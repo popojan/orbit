@@ -870,3 +870,143 @@ All three approaches:
 **Principle**: Radical honesty about what we know vs. what we conjecture.
 
 **Citation**: If using this research, cite with appropriate epistemic qualifiers (e.g., "numerically observed", "conjectured", "not peer-reviewed").
+
+---
+
+## Pell Prime Patterns: x₀ ≡ ±1 (mod p) Classification (Nov 17, 2025)
+
+**Status**: ⚠️ **CORRECTED** after adversarial self-review
+
+### Pattern (Empirically Observed)
+
+For fundamental Pell solution x₀² - py₀² = 1:
+
+```
+p ≡ 1 (mod 8)  ⟹  x₀ ≡ -1 (mod p)  [PROVEN]
+p ≡ 5 (mod 8)  ⟹  x₀ ≡ -1 (mod p)  [PROVEN]
+p ≡ 3 (mod 8)  ⟹  x₀ ≡ -1 (mod p)  [CONJECTURED, 311/311]
+p ≡ 7 (mod 8)  ⟹  x₀ ≡ +1 (mod p)  [CONJECTURED, 171/171]
+```
+
+### Proof Status
+
+| Case | Claim | Status | Method | Confidence |
+|------|-------|--------|--------|------------|
+| p ≡ 1,5 (mod 8) | x₀ ≡ -1 (mod p) | ✅ **PROVEN** | Negative Pell squaring | 100% |
+| p ≡ 3 (mod 8) | x₀ ≡ -1 (mod p) | 🔬 **CONJECTURED** | Empirical (311/311) | 99.9% empirical, 0% rigorous |
+| p ≡ 7 (mod 8) | x₀ ≡ +1 (mod p) | 🔬 **CONJECTURED** | Empirical (171/171) | 99.9% empirical, 0% rigorous |
+
+**Overall**: 2/4 cases proven rigorously, 2/4 strongly supported empirically but NOT proven.
+
+### Previous Claim (INCORRECT)
+
+**Previous documentation** claimed 3/4 cases proven. This was **WRONG**.
+
+**Error**: "Parity argument" for p ≡ 7 (mod 8) was **invalid**.
+
+**Claim**: "x₀ even and p odd ⟹ x₀ ≢ -1 (mod p)"
+
+**Why wrong**: If x₀ ≡ -1 (mod p), then x₀ = kp - 1. For x₀ even, we need kp odd, which requires k odd (since p odd). This is **possible** — no contradiction!
+
+**Example**: p = 7, k = 3, x₀ = 20 is even and x₀ ≡ -1 (mod 7). ✓
+
+### Corrected Assessment (Nov 17, 2025)
+
+**RIGOROUSLY PROVEN**:
+- ✅ p ≡ 1 (mod 4) → x₀ ≡ -1 (mod p)
+  - **Proof**: Negative Pell x₁² - py₁² = -1 exists, then x₀ = x₁² + py₁² ≡ -1 (mod p)
+
+**STRONGLY CONJECTURED** (empirical, not proven):
+- 🔬 p ≡ 3 (mod 8) → x₀ ≡ -1 (mod p)
+  - **Evidence**: 311/311 primes < 10000, 0 exceptions
+  - **Related**: p | (x₀ + 1) in 100% of cases
+  - **Related**: center norm = -2 in 168/168 cases
+  - **Related**: period ≡ 2 (mod 4) in 100% of cases
+
+- 🔬 p ≡ 7 (mod 8) → x₀ ≡ +1 (mod p)
+  - **Evidence**: 171/171 primes < 5000, 0 exceptions
+  - **Related**: center norm = +2 in 171/171 cases
+  - **Related**: period ≡ 0 (mod 4) in 100% of cases
+
+### Empirical Patterns (All 100% Verified)
+
+**x₀ mod 8 classification**:
+```
+p ≡ 1 (mod 8)  ⟹  x₀ ≡ 1 (mod 16)  [PROVEN]
+p ≡ 3 (mod 8)  ⟹  x₀ ≡ 2 (mod 4)   [PROVEN]
+p ≡ 7 (mod 8)  ⟹  x₀ ≡ 0 (mod 4)   [PROVEN], x₀ ≡ 0 (mod 8) [EMPIRICAL]
+```
+
+**Period mod 4 classification**:
+```
+p ≡ 1 (mod 8)  ⟹  period ≡ 1 or 3 (mod 4) [odd]  [95% proven via Legendre]
+p ≡ 3 (mod 8)  ⟹  period ≡ 2 (mod 4)              [95% proven via Legendre]
+p ≡ 7 (mod 8)  ⟹  period ≡ 0 (mod 4)              [95% proven via Legendre]
+```
+
+**CF center convergent norm pattern** (from parallel session):
+```
+p ≡ 3 (mod 8)  ⟹  center norm = -2  [168/168 = 100%]
+p ≡ 7 (mod 8)  ⟹  center norm = +2  [171/171 = 100%]
+```
+
+### Key Insights
+
+1. **x₀ mod 8 is more fundamental than x₀ mod p** (empirically)
+2. **Period mod 4 explains everything** via Legendre symbols (95% proven)
+3. **Parity alone does NOT determine x₀ mod p sign** (common misconception!)
+4. **Center convergent norm** correlates perfectly with x₀ mod p sign
+5. **Negative Pell existence** is THE rigorous proof for p ≡ 1 (mod 4)
+
+### Open Problems
+
+1. **Prove x₀ ≡ -1 (mod p) for p ≡ 3 (mod 8)** rigorously
+   - Approaches: genus theory, center convergent recurrence, contradiction
+2. **Prove x₀ ≡ +1 (mod p) for p ≡ 7 (mod 8)** rigorously
+   - Approaches: prove x₀ ≡ 0 (mod 8), use center norm = +2
+3. **Prove center norm = ±2 pattern** from CF theory
+4. **Generalize to composite D** (not just prime p)
+
+### Publication Recommendation
+
+**Hybrid paper** (Option C):
+- **Title**: "On Congruence Properties of Fundamental Pell Solutions"
+- **Content**:
+  - ✅ Rigorous proof: p ≡ 1 (mod 4) case
+  - 🔬 Strong conjectures: p ≡ 3,7 (mod 8) cases with empirical evidence
+  - ⏸️ Open problems: Complete proof for all cases
+- **Venue**: Fibonacci Quarterly, Integers, Experimental Mathematics
+- **Strength**: Honest about gaps, strong computational evidence
+
+### References
+
+- **Main document**: `docs/pell-prime-patterns-summary.md`
+- **Corrected status**: `docs/genus-theory-CORRECTED-status.md`
+- **Genus theory attempt**: `docs/genus-theory-proof-p13.md` (contains error!)
+- **Empirical verification**: 311 primes for p ≡ 3 (mod 8)
+- **CF center pattern**: `docs/cf-center-norm-pattern.md` (from main branch)
+
+### Confidence Assessment
+
+**What we can claim with HIGH confidence**:
+
+| Claim | Confidence | Type | Basis |
+|-------|-----------|------|-------|
+| p ≡ 1 (mod 4) → x₀ ≡ -1 (mod p) | 100% | Rigorous proof | Negative Pell squaring ✓ |
+| p ≡ 3 (mod 8) → x₀ ≡ -1 (mod p) | 99.9% | Empirical | 311/311 primes, no exceptions |
+| p ≡ 7 (mod 8) → x₀ ≡ +1 (mod p) | 99.9% | Empirical | 171/171 primes, no exceptions |
+| x₀ mod 8 patterns | 100% | Empirical | 300+ primes, no exceptions |
+| Period mod 4 patterns | 100% | Empirical | 300+ primes, no exceptions |
+| Period mod 4 theorem | 95% | Theoretical | Legendre symbols + halfway eqn |
+| Center norm = ±2 | 100% | Empirical | 168+171 = 339 primes total |
+
+**Lesson learned**: Distinguish rigorously proven vs empirically verified!
+
+**Adversarial discipline**: Always challenge "obvious" implications (like parity argument).
+
+---
+
+**Last updated**: November 17, 2025 (after adversarial self-review)
+**Corrected by**: Claude Code (self-review mode)
+**Critical error fixed**: Parity argument invalidation, confidence downgrade for p ≡ 7 case
+

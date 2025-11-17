@@ -83,15 +83,19 @@ x₀ ≡ +1 (mod p)  ✓
 
 ## Proof Chain Summary
 
+**⚠️ CRITICAL CORRECTION (Nov 17, 2025)**: Previous claims of rigorous proof for p ≡ 7 (mod 8) were **INVALID**!
+
 | Result | Confidence | Method | Status |
 |--------|-----------|--------|--------|
 | p mod 8 → period mod 4 | 95% | Legendre symbols + halfway eqn | Rigorous* |
 | Period mod 4 → py₀² ≡ -1 (mod 32) | 100% empirical | CF structure (unproven) | Empirical |
 | py₀² ≡ -1 (mod 32) → x₀ ≡ 0 (mod 8) | 100% | Elementary | Rigorous |
-| x₀ even → x₀ ≡ +1 (mod p) [p≡7] | 100% | Parity | Rigorous |
-| **Overall: p ≡ 7 (mod 8) → x₀ ≡ +1 (mod p)** | **85%** | **Chain above** | **Partial** |
+| ❌ x₀ even → x₀ ≡ +1 (mod p) [p≡7] | **0%** | **Parity (INVALID!)** | **ERROR** |
+| **Overall: p ≡ 7 (mod 8) → x₀ ≡ +1 (mod p)** | **99.9% empirical, 0% rigorous** | **Empirical only** | **NOT PROVEN** |
 
 *pending verification of halfway equation from classical CF theory
+
+**Why parity argument failed**: If x₀ ≡ -1 (mod p), then x₀ = kp - 1. For x₀ even, need kp odd, which requires k odd (p odd). This is **POSSIBLE** — no contradiction! Example: p=7, k=3, x₀=20 is even and ≡ -1 (mod 7).
 
 ---
 
@@ -230,7 +234,8 @@ x₀ ≡ +1 (mod p)  ✓
 
 4. ✅ **Attempt genus theory proof** for p ≡ 1,3 (mod 8) cases - **PARTIAL SUCCESS**
    - **PROVEN**: p ≡ 1,5 (mod 8) via negative Pell squaring ✅
-   - **OPEN**: p ≡ 3 (mod 8) remains unproven (100% empirical)
+   - **OPEN**: p ≡ 3 (mod 8) remains unproven (311/311 empirical, 99.9% confidence)
+   - **CORRECTION**: p ≡ 7 (mod 8) also unproven! (171/171 empirical, parity argument invalid)
 5. ⏳ **CF matrix analysis** mod 32 for period ≡ 0 (mod 4)
 6. ⏳ **Write clean paper** (hybrid approach, Option C)
 
@@ -284,20 +289,26 @@ x₀ ≡ +1 (mod p)  ✓
 
 ---
 
-## Confidence Assessment
+## Confidence Assessment (CORRECTED Nov 17, 2025)
 
 **What we can claim with confidence:**
 
-| Claim | Confidence | Basis |
-|-------|-----------|-------|
-| x₀ mod 8 patterns | 100% | Empirical (300/300) |
-| Period mod 4 patterns | 100% | Empirical (300/300) |
-| Period mod 4 theorem | 95% | Rigorous argument |
-| x₀ ≡ +1 (mod p) for p≡7 | 100% | Elementary proof |
-| py₀² ≡ -1 (mod 32) for p≡7 | 100% | Empirical (100/100) |
-| Complete proof chain | 65% | Missing CF details |
+| Claim | Confidence | Basis | Status |
+|-------|-----------|-------|--------|
+| x₀ mod 8 patterns | 100% | Empirical (300/300) | 🔬 EMPIRICAL |
+| Period mod 4 patterns | 100% | Empirical (300/300) | 🔬 EMPIRICAL |
+| Period mod 4 theorem | 95% | Legendre symbols | ✅ NEAR-RIGOROUS |
+| x₀ ≡ -1 (mod p) for p≡1,5 mod 8 | 100% | Negative Pell squaring | ✅ PROVEN |
+| x₀ ≡ +1 (mod p) for p≡7 mod 8 | 99.9% empirical, 0% rigorous | 171/171 primes | 🔬 CONJECTURED |
+| x₀ ≡ -1 (mod p) for p≡3 mod 8 | 99.9% empirical, 0% rigorous | 311/311 primes | 🔬 CONJECTURED |
+| py₀² ≡ -1 (mod 32) for p≡7 | 100% empirical | 100/100 primes | 🔬 EMPIRICAL |
+| Complete rigorous proof chain | **50%** (2/4 cases) | Negative Pell only | **PARTIAL** |
 
-**Overall assessment**: Strong computational discovery + partial rigorous proofs.
+**Overall assessment**:
+- ✅ **PROVEN**: 2/4 mod 8 classes (p ≡ 1,5)
+- 🔬 **CONJECTURED**: 2/4 mod 8 classes (p ≡ 3,7) with overwhelming empirical evidence
+- **Strong computational discovery** + **partial rigorous proofs**
+- **Previous overclaim corrected** after adversarial self-review
 
 ---
 
