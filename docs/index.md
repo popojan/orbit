@@ -1,12 +1,14 @@
 # Documentation Index
 
-**Generated:** 2025-11-17 11:10:57
+**Generated:** 2025-11-17 11:37:12
 
 ## Recent Documents (by commit time)
 
-- [Literature Search: Mod 8 Classification of Fundamental Pell Solutions](egypt-mod8-literature-search.md) *()*
-- [Handoff Document: Mod 8 Classification Proof Attempt](handoff-web-cli-mod8-proof.md) *()*
-- [Egypt.wl: Theoretical Implications and Novelty Assessment](egypt-theoretical-implications.md) *()*
+- [pellc Rational Families - Novelty Analysis](pellc-rational-families-analysis.md) *()*
+- [pellc: Closed Form Exploration (Archived)](pellc-exploration-note.md) *()*
+- [Handoff Document: Mod 8 Classification Proof Attempt](handoff-web-cli-mod8-proof.md) *(2025-11-17)*
+- [Egypt.wl: Theoretical Implications and Novelty Assessment](egypt-theoretical-implications.md) *(2025-11-17)*
+- [Literature Search: Mod 8 Classification of Fundamental Pell Solutions](egypt-mod8-literature-search.md) *(2025-11-17)*
 - [Egypt.wl Universal Pattern - Discovery Session](egypt-universal-pattern-discovery.md) *(2025-11-17)*
 - [Egypt.wl Unified Theorem: Complete Characterization](egypt-unified-theorem.md) *(2025-11-17)*
 - [Proof of TOTAL-EVEN Divisibility Theorem](egypt-even-parity-proof.md) *(2025-11-17)*

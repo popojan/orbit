@@ -334,6 +334,29 @@ If Web CLI session needs to hand back to CLI:
 
 ---
 
+## Related Exploration: pellc Rational Families (Archived)
+
+During this session, user shared `pellc` function - closed-form Chebyshev solution for generalized Diophantine equations.
+
+**Key finding**: pellc gives rational (x,y) solutions when discriminant nd² - 1 is a perfect square.
+
+**Result**: This is classical Pell theory (nx² - k²y² = 1 rational ⟺ k² perfect square), elegantly expressed via Chebyshev ratios.
+
+**Status**: Documented and archived as non-novel but elegant.
+
+**Files**:
+- `docs/pellc-exploration-note.md` - Main summary
+- `docs/pellc-rational-families-analysis.md` - Detailed analysis of parametric families
+- `scripts/test_pellc_simple.wl` - Basic verification
+- `scripts/test_pellc_rational.wl` - Rational argument testing
+- `scripts/analyze_pellc_perfect_squares.wl` - Perfect square discriminant analysis
+
+**Connection to Egypt.wl**: Weak. The (x+c) parameter creates (x+1)² factor, but no direct connection to TOTAL-EVEN divisibility established. That pattern comes from Chebyshev identity T_m(x) + T_{m+1}(x) = (x+1)·P_m(x).
+
+**Conclusion**: Interesting tangent, now archived. Focus remains on mod 8 classification proof.
+
+---
+
 **Files to read first:**
 1. This document (you're reading it!)
 2. `docs/egypt-unified-theorem.md` - see theorem statement
