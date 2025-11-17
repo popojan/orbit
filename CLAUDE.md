@@ -613,4 +613,4 @@ These guidelines apply to **formal mathematical papers** intended for publicatio
 ### Reference Example
 
 See `docs/primorial-proof-clean.tex` for the preferred style: rigorous, self-contained, no computational baggage.
-
+- always regenrate index.md before commiting using make generate-index

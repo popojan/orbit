@@ -1,9 +1,14 @@
 # Documentation Index
 
-**Generated:** 2025-11-17 11:57:54
+**Generated:** 2025-11-17 13:58:43
 
 ## Recent Documents (by commit time)
 
+- [Unified Regulator Theory: R(n) = f(n mod 8, M(n))](unified-regulator-theory.md) *(2025-11-17)*
+- [Research Status Tracker](STATUS.md) *(2025-11-17)*
+- [Mod 8 Stratification of Regulator R(p)](mod8-regulator-stratification.md) *(2025-11-17)*
+- [Egypt.wl ↔ Primal Forest Connection](egypt-primal-forest-connection.md) *(2025-11-17)*
+- [pellc & Egyptian Fractions: Fractal Research Directions](pellc-fractal-research-directions.md) *()*
 - [pellc Rational Families - Novelty Analysis](pellc-rational-families-analysis.md) *(2025-11-17)*
 - [pellc: Closed Form Exploration (Archived)](pellc-exploration-note.md) *(2025-11-17)*
 - [Handoff Document: Mod 8 Classification Proof Attempt](handoff-web-cli-mod8-proof.md) *(2025-11-17)*
@@ -12,7 +17,6 @@
 - [Egypt.wl Universal Pattern - Discovery Session](egypt-universal-pattern-discovery.md) *(2025-11-17)*
 - [Egypt.wl Unified Theorem: Complete Characterization](egypt-unified-theorem.md) *(2025-11-17)*
 - [Proof of TOTAL-EVEN Divisibility Theorem](egypt-even-parity-proof.md) *(2025-11-17)*
-- [Research Status Tracker](STATUS.md) *(2025-11-17)*
 - [Perfect Square Denominator Formula - Discovery](egypt-perfect-square-denominator.md) *(2025-11-17)*
 - [Egypt.wl TOTAL-EVEN Pattern - Breakthrough Analysis](egypt-total-even-breakthrough.md) *(2025-11-17)*
 - [Egypt.wl k=EVEN Pattern - Rigorous Proof Attempt](egypt-even-k-rigorous-attempt.md) *(2025-11-16)*
@@ -20,26 +24,26 @@
 - [Mellin Puzzle Resolution: (γ-1) vs (2γ-1)](mellin-puzzle-resolution.md) *(2025-11-16)*
 - [Diagonal Summation: Layer-by-Layer Analysis of L_M(s)](diagonal-summation-analysis.md) *(2025-11-16)*
 - [Diagonal Regularity Summation: Fourth Way to Compute L_M(s)](diagonal-regularity-summation.md) *(2025-11-16)*
-- [Pivot: Return to Primal Forest Geometry](pivot-to-primal-forest-geometry.md) *(2025-11-16)*
+- [Tracking Where Epsilon Disappeared](tracking-epsilon-loss.md) *(2025-11-16)*
 - [Theta Function Truncation: Practical vs Theoretical Considerations](theta-truncation-insight.md) *(2025-11-16)*
 - [Theta Function Transformation Test - Results](theta-transformation-test-results.md) *(2025-11-16)*
 - [Technika Odečtení Singularit - Vysvětlení](subtraction-technique-explained.md) *(2025-11-16)*
-- [Connection to Riemann's Seminal Paper (1859)](riemann-connection-analysis.md) *(2025-11-16)*
-- [Analytic Continuation via Integral Representation](analytic-continuation-via-integral.md) *(2025-11-16)*
-- [Tracking Where Epsilon Disappeared](tracking-epsilon-loss.md) *(2025-11-16)*
-- [From Primal Forest to L_M(s): Geometric Journey](primal-forest-to-L_M-geometry.md) *(2025-11-16)*
-- [Functional Equation for L_M(s): Systematic Hunt](functional-equation-systematic-hunt.md) *(2025-11-16)*
-- [C(s) Series: Connection to Primal Forest Floor Structure](C-series-primal-forest-connection.md) *(2025-11-16)*
-- [C(s) Series: Functional Properties](C-series-functional-properties.md) *(2025-11-16)*
-- [A = 1: Analytical Bound Attempt](A-coefficient-analytical-bound-attempt.md) *(2025-11-16)*
-- [A = 1: Summation by Parts Approach](A-coefficient-summation-by-parts.md) *(2025-11-16)*
-- [A = 1: Proof by Contradiction](A-coefficient-proof-by-contradiction.md) *(2025-11-16)*
-- [A = 1: Final Rigorous Argument](A-coefficient-final-push.md) *(2025-11-16)*
-- [Double Pole Coefficient A=1 - Rigorous Proof](double-pole-coefficient-proof.md) *(2025-11-16)*
-- [A = 1 Proof via C(s) Regularity Argument](A-coefficient-regularity-argument.md) *(2025-11-16)*
-- [Residue at s=1 - Rigorous Proof](residue-proof-rigorous.md) *(2025-11-16)*
 - [Schwarz Reflection Symmetry - Rigorous Proof](schwarz-symmetry-proof.md) *(2025-11-16)*
 - [Rigorous Foundation Review - Co OPRAVDU máme dokázáno](rigorous-foundation-review.md) *(2025-11-16)*
+- [Connection to Riemann's Seminal Paper (1859)](riemann-connection-analysis.md) *(2025-11-16)*
+- [Residue at s=1 - Rigorous Proof](residue-proof-rigorous.md) *(2025-11-16)*
+- [From Primal Forest to L_M(s): Geometric Journey](primal-forest-to-L_M-geometry.md) *(2025-11-16)*
+- [Pivot: Return to Primal Forest Geometry](pivot-to-primal-forest-geometry.md) *(2025-11-16)*
+- [Functional Equation for L_M(s): Systematic Hunt](functional-equation-systematic-hunt.md) *(2025-11-16)*
+- [Double Pole Coefficient A=1 - Rigorous Proof](double-pole-coefficient-proof.md) *(2025-11-16)*
+- [C(s) Series: Connection to Primal Forest Floor Structure](C-series-primal-forest-connection.md) *(2025-11-16)*
+- [C(s) Series: Functional Properties](C-series-functional-properties.md) *(2025-11-16)*
+- [Analytic Continuation via Integral Representation](analytic-continuation-via-integral.md) *(2025-11-16)*
+- [A = 1: Summation by Parts Approach](A-coefficient-summation-by-parts.md) *(2025-11-16)*
+- [A = 1 Proof via C(s) Regularity Argument](A-coefficient-regularity-argument.md) *(2025-11-16)*
+- [A = 1: Proof by Contradiction](A-coefficient-proof-by-contradiction.md) *(2025-11-16)*
+- [A = 1: Final Rigorous Argument](A-coefficient-final-push.md) *(2025-11-16)*
+- [A = 1: Analytical Bound Attempt](A-coefficient-analytical-bound-attempt.md) *(2025-11-16)*
 - [Theoretical Connection: M(n) and the Divisor Problem](theoretical_connection.md) *(2025-11-16)*
 - [Symbolic Derivation of Res[L_M, s=1]](symbolic_residue_derivation.md) *(2025-11-16)*
 - [Residuum L_M(s) v s=1](residue-analysis-s1.md) *(2025-11-16)*
@@ -67,7 +71,6 @@
 - [Functional Equation Derivation for L_M(s)](functional-equation-derivation.md) *(2025-11-16)*
 - [Functional Equation Discovery for L_M(s)](functional-equation-discovery.md) *(2025-11-16)*
 - [Wolfram Language: Business Case from Real Research](WOLFRAM_BUSINESS_CASE.md) *(2025-11-16)*
-- [PhD Application Roadmap v2 - Realistic Edition](phd-roadmap-v2.md) *(2025-11-16)*
 - [Strategy and Implications: What's Next?](next-steps-strategy.md) *(2025-11-15)*
 - [Evening Session Summary - November 15, 2025](session-summary-nov15-evening.md) *(2025-11-15)*
 - [Global Dirichlet Series for M(n)](global-dirichlet-series.md) *(2025-11-15)*
@@ -141,7 +144,6 @@
 - [The Role of the Alternating Sign: A Clarification](alternating-sign-clarification.md) *(2025-11-14)*
 - [](000-simplify-hint.md) *(2025-11-14)*
 - [Primorial Cancellation Proof: Machine-Readable Development Plan](proof-development-plan.md) *(2025-11-14)*
-- [PhD Application Roadmap](phd-roadmap.md) *(2025-11-14)*
 
 ---
 *Auto-generated by `make preview`*

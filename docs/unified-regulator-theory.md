@@ -254,19 +254,19 @@ Egypt.wl approximates √n using unit fractions:
 
 where (x,y) is fundamental Pell solution.
 
-**Quality** = 1/R(n) (inversely proportional)
+**Quality** ∝ R(n) (larger R → larger x,y → better x/y approximation to √n)
 
 **From unified theory**:
 ```
-Egypt.wl quality = 1/g(n mod 8) · 1/h(M(n))
+Egypt.wl quality ∝ R(n) (larger R → better approximation)
 
 High quality when:
-- n ≡ 3 (mod 8) [low baseline g]
-- High M(n) [low adjustment h]
+- n ≡ 1,5 (mod 8) [high baseline R]
+- Low M(n) [high adjustment R]
 ```
 
-**Optimal primes for Egypt.wl**: p ≡ 3 (mod 8)
-**Worst primes for Egypt.wl**: p ≡ 1,5 (mod 8)
+**Optimal primes for Egypt.wl**: p ≡ 1,5 (mod 8) - largest R, best √p approximation
+**Worst primes for Egypt.wl**: p ≡ 3 (mod 8) - smallest R, worst approximation
 
 ---
 
@@ -280,7 +280,37 @@ High quality when:
 
 **Test**: Recompute for n ≡ 2,4,6 (mod 8) using M_odd instead of M.
 
-**Expected**: Correlation improves from +0.03/-0.33 to ~-0.4.
+**Results** (tested Nov 17, 2025):
+- **n ≡ 2**: No improvement (M↔R = +0.034, M_odd↔R = -0.016)
+  - **Explanation**: 48% of cases have M_odd = 0 (form n = 2p for prime p)
+  - Structural anomaly: n ≡ 2 are always 2^1·(odd), half are 2·prime
+- **n ≡ 4**: **+16.9% improvement** (M↔R = -0.333, M_odd↔R = -0.390) ⭐
+- **n ≡ 6**: **+3.2% improvement** (M↔R = -0.338, M_odd↔R = -0.349) ⭐
+
+**Conclusion**: M_odd partially confirms hypothesis - works for n≡4,6 but not n≡2 due to structural constraint (too many cases with M_odd = 0).
+
+#### Deep Dive: The n ≡ 2 (mod 8) Anomaly
+
+**Structure**: All n ≡ 2 (mod 8) have form n = 2^1 · k where k is odd.
+
+**Key observation**: For n = 2p (p prime), we have:
+- M(2p) = 1 (only divisor 2)
+- M_odd(2p) = 0 (no odd divisors in range [2, √(2p)])
+- R(2p) varies based on p
+
+**Statistics** (n ≤ 200):
+- 48% of n ≡ 2 cases have M_odd = 0
+- Only 4% have M = M_odd
+- All have exactly 2^1 in factorization (unlike n≡4 which have 2^2, or n≡6 which have 2·3)
+
+**Why M_odd fails**: When half the data points have M_odd = 0 (constant), correlation breaks down. This is a **floor effect** - you can't correlate with a binary (0 vs >0) variable effectively.
+
+**Comparison to n ≡ 4, 6**:
+- n ≡ 4: Form 2^2·k or 2^k → more structure beyond just "×2"
+- n ≡ 6: Form 2·3·k → composite odd part
+- n ≡ 2: Form 2·k, often 2·prime → minimal structure
+
+**Implication**: The n ≡ 2 anomaly is **structural**, not a measurement artifact. It reflects the special status of semiprimes 2p in the regulator landscape.
 
 ### Prediction 2: Class Number Anti-correlates with R
 
@@ -363,11 +393,11 @@ def predict_pell_difficulty(n):
 
 ### 2. Egypt.wl Optimization
 
-**Best primes**: p ≡ 3 (mod 8) - lowest R, best √p approximation
+**Best primes**: p ≡ 1,5 (mod 8) - highest R, best √p approximation
 
-**Worst primes**: p ≡ 1,5 (mod 8) - highest R, worst approximation
+**Worst primes**: p ≡ 3 (mod 8) - lowest R, worst approximation
 
-**For composites**: Choose n ≡ 3 (mod 8) with high M(n).
+**For composites**: Choose n ≡ 1,5 (mod 8) with low M(n) for maximum R.
 
 ### 3. Primal Forest Navigation
 
