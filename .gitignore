@@ -33,3 +33,8 @@ verification_*.txt
 
 # Miscellaneous/scratch files
 misc/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
