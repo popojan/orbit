@@ -1,10 +1,25 @@
 # Documentation Index
 
-**Generated:** 2025-11-16 12:48:25
+**Generated:** 2025-11-17 11:57:54
 
 ## Recent Documents (by commit time)
 
-- [Research Status Tracker](STATUS.md) *(2025-11-16)*
+- [pellc Rational Families - Novelty Analysis](pellc-rational-families-analysis.md) *(2025-11-17)*
+- [pellc: Closed Form Exploration (Archived)](pellc-exploration-note.md) *(2025-11-17)*
+- [Handoff Document: Mod 8 Classification Proof Attempt](handoff-web-cli-mod8-proof.md) *(2025-11-17)*
+- [Egypt.wl: Theoretical Implications and Novelty Assessment](egypt-theoretical-implications.md) *(2025-11-17)*
+- [Literature Search: Mod 8 Classification of Fundamental Pell Solutions](egypt-mod8-literature-search.md) *(2025-11-17)*
+- [Egypt.wl Universal Pattern - Discovery Session](egypt-universal-pattern-discovery.md) *(2025-11-17)*
+- [Egypt.wl Unified Theorem: Complete Characterization](egypt-unified-theorem.md) *(2025-11-17)*
+- [Proof of TOTAL-EVEN Divisibility Theorem](egypt-even-parity-proof.md) *(2025-11-17)*
+- [Research Status Tracker](STATUS.md) *(2025-11-17)*
+- [Perfect Square Denominator Formula - Discovery](egypt-perfect-square-denominator.md) *(2025-11-17)*
+- [Egypt.wl TOTAL-EVEN Pattern - Breakthrough Analysis](egypt-total-even-breakthrough.md) *(2025-11-17)*
+- [Egypt.wl k=EVEN Pattern - Rigorous Proof Attempt](egypt-even-k-rigorous-attempt.md) *(2025-11-16)*
+- [Mellin Puzzle Resolution - Rigorous Derivation](mellin-puzzle-resolution-rigorous.md) *(2025-11-16)*
+- [Mellin Puzzle Resolution: (γ-1) vs (2γ-1)](mellin-puzzle-resolution.md) *(2025-11-16)*
+- [Diagonal Summation: Layer-by-Layer Analysis of L_M(s)](diagonal-summation-analysis.md) *(2025-11-16)*
+- [Diagonal Regularity Summation: Fourth Way to Compute L_M(s)](diagonal-regularity-summation.md) *(2025-11-16)*
 - [Pivot: Return to Primal Forest Geometry](pivot-to-primal-forest-geometry.md) *(2025-11-16)*
 - [Theta Function Truncation: Practical vs Theoretical Considerations](theta-truncation-insight.md) *(2025-11-16)*
 - [Theta Function Transformation Test - Results](theta-transformation-test-results.md) *(2025-11-16)*
