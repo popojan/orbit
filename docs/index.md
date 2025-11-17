@@ -1,10 +1,15 @@
 # Documentation Index
 
-**Generated:** 2025-11-17 18:36:18
+**Generated:** 2025-11-17 19:45:49
 
 ## Recent Documents (by commit time)
 
+- [Primal Forest × Stern-Brocot Tree Bridge](primal-forest-sb-tree-bridge.md) *(2025-11-17)*
+- [Geometric Shortcuts: "Vzdušná Čára" Research Dialogue](geometric-shortcut-dialogue.md) *(2025-11-17)*
+- [TODO: Next Session Continuation Tasks](TODO-next-session.md) *(2025-11-17)*
 - [Research Status Tracker](STATUS.md) *(2025-11-17)*
+- [Pell Equation Computational Speedup via Half-Period](pell-half-period-speedup.md) *(2025-11-17)*
+- [CF Center Convergent Pattern: Universal Structure](cf-center-norm-pattern.md) *(2025-11-17)*
 - [ML Approach to R(n) Prediction: Failed Experiment](regulator-ml-approach-failed.md) *(2025-11-17)*
 - [Reasoning Chain: Period Divisibility Discovery](reasoning-period-discovery.md) *(2025-11-17)*
 - [Universal Prime/Composite Bifurcation](prime-bifurcation-universal.md) *(2025-11-17)*
@@ -13,7 +18,6 @@
 - [Mersenne Primes & Pell Regulator Connection](mersenne-primes-regulator.md) *(2025-11-17)*
 - [Genus Theory Approach to Period Divisibility](genus-theory-period-connection.md) *(2025-11-17)*
 - [Class Number vs Period Test](class-number-period-test.md) *(2025-11-17)*
-- [CF Center Convergent Pattern: Norm ±2](cf-center-norm-pattern.md) *(2025-11-17)*
 - [Sum of Two Squares: The Missing Link](sum-of-squares-breakthrough.md) *(2025-11-17)*
 - [Complete Structure of Pell Regulator R(n)](regulator-structure-complete.md) *(2025-11-17)*
 - [Unified Regulator Theory: R(n) = f(n mod 8, M(n))](unified-regulator-theory.md) *(2025-11-17)*
