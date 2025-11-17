@@ -1,6 +1,6 @@
 # Research Status Tracker
 
-**Last Updated**: November 17, 2025 (evening session: CF period breakthrough)
+**Last Updated**: November 17, 2025 (evening session: CF center norm + Pell speedup via Wildberger SB tree)
 
 This document tracks the **epistemological status** of all claims in the Orbit project.
 
@@ -678,6 +678,74 @@ Interaction between internal and external structure may strengthen correlation.
 
 ---
 
+## CF Center Norm Pattern & Computational Speedup (Nov 17, 2025)
+
+**Status**: 🔬 **NUMERICALLY VERIFIED** (668 primes < 5000)
+**Inspiration**: Norman Wildberger's Stern-Brocot tree framework
+
+### Universal Pattern: Period mod 4 Determines Center Norm Sign
+
+**Discovery** (Nov 17, 2025, evening): Convergent at period/2 has norm determined by period mod 4:
+
+```
+Period mod 4 | Center norm
+-------------|-------------
+    0        | +2 (fixed magnitude)
+    1        | negative (varying magnitude)
+    2        | -2 (fixed magnitude)
+    3        | positive (varying magnitude)
+```
+
+**By prime class**:
+- **p ≡ 3 (mod 8)**: period ALWAYS ≡ 2 (mod 4) → norm = **-2** (168/168 = 100%)
+- **p ≡ 7 (mod 8)**: period ALWAYS ≡ 0 (mod 4) → norm = **+2** (171/171 = 100%)
+- **p ≡ 1 (mod 8)**: period ≡ 1 or 3 (mod 4) → norm < 0 or > 0 (82+79 = 161)
+- **p ≡ 5 (mod 8)**: period ≡ 1 or 3 (mod 4) → norm < 0 or > 0 (97+71 = 168)
+
+**Magnitude**:
+- p ≡ 3,7 (mod 8): FIXED at ±2
+- p ≡ 1,5 (mod 8): VARIES (small odd numbers, range observed: 1 to ~70)
+
+**Reference**: `scripts/test_all_mod8_center_norms.wl`, `docs/cf-center-norm-pattern.md`
+
+### Computational Speedup for Pell Solutions ⭐
+
+**Discovery** (Nov 17, 2025): For p ≡ 3,7 (mod 8), fundamental solution computable algebraically from half-period:
+
+```
+Half-period: (xh, yh) with norm ±2
+Fundamental: (xf, yf) = ((xh² + p·yh²)/2, xh·yh)
+```
+
+**Verification**: 24/24 primes < 200 (100% match)
+
+**Algorithm**:
+1. Compute CF until x² - py² = ±2 (half-period)
+2. Apply formula: fundamental = ((xh²+p·yh²)/2, xh·yh)
+3. **Speedup**: ~2× faster (O(period/2) instead of O(period))
+
+**Theoretical framework**: Wildberger's vision of irrationals as **algorithms** (paths in Stern-Brocot tree):
+- √p = infinite path in SB tree, encoded by CF expansion
+- Convergents = checkpoints along path
+- Half-period = structural checkpoint with norm ±2 (geometric invariant)
+- Algebraic construction = movement between tree levels
+- Connection to (2/p) Legendre symbol explains why ±2
+
+**User insight**: This discovery emerged from exploring Wildberger's SB tree framework as applied to Pell equations.
+
+**References**:
+- `scripts/test_half_fundamental_relation.wl` (algebraic relation verification)
+- `docs/pell-half-period-speedup.md` (full analysis with Wildberger context)
+
+**Confidence**: 99% (formula works, geometric interpretation via SB tree provides mechanism)
+
+**Open questions**:
+- Does formula extend to p ≡ 1,5 (mod 8)? (varying norms)
+- Quarter/eighth-period patterns for period ≡ 0 (mod 8)?
+- Rigorous proof via SB tree geometry?
+
+---
+
 ## CF Period Divisibility & R(p) Prediction (Nov 17, 2025)
 
 **Status**: 🔬 **NUMERICALLY VERIFIED** (619/619 primes tested, breakthrough session)
@@ -805,6 +873,8 @@ p=631:  actual=48, predicted=20  (58% error)
 | Primal forest | ✅ PROVEN* | 100% | ❌ NO | Write for publication |
 | **Mod 8 theorem (x₀ mod p)** | **🔬 NUMERICAL** | **99%** | **❌ NO** | **Genus theory proof** |
 | **Period divisibility (mod 4)** | **🔬 NUMERICAL** | **99%** | **❌ NO** | **Theoretical derivation** |
+| **CF center norm pattern** | **🔬 NUMERICAL** | **99%** | **❌ NO** | **SB tree geometric proof** |
+| **Pell speedup (p≡3,7 mod 8)** | **🔬 NUMERICAL** | **99%** | **❌ NO** | **Test on large primes** |
 | Distance-based R(n) model | ❌ FALSIFIED | N/A | N/A | Use CF algorithm directly |
 | Period magnitude prediction | ❌ FALSIFIED | N/A | N/A | Chaotic, no simple formula |
 

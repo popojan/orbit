@@ -1,21 +1,41 @@
-# CF Center Convergent Pattern: Norm ±2
+# CF Center Convergent Pattern: Universal Structure
 
 **Date**: 2025-11-17
-**Status**: 🔬 NUMERICAL (15 primes tested)
+**Status**: 🔬 NUMERICAL (668 primes < 5000 tested)
 **Novelty**: ⚠️ UNKNOWN (needs literature check)
 
 ---
 
-## Pattern
+## Universal Pattern
 
-**Convergent at period/2 ALWAYS has norm ±2:**
+**Convergent at period/2 has norm determined by period mod 4:**
 
 ```
-p ≡ 7 (mod 8): norm = +2  (7/7 tested)
-p ≡ 3 (mod 8): norm = -2  (8/8 tested)
+Period mod 4 | Center norm sign
+-------------|------------------
+    0        | +2 (fixed magnitude)
+    1        | negative (varying magnitude)
+    2        | -2 (fixed magnitude)
+    3        | positive (varying magnitude)
 ```
 
-**Sample:** 15 primes {3,7,11,19,23,31,43,47,59,67,71,79,83,103,107}
+## By Prime Class
+
+### p ≡ 3 (mod 8): [168/168 primes]
+- Period ALWAYS ≡ 2 (mod 4)
+- Norm = **-2** (universal, 100%)
+
+### p ≡ 7 (mod 8): [171/171 primes]
+- Period ALWAYS ≡ 0 (mod 4)
+- Norm = **+2** (universal, 100%)
+
+### p ≡ 1 (mod 8): [161/161 primes]
+- Period ≡ 1 (mod 4): norm < 0 [82/82, range: -63 to -1]
+- Period ≡ 3 (mod 4): norm > 0 [79/79, range: +3 to +67]
+
+### p ≡ 5 (mod 8): [168/168 primes]
+- Period ≡ 1 (mod 4): norm < 0 [97/97, range: -69 to -1]
+- Period ≡ 3 (mod 4): norm > 0 [71/71, range: +3 to +69]
 
 ---
 
@@ -49,30 +69,38 @@ p ≡ 3 (mod 8): norm = -2  (8/8 tested)
 
 ---
 
-## Computational Implications (if novel)
+## Key Insights
 
-### 1. Early Period Detection
-```
-Instead of:  Compute CF until x²-py²=1 found
-Do:          Compute CF until x²-py²=±2 found
-             → period = 2 × current_index
-```
+### 1. Sign Rule (Universal)
+**Sign of center norm determined ONLY by period mod 4:**
+- Even period mod: |norm| = 2 (fixed)
+- Odd period mod: |norm| varies (small odd numbers)
 
-**Efficiency:** 2× faster period detection.
+### 2. Magnitude Rule
+**p ≡ 3,7 (mod 8):** Magnitude = 2 (universal)
+**p ≡ 1,5 (mod 8):** Magnitude varies (range observed: 1 to ~70)
 
-### 2. Determine p mod 8 from CF
+### 3. Connection Chain
 ```
-If find norm = +2 first → p ≡ 7 (mod 8)
-If find norm = -2 first → p ≡ 3 (mod 8)
-```
-
-### 3. Recursive Structure?
-```
-Period divisible by 4 → quarter-period has pattern?
-Period divisible by 8 → eighth-period has pattern?
+p mod 8 → period mod 4 → center norm sign
+         (deterministic   (universal rule)
+          for p≡3,7)
 ```
 
-**Binary decomposition of CF expansion?**
+## Open Questions
+
+### Q1: Magnitude Distribution (p≡1,5 mod 8)
+- Why small odd numbers?
+- Relation to p or period length?
+- Upper bound as function of p?
+
+### Q2: Period Determination (p≡1,5 mod 8)
+- What determines period ≡ 1 vs 3 (mod 4)?
+- Connection to splitting of primes in Q(√p)?
+
+### Q3: Computational Use
+- Early period detection (2× faster for p≡3,7)
+- Determine p mod 8 from CF alone
 
 ---
 
