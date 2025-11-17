@@ -1,13 +1,14 @@
 # Documentation Index
 
-**Generated:** 2025-11-17 08:57:36
+**Generated:** 2025-11-17 09:23:09
 
 ## Recent Documents (by commit time)
 
-- [Proof of TOTAL-EVEN Divisibility Theorem](egypt-even-parity-proof.md) *()*
-- [Egypt.wl TOTAL-EVEN Pattern - Breakthrough Analysis](egypt-total-even-breakthrough.md) *()*
+- [Egypt.wl Unified Theorem: Complete Characterization](egypt-unified-theorem.md) *()*
+- [Research Status Tracker](STATUS.md) *(2025-11-17)*
+- [Egypt.wl TOTAL-EVEN Pattern - Breakthrough Analysis](egypt-total-even-breakthrough.md) *(2025-11-17)*
+- [Proof of TOTAL-EVEN Divisibility Theorem](egypt-even-parity-proof.md) *(2025-11-17)*
 - [Egypt.wl k=EVEN Pattern - Rigorous Proof Attempt](egypt-even-k-rigorous-attempt.md) *(2025-11-16)*
-- [Research Status Tracker](STATUS.md) *(2025-11-16)*
 - [Mellin Puzzle Resolution - Rigorous Derivation](mellin-puzzle-resolution-rigorous.md) *(2025-11-16)*
 - [Mellin Puzzle Resolution: (γ-1) vs (2γ-1)](mellin-puzzle-resolution.md) *(2025-11-16)*
 - [Diagonal Summation: Layer-by-Layer Analysis of L_M(s)](diagonal-summation-analysis.md) *(2025-11-16)*
