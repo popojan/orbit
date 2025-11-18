@@ -205,7 +205,7 @@ if __name__ == "__main__":
     # Parameters
     p = 3.0      # Power for p-norm (3 is balanced)
     eps = 1.0    # Regularization
-    s_range = np.arange(0.8, 3.1, 0.1)
+    s_range = np.arange(0.5, 5.1, 0.1)  # Extended range to capture full U-shape
 
     # Test for n = 97 (prime)
     print("=" * 70)
