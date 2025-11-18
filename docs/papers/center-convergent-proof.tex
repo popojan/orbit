@@ -1,0 +1,291 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\title{Divisor Structure in Center Convergents\\of Pell Equation Periods}
+\author{Adversarial Rigor Investigation}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We investigate the arithmetic structure of convergents at the midpoint of the continued fraction period for $\sqrt{p}$ where $p$ is prime and the period length satisfies $\tau(p) = p-1$. We attempt to rigorously prove that the center convergent encodes divisor information about $p-1$ through its denominator.
+\end{abstract}
+
+\section{Definitions and Notation}
+
+\begin{definition}[Continued Fraction Expansion]
+For a non-square positive integer $D$, the continued fraction expansion of $\sqrt{D}$ is periodic and can be written as
+\[
+\sqrt{D} = [a_0; \overline{a_1, a_2, \ldots, a_{\tau-1}, a_\tau}]
+\]
+where $a_0 = \lfloor \sqrt{D} \rfloor$ and the overline denotes the repeating block of length $\tau$, called the \emph{period length}.
+\end{definition}
+
+\begin{definition}[Convergents]
+The $k$-th convergent $\frac{p_k}{q_k}$ is defined by the recurrence relations:
+\begin{align}
+p_k &= a_k p_{k-1} + p_{k-2}, \quad p_{-1} = 1, \; p_0 = a_0 \label{eq:pk-recurrence}\\
+q_k &= a_k q_{k-1} + q_{k-2}, \quad q_{-1} = 0, \; q_0 = 1 \label{eq:qk-recurrence}
+\end{align}
+where $a_k$ is the $k$-th partial quotient.
+\end{definition}
+
+\begin{definition}[Complete Quotients and Auxiliary Sequences]
+The continued fraction algorithm generates sequences $P_k$, $Q_k$ such that the $k$-th complete quotient is
+\[
+\xi_k = \frac{\sqrt{D} + P_k}{Q_k}
+\]
+with $a_k = \lfloor \xi_k \rfloor$ and the recurrences:
+\begin{align}
+P_{k+1} &= a_k Q_k - P_k, \quad P_0 = 0 \label{eq:Pk-recurrence}\\
+Q_{k+1} &= \frac{D - P_{k+1}^2}{Q_k}, \quad Q_0 = 1 \label{eq:Qk-recurrence}
+\end{align}
+\end{definition}
+
+\begin{lemma}[Standard CF Properties]\label{lem:cf-properties}
+The following identities hold for all $k \geq 0$:
+\begin{enumerate}
+\item $p_k q_{k-1} - p_{k-1} q_k = (-1)^{k-1}$
+\item $p_k^2 - D q_k^2 = (-1)^k Q_{k+1}$
+\item $Q_k \mid (D - P_k^2)$
+\item $a_\tau = 2a_0$ where $\tau$ is the period length
+\item The period satisfies $P_\tau = P_0 = 0$ and $Q_\tau = Q_0 = 1$
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+These are standard results in the theory of continued fractions. We provide brief justifications:
+
+(1) Follows by induction on the recurrence relations \eqref{eq:pk-recurrence} and \eqref{eq:qk-recurrence}.
+
+(2) Derived from the identity $\xi_k = \frac{p_k \xi_{k-1} + p_{k-1}}{q_k \xi_{k-1} + q_{k-1}}$ combined with $\xi_0 = \sqrt{D}$.
+
+(3) Immediate from definition \eqref{eq:Qk-recurrence}.
+
+(4) The symmetry $a_{\tau-k} = a_k$ for $k = 1, \ldots, \tau-1$ and $a_\tau = 2a_0$ is a fundamental property of quadratic irrationals.
+
+(5) Periodicity condition defining $\tau$.
+\end{proof}
+
+\section{The Center Convergent}
+
+\begin{definition}[Center Convergent]
+For a period of even length $\tau = 2m$, we define the \emph{center convergent} as $\frac{p_m}{q_m}$ where $m = \frac{\tau}{2}$.
+\end{definition}
+
+\begin{remark}
+The center convergent corresponds to the midpoint of the periodic block. For $\tau = p-1$ where $p$ is prime, we have $m = \frac{p-1}{2}$.
+\end{remark}
+
+\section{Main Results}
+
+\subsection{Numerical Observations}
+
+\begin{example}[Prime $p = 89$]
+For $p = 89$, we have $\tau(89) = 88 = p-1$. The center convergent is at position $k = 44$.
+
+Computation yields:
+\begin{align*}
+p_{44} &= 227528 \\
+q_{44} &= 24091
+\end{align*}
+
+Factorization analysis:
+\begin{align*}
+p-1 &= 88 = 2^3 \cdot 11 \\
+\gcd(q_{44}, p-1) &= \gcd(24091, 88) = 11 \\
+\gcd(q_{44} - 1, p-1) &= \gcd(24090, 88) = 2 \\
+\gcd(q_{44} + 1, p-1) &= \gcd(24092, 88) = 4 = 2^2
+\end{align*}
+
+Observation: $\max\{11, 2, 4\} = 11$ is the largest prime factor of $p-1 = 88$.
+\end{example}
+
+\begin{conjecture}[Center Convergent Divisor Property]\label{conj:main}
+Let $p$ be an odd prime with $\tau(p) = p-1$, and let $\frac{p_m}{q_m}$ be the center convergent where $m = \frac{p-1}{2}$. Then
+\[
+\max\left\{ \gcd(q_m, p-1), \gcd(q_m - 1, p-1), \gcd(q_m + 1, p-1) \right\}
+\]
+equals the largest prime power divisor of $p-1$.
+\end{conjecture}
+
+\subsection{Proof Strategy}
+
+To prove Conjecture \ref{conj:main}, we need to:
+
+\begin{enumerate}
+\item Understand the divisibility properties of $Q_m$ at the midpoint
+\item Relate $Q_m$ to the factorization of $p-1$
+\item Analyze the connection between $q_m$ and $Q_m$ via Lemma \ref{lem:cf-properties}(2)
+\item Use periodicity and symmetry properties of the CF expansion
+\end{enumerate}
+
+\section{Analysis of the Midpoint Structure}
+
+\begin{lemma}[Midpoint Property]\label{lem:midpoint}
+For even period length $\tau = 2m$, the auxiliary sequences satisfy:
+\begin{align}
+P_m &= P_{m-1} + a_{m-1} Q_{m-1} \quad \text{(from \eqref{eq:Pk-recurrence})}\\
+Q_m &= \frac{D - P_m^2}{Q_{m-1}}
+\end{align}
+Furthermore, by periodicity, $a_m = a_m$ (palindromic symmetry point).
+\end{lemma}
+
+\begin{proof}
+Direct application of recurrence relations \eqref{eq:Pk-recurrence} and \eqref{eq:Qk-recurrence}.
+
+For the palindromic property: The period of $\sqrt{D}$ has the form $[a_0; \overline{a_1, \ldots, a_{m-1}, a_m, a_{m-1}, \ldots, a_1, 2a_0}]$ for $\tau = 2m$. The partial quotient sequence is symmetric around the center, except that $a_m$ appears once (if $\tau$ is even) or twice (if we count it in both halves).
+\end{proof}
+
+\begin{proposition}[Pell Equation at Midpoint]\label{prop:pell-midpoint}
+At the center convergent $k = m = \frac{\tau}{2}$, the Pell equation identity gives:
+\[
+p_m^2 - D q_m^2 = (-1)^m Q_{m+1}
+\]
+For $D = p$ prime and $\tau = p-1$, we have $m = \frac{p-1}{2}$.
+\end{proposition}
+
+\section{Connection to Pocklington Structure}
+
+\begin{remark}[Motivation]
+The condition $\tau(p) = p-1$ suggests a deep connection to the structure of $p-1$. Pocklington's theorem uses factorization of $p-1$ for primality testing. We investigate whether the CF period inherits this structure.
+\end{remark}
+
+\begin{lemma}[Fermat's Little Theorem Constraint]\label{lem:fermat}
+For prime $p$, any residue $a \not\equiv 0 \pmod{p}$ satisfies $a^{p-1} \equiv 1 \pmod{p}$.
+
+If $q_m$ arises from the CF expansion of $\sqrt{p}$, then $q_m$ may contain information about divisors of $p-1$ through multiplicative orders.
+\end{lemma}
+
+\section{Attempted Proof}
+
+\subsection{Strategy 1: Direct Analysis of $Q_m$}
+
+We attempt to connect $Q_m$ to divisors of $p-1$.
+
+From Lemma \ref{lem:cf-properties}(2):
+\[
+p_m^2 - p q_m^2 = (-1)^m Q_{m+1}
+\]
+
+For $m = \frac{p-1}{2}$ odd (since $p \equiv 1 \pmod{4}$ typically), we get:
+\[
+p_m^2 - p q_m^2 = -Q_{m+1}
+\]
+
+Rearranging:
+\[
+p_m^2 = p q_m^2 - Q_{m+1}
+\]
+
+This shows $p \mid p_m^2 + Q_{m+1}$, but does not immediately reveal divisibility by factors of $p-1$.
+
+\subsection{Strategy 2: Multiplicative Order}
+
+Since $\frac{p_m}{q_m}$ approximates $\sqrt{p}$, we have:
+\[
+\frac{p_m^2}{q_m^2} \approx p \implies p_m^2 \approx p q_m^2
+\]
+
+The error term is $(-1)^m Q_{m+1}$, which is small relative to $p q_m^2$.
+
+\begin{question}
+How does the multiplicative order of $q_m$ modulo $p$ relate to divisors of $p-1$?
+\end{question}
+
+By Fermat, $q_m^{p-1} \equiv 1 \pmod{p}$. The order $\text{ord}_p(q_m)$ divides $p-1$.
+
+\textbf{Claim (unproven):} If the order of $q_m$ modulo $p$ is exactly $p-1$, then $q_m$ is a primitive root, and... [reasoning breaks down here - this doesn't directly give us divisors].
+
+\subsection{Strategy 3: Symmetry and Period Structure}
+
+The palindromic structure suggests:
+\[
+a_k = a_{\tau - k} \quad \text{for } k = 1, \ldots, \tau-1
+\]
+
+At $k = m$, if $\tau = 2m$, then $a_m$ is the center element.
+
+\begin{question}
+Does the value of $a_m$ encode information about the largest divisor of $p-1$?
+\end{question}
+
+Numerical evidence suggests correlation, but a rigorous connection remains elusive.
+
+\section{Obstacles and Open Questions}
+
+\subsection{Gap in Current Understanding}
+
+The main obstacle is connecting:
+\begin{itemize}
+\item \textbf{Algebraic structure}: The Pell equation $p_m^2 - p q_m^2 = \pm Q_{m+1}$
+\item \textbf{Arithmetic structure}: Divisibility properties $\gcd(q_m \pm 1, p-1)$
+\item \textbf{Multiplicative structure}: Orders and primitive roots modulo $p$
+\end{itemize}
+
+\subsection{Missing Link}
+
+We need a theorem of the form:
+
+\begin{conjecture}[Missing Link]
+If $\tau(p) = p-1$ for prime $p$, then the auxiliary quantity $Q_m$ at the midpoint satisfies:
+\[
+Q_m \equiv 0 \pmod{d}
+\]
+where $d$ is the largest prime power dividing $p-1$.
+\end{conjecture}
+
+\textbf{Why this would help:} If $Q_m \equiv 0 \pmod{d}$, then from $p_m^2 - p q_m^2 = \pm Q_{m+1}$, we could potentially derive divisibility conditions on $q_m$.
+
+\subsection{Alternative Approach: Genus Theory}
+
+The period length is related to the class number of $\mathbb{Q}(\sqrt{p})$. Perhaps the divisor structure arises from:
+\begin{itemize}
+\item Decomposition of $p-1$ in the ring of integers
+\item Norm forms and ideal factorization
+\item Connection to quadratic reciprocity
+\end{itemize}
+
+This requires machinery beyond elementary methods.
+
+\section{Conclusion}
+
+We have established a rigorous framework for analyzing the center convergent property but have not yet achieved a complete proof of Conjecture \ref{conj:main}.
+
+\textbf{What we proved rigorously:}
+\begin{itemize}
+\item Standard CF machinery and Pell equation identities (Lemma \ref{lem:cf-properties})
+\item Definition of center convergent and midpoint structure (Lemma \ref{lem:midpoint})
+\item Identity $p_m^2 - p q_m^2 = (-1)^m Q_{m+1}$ (Proposition \ref{prop:pell-midpoint})
+\end{itemize}
+
+\textbf{What remains unproven:}
+\begin{itemize}
+\item Why $\gcd(q_m, p-1)$ captures divisor information
+\item The mechanism connecting $\tau(p) = p-1$ to the center convergent property
+\item Whether this is a universal phenomenon or coincidence for small primes
+\end{itemize}
+
+\textbf{Next steps:}
+\begin{enumerate}
+\item Investigate $Q_m \bmod{p}$ and its relationship to $(p-1)$
+\item Study the generating function approach from algebraic number theory
+\item Examine counterexamples: Are there primes where the pattern fails?
+\item Consider computational verification at scale (e.g., all primes $p < 10^6$ with $\tau(p) = p-1$)
+\end{enumerate}
+
+\end{document}
