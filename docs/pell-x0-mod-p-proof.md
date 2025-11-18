@@ -20,17 +20,22 @@ x₀ ≡ +1 (mod p)
 
 ### Foundation (Numerical)
 
-From `cf-center-norm-pattern.md` (668/668 primes tested):
+From `cf-center-norm-pattern.md`:
 
-**Central Convergent Theorem** (NUMERICAL):
-> For p ≡ 7 (mod 8), the convergent at half-period of CF(√p) has norm +2.
+**CF Norm +2 Position Theorem** (NUMERICAL):
+> For p ≡ 7 (mod 8) with CF period τ, the convergent at position k = τ/2 - 1 has norm +2.
 
 That is, there exists (xₕ, yₕ) such that:
 ```
 xₕ² - p·yₕ² = +2
 ```
 
-**Status**: No rigorous proof, but 100% numerical verification for all tested primes p ≡ 7 (mod 8).
+**Precision**: The convergent with norm +2 appears at position τ/2 - 1, which is **before** the center of the period (τ/2), not exactly at the center.
+
+**Status**: No rigorous proof, but 100% numerical verification:
+- Original test: 668/668 primes
+- Extended verification: **308/308 primes p ≡ 7 (mod 8) < 10000** (Nov 18, 2025)
+- Zero counterexamples found
 
 ---
 
