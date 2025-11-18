@@ -313,6 +313,143 @@ $$\xi(s) = \xi(1-s) \quad \text{kde } \xi(s) = \frac{1}{2}s(s-1)\pi^{-s/2}\Gamma
 
 ---
 
+## U-Shape jako Signature Prvočíselnosti
+
+### Klíčové Pozorování (Nov 18, 2025 večer)
+
+Při prohlížení grafů z Varianty B (local-local comparison) jsme objevili **fundamentální rozdíl** mezi primes a composites:
+
+**Pro prvočísla (n = 97):**
+- F_n(s) vykazuje **U-shape** s minimem kolem **s* ≈ 2.3**
+- Existuje "optimální exponent" kde metrika dosahuje minima
+- Není monotónní!
+
+**Pro kompozitní (n = 96):**
+- F_n(s) je **monotónně klesající**
+- Žádná U-shape, žádné lokální minimum
+- Podobné chování jako ζ_n(s)
+
+### Teoretické Vysvětlení
+
+**Hypotéza**: U-shape vzniká z absence exact hitu.
+
+**Pro prvočíslo p:**
+- Neexistuje žádná kombinace (d, k) kde p = kd + d² (exact hit)
+- Všechny vzdálenosti jsou **kladné**
+- Pro malá s: penalizujeme velké vzdálenosti → větší F_p(s)
+- Pro velká s: penalizujeme malé vzdálenosti (které přesto existují) → větší F_p(s)
+- **Sweet spot s* balancuje obě extrémy → minimum!**
+
+**Pro kompozitní c = pq:**
+- Existuje exact hit: d = p, k = q - p - 1 → vzdálenost = 0
+- Pro malá s: [0]^(-s) nebo soft-min ≈ ε^(-s) → velký příspěvek
+- Pro rostoucí s: tento člen **exploduje** (ε^(-s) → ∞)
+- **Monotónní růst dominantního členu → žádné minimum!**
+
+**Geometricky**:
+- Prime: "daleko od všech bodů" → geometricky bohatá struktura → U-shape
+- Composite: "exact hit existuje" → jeden člen dominuje → monotónní
+
+### Důsledky
+
+**1. U-shape jako primality test?**
+
+Potenciální charakterizace:
+$$n \text{ je prvočíslo} \iff F_n(s) \text{ má lokální minimum pro nějaké } s^* \in (0, \infty)$$
+
+**Výhody oproti "F_p > F_c":**
+- Kvalitativní rozdíl (tvar křivky) místo kvantitativního (hodnota)
+- Robustnější vůči variance
+- Geometricky intuitivní
+
+**Otázky k testování:**
+- Platí to pro **všechna** prvočísla?
+- Existují **výjimky** (composites s U-shape, primes bez U-shape)?
+- Jak se mění s*(p) jako funkce p?
+
+**2. Optimální exponent s*(n)**
+
+Pro prvočísla můžeme definovat:
+$$s^*(p) = \arg\min_{s>0} F_p(s)$$
+
+**Možné studie:**
+- Distribuce s*(p) přes mnoho primes
+- Korelace s velikostí p? (s*(p) ~ log p? ~ √p?)
+- Korelace s gap p_{k+1} - p_k?
+- Teoretický výpočet s* z geometrie Primal Forest?
+
+**3. Intrinsic scale**
+
+U-shape znamená, že **geometrie má vnitřní měřítko**:
+- Pro každé n existuje "přirozený exponent" kde struktura je nejviditelnější
+- Monotónní funkce (ζ_n, klasické aritmetické funkce) toto nemají
+- Primal Forest kóduje **víc informace** než jen divisory!
+
+### Numerické Hodnoty
+
+Z local-local grafů:
+
+| n | Typ | s* (minimum) | F_n(s*) | Chování |
+|---|-----|--------------|---------|---------|
+| 97 | prime | **≈ 2.3** | ≈ 6.36 | **U-shape** ✓ |
+| 96 | composite | n/a | klesá | monotónní ✗ |
+
+**Pozorování**: Pro n = 96 minimum je "v nekonečnu" → triviální.
+
+### Systematická Studie (Návrh)
+
+**Co udělat:**
+
+1. **Compute s*(n) pro n ∈ [2, 1000]:**
+   - Najít minimum F_n(s) numericky
+   - Klasifikovat: "má U-shape" (minimum existuje) vs. "monotónní"
+
+2. **Korelace s prvočíselností:**
+   - Precision/Recall: má U-shape → je prime?
+   - False positives: composites s U-shape
+   - False negatives: primes bez U-shape
+
+3. **Analýza s*(p) distribuce:**
+   - Průměr, medián, rozptyl
+   - Závislost na velikosti prime
+   - Outliers a jejich vysvětlení
+
+4. **Vizualizace:**
+   - Scatter plot: n vs. s*(n)
+   - Color-coded: primes vs. composites
+   - Heatmap: F_n(s) v (n, s) prostoru
+
+### Porovnání s Jinými Metrikami
+
+**Klasické metriky prvočíselnosti:**
+- Divisor count τ(n): diskrétní, ne spojitá
+- Omega funkce Ω(n): počítá faktory, ne geometrii
+- Von Mangoldt Λ(n): binární (prime power vs. 0)
+
+**F_n(s) s U-shape:**
+- **Spojitá** funkce s (lze derivovat, hledat extrémy)
+- **Geometrická** (závisí na struktuře Primal Forest)
+- **Bohatší informace** než binární klasifikace
+
+**Analogie**: Je to jako rozdíl mezi:
+- "Je n prvočíslo?" (binární otázka)
+- "Jaká je geometrická komplexita n?" (spojitá metrika)
+
+### Spekulativní Zobecnění
+
+**Hypotéza**: s*(n) kóduje "faktorizační obtížnost":
+- **Primes**: s* ≈ 2-3 (střední obtížnost)
+- **Semiprimes** (pq kde p ≈ q): s* může být vyšší?
+- **Highly composites** (2^a × 3^b): s* může být nižší?
+
+**Testovat**: Koreluje s*(n) s:
+- Počtem divisorů τ(n)?
+- Sumou divisorů σ(n)?
+- Largest prime factor of n?
+- Smoothness (B-smooth numbers)?
+
+---
+
 ## Reference
 
 **Související dokumenty**:
