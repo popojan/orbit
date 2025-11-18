@@ -1,8 +1,10 @@
 # Proof: d[τ/2] = 2 for p ≡ 7 (mod 8)
 
 **Date**: 2025-11-18
-**Status**: ✅ PARTIAL PROOF (τ = 4 cases proven, general case empirical)
+**Status**: 🔬 LIKELY CLASSICAL RESULT (applies to all even periods, not just p ≡ 7 mod 8)
 **Authors**: Jan Popelka, Claude Code
+
+**⚠️ IMPORTANT**: This may be a well-known result in CF theory that we are rediscovering!
 
 ---
 
@@ -143,19 +145,89 @@ For all tested cases, d-sequence is **palindromic** around τ/2:
 
 ---
 
+## Key Identity (General Case)
+
+### Universal Pattern
+
+**Discovery** (Nov 18, 2025): For ALL p ≡ 7 (mod 8), regardless of period τ:
+
+```
+p - m[τ/2]² = 2·d[τ/2-1]
+```
+
+**Empirical verification**: 14/14 primes tested (various periods τ = 4, 8, 12, 16, 20)
+
+**Examples**:
+
+| p   | τ  | m[τ/2] | d[τ/2-1] | p - m² | 2d  | Match |
+|-----|-----|--------|----------|--------|-----|-------|
+| 7   | 4   | 1      | 3        | 6      | 6   | ✓     |
+| 31  | 8   | 5      | 3        | 6      | 6   | ✓     |
+| 71  | 8   | 7      | 11       | 22     | 22  | ✓     |
+| 103 | 12  | 9      | 11       | 22     | 22  | ✓     |
+| 127 | 12  | 11     | 3        | 6      | 6   | ✓     |
+| 191 | 16  | 13     | 11       | 22     | 22  | ✓     |
+
+**Factorization pattern**: p - m² is always 2 × (small integer)
+
+**Consequence**: If we can show that p - m² = 2·d (which empirically holds), then by recurrence:
+
+```
+d[τ/2] = (p - m[τ/2]²) / d[τ/2-1]
+       = 2·d[τ/2-1] / d[τ/2-1]
+       = 2  ✓
+```
+
+**Status**: This identity is STRONGER than just d[τ/2] = 2 — it gives us the exact relationship between p, m, and d at the midpoint.
+
+---
+
+## Generalization: All Even Periods
+
+### Critical Discovery (Nov 18, 2025, evening)
+
+**IMPORTANT**: d[τ/2] = 2 is **NOT** specific to p ≡ 7 (mod 8)!
+
+**Test results**:
+```
+p ≡ 3 (mod 8): d[τ/2] = 2 for 10/10 tested (100%)
+p ≡ 7 (mod 8): d[τ/2] = 2 for 8/8 tested (100%)
+```
+
+**Hypothesis**: For ALL primes p ≡ 3 (mod 4) (which have even period):
+```
+d[τ/2] = 2
+```
+
+This is likely a **classical result** in continued fraction theory for quadratic irrationals with even period.
+
+**Implication for our work**:
+- We may be rediscovering known CF theory
+- But: Application to Pell equation x₀ mod p might still be novel
+- Connection: period parity + palindrome → d[τ/2] = 2 → norm ±2 → x₀ mod p
+
+**Literature search needed**: Check classical texts (Perron, Rockett-Szüsz) for:
+- "d value at center of period"
+- "palindromic CF auxiliary sequence"
+- "norm ±2 for even period"
+
+---
+
 ## What Remains Unproven
 
 ### General Algebraic Proof
 
-**Open problem**: Prove d[τ/2] = 2 for arbitrary τ (not just τ = 4).
+**Open problem**: Prove p - m[τ/2]² = 2·d[τ/2-1] for arbitrary τ.
 
 **Challenges**:
 1. CF recurrence involves all previous values (not closed-form)
 2. Palindrome structure is complex for large τ
-3. Relationship between p and a_0 varies with τ
+3. Relationship between m[τ/2] and p varies with τ
 
 **Possible approaches**:
-1. **Induction on τ**: Use palindrome symmetry to build pattern
+1. **Palindrome symmetry**: d-sequence is perfectly palindromic
+   - d[τ/2 - k] = d[τ/2 + k] for all k (verified empirically)
+   - Maybe this forces specific value at center?
 2. **Matrix analysis**: Exploit determinant properties
 3. **Legendre symbol connection**: (2/p) = +1 for p ≡ 7 (mod 8)
 4. **Classical CF literature**: May be known result (not found yet)
