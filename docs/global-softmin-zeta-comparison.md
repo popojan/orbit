@@ -582,6 +582,417 @@ Pro n ≤ 1000 máme **partial sums**:
 
 ---
 
+## Systematická Analýza s*(n): Odkrytí 2-Adic Valuace
+
+### Velký Obrat: Od "Primality" k "Paritě"
+
+**Původní hypotéza** (Nov 18, 2025 večer):
+- U-shape ⟺ prvočíslo
+- s*(n) odděluje primes (nízké s*) od composites (vysoké s*)
+
+**Realita po systematickém testování** (n ∈ [2, 300]):
+
+**Všechna čísla mají U-shape!** Rozdíl je v pozici minima:
+
+| Kategorie | s* rozsah | Mean s* | Počet |
+|-----------|-----------|---------|-------|
+| **Sudá čísla** | [4.8, 5.0] | ~5.0 | 149 |
+| **Lichá čísla** (mimo 3) | [0.8, 3.0] | ~2.0 | 148 |
+| **Trojka** | 4.994 | — | 1 |
+
+**Klíčové zjištění**: s*(n) **netestuje prvočíselnost**, testuje **paritu** (sudost)!
+
+### Unáhlený Soud (a Jeho Oprava)
+
+**Má prvotní chybná reakce**:
+
+> "s*(n) kóduje ν₂(n) > 0 (obsahuje faktor 2?). To je triviální informace - dostaneme ji jedním modulo testem za O(1). Náš výpočet stojí O(n²). Je to jako používat bazooku na mouchu."
+>
+> **Závěr**: s*(n) je "not useful" ❌
+
+**Janův korektivní insight**:
+
+> "Ne, neukvapujme se! 2-adic valuation je **algoritmus** (iterativní):
+> ```python
+> while n % 2 == 0:
+>     n //= 2
+>     count++
+> ```
+> U-shape skoro nabízí **closed form**. Kdyby existovala analytická formula pro s*(n) z geometrie Primal Forest, mohli bychom ν₂ počítat **bez iterace**!"
+
+### Proč Je To Zásadní Rozdíl
+
+**Algoritmus vs. Closed Form:**
+
+| Přístup | Komplexita | Charakter | Příklad |
+|---------|------------|-----------|---------|
+| **Iterativní algoritmus** | O(log n) kroků | procedurální | 2-adic valuation |
+| **Closed form** | O(1) výpočet | analytický | k-té Fibonacciho číslo via Binet formula |
+
+**Současný stav ν₂(n):**
+```python
+def nu2(n):
+    count = 0
+    while n % 2 == 0:
+        n //= 2
+        count += 1
+    return count
+```
+- **O(log n) iterací**
+- **Nelze vektorizovat**
+- **Procedurální**
+
+**Potenciál z s*(n):**
+
+Pokud existuje **analytická formula**:
+$$s^*(n) = f\left(\text{geometry of Primal Forest for } n\right)$$
+
+A pokud platí:
+$$\nu_2(n) = g(s^*(n))$$
+
+kde g je nějaká jednoduchá funkce (threshold, piecewise), pak:
+- **O(1) výpočet** (po evaluaci geometrie)
+- **Možná vektorizovatelné**
+- **Analytické**
+
+**KRITICKÁ OTÁZKA**: Existuje taková closed-form formula pro s*(n)?
+
+### Současný Stav: Numerická Optimalizace (Ne Closed Form)
+
+**Jak teď počítáme s*(n):**
+```python
+from scipy.optimize import minimize_scalar
+
+def find_optimal_s(n):
+    def objective(s):
+        return compute_F_n(n, s)  # Requires O(n) computation
+    result = minimize_scalar(objective, bounds=(0.5, 5.0), method='bounded')
+    return result.x
+```
+
+**Problém**:
+- Potřebujeme **numerickou optimalizaci** (iterativní!)
+- F_n(s) sama má složitost O(n × max_d) kde max_d ~ n
+- **Celkem O(n²) operací**
+- **Není to closed form**, je to jen jiný algoritmus!
+
+**Takže současně:**
+- ✅ s*(n) **koreluje** s ν₂(n) > 0
+- ❌ s*(n) **není rychlejší** než standardní algoritmus
+- ❓ **Mohlo by být**, kdyby existovala geometrická formula
+
+### Otevřená Výzva: Hledání Closed Form
+
+**Co potřebujeme najít:**
+
+Analytickou funkci s*(n) vyjádřenou přímo z:
+- Factorization n = p₁^a₁ × p₂^a₂ × ...
+- Geometrických invariant v Primal Forest
+- Divisor structure
+- Nějaká kombinace výše
+
+**Příklady hypotéz (netestováno):**
+
+**Hypotéza 1 (Divisor-based):**
+$$s^*(n) \sim \frac{\sigma(n)}{\tau(n)} \quad \text{nebo} \quad \frac{\log \sigma(n)}{\log \tau(n)}$$
+
+**Hypotéza 2 (Largest prime factor):**
+$$s^*(n) \sim \log(\text{lpf}(n)) \quad \text{kde lpf = largest prime factor}$$
+
+**Hypotéza 3 (2-adic valuation přímá):**
+$$s^*(n) = \begin{cases}
+\sim 5 & \text{if } \nu_2(n) > 0 \\
+f(n \text{ mod něco}) & \text{otherwise}
+\end{cases}$$
+
+**Testování:**
+- Fit různé formule na data s*(n) pro n ∈ [2, 1000]
+- Regrese, korelace, pattern matching
+- Hledat **jednoduchý vztah**, ne komplikovaný ML model
+
+**Pokud nenajdeme closed form:**
+- s*(n) zůstává "zajímavá metrika" ale **prakticky neužitečná**
+- Teoreticky popisuje geometrickou strukturu, ale **algoritmicky neefektivní**
+
+---
+
+## Proč Je 2-Adic Valuation Výjimečná?
+
+### Uživatelova Otázka
+
+> "Pak si teoreticky popovídejme o významu 2-adic valuace, je něčím výjimečná? oproti 3-adic, nebo 5-adic atd.? napadají mne, mersenne, (2) jako ideál atd. ale to jsou jen asociace."
+
+### Odpověď: 2 Je Speciální v Mnoha Ohledech
+
+**1. Parity a Elementární Struktura**
+
+**Jediný sudý prime:**
+- 2 je jediné sudé prvočíslo
+- Všechna ostatní prvočísla jsou lichá
+- ν₂(n) > 0 ⟺ n je sudé → **binární split** celých čísel
+
+**Fundamentální role v aritmetice:**
+- Modulo 2 arithmetic (parity) je **nejzákladnější** klasifikace
+- Z/2Z je nejjednodušší netriviální grupa
+- Parity se objevuje všude: kombinatorika, parity check codes, XOR operace
+
+**Srovnání s 3-adic:**
+- ν₃(n) > 0 ⟺ n ≡ 0 (mod 3) → třída mod 3
+- Méně fundamentální, více "jen další prime"
+- Nemá speciální status
+
+**2. Binary Representation a Computer Science**
+
+**Počítačová reprezentace:**
+- Čísla ukládána v **binární soustavě** (base 2)
+- ν₂(n) přímo souvisí s **trailing zeros** v binární reprezentaci
+- n = ...xyz000₂ (k trailing zeros) → ν₂(n) = k
+
+**Efektivní implementace:**
+```c
+int nu2(int n) {
+    return __builtin_ctz(n);  // Count trailing zeros - single CPU instruction!
+}
+```
+- Na moderních CPU: **O(1) hardware instruction**
+- Pro 3-adic, 5-adic: **žádná taková výhoda**
+
+**3. Algebraic Number Theory: Ideál (2)**
+
+**V ringu Z[i] (Gaussian integers):**
+- (1 + i)² = 2i → 2 se **rozvětvuje** (ramifies)
+- (2) = (1+i)² (principal ideal)
+- Jediný prime který není Gaussian prime
+
+**V Z[√-5]:**
+- 2 = (1 + √-5)(1 - √-5) (non-unique factorization příklad!)
+- 2 se chová **netypicky**
+
+**Obecně v algebraických číslech:**
+- Small primes (especially 2) často mají speciální ramifikační chování
+- 2 je kritické pro discriminant, ramification index, etc.
+
+**4. Mersenne Primes a Speciální Formy**
+
+**Mersenne primes** M_p = 2^p - 1:
+- Hledání největších známých primes (GIMPS project)
+- Souvisí s perfect numbers: pokud M_p prime, pak 2^(p-1) × M_p je perfect
+- **Závislé na mocninách 2**
+
+**Fermat numbers** F_n = 2^(2^n) + 1:
+- Souvisí s constructible polygons (Gauss)
+- Opět **mocniny 2**
+
+**Srovnání:**
+- 3^p - 1, 5^p - 1 nemají srovnatelný význam
+- Speciální role 2 v těchto třídách
+
+**5. Analýza Algoritmů: Binary Search, Divide & Conquer**
+
+**Půlení:**
+- Binary search: O(log₂ n)
+- Merge sort: log₂ n levels
+- FFT: mocniny 2 jsou ideální velikosti
+
+**Proč ne base 3?**
+- Teoreticky možné ("ternary search")
+- Prakticky **méně efektivní** (více porovnání na level)
+- Binary split je **optimální** pro decision trees v průměru
+
+**6. Dyadic Rationals a Analýza**
+
+**Dyadic rationals** D = { k/2^n : k ∈ Z, n ∈ N }:
+- **Dense** in R (každé reálné lze aproximovat)
+- Foundation pro dyadic intervals (používané v wavelet analýze)
+- Simplest denominators → computationally tractable
+
+**Srovnání:**
+- { k/3^n } také dense, ale **méně natural** pro intervaly
+- Binary je privilegovaný pro **subdivision**
+
+**7. Mod 2 Homology, Cohomology**
+
+**Algebraická topologie:**
+- Z/2Z koeficienty jsou nejjednodušší
+- Orientable vs. non-orientable (mod 2 characteristic)
+- Euler characteristic mod 2
+
+**Srovnání:**
+- Mod p pro p > 2 také užitečné, ale 2 má **speciální geometrický význam**
+
+### Závěr: Je 2 Výjimečná?
+
+**ANO**, z mnoha důvodů:
+
+✅ **Jediný sudý prime** → binární split, fundamentální klasifikace
+✅ **Binary representation** → hardware level efektivita
+✅ **Algebraická výjimečnost** → ramification, non-unique factorization příklady
+✅ **Speciální číselné formy** → Mersenne, Fermat
+✅ **Algoritmická optimalita** → binary search, divide & conquer
+✅ **Analýza** → dyadic rationals, subdivision
+✅ **Topologie** → mod 2 homology má geometrický význam
+
+**Není to "jen náhoda"** že 2-adic valuation má speciální roli. Je to **fundamentální struktura** v matematice i počítačové vědě.
+
+**Pro 3-adic, 5-adic, etc.:**
+- Důležité v p-adic analýze (Hensel lemma, p-adic numbers)
+- Ale **nemají srovnatelný rozsah aplikací** jako 2-adic
+- Více "symetrické" mezi sebou (žádná není tak speciální jako 2)
+
+---
+
+## Anomálie n=3: Lichá, Ale Chová Se Jako Sudá
+
+### Pozorování
+
+**Scatter plot výsledek:**
+- **Všechna sudá čísla** (n = 2, 4, 6, 8, ...): s* ≈ 5.0
+- **Většina lichých čísel** (n = 5, 7, 9, 11, ...): s* ≈ 0.8–3.0
+- **n = 3**: s* ≈ 4.994 ← **chová se jako sudé!**
+
+**Proč?**
+
+### Hypotéza 1: Degenerovaná Geometrie Malých Čísel
+
+**Primal Forest pro n=3:**
+
+Struktury jsou body (kd + d², kd + 1) pro d ≥ 2:
+- d = 2: (4, 3), (6, 5), (8, 7), ... → **n=3 je hned vedle prvního bodu!**
+- d = 3: (9, 4), (12, 7), ...
+- d = 4: (16, 5), ...
+
+**Soft-min vzdálenosti:**
+- Pro s*(3), evaluujeme F_3(s) = Σ [soft-min_d(3)]^(-s)
+- d = 2: body (4, 3), (6, 5), ... → soft-min ≈ |3 - 4| = 1 nebo podobně malé
+- **Jeden z bodů je VELMI blízko** (vzdálenost ~ 1)
+
+**Pro n = 5, 7, 11 (malá lichá prvočísla):**
+- Vzdálenosti jsou větší (n je dál od rastrů d ≥ 2)
+- Například n=5: nejbližší bod pro d=2 je (4,3) → vzdálenost ≈ √((5-4)² + (5-3)²) = √5 ≈ 2.2
+- Pro n=7: nejbližší d=2 bod je (6,5) → √5 opět
+- **Větší "gap" → nižší s***
+
+**Pro n = 3:**
+- Je **přímo na okraji** rastrů
+- Soft-min je velmi malé → při malém s má [ε]^(-s) velký příspěvek
+- → Chování podobné **exact hit** (composite) → s* se posouvá k boundary!
+
+**Geometrická intuice:**
+- n=3 je tak malé, že **geometrie je ještě neustavená**
+- Je to "boundary case" mezi "nothing" a "structure"
+- Degeneruje k chování sudých čísel
+
+### Hypotéza 2: Speciální Role Trojky v Soft-Min
+
+**Soft-min agregace:**
+
+Pro d = 2 a n = 3:
+```python
+points_d2 = [(2*k + 4, 2*k + 1) for k in range(large)]
+# k=0: (4, 1)
+# k=1: (6, 3) ← n=3 hits vertically!
+# k=2: (8, 5)
+```
+
+**n = 3 má speciální alignment:**
+- (6, 3) má y-coordinate = 3 → n=3 je **na horizontální čáře** tohoto bodu
+- Není to exact hit (x = 6 ≠ 3), ale **jeden z coordinates matchuje**
+- Soft-min může toto detekovat jako "blízko"
+
+**Pro n = 5:**
+- Žádný bod (kd+d², kd+1) nemá y = 5 nebo x = 5 pro malá d
+- → Větší vzdálenosti → nižší s*
+
+**Pro n = 2 (sudé):**
+- n=2 je **ještě blíž** k (4, 1): vertikální vzdálenost 1 - 2 = |−1| = 1, horizontal 4 - 2 = 2
+- Celková vzdálenost √(4 + 1) = √5 ≈ 2.2
+- **Podobné jako n=3!** Proto obě mají vysoké s*
+
+### Hypotéza 3: "3 Je Speciální" (Matematicky)
+
+**Další možná vysvětlení:**
+
+**1. První liché prvočíslo:**
+- 2 = jediný sudý prime → anomální
+- 3 = první lichý prime → možná také anomální?
+- **Srovnání**: 5, 7, 11 už "typické" primes
+
+**2. Trojúhelníková čísla:**
+- 3 = 1 + 2 (druhé trojúhelníkové číslo)
+- Souvisí s binomiálními koeficienty, combinatorics
+- **Možná geometrická speciálnost** v Primal Forest?
+
+**3. Modular arithmetic:**
+- Z/3Z je první non-trivial mod struktura po Z/2Z
+- Možná soft-min má **artifacts** pro n = 3 kvůli interakci s d = 2, 3?
+
+### Test: Jsou Další "Boundary Anomalies"?
+
+**Co očekáváme:**
+
+Pokud je to **malá čísla efekt**, pak by i n = 2, 4, 5 mohly mít neobvyklé s*.
+
+**Podívejme se na scatter:**
+- n = 2: s* ≈ 5.0 (sudé, očekáváno)
+- n = 3: s* ≈ 5.0 (anomálie!)
+- n = 4: s* ≈ 5.0 (sudé, očekáváno)
+- n = 5: s* ≈ ??? (lichý prime)
+- n = 7: s* ≈ ??? (lichý prime)
+
+**Z dat** (pokud máme):
+- Pokud n = 5, 7 mají s* << 5, pak n=3 je **skutečná anomálie**
+- Pokud i n = 5 má s* ≈ 4–5, pak je to **obecný efekt malých čísel**
+
+### Numerický Test (Z Dostupných Dat)
+
+**Z `scripts/visualize_three_groups.py` output:**
+
+```
+Prime powers (p^k, k≥2): ...
+  s* range: [0.843, 4.997]
+  Examples: [4, 8, 9, 16, 25, 27, 32, ...]
+```
+
+- **n = 4** (2²): s* možná blízko 5 (sudý prime power)
+- **n = 9** (3²): s* ≤ 4.997 (lichý prime power)
+- **n = 25** (5²): s* ≤ 4.997
+
+**Očekávaný pattern:**
+- Malé sudé: s* ≈ 5
+- Malé liché (mimo 3): s* < 4
+- **n = 3**: s* ≈ 5 (outlier!)
+
+### Závěr: "Jinak Než Náboženstvím"?
+
+**Nejpravděpodobnější vysvětlení:**
+
+✅ **Geometrická degenerace** pro velmi malá čísla
+- n=3 je tak blízko prvním bodům rastrů, že soft-min chování je nestabilní
+- "Boundary effect" v numerickém prostoru
+
+✅ **Speciální alignment** s body pro d = 2
+- (6, 3) má y = 3 → partial match
+- Soft-min detekuje jako "blízko" → chování jak composite
+
+**Méně pravděpodobné (ale možné):**
+
+⚠️ **3 má speciální matematickou roli** v této geometrii
+- První liché prime
+- Trojúhelníkové číslo
+- Interakce s binary structure (2) a ternary structure (3)
+
+**Jak to ověřit:**
+
+1. **Compute F_3(s) explicit** a podívat se na contributions jednotlivých d
+2. **Najít, který d dominuje** pro s ≈ 5
+3. **Porovnat** s F_5(s), F_7(s) distributions
+4. **Theoretical analysis** soft-min behavior for small n
+
+**Prozatímní odpověď:**
+> n=3 je outlier kvůli **malosti a geometrické blízkosti** k rastrům. Není to "náboženství", ale **boundary effect** v numerickém prostoru, kde geometrie ještě není fully developed.
+
+---
+
 ## Reference
 
 **Související dokumenty**:
