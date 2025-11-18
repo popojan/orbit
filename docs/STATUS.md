@@ -977,14 +977,44 @@ p ≡ 7 (mod 8)  ⟹  center norm = +2  [171/171 = 100%]
 4. **Center convergent norm** correlates perfectly with x₀ mod p sign
 5. **Negative Pell existence** is THE rigorous proof for p ≡ 1 (mod 4)
 
+### Adversarial Rigor Investigation (Nov 18, 2025)
+
+**Status**: 🔬 **PROOF ATTEMPT FAILED - Elementary methods insufficient**
+
+**Investigation findings**:
+- ✅ Pattern confirmed: center norm sign → x₀ mod p (100% for p ≡ 3 mod 4)
+- ✅ Clarified: period τ is SMALL (e.g., τ=5 for p=89), NOT p-1 as initially confused
+- ✅ Identified proof obstruction: cannot connect x_c to x₀ mod p via elementary CF methods
+- ❌ Squaring relation (x₀ = x_c² + py_c²) fails when |N_c| > 1
+- ❌ Elementary proof appears impossible
+
+**Attempted approaches** (all failed):
+1. Direct squaring relation → fails for |N_c| ≠ 1
+2. Multiplicative order analysis → no clear connection to divisors
+3. Symmetry/periodicity arguments → insufficient
+
+**Requirements for rigorous proof** (honest assessment):
+- Genus theory machinery (Q(√p, √±2) fields)
+- OR unit structure in quadratic fields
+- OR entirely new elementary approach
+
+**Critical admission**: We do NOT sufficiently understand genus theory to write rigorous proof. Claims about "needs genus theory" are hand-waving.
+
+**Actual status**:
+- Pattern: 🔬 **EMPIRICALLY VERIFIED** (100%, 619 primes)
+- Proof: ⏸️ **UNKNOWN** (beyond our current capabilities)
+
 ### Open Problems
 
 1. **Prove x₀ ≡ -1 (mod p) for p ≡ 3 (mod 8)** rigorously
-   - Approaches: genus theory, center convergent recurrence, contradiction
+   - Status: ⏸️ **OPEN** - elementary approaches exhausted
+   - Barrier: Cannot connect center convergent to fundamental solution mod p
 2. **Prove x₀ ≡ +1 (mod p) for p ≡ 7 (mod 8)** rigorously
-   - Approaches: prove x₀ ≡ 0 (mod 8), use center norm = +2
+   - Status: ⏸️ **OPEN** - same barrier as above
 3. **Prove center norm = ±2 pattern** from CF theory
+   - Status: 🔬 **EMPIRICALLY VERIFIED** but proof unknown
 4. **Generalize to composite D** (not just prime p)
+   - Status: ⏸️ **UNTESTED**
 
 ### Publication Recommendation
 
