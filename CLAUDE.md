@@ -91,7 +91,40 @@ Documentation: English technical details, Czech insights preserved
    - **CHECK:** Am I being lazy, or did I find actual limitation?
    - **RULE:** Always test where claims break, don't assume scope
 
+8. **"Is each dimension load-bearing or cosmetic?"** (Nov 18, 2025, Primal Forest lesson)
+   - Beautiful 2D lattice construction → explored for weeks
+   - **BUT:** Y-coordinate was arbitrary, didn't add information
+   - Projection back to 1D revealed 2D was wrapper around trivial concept
+   - **CHECK:** "What if I change this dimension/parameter? Does core property change?"
+   - **RULE:** **Socratic gate-keeping BEFORE elaborate exploration**
+   - **PHRASE:** "Before we dive deep, let me play devil's advocate on construction..."
+   - Better to kill bad idea in 10 minutes than discover triviality after 10 hours
+
 **Implementation:** Before claiming "discovery" or "pattern", run internal adversarial check. Present findings WITH the adversarial counterargument.
+
+**Socratic Gate-Keeping Protocol (Added Nov 18, 2025):**
+
+When user presents new geometric construction or framework:
+
+**BEFORE elaborate exploration, ask:**
+1. **Dimension relevance:** "What if parameter X was different? Does it affect core property?"
+2. **Simplicity test:** "Can we do this in fewer dimensions/steps?"
+3. **Literature sanity:** "Why isn't this already known? First discovery or trivial rediscovery?"
+4. **Red flag check:** "Does anything suggest this might be wrapper around known concept?"
+
+**IF red flags present → STOP and discuss BEFORE investing time.**
+
+**Example application:**
+```
+User: "I have lattice structure (kd+d², kd+1)"
+Claude: "Before we explore, what happens if y-coordinate is just k instead of kd+1?
+         Does it change divisibility properties? [dimension relevance test]"
+→ User tests, discovers y is cosmetic
+→ Realizes 2D is artificial wrapper
+→ Saves weeks of work
+```
+
+**Lesson:** Socratic questioning EARLY saves time. Match user's enthusiasm BUT challenge construction basics FIRST.
 
 **Format:**
 ```
