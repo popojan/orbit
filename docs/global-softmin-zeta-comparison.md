@@ -754,7 +754,7 @@ int nu2(int n) {
     return __builtin_ctz(n);  // Count trailing zeros - single CPU instruction!
 }
 ```
-- Na moderních CPU: **O(1) hardware instruction**
+- Na moderních CPU: **O(1) hardware instruction** (pro fixní-velikostní registry; pro arbitrary precision zůstává O(log n))
 - Pro 3-adic, 5-adic: **žádná taková výhoda**
 
 **3. Algebraic Number Theory: Ideál (2)**
