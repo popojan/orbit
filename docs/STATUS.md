@@ -868,6 +868,135 @@ p=631:  actual=48, predicted=20  (58% error)
 
 ---
 
+## Pell Equations: d[τ/2] = 2 Property (Nov 16-18, 2025)
+
+**Status**: 🔬 **EMPIRICALLY VERIFIED** (782 total: 619 primes + 163 composites)
+**Main Finding**: d[τ/2] = 2 at palindrome center is NOT universal CF property - conditional on sign consistency
+
+---
+
+### For Primes p ≡ 3,7 (mod 8)
+
+**Status**: 🔬 **NUMERICAL** (619/619 primes < 10000, 100%)
+
+**Pattern**:
+```
+For prime p ≡ 3,7 (mod 8):
+  d[τ/2] = 2  ALWAYS
+```
+
+**Evidence**:
+- p ≡ 3 (mod 8): 311/311 primes → d[τ/2] = 2 (100%)
+- p ≡ 7 (mod 8): 308/308 primes → d[τ/2] = 2 (100%)
+- Zero counterexamples found
+
+**Consequence**: Via half-period formula, this PROVES x₀ mod p classification (conditional):
+- p ≡ 7 (mod 8): d[τ/2]=2 → norm +2 → x₀ ≡ +1 (mod p) ✅
+- p ≡ 3 (mod 8): d[τ/2]=2 → norm -2 → x₀ ≡ -1 (mod p) ✅
+
+**Proof chain**:
+1. ✅ PROVEN: Half-period formula x₀ = (xₕ² + p·yₕ²)/2 when norm = ±2
+2. 🔬 EMPIRICAL: d[τ/2] = 2 for all primes p ≡ 3,7 (mod 8)
+3. ✅ PROVEN: From 1+2 → x₀ ≡ ±1 (mod p) with sign determined by p mod 8
+
+**Theoretical gap**: WHY is d[τ/2] = 2 for primes? Multiple approaches attempted:
+- CF palindrome center (m[τ/2] = a[τ/2] observed, not proven)
+- Ideal splitting in ℤ[√p] (incomplete)
+- Matrix symmetry (not pursued)
+
+**Confidence**: 99%+ for empirical pattern, proof chain conditional on d[τ/2]=2
+
+**References**:
+- `docs/pell-x0-mod-p-proof.md` (complete proof chain)
+- `docs/cf-d-half-equals-2-proof.md` (CF center analysis)
+- `scripts/test_all_mod8_center_norms.wl` (668 prime verification)
+
+---
+
+### Composite Generalization (Nov 18, 2025)
+
+**Status**: 🔬 **EMPIRICALLY VERIFIED** (163 composites, 100% correlation)
+
+**Discovery**: Pattern extends to composites via **sign-consistency criterion**:
+
+```
+For D = p₁^a₁ × ... × pₖ^aₖ ≡ 3 (mod 4):
+
+d[τ/2] = 2  ⟺  x₀ has SAME sign modulo ALL unique prime factors pᵢ
+```
+
+**Evidence**:
+- **Semiprimes** (n=37): Same sign → d=2 (10/10), Different → d≠2 (27/27)
+- **3-factors** (n=49): Same sign → d=2 (10/10), Different → d≠2 (39/39)
+- **All composites** (n=163): Same sign → d=2 (34/34), Different → d≠2 (129/129)
+- **Zero counterexamples**
+
+**Coverage by factorization**:
+| # unique primes | Same-sign % | Note |
+|-----------------|-------------|------|
+| 1 (prime powers p^k) | 100% | Trivial - single factor |
+| 2 (semiprimes) | 22.4% | Minority (~1 in 4-5) |
+| 3 | 3.8% | Rare (~1 in 26) |
+
+**Perfect norm correlation** (38 semiprimes tested):
+```
+Same sign  ⟺  norm[τ/2-1] = ±2  (100%)
+```
+
+- D ≡ 3 (mod 8), same sign → norm = -2 (matches primes!)
+- D ≡ 7 (mod 8), same sign → norm = +2 (matches primes!)
+
+**Theoretical chain** (empirical equivalence):
+```
+(1) All x₀ mod pᵢ same sign
+      ⟺ [CRT - PROVEN]
+(2) x₀ ≡ ±1 (mod D)
+      ⟺ [EMPIRICAL - GAP!]
+(3) norm[τ/2-1] = ±2
+      ⟺ [Euler formula - PROVEN]
+(4) d[τ/2] = 2
+```
+
+**Central mystery**: Step (2)→(3) empirically perfect but theoretically unproven.
+
+**Why primes are universal**: Single factor → sign consistency automatic → 100% coverage.
+
+**Why composites are conditional**: Multiple factors → sign consistency rare → minority coverage.
+
+**Confidence**: 100% empirical correlation, theoretical mechanism incomplete
+
+**References**:
+- `docs/cf-d-half-composite-generalization.md` (full analysis)
+- `docs/cf-d-half-semiprime-perfect-pattern.md` (semiprime details)
+- `scripts/test_threefactor_d_half.py` (3-factor verification)
+- `scripts/check_norms_at_center.py` (norm correlation)
+- `scripts/analyze_coverage_and_sign_parity.py` (coverage stats)
+
+---
+
+### Open Questions
+
+1. **WHY d[τ/2] = 2 for primes?**
+   - Palindrome center property?
+   - Ideal class group connection?
+   - Classical CF theorem we haven't found?
+
+2. **WHY x₀ ≡ ±1 (mod D) ⟹ norm[τ/2-1] = ±2?**
+   - Uniqueness: Is norm ±2 the ONLY way?
+   - Algebraic constraint from Pell equation?
+   - CF algorithm structural property?
+
+3. **Literature**: Does "d[τ/2] = 2 for √p" appear in classical texts?
+   - Perron, Khinchin, Rockett-Szüsz searched online (unsuccessful)
+   - Likely in physical books not digitized
+
+**Next steps**:
+- Online literature search (mathoverflow, etc.)
+- Accept as strong empirical result for publication
+- Or: attempt direct proof via CF/ANT machinery
+
+---
+
 ## Summary Table
 
 | Result | Status | Confidence | Peer Review | Next Step |
