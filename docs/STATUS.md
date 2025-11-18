@@ -1,6 +1,6 @@
 # Research Status Tracker
 
-**Last Updated**: November 17, 2025 (evening session: CF center norm + Pell speedup via Wildberger SB tree)
+**Last Updated**: November 18, 2025 (morning: terminology review & standardization)
 
 This document tracks the **epistemological status** of all claims in the Orbit project.
 
@@ -743,6 +743,79 @@ Fundamental: (xf, yf) = ((xh² + p·yh²)/2, xh·yh)
 - Does formula extend to p ≡ 1,5 (mod 8)? (varying norms)
 - Quarter/eighth-period patterns for period ≡ 0 (mod 8)?
 - Rigorous proof via SB tree geometry?
+
+---
+
+## Terminology Clarification: Surd Algorithm vs XGCD (Nov 18, 2025)
+
+**Status**: 🎓 **TERMINOLOGY STANDARDIZATION**
+
+### The "Auxiliary Sequence" is the Standard Surd Algorithm
+
+**Clarification** (Nov 18, 2025, morning): Empirical research in branch `claude/pell-prime-patterns-01NDhotAvquPLsYY6hinGD3V` used the term "auxiliary CF sequence" for the (m, d, a) triple.
+
+**Standard terminology**:
+- **Surd algorithm** (Lagrange, Perron, Khinchin, Rockett-Szüsz)
+- Also called: "complete quotient algorithm" or "Gosper's algorithm"
+- Computes CF(√D) directly via:
+  ```
+  mₖ₊₁ = dₖ·aₖ - mₖ
+  dₖ₊₁ = (D - m²ₖ₊₁)/dₖ
+  aₖ₊₁ = ⌊(a₀ + mₖ₊₁)/dₖ₊₁⌋
+  ```
+
+**Notation**:
+- mₖ = "residue" or "remainder term" (numerator offset)
+- dₖ = "complete quotient denominator" (auxiliary denominator)
+- aₖ = "partial quotient" (CF digit)
+
+**Complete quotient**: αₖ = (√D + mₖ)/dₖ has integer part aₖ
+
+### NOT Related to Extended Euclidean Algorithm
+
+**Critical distinction**:
+- ❌ The surd algorithm (m, d, a) is **NOT** the Extended Euclidean Algorithm (XGCD)
+- ❌ The sequences (mₖ, dₖ) and (sₖ, tₖ) from XGCD are DIFFERENT
+- ✅ Both algorithms produce the same partial quotients aₖ
+- ✅ XGCD works for rationals p/q, surd algorithm works for quadratic irrationals √D
+
+**Where they connect**:
+- Running XGCD backward on convergents pₖ/qₖ recovers the CF partial quotients
+- Classical identity: pₖ·qₖ₋₁ - pₖ₋₁·qₖ = (-1)^(k+1) (Bézout-like)
+- But the intermediate sequences tracked are fundamentally different
+
+**References**:
+- `docs/cf-terminology-review-standard.md` (comprehensive review)
+- `docs/cf-vs-xgcd-technical-comparison.md` (detailed technical comparison)
+
+### Standardized Notation Going Forward
+
+**Use**:
+- ✅ "Surd algorithm" (not "auxiliary CF sequence")
+- ✅ "Complete quotient dₖ" (not "XGCD-related")
+- ✅ Subscript notation dₖ in papers (programming-style d[k] acceptable in code)
+
+**Avoid**:
+- ❌ "Related to Extended Euclidean Algorithm"
+- ❌ "XGCD coefficients" when referring to (m, d)
+
+### Empirical Finding: dₜ/₂ = 2 (Standard Terminology)
+
+**Reformulated claim**:
+> For square-free D ≡ 3 (mod 4) with even CF period τ, the **complete quotient denominator** at the palindrome center equals 2.
+
+**Status**: 🔬 NUMERICAL (619 primes, 100%)
+- Likely classical result (needs literature verification)
+- Novel application: enables half-period Pell solution computation
+
+**Classical connection**: Via Euler's formula for convergent norms:
+```
+p²ₖ - D·q²ₖ = (-1)^(k+1) · dₖ₊₁
+```
+
+If dₜ/₂ = 2, then norm at k = τ/2 - 1 equals ±2 (sign depends on τ/2 parity).
+
+**Literature search needed**: Perron (1929), Rockett-Szüsz (1992), Mollin papers (1990s)
 
 ---
 
