@@ -277,20 +277,20 @@ The parameters $m_1$ and $m_2$ govern a fundamental computational trade-off that
 \item \textbf{Small $m_1$, large $m_2$:} Each iteration executes rapidly (utilizing our closed-form expressions) while achieving more modest per-iteration precision gains. Counterintuitively, this strategy delivers \emph{superior overall performance} for extreme precision requirements, as the dramatically reduced per-iteration cost more than compensates for the increased iteration count.
 \end{itemize}
 
-\begin{theorem}[Empirical Convergence Rates]
-\label{thm:convergence}
+\begin{conjecture}[Empirical Convergence Rates]
+\label{conj:convergence}
 For $\sqrt{13}$ initialized with the Pell-derived approximation $n_0 = 18/5$, the precision growth (measured in decimal digits of accuracy for $n^2$) exhibits the following empirical behavior:
 \begin{align}
 m_1 = 3: \quad &\text{precision} \approx 10^{m_2} \text{ digits} \\
 m_1 = 2: \quad &\text{precision} \approx 8^{m_2} \text{ digits} \\
 m_1 = 1: \quad &\text{precision} \approx 6^{m_2} \text{ digits}
 \end{align}
-Most remarkably, for $m_1=1$, empirical measurements reveal an extraordinary precision growth factor of approximately 6000-fold per iteration.
-\end{theorem}
+For $m_1=1$, empirical measurements suggest a precision growth factor of approximately 6000-fold per iteration. However, these rates are observed only for $\sqrt{13}$; systematic testing across diverse $d$ values is needed to confirm generality.
+\end{conjecture}
 
-\begin{proof}
-These rates are established empirically through extensive computational experiments. A rigorous theoretical analysis of these convergence phenomena remains an important open problem (see Section \ref{sec:open}).
-\end{proof}
+\begin{remark}
+These rates are established empirically through computational experiments on $\sqrt{13}$. A rigorous theoretical proof of convergence rates remains an important open problem (see Section \ref{sec:open}). The dependence of these rates on properties of $d$ (such as continued fraction period length or regulator size) has not been systematically investigated.
+\end{remark}
 
 \section{Performance Analysis}
 
@@ -339,7 +339,7 @@ Nested (extreme) & 1 & 10 & 100 & 62,749,264 & 31,374,632 & 2.0x \\
 
 The classical Newton-Raphson method (Babylonian algorithm) exhibits well-known quadratic convergence: $\epsilon_{n+1} \approx \epsilon_n^2$, effectively doubling precision with each iteration. Achieving $10^{6}$ digits of precision requires approximately $\log_2(10^6) \approx 20$ iterations.
 
-In striking contrast, our method with $m_1=1$ achieves extraordinary super-quadratic convergence, with empirically observed precision growth suggesting $\epsilon_{n+1} \approx \epsilon_n^{6000}$ (see Theorem \ref{thm:convergence}), requiring merely $\log_{6000}(10^6) \approx 1.7$ iterations to reach comparable precision. While each individual iteration incurs greater computational cost, the dramatic reduction in iteration count yields superior overall performance.
+In striking contrast, our method with $m_1=1$ achieves extraordinary super-quadratic convergence, with empirically observed precision growth suggesting $\epsilon_{n+1} \approx \epsilon_n^{6000}$ (see Conjecture \ref{conj:convergence}), requiring merely $\log_{6000}(10^6) \approx 1.7$ iterations to reach comparable precision. While each individual iteration incurs greater computational cost, the dramatic reduction in iteration count yields superior overall performance.
 
 A crucial distinction emerges in the arithmetic domain: Newton's method excels for \emph{floating-point} approximations, benefiting from hardware-optimized arithmetic operations. However, for \emph{exact rational} approximations---our primary focus---the nested Chebyshev-Pell method demonstrates clear superiority.
 
@@ -392,7 +392,7 @@ This decomposition property motivated the original \texttt{egypt} project explor
 \subsection{Rigorous Convergence Analysis}
 
 \begin{problem}
-Establish a rigorous theoretical foundation for Theorem \ref{thm:convergence}. Determine the precise convergence rates as analytic functions of the parameters $m_1$ and $m_2$, the initial approximation quality, and the target value $d$.
+Establish a rigorous theoretical foundation for Conjecture \ref{conj:convergence}. Determine the precise convergence rates as analytic functions of the parameters $m_1$ and $m_2$, the initial approximation quality, and the target value $d$.
 \end{problem}
 
 \subsection{The Imaginary Cancellation Phenomenon}
