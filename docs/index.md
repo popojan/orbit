@@ -1,164 +1,37 @@
 # Documentation Index
 
-**Generated:** 2025-11-17 19:45:49
+**Generated:** 2025-11-19 16:15:07
 
-## Recent Documents (by commit time)
+## Theorems (Master References)
 
-- [Primal Forest × Stern-Brocot Tree Bridge](primal-forest-sb-tree-bridge.md) *(2025-11-17)*
-- [Geometric Shortcuts: "Vzdušná Čára" Research Dialogue](geometric-shortcut-dialogue.md) *(2025-11-17)*
-- [TODO: Next Session Continuation Tasks](TODO-next-session.md) *(2025-11-17)*
-- [Research Status Tracker](STATUS.md) *(2025-11-17)*
-- [Pell Equation Computational Speedup via Half-Period](pell-half-period-speedup.md) *(2025-11-17)*
-- [CF Center Convergent Pattern: Universal Structure](cf-center-norm-pattern.md) *(2025-11-17)*
-- [ML Approach to R(n) Prediction: Failed Experiment](regulator-ml-approach-failed.md) *(2025-11-17)*
-- [Reasoning Chain: Period Divisibility Discovery](reasoning-period-discovery.md) *(2025-11-17)*
-- [Universal Prime/Composite Bifurcation](prime-bifurcation-universal.md) *(2025-11-17)*
-- [CF Period Divisibility: Connection to Mod 8 Theorem](period-divisibility-discovery.md) *(2025-11-17)*
-- [Pell ±2 Connection to Period Divisibility](pell-plus-minus-2-connection.md) *(2025-11-17)*
-- [Mersenne Primes & Pell Regulator Connection](mersenne-primes-regulator.md) *(2025-11-17)*
-- [Genus Theory Approach to Period Divisibility](genus-theory-period-connection.md) *(2025-11-17)*
-- [Class Number vs Period Test](class-number-period-test.md) *(2025-11-17)*
-- [Sum of Two Squares: The Missing Link](sum-of-squares-breakthrough.md) *(2025-11-17)*
-- [Complete Structure of Pell Regulator R(n)](regulator-structure-complete.md) *(2025-11-17)*
-- [Unified Regulator Theory: R(n) = f(n mod 8, M(n))](unified-regulator-theory.md) *(2025-11-17)*
-- [pellc & Egyptian Fractions: Fractal Research Directions](pellc-fractal-research-directions.md) *(2025-11-17)*
-- [Mod 8 Stratification of Regulator R(p)](mod8-regulator-stratification.md) *(2025-11-17)*
-- [Egypt.wl ↔ Primal Forest Connection](egypt-primal-forest-connection.md) *(2025-11-17)*
-- [pellc Rational Families - Novelty Analysis](pellc-rational-families-analysis.md) *(2025-11-17)*
-- [pellc: Closed Form Exploration (Archived)](pellc-exploration-note.md) *(2025-11-17)*
-- [Handoff Document: Mod 8 Classification Proof Attempt](handoff-web-cli-mod8-proof.md) *(2025-11-17)*
-- [Egypt.wl: Theoretical Implications and Novelty Assessment](egypt-theoretical-implications.md) *(2025-11-17)*
-- [Literature Search: Mod 8 Classification of Fundamental Pell Solutions](egypt-mod8-literature-search.md) *(2025-11-17)*
-- [Egypt.wl Universal Pattern - Discovery Session](egypt-universal-pattern-discovery.md) *(2025-11-17)*
-- [Egypt.wl Unified Theorem: Complete Characterization](egypt-unified-theorem.md) *(2025-11-17)*
-- [Proof of TOTAL-EVEN Divisibility Theorem](egypt-even-parity-proof.md) *(2025-11-17)*
-- [Perfect Square Denominator Formula - Discovery](egypt-perfect-square-denominator.md) *(2025-11-17)*
-- [Egypt.wl TOTAL-EVEN Pattern - Breakthrough Analysis](egypt-total-even-breakthrough.md) *(2025-11-17)*
-- [Egypt.wl k=EVEN Pattern - Rigorous Proof Attempt](egypt-even-k-rigorous-attempt.md) *(2025-11-16)*
-- [Mellin Puzzle Resolution - Rigorous Derivation](mellin-puzzle-resolution-rigorous.md) *(2025-11-16)*
-- [Mellin Puzzle Resolution: (γ-1) vs (2γ-1)](mellin-puzzle-resolution.md) *(2025-11-16)*
-- [Diagonal Summation: Layer-by-Layer Analysis of L_M(s)](diagonal-summation-analysis.md) *(2025-11-16)*
-- [Diagonal Regularity Summation: Fourth Way to Compute L_M(s)](diagonal-regularity-summation.md) *(2025-11-16)*
-- [Tracking Where Epsilon Disappeared](tracking-epsilon-loss.md) *(2025-11-16)*
-- [Theta Function Truncation: Practical vs Theoretical Considerations](theta-truncation-insight.md) *(2025-11-16)*
-- [Theta Function Transformation Test - Results](theta-transformation-test-results.md) *(2025-11-16)*
-- [Technika Odečtení Singularit - Vysvětlení](subtraction-technique-explained.md) *(2025-11-16)*
-- [Schwarz Reflection Symmetry - Rigorous Proof](schwarz-symmetry-proof.md) *(2025-11-16)*
-- [Rigorous Foundation Review - Co OPRAVDU máme dokázáno](rigorous-foundation-review.md) *(2025-11-16)*
-- [Connection to Riemann's Seminal Paper (1859)](riemann-connection-analysis.md) *(2025-11-16)*
-- [Residue at s=1 - Rigorous Proof](residue-proof-rigorous.md) *(2025-11-16)*
-- [From Primal Forest to L_M(s): Geometric Journey](primal-forest-to-L_M-geometry.md) *(2025-11-16)*
-- [Pivot: Return to Primal Forest Geometry](pivot-to-primal-forest-geometry.md) *(2025-11-16)*
-- [Functional Equation for L_M(s): Systematic Hunt](functional-equation-systematic-hunt.md) *(2025-11-16)*
-- [Double Pole Coefficient A=1 - Rigorous Proof](double-pole-coefficient-proof.md) *(2025-11-16)*
-- [C(s) Series: Connection to Primal Forest Floor Structure](C-series-primal-forest-connection.md) *(2025-11-16)*
-- [C(s) Series: Functional Properties](C-series-functional-properties.md) *(2025-11-16)*
-- [Analytic Continuation via Integral Representation](analytic-continuation-via-integral.md) *(2025-11-16)*
-- [A = 1: Summation by Parts Approach](A-coefficient-summation-by-parts.md) *(2025-11-16)*
-- [A = 1 Proof via C(s) Regularity Argument](A-coefficient-regularity-argument.md) *(2025-11-16)*
-- [A = 1: Proof by Contradiction](A-coefficient-proof-by-contradiction.md) *(2025-11-16)*
-- [A = 1: Final Rigorous Argument](A-coefficient-final-push.md) *(2025-11-16)*
-- [A = 1: Analytical Bound Attempt](A-coefficient-analytical-bound-attempt.md) *(2025-11-16)*
-- [Theoretical Connection: M(n) and the Divisor Problem](theoretical_connection.md) *(2025-11-16)*
-- [Symbolic Derivation of Res[L_M, s=1]](symbolic_residue_derivation.md) *(2025-11-16)*
-- [Residuum L_M(s) v s=1](residue-analysis-s1.md) *(2025-11-16)*
-- [Geometric Meaning of Residue 2γ-1](geometric-meaning-of-residue.md) *(2025-11-16)*
-- [Theoretical Analysis of L_M Zeros from Closed Form](zero-analysis-theoretical.md) *(2025-11-16)*
-- [Session Final Summary - November 16, 2025](session-final-summary.md) *(2025-11-16)*
-- [Session Summary: Functional Equation Search (Nov 16, 2025)](session-2025-11-16-functional-equation-summary.md) *(2025-11-16)*
-- [What Can We Do With Schwarz Symmetry Alone?](schwarz-symmetry-applications.md) *(2025-11-16)*
-- [Integral Representation for L_M(s)](LM-integral-representation.md) *(2025-11-16)*
-- [Debugging Integral Representation](integral-representation-debug.md) *(2025-11-16)*
-- [Search for γ(s) in Functional Equation - Session Summary](gamma-factor-search-summary.md) *(2025-11-16)*
-- [Explicit Expansion of γ(s) Using Closed Form](gamma-explicit-expansion.md) *(2025-11-16)*
-- [Constraint Analysis: What Must γ(s) Satisfy?](gamma-constraint-analysis.md) *(2025-11-16)*
-- [Functional Equation via Integral Representation](functional-equation-integral-approach.md) *(2025-11-16)*
-- [Theoretical Derivation of γ(s) for L_M via Hurwitz Zeta](functional-equation-hurwitz-derivation.md) *(2025-11-16)*
-- [Empirical Findings: Functional Equation Search](functional-equation-empirical-findings.md) *(2025-11-16)*
-- [Approaches to Finding Functional Equation for L_M(s)](functional-equation-approaches.md) *(2025-11-16)*
-- [Double Sum Form - Algebraic Verification](double-sum-verification.md) *(2025-11-16)*
-- [Closed Form Convergence Analysis](closed-form-convergence-analysis.md) *(2025-11-16)*
-- [Analytic Continuation of C(s)](C-analytic-continuation.md) *(2025-11-16)*
-- [Analytic Continuation of L_M(s) Without Functional Equation](analytic-continuation-approaches.md) *(2025-11-16)*
-- [Theoretical Derivation of Functional Equation for L_M(s)](functional-equation-theoretical-derivation.md) *(2025-11-16)*
-- [Theoretical Derivation of Functional Equation for L_M(s)](functional-equation-derivation-attempt.md) *(2025-11-16)*
-- [AI-Augmented Mathematical Research: A Case Study](ai-collaboration-methodology-outline.md) *(2025-11-16)*
-- [Functional Equation Derivation for L_M(s)](functional-equation-derivation.md) *(2025-11-16)*
-- [Functional Equation Discovery for L_M(s)](functional-equation-discovery.md) *(2025-11-16)*
-- [Wolfram Language: Business Case from Real Research](WOLFRAM_BUSINESS_CASE.md) *(2025-11-16)*
-- [Strategy and Implications: What's Next?](next-steps-strategy.md) *(2025-11-15)*
-- [Evening Session Summary - November 15, 2025](session-summary-nov15-evening.md) *(2025-11-15)*
-- [Global Dirichlet Series for M(n)](global-dirichlet-series.md) *(2025-11-15)*
-- [Euler Product for Sum[M(n)/n^s]](euler-product-formula.md) *(2025-11-15)*
-- [CLOSED FORM for L_M(s) - DISCOVERED!](closed-form-L_M-RESULT.md) *(2025-11-15)*
-- [Residue Theorem: Complete Proof](residue-theorem-proof.md) *(2025-11-15)*
-- [Residue Conjecture: Proof Strategy via Double Sum Reorganization](residue-proof-strategy.md) *(2025-11-15)*
-- [Philosophical Note: Primal Forest Geometry vs. Riemann Hypothesis](philosophical-note-primal-forest-vs-rh.md) *(2025-11-15)*
-- [M(n) Function: Connection to Divisor Function τ(n)](m-function-divisor-connection.md) *(2025-11-15)*
-- [Lemma 1: Regular Part Vanishes at ε=0](lemma1-regular-part-vanishes.md) *(2025-11-15)*
-- [Epsilon Poles and Residue Theory: Quantifying Compositeness](epsilon-pole-residue-theory.md) *(2025-11-15)*
-- [Bug Report: kMax Scaling Issue in Residue Tests](bug-report-kmax-scaling.md) *(2025-11-15)*
-- [Residua v Komplexní Analýze: Vysvětlení od Základů](residues-explained.md) *(2025-11-15)*
-- [Analysis of F_p(α, ε=0): Transcendental Nature](rationality-and-divine-geometry.md) *(2025-11-15)*
-- [Pentagamma Closed Form of F_p(α)](pentagamma-closed-form.md) *(2025-11-15)*
-- [TODO: Zvážit změnu tónu na rekreační matematiku](TODO-rekreacni-ton.md) *(2025-11-15)*
-- [Complex Analysis & Mellin Transform Review](complex-analysis-mellin-review.md) *(2025-11-15)*
-- [Analytical Exploration Summary: Full Double Sum](analytical-exploration-summary.md) *(2025-11-15)*
-- [Dominant-Term Simplification: Breakthrough Synthesis](dominant-term-simplification.md) *(2025-11-15)*
-- [Continuous Primality Score: Research Summary](continuous-primality-research-summary.md) *(2025-11-15)*
-- [Strategické směry výzkumu - Prvoles a spojité skóre prvočíselnosti](strategic-research-directions.md) *(2025-11-15)*
-- [Analýza Limitu Sumace: $\sqrt{n}$ vs $n$ vs $\infty$](summation-limit-analysis.md) *(2025-11-15)*
-- [Spojitost Epsilon-Stabilizovaného Skóre s Funkcí Zeta](zeta-connection-analysis.md) *(2025-11-15)*
-- [Log-Sum-Exp Trick: Numerická Stabilizace](log-sum-exp.md) *(2025-11-15)*
-- [Papers Directory Guide](README.md) *(2025-11-14)*
-- [Closed-Form Semiprime Factorization](semiprime-factorization.md) *(2025-11-14)*
-- [Primorial via Rational Sum Formula](primorial-formula.md) *(2025-11-14)*
-- [Prime Index DAG and the Gap Theorem](prime-dag-gap-theorem.md) *(2025-11-14)*
-- [Efficient Modular Factorial Computation](modular-factorials.md) *(2025-11-14)*
-- [Chebyshev-Pell Framework for Square Root Rationalization](chebyshev-pell-sqrt-framework.md) *(2025-11-14)*
-- [Wilson's Pairing Structure and the Alternating Sum Connection](wilson-pairing-structure.md) *(2025-11-14)*
-- [Wilson's Theorem Connection: Attacking the Two Open Problems](wilson-connection-analysis.md) *(2025-11-14)*
-- [TODO: Next Session Tasks](TODO-NEXT-SESSION.md) *(2025-11-14)*
-- [TODO: Sanity Checks and Open Questions](TODO.md) *(2025-11-14)*
-- [](subcase-B2.md) *(2025-11-14)*
-- [The Strange Loop: Why It Cannot Be Broken](strange-loop-analysis.md) *(2025-11-14)*
-- [Square Root Rationalizations via Chebyshev Polynomials](sqrt-rationalizations.md) *(2025-11-14)*
-- [Square Root Rationalization: The m1=1 Optimization](sqrt-m1-optimization.md) *(2025-11-14)*
-- [Session Summary: November 12, 2025](session-2025-11-12.md) *(2025-11-14)*
-- [Theoretical Connection: Factorial Sum Structure ↔ Riemann Hypothesis](rh-factorial-connection-theory.md) *(2025-11-14)*
-- [Research Program: Factorial Sum Structure and the Riemann Hypothesis](rh-connection-research-program.md) *(2025-11-14)*
-- [Recursive Primorial Formulation: Analysis and Simplification](recursive-formulation-analysis.md) *(2025-11-14)*
-- [Quantum Computing and Prime Sieving](quantum-primorial-analysis.md) *(2025-11-14)*
-- [Can Quantum Computing Exploit the Primal Forest Structure?](quantum-primal-forest-analysis.md) *(2025-11-14)*
-- [Proof Strategies for the Primorial Conjecture](primorial-proof-strategies.md) *(2025-11-14)*
-- [Primorial Conjecture: Computational Breakthrough](primorial-proof-breakthrough.md) *(2025-11-14)*
-- [Primorial Conjecture: Inductive Proof Approach](primorial-proof-approach-inductive.md) *(2025-11-14)*
-- [Primorial Formula: Investigation Findings](primorial-mystery-findings.md) *(2025-11-14)*
-- [Primorial-Duality Paper: Correction Clarification](PRIMORIAL-CORRECTION-CLARIFICATION.md) *(2025-11-14)*
-- [Primal Forest: Geometric Prime Sieve Visualization](primal-forest-visualization.md) *(2025-11-14)*
-- [Optimized Nested Chebyshev Method: m1=1 Special Case](optimized-nested-chebyshev-m1-1.md) *(2025-11-14)*
-- [Modular Factorial Sum Investigation: Key Findings](modular-factorial-sum-findings.md) *(2025-11-14)*
-- [Investigation Summary: 2025-11-12](investigation-summary-2025-11-12.md) *(2025-11-14)*
-- [](honest.md) *(2025-11-14)*
-- [The Half-Factorial Numerator Theorem](half-factorial-numerator-theorem.md) *(2025-11-14)*
-- [GCD Formula: Detailed Worked Example](gcd-proof-example.md) *(2025-11-14)*
-- [Gauss AI Submission Draft](gauss-submission-draft.md) *(2025-11-14)*
-- [The Fractional Part Theorem](fractional-part-theorem.md) *(2025-11-14)*
-- [Theoretical Analysis of Factorial Variants for Primorial Formulas](factorial-variant-analysis.md) *(2025-11-14)*
-- [The Factorial-Fractional Unification: Deep Connections in Prime Structure](factorial-fractional-unification.md) *(2025-11-14)*
-- [Egyptian Horcruxes: Steganographic Secret Sharing](egyptian-horcruxes.md) *(2025-11-14)*
-- [Summary of Czech Translation Improvements](czech-translation-improvements.md) *(2025-11-14)*
-- [Corrections to Primorial-Duality Paper: Summary and Integration Guide](CORRECTIONS-SUMMARY.md) *(2025-11-14)*
-- [Convergence Proof Strategy for Nested Chebyshev-Pell Method](convergence-proof-strategy.md) *(2025-11-14)*
-- [Connections to Classical Prime Gap Theory](connections-to-classical-theory.md) *(2025-11-14)*
-- [Computational Utility Analysis: The Final Verdict](computational-utility-analysis.md) *(2025-11-14)*
-- [Complex Extension of Factorial Sum Formula](complex-extension-analysis.md) *(2025-11-14)*
-- [Chebyshev Curve Visualization: "Infinite Interference"](chebyshev-visualization.md) *(2025-11-14)*
-- [Chebyshev-Pell Square Root Paper - Summary](chebyshev-pell-sqrt-paper-summary.md) *(2025-11-14)*
-- [Investigation Plan: σ_m and Babylonian Method Relationship](babylonian-sigma-investigation-plan.md) *(2025-11-14)*
-- [The Role of the Alternating Sign: A Clarification](alternating-sign-clarification.md) *(2025-11-14)*
-- [](000-simplify-hint.md) *(2025-11-14)*
-- [Primorial Cancellation Proof: Machine-Readable Development Plan](proof-development-plan.md) *(2025-11-14)*
+- [Egypt-Chebyshev Binomial Equivalence](theorems/egypt-chebyshev/README.md)
+- [TOTAL-EVEN Divisibility Theorem](theorems/egypt-total-even/README.md)
+- [Pell Equation & Continued Fraction Patterns](theorems/pell-patterns/README.md)
+
+## Complete Proofs
+
+- [COMPLETE PROOF: Universal TOTAL-EVEN Divisibility](proofs/egypt-total-even-tier1-proof.md)
+
+## Recent Sessions (Last 10)
+
+- [TOTAL-EVEN Divisibility: Tier-1 Proof Complete](sessions/2025-11-19-total-even-tier1-proof.md) *(2025-11-19)*
+- [Wildberger-Egypt-Chebyshev Rosetta Stone Discovery](sessions/wildberger-rosetta-stone-discovery.md) *(2025-11-19)*
+- [Wildberger Pell Algorithm Analysis: √13](sessions/wildberger-pell-sqrt13-analysis.md) *(2025-11-19)*
+- [Systematic Analysis of Three Open Questions](sessions/three-questions-systematic-analysis.md) *(2025-11-19)*
+- [Chomsky Hierarchy Exploration - LR String Analysis](sessions/chomsky-lr-exploration-summary.md) *(2025-11-19)*
+- [QUICK SUMMARY: Rosetta Stone Discovery](sessions/SUMMARY-rosetta-stone.md) *(2025-11-19)*
+- [Morning Reflection: Trust, Context, and Role Asymmetry](sessions/2025-11-20-morning-reflection.md) *(2025-11-19)*
+- [Session: Trigonometric Proof Attempts & Epistemology Discussion](sessions/2025-11-20-afternoon-proof-attempts.md) *(2025-11-19)*
+- [Session: Egypt-Chebyshev Equivalence Exploration](sessions/2025-11-19-egypt-chebyshev-exploration.md) *(2025-11-19)*
+
+## Navigation
+
+- [STATUS.md](STATUS.md) - Master status tracker
+- [theorems/](theorems/) - All theorems organized by topic
+- [proofs/](proofs/) - Complete standalone proofs
+- [papers/](papers/) - LaTeX papers for publication
+- [sessions/](sessions/) - Discovery narratives by date
+- [failed-attempts/](failed-attempts/) - Dead ends (educational)
 
 ---
 *Auto-generated by `make preview`*
