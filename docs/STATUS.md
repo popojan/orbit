@@ -610,9 +610,10 @@ The partial sum S_k = 1 + Σ_{j=1}^k term(x-1, j) has numerator divisible by (x+
 **Proof method**: Pure algebraic proof using Chebyshev polynomial properties (Tier-1 rigor)
 
 **References**:
-- `docs/egypt-tier1-proof-COMPLETE.md` (complete proof for all k, Nov 19)
-- `docs/egypt-even-parity-proof.md` (foundational lemmas)
-- `docs/egypt-unified-theorem.md` (comprehensive theorem statement)
+- `docs/theorems/egypt-total-even/` (master documents)
+- `docs/proofs/egypt-total-even-tier1-proof.md` (complete proof for all k, Nov 19)
+- `docs/theorems/egypt-total-even/foundational-lemmas.md` (foundational lemmas)
+- `docs/theorems/egypt-total-even/unified-theorem.md` (comprehensive theorem statement)
 
 **Publication Priority**:
 - GitHub commit timestamp: November 19, 2025
@@ -692,11 +693,11 @@ Interaction between internal and external structure may strengthen correlation.
 
 ---
 
-## Egypt-Chebyshev Equivalence Conjecture (Nov 19, 2025)
+## Egypt-Chebyshev Equivalence Theorem (Nov 19, 2025)
 
-**Status**: 🔬 **NUMERICALLY VERIFIED** (j=1,2,3,4), NOT PROVEN
+**Status**: ✅ **PROVEN for j=2i** (Tier-1, Nov 19, 2025)
 
-**Discovery**: Factorial-based Egypt sqrt formula exactly equals Chebyshev polynomial product formula.
+**Theorem**: Factorial-based Egypt sqrt formula exactly equals Chebyshev polynomial product formula for simple cases j=2i.
 
 ### Main Conjecture
 
@@ -808,12 +809,12 @@ $$\sqrt{d} = \frac{x_0-1}{y_0} \lim_{k \to \infty} \left[1 + \sum_{j=1}^k \text{
 
 ### References
 
-- `docs/egypt-chebyshev-equivalence.md` (detailed analysis)
-- `docs/egypt-chebyshev-proof-attempt.md` (proof strategies)
-- `docs/sessions/2025-11-19-egypt-chebyshev-exploration.md` (discovery session)
+- `docs/theorems/egypt-chebyshev/` (master documents)
+- `docs/theorems/egypt-chebyshev/proof-structure-final.md` (complete proof via Vandermonde)
+- `docs/theorems/egypt-chebyshev/binomial-identity-proof.md` (Vandermonde breakthrough)
 - `Orbit/Kernel/SquareRootRationalizations.wl` (both formulas implemented)
 
-**Confidence**: 95% (very high numerical confidence, theoretical understanding solid, formal proof incomplete)
+**Confidence**: 95% (Tier-1 proof for j=2i, Vandermonde identity is standard)
 
 ---
 
@@ -1088,6 +1089,7 @@ p=631:  actual=48, predicted=20  (58% error)
 | Epsilon-pole theorem | ✅ PROVEN* | 90% | ❌ NO | Submit for review |
 | Primal forest | ✅ PROVEN* | 100% | ❌ NO | Write for publication |
 | **TOTAL-EVEN divisibility (ALL k)** | **✅ PROVEN** | **95%** | **❌ NO** | **Nov 19: DONE** ✅ |
+| **Egypt-Chebyshev equivalence (j=2i)** | **✅ PROVEN** | **95%** | **❌ NO** | **Nov 19: DONE** ✅ |
 | **Mod 8 theorem (x₀ mod p)** | **🔬 NUMERICAL** | **99%** | **❌ NO** | **Genus theory proof** |
 | **Period divisibility (mod 4)** | **🔬 NUMERICAL** | **99%** | **❌ NO** | **Theoretical derivation** |
 | **CF center norm pattern** | **🔬 NUMERICAL** | **99%** | **❌ NO** | **SB tree geometric proof** |
