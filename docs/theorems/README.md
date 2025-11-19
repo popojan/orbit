@@ -21,7 +21,7 @@ These theorems reveal **deep structural properties** and unify different mathema
 
 ### 1. Egypt-Chebyshev Binomial Equivalence ⭐
 
-**Status:** ✅ PROVEN for j=2i (Tier-1)
+**Status:** ✅ PROVEN for j=2i
 **Date:** November 19, 2025
 **Location:** [`egypt-chebyshev/`](egypt-chebyshev/)
 
@@ -54,14 +54,14 @@ Both frameworks compute $\sqrt{d}$ via Pell solutions, but use completely differ
 
 #### Proof Method
 
-**Vandermonde convolution + induction** (Tier-1 rigor)
+**Vandermonde convolution + induction** (rigorous)
 
 1. Reduction to $\Delta U$ formula via trigonometric product-to-sum
 2. Binomial coefficient formula via induction + **Vandermonde identity**:
    $$\sum_{j=0}^m \binom{a+j}{j} \binom{b+m-j}{m-j} = \binom{a+b+m+1}{m}$$
 3. Logical derivation combines Steps 1 and 2
 
-**Confidence:** 95% (relies on standard Chebyshev properties and Vandermonde identity)
+**Status:** Proven (not peer-reviewed). Relies on standard Chebyshev polynomial properties and Vandermonde identity.
 
 #### Implications
 
@@ -78,7 +78,7 @@ These theorems reveal **observable patterns** that are consequences of deeper st
 
 ### 2. TOTAL-EVEN Divisibility
 
-**Status:** ✅ PROVEN for all k (Tier-1)
+**Status:** ✅ PROVEN for all k
 **Date:** November 19, 2025
 **Location:** [`egypt-total-even/`](egypt-total-even/)
 
@@ -111,7 +111,7 @@ where $S_k = 1 + \sum_{j=1}^k \text{term}(x-1, j)$ is the partial sum in the Egy
 
 #### Proof Method
 
-**Chebyshev polynomial evaluation at x = -1** (Tier-1 rigor)
+**Chebyshev polynomial evaluation at x = -1** (rigorous)
 
 Key lemmas:
 1. $T_n(-1) = (-1)^n \neq 0$ → $(x+1) \nmid T_n(x)$
@@ -119,7 +119,7 @@ Key lemmas:
 3. $P_i(-1) = (-1)^i(2i+1) \neq 0$ (via L'Hospital) → $(x+1) \nmid P_i(x)$
 4. Pair sums have factor $(x+1)$ in numerator that cannot cancel
 
-**Confidence:** 95% (complete algebraic proof)
+**Status:** Proven (not peer-reviewed). Complete algebraic proof.
 
 #### Implications
 
@@ -217,12 +217,12 @@ Mod 8 correlation (numerical)
 - Systematic attack on Egypt-Chebyshev conjecture
 - 10:55: First proof via product formula
 - 12:43: **BREAKTHROUGH** - Vandermonde convolution proof ⭐
-- Egypt-Chebyshev **PROVEN for j=2i** (Tier-1)
+- Egypt-Chebyshev **PROVEN for j=2i**
 
 **Afternoon (15:02):**
 - Return to TOTAL-EVEN divisibility question
 - Chebyshev evaluation at $x=-1$ technique
-- **COMPLETE PROOF** for all $k$ (Tier-1) ⭐
+- **COMPLETE PROOF** for all $k$ ⭐
 
 **Evening (16:00-16:30):**
 - Documentation and reorganization
@@ -282,7 +282,7 @@ Mod 8 correlation (numerical)
 
 **Deep dives:**
 - [Egypt-Chebyshev proof](egypt-chebyshev/proof-structure-final.md) - Vandermonde technique
-- [TOTAL-EVEN proof](../proofs/egypt-total-even-tier1-proof.md) - Chebyshev evaluation
+- [TOTAL-EVEN proof](egypt-total-even/complete-proof.md) - Chebyshev evaluation
 - [Session logs](../sessions/) - Discovery narrative with false starts
 
 ### For Developers
@@ -343,7 +343,6 @@ All contributions must maintain **epistemological honesty**:
 - [`egypt-total-even/`](egypt-total-even/) - Divisibility manifestation
 - [`pell-patterns/`](pell-patterns/) - Numerical patterns (Wildberger, Mod 8)
 - [`../sessions/`](../sessions/) - Discovery narratives
-- [`../proofs/`](../proofs/) - Standalone proof documents
 
 ### External Resources
 - Pell equations: Standard number theory (Jacobson & Williams)
@@ -357,6 +356,6 @@ All contributions must maintain **epistemological honesty**:
 **Authors:** Jan Popelka, Claude (Anthropic)
 **Repository:** [popojan/orbit](https://github.com/popojan/orbit) (public)
 
-**Status:** Two Tier-1 theorems proven, multiple open questions, active exploration continuing.
+**Status:** Two rigorously proven theorems proven, multiple open questions, active exploration continuing.
 
 🎯 **Current Focus:** Understanding WHY these connections exist (geometric interpretation, Wildberger symmetry, primal forest links).

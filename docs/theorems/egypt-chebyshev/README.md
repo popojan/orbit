@@ -1,6 +1,6 @@
 # Egypt-Chebyshev Binomial Equivalence
 
-**Status:** ✅ **PROVEN for j=2i** (Tier-1)
+**Status:** ✅ **PROVEN for j=2i**
 **Date:** November 19, 2025
 **Authors:** Jan Popelka, Claude (Anthropic)
 
@@ -186,6 +186,4 @@ Developed in collaboration with Claude (Anthropic). All algebraic steps independ
 
 ---
 
-**Confidence:** 95% (Tier-1 proof, Vandermonde identity is standard)
-
-**Status:** ✅ PROVEN for j=2i (simple cases)
+**Status:** ✅ Proven for j=2i (not peer-reviewed). Rigorous algebraic proof using standard Vandermonde identity.

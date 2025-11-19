@@ -574,7 +574,7 @@ For f(n) = ⌊(g(n) - k)/m⌋ where Σ g(n) ~ x ln x + Bx:
 
 ## Egypt.wl TOTAL-EVEN Divisibility Theorem (Nov 16-19, 2025)
 
-**Status**: ✅ **RIGOROUSLY PROVEN FOR ALL k** (Nov 19, 2025, Tier-1)
+**Status**: ✅ **RIGOROUSLY PROVEN FOR ALL k** (Nov 19, 2025)
 
 **Theorem (Universal)**: For **any** positive integer n and Pell solution x² - ny² = 1:
 
@@ -607,21 +607,21 @@ The partial sum S_k = 1 + Σ_{j=1}^k term(x-1, j) has numerator divisible by (x+
 - **Special primes**: {7,23,31,47,...} have x ≡ +1 (mod p) (p ≡ 7 mod 8)
 - **Perfect square denominator**: All prime factors have even exponents (proven)
 
-**Proof method**: Pure algebraic proof using Chebyshev polynomial properties (Tier-1 rigor)
+**Proof method**: Pure algebraic proof using Chebyshev polynomial properties (rigorous proof)
 
 **References**:
 - `docs/theorems/egypt-total-even/` (master documents)
-- `docs/proofs/egypt-total-even-tier1-proof.md` (complete proof for all k, Nov 19)
+- `docs/theorems/egypt-total-even/complete-proof.md` (complete proof for all k, Nov 19)
 - `docs/theorems/egypt-total-even/foundational-lemmas.md` (foundational lemmas)
 - `docs/theorems/egypt-total-even/unified-theorem.md` (comprehensive theorem statement)
 
 **Publication Priority**:
 - GitHub commit timestamp: November 19, 2025
 - Repository: popojan/orbit (public)
-- Proof complete: Tier-1 rigor, ready for publication
+- Proof complete: rigorous proof, ready for publication
 - Strategy: Focus on mathematical implications, defer formal publication
 
-**Confidence**: 95% (complete algebraic proof, relying on standard Chebyshev properties)
+**Status**: Proven (not peer-reviewed). Complete algebraic proof using standard Chebyshev polynomial properties.
 
 ---
 
@@ -814,7 +814,7 @@ $$\sqrt{d} = \frac{x_0-1}{y_0} \lim_{k \to \infty} \left[1 + \sum_{j=1}^k \text{
 - `docs/theorems/egypt-chebyshev/binomial-identity-proof.md` (Vandermonde breakthrough)
 - `Orbit/Kernel/SquareRootRationalizations.wl` (both formulas implemented)
 
-**Confidence**: 95% (Tier-1 proof for j=2i, Vandermonde identity is standard)
+**Status**: Proven for j=2i (not peer-reviewed). Rigorous algebraic proof using standard Vandermonde identity.
 
 ---
 
