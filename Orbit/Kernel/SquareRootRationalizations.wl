@@ -26,7 +26,19 @@ ChebyshevTerm::usage = "ChebyshevTerm[x, k] computes the k-th term in the Chebys
 Formula:
   1 / (ChebyshevT[⌈k/2⌉, x+1] · (ChebyshevU[⌊k/2⌋, x+1] - ChebyshevU[⌊k/2⌋-1, x+1]))
 
-where T is Chebyshev polynomial of the first kind, U is second kind.";
+where T is Chebyshev polynomial of the first kind, U is second kind.
+
+NOTE: ChebyshevTerm is conjectured to be algebraically equivalent to FactorialTerm (see docs/egypt-chebyshev-equivalence.md).";
+
+FactorialTerm::usage = "FactorialTerm[x, j] computes the j-th term using the factorial-based formula from the Egypt repository.
+
+Formula:
+  1 / (1 + Sum[2^(i-1) x^i (j+i)! / ((j-i)! (2i)!), {i,1,j}])
+
+CONJECTURE: FactorialTerm[x,j] = ChebyshevTerm[x,j] for all x,j (numerically verified, not proven).
+
+This formula comes from the Egypt repository's closed-form representation of sqrt via Egyptian fractions.
+For details see: https://github.com/popojan/egypt and docs/egypt-chebyshev-equivalence.md";
 
 NestedChebyshevSqrt::usage = "NestedChebyshevSqrt[n, {m1, m2}] computes ultra-high precision rational sqrt approximations using nested Chebyshev iterations.
 
@@ -58,6 +70,20 @@ Examples:
 This is the most powerful method for extreme precision, far exceeding continued fractions in speed at high precision.";
 
 Begin["`Private`"];
+
+(* ===================================================================
+   EQUIVALENT FORMULATIONS - Egypt vs Chebyshev
+
+   CONJECTURE: FactorialTerm[x,j] == ChebyshevTerm[x,j] for all x,j
+
+   Status: Numerically verified (Egypt repo), algebraically unproven
+   See: docs/egypt-chebyshev-equivalence.md for details
+   =================================================================== *)
+
+(* Factorial-based term from Egypt repository *)
+FactorialTerm[x_, j_] :=
+    1 / (1 + Sum[2^(i-1) * x^i * Factorial[j+i] /
+                 (Factorial[j-i] * Factorial[2*i]), {i, 1, j}])
 
 (* Chebyshev-based term for rational approximation *)
 ChebyshevTerm[x_, k_] :=
