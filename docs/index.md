@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-11-19 16:49:14
+**Generated:** 2025-11-19 22:11:49
 
 ## Theorems (Master References)
 
@@ -10,7 +10,6 @@
 
 ## Complete Proofs
 
-- [COMPLETE PROOF: Universal TOTAL-EVEN Divisibility](proofs/egypt-total-even-tier1-proof.md)
 
 ## Recent Sessions (Last 10)
 

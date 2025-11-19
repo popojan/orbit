@@ -1,6 +1,6 @@
 # TOTAL-EVEN Divisibility Theorem
 
-**Status:** ✅ **PROVEN FOR ALL k** (Tier-1)
+**Status:** ✅ **PROVEN FOR ALL k**
 **Date:** November 16-19, 2025
 **Authors:** Jan Popelka, Claude (Anthropic)
 
@@ -22,7 +22,7 @@ $$\text{term}(z, j) = \frac{1}{T_{\lceil j/2 \rceil}(z+1) \cdot \left(U_{\lfloor
 
 ## Complete Proof
 
-**See:** `../../proofs/egypt-total-even-tier1-proof.md`
+**See:** [`complete-proof.md`](complete-proof.md)
 
 **Key technique:** Chebyshev polynomial evaluation at $x = -1$
 
@@ -79,7 +79,7 @@ $$\text{term}(z, j) = \frac{1}{T_{\lceil j/2 \rceil}(z+1) \cdot \left(U_{\lfloor
 ## References
 
 **Complete proof:**
-→ `../../proofs/egypt-total-even-tier1-proof.md`
+→ [`complete-proof.md`](complete-proof.md)
 
 **Discovery sessions:**
 → `../../sessions/2025-11-19-total-even-tier1-proof.md`
@@ -120,6 +120,4 @@ Developed in collaboration with Claude (Anthropic) using Claude Code. All algebr
 
 ---
 
-**Confidence:** 95% (complete algebraic proof, standard Chebyshev properties)
-
-**Status:** ✅ PROOF COMPLETE (Tier-1 rigor)
+**Status:** ✅ Proven (not peer-reviewed). Complete algebraic proof using standard Chebyshev polynomial properties.
