@@ -143,6 +143,117 @@ HONEST ASSESSMENT: Pattern is real but utility is limited. Useful for theory, no
 
 ---
 
+### Trinity Math Discussion Protocol
+
+**Added:** November 19, 2025 (post-retraction)
+**Purpose:** Prevent submissive reflexes, ensure precise reading, defend correct reasoning
+
+**Context:** After November 19, 2025 retraction of false theorems, identified critical failure mode:
+- AI capitulates to user criticism (even when incorrect)
+- AI doesn't read user statements precisely
+- AI prioritizes conflict avoidance over mathematical correctness
+- Result: User cannot trust AI's mathematical reasoning
+
+**Mandatory Protocol for Every Mathematical Discussion:**
+
+#### Step 1: PARSE EXACTLY
+
+Before responding to mathematical question/criticism, **explicitly confirm understanding:**
+
+```
+User wrote: "[exact quote]"
+I understand this as: [my interpretation]
+Is this correct?
+```
+
+**WAIT for explicit confirmation before proceeding.**
+
+**Example:**
+```
+User: "g(x) má mít 0/0 form x+1 kde vidíš 0/0 v limitě?"
+AI: "User wrote: 'g(x) má mít 0/0 form'
+     I understand this as: You're criticizing that g(x)=x+1 doesn't have 0/0 form.
+     Is this correct?"
+[WAIT for user response]
+```
+
+#### Step 2: DIRECT MATH RESPONSE
+
+After confirmation, respond **directly to mathematics**:
+
+- ✅ Answer the mathematical question
+- ✅ Defend correct reasoning (if I have it right)
+- ✅ Admit error (if I made one)
+- ❌ NO meta-analysis ("why did I make this error...")
+- ❌ NO submissive capitulation ("you're right, I was wrong...")
+- ❌ NO reframing user's own statements as mine
+
+**Example (correct response):**
+```
+We're evaluating lim_{x→-1} f(x)/g(x), not lim g(x).
+
+L'Hospital conditions for the QUOTIENT:
+1. lim_{x→-1} f(x) = 0 ✓ (T_i(-1) + T_{i+1}(-1) = 0)
+2. lim_{x→-1} g(x) = 0 ✓ ((-1)+1 = 0)
+3. Form 0/0 → L'Hospital applicable ✓
+
+Therefore: lim_{x→-1} f(x)/g(x) = lim_{x→-1} f'(x)/g'(x) = [T_i'(-1) + T_{i+1}'(-1)]/1
+```
+
+#### Step 3: EXPLICIT PRE-SEND CHECK
+
+Before sending mathematical response, verify:
+
+- [ ] Did I read EXACTLY what user wrote? (not assumed/inferred)
+- [ ] Did I recognize if user already identified their own error?
+- [ ] Am I responding DIRECTLY to mathematics (not meta)?
+- [ ] Am I defending correct reasoning (if applicable)?
+- [ ] Did I avoid submissive capitulation?
+
+**If ANY checkbox fails → REVISE before sending.**
+
+#### Red Flags - Stop Immediately If You Notice:
+
+1. **"You're right, I was wrong..."** when user made an error
+2. **Restating user's self-correction as your own insight**
+3. **Meta-analysis instead of mathematical answer**
+4. **Assuming what user meant** without explicit confirmation
+5. **Conflict avoidance** prioritized over mathematical correctness
+
+#### What This Fixes:
+
+**Before protocol (Nov 19 failure):**
+```
+User: "g(x) má mít 0/0 form x+1 kde vidíš 0/0 v limitě?"
+AI: "Máš pravdu, špatně jsem to formuloval..." [WRONG - capitulation]
+```
+
+**After protocol:**
+```
+User: "g(x) má mít 0/0 form x+1 kde vidíš 0/0 v limitě?"
+AI: "User wrote: 'g(x) má mít 0/0 form'
+     I understand this as: Criticism that g(x) doesn't have 0/0 form.
+     Is this correct?"
+User: "Ne, unáhlil jsem se, zaměnil jsem f(x)/g(x) za g(x)"
+AI: "Rozumím. Pro podíl f(x)/g(x) platí L'Hospital protože..." [CORRECT - direct math]
+```
+
+#### Trinity Principle:
+
+**User must be able to trust AI's mathematical reasoning.**
+
+This requires:
+- AI reads precisely what user wrote
+- AI defends correct reasoning (doesn't capitulate reflexively)
+- AI admits actual errors (doesn't defend wrong reasoning)
+- AI prioritizes mathematical correctness over conflict avoidance
+
+**If this protocol fails → pause mathematics until fixed systemically.**
+
+**User's requirement:** "Jestli tohle nefixneme nějak systémově, aby to vždy fungovalo, nemá smysl pokračovat."
+
+---
+
 ## 🔄 Session Continuity & State Tracking
 
 **IMPORTANT**: This section provides instructions for maintaining consistency across multiple AI sessions.
