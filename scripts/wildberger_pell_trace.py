@@ -176,25 +176,30 @@ def binomial_comparison(trace, d):
 
 
 if __name__ == "__main__":
+    import sys
+
+    # Allow d to be passed as command line argument
+    d = int(sys.argv[1]) if len(sys.argv) > 1 else 61
+
     print("="*60)
-    print("Wildberger Pell Algorithm Trace for sqrt(13)")
+    print(f"Wildberger Pell Algorithm Trace for sqrt({d})")
     print("="*60)
     print()
 
     # Run algorithm
-    x, y, trace = wildberger_pell(13, verbose=True)
+    x, y, trace = wildberger_pell(d, verbose=True)
 
     # Analyze alternation
     branches, runs, plus, minus = analyze_alternation(trace)
 
     # Find negative Pell
-    neg_pell = find_negative_pell(trace, 13)
+    neg_pell = find_negative_pell(trace, d)
 
     # Binomial comparison
-    binomial_comparison(trace, 13)
+    binomial_comparison(trace, d)
 
     print("\n" + "="*60)
-    print(f"SUMMARY: sqrt(13) fundamental solution = ({x}, {y})")
+    print(f"SUMMARY: sqrt({d}) fundamental solution = ({x}, {y})")
     print(f"Algorithm steps: {len(trace)}")
     print(f"Branch pattern: {'+' * plus} and {'-' * minus}")
     print("="*60)
