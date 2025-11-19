@@ -59,7 +59,7 @@ The classical continued fraction approach yields \emph{optimal} rational approxi
 
 \subsection{Our Contribution}
 
-Building upon earlier investigations in Egyptian fraction representations of square roots using Pell-Chebyshev methods \cite{egypt_repo}, we present a nested iteration approach that achieves substantial computational improvements. Our synthesis of classical mathematical structures yields a novel iterative framework with the following properties:
+Building upon earlier investigations in Egyptian fraction representations of square roots using Pell-Chebyshev methods \cite{egypt_repo}, we present a nested iteration approach that achieves substantial computational improvements. Our synthesis of classical mathematical structures yields an iterative framework with the following properties:
 
 \begin{enumerate}
 \item \textbf{Super-quadratic convergence:} The method achieves approximately 10-fold precision gain per iteration in balanced mode, increasing to 6000-fold gain in optimized configurations.
@@ -117,7 +117,7 @@ T_n(x)^2 - (x^2 - 1)U_{n-1}(x)^2 = 1
 \end{equation}
 
 \begin{remark}
-While the connection between Chebyshev polynomials and Pell equations has been established in the classical literature \cite{chebyshev_pell_connection}, our application of this relationship to rational square root approximation through nested iteration represents a novel computational paradigm.
+While the connection between Chebyshev polynomials and Pell equations has been established in the classical literature \cite{chebyshev_pell_connection}, our application of this relationship to rational square root approximation through nested iteration provides a new computational approach.
 \end{remark}
 
 \subsection{Genesis: The Egyptian Fraction Approach}
@@ -217,7 +217,7 @@ These optimized expressions eliminate both symbolic Chebyshev evaluation and com
 
 \begin{remark}[A Unique Coincidence with Newton's Method]
 \label{rem:sigma2-newton}
-A remarkable property of $\sigma_2$ emerged during our investigation: it is \emph{algebraically identical} to two successive applications of Newton's method (the classical Babylonian algorithm $x \mapsto (x + d/x)/2$):
+An interesting property of $\sigma_2$ emerged during our investigation: it is \emph{algebraically identical} to two successive applications of Newton's method (the classical Babylonian algorithm $x \mapsto (x + d/x)/2$):
 \begin{equation}
 \label{eq:sigma2-newton}
 \underbrace{(x_1 + d/x_1)/2}_{\text{where } x_1 = (n+d/n)/2} = \frac{n^4 + 6n^2d + d^2}{4n(n^2 + d)} = \sigma_2(d,n)
@@ -384,11 +384,11 @@ The observed 2× denominator overhead relative to continued fraction convergents
 The choice between methods depends critically on application requirements. For scenarios demanding minimal representation size (such as transmitting rational approximations over bandwidth-constrained channels), continued fraction convergents remain the optimal choice. Conversely, for applications requiring massive precision in computational memory (including symbolic verification systems and high-precision interval arithmetic), our method's computational speed advantage proves decisive.
 \end{remark}
 
-\section{Theoretical Insights and Novel Connections}
+\section{Theoretical Insights}
 
 \subsection{A Fixed-Point Characterization of Pell Solutions}
 
-Our investigations have unveiled a profound and previously unrecognized connection between Pell equation solutions and Chebyshev polynomial series:
+Our investigations have revealed an interesting connection between Pell equation solutions and Chebyshev polynomial series:
 
 \begin{proposition}[Empirical]
 \label{prop:fixedpoint}
@@ -406,7 +406,7 @@ Then $S_n(x_0 - 1)$ is rational for all $n$, and:
 The rationality property of $S_n(x)$ for all $n$ provides a complete characterization of Pell solutions: if $S_n(x)$ remains rational for all $n \in \mathbb{N}$ and $\lim_{n\to\infty} b \cdot S_n(x) = \sqrt{d}$ for some rational constant $b$, then $x+1$ necessarily corresponds to the $x$-coordinate of a Pell equation solution.
 \end{conjecture}
 
-This remarkable observation suggests that Pell solutions function as \emph{fixed points} of the Chebyshev rationalization process. Establishing this relationship rigorously would illuminate deep structural connections between Pell equations and Chebyshev polynomial theory.
+This observation suggests that Pell solutions function as \emph{fixed points} of the Chebyshev rationalization process. Establishing this relationship rigorously would clarify the structural connections between Pell equations and Chebyshev polynomial theory.
 
 \subsection{Connections to Egyptian Fraction Theory}
 
@@ -454,13 +454,13 @@ Conduct a comprehensive bit-complexity analysis of the nested Chebyshev-Pell alg
 
 \section{Conclusion}
 
-We have introduced a powerful new computational framework for ultra-high precision rational approximation of square roots, synthesizing classical mathematical structures in a novel algorithmic paradigm. Our method achieves remarkable computational milestones:
+We have introduced an efficient computational method for ultra-high precision rational approximation of square roots, combining Pell equation solutions with nested Chebyshev polynomial refinement. Our method achieves the following results:
 
 \begin{itemize}
-\item \textbf{Extraordinary convergence rates:} Super-quadratic convergence with up to 6000-fold precision gain per iteration, far exceeding traditional methods
+\item \textbf{Fast convergence:} Super-quadratic convergence with empirically observed 6000-fold precision gain per iteration for $\sqrt{13}$
 \item \textbf{Superior computational performance:} Demonstrates 3--10× speedup over state-of-the-art continued fraction implementations for precision requirements exceeding 200 digits
 \item \textbf{Unprecedented precision capability:} Successfully computed a 62-million-digit rational approximation to $\sqrt{13}$, establishing new benchmarks for exact arithmetic computation
-\item \textbf{Theoretical elegance:} Reveals profound connections between Pell equations, Chebyshev polynomials, and iterative refinement through the remarkable imaginary cancellation phenomenon
+\item \textbf{Algebraic insights:} Demonstrates connections between Pell equations, Chebyshev polynomials, and iterative refinement through imaginary unit cancellation in polynomial ratios
 \end{itemize}
 
 The method's deliberate trade-off---accepting approximately 2× denominator overhead in exchange for dramatic computational speedup---proves optimal for modern symbolic computation systems and applications demanding extreme rational precision. The discovered imaginary cancellation mechanism and the fixed-point characterization of Pell solutions suggest rich mathematical structures awaiting deeper theoretical investigation.
