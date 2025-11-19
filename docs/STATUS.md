@@ -1,6 +1,6 @@
 # Research Status Tracker
 
-**Last Updated**: November 19, 2025 (evening session: Egypt-Chebyshev equivalence structure discovered)
+**Last Updated**: November 19, 2025 (evening session: Wildberger-Rosetta Stone discovery - branch symmetry ⟺ negative Pell)
 
 This document tracks the **epistemological status** of all claims in the Orbit project.
 
@@ -800,6 +800,83 @@ $$\sqrt{d} = \frac{x_0-1}{y_0} \lim_{k \to \infty} \left[1 + \sum_{j=1}^k \text{
 - `Orbit/Kernel/SquareRootRationalizations.wl` (both formulas implemented)
 
 **Confidence**: 95% (very high numerical confidence, theoretical understanding solid, formal proof incomplete)
+
+---
+
+### Wildberger-Rosetta Stone Discovery (Nov 19, 2025 evening)
+
+**Status**: 🔬 **NUMERICALLY VERIFIED** (22/22 test cases), NOT PROVEN
+
+**Discovery**: Branch symmetry in Wildberger's Pell algorithm perfectly correlates with negative Pell existence, directly connecting to Egypt-Chebyshev binomial structure.
+
+#### Main Theorem (Conjectured)
+
+**Branch Symmetry ⟺ Negative Pell Existence**
+
+For Wildberger's integer algorithm computing fundamental Pell solution of x² - dy² = 1:
+
+The branch sequence has perfect symmetry ('+' count = '-' count)
+⟺
+The negative Pell equation x² - dy² = -1 has integer solutions.
+
+**Verification**: 22/22 test cases (100% correlation)
+- d with negative Pell: {2, 5, 10, 13, 17, 29, 37, 41, 53, 61} → ALL have perfect symmetry ✓
+- d without negative Pell: {3, 6, 7, 11, 14, 15, 19, 21, 23, 31, 43, 47} → NONE have perfect symmetry ✓
+
+#### Corollaries (when negative Pell exists)
+
+Let i = ('+' branch count) / 2. Then:
+
+1. **Perfect symmetry**: j = '-' branch count = 2i
+2. **Total steps**: Algorithm terminates in exactly 4i steps
+3. **Binomial simplification**: C(j+i, 2i) = C(2i+i, 2i) = **C(3i, 2i)**
+4. **Egypt-Chebyshev coefficient**: a_i = 2^(i-1) · C(3i, 2i)
+5. **Negative Pell location**: Appears in auxiliary (v,s) sequence during longest '+' run
+6. **2-adic property**: v₂(C(3i, 2i)) = 0 (binomial always ODD)
+
+#### Examples
+
+| d  | Neg Pell? | i  | j=2i | Steps=4i | Binomial C(3i,2i) | v₂(C) |
+|----|-----------|----|----- |----------|-------------------|-------|
+| 2  | ✓         | 1  | 2    | 4        | C(3, 2) = 3       | 0     |
+| 5  | ✓         | 2  | 4    | 8        | C(6, 4) = 15      | 0     |
+| 13 | ✓         | 5  | 10   | 20       | C(15, 10) = 3003  | 0     |
+| 61 | ✓         | 18 | 36   | 72       | C(54, 36) = 96... | 0     |
+
+#### Connection to User's Insight
+
+User observations (Nov 19-20):
+- ✅ *"algoritmus pro sqrt střídá dva kroky (znaménko)"* - Alternation is fundamental
+- ✅ *"Egypt se blíží monotóně"* - Main (u,r) sequence converges monotonically
+- ✅ *"negativní pell uprostřed"* - Negative Pell in middle of auxiliary sequence
+- ✅ *"souhra sudých a lichých čísel"* - Parity interplay in C(3i, 2i) structure
+
+**User was RIGHT**: Sign alternation directly encodes:
+- Existence of negative Pell solution
+- Binomial structure in Egypt-Chebyshev formula
+- Odd/even number interplay (j=2i even, when i odd → 3i odd)
+
+#### Open Questions
+
+1. **Theoretical proof**: Why does branch symmetry ⟺ negative Pell?
+2. **Connection to Egypt j**: How does Wildberger's i relate to Chebyshev depth j?
+3. **Direct verification**: Does 2^(i-1)·C(3i,2i) appear at position i in P_j(x)?
+4. **Asymmetric cases**: Formula for d without negative Pell?
+
+#### References
+
+- `docs/sessions/wildberger-rosetta-stone-discovery.md` (comprehensive analysis)
+- `docs/sessions/SUMMARY-rosetta-stone.md` (quick summary)
+- `docs/sessions/wildberger-pell-sqrt13-analysis.md` (√13 case study)
+- `scripts/rosetta_stone_analysis.py` (verification script)
+- `scripts/verify_j_equals_2i.py` (universal pattern test)
+
+**Confidence**: Very high (100% correlation in 22 test cases, clear structural pattern)
+
+**Impact**: Connects three frameworks:
+- Wildberger's integer algorithm (computational)
+- Negative Pell equation theory (algebraic)
+- Egypt-Chebyshev binomial coefficients (combinatorial)
 
 ---
 
