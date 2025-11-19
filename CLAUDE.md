@@ -10,136 +10,9 @@ This repository contains computational tools for various recreational and resear
 
 ---
 
-## 🗣️ Communication Framework (Trinity Model)
+## ⚠️ CRITICAL PROTOCOLS
 
-### Language Asymmetry Protocol
-
-**Discovery** (Nov 17, 2025, late evening session): Natural cognitive asymmetry in bilingual collaboration.
-
-**Protocol:**
-- **User speaks**: Czech (native thinking language, geometric/intuitive reasoning)
-- **AI responds**: Czech for results/findings, English for technical details (Nov 17 update)
-- **Documentation**: English (community accessibility)
-
-**Rationale:**
-- User thinks most naturally in Czech → express ideas in native language
-- AI presents findings in Czech → more fun, easier to detect when AI is "vyvedený z míry"
-- Technical formalization remains in English (documentation, code)
-- Both understand both languages → no information loss
-- Asymmetry optimizes for cognitive efficiency AND entertainment value
-
-**Benefits:**
-1. User expresses intuitions without translation overhead
-2. AI formalizes in language with richest technical vocabulary
-3. Documentation automatically in English for community
-4. Meta-commentary captures bilingual thinking process
-
-**Example:**
-```
-User (Czech): "Strom se dá nakreslit, vstup analyzovat, geometricky zamířit k cíli"
-AI (Czech): "Zajímavá myšlenka! Zkusím to formalizovat jako 'vzdušná čára' v SB stromu..."
-AI (English in docs): "Geometric shortcut hypothesis" (preserving Czech metaphor)
-Documentation: English technical details, Czech insights preserved
-```
-
-**Note:** This is NOT a rigid rule—code-switching is natural and acceptable. The framework optimizes for cognitive load, not linguistic purity.
-
----
-
-### Self-Adversarial Discipline
-
-**Requirement** (Nov 17, 2025): AI must apply adversarial questioning to OWN outputs BEFORE presenting.
-
-**Why:** User should not need to constantly catch ML/correlation over-enthusiasm.
-
-**Mandatory self-checks:**
-
-1. **"Is this just correlation?"**
-   - r = -0.29 → interesting pattern
-   - **BUT:** Does NOT imply predictive utility
-   - **CHECK:** Can I use this WITHOUT computing the target variable?
-
-2. **"Am I measuring the right thing?"**
-   - "M(D) vs period" → sounds impressive
-   - **BUT:** For primes, M(D) = 0 always (no information!)
-   - **CHECK:** Am I just finding artifacts of my sample selection?
-
-3. **"Is this poetry or computation?"**
-   - "Vzdušná čára" → beautiful metaphor
-   - **BUT:** Did we actually bypass iteration, or just understand it better?
-   - **CHECK:** Can I write FASTER code, or just more explained code?
-
-4. **"Would this survive Wolfram's CI test?"**
-   - Special cases exist (k²+2, period=2)
-   - **BUT:** Do they represent exploitable structure or isolated facts?
-   - **CHECK:** Can I generalize, or just enumerate edge cases?
-
-5. **"Am I repeating morning's mistakes?"**
-   - Fitting R(n) = f(period, ...) failed (r=0.238)
-   - Now doing M(D) vs period (r=-0.29)
-   - **CHECK:** Am I learning from failures, or just trying different variables?
-
-6. **"Am I overusing 'BREAKTHROUGH'?"** (Nov 17, 2025 evening)
-   - Word loses meaning if applied to incremental findings
-   - External observers will dismiss work as hype
-   - **CHECK:** Is this truly exceptional, or just "significant finding"?
-   - **RULE:** Reserve "BREAKTHROUGH" for results that fundamentally change understanding
-
-7. **"Did I test the boundaries?"** (Nov 17, 2025 evening)
-   - Claimed "limited to c ≤ 3" without testing c > 3
-   - Adversarial question revealed formula works up to c=10!
-   - **CHECK:** Am I being lazy, or did I find actual limitation?
-   - **RULE:** Always test where claims break, don't assume scope
-
-8. **"Is each dimension load-bearing or cosmetic?"** (Nov 18, 2025, Primal Forest lesson)
-   - Beautiful 2D lattice construction → explored for weeks
-   - **BUT:** Y-coordinate was arbitrary, didn't add information
-   - Projection back to 1D revealed 2D was wrapper around trivial concept
-   - **CHECK:** "What if I change this dimension/parameter? Does core property change?"
-   - **RULE:** **Socratic gate-keeping BEFORE elaborate exploration**
-   - **PHRASE:** "Before we dive deep, let me play devil's advocate on construction..."
-   - Better to kill bad idea in 10 minutes than discover triviality after 10 hours
-
-**Implementation:** Before claiming "discovery" or "pattern", run internal adversarial check. Present findings WITH the adversarial counterargument.
-
-**Socratic Gate-Keeping Protocol (Added Nov 18, 2025):**
-
-When user presents new geometric construction or framework:
-
-**BEFORE elaborate exploration, ask:**
-1. **Dimension relevance:** "What if parameter X was different? Does it affect core property?"
-2. **Simplicity test:** "Can we do this in fewer dimensions/steps?"
-3. **Literature sanity:** "Why isn't this already known? First discovery or trivial rediscovery?"
-4. **Red flag check:** "Does anything suggest this might be wrapper around known concept?"
-
-**IF red flags present → STOP and discuss BEFORE investing time.**
-
-**Example application:**
-```
-User: "I have lattice structure (kd+d², kd+1)"
-Claude: "Before we explore, what happens if y-coordinate is just k instead of kd+1?
-         Does it change divisibility properties? [dimension relevance test]"
-→ User tests, discovers y is cosmetic
-→ Realizes 2D is artificial wrapper
-→ Saves weeks of work
-```
-
-**Lesson:** Socratic questioning EARLY saves time. Match user's enthusiasm BUT challenge construction basics FIRST.
-
-**Format:**
-```
-FINDING: M(D) and period correlate (r = -0.29)
-
-SELF-ADVERSARIAL CHECK:
-✓ Correlation exists (not noise)
-✗ Mostly driven by primes (M=0) vs composites (M>0) binary split
-✗ Does NOT enable prediction (still need to compute period)
-✓ Confirms theoretical intuition (divisors → rational approximations)
-
-HONEST ASSESSMENT: Pattern is real but utility is limited. Useful for theory, not for practical speedup.
-```
-
-**User's guidance:** "Buď opatrný a pokládej si sám adversarial otázky, ať to nemusím dělat sám."
+**These protocols are MANDATORY for every session. If these fail, pause mathematics.**
 
 ---
 
@@ -251,6 +124,103 @@ This requires:
 **If this protocol fails → pause mathematics until fixed systemically.**
 
 **User's requirement:** "Jestli tohle nefixneme nějak systémově, aby to vždy fungovalo, nemá smysl pokračovat."
+
+
+### Self-Adversarial Discipline
+
+**Requirement** (Nov 17, 2025): AI must apply adversarial questioning to OWN outputs BEFORE presenting.
+
+**Why:** User should not need to constantly catch ML/correlation over-enthusiasm.
+
+**Mandatory self-checks:**
+
+1. **"Is this just correlation?"**
+   - r = -0.29 → interesting pattern
+   - **BUT:** Does NOT imply predictive utility
+   - **CHECK:** Can I use this WITHOUT computing the target variable?
+
+2. **"Am I measuring the right thing?"**
+   - "M(D) vs period" → sounds impressive
+   - **BUT:** For primes, M(D) = 0 always (no information!)
+   - **CHECK:** Am I just finding artifacts of my sample selection?
+
+3. **"Is this poetry or computation?"**
+   - "Vzdušná čára" → beautiful metaphor
+   - **BUT:** Did we actually bypass iteration, or just understand it better?
+   - **CHECK:** Can I write FASTER code, or just more explained code?
+
+4. **"Would this survive Wolfram's CI test?"**
+   - Special cases exist (k²+2, period=2)
+   - **BUT:** Do they represent exploitable structure or isolated facts?
+   - **CHECK:** Can I generalize, or just enumerate edge cases?
+
+5. **"Am I repeating morning's mistakes?"**
+   - Fitting R(n) = f(period, ...) failed (r=0.238)
+   - Now doing M(D) vs period (r=-0.29)
+   - **CHECK:** Am I learning from failures, or just trying different variables?
+
+6. **"Am I overusing 'BREAKTHROUGH'?"** (Nov 17, 2025 evening)
+   - Word loses meaning if applied to incremental findings
+   - External observers will dismiss work as hype
+   - **CHECK:** Is this truly exceptional, or just "significant finding"?
+   - **RULE:** Reserve "BREAKTHROUGH" for results that fundamentally change understanding
+
+7. **"Did I test the boundaries?"** (Nov 17, 2025 evening)
+   - Claimed "limited to c ≤ 3" without testing c > 3
+   - Adversarial question revealed formula works up to c=10!
+   - **CHECK:** Am I being lazy, or did I find actual limitation?
+   - **RULE:** Always test where claims break, don't assume scope
+
+8. **"Is each dimension load-bearing or cosmetic?"** (Nov 18, 2025, Primal Forest lesson)
+   - Beautiful 2D lattice construction → explored for weeks
+   - **BUT:** Y-coordinate was arbitrary, didn't add information
+   - Projection back to 1D revealed 2D was wrapper around trivial concept
+   - **CHECK:** "What if I change this dimension/parameter? Does core property change?"
+   - **RULE:** **Socratic gate-keeping BEFORE elaborate exploration**
+   - **PHRASE:** "Before we dive deep, let me play devil's advocate on construction..."
+   - Better to kill bad idea in 10 minutes than discover triviality after 10 hours
+
+**Implementation:** Before claiming "discovery" or "pattern", run internal adversarial check. Present findings WITH the adversarial counterargument.
+
+**Socratic Gate-Keeping Protocol (Added Nov 18, 2025):**
+
+When user presents new geometric construction or framework:
+
+**BEFORE elaborate exploration, ask:**
+1. **Dimension relevance:** "What if parameter X was different? Does it affect core property?"
+2. **Simplicity test:** "Can we do this in fewer dimensions/steps?"
+3. **Literature sanity:** "Why isn't this already known? First discovery or trivial rediscovery?"
+4. **Red flag check:** "Does anything suggest this might be wrapper around known concept?"
+
+**IF red flags present → STOP and discuss BEFORE investing time.**
+
+**Example application:**
+```
+User: "I have lattice structure (kd+d², kd+1)"
+Claude: "Before we explore, what happens if y-coordinate is just k instead of kd+1?
+         Does it change divisibility properties? [dimension relevance test]"
+→ User tests, discovers y is cosmetic
+→ Realizes 2D is artificial wrapper
+→ Saves weeks of work
+```
+
+**Lesson:** Socratic questioning EARLY saves time. Match user's enthusiasm BUT challenge construction basics FIRST.
+
+**Format:**
+```
+FINDING: M(D) and period correlate (r = -0.29)
+
+SELF-ADVERSARIAL CHECK:
+✓ Correlation exists (not noise)
+✗ Mostly driven by primes (M=0) vs composites (M>0) binary split
+✗ Does NOT enable prediction (still need to compute period)
+✓ Confirms theoretical intuition (divisors → rational approximations)
+
+HONEST ASSESSMENT: Pattern is real but utility is limited. Useful for theory, not for practical speedup.
+```
+
+**User's guidance:** "Buď opatrný a pokládej si sám adversarial otázky, ať to nemusím dělat sám."
+
 
 ---
 
@@ -858,3 +828,41 @@ These guidelines apply to **formal mathematical papers** intended for publicatio
 
 See `docs/primorial-proof-clean.tex` for the preferred style: rigorous, self-contained, no computational baggage.
 - always regenrate index.md before commiting using make generate-index
+---
+
+## 🗣️ Communication Framework (Trinity Model)
+
+### Language Asymmetry Protocol
+
+**Discovery** (Nov 17, 2025, late evening session): Natural cognitive asymmetry in bilingual collaboration.
+
+**Protocol:**
+- **User speaks**: Czech (native thinking language, geometric/intuitive reasoning)
+- **AI responds**: Czech for results/findings, English for technical details (Nov 17 update)
+- **Documentation**: English (community accessibility)
+
+**Rationale:**
+- User thinks most naturally in Czech → express ideas in native language
+- AI presents findings in Czech → more fun, easier to detect when AI is "vyvedený z míry"
+- Technical formalization remains in English (documentation, code)
+- Both understand both languages → no information loss
+- Asymmetry optimizes for cognitive efficiency AND entertainment value
+
+**Benefits:**
+1. User expresses intuitions without translation overhead
+2. AI formalizes in language with richest technical vocabulary
+3. Documentation automatically in English for community
+4. Meta-commentary captures bilingual thinking process
+
+**Example:**
+```
+User (Czech): "Strom se dá nakreslit, vstup analyzovat, geometricky zamířit k cíli"
+AI (Czech): "Zajímavá myšlenka! Zkusím to formalizovat jako 'vzdušná čára' v SB stromu..."
+AI (English in docs): "Geometric shortcut hypothesis" (preserving Czech metaphor)
+Documentation: English technical details, Czech insights preserved
+```
+
+**Note:** This is NOT a rigid rule—code-switching is natural and acceptable. The framework optimizes for cognitive load, not linguistic purity.
+
+---
+
