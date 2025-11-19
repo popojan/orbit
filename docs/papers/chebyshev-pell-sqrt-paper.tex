@@ -335,6 +335,39 @@ Nested (extreme) & 1 & 10 & 100 & 62,749,264 & 31,374,632 & 2.0x \\
 \item \textbf{Unprecedented precision capability:} The computation of 62 million digits in merely 100 milliseconds represents a precision regime entirely inaccessible to continued fraction methods within practical time constraints.
 \end{enumerate}
 
+\subsection{Initialization Cost: A Critical Caveat}
+
+\textbf{Important limitation:} The benchmarks presented in Table \ref{tab:sqrt13} measure \emph{only} the nested iteration phase (Algorithm 1, lines 3--6). They deliberately exclude the computational cost of solving the Pell equation (line 1) to obtain the fundamental solution $(x_0, y_0)$.
+
+For a complete performance assessment, the total computation time must account for both phases:
+\begin{equation}
+T_{\text{total}} = T_{\text{Pell}}(d) + T_{\text{nested}}(m_1, m_2, \text{target precision})
+\end{equation}
+
+\textbf{When initialization cost matters:}
+
+\begin{itemize}
+\item \textbf{Single-use computations:} For one-time approximation of $\sqrt{d}$, the Pell solution must be computed from scratch. Using Wildberger's algorithm \cite{wildberger2010pell}, this requires $O(p)$ operations where $p$ is the continued fraction period of $\sqrt{d}$. For primes, empirical evidence suggests $p = O(\sqrt{d})$ in the worst case, though typical behavior is substantially better.
+
+\item \textbf{Long period cases:} Certain $d$ values exhibit exceptionally long periods. For instance, while $\sqrt{13}$ has period 5 (making initialization negligible), $\sqrt{991}$ has period 16, and extreme cases can reach periods proportional to $\sqrt{d}$.
+
+\item \textbf{Moderate precision targets:} For precision requirements below approximately 1000 digits, initialization cost can dominate the total computation time, particularly for $d$ with long periods. In such scenarios, continued fraction methods may prove more efficient despite slower asymptotic performance.
+\end{itemize}
+
+\textbf{When initialization cost amortizes:}
+
+\begin{itemize}
+\item \textbf{Repeated computations:} When computing $\sqrt{d}$ to multiple precision levels (e.g., progressive refinement), the Pell solution is computed once and reused. The initialization cost $T_{\text{Pell}}$ amortizes across all computations.
+
+\item \textbf{High precision regime:} For extreme precision targets (exceeding 10,000 digits), $T_{\text{nested}}$ dominates regardless of period length, making initialization cost negligible in relative terms.
+
+\item \textbf{Precomputation:} Applications working with fixed $d$ values can precompute and cache Pell solutions, entirely eliminating runtime initialization cost.
+\end{itemize}
+
+\begin{remark}
+A fair comparison between our method and continued fractions should either (1) include Pell solution time in the nested method's total, or (2) explicitly state that benchmarks assume amortized cost over repeated use. Our presentation adopts the latter convention, appropriate for high-precision symbolic computation applications where initialization cost is negligible relative to iteration cost.
+\end{remark}
+
 \subsection{Comparison with Newton's Method}
 
 The classical Newton-Raphson method (Babylonian algorithm) exhibits well-known quadratic convergence: $\epsilon_{n+1} \approx \epsilon_n^2$, effectively doubling precision with each iteration. Achieving $10^{6}$ digits of precision requires approximately $\log_2(10^6) \approx 20$ iterations.
