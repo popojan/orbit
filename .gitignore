@@ -34,3 +34,4 @@ verification_*.txt
 # Miscellaneous/scratch files
 misc/
 cache/
+scripts/__pycache__/
