@@ -51,7 +51,7 @@ The classical continued fraction approach yields \emph{optimal} rational approxi
 
 \textbf{Continued Fractions.} The periodic continued fraction expansion $\sqrt{d} = [a_0; \overline{a_1, \ldots, a_k}]$ generates convergents $p_n/q_n$ that optimally approximate $\sqrt{d}$. These convergents satisfy the fundamental minimality property: no rational approximation with a smaller denominator can achieve comparable precision \cite{khinchin1964continued}. Nevertheless, the computation of thousands of convergents becomes prohibitively expensive for ultra-high precision applications.
 
-\textbf{Newton's Method.} The classical Babylonian algorithm $x_{n+1} = \frac{1}{2}(x_n + d/x_n)$ exhibits quadratic convergence in floating-point arithmetic, effectively doubling precision with each iteration. Recent investigations \cite{arxiv2501.04703} have established connections between Newton and Householder iterative methods and Chebyshev polynomials, expressing iteration sequences through the polynomial forms $T_{2^k}$ and $U_{2^k}$.
+\textbf{Newton's Method.} The classical Babylonian algorithm \cite{press2007numerical} $x_{n+1} = \frac{1}{2}(x_n + d/x_n)$ exhibits quadratic convergence in floating-point arithmetic, effectively doubling precision with each iteration. Recent investigations \cite{arxiv2501.04703} have established connections between Newton and Householder iterative methods and Chebyshev polynomials, expressing iteration sequences through the polynomial forms $T_{2^k}$ and $U_{2^k}$.
 
 \textbf{Pell Equations.} Integer solutions $(x, y)$ to the Pell equation $x^2 - dy^2 = 1$ naturally yield excellent rational approximations $x/y \approx \sqrt{d}$. Wildberger \cite{wildberger2010pell} has developed efficient algorithms for computing fundamental solutions entirely within integer arithmetic. The intimate connection between Pell equations and Chebyshev polynomials has been well-established in the classical literature \cite{chebyshev_pell_connection}.
 
@@ -292,6 +292,81 @@ For $m_1=1$, empirical measurements suggest a precision growth factor of approxi
 These rates are established empirically through computational experiments on $\sqrt{13}$. A rigorous theoretical proof of convergence rates remains an important open problem (see Section \ref{sec:open}). The dependence of these rates on properties of $d$ (such as continued fraction period length or regulator size) has not been systematically investigated.
 \end{remark}
 
+\subsection{Theoretical Explanation: Sextic Convergence}
+
+While Conjecture \ref{conj:convergence} presents empirical observations, we can establish a theoretical foundation explaining the observed $6^{m_2}$ scaling for $m_1=1$.
+
+\begin{lemma}[Sextic Convergence of $\tau_1$]
+\label{lem:tau1-sextic}
+Let $H(n) = n(n^2 + 3d)/(3n^2 + d)$ denote Halley's method \cite{halley1694} for $\sqrt{d}$, and define the symmetrized refinement operator
+\begin{equation}
+\tau_1(d, n) = \frac{1}{2}\left(H(n) + \frac{d}{H(n)}\right)
+\end{equation}
+
+For $n = \sqrt{d} + \epsilon$ with $|\epsilon| \ll \sqrt{d}$:
+\begin{equation}
+\tau_1(d, n) = \sqrt{d} + O(\epsilon^6)
+\end{equation}
+
+Thus $\tau_1$ exhibits \emph{sextic convergence} (order 6): the error behaves as $\epsilon_{k+1} \approx C \cdot \epsilon_k^6$.
+\end{lemma}
+
+\begin{proof}
+We proceed through Taylor expansion analysis.
+
+\textbf{Step 1: Halley's cubic convergence.} Standard analysis of Halley's method for $f(x) = x^2 - d$ yields:
+\begin{equation}
+H(\sqrt{d} + \epsilon) = \sqrt{d} + \frac{1}{2\sqrt{d}} \cdot \epsilon^3 + O(\epsilon^5)
+\end{equation}
+
+\textbf{Step 2: Reciprocal expansion.} Applying the binomial series:
+\begin{align}
+\frac{d}{H(\sqrt{d} + \epsilon)}
+&= \sqrt{d} \cdot \frac{1}{1 + \frac{\epsilon^3}{2d} + O(\epsilon^5)} \\
+&= \sqrt{d} \left(1 - \frac{\epsilon^3}{2d} + \frac{\epsilon^6}{4d^2} + O(\epsilon^7)\right) \\
+&= \sqrt{d} - \frac{\epsilon^3}{2\sqrt{d}} + O(\epsilon^6)
+\end{align}
+
+\textbf{Step 3: Cubic term cancellation.} Averaging the two expressions:
+\begin{align}
+\tau_1(d, \sqrt{d}+\epsilon)
+&= \frac{1}{2}\left[\left(\sqrt{d} + \frac{\epsilon^3}{2\sqrt{d}}\right) + \left(\sqrt{d} - \frac{\epsilon^3}{2\sqrt{d}}\right)\right] + O(\epsilon^6) \\
+&= \sqrt{d} + O(\epsilon^6)
+\end{align}
+
+The $\epsilon^3$ terms from $H$ and $d/H$ \emph{exactly cancel} due to opposite signs, leaving $\epsilon^6$ as the leading error term. This establishes sextic convergence.
+\end{proof}
+
+\begin{corollary}[Exponential Precision Growth]
+\label{cor:nested-scaling}
+Under $m_2$ nested applications of $\tau_1$, starting from initial error $\epsilon_0$:
+\begin{equation}
+\epsilon_{m_2} \approx \epsilon_0^{6^{m_2}}
+\end{equation}
+
+Consequently, decimal precision grows as:
+\begin{equation}
+\text{digits}_{m_2} \approx 6^{m_2} \cdot (-\log_{10} \epsilon_0)
+\end{equation}
+
+This explains the empirically observed $\text{precision} \approx 6^{m_2}$ scaling in Conjecture \ref{conj:convergence}.
+\end{corollary}
+
+\begin{proof}
+Each iteration raises error to the 6th power:
+\begin{align}
+\epsilon_1 &\approx C \epsilon_0^6 \\
+\epsilon_2 &\approx C \epsilon_1^6 = C(C \epsilon_0^6)^6 \approx \epsilon_0^{36} = \epsilon_0^{6^2} \\
+\epsilon_k &\approx \epsilon_0^{6^k}
+\end{align}
+
+Taking negative logarithms: $-\log_{10}(\epsilon_k) \approx 6^k \cdot (-\log_{10}\epsilon_0)$, establishing the result.
+\end{proof}
+
+\begin{remark}
+The sextic convergence arises from a \emph{perfect cancellation} of cubic error terms when averaging Halley's method with its reciprocal. This mechanism differs fundamentally from classical iteration schemes and explains the method's exceptional performance. Note that $\sigma_1(d,n) = d/H(n)$ can be viewed as reciprocal Halley, and the symmetrization $\tau_1 = (H + d/H)/2$ precisely exploits this structure.
+\end{remark}
+
 \section{Performance Analysis}
 
 \subsection{Benchmark Methodology}
@@ -508,6 +583,16 @@ Chapman \& Hall/CRC, 2003.
 L. N. Trefethen et al.
 ``Chebfun Guide.''
 \url{https://www.chebfun.org/docs/guide/}, 2024.
+
+\bibitem{halley1694}
+E. Halley.
+``A new, exact and easy method of finding the roots of equations generally and that without any previous reduction.''
+\emph{Philosophical Transactions of the Royal Society of London}, Vol. 18, pp. 136--148, 1694.
+
+\bibitem{press2007numerical}
+W. H. Press, S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery.
+\emph{Numerical Recipes: The Art of Scientific Computing}, 3rd edition.
+Cambridge University Press, 2007.
 
 \end{thebibliography}
 
