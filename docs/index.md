@@ -1,19 +1,15 @@
 # Documentation Index
 
-**Generated:** 2025-11-19 22:11:49
+**Generated:** 2025-11-19 22:34:20
 
 ## Theorems (Master References)
 
-- [Egypt-Chebyshev Binomial Equivalence](theorems/egypt-chebyshev/README.md)
-- [TOTAL-EVEN Divisibility Theorem](theorems/egypt-total-even/README.md)
-- [Pell Equation & Continued Fraction Patterns](theorems/pell-patterns/README.md)
 
 ## Complete Proofs
 
 
 ## Recent Sessions (Last 10)
 
-- [TOTAL-EVEN Divisibility: Tier-1 Proof Complete](sessions/2025-11-19-total-even-tier1-proof.md) *(2025-11-19)*
 - [Wildberger-Egypt-Chebyshev Rosetta Stone Discovery](sessions/wildberger-rosetta-stone-discovery.md) *(2025-11-19)*
 - [Wildberger Pell Algorithm Analysis: √13](sessions/wildberger-pell-sqrt13-analysis.md) *(2025-11-19)*
 - [Systematic Analysis of Three Open Questions](sessions/three-questions-systematic-analysis.md) *(2025-11-19)*
