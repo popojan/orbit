@@ -1,6 +1,6 @@
 # Research Status Tracker
 
-**Last Updated**: November 17, 2025 (evening session: CF center norm + Pell speedup via Wildberger SB tree)
+**Last Updated**: November 19, 2025 (evening session: Egypt-Chebyshev equivalence structure discovered)
 
 This document tracks the **epistemological status** of all claims in the Orbit project.
 
@@ -675,6 +675,131 @@ Interaction between internal and external structure may strengthen correlation.
   - `scripts/pell_regulator_attack.py`
 
 **Confidence**: 75% (correlation exists, mechanism partially understood, needs deeper analysis)
+
+---
+
+## Egypt-Chebyshev Equivalence Conjecture (Nov 19, 2025)
+
+**Status**: 🔬 **NUMERICALLY VERIFIED** (j=1,2,3,4), NOT PROVEN
+
+**Discovery**: Factorial-based Egypt sqrt formula exactly equals Chebyshev polynomial product formula.
+
+### Main Conjecture
+
+**Identity**:
+$$\frac{1}{1 + \sum_{i=1}^{j} 2^{i-1} \binom{j+i}{2i} x^i} = \frac{1}{T_{\lceil j/2 \rceil}(x+1) \cdot \Delta U_j(x+1)}$$
+
+where $\Delta U_j(y) := U_{\lfloor j/2 \rfloor}(y) - U_{\lfloor j/2 \rfloor-1}(y)$.
+
+**Verification status**:
+- ✅ j=1: $1+x$ (both sides)
+- ✅ j=2: $1+3x+2x^2$ (both sides)
+- ✅ j=3: $1+6x+10x^2+4x^3$ (both sides)
+- ✅ j=4: $1+10x+30x^2+28x^3+8x^4$ (both sides)
+
+**General proof**: ❌ INCOMPLETE (ceiling/floor indexing breaks standard techniques)
+
+### Key Insights (Non-Trivial Structure)
+
+**1. Positivity is special**:
+- Individual $T_n, U_n$ have **mixed signs** (e.g., $T_2(y) = 2y^2 - 1$)
+- Product $T_n(x+1) \cdot \Delta U_n(x+1)$ has **ALL POSITIVE** coefficients
+- Mechanism: Shift to boundary ($y=1$) + difference operator → cancellation
+
+**2. Binomial structure emerges**:
+$$P_j(x) = 1 + \sum_{i=1}^{j} 2^{i-1} \binom{j+i}{2i} x^i$$
+
+- "Choose EVEN number (2i) from pool (j+i)"
+- Factor $2^{i-1}$ from Chebyshev recursion doubling
+- Leading coefficient: $2^{j-1}$ always
+
+**3. Moment sequence property**:
+- Positive coefficients → represents positive measure $\mu$
+- Related to transformed Chebyshev weight $w(t) = 1/\sqrt{1-t^2}$
+- Expansion at domain boundary (y=1) crucial
+
+**4. Uniqueness to Chebyshev**:
+- Legendre, Hermite shifted forms don't have this structure
+- Specific to product $T_{\lceil j/2 \rceil} \cdot \Delta U_j$ at $y=x+1$
+
+### Why Sign Determination is Non-Trivial
+
+**Standard Chebyshev properties**:
+- $T_n$ and $U_n$ have alternating signs in standard form
+- Products generally preserve mixed signs
+- Shift $y \to x+\alpha$ doesn't always create positivity
+
+**Our special combination**:
+1. Shift to boundary: $y = x+1$ (expands around Chebyshev domain edge)
+2. Difference operator: $\Delta U$ mixes parities (n vs n-1)
+3. Product structure: Negative terms cancel exactly
+4. Ceiling/floor indexing: Creates alignment for cancellation
+
+**Result**: All negative terms vanish, binomial pattern emerges.
+
+### Connection to Pell & Sqrt
+
+**Egypt framework** (from `egypt/doc/sqrt.pdf`):
+$$\sqrt{d} = \frac{x_0-1}{y_0} \lim_{k \to \infty} \left[1 + \sum_{j=1}^k \text{term0}(x_0-1, j)\right]$$
+
+where $(x_0, y_0)$ is fundamental Pell solution to $x^2 - d \cdot y^2 = 1$.
+
+**Orbit framework** (Chebyshev-based):
+$$\sqrt{d} = \frac{x_0-1}{y_0} \lim_{k \to \infty} \left[1 + \sum_{j=1}^k \text{ChebyshevTerm}(x_0-1, j)\right]$$
+
+**If equivalence proven**: Factorial sums ↔ Orthogonal polynomials for sqrt rationalization.
+
+### Open Questions (⏸️)
+
+1. **Is this known?** Literature search needed (Chebyshev theory 200+ years old)
+2. **General proof?** Tried 5 approaches, all blocked by ceiling/floor complications
+3. **Generalization?** Other shifts $T_n(x+\alpha)$? Other orthogonal families?
+4. **Explicit measure?** What is $\mu$ such that $c_i = \int t^i d\mu(t)$?
+5. **Lattice path model?** Is $\binom{j+i}{2i}$ counting specific combinatorial objects?
+
+### Proof Attempts (All Incomplete)
+
+**Tried strategies**:
+1. ❌ Direct expansion: Works for j≤4, too messy for general case
+2. ❌ Recurrence relations: Ceiling/floor breaks clean recurrence for $P_j$
+3. ❌ Generating functions: Floor/ceiling in indices prevents standard approach
+4. ⏸️ Induction: Most promising but stuck on inductive step
+5. ❓ Hypergeometric: Connection unclear (Pochhammer with index 2i)
+
+**Main obstacle**: Ceiling/floor indexing $\lceil j/2 \rceil, \lfloor j/2 \rfloor$ breaks symmetry.
+
+### Implications
+
+**If proven**:
+- ✅ Unifies Egypt (factorial) ↔ Orbit (Chebyshev) frameworks
+- ✅ New identity in Chebyshev polynomial theory
+- ✅ Explains binomial structure in shifted orthogonal polynomials
+
+**Even without proof**:
+- ✅ **INSIGHT** into shifted Chebyshev structure (non-trivial positivity)
+- ✅ **EDUCATIONAL** value (sign determination complexity)
+- ✅ **CONNECTS** factorial formulas to polynomial theory
+
+### Publication Potential
+
+**Realistic assessment**:
+- ❌ Standalone paper: No (needs proof or applications)
+- ✅ Technical note: Maybe (if literature confirms novelty)
+- ✅ Repository documentation: High value
+- ✅ Blog/educational post: Excellent content
+
+**Why not full paper**: No proof + Egypt framework circular (needs Pell solution) + no killer application.
+
+**But**: **Insight > Utility** - understanding structure has intrinsic value.
+
+### References
+
+- `docs/egypt-chebyshev-equivalence.md` (detailed analysis)
+- `docs/egypt-chebyshev-proof-attempt.md` (proof strategies)
+- `docs/sessions/2025-11-19-egypt-chebyshev-exploration.md` (discovery session)
+- `Orbit/Kernel/SquareRootRationalizations.wl` (both formulas implemented)
+
+**Confidence**: 95% (very high numerical confidence, theoretical understanding solid, formal proof incomplete)
 
 ---
 
