@@ -265,5 +265,84 @@ $${}_pF_q\left(\begin{matrix} a_1, \ldots, a_p \\ b_1, \ldots, b_q \end{matrix};
 
 ---
 
+## Strategy 6: Trigonometric/Hyperbolic Substitution (Nov 20, 2025)
+
+**Idea**: Use hyperbol ic Chebyshev identity $T_n(\cosh t) = \cosh(nt)$ to simplify product.
+
+### Approach for j even
+
+Substitution $x+1 = \cosh(t)$, so $x = \cosh(t) - 1$.
+
+Using sinh difference formulas on $\Delta U$:
+$$P_j = \frac{\cosh((2j+1)t/2) + \cosh(t/2)}{2\cosh(t/2)}$$
+
+**Obstacle**: Half-integer indices $(2j+1)/2$ require:
+- Double-angle formula: $t = 2s$ leads to $\cosh(s) = \sqrt{(x+2)/2}$ → introduces √
+- Cannot avoid square roots in expansion back to polynomial in $x$
+
+**Conclusion**: Hyperbolic substitution reduces to messier form than direct polynomial approach. Unlike composition property (where gonio makes it trivial), this product doesn't simplify via trig identities.
+
+**Why it fails here vs. composition property:**
+- Composition: $T_m(T_n(\cos\theta)) = T_m(\cos(n\theta)) = \cos(mn\theta)$ → substitution **eliminates** polynomials
+- Our problem: Substitution leads to $\cosh(kt)$ expressions, converting back requires $t = \text{arccosh}(x+1)$ → no simplification
+
+---
+
+## Strategy 7: Computational Coefficient Analysis (Nov 20, 2025)
+
+**Idea**: Manually verify j=5 and analyze coefficient structure.
+
+### Case j=5 (First Odd Case Beyond j=3)
+
+**Chebyshev formula:**
+$$P_5 = T_3(x+1) \cdot [U_2(x+1) - U_1(x+1)]$$
+
+**Explicit calculation:**
+- $T_3(x+1) = 4x^3 + 12x^2 + 9x + 1$
+- $\Delta U_5 = U_2(x+1) - U_1(x+1) = 4x^2 + 6x + 1$
+- Product: $P_5 = 16x^5 + 72x^4 + 112x^3 + 70x^2 + 15x + 1$
+
+**Binomial formula:**
+$$P_5 = 1 + \sum_{i=1}^{5} 2^{i-1} \binom{5+i}{2i} x^i = 1 + 15x + 70x^2 + 112x^3 + 72x^4 + 16x^5$$
+
+**Result**: ✅ EQUAL (j=5 verified)
+
+### Coefficient Structure Analysis
+
+| Power | Chebyshev | Binomial formula | Factorization |
+|-------|-----------|------------------|---------------|
+| $x^0$ | 1 | $2^{-1}\binom{5}{0}$ (convention) | 1 |
+| $x^1$ | 15 | $2^0 \binom{6}{2} = 15$ | $3 \cdot 5$ |
+| $x^2$ | 70 | $2^1 \binom{7}{4} = 2 \cdot 35$ | $2 \cdot 5 \cdot 7$ |
+| $x^3$ | 112 | $2^2 \binom{8}{6} = 4 \cdot 28$ | $2^4 \cdot 7$ |
+| $x^4$ | 72 | $2^3 \binom{9}{8} = 8 \cdot 9$ | $2^3 \cdot 3^2$ |
+| $x^5$ | 16 | $2^4 \binom{10}{10} = 16$ | $2^4$ |
+
+**Pattern confirmed**: Leading coefficient $= 2^{j-1}$ for all verified cases {1,2,3,4,5}.
+
+### Convolution Structure
+
+Coefficient of $x^i$ arises from convolution:
+$$[x^i]: \sum_{k=0}^{\min(i, \deg T)} c_k(T) \cdot c_{i-k}(\Delta U)$$
+
+where $c_k(P)$ = coefficient of $x^k$ in polynomial $P$.
+
+**Example** (j=5, i=2):
+- $T_3(x+1)$ coeffs: $[1, 9, 12, 4]$
+- $\Delta U_5$ coeffs: $[1, 6, 4]$
+- Convolution: $1 \cdot 4 + 9 \cdot 6 + 12 \cdot 1 = 4 + 54 + 12 = 70$ ✓
+
+**Key unsolved question**: Why does this **specific convolution** yield exactly $2^{i-1}\binom{j+i}{2i}$?
+
+This suggests there's an underlying combinatorial or algebraic identity connecting:
+- Chebyshev polynomial coefficients (via recurrence + shift)
+- Binomial coefficients with "choose even number (2i)" structure
+
+**Potential approach**: Express $T_n(x+1)$ and $\Delta U_m(x+1)$ coefficients in closed form, prove convolution identity.
+
+---
+
 *Proof attempt status: INCOMPLETE but insight documented.*
+*Verified: j ∈ {1,2,3,4,5} ✓*
+*Strategies attempted: 7 (direct expansion, recurrence, generating functions, induction, hypergeometric, trigonometric, computational)*
 *Recommendation: Accept as high-confidence conjecture, continue documentation.*
