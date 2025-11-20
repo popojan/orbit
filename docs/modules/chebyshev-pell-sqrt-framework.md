@@ -155,12 +155,63 @@ $$\sqrt{d} \cdot \left\{\frac{(n+\sqrt{d})^k - (n-\sqrt{d})^k}{(n+\sqrt{d})^k + 
 
 This provides **both upper and lower rational bounds** that converge to $\sqrt{d}$.
 
-**Comparison of bound properties:**
+**Implementation** (now available in `SquareRootRationalizations.wl`):
+```mathematica
+BinetSqrt[nn, n, k]  (* returns {lower, upper} bounds *)
+```
+
+**Convergence**: Exponential (bounds tighten by factor $\sim 2^k$)
+
+### Babylonian (Newton) Method with Bounds
+
+The classical Babylonian method can also maintain **rigorous bounds**:
+
+**Starting bounds** (from approximation $n$):
+$$\left\{\frac{2n \cdot d}{n^2 + d}, \frac{n^2 + d}{2n}\right\}$$
+
+**Iteration step** (given bounds $\{L, U\}$):
+$$\{L', U'\} = \left\{\frac{d}{\text{avg}(L,U)}, \text{avg}(L,U)\right\}$$
+
+**Implementation**:
+```mathematica
+BabylonianSqrt[nn, n, k]  (* k iterations, returns {lower, upper} bounds *)
+```
+
+**Convergence**: Quadratic (precision doubles per iteration)
+
+### Egypt Method with Bounds
+
+The factorial-based Egypt method yields a single approximation, which can be converted to bounds:
+
+**Formula**:
+$$r = \frac{x-1}{y} \left(1 + \sum_{j=1}^{k} \frac{1}{1 + \sum_{i=1}^{j} 2^{i-1} (x-1)^i \frac{(j+i)!}{(j-i)! (2i)!}}\right)$$
+
+**Bounds construction**: $\{r, d/r\}$ where $r$ is the approximation.
+
+**Implementation**:
+```mathematica
+EgyptSqrt[n, {x, y}, k]  (* Pell solution {x,y}, k terms, returns bounds *)
+```
+
+**Convergence**: Very fast (comparable to Chebyshev method)
+
+### Comparison of Bound Methods
+
+| Method | Convergence Rate | Requires Pell Solution | Returns Bounds | Notes |
+|--------|------------------|------------------------|----------------|-------|
+| BinetSqrt | Exponential ($2^k$) | No | Yes | Native bounds formula |
+| BabylonianSqrt | Quadratic | No | Yes | Classical Newton method |
+| EgyptSqrt | Very fast | Yes | Yes | Uses factorial series |
+| NestedChebyshevSqrt | Super-quadratic ($\sim 10^k$) | Optional | No | Fastest for extreme precision |
+| SqrtRationalization | Very fast | Yes | No | Single value (use MakeBounds) |
+
+**Bound properties comparison:**
 - **Continued fractions** (used by Rationalize): Convergents oscillate between upper/lower bounds
 - **Egyptian fraction approach**: Always approaches from below (guaranteed lower bound)
 - **Binet formula**: Provides both bounds simultaneously (Dedekind cut)
+- **Babylonian**: Maintains both bounds through iteration
 
-**Proof of lower bound property**: At the Pell solution, all Chebyshev terms $T_k(x-1) > 0$. Since the base $b = (x-1)/y < \sqrt{d}$ and we add only positive terms:
+**Proof of lower bound property** (Egypt/Chebyshev): At the Pell solution, all Chebyshev terms $T_k(x-1) > 0$. Since the base $b = (x-1)/y < \sqrt{d}$ and we add only positive terms:
 $$\text{approx} = b \left(1 + \sum_{k=1}^{n} T_k(x-1)\right)$$
 forms a **monotone increasing sequence** converging from below to $\sqrt{d}$.
 
@@ -273,7 +324,31 @@ sym[d, n, m] := Module[{x = sqrttrf[d, n, m]}, d/(2x) + x/2]
 nestqrt[d, n0, {m1, m2}] := Nest[sym[d, #, m1]&, n0, m2]
 ```
 
-**Recommended usage**: Start from Pell base for 3x faster convergence.
+### Binet Bounds
+```mathematica
+BinetSqrt[nn, n, k]  (* Exponential convergence, returns {lower, upper} *)
+```
+
+### Babylonian Bounds
+```mathematica
+BabylonianSqrt[nn, n, k]  (* Quadratic convergence, returns {lower, upper} *)
+```
+
+### Egypt with Bounds
+```mathematica
+{x, y} = PellSolution[d]
+EgyptSqrt[d, {x, y}, k]  (* Factorial series, returns {lower, upper} *)
+```
+
+### Helper: Convert to Bounds
+```mathematica
+MakeBounds[n, approx]  (* Converts single approximation to {lower, upper} *)
+```
+
+**Recommended usage**:
+- For extreme precision (>1000 digits): Use `NestedChebyshevSqrt` with Pell starting point
+- For certified bounds: Use `BinetSqrt`, `BabylonianSqrt`, or `EgyptSqrt`
+- For converting existing approximations: Use `MakeBounds`
 
 ## Open Problems
 
