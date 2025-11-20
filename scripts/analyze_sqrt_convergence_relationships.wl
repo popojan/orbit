@@ -45,11 +45,14 @@ RunEgypt[n_, k_] := Module[{result, pell},
   ExtractApprox[result]
 ]
 
-(* Nested Chebyshev - using m1=3 (consistent order) *)
-RunNestedCheb[n_, m2_] := Module[{result},
-  result = NestedChebyshevSqrt[n, {3, m2}, StartingPoint -> "Pell"];
+(* Nested Chebyshev - general 2D version *)
+RunNestedCheb[n_, {m1_, m2_}] := Module[{result},
+  result = NestedChebyshevSqrt[n, {m1, m2}, StartingPoint -> "Pell"];
   ExtractApprox[result]
 ]
+
+(* Convenience: m1=3 variant for backward compatibility *)
+RunNestedCheb3[n_, m2_] := RunNestedCheb[n, {3, m2}]
 
 (* SqrtRationalization - original Pell+Chebyshev *)
 RunSqrtRat[n_, k_] := Module[{result},
@@ -92,6 +95,36 @@ FindEquivalentK[n_, k_babylon_ref_, methodFunc_, kRange_] := Module[
   {k_babylon_ref, closest[[1]], closest[[2]], targetError}
 ]
 
+(* Find ALL equivalent {m1, m2} combinations for NestedChebyshev *)
+FindEquivalentNestedParams[n_, k_babylon_ref_, tolerance_: 0.5] := Module[
+  {targetError, m1Range, m2Range, allCombos, matches},
+
+  (* Get target error from Babylon *)
+  targetError = LogQuadraticError[n, RunBabylonian[n, k_babylon_ref]];
+
+  (* Search parameter space *)
+  m1Range = Range[1, 5];  (* m1 ∈ {1, 2, 3, 4, 5} *)
+  m2Range = Range[0, 15]; (* m2 ∈ {0, 1, ..., 15} *)
+
+  (* Generate all combinations and filter matches *)
+  allCombos = Flatten[Table[
+    Module[{error, combo},
+      combo = {m1, m2};
+      error = LogQuadraticError[n, RunNestedCheb[n, combo]];
+      If[Abs[error - targetError] < tolerance,
+        {{m1, m2, error, Abs[error - targetError]}},
+        {}
+      ]
+    ],
+    {m1, m1Range}, {m2, m2Range}
+  ], 1];
+
+  (* Sort by closeness to target *)
+  matches = SortBy[allCombos, #[[4]] &];
+
+  {k_babylon_ref, targetError, matches}
+]
+
 (* ===================================================================
    MAIN ANALYSIS
    =================================================================== *)
@@ -131,12 +164,21 @@ AnalyzeConvergenceRelationships[n_] := Module[{},
   ];
   Print[];
 
-  Print["NestedChebyshev (m1=3):"];
+  Print["NestedChebyshev (m1=3, varying m2):"];
   Print["m2\tLog10 Quadratic Error"];
   Print[StringRepeat["-", 40]];
   Do[
-    Print[m2, "\t", LogQuadraticError[n, RunNestedCheb[n, m2]]],
+    Print[m2, "\t", LogQuadraticError[n, RunNestedCheb3[n, m2]]],
     {m2, 0, 5}
+  ];
+  Print[];
+
+  Print["NestedChebyshev (2D parameter space sample):"];
+  Print["{m1,m2}\tLog10 Quadratic Error"];
+  Print[StringRepeat["-", 40]];
+  Do[
+    Print["{", m1, ",", m2, "}\t", LogQuadraticError[n, RunNestedCheb[n, {m1, m2}]]],
+    {m1, {1, 2, 3}}, {m2, {0, 1, 2, 3}}
   ];
   Print[];
 
@@ -149,25 +191,77 @@ AnalyzeConvergenceRelationships[n_] := Module[{},
   ];
   Print["\n"];
 
-  (* 2. FIND EQUIVALENT k VALUES *)
-  Print["=== RELATIONSHIP TABLE ===\n"];
+  (* 2. FIND EQUIVALENT k VALUES (1D methods) *)
+  Print["=== RELATIONSHIP TABLE (1D Methods) ===\n"];
   Print["For each k_babylon, find equivalent k for other methods:\n"];
-  Print["k_babylon\tk_binet\tk_egypt\tk_sqrtrat\tm2_nested\tPrecision (log10 err)"];
-  Print[StringRepeat["-", 80]];
+  Print["k_babylon\tk_binet\tk_egypt\tk_sqrtrat\tPrecision (log10 err)"];
+  Print[StringRepeat["-", 70]];
 
   Do[
-    Module[{kBinet, kEgypt, kSqrtRat, m2Nested},
+    Module[{kBinet, kEgypt, kSqrtRat},
       (* Find equivalent k values *)
       kBinet = FindEquivalentK[n, kBab, RunBinet, Range[1, 20]][[2]];
       kEgypt = FindEquivalentK[n, kBab, RunEgypt, Range[1, 20]][[2]];
       kSqrtRat = FindEquivalentK[n, kBab, RunSqrtRat, Range[1, 20]][[2]];
-      m2Nested = FindEquivalentK[n, kBab, RunNestedCheb, Range[0, 10]][[2]];
 
-      Print[kBab, "\t\t", kBinet, "\t", kEgypt, "\t", kSqrtRat, "\t\t", m2Nested,
+      Print[kBab, "\t\t", kBinet, "\t", kEgypt, "\t", kSqrtRat,
             "\t\t", LogQuadraticError[n, RunBabylonian[n, kBab]]];
     ],
     {kBab, {1, 2, 3, 5, 8}}
   ];
+  Print["\n"];
+
+  (* 3. 2D PARAMETER SPACE FOR NESTED CHEBYSHEV *)
+  Print["=== 2D PARAMETER SPACE: NestedChebyshev ===\n"];
+  Print["For each k_babylon, find ALL equivalent {m1, m2} combinations:\n"];
+
+  Do[
+    Module[{nestedResults},
+      nestedResults = FindEquivalentNestedParams[n, kBab, 0.5];
+
+      Print["k_babylon = ", kBab, " (target precision: ", nestedResults[[2]], ")"];
+      Print["{m1, m2}\tLog10 Error\tDeviation"];
+      Print[StringRepeat["-", 50]];
+
+      If[Length[nestedResults[[3]]] > 0,
+        Do[
+          Module[{match},
+            match = nestedResults[[3]][[i]];
+            Print["{", match[[1]], ", ", match[[2]], "}\t",
+                  N[match[[3]], 5], "\t\t", N[match[[4]], 5]];
+          ],
+          {i, 1, Min[10, Length[nestedResults[[3]]]]}  (* Show top 10 matches *)
+        ],
+        Print["No matches found within tolerance"]
+      ];
+      Print[];
+    ],
+    {kBab, {1, 2, 3, 5, 8}}
+  ];
+  Print["\n"];
+
+  (* 4. PARETO FRONTIER ANALYSIS *)
+  Print["=== PARETO FRONTIER: Optimal {m1, m2} for each precision ===\n"];
+  Print["For each k_babylon, find FASTEST {m1, m2} combination (assumes m1=1 fastest):\n"];
+
+  Do[
+    Module[{nestedResults, allMatches, optimal},
+      nestedResults = FindEquivalentNestedParams[n, kBab, 0.5];
+      allMatches = nestedResults[[3]];
+
+      If[Length[allMatches] > 0,
+        (* Find minimum m1 (fastest) *)
+        optimal = First[SortBy[allMatches, {#[[1]] &, #[[2]] &}]];
+
+        Print["k_babylon = ", kBab, ":"];
+        Print["  Optimal: {m1=", optimal[[1]], ", m2=", optimal[[2]],
+              "}, error=", N[optimal[[3]], 5]];
+        Print["  Alternative combos with same precision: ", Length[allMatches] - 1];
+      ];
+    ],
+    {kBab, {1, 2, 3, 5, 8}}
+  ];
+
   Print["\n"];
 ]
 
