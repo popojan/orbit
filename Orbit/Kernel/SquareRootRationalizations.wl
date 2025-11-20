@@ -76,12 +76,13 @@ Parameters:
   n  - starting approximation to Sqrt[nn]
   k  - number of iterations
 
-Returns: {lower, upper} bounds bracketing Sqrt[nn]
+Returns: Interval[{lower, upper}] bracketing Sqrt[nn]
 
 Formula: Sqrt[nn] * {(p^k - q^k)/(p^k + q^k), (p^k + q^k)/(p^k - q^k)}
 where p = n + Sqrt[nn], q = n - Sqrt[nn]
 
-The bounds converge exponentially fast to Sqrt[nn] from both sides.";
+The bounds converge exponentially fast to Sqrt[nn] from both sides.
+Use Normal[result] to extract {lower, upper} list for numeric operations.";
 
 BabylonianSqrt::usage = "BabylonianSqrt[nn, n, k] computes rational sqrt approximation bounds using iterated Babylonian (Newton) method.
 
@@ -90,12 +91,13 @@ Parameters:
   n  - starting approximation to Sqrt[nn]
   k  - number of iterations
 
-Returns: {lower, upper} bounds bracketing Sqrt[nn]
+Returns: Interval[{lower, upper}] bracketing Sqrt[nn]
 
 Starting bounds: {2*n*nn/(n^2 + nn), (n^2 + nn)/(2*n)}
 Iteration: {nn/Mean[bounds], Mean[bounds]}
 
-The bounds converge quadratically to Sqrt[nn] from both sides.";
+The bounds converge quadratically to Sqrt[nn] from both sides.
+Use Normal[result] to extract {lower, upper} list for numeric operations.";
 
 EgyptSqrt::usage = "EgyptSqrt[n, {x, y}, k] computes rational sqrt approximation bounds using Egypt method with Pell solution.
 
@@ -104,10 +106,11 @@ Parameters:
   {x,y} - Pell solution to x^2 - n*y^2 = 1 (use PellSolution[n])
   k     - number of terms in factorial series
 
-Returns: {lower, upper} bounds bracketing Sqrt[n]
+Returns: Interval[{lower, upper}] bracketing Sqrt[n]
 
 Uses factorial-based series expansion: ((x-1)/y) * (1 + Sum[FactorialTerm[x-1, j], {j,1,k}])
-Then constructs bounds as {r, n/r} where r is the approximation.";
+Then constructs bounds as {r, n/r} where r is the approximation.
+Use Normal[result] to extract {lower, upper} list for numeric operations.";
 
 BinetError::usage = "BinetError[n, k, x] computes the error in Binet approximation using direct formula.
 
@@ -137,11 +140,12 @@ Parameters:
   n - the number whose square root r approximates
   r - rational approximation to Sqrt[n]
 
-Returns: {lower, upper} where lower < Sqrt[n] < upper
+Returns: Interval[{lower, upper}] where lower < Sqrt[n] < upper
 
-Formula: {Min[r, n/r], Max[r, n/r]}
+Formula: Interval[{Min[r, n/r], Max[r, n/r]}]
 
-This works because if r < Sqrt[n] then n/r > Sqrt[n], and vice versa.";
+This works because if r < Sqrt[n] then n/r > Sqrt[n], and vice versa.
+Use Normal[result] to extract {lower, upper} list for numeric operations.";
 
 Begin["`Private`"];
 
@@ -262,23 +266,34 @@ Options[NestedChebyshevSqrt] = {StartingPoint -> "Pell"}
    BINET-STYLE METHODS - Bounds via exponential convergence
    =================================================================== *)
 
-(* Binet formula - returns bounds pair {lower, upper} *)
-BinetSqrt[nn_, n_, k_] :=
-  Sqrt[nn] * {(#1 - #2)/(#1 + #2), (#1 + #2)/(#1 - #2)} & @@
-    {(n + Sqrt[nn])^k, (n - Sqrt[nn])^k} // FullSimplify
+(* Binet formula - returns sorted Interval *)
+BinetSqrt[nn_, n_, k_] := Module[{val1, val2, p, q},
+  p = (n + Sqrt[nn])^k;
+  q = (n - Sqrt[nn])^k;
+  val1 = Sqrt[nn] * (p - q)/(p + q) // FullSimplify;
+  val2 = Sqrt[nn] * (p + q)/(p - q) // FullSimplify;
+  Interval[{Min[val1, val2], Max[val1, val2]}]
+]
 
 (* ===================================================================
    BABYLONIAN (NEWTON) METHOD - Bounds via quadratic convergence
    =================================================================== *)
 
 (* Helper: single iteration step for bounds pair *)
-babylonianStep[nn_, n_, x_] := {nn/#, #} &@Mean@x
+babylonianStep[nn_, n_, x_] := Module[{avg, val1, val2},
+  avg = Mean[x];
+  val1 = nn/avg;
+  val2 = avg;
+  {Min[val1, val2], Max[val1, val2]}
+]
 
-(* Babylonian method - returns bounds pair {lower, upper} *)
-BabylonianSqrt[nn_, n_, k_] :=
-  Nest[babylonianStep[nn, n, #] &,
-       {(2*n*nn)/(n^2 + nn), (n^2 + nn)/(2*n)},
-       k]
+(* Babylonian method - returns sorted Interval *)
+BabylonianSqrt[nn_, n_, k_] := Module[{bounds},
+  bounds = Nest[babylonianStep[nn, n, #] &,
+                {(2*n*nn)/(n^2 + nn), (n^2 + nn)/(2*n)},
+                k];
+  Interval[bounds]
+]
 
 (* ===================================================================
    EGYPT METHOD - Bounds via factorial series
@@ -287,9 +302,15 @@ BabylonianSqrt[nn_, n_, k_] :=
 (* Helper: factorial-based sum of terms (explicit version) *)
 sqrtTermsFactorial[x_, n_] := 1 + Sum[FactorialTerm[x, j], {j, 1, n}]
 
-(* Egypt method - returns bounds pair {lower, upper} *)
-EgyptSqrt[n_, {x_, y_}, k_] :=
-  {#, n/#} &@((x - 1)/y * sqrtTermsFactorial[x - 1, k])
+(* Egypt method - returns sorted Interval using smart comparison *)
+EgyptSqrt[n_, {x_, y_}, k_] := Module[{r},
+  r = (x - 1)/y * sqrtTermsFactorial[x - 1, k];
+  (* Smart sort: if r^2 < n then r < sqrt(n) < n/r, else n/r < sqrt(n) < r *)
+  If[r^2 < n,
+    Interval[{r, n/r}],
+    Interval[{n/r, r}]
+  ]
+]
 
 (* ===================================================================
    ERROR ANALYSIS - Binet convergence tracking
@@ -307,8 +328,11 @@ BinetErrorChebyshev[n_, k_, x_] :=
    HELPER UTILITIES
    =================================================================== *)
 
-(* Convert single approximation to bounds pair *)
-MakeBounds[n_, r_] := {Min[r, n/r], Max[r, n/r]}
+(* Convert single approximation to sorted Interval using smart comparison *)
+MakeBounds[n_, r_] := If[r^2 < n,
+  Interval[{r, n/r}],
+  Interval[{n/r, r}]
+]
 
 End[];
 
