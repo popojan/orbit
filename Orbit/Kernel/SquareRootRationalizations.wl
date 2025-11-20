@@ -69,6 +69,80 @@ Examples:
 
 This is the most powerful method for extreme precision, far exceeding continued fractions in speed at high precision.";
 
+BinetSqrt::usage = "BinetSqrt[nn, n, k] computes rational sqrt approximation bounds using Binet-style formula.
+
+Parameters:
+  nn - the number whose square root to approximate
+  n  - starting approximation to Sqrt[nn]
+  k  - number of iterations
+
+Returns: {lower, upper} bounds bracketing Sqrt[nn]
+
+Formula: Sqrt[nn] * {(p^k - q^k)/(p^k + q^k), (p^k + q^k)/(p^k - q^k)}
+where p = n + Sqrt[nn], q = n - Sqrt[nn]
+
+The bounds converge exponentially fast to Sqrt[nn] from both sides.";
+
+BabylonianSqrt::usage = "BabylonianSqrt[nn, n, k] computes rational sqrt approximation bounds using iterated Babylonian (Newton) method.
+
+Parameters:
+  nn - the number whose square root to approximate
+  n  - starting approximation to Sqrt[nn]
+  k  - number of iterations
+
+Returns: {lower, upper} bounds bracketing Sqrt[nn]
+
+Starting bounds: {2*n*nn/(n^2 + nn), (n^2 + nn)/(2*n)}
+Iteration: {nn/Mean[bounds], Mean[bounds]}
+
+The bounds converge quadratically to Sqrt[nn] from both sides.";
+
+EgyptSqrt::usage = "EgyptSqrt[n, {x, y}, k] computes rational sqrt approximation bounds using Egypt method with Pell solution.
+
+Parameters:
+  n     - the number whose square root to approximate
+  {x,y} - Pell solution to x^2 - n*y^2 = 1 (use PellSolution[n])
+  k     - number of terms in factorial series
+
+Returns: {lower, upper} bounds bracketing Sqrt[n]
+
+Uses factorial-based series expansion: ((x-1)/y) * (1 + Sum[FactorialTerm[x-1, j], {j,1,k}])
+Then constructs bounds as {r, n/r} where r is the approximation.";
+
+BinetError::usage = "BinetError[n, k, x] computes the error in Binet approximation using direct formula.
+
+Parameters:
+  n - the number whose square root is being approximated
+  k - number of iterations
+  x - parameter for Binet formula
+
+Returns: Error term (n - BinetSqrt[n, ...]^2)
+
+Useful for analyzing convergence rates and error bounds.";
+
+BinetErrorChebyshev::usage = "BinetErrorChebyshev[n, k, x] computes the error in Binet approximation using simplified Chebyshev formula.
+
+Parameters:
+  n - the number whose square root is being approximated
+  k - number of iterations
+  x - parameter for Binet formula
+
+Returns: (-1)^k * (4*n)/(x^2 - 1) * ChebyshevT[k,x] / ChebyshevU[k-1,x]^2
+
+This is the closed-form simplification of BinetError, revealing the Chebyshev structure.";
+
+MakeBounds::usage = "MakeBounds[n, r] converts a single rational sqrt approximation to lower/upper bounds.
+
+Parameters:
+  n - the number whose square root r approximates
+  r - rational approximation to Sqrt[n]
+
+Returns: {lower, upper} where lower < Sqrt[n] < upper
+
+Formula: {Min[r, n/r], Max[r, n/r]}
+
+This works because if r < Sqrt[n] then n/r > Sqrt[n], and vice versa.";
+
 Begin["`Private`"];
 
 (* ===================================================================
@@ -183,6 +257,58 @@ NestedChebyshevSqrt[n_, {m1_, m2_}, OptionsPattern[]] :=
   ]
 
 Options[NestedChebyshevSqrt] = {StartingPoint -> "Pell"}
+
+(* ===================================================================
+   BINET-STYLE METHODS - Bounds via exponential convergence
+   =================================================================== *)
+
+(* Binet formula - returns bounds pair {lower, upper} *)
+BinetSqrt[nn_, n_, k_] :=
+  Sqrt[nn] * {(#1 - #2)/(#1 + #2), (#1 + #2)/(#1 - #2)} & @@
+    {(n + Sqrt[nn])^k, (n - Sqrt[nn])^k} // FullSimplify
+
+(* ===================================================================
+   BABYLONIAN (NEWTON) METHOD - Bounds via quadratic convergence
+   =================================================================== *)
+
+(* Helper: single iteration step for bounds pair *)
+babylonianStep[nn_, n_, x_] := {nn/#, #} &@Mean@x
+
+(* Babylonian method - returns bounds pair {lower, upper} *)
+BabylonianSqrt[nn_, n_, k_] :=
+  Nest[babylonianStep[nn, n, #] &,
+       {(2*n*nn)/(n^2 + nn), (n^2 + nn)/(2*n)},
+       k]
+
+(* ===================================================================
+   EGYPT METHOD - Bounds via factorial series
+   =================================================================== *)
+
+(* Helper: factorial-based sum of terms (explicit version) *)
+sqrtTermsFactorial[x_, n_] := 1 + Sum[FactorialTerm[x, j], {j, 1, n}]
+
+(* Egypt method - returns bounds pair {lower, upper} *)
+EgyptSqrt[n_, {x_, y_}, k_] :=
+  {#, n/#} &@((x - 1)/y * sqrtTermsFactorial[x - 1, k])
+
+(* ===================================================================
+   ERROR ANALYSIS - Binet convergence tracking
+   =================================================================== *)
+
+(* Error formula - computational version *)
+BinetError[n_, k_, x_] :=
+  Subtract @@ (n - BinetSqrt[n, Sqrt[n]*(x - 1)/Sqrt[x^2 - 1], k]^2)
+
+(* Error formula - Chebyshev closed form *)
+BinetErrorChebyshev[n_, k_, x_] :=
+  (-1)^k * (4*n)/(x^2 - 1) * ChebyshevT[k, x]/ChebyshevU[k - 1, x]^2
+
+(* ===================================================================
+   HELPER UTILITIES
+   =================================================================== *)
+
+(* Convert single approximation to bounds pair *)
+MakeBounds[n_, r_] := {Min[r, n/r], Max[r, n/r]}
 
 End[];
 
