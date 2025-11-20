@@ -14,9 +14,11 @@ Print["=== EXPORTING SQRT CONVERGENCE DATA ===\n"];
 testNumbers = {2, 3, 5, 13};
 kMaxBabylon = 10;
 kMaxOther = 30;  (* Search range for equivalent k *)
-m2MaxNested = 10;
+m1Range = Range[1, 5];  (* m1 ∈ {1, 2, 3, 4, 5} *)
+m2Range = Range[0, 15]; (* m2 ∈ {0, 1, ..., 15} *)
 
 outputFile = "sqrt_convergence_data.csv";
+outputFile2D = "sqrt_convergence_2d_nested.csv";
 
 (* ===================================================================
    HELPER FUNCTIONS
@@ -34,15 +36,16 @@ LogQuadraticError[target_, approx_] := Module[{err},
    DATA COLLECTION
    =================================================================== *)
 
+(* Collect 1D method relationships *)
 CollectConvergenceData[n_] := Module[{data, pell},
-  Print["Collecting data for n=", n, "..."];
+  Print["Collecting 1D method data for n=", n, "..."];
   pell = PellSolution[n];
 
   data = {};
 
   (* For each k_babylon, find equivalent k for other methods *)
   Do[
-    Module[{errorBab, approxBab, kBinet, kEgypt, kSqrtRat, m2Nested},
+    Module[{errorBab, approxBab, kBinet, kEgypt, kSqrtRat},
 
       (* Babylonian reference *)
       approxBab = ExtractApprox[BabylonianSqrt[n, Floor[Sqrt[N[n]]], kBab]];
@@ -75,17 +78,50 @@ CollectConvergenceData[n_] := Module[{data, pell},
         {k, 1, kMaxOther}
       ];
 
-      (* Find equivalent m2 for NestedChebyshev *)
-      m2Nested = 0;
+      (* Append to data *)
+      AppendTo[data, {n, kBab, kBinet, kEgypt, kSqrtRat, errorBab}];
+    ],
+    {kBab, 1, kMaxBabylon}
+  ];
+
+  data
+]
+
+(* Collect 2D NestedChebyshev parameter space *)
+Collect2DNestedData[n_] := Module[{data, pell},
+  Print["Collecting 2D NestedChebyshev data for n=", n, "..."];
+  pell = PellSolution[n];
+
+  data = {};
+
+  (* For each k_babylon, find ALL equivalent {m1, m2} combinations *)
+  Do[
+    Module[{errorBab, approxBab, tolerance, matches},
+
+      (* Babylonian reference *)
+      approxBab = ExtractApprox[BabylonianSqrt[n, Floor[Sqrt[N[n]]], kBab]];
+      errorBab = LogQuadraticError[n, approxBab];
+      tolerance = 0.5;
+
+      (* Search all {m1, m2} combinations *)
+      matches = {};
       Do[
-        If[Abs[LogQuadraticError[n, ExtractApprox[NestedChebyshevSqrt[n, {3, m2}, StartingPoint -> "Pell"]]] - errorBab] < 0.5,
-          m2Nested = m2; Break[]
+        Module[{errorNested, approxNested},
+          approxNested = ExtractApprox[NestedChebyshevSqrt[n, {m1, m2}, StartingPoint -> "Pell"]];
+          errorNested = LogQuadraticError[n, approxNested];
+
+          If[Abs[errorNested - errorBab] < tolerance,
+            AppendTo[matches, {m1, m2, errorNested, Abs[errorNested - errorBab]}]
+          ];
         ],
-        {m2, 0, m2MaxNested}
+        {m1, m1Range}, {m2, m2Range}
       ];
 
-      (* Append to data *)
-      AppendTo[data, {n, kBab, kBinet, kEgypt, kSqrtRat, m2Nested, errorBab}];
+      (* Append all matches (one row per match) *)
+      Do[
+        AppendTo[data, {n, kBab, matches[[i, 1]], matches[[i, 2]], errorBab, matches[[i, 3]], matches[[i, 4]]}],
+        {i, 1, Length[matches]}
+      ];
     ],
     {kBab, 1, kMaxBabylon}
   ];
@@ -97,35 +133,51 @@ CollectConvergenceData[n_] := Module[{data, pell},
    MAIN EXPORT
    =================================================================== *)
 
-allData = {};
-
+(* Export 1: 1D methods *)
+allData1D = {};
 Do[
-  allData = Join[allData, CollectConvergenceData[n]],
+  allData1D = Join[allData1D, CollectConvergenceData[n]],
   {n, testNumbers}
 ];
 
-(* Add header *)
-dataWithHeader = Prepend[allData,
-  {"n", "k_babylon", "k_binet", "k_egypt", "k_sqrtrat", "m2_nested", "log10_error"}
+dataWithHeader1D = Prepend[allData1D,
+  {"n", "k_babylon", "k_binet", "k_egypt", "k_sqrtrat", "log10_error"}
 ];
 
-(* Export to CSV *)
-Export[outputFile, dataWithHeader];
+Export[outputFile, dataWithHeader1D];
+Print["\n1D methods data exported to: ", outputFile];
+Print["Rows: ", Length[allData1D]];
 
-Print["\nData exported to: ", outputFile];
-Print["Rows: ", Length[allData]];
-Print["\nSample data:"];
-Print[Grid[Take[dataWithHeader, Min[10, Length[dataWithHeader]]]]];
+(* Export 2: 2D NestedChebyshev *)
+allData2D = {};
+Do[
+  allData2D = Join[allData2D, Collect2DNestedData[n]],
+  {n, testNumbers}
+];
+
+dataWithHeader2D = Prepend[allData2D,
+  {"n", "k_babylon", "m1", "m2", "babylon_log10_error", "nested_log10_error", "deviation"}
+];
+
+Export[outputFile2D, dataWithHeader2D];
+Print["\n2D NestedChebyshev data exported to: ", outputFile2D];
+Print["Rows: ", Length[allData2D]];
+
+Print["\n=== SAMPLE DATA ===\n"];
+Print["1D Methods (first 10 rows):"];
+Print[Grid[Take[dataWithHeader1D, Min[10, Length[dataWithHeader1D]]]]];
+Print["\n2D NestedChebyshev (first 10 rows):"];
+Print[Grid[Take[dataWithHeader2D, Min[10, Length[dataWithHeader2D]]]]];
 
 (* ===================================================================
    QUICK ANALYSIS
    =================================================================== *)
 
-Print["\n=== QUICK FITTING ANALYSIS ===\n"];
+Print["\n=== QUICK FITTING ANALYSIS (1D Methods) ===\n"];
 
 Do[
-  Module[{subset, binetRatio, egyptRatio, sqrtratRatio, nestedRatio},
-    subset = Select[allData, #[[1]] == n &];
+  Module[{subset, binetRatio, egyptRatio, sqrtratRatio},
+    subset = Select[allData1D, #[[1]] == n &];
 
     Print["n = ", n, ":"];
 
@@ -133,16 +185,69 @@ Do[
     binetRatio = Mean[#[[3]]/#[[2]] & /@ Select[subset, #[[3]] > 0 &]];
     egyptRatio = Mean[#[[4]]/#[[2]] & /@ Select[subset, #[[4]] > 0 &]];
     sqrtratRatio = Mean[#[[5]]/#[[2]] & /@ Select[subset, #[[5]] > 0 &]];
-    nestedRatio = Mean[#[[6]]/#[[2]] & /@ Select[subset, #[[6]] > 0 &]];
 
     Print["  k_binet / k_babylon    ≈ ", N[binetRatio, 3]];
     Print["  k_egypt / k_babylon    ≈ ", N[egyptRatio, 3]];
     Print["  k_sqrtrat / k_babylon  ≈ ", N[sqrtratRatio, 3]];
-    Print["  m2_nested / k_babylon  ≈ ", N[nestedRatio, 3]];
+    Print[];
+  ],
+  {n, testNumbers}
+];
+
+Print["=== 2D NESTED STATISTICS ===\n"];
+
+Do[
+  Module[{subset, countByK},
+    subset = Select[allData2D, #[[1]] == n &];
+
+    Print["n = ", n, ":"];
+    Print["  Total {m1, m2} matches: ", Length[subset]];
+
+    (* Count matches per k_babylon *)
+    countByK = Table[
+      {kBab, Length[Select[subset, #[[2]] == kBab &]]},
+      {kBab, 1, kMaxBabylon}
+    ];
+
+    Print["  Matches per k_babylon: ", countByK];
+    Print[];
+  ],
+  {n, testNumbers}
+];
+
+Print["=== PARETO FRONTIER ANALYSIS ===\n"];
+
+Do[
+  Module[{subset, paretoData},
+    subset = Select[allData2D, #[[1]] == n &];
+
+    Print["n = ", n, ":"];
+    Print["k_babylon\tOptimal {m1,m2}\tlog10_error\tAlternatives"];
+    Print[StringRepeat["-", 60]];
+
+    (* For each k_babylon, find minimum m1 (fastest) *)
+    Do[
+      Module[{matches, optimal},
+        matches = Select[subset, #[[2]] == kBab &];
+
+        If[Length[matches] > 0,
+          (* Sort by m1 (primary), then m2 (secondary) *)
+          optimal = First[SortBy[matches, {#[[3]] &, #[[4]] &}]];
+
+          Print[kBab, "\t\t{", optimal[[3]], ",", optimal[[4]], "}\t\t",
+                N[optimal[[6]], 5], "\t\t", Length[matches] - 1];
+        ];
+      ],
+      {kBab, 1, kMaxBabylon}
+    ];
     Print[];
   ],
   {n, testNumbers}
 ];
 
 Print["=== EXPORT COMPLETE ==="];
-Print["\nUse the CSV file for further analysis, plotting, or advanced fitting."];
+Print["\nFiles generated:"];
+Print["  ", outputFile, " - 1D method relationships"];
+Print["  ", outputFile2D, " - 2D NestedChebyshev parameter space"];
+Print["\nPareto frontier: Use 2D data to identify fastest {m1,m2} for each precision level."];
+Print["Assumption: Lower m1 = faster (based on optimization notes in usage string)"];
