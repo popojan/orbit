@@ -157,10 +157,12 @@ This provides **both upper and lower rational bounds** that converge to $\sqrt{d
 
 **Implementation** (now available in `SquareRootRationalizations.wl`):
 ```mathematica
-BinetSqrt[nn, n, k]  (* returns {lower, upper} bounds *)
+BinetSqrt[nn, n, k]  (* returns Interval[{lower, upper}] *)
 ```
 
 **Convergence**: Exponential (bounds tighten by factor $\sim 2^k$)
+
+**Usage**: Use `Normal[result]` to extract `{lower, upper}` list for numeric operations.
 
 ### Babylonian (Newton) Method with Bounds
 
@@ -174,10 +176,12 @@ $$\{L', U'\} = \left\{\frac{d}{\text{avg}(L,U)}, \text{avg}(L,U)\right\}$$
 
 **Implementation**:
 ```mathematica
-BabylonianSqrt[nn, n, k]  (* k iterations, returns {lower, upper} bounds *)
+BabylonianSqrt[nn, n, k]  (* k iterations, returns Interval[{lower, upper}] *)
 ```
 
 **Convergence**: Quadratic (precision doubles per iteration)
+
+**Usage**: Use `Normal[result]` to extract `{lower, upper}` list for numeric operations.
 
 ### Egypt Method with Bounds
 
@@ -190,20 +194,22 @@ $$r = \frac{x-1}{y} \left(1 + \sum_{j=1}^{k} \frac{1}{1 + \sum_{i=1}^{j} 2^{i-1}
 
 **Implementation**:
 ```mathematica
-EgyptSqrt[n, {x, y}, k]  (* Pell solution {x,y}, k terms, returns bounds *)
+EgyptSqrt[n, {x, y}, k]  (* Pell solution {x,y}, k terms, returns Interval[{lower, upper}] *)
 ```
 
 **Convergence**: Very fast (comparable to Chebyshev method)
 
+**Usage**: Use `Normal[result]` to extract `{lower, upper}` list for numeric operations.
+
 ### Comparison of Bound Methods
 
-| Method | Convergence Rate | Requires Pell Solution | Returns Bounds | Notes |
-|--------|------------------|------------------------|----------------|-------|
-| BinetSqrt | Exponential ($2^k$) | No | Yes | Native bounds formula |
-| BabylonianSqrt | Quadratic | No | Yes | Classical Newton method |
-| EgyptSqrt | Very fast | Yes | Yes | Uses factorial series |
-| NestedChebyshevSqrt | Super-quadratic ($\sim 10^k$) | Optional | No | Fastest for extreme precision |
-| SqrtRationalization | Very fast | Yes | No | Single value (use MakeBounds) |
+| Method | Convergence Rate | Requires Pell Solution | Return Type | Notes |
+|--------|------------------|------------------------|-------------|-------|
+| BinetSqrt | Exponential ($2^k$) | No | Interval | Native bounds formula |
+| BabylonianSqrt | Quadratic | No | Interval | Classical Newton method |
+| EgyptSqrt | Very fast | Yes | Interval | Uses factorial series |
+| NestedChebyshevSqrt | Super-quadratic ($\sim 10^k$) | Optional | Rational | Fastest for extreme precision |
+| SqrtRationalization | Very fast | Yes | Rational | Single value (use MakeBounds) |
 
 **Bound properties comparison:**
 - **Continued fractions** (used by Rationalize): Convergents oscillate between upper/lower bounds
@@ -326,29 +332,30 @@ nestqrt[d, n0, {m1, m2}] := Nest[sym[d, #, m1]&, n0, m2]
 
 ### Binet Bounds
 ```mathematica
-BinetSqrt[nn, n, k]  (* Exponential convergence, returns {lower, upper} *)
+BinetSqrt[nn, n, k]  (* Exponential convergence, returns Interval[{lower, upper}] *)
 ```
 
 ### Babylonian Bounds
 ```mathematica
-BabylonianSqrt[nn, n, k]  (* Quadratic convergence, returns {lower, upper} *)
+BabylonianSqrt[nn, n, k]  (* Quadratic convergence, returns Interval[{lower, upper}] *)
 ```
 
 ### Egypt with Bounds
 ```mathematica
 {x, y} = PellSolution[d]
-EgyptSqrt[d, {x, y}, k]  (* Factorial series, returns {lower, upper} *)
+EgyptSqrt[d, {x, y}, k]  (* Factorial series, returns Interval[{lower, upper}] *)
 ```
 
 ### Helper: Convert to Bounds
 ```mathematica
-MakeBounds[n, approx]  (* Converts single approximation to {lower, upper} *)
+MakeBounds[n, approx]  (* Converts single approximation to Interval[{lower, upper}] *)
 ```
 
 **Recommended usage**:
-- For extreme precision (>1000 digits): Use `NestedChebyshevSqrt` with Pell starting point
-- For certified bounds: Use `BinetSqrt`, `BabylonianSqrt`, or `EgyptSqrt`
-- For converting existing approximations: Use `MakeBounds`
+- For extreme precision (>1000 digits): Use `NestedChebyshevSqrt` with Pell starting point (returns Rational)
+- For certified bounds: Use `BinetSqrt`, `BabylonianSqrt`, or `EgyptSqrt` (return Interval)
+- For converting existing approximations: Use `MakeBounds` (returns Interval)
+- To extract numeric list: Use `Normal[interval]` to get `{lower, upper}`
 
 ## Open Problems
 
