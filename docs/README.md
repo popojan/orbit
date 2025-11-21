@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-11-21 19:55:07
+**Generated:** 2025-11-21 23:10:55
 
 ## Theorems (Master References)
 
@@ -10,6 +10,7 @@
 
 ## Reference Documentation
 
+- [Algebraic Circle Parametrizations and Integer Periods](reference/algebraic-circle-parametrizations.md)
 - [Hyperbolic Geometry and Square Root Approximations](reference/hyperbolic-geometry-sqrt.md)
 - [Wolfram Language Namespace Organization Best Practices](reference/namespace-best-practices.md)
 - [Wolfram Pattern Matching vs Prolog Unification](reference/wolfram-vs-prolog-patterns.md)
