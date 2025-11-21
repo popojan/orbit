@@ -12,24 +12,34 @@ Print["=== EXPORTING SQRT CONVERGENCE DATA ===\n"];
    =================================================================== *)
 
 testNumbers = {2, 3, 5, 13};
-kMaxBabylon = 10;
-kMaxOther = 30;  (* Search range for equivalent k *)
+kMaxBabylon = 12;  (* Quadratic convergence: k=12 reaches ~10^-800 with 1000-digit precision *)
+kMaxOther = 200;   (* Search range for equivalent k - linear methods need exponentially more *)
 m1Range = Range[1, 5];  (* m1 ∈ {1, 2, 3, 4, 5} *)
-m2Range = Range[0, 15]; (* m2 ∈ {0, 1, ..., 15} *)
+m2Range = Range[0, 8];  (* m2 ∈ {0..8} - increased for better NestedChebyshev analysis *)
 
-outputFile = "sqrt_convergence_data.csv";
-outputFile2D = "sqrt_convergence_2d_nested.csv";
+outputFile = "reports/sqrt_convergence/sqrt_convergence_data.csv";
+outputFile2D = "reports/sqrt_convergence/sqrt_convergence_2d_nested.csv";
 
 (* ===================================================================
    HELPER FUNCTIONS
    =================================================================== *)
 
-ExtractApprox[result_Interval] := Mean[Normal[result]]
-ExtractApprox[result_] := result
+workingPrecision = 1000;  (* Use 1000-digit arithmetic for ultra-precision analysis *)
+
+ExtractApprox[result_Interval] := N[Mean[First[List @@ result]], workingPrecision]
+ExtractApprox[result_?NumericQ] := N[result, workingPrecision]
+ExtractApprox[result_] := N[result, workingPrecision]
 
 LogQuadraticError[target_, approx_] := Module[{err},
-  err = Abs[target - approx^2];
-  If[err == 0, -Infinity, Log10[N[err]]]
+  err = Abs[N[target, workingPrecision] - N[approx, workingPrecision]^2];
+  If[err == 0, -Infinity, Log10[err]]
+]
+
+(* Helper: Extract Pell-based starting point (x-1)/y *)
+PellStart[n_] := Module[{pell, pellValues},
+  pell = PellSolution[n];
+  pellValues = Values[Association @@ pell];
+  N[(pellValues[[1]] - 1) / pellValues[[2]], workingPrecision]
 ]
 
 (* ===================================================================
@@ -48,13 +58,13 @@ CollectConvergenceData[n_] := Module[{data, pell},
     Module[{errorBab, approxBab, kBinet, kEgypt, kSqrtRat},
 
       (* Babylonian reference *)
-      approxBab = ExtractApprox[BabylonianSqrt[n, Floor[Sqrt[N[n]]], kBab]];
+      approxBab = ExtractApprox[BabylonianSqrt[n, PellStart[n], kBab]];
       errorBab = LogQuadraticError[n, approxBab];
 
       (* Find equivalent k for Binet *)
       kBinet = 0;
       Do[
-        If[Abs[LogQuadraticError[n, ExtractApprox[BinetSqrt[n, Floor[Sqrt[N[n]]], k]]] - errorBab] < 0.5,
+        If[Abs[LogQuadraticError[n, ExtractApprox[BinetSqrt[n, PellStart[n], k]]] - errorBab] < 0.5,
           kBinet = k; Break[]
         ],
         {k, 1, kMaxOther}
@@ -63,7 +73,7 @@ CollectConvergenceData[n_] := Module[{data, pell},
       (* Find equivalent k for Egypt *)
       kEgypt = 0;
       Do[
-        If[Abs[LogQuadraticError[n, ExtractApprox[EgyptSqrt[n, {x, y} /. pell, k]]] - errorBab] < 0.5,
+        If[Abs[LogQuadraticError[n, ExtractApprox[EgyptSqrt[n, Values[Association @@ pell], k]]] - errorBab] < 0.5,
           kEgypt = k; Break[]
         ],
         {k, 1, kMaxOther}
@@ -99,7 +109,7 @@ Collect2DNestedData[n_] := Module[{data, pell},
     Module[{errorBab, approxBab, tolerance, matches},
 
       (* Babylonian reference *)
-      approxBab = ExtractApprox[BabylonianSqrt[n, Floor[Sqrt[N[n]]], kBab]];
+      approxBab = ExtractApprox[BabylonianSqrt[n, PellStart[n], kBab]];
       errorBab = LogQuadraticError[n, approxBab];
       tolerance = 0.5;
 

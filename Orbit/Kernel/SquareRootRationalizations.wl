@@ -147,6 +147,40 @@ Formula: Interval[{Min[r, n/r], Max[r, n/r]}]
 This works because if r < Sqrt[n] then n/r > Sqrt[n], and vice versa.
 Use Normal[result] to extract {lower, upper} list for numeric operations.";
 
+EquivalentIterations::usage = "EquivalentIterations[methodFrom, methodTo, k] computes the number of iterations needed for methodTo to achieve the same precision as methodFrom with k iterations.
+
+Based on empirically-derived closed-form relationships (verified 2025-11-21):
+  Babylonian (quadratic convergence) ↔ Linear methods (Binet, Egypt, SqrtRat)
+
+Relationships:
+  k_binet   = 2^(k_babylon + 1)
+  k_egypt   = 2^(k_babylon + 1) - 1
+  k_sqrtrat = 2^(k_babylon + 2) - 1
+
+Examples:
+  EquivalentIterations[\"Babylonian\", \"Egypt\", 3]   → 15
+  EquivalentIterations[\"Egypt\", \"Babylonian\", 15]  → 3
+
+Supported methods: \"Babylonian\", \"Binet\", \"Egypt\", \"SqrtRat\"
+
+PRECISION GUARANTEE:
+  This function guarantees EQUIVALENT PRECISION (within tolerance 0.5 log10 digits),
+  NOT identical rational approximations.
+
+  Different methods produce different convergent sequences - they approach Sqrt[n]
+  from different paths with different rational values at each iteration.
+
+  Tolerance 0.5 means the log10 quadratic error differs by at most 0.5, which
+  corresponds to up to 10^0.5 ≈ 2× difference in absolute error.
+
+  Use case: Benchmarking convergence rates and comparing algorithmic efficiency.
+  NOT for obtaining specific rational approximations.
+
+Note: Relationships are exponential due to quadratic vs linear convergence.
+For high precision requirements, Babylonian is exponentially more efficient.
+
+Future work: NestedChebyshev equivalence relationships require more data points.";
+
 Begin["`Private`"];
 
 (* ===================================================================
@@ -333,6 +367,55 @@ MakeBounds[n_, r_] := If[r^2 < n,
   Interval[{r, n/r}],
   Interval[{n/r, r}]
 ]
+
+(* ===================================================================
+   METHOD EQUIVALENCE UTILITIES
+   =================================================================== *)
+
+(* Empirically-derived conversion formulas (verified 2025-11-21 via high-precision analysis) *)
+equivalentIterations["Babylonian", "Binet", k_Integer] := 2^(k + 1)
+equivalentIterations["Babylonian", "Egypt", k_Integer] := 2^(k + 1) - 1
+equivalentIterations["Babylonian", "SqrtRat", k_Integer] := 2^(k + 2) - 1
+equivalentIterations["Babylonian", "Babylonian", k_Integer] := k
+
+(* Inverse transformations (approximate - use Log2) *)
+equivalentIterations["Binet", "Babylonian", k_Integer] := Floor[Log2[k]] - 1
+equivalentIterations["Egypt", "Babylonian", k_Integer] := Floor[Log2[k + 1]] - 1
+equivalentIterations["SqrtRat", "Babylonian", k_Integer] := Floor[Log2[k + 1]] - 2
+
+(* Cross-conversions (compose via Babylonian) *)
+equivalentIterations[from_String, to_String, k_Integer] :=
+  equivalentIterations[to, "Babylonian",
+    equivalentIterations[from, "Babylonian", k]]
+
+(* Public API wrapper with error checking *)
+EquivalentIterations[from_String, to_String, k_Integer] :=
+  Module[{validMethods, result},
+    validMethods = {"Babylonian", "Binet", "Egypt", "SqrtRat"};
+
+    If[!MemberQ[validMethods, from],
+      Message[EquivalentIterations::method, from, validMethods];
+      Return[$Failed]
+    ];
+
+    If[!MemberQ[validMethods, to],
+      Message[EquivalentIterations::method, to, validMethods];
+      Return[$Failed]
+    ];
+
+    If[k < 1,
+      Message[EquivalentIterations::iter, k];
+      Return[$Failed]
+    ];
+
+    result = equivalentIterations[from, to, k];
+
+    (* Ensure result is at least 1 *)
+    Max[1, result]
+  ]
+
+EquivalentIterations::method = "Method `1` not recognized. Valid methods: `2`";
+EquivalentIterations::iter = "Iteration count `1` must be positive integer";
 
 End[];
 

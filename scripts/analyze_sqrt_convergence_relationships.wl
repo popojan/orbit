@@ -12,36 +12,47 @@ Print["=== SQRT METHODS CONVERGENCE RELATIONSHIP ANALYSIS ===\n"];
    HELPER FUNCTIONS
    =================================================================== *)
 
+workingPrecision = 100;  (* Use 100-digit arithmetic throughout *)
+
 (* Extract single approximation from Interval or Rational *)
-ExtractApprox[result_Interval] := Mean[Normal[result]]
-ExtractApprox[result_] := result
+ExtractApprox[result_Interval] := N[Mean[First[List @@ result]], workingPrecision]
+ExtractApprox[result_?NumericQ] := N[result, workingPrecision]
+ExtractApprox[result_] := N[result, workingPrecision]
 
 (* Measure log10 quadratic error *)
 LogQuadraticError[target_, approx_] := Module[{err},
-  err = Abs[target - approx^2];
-  If[err == 0, -Infinity, Log10[N[err]]]
+  err = Abs[N[target, workingPrecision] - N[approx, workingPrecision]^2];
+  If[err == 0, -Infinity, Log10[err]]
 ]
 
 (* ===================================================================
    METHOD WRAPPERS - Unified interface
    =================================================================== *)
 
+(* Helper: Extract Pell-based starting point (x-1)/y *)
+PellStart[n_] := Module[{pell, pellValues},
+  pell = PellSolution[n];
+  pellValues = Values[Association @@ pell];
+  N[(pellValues[[1]] - 1) / pellValues[[2]], workingPrecision]
+]
+
 (* Babylonian - REFERENCE METHOD *)
 RunBabylonian[n_, k_] := Module[{result},
-  result = BabylonianSqrt[n, Floor[Sqrt[N[n]]], k];
+  result = BabylonianSqrt[n, PellStart[n], k];
   ExtractApprox[result]
 ]
 
 (* Binet *)
 RunBinet[n_, k_] := Module[{result},
-  result = BinetSqrt[n, Floor[Sqrt[N[n]]], k];
+  result = BinetSqrt[n, PellStart[n], k];
   ExtractApprox[result]
 ]
 
 (* Egypt - requires Pell solution *)
-RunEgypt[n_, k_] := Module[{result, pell},
+RunEgypt[n_, k_] := Module[{result, pell, pellValues},
   pell = PellSolution[n];
-  result = EgyptSqrt[n, {x, y} /. pell, k];
+  pellValues = Values[Association @@ pell];
+  result = EgyptSqrt[n, pellValues, k];
   ExtractApprox[result]
 ]
 
@@ -76,12 +87,12 @@ ProfileMethod[methodName_, runFunc_, n_, kValues_] := Module[{results},
    RELATIONSHIP FINDER
    =================================================================== *)
 
-(* Find k_method that gives same precision as k_babylon_ref *)
-FindEquivalentK[n_, k_babylon_ref_, methodFunc_, kRange_] := Module[
+(* Find k_method that gives same precision as kBabylonRef *)
+FindEquivalentK[n_, kBabylonRef_, methodFunc_, kRange_] := Module[
   {targetError, errors, closest},
 
   (* Get target error from Babylon *)
-  targetError = LogQuadraticError[n, RunBabylonian[n, k_babylon_ref]];
+  targetError = LogQuadraticError[n, RunBabylonian[n, kBabylonRef]];
 
   (* Compute errors for method across range *)
   errors = Table[
@@ -92,19 +103,19 @@ FindEquivalentK[n_, k_babylon_ref_, methodFunc_, kRange_] := Module[
   (* Find closest match *)
   closest = First[SortBy[errors, Abs[#[[2]] - targetError] &]];
 
-  {k_babylon_ref, closest[[1]], closest[[2]], targetError}
+  {kBabylonRef, closest[[1]], closest[[2]], targetError}
 ]
 
 (* Find ALL equivalent {m1, m2} combinations for NestedChebyshev *)
-FindEquivalentNestedParams[n_, k_babylon_ref_, tolerance_: 0.5] := Module[
+FindEquivalentNestedParams[n_, kBabylonRef_, tolerance_: 0.5] := Module[
   {targetError, m1Range, m2Range, allCombos, matches},
 
   (* Get target error from Babylon *)
-  targetError = LogQuadraticError[n, RunBabylonian[n, k_babylon_ref]];
+  targetError = LogQuadraticError[n, RunBabylonian[n, kBabylonRef]];
 
   (* Search parameter space *)
   m1Range = Range[1, 5];  (* m1 ∈ {1, 2, 3, 4, 5} *)
-  m2Range = Range[0, 15]; (* m2 ∈ {0, 1, ..., 15} *)
+  m2Range = Range[0, 5];  (* m2 ∈ {0, 1, ..., 5} - reduced for performance *)
 
   (* Generate all combinations and filter matches *)
   allCombos = Flatten[Table[
@@ -122,7 +133,7 @@ FindEquivalentNestedParams[n_, k_babylon_ref_, tolerance_: 0.5] := Module[
   (* Sort by closeness to target *)
   matches = SortBy[allCombos, #[[4]] &];
 
-  {k_babylon_ref, targetError, matches}
+  {kBabylonRef, targetError, matches}
 ]
 
 (* ===================================================================
@@ -130,7 +141,8 @@ FindEquivalentNestedParams[n_, k_babylon_ref_, tolerance_: 0.5] := Module[
    =================================================================== *)
 
 AnalyzeConvergenceRelationships[n_] := Module[{},
-  Print[StringRepeat["=", 70]];
+  Print["\n", StringRepeat["=", 70]];
+  Print["ANALYZING n = ", n];
   Print["Target: √", n, " = ", N[Sqrt[n], 20]];
   Print[StringRepeat["=", 70], "\n"];
 
@@ -200,14 +212,14 @@ AnalyzeConvergenceRelationships[n_] := Module[{},
   Do[
     Module[{kBinet, kEgypt, kSqrtRat},
       (* Find equivalent k values *)
-      kBinet = FindEquivalentK[n, kBab, RunBinet, Range[1, 20]][[2]];
-      kEgypt = FindEquivalentK[n, kBab, RunEgypt, Range[1, 20]][[2]];
-      kSqrtRat = FindEquivalentK[n, kBab, RunSqrtRat, Range[1, 20]][[2]];
+      kBinet = FindEquivalentK[n, kBab, RunBinet, Range[1, 60]][[2]];
+      kEgypt = FindEquivalentK[n, kBab, RunEgypt, Range[1, 60]][[2]];
+      kSqrtRat = FindEquivalentK[n, kBab, RunSqrtRat, Range[1, 60]][[2]];
 
       Print[kBab, "\t\t", kBinet, "\t", kEgypt, "\t", kSqrtRat,
             "\t\t", LogQuadraticError[n, RunBabylonian[n, kBab]]];
     ],
-    {kBab, {1, 2, 3, 5, 8}}
+    {kBab, Range[1, 8]}
   ];
   Print["\n"];
 
@@ -217,6 +229,7 @@ AnalyzeConvergenceRelationships[n_] := Module[{},
 
   Do[
     Module[{nestedResults},
+      Print["  Searching for k_babylon = ", kBab, "..."];
       nestedResults = FindEquivalentNestedParams[n, kBab, 0.5];
 
       Print["k_babylon = ", kBab, " (target precision: ", nestedResults[[2]], ")"];
@@ -236,7 +249,7 @@ AnalyzeConvergenceRelationships[n_] := Module[{},
       ];
       Print[];
     ],
-    {kBab, {1, 2, 3, 5, 8}}
+    {kBab, Range[1, 8]}
   ];
   Print["\n"];
 
@@ -259,7 +272,7 @@ AnalyzeConvergenceRelationships[n_] := Module[{},
         Print["  Alternative combos with same precision: ", Length[allMatches] - 1];
       ];
     ],
-    {kBab, {1, 2, 3, 5, 8}}
+    {kBab, Range[1, 8]}
   ];
 
   Print["\n"];
@@ -276,12 +289,12 @@ FitRelationships[n_] := Module[{dataPoints, fit},
   (* Collect data points for fitting *)
   dataPoints = Table[
     Module[{kBinet, kEgypt, kSqrtRat},
-      kBinet = FindEquivalentK[n, kBab, RunBinet, Range[1, 30]][[2]];
-      kEgypt = FindEquivalentK[n, kBab, RunEgypt, Range[1, 30]][[2]];
-      kSqrtRat = FindEquivalentK[n, kBab, RunSqrtRat, Range[1, 30]][[2]];
+      kBinet = FindEquivalentK[n, kBab, RunBinet, Range[1, 60]][[2]];
+      kEgypt = FindEquivalentK[n, kBab, RunEgypt, Range[1, 60]][[2]];
+      kSqrtRat = FindEquivalentK[n, kBab, RunSqrtRat, Range[1, 60]][[2]];
       {kBab, kBinet, kEgypt, kSqrtRat}
     ],
-    {kBab, Range[1, 10]}
+    {kBab, Range[1, 8]}
   ];
 
   Print["Data points (k_babylon, k_binet, k_egypt, k_sqrtrat):"];

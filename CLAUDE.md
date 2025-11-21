@@ -180,6 +180,12 @@ This requires:
    - **PHRASE:** "Before we dive deep, let me play devil's advocate on construction..."
    - Better to kill bad idea in 10 minutes than discover triviality after 10 hours
 
+9. **"Do I understand the theoretical context?"** (Nov 20, 2025, sqrt convergence analysis)
+   - Can derive algebraically ✓, but does it have deeper meaning?
+   - **ASK:** "Has this deeper mathematical significance, or just algebraic consequence?"
+   - **RULE:** When uncertain about theory → ask user for context
+   - Better to admit knowledge gap than proceed with incomplete understanding
+
 **Implementation:** Before claiming "discovery" or "pattern", run internal adversarial check. Present findings WITH the adversarial counterargument.
 
 **Socratic Gate-Keeping Protocol (Added Nov 18, 2025):**
