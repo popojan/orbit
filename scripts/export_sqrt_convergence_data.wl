@@ -98,15 +98,13 @@ CollectConvergenceData[n_] := Module[{data, pell},
 ]
 
 (* Collect 2D NestedChebyshev parameter space *)
-Collect2DNestedData[n_] := Module[{data, pell},
+Collect2DNestedData[n_] := Module[{data, pell, allResults},
   Print["Collecting 2D NestedChebyshev data for n=", n, "..."];
   pell = PellSolution[n];
 
-  data = {};
-
-  (* For each k_babylon, find ALL equivalent {m1, m2} combinations *)
-  Do[
-    Module[{errorBab, approxBab, tolerance, matches, startTime},
+  (* Parallel computation over k_babylon values *)
+  allResults = ParallelTable[
+    Module[{errorBab, approxBab, tolerance, matches, startTime, localData},
       startTime = AbsoluteTime[];
       Print["  k_babylon=", kBab, "/", kMaxBabylon, " (testing ", Length[m1Range]*Length[m2Range], " {m1,m2} combinations)..."];
 
@@ -129,16 +127,21 @@ Collect2DNestedData[n_] := Module[{data, pell},
         {m1, m1Range}, {m2, m2Range}
       ];
 
-      (* Append all matches (one row per match) *)
-      Do[
-        AppendTo[data, {n, kBab, matches[[i, 1]], matches[[i, 2]], errorBab, matches[[i, 3]], matches[[i, 4]]}],
+      (* Build local data rows for this k_babylon *)
+      localData = Table[
+        {n, kBab, matches[[i, 1]], matches[[i, 2]], errorBab, matches[[i, 3]], matches[[i, 4]]},
         {i, 1, Length[matches]}
       ];
 
       Print["    → Found ", Length[matches], " matches, time: ", Round[AbsoluteTime[] - startTime, 0.1], "s"];
+
+      localData  (* Return local data for this k_babylon *)
     ],
     {kBab, 1, kMaxBabylon}
   ];
+
+  (* Flatten all results from parallel computations *)
+  data = Flatten[allResults, 1];
 
   data
 ]
