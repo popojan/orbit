@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-11-19 22:34:20
+**Generated:** 2025-11-21 19:32:22
 
 ## Theorems (Master References)
 
@@ -13,8 +13,8 @@
 - [Wildberger-Egypt-Chebyshev Rosetta Stone Discovery](sessions/wildberger-rosetta-stone-discovery.md) *(2025-11-19)*
 - [Wildberger Pell Algorithm Analysis: √13](sessions/wildberger-pell-sqrt13-analysis.md) *(2025-11-19)*
 - [Systematic Analysis of Three Open Questions](sessions/three-questions-systematic-analysis.md) *(2025-11-19)*
-- [Chomsky Hierarchy Exploration - LR String Analysis](sessions/chomsky-lr-exploration-summary.md) *(2025-11-19)*
 - [QUICK SUMMARY: Rosetta Stone Discovery](sessions/SUMMARY-rosetta-stone.md) *(2025-11-19)*
+- [Chomsky Hierarchy Exploration - LR String Analysis](sessions/chomsky-lr-exploration-summary.md) *(2025-11-19)*
 - [Morning Reflection: Trust, Context, and Role Asymmetry](sessions/2025-11-20-morning-reflection.md) *(2025-11-19)*
 - [Session: Trigonometric Proof Attempts & Epistemology Discussion](sessions/2025-11-20-afternoon-proof-attempts.md) *(2025-11-19)*
 - [Session: Egypt-Chebyshev Equivalence Exploration](sessions/2025-11-19-egypt-chebyshev-exploration.md) *(2025-11-19)*
