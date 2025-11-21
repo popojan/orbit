@@ -106,7 +106,9 @@ Collect2DNestedData[n_] := Module[{data, pell},
 
   (* For each k_babylon, find ALL equivalent {m1, m2} combinations *)
   Do[
-    Module[{errorBab, approxBab, tolerance, matches},
+    Module[{errorBab, approxBab, tolerance, matches, startTime},
+      startTime = AbsoluteTime[];
+      Print["  k_babylon=", kBab, "/", kMaxBabylon, " (testing ", Length[m1Range]*Length[m2Range], " {m1,m2} combinations)..."];
 
       (* Babylonian reference *)
       approxBab = ExtractApprox[BabylonianSqrt[n, PellStart[n], kBab]];
@@ -132,6 +134,8 @@ Collect2DNestedData[n_] := Module[{data, pell},
         AppendTo[data, {n, kBab, matches[[i, 1]], matches[[i, 2]], errorBab, matches[[i, 3]], matches[[i, 4]]}],
         {i, 1, Length[matches]}
       ];
+
+      Print["    → Found ", Length[matches], " matches, time: ", Round[AbsoluteTime[] - startTime, 0.1], "s"];
     ],
     {kBab, 1, kMaxBabylon}
   ];
