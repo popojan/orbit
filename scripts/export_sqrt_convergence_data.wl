@@ -8,6 +8,8 @@ Print["=== EXPORTING SQRT CONVERGENCE DATA ===\n"];
 << Orbit`
 
 (* Load Orbit paclet in parallel kernels for ParallelTable *)
+(* Parallel kernels don't read init.m in wolframscript, so we need to explicitly load the paclet *)
+ParallelEvaluate[If[DirectoryQ["/home/jan/github/orbit"], PacletDirectoryLoad["/home/jan/github/orbit"]]];
 ParallelNeeds["Orbit`"];
 
 (* ===================================================================
