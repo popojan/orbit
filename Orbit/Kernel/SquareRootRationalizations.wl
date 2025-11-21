@@ -30,6 +30,89 @@ where T is Chebyshev polynomial of the first kind, U is second kind.
 
 NOTE: ChebyshevTerm is conjectured to be algebraically equivalent to FactorialTerm (see docs/egypt-chebyshev-equivalence.md).";
 
+ChebyshevPolygonFunction::usage = "ChebyshevPolygonFunction[x, k] computes ChebyshevT[k+1, x] - x*ChebyshevT[k, x].
+
+Geometric Properties:
+
+1. REGULAR POLYGON VERTICES:
+   Solutions to x^2 + ChebyshevPolygonFunction[x, k]^2 == 1 give vertices of a regular (k+1)-gon
+   inscribed in the unit circle.
+
+   IMPORTANT: Exclude singularities x = ±1 to obtain the k+1 polygon vertices.
+   Points must be sorted by angle (not by x-coordinate) to see regular spacing.
+
+2. SYMMETRY:
+   - k even → f(-x, k) = -f(x, k) (odd function, central symmetry)
+   - k odd  → f(-x, k) = f(x, k) (even function)
+
+3. ROTATION PROPERTY:
+   Polygon is rotated such that no two vertices share the same x-coordinate,
+   ensuring ChebyshevPolygonFunction is single-valued (proper function).
+
+4. UNIT INTEGRAL CONJECTURE:
+   Integrate[Abs[ChebyshevPolygonFunction[x, k]], {x, -1, 1}] == 1 for k ≥ 2
+   Status: Numerically verified, not proven.
+
+Examples:
+  (* k=3 gives square (4 vertices, excluding x=±1) *)
+  ChebyshevPolygonFunction[0, 3]     (* → 1 *)
+
+  (* Find square vertices *)
+  sols = Solve[x^2 + ChebyshevPolygonFunction[x, 3]^2 == 1 && Abs[x] < 1, x, Reals];
+  vertices = Table[{x, ChebyshevPolygonFunction[x, 3]} /. sol, {sol, sols}];
+  (* Sort by angle to see 90° spacing *)
+
+  (* Verify unit circle property *)
+  Simplify[x^2 + ChebyshevPolygonFunction[x, 3]^2] (* → 1 at vertices *)
+";
+
+AlgebraicCirclePoint::usage = "AlgebraicCirclePoint[k, a] returns {x, y} point on unit circle using algebraic parameter a.
+
+Parameters:
+  k - integer index (step around circle)
+  a - algebraic parameter defining the angular step
+
+Formula:
+  x = Re[(a - I)^(4k) / (1 + a^2)^(2k)]
+  y = Im[(a - I)^(4k) / (1 + a^2)^(2k)]
+
+For regular n-gon, use a = RegularPolygonParameter[n].
+
+Properties:
+  - x^2 + y^2 == 1 (always on unit circle)
+  - Period T = π/(2 ArcCot[a])
+  - Returns exact algebraic coordinates
+
+Examples:
+  (* Regular 12-gon *)
+  a = RegularPolygonParameter[12];
+  AlgebraicCirclePoint[0, a]  (* → {1, 0} *)
+  AlgebraicCirclePoint[1, a]  (* → {√3/2, 1/2} *)
+
+  (* General algebraic parameter *)
+  AlgebraicCirclePoint[k, 2 + Sqrt[2]]
+";
+
+RegularPolygonParameter::usage = "RegularPolygonParameter[n] returns the algebraic parameter a for a regular n-gon inscribed in the unit circle.
+
+Parameter: n - number of vertices (n ≥ 3)
+
+Returns: a = Cot[π/(2n)]
+
+This parameter can be used with AlgebraicCirclePoint to generate exact algebraic coordinates of regular polygon vertices.
+
+The period is T = 2n, meaning AlgebraicCirclePoint[k, a] cycles through n distinct points as k goes from 0 to n-1.
+
+Examples:
+  RegularPolygonParameter[3]   (* → Cot[π/6] = √3 *)
+  RegularPolygonParameter[4]   (* → Cot[π/8] = 1 + √2 *)
+  RegularPolygonParameter[12]  (* → Cot[π/24] = 2 + √2 + √3 + √6 *)
+
+  (* Generate regular hexagon vertices *)
+  a = RegularPolygonParameter[6];
+  Table[AlgebraicCirclePoint[k, a], {k, 0, 5}]
+";
+
 FactorialTerm::usage = "FactorialTerm[x, j] computes the j-th term using the factorial-based formula from the Egypt repository.
 
 Formula:
@@ -258,6 +341,23 @@ ChebyshevTerm[x_, k_] :=
     1 / (     ChebyshevT[Ceiling[k/2],     x + 1]
           (   ChebyshevU[  Floor[k/2],     x + 1]
             - ChebyshevU[  Floor[k/2] - 1, x + 1]))
+
+(* Chebyshev polygon function - unit circle polygon vertices *)
+ChebyshevPolygonFunction[x_, k_Integer] := ChebyshevT[k + 1, x] - x * ChebyshevT[k, x]
+
+(* ===================================================================
+   ALGEBRAIC CIRCLE CONSTRUCTIONS - Regular polygons via Cot[π/n]
+   =================================================================== *)
+
+(* Regular polygon parameter: a = Cot[π/(2n)] *)
+RegularPolygonParameter[n_Integer /; n >= 3] := Cot[Pi/(2*n)]
+
+(* Algebraic circle point construction via complex powers *)
+AlgebraicCirclePoint[k_Integer, a_] := Module[{z},
+  (* z = (a - I)^(4k) / (1 + a^2)^(2k) *)
+  z = (a - I)^(4*k) / (1 + a^2)^(2*k);
+  {Re[z], Im[z]} // Simplify
+]
 
 (* Sum of Chebyshev terms *)
 sqrtTerms[x_, n_] :=
