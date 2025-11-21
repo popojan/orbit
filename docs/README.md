@@ -1,12 +1,18 @@
 # Documentation Index
 
-**Generated:** 2025-11-21 19:32:22
+**Generated:** 2025-11-21 19:55:07
 
 ## Theorems (Master References)
 
 
 ## Complete Proofs
 
+
+## Reference Documentation
+
+- [Hyperbolic Geometry and Square Root Approximations](reference/hyperbolic-geometry-sqrt.md)
+- [Wolfram Language Namespace Organization Best Practices](reference/namespace-best-practices.md)
+- [Wolfram Pattern Matching vs Prolog Unification](reference/wolfram-vs-prolog-patterns.md)
 
 ## Recent Sessions (Last 10)
 
@@ -22,6 +28,7 @@
 ## Navigation
 
 - [STATUS.md](STATUS.md) - Master status tracker
+- [reference/](reference/) - Mathematical foundations and design rationale
 - [theorems/](theorems/) - All theorems organized by topic
 - [proofs/](proofs/) - Complete standalone proofs
 - [papers/](papers/) - LaTeX papers for publication
