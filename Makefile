@@ -5,7 +5,7 @@ HTML := $(patsubst %.md,preview/%.html,$(DOCS))
 
 preview: generate-index $(HTML) copy-assets
 	@echo "✓ All HTML previews generated in preview/"
-	@xdg-open "file://$(shell pwd)/preview/docs/index.html" 2>/dev/null || open "file://$(shell pwd)/preview/docs/index.html" 2>/dev/null || echo "Please open preview/docs/index.html manually"
+	@xdg-open "file://$(shell pwd)/preview/docs/README.html" 2>/dev/null || open "file://$(shell pwd)/preview/docs/README.html" 2>/dev/null || echo "Please open preview/docs/README.html manually"
 
 generate-index:
 	@echo "Generating docs/README.md..."
