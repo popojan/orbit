@@ -279,7 +279,7 @@ PellSolution[d_] := Module[
     a = t; b += c; u += v; r += s,
     b += a; c = t; v += u; s += r];
     Not[a == 1 && b == 0 && c == -d]
-  ]; {x -> u, y -> r} ]
+  ]; {Global`x -> u, Global`y -> r} ]
 
 (* Main rationalization function *)
 SqrtRationalization[n_, OptionsPattern[]] :=
