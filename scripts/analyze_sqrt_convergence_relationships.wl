@@ -57,8 +57,10 @@ RunEgypt[n_, k_] := Module[{result, pell, pellValues},
 ]
 
 (* Nested Chebyshev - general 2D version *)
-RunNestedCheb[n_, {m1_, m2_}] := Module[{result},
-  result = NestedChebyshevSqrt[n, {m1, m2}, StartingPoint -> "Pell"];
+RunNestedCheb[n_, {m1_, m2_}] := Module[{result, sol, start},
+  sol = PellSolution[n];
+  start = (x - 1)/y /. sol;
+  result = NestedChebyshevSqrt[n, start, {m1, m2}];
   ExtractApprox[result]
 ]
 

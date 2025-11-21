@@ -17,10 +17,10 @@ ParallelNeeds["Orbit`"];
    =================================================================== *)
 
 testNumbers = {2, 3, 5, 13};
-kMaxBabylon = 12;  (* Quadratic convergence: k=12 reaches ~10^-800 with 1000-digit precision *)
+kMaxBabylon = 8;  (* Reduced for faster analysis - covers error range ~10^-256 *)
 kMaxOther = 200;   (* Search range for equivalent k - linear methods need exponentially more *)
-m1Range = Range[1, 5];  (* m1 ∈ {1, 2, 3, 4, 5} *)
-m2Range = Range[0, 8];  (* m2 ∈ {0..8} - increased for better NestedChebyshev analysis *)
+m1Range = Range[1, 3];  (* m1 ∈ {1, 2, 3} - optimized Chebyshev orders *)
+m2Range = Range[0, 5];  (* m2 ∈ {0..5} - sufficient for relationship analysis *)
 
 outputFile = "reports/sqrt_convergence/sqrt_convergence_data.csv";
 outputFile2D = "reports/sqrt_convergence/sqrt_convergence_2d_nested.csv";
@@ -29,7 +29,7 @@ outputFile2D = "reports/sqrt_convergence/sqrt_convergence_2d_nested.csv";
    HELPER FUNCTIONS
    =================================================================== *)
 
-workingPrecision = 1000;  (* Use 1000-digit arithmetic for ultra-precision analysis *)
+workingPrecision = 100;  (* 100-digit precision sufficient for log10 error comparison *)
 
 ExtractApprox[result_Interval] := N[Mean[First[List @@ result]], workingPrecision]
 ExtractApprox[result_?NumericQ] := N[result, workingPrecision]
@@ -109,40 +109,30 @@ Collect2DNestedData[n_] := Module[{data, pell, allResults},
 
   (* Parallel computation over k_babylon values *)
   allResults = ParallelTable[
-    Module[{errorBab, approxBab, tolerance, matches, startTime, localData},
+    Module[{errorBab, approxBab, allData, startTime},
       startTime = AbsoluteTime[];
-      Print["  k_babylon=", kBab, "/", kMaxBabylon, " (testing ", Length[m1Range]*Length[m2Range], " {m1,m2} combinations)..."];
+      Print["  k_babylon=", kBab, "/", kMaxBabylon, " (computing ", Length[m1Range]*Length[m2Range], " {m1,m2} combinations)..."];
 
       (* Babylonian reference *)
       approxBab = ExtractApprox[BabylonianSqrt[n, PellStart[n], kBab]];
       errorBab = LogQuadraticError[n, approxBab];
-      tolerance = 0.5;
 
-      (* Search all {m1, m2} combinations *)
-      matches = {};
-      Do[
+      (* Compute ALL {m1, m2} combinations *)
+      allData = Table[
         Module[{errorNested, approxNested},
-          approxNested = ExtractApprox[NestedChebyshevSqrt[n, {m1, m2}, StartingPoint -> "Pell"]];
+          approxNested = ExtractApprox[NestedChebyshevSqrt[n, PellStart[n], {m1, m2}]];
           errorNested = LogQuadraticError[n, approxNested];
-
-          If[Abs[errorNested - errorBab] < tolerance,
-            AppendTo[matches, {m1, m2, errorNested, Abs[errorNested - errorBab]}]
-          ];
+          {n, kBab, m1, m2, errorBab, errorNested, Abs[errorNested - errorBab]}
         ],
         {m1, m1Range}, {m2, m2Range}
       ];
 
-      (* Build local data rows for this k_babylon *)
-      localData = Table[
-        {n, kBab, matches[[i, 1]], matches[[i, 2]], errorBab, matches[[i, 3]], matches[[i, 4]]},
-        {i, 1, Length[matches]}
-      ];
+      Print["    → Computed ", Length[Flatten[allData, 1]], " data points, time: ", Round[AbsoluteTime[] - startTime, 0.1], "s"];
 
-      Print["    → Found ", Length[matches], " matches, time: ", Round[AbsoluteTime[] - startTime, 0.1], "s"];
-
-      localData  (* Return local data for this k_babylon *)
+      Flatten[allData, 1]  (* Return flattened data for this k_babylon *)
     ],
-    {kBab, 1, kMaxBabylon}
+    {kBab, 1, kMaxBabylon},
+    Method -> "FinestGrained"  (* Dynamic load balancing for better CPU utilization *)
   ];
 
   (* Flatten all results from parallel computations *)

@@ -45,7 +45,9 @@ results = Table[
     y0 = y /. sol;
 
     (* Run nested iteration *)
-    approx = NestedChebyshevSqrt[d, {m1, m2}];
+    sol = PellSolution[d];
+    start = (x - 1)/y /. sol;
+    approx = NestedChebyshevSqrt[d, start, {m1, m2}];
 
     (* Measure precision *)
     digits = MeasurePrecision[d, approx];

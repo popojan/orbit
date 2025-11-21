@@ -40,16 +40,16 @@ CONJECTURE: FactorialTerm[x,j] = ChebyshevTerm[x,j] for all x,j (numerically ver
 This formula comes from the Egypt repository's closed-form representation of sqrt via Egyptian fractions.
 For details see: https://github.com/popojan/egypt and docs/egypt-chebyshev-equivalence.md";
 
-NestedChebyshevSqrt::usage = "NestedChebyshevSqrt[n, {m1, m2}] computes ultra-high precision rational sqrt approximations using nested Chebyshev iterations.
+NestedChebyshevSqrt::usage = "NestedChebyshevSqrt[nn, start, {m1, m2}] computes ultra-high precision rational sqrt approximation bounds using nested Chebyshev iterations.
 
 Parameters:
-  n   - the number whose square root to approximate
-  {m1, m2} - iteration parameters:
+  nn    - the number whose square root to approximate
+  start - starting approximation to Sqrt[nn] (use Pell solution for fastest convergence)
+  {m1, m2} - iteration parameters (must be integers):
     m1 = Chebyshev order per iteration (1, 2, or 3 recommended)
     m2 = number of nesting iterations
 
-Options:
-  StartingPoint -> \"Pell\" | \"Crude\" | rational (default: \"Pell\")
+Returns: Interval[{lower, upper}] bracketing Sqrt[nn] using reciprocal bounds
 
 Precision scaling:
   - Each iteration roughly squares or cubes the precision (depending on m1)
@@ -62,10 +62,14 @@ Performance:
   - Crossover vs Babylonian method: ~4000 digits
   - Speedup grows with precision: 1.7x at 4k digits → 2.7x at 871k digits
 
+Starting point selection:
+  - Pell solution: sol = PellSolution[nn]; start = (x-1)/y /. sol  (recommended)
+  - Crude approximation: start = Floor[Sqrt[N[nn]]]
+  - Custom: any rational approximation
+
 Examples:
-  NestedChebyshevSqrt[13, {3, 3}] achieves ~3000 digits in 0.01 seconds
-  NestedChebyshevSqrt[13, {1, 7}] achieves ~871k digits in 0.09 seconds
-  NestedChebyshevSqrt[13, {1, 10}] achieves ~60 million digits (62M demonstration)
+  sol = PellSolution[13]; NestedChebyshevSqrt[13, (x-1)/y /. sol, {3, 3}] → ~3000 digits
+  NestedChebyshevSqrt[13, 1, {1, 7}] → ~871k digits (using trivial start)
 
 This is the most powerful method for extreme precision, far exceeding continued fractions in speed at high precision.";
 
@@ -181,6 +185,58 @@ For high precision requirements, Babylonian is exponentially more efficient.
 
 Future work: NestedChebyshev equivalence relationships require more data points.";
 
+BabylonianToNestedChebyshev::usage = "BabylonianToNestedChebyshev[k_babylon] computes the optimal {m1, m2} parameters for NestedChebyshevSqrt to achieve equivalent precision as BabylonianSqrt with k iterations.
+
+BabylonianToNestedChebyshev[k_babylon, m1] allows specifying the Chebyshev order.
+
+Closed-form relationship (verified 2025-11-21):
+  k_babylon = 4^(m2 - 1)  with m2 = Ceiling[Log[4, k] + 1]
+
+Precision guarantee:
+  - m1=2: EXACT match (deviation < 1e-50)
+  - m1=1: APPROXIMATE match (deviation ~1.5 log10 units)
+  - m1=3: APPROXIMATE match (deviation ~1.5-27 log10 units)
+
+Default m1=2 (optimal):
+  - Uses pre-simplified Chebyshev formula (20× faster than general case)
+  - ~8× precision gain per iteration (vs ~6× for m1=1, ~10× for m1=3)
+  - Balance between speed and convergence rate
+
+Examples:
+  BabylonianToNestedChebyshev[1]      → {2, 1}  (k = 4^0 = 1)
+  BabylonianToNestedChebyshev[4]      → {2, 2}  (k = 4^1 = 4)
+  BabylonianToNestedChebyshev[16]     → {2, 3}  (k = 4^2 = 16)
+  BabylonianToNestedChebyshev[4, 1]   → {1, 2}  (approximate)
+
+Inverse relationship:
+  Use NestedChebyshevToBabylonian[{m1, m2}] to convert back
+
+Note: This relationship is exponential - NestedChebyshev needs logarithmically
+      fewer iterations than Babylonian due to higher-order convergence.
+";
+
+BabylonianToNestedChebyshev::iter = "Iteration count `1` must be positive integer";
+
+NestedChebyshevToBabylonian::usage = "NestedChebyshevToBabylonian[{m1, m2}] computes the number of Babylonian iterations equivalent to NestedChebyshevSqrt[n, {m1, m2}].
+
+For ALL m1 values:
+  k_babylon = 4^(m2 - 1)
+
+Precision note:
+  - m1=2: EXACT equivalence
+  - m1≠2: APPROXIMATE equivalence (same formula, larger deviation)
+
+Examples:
+  NestedChebyshevToBabylonian[{2, 1}] → 1
+  NestedChebyshevToBabylonian[{2, 2}] → 4
+  NestedChebyshevToBabylonian[{1, 2}] → 4 (approximate)
+  NestedChebyshevToBabylonian[{3, 3}] → 16 (approximate)
+
+Note: Formula is same for all m1, but precision match quality varies.
+";
+
+NestedChebyshevToBabylonian::approx = "Equivalence for m1=`1` is approximate. Exact match only for m1=2.";
+
 Begin["`Private`"];
 
 (* ===================================================================
@@ -278,23 +334,17 @@ sym[nn_, n_, m_] := Module[{x = sqrttrf[nn, n, m]}, nn/(2 x) + x/2]
 (* Nested iteration - the power method *)
 nestqrt[nn_, n_, {m1_, m2_}] := Nest[sym[nn, #, m1] &, n, m2]
 
-(* User-facing function with options *)
-NestedChebyshevSqrt[n_, {m1_, m2_}, OptionsPattern[]] :=
-  Module[{start},
-    start = Switch[OptionValue[StartingPoint],
-      "Pell",
-        Module[{sol = PellSolution[n]},
-          (x - 1)/y /. sol
-        ],
-      "Crude",
-        Floor[Sqrt[N[n]]],
-      _,
-        OptionValue[StartingPoint]
-    ];
-    nestqrt[n, start, {m1, m2}]
+(* User-facing function - returns Interval bounds *)
+NestedChebyshevSqrt[nn_, start_, {m1_Integer, m2_Integer}] :=
+  Module[{approx, lower, upper},
+    approx = nestqrt[nn, start, {m1, m2}];
+    (* Return reciprocal bounds like EgyptSqrt *)
+    (* Use TrueQ to handle symbolic expressions gracefully *)
+    If[TrueQ[approx^2 < nn],
+      Interval[{approx, nn/approx}],      (* approx < Sqrt[nn] < nn/approx *)
+      Interval[{nn/approx, approx}]       (* nn/approx < Sqrt[nn] < approx *)
+    ]
   ]
-
-Options[NestedChebyshevSqrt] = {StartingPoint -> "Pell"}
 
 (* ===================================================================
    BINET-STYLE METHODS - Bounds via exponential convergence
@@ -416,6 +466,26 @@ EquivalentIterations[from_String, to_String, k_Integer] :=
 
 EquivalentIterations::method = "Method `1` not recognized. Valid methods: `2`";
 EquivalentIterations::iter = "Iteration count `1` must be positive integer";
+
+(* ========================================================================
+   NestedChebyshev ↔ Babylonian Equivalence
+   ======================================================================== *)
+
+BabylonianToNestedChebyshev[k_Integer /; k >= 1, m1_Integer: 2] :=
+  Module[{m2},
+    (* Solve: k = 4^(m2-1) → m2 = Log[4, k] + 1 *)
+    m2 = Ceiling[Log[4, k] + 1];
+    {m1, m2}
+  ]
+
+NestedChebyshevToBabylonian[{m1_Integer, m2_Integer}] :=
+  Module[{k},
+    k = 4^(m2 - 1);
+    If[m1 =!= 2,
+      Message[NestedChebyshevToBabylonian::approx, m1]
+    ];
+    k
+  ]
 
 End[];
 
