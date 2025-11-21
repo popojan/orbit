@@ -7,6 +7,9 @@ Print["=== EXPORTING SQRT CONVERGENCE DATA ===\n"];
 
 << Orbit`
 
+(* Load Orbit paclet in parallel kernels for ParallelTable *)
+ParallelNeeds["Orbit`"];
+
 (* ===================================================================
    CONFIGURATION
    =================================================================== *)
