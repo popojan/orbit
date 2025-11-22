@@ -18,6 +18,9 @@ reports/*.svg
 # Wolfram Language cache
 .wl_cache/
 
+# Wolfram scripts in root (keep organized in scripts/)
+/*.wl
+
 # HTML previews
 preview/
 
@@ -35,6 +38,13 @@ verification_*.txt
 misc/
 cache/
 scripts/__pycache__/
+tmp*
+*.swp
+gosper.m
+
+# Visualizations in root (keep in visualizations/ directory)
+/viz_*.png
+/viz_*.wl
 
 # Downloaded papers (not for version control)
 papers/

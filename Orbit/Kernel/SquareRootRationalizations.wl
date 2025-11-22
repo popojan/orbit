@@ -30,6 +30,17 @@ where T is Chebyshev polynomial of the first kind, U is second kind.
 
 NOTE: ChebyshevTerm is conjectured to be algebraically equivalent to FactorialTerm (see docs/egypt-chebyshev-equivalence.md).";
 
+HyperbolicTerm::usage = "HyperbolicTerm[x, k] computes the k-th term using hyperbolic functions.
+
+Formula:
+  1 / (1/2 + Cosh[(1+2k)·ArcSinh[√(x/2)]] / (√2·√(2+x)))
+
+Triple Identity (Discovered 2025-11-22):
+  HyperbolicTerm[x, k] = FactorialTerm[x, k] = ChebyshevTerm[x, k]  (numerically verified)
+
+This provides a closed-form expression without summation or Chebyshev polynomial evaluation.
+See: docs/sessions/2025-11-22-palindromic-symmetries/triple-identity-factorial-chebyshev-hyperbolic.md";
+
 ChebyshevPolygonFunction::usage = "ChebyshevPolygonFunction[x, k] computes ChebyshevT[k+1, x] - x*ChebyshevT[k, x].
 
 Geometric Properties:
@@ -408,6 +419,11 @@ ChebyshevTerm[x_, k_] :=
     1 / (     ChebyshevT[Ceiling[k/2],     x + 1]
           (   ChebyshevU[  Floor[k/2],     x + 1]
             - ChebyshevU[  Floor[k/2] - 1, x + 1]))
+
+(* Hyperbolic-based term - closed form discovered 2025-11-22 *)
+HyperbolicTerm[x_, k_] :=
+    1 / (1/2 + Cosh[(1 + 2*k)*ArcSinh[Sqrt[x]/Sqrt[2]]] /
+                (Sqrt[2]*Sqrt[2 + x]))
 
 (* Chebyshev polygon function - unit circle polygon vertices *)
 ChebyshevPolygonFunction[x_, k_Integer] := ChebyshevT[k + 1, x] - x * ChebyshevT[k, x]
