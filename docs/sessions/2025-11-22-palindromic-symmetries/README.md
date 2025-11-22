@@ -26,7 +26,11 @@ All three connected through underlying mathematical structures but distinct mech
 - **[palindromic-theorem.md](palindromic-theorem.md)** - Proof of palindromic property from hypergeometric symmetry
 - **[literature-search-summary.md](literature-search-summary.md)** - ⭐ Comprehensive literature search results and 1. NOVEL vs 3. TRIVIAL assessment
 - **[self-adversarial-check.md](self-adversarial-check.md)** - Quality control verification
-- **[triple-identity-factorial-chebyshev-hyperbolic.md](triple-identity-factorial-chebyshev-hyperbolic.md)** - ⭐⭐⭐ **NEW:** Triple identity connecting factorial sums, Chebyshev polynomials, and hyperbolic functions
+- **[triple-identity-factorial-chebyshev-hyperbolic.md](triple-identity-factorial-chebyshev-hyperbolic.md)** - ⭐⭐⭐ Triple identity connecting factorial sums, Chebyshev polynomials, and hyperbolic functions
+- **[geometric-context-chebyshev-hyperbolic.md](geometric-context-chebyshev-hyperbolic.md)** - ⭐⭐ Geometric foundations: hyperboloid, Poincaré disk, and bridge to Chebyshev
+- **[derivation-1plus2k-factor.md](derivation-1plus2k-factor.md)** - ✅ **PROVEN:** Algebraic derivation of (1+2k) factor from Chebyshev indices
+- **[factorial_term_hypergeometric_analysis.md](factorial_term_hypergeometric_analysis.md)** - Analysis: FactorialTerm is rational, NOT hypergeometric
+- **[algebraic_tangent_summary.md](algebraic_tangent_summary.md)** - Algebraic tangent multiplication formulas
 
 ## Tangent Polynomial Palindromes
 
