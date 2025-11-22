@@ -26,6 +26,7 @@ All three connected through underlying mathematical structures but distinct mech
 - **[palindromic-theorem.md](palindromic-theorem.md)** - Proof of palindromic property from hypergeometric symmetry
 - **[literature-search-summary.md](literature-search-summary.md)** - ⭐ Comprehensive literature search results and 1. NOVEL vs 3. TRIVIAL assessment
 - **[self-adversarial-check.md](self-adversarial-check.md)** - Quality control verification
+- **[triple-identity-factorial-chebyshev-hyperbolic.md](triple-identity-factorial-chebyshev-hyperbolic.md)** - ⭐⭐⭐ **NEW:** Triple identity connecting factorial sums, Chebyshev polynomials, and hyperbolic functions
 
 ## Tangent Polynomial Palindromes
 
@@ -410,8 +411,9 @@ j=7: (1+12x+20x²+8x³)(1+16x+40x²+32x³+8x⁴)
 ### Egypt Convergence
 7. Rigorous proof that r_k → √n (assumes yes, not proven)
 8. Closed form for Sum[FactorialTerm[x, j], {j, 1, ∞}]?
-9. Algebraic proof: FactorialTerm ⇔ ChebyshevTerm ⇔ Gamma weights?
+9. ~~Algebraic proof: FactorialTerm ⇔ ChebyshevTerm ⇔ Gamma weights?~~ **PROGRESS:** Triple identity found (see triple-identity-factorial-chebyshev-hyperbolic.md)
 10. Exact convergence rate characterization (empirically ~6x per iteration)
+11. **NEW:** Can hyperbolic form provide algebraic proof of Egypt-Chebyshev equivalence?
 
 ### Hypergeometric Structure
 11. **NEW:** Identify combinatorial rule for which factors appear in Denom[x, j]
