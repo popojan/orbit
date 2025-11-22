@@ -35,3 +35,6 @@ verification_*.txt
 misc/
 cache/
 scripts/__pycache__/
+
+# Downloaded papers (not for version control)
+papers/

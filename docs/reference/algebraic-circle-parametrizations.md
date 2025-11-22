@@ -29,7 +29,7 @@ Classical circle parametrizations use π:
 2. Coordinates are **algebraic** (nested radicals, constructible)
 3. Discrete parameter k ∈ ℤ cycles through exactly T distinct points
 
-**Discovery**: For special algebraic parameters a = Cot[π/(2n)], the construction (a-I)^(4k)/(1+a²)^(2k) achieves integer period T = 2n.
+**Discovery**: For special algebraic parameters a = Cot[π/(2n)], the construction (a-I)^(4k)/(1+a²)^(2k) achieves integer period T = n.
 
 **Trade-off accepted**:
 ```
@@ -122,9 +122,9 @@ This gives **exact integer period T = 24**.
 
 | n | a = Cot[π/(2n)] | Period T | Simplifies? |
 |---|-----------------|----------|-------------|
-| 3 | √3 | 6 | Yes |
-| 5 | √(5 + 2√5) | 10 | Yes |
-| 6 | 2 + √3 | 12 | Yes |
+| 3 | √3 | 3 | Yes |
+| 5 | √(5 + 2√5) | 5 | Yes |
+| 6 | 2 + √3 | 6 | Yes |
 | 24 | 2 + √2 + √3 + √6 | 24 | Yes (found by search) |
 
 ### Comparison with Other Parameters

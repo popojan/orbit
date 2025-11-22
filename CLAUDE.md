@@ -264,6 +264,13 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - One topic = One primary document
 - Avoid documentation bloat
 
+**Session documentation structure:**
+- Each session gets its own folder: `docs/sessions/YYYY-MM-DD-session-name/`
+- Main session doc: `README.md` (in session folder)
+- Supporting files: additional `.md`, `.wl`, images etc. in same folder
+- **NEVER** place session docs directly in `docs/` root
+- **NEVER** place session docs as loose files in `docs/sessions/`
+
 ---
 
 ## Git Operations
