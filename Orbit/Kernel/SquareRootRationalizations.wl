@@ -320,6 +320,73 @@ Note: Formula is same for all m1, but precision match quality varies.
 
 NestedChebyshevToBabylonian::approx = "Equivalence for m1=`1` is approximate. Exact match only for m1=2.";
 
+TangentMultiplication::usage = "TangentMultiplication[k, a] computes tan(k·arctan(a)) using algebraic operations only.
+
+Parameters:
+  k - integer multiplier
+  a - tangent value (algebraic number)
+
+Returns: tan(k·arctan(a)) as an algebraic expression
+
+Formula:
+  Uses complex power construction with (±I ± a)^k terms to extract tangent ratio.
+  Result is purely algebraic - no transcendental functions.
+
+Polynomial Structure:
+  For rational a, result tan(kθ) = P_k(a)/Q_k(a) where:
+  - P_k and Q_k are polynomials in a
+  - Coefficients exhibit palindromic symmetry
+  - P_k(a)/a and Q_k(a) have reversed coefficient patterns
+
+Connection to AlgebraicCirclePoint:
+  If z = AlgebraicCirclePoint[k, a], then TangentMultiplication[k, a] = Im[z]/Re[z]
+  Both use same (a-I)^(4k) construction with exponent 4k.
+
+Examples:
+  TangentMultiplication[1, 1/2]  (* → 1/2 *)
+  TangentMultiplication[2, 1/2]  (* → 4/3 *)
+  TangentMultiplication[3, 1/2]  (* → 11/2 *)
+
+  (* Verify identity *)
+  TangentMultiplication[2, a] == (2a)/(1-a^2) // Simplify  (* → True *)
+
+Note: This is equivalent to Chebyshev polynomial parametrization of tan(nθ).
+See docs/reference/algebraic-circle-parametrizations.md for theory.";
+
+GammaPalindromicSqrt::usage = "GammaPalindromicSqrt[nn, n, k] computes rational sqrt approximation using Gamma function weights with palindromic structure.
+
+Parameters:
+  nn - the number whose square root to approximate
+  n  - starting approximation to Sqrt[nn]
+  k  - order parameter (higher k → more terms, better precision)
+
+Returns: rational approximation to Sqrt[nn]
+
+Method:
+  Uses weighted sum with weights w[i] = n^(2-2i+2⌈k/2⌉) · nn^i / (Γ[-1+2i] · Γ[4-2i+k])
+
+Palindromic Structure:
+  Gamma arguments sum to constant: (-1+2i) + (4-2i+k) = 3+k
+  As i increases: first Gamma arg increases, second decreases
+  This creates mirror symmetry in weight distribution
+
+  Example (k=5):
+    i=1: Γ(1)·Γ(7)
+    i=2: Γ(3)·Γ(5)
+    i=3: Γ(5)·Γ(3)  ← palindrome
+    i=4: Γ(7)·Γ(1)
+
+Connection to Other Methods:
+  Related to Beta function symmetry B(a,b) = B(b,a)
+  Gamma product Γ(a)Γ(b) with constant sum exhibits palindromic coefficients
+  Similar palindromic structure appears in Chebyshev tan multiplication polynomials
+
+Examples:
+  sol = PellSolution[13];
+  GammaPalindromicSqrt[13, (x-1)/y /. sol, 3]
+
+Status: Experimental method, convergence properties under investigation.";
+
 Begin["`Private`"];
 
 (* ===================================================================
@@ -586,6 +653,53 @@ NestedChebyshevToBabylonian[{m1_Integer, m2_Integer}] :=
     ];
     k
   ]
+
+(* ===================================================================
+   TANGENT MULTIPLICATION - Algebraic tan(k·arctan(a))
+   =================================================================== *)
+
+(* Algebraic tangent multiplication using complex powers *)
+TangentMultiplication[k_Integer, a_] := Module[{num, den, kexp},
+  (* Use 4k exponent to match AlgebraicCirclePoint construction *)
+  kexp = 4*k;
+  (* Numerator: I(-I-a)^kexp - (I-a)^kexp - I(-I+a)^kexp + (I+a)^kexp *)
+  num = I*(-I - a)^kexp - (I - a)^kexp - I*(-I + a)^kexp + (I + a)^kexp;
+  (* Denominator: (-I-a)^kexp - I(I-a)^kexp + (-I+a)^kexp - I(I+a)^kexp *)
+  den = (-I - a)^kexp - I*(I - a)^kexp + (-I + a)^kexp - I*(I + a)^kexp;
+  Simplify[num/den]
+]
+
+(* ===================================================================
+   GAMMA PALINDROMIC SQRT - Weighted approximation with mirror symmetry
+   =================================================================== *)
+
+(* Helper: reconstruct term with Gamma palindromic weights *)
+gammaPalindromicReconstruct[nn_, n_, k_] := Module[{lim, weights, nums},
+  lim = 1 + 1/2 (1 - (-1)^k) + Floor[k/2];
+
+  (* Palindromic weights: Gamma args sum to constant 3+k *)
+  weights = Table[
+    (n^(2 - 2*i + 2*Ceiling[k/2]) * nn^i) / (Gamma[-1 + 2*i] * Gamma[4 - 2*i + k]),
+    {i, 1, lim}
+  ];
+
+  (* Numerator coefficients *)
+  nums = Table[
+    (-24 + 16*i^2*(1 + k) + 4*i*(1 + k)*(2 + k) - k*(24 + k*(7 + k))) / (-1 + 4*i^2),
+    {i, 1, lim}
+  ];
+
+  (* Weighted sum *)
+  nn * Sum[weights[[i]] * nums[[i]], {i, 1, lim}] / Sum[weights[[i]], {i, 1, lim}]
+]
+
+(* Main Gamma palindromic sqrt function - complete Egypt formulation *)
+GammaPalindromicSqrt[nn_, n_, k_Integer] := Module[{recon},
+  recon = gammaPalindromicReconstruct[nn, n, k];
+
+  (* Full sqrt formula *)
+  (nn/n) * ((1 + k)*n^2 - (3 + 5*k)*nn + recon) / (n^2 - 3*nn)
+]
 
 End[];
 

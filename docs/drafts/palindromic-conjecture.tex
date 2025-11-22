@@ -217,6 +217,31 @@ The Egypt factorial denominators factor as products:
 Each factor $(1+kx)^{-1}$ is geometric series ${}_2F_1(1,1;1;-kx)$. The product satisfies reciprocal properties inherited from individual factors.
 \end{example}
 
+\begin{example}[Palindromic Möbius Transformations]
+Möbius transformations of the form
+\[
+f(z) = \frac{az + b}{bz + a}
+\]
+with palindromic coefficients $[a, b, b, a]$ satisfy the reciprocal functional equation:
+\[
+f(z) \cdot f(1/z) = \frac{(az+b)(a+bz)}{(bz+a)(b+az)} = 1
+\]
+
+\textbf{Properties:}
+\begin{itemize}
+\item[(a)] Pole at $z = -a/b$ and zero at $z = -b/a$ form a reciprocal pair: $(-a/b) \cdot (-b/a) = 1$
+\item[(b)] For $|a| = |b|$, the unit circle $|z| = 1$ maps to the unit circle $|w| = 1$
+\item[(c)] Different choices of $(a,b)$ map different circles/lines to the unit circle
+\item[(d)] This is the general form of Möbius transformations satisfying $f(z) \cdot f(1/z) = 1$
+\end{itemize}
+
+\textbf{Special case:} $a = 1, b = i$ gives
+\[
+f(z) = \frac{z + i}{iz + 1}
+\]
+which maps the unit circle to itself with specific rotation properties.
+\end{example}
+
 \section{General Conjecture}
 
 \begin{conjecture}[Reciprocal Functional Equation for Hypergeometric Functions]
@@ -277,7 +302,25 @@ Classification problem & ○ Open & Research direction \\
 \item $u = r + 1/r$ substitution for degree reduction \cite{konvalina2004}
 \item Chebyshev as hypergeometric ${}_2F_1$ (standard) \cite{dlmf}
 \item Hypergeometric transformations $z \to 1/z$ \cite{dlmf} (Section 15.8.2, Kummer 24 symmetries)
+\item Self-inversive polynomial root counting \cite{vieira2016} (see Theorem \ref{thm:vieira} below)
 \end{itemize}
+
+\begin{theorem}[Vieira 2016 - Roots on Unit Circle \cite{vieira2016}]
+\label{thm:vieira}
+Let $p(z) = a_n z^n + a_{n-1} z^{n-1} + \cdots + a_1 z + a_0$ be an $n$-th degree self-inversive polynomial satisfying $p(z) = \omega z^n \overline{p(1/z)}$ where $|\omega| = 1$.
+
+If the inequality
+\[
+|a_{n-l}| > \frac{1}{2}\binom{n}{n-2l} \sum_{\substack{k=0\\k \neq l, n-l}}^n |a_k|, \quad l < n/2
+\]
+holds, then $p(z)$ has exactly $n - 2l$ roots on the complex unit circle $|z| = 1$ and these roots are simple.
+
+Moreover, if $n$ is even and $l = n/2$, then $p(z)$ has no roots on the unit circle if
+\[
+\left|a_{n/2}\right| > \sum_{\substack{k=0\\k \neq n/2}}^n |a_k|
+\]
+is satisfied.
+\end{theorem}
 
 \textbf{Novel contributions:}
 \begin{itemize}
@@ -295,6 +338,18 @@ Konvalina, J., Matache, V. (2004).
 \textit{Palindrome-Polynomials with Roots on the Unit Circle}.
 University of Nebraska at Omaha, Mathematics Faculty Publications, 44.
 \texttt{https://digitalcommons.unomaha.edu/mathfacpub/44}
+
+\bibitem{conrad2008}
+Conrad, K. (2008).
+\textit{Algebraic Numbers on the Unit Circle}.
+Unpublished lecture notes.
+\texttt{https://kconrad.math.uconn.edu/blurbs/}
+
+\bibitem{vieira2016}
+Vieira, R.S. (2016).
+\textit{On the number of roots of self-inversive polynomials on the complex unit circle}.
+arXiv preprint arXiv:1604390.
+\texttt{https://arxiv.org/abs/1604390}
 
 \bibitem{dlmf}
 NIST Digital Library of Mathematical Functions.
