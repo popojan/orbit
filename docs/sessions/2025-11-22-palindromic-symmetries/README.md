@@ -29,6 +29,7 @@ All three connected through underlying mathematical structures but distinct mech
 - **[triple-identity-factorial-chebyshev-hyperbolic.md](triple-identity-factorial-chebyshev-hyperbolic.md)** - ⭐⭐⭐ Triple identity connecting factorial sums, Chebyshev polynomials, and hyperbolic functions
 - **[geometric-context-chebyshev-hyperbolic.md](geometric-context-chebyshev-hyperbolic.md)** - ⭐⭐ Geometric foundations: hyperboloid, Poincaré disk, and bridge to Chebyshev
 - **[derivation-1plus2k-factor.md](derivation-1plus2k-factor.md)** - ✅ **PROVEN:** Algebraic derivation of (1+2k) factor from Chebyshev indices
+- **[egypt-poincare-trajectory.md](egypt-poincare-trajectory.md)** - 🔬 **NUMERICALLY VERIFIED:** Egypt trajectory in Poincaré disk with inversion symmetry
 - **[factorial_term_hypergeometric_analysis.md](factorial_term_hypergeometric_analysis.md)** - Analysis: FactorialTerm is rational, NOT hypergeometric
 - **[algebraic_tangent_summary.md](algebraic_tangent_summary.md)** - Algebraic tangent multiplication formulas
 
