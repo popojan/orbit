@@ -32,6 +32,7 @@ All three connected through underlying mathematical structures but distinct mech
 - **[egypt-poincare-trajectory.md](egypt-poincare-trajectory.md)** - 🔬 **NUMERICALLY VERIFIED:** Egypt trajectory in Poincaré disk with inversion symmetry
 - **[physics-connection-review.md](physics-connection-review.md)** - ⚠️ **CORRECTION:** Why hyperbolic geometry ≠ physics (Lorentzian signature explained)
 - **[riemann-historical-review.md](riemann-historical-review.md)** - 📜 **HISTORICAL CHECK:** Anachronisms corrected, Pell equation misattribution noted
+- **[chebyshev-historical-review.md](chebyshev-historical-review.md)** - 🇷🇺 **ЧЕБЫШЁВ (1885):** His polynomials used correctly! Demands rigorous proof (Russian)
 - **[factorial_term_hypergeometric_analysis.md](factorial_term_hypergeometric_analysis.md)** - Analysis: FactorialTerm is rational, NOT hypergeometric
 - **[algebraic_tangent_summary.md](algebraic_tangent_summary.md)** - Algebraic tangent multiplication formulas
 
