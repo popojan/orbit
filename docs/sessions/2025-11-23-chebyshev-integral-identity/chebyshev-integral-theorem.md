@@ -12,13 +12,13 @@ Discovered and proved integral identity for Chebyshev polynomials T_k:
 ∫_{-1}^{1} |T_{k+1}(x) - x·T_k(x)| dx = 1
 ```
 
-**Alternative Form:** Using simplified integrals (without absolute value):
+**Related Identity:** Simplified integrals (without absolute value) give a different sequence:
 ```
 AB[k] = { 1/k                           k odd
         { -(1/(k+1) + 1/(k-1))/2        k even
 ```
 
-Both results verified symbolically and proven using trigonometric substitution.
+Note: AB[k] ≠ 1 (different integral, different results). Main result verified symbolically and proven using trigonometric substitution.
 
 ---
 
