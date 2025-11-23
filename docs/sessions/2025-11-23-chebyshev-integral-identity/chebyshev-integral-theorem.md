@@ -112,6 +112,12 @@ f(cos θ, k) = cos(θ)·cos(kθ) - cos((k-1)θ)
 cos(θ)·cos(kθ) = [cos((k+1)θ) + cos((k-1)θ)]/2
 ```
 
+**Note:** This identity corresponds to Mason & Handscomb (2003) Equation 2.39:
+```
+xT_n(x) = (1/2)[T_{n+1}(x) + T_{n-1}(x)]
+```
+which is the foundational product identity for Chebyshev polynomials of the first kind.
+
 Therefore:
 ```
 f(cos θ, k) = [cos((k+1)θ) + cos((k-1)θ)]/2 - cos((k-1)θ)
@@ -611,6 +617,37 @@ Computed `NIntegrate[|sin(kθ)|·sin²(θ), {θ,0,π}]` for k=2..12:
 
 ---
 
+## Literature Review
+
+**Comparison with Mason & Handscomb (2003):**
+
+A systematic review of the authoritative reference *Chebyshev Polynomials* by J.C. Mason and D.C. Handscomb confirms that **our results are original**.
+
+**What is in Mason & Handscomb:**
+- Product identity: `xT_n(x) = (1/2)[T_{n+1}(x) + T_{n-1}(x)]` ← Foundation for our work (Eq. 2.39)
+- Indefinite integrals of T_n and U_n
+- Orthogonality relations with weight functions
+- Integral equations with singular kernels (Hilbert, logarithmic)
+- General shift to arbitrary interval [a,b] (Eq. 1.31)
+
+**What is NOT in Mason & Handscomb:**
+- ❌ Combination `T_{k+1}(x) - x·T_k(x)` studied as geometric object
+- ❌ Integrals with absolute value: `∫|f(x)| dx`
+- ❌ Unit integral identity: `∫_{-1}^1 |T_{k+1}(x) - x·T_k(x)| dx = 1`
+- ❌ Connection to regular polygon vertices via `x² + f(x,k)² = 1`
+- ❌ Generating function G(z) = z(4-z)/[3(1-z)] for unit integral
+
+**Key insight:** Mason & Handscomb provides the product identity (Eq. 2.39) that enables the trigonometric transformation:
+```
+T_{k+1}(x) - x·T_k(x) = (1/2)[T_{k+1}(x) - T_{k-1}(x)] = -sin(kθ)sin(θ)
+```
+
+However, they **do not compute the integral with absolute value**, nor explore its geometric implications.
+
+**Detailed comparison:** See [literature-comparison-mason-handscomb.md](literature-comparison-mason-handscomb.md) for complete analysis.
+
+---
+
 ## Connection to Previous Work
 
 This session builds on **2025-11-22 Egypt Convergence Analysis**:
@@ -628,6 +665,7 @@ This session builds on **2025-11-22 Egypt Convergence Analysis**:
 
 ### Main Session (2025-11-23)
 - `chebyshev-integral-theorem.md` (this document)
+- `literature-comparison-mason-handscomb.md` - Comparison with authoritative reference
 
 ### Working Scripts (/tmp)
 - `chebyshev_integral_symbolic.wl` - Initial symbolic verification
