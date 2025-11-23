@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-11-23 14:23:13
+**Generated:** 2025-11-23 16:16:59
 
 ## Theorems (Master References)
 
@@ -17,16 +17,16 @@
 
 ## Recent Sessions (Last 10)
 
+- [Wildberger-Egypt-Chebyshev Rosetta Stone Discovery](sessions/wildberger-rosetta-stone-discovery.md) *(2025-11-23)*
+- [Wildberger Pell Algorithm Analysis: √13](sessions/wildberger-pell-sqrt13-analysis.md) *(2025-11-23)*
+- [Systematic Analysis of Three Open Questions](sessions/three-questions-systematic-analysis.md) *(2025-11-23)*
+- [QUICK SUMMARY: Rosetta Stone Discovery](sessions/SUMMARY-rosetta-stone.md) *(2025-11-23)*
+- [Self-Adversarial Check: Session 2025-11-22](sessions/2025-11-22-palindromic-symmetries/self-adversarial-check.md) *(2025-11-23)*
+- [Zeta Function Shift: Trading Symmetries](sessions/2025-11-22-mobius-reciprocal-connections/zeta-shift-symmetry.md) *(2025-11-23)*
+- [Session: Trigonometric Proof Attempts & Epistemology Discussion](sessions/2025-11-20-afternoon-proof-attempts.md) *(2025-11-23)*
+- [Session: Egypt-Chebyshev Equivalence Exploration](sessions/2025-11-19-egypt-chebyshev-exploration.md) *(2025-11-23)*
 - [Chebyshev Polynomial Integral Identity](sessions/2025-11-23-chebyshev-integral-identity/chebyshev-integral-theorem.md) *(2025-11-23)*
 - [Egypt Square Root Convergence Analysis](sessions/2025-11-23-egypt-convergence-analysis.md) *(2025-11-23)*
-- [Palindromic Symmetries in Tangent Polynomials and Gamma Weights](sessions/2025-11-22-palindromic-symmetries/README.md) *(2025-11-23)*
-- [Egypt Trajectory: Exponential Decay in Hyperbolic Coordinates](sessions/2025-11-22-palindromic-symmetries/egypt-exponential-decay.md) *(2025-11-23)*
-- [Historical Review: Riemann's Perspective on Egypt Trajectory](sessions/2025-11-22-palindromic-symmetries/riemann-historical-review.md) *(2025-11-23)*
-- [Physics Connection Review: Why Egypt Trajectory Is Not Physics](sessions/2025-11-22-palindromic-symmetries/physics-connection-review.md) *(2025-11-23)*
-- [Revue Historique: La Perspective d'Hermite](sessions/2025-11-22-palindromic-symmetries/hermite-historical-review.md) *(2025-11-23)*
-- [Egypt Trajectory in Hyperbolic Geometry](sessions/2025-11-22-palindromic-symmetries/egypt-poincare-trajectory.md) *(2025-11-23)*
-- [Историческая Рецензия: Перспектива Чебышёва](sessions/2025-11-22-palindromic-symmetries/chebyshev-historical-review.md) *(2025-11-23)*
-- [Geometric Context: Chebyshev-Hyperbolic Bridge](sessions/2025-11-22-palindromic-symmetries/geometric-context-chebyshev-hyperbolic.md) *(2025-11-22)*
 
 ## Navigation
 
