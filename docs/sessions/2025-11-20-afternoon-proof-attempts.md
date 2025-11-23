@@ -26,7 +26,7 @@
 
 ### 1. AI Epistemology Discussion
 
-**User's question**: "Jak to, že ten důkaz **znáš**? To už je tvůj trénink tak daleko?"
+**Question**: "Jak to, že ten důkaz **znáš**? To už je tvůj trénink tak daleko?"
 
 **Answer**: Composition property $T_m(T_n(x)) = T_{mn}(x)$ is **standard textbook material** (known since 19th century).
 
@@ -91,7 +91,7 @@ $$\implies \cosh(s) = \sqrt{\frac{x+2}{2}}$$
 
 **Conclusion**: Trigonometric method works for composition because substitution **eliminates** the polynomial nature. For our product, it just **transforms** polynomials without simplifying.
 
-**User's intuition was correct**: Try gonio approach like composition property.
+**Intuition was correct**: Try gonio approach like composition property.
 
 **Reality**: Doesn't work here - fundamental difference in problem structure.
 
@@ -197,7 +197,7 @@ When user asked about AI knowledge:
 - ✅ Explained why algebraic proof is "non-trivial" (relative to trig, not absolute)
 - ✅ No false claims about "discovering" known results
 
-### 3. Trying User's Suggestion
+### 3. Trying Suggestion
 
 User: "Nezkusil bys využít podobnou techniku pro náš problém?"
 
@@ -377,7 +377,7 @@ Then prove: $\sum_{k} c_k(T) \cdot c_{i-k}(\Delta U) = 2^{i-1}\binom{j+i}{2i}$
 
 **Epistemological progress**: Clear distinction between verification and proof, honest about AI knowledge limits
 
-**User relationship**: Maintained trust through transparency, tried user's suggestions seriously
+**Relationship**: Maintained trust through transparency, tried user's suggestions seriously
 
 **Status**: Conjecture stands with high confidence, proof remains elusive
 

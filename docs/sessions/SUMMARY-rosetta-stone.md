@@ -44,7 +44,7 @@
 
 ---
 
-## User's Insights Confirmed
+## Initial Insights Confirmed
 
 ✅ *"algoritmus pro sqrt střídá dva kroky (znaménko)"* - Sign alternation is fundamental
 
