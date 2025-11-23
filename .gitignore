@@ -46,5 +46,9 @@ gosper.m
 /viz_*.png
 /viz_*.wl
 
+# Generated visualizations
+visualizations/viz_*.png
+visualizations/viz_*.wl
+
 # Downloaded papers (not for version control)
 papers/
