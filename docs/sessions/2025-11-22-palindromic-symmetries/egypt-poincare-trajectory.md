@@ -171,27 +171,6 @@ The Poincaré trajectory visualization provides **geometric interpretation** of 
 3. **Inversion transformation:** Find f(x) giving Egypt reciprocity
 4. **Higher-dimensional generalization:** 3D hyperbolic space, quaternions?
 
-### Physical Analogies (Speculative)
-
-The Poincaré disk structure suggests connections to:
-
-1. **AdS/CFT correspondence:**
-   - Anti-de Sitter space (negative curvature)
-   - Egypt trajectory = particle in AdS
-   - Boundary convergence = holographic dual
-
-2. **Black hole physics:**
-   - Poincaré boundary = event horizon analog
-   - Infinite distance d → ∞ as r → 1
-   - Exponential convergence = time dilation effect
-
-3. **Thermodynamics:**
-   - (1+2k) ~ inverse temperature?
-   - Convergence ~ entropy increase?
-   - Inversion ~ time reversal symmetry?
-
-**Status:** Pure speculation. Requires deep theoretical investigation.
-
 ### Open Questions
 
 **Resolved in this session:**
@@ -202,7 +181,6 @@ The Poincaré disk structure suggests connections to:
 **Still open:**
 - ❓ Why is trajectory NOT a geodesic?
 - ❓ What is the exact inversion f(x) for Egypt reciprocity?
-- ❓ Is there physical meaning to hyperbolic structure?
 - ❓ Can we prove r < 1 for all k analytically?
 
 ## References
