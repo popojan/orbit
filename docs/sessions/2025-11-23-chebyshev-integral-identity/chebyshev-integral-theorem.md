@@ -407,6 +407,49 @@ Total      = 1/2
 
 Verified numerically: partial sums oscillate around 1/2 with amplitude ~ 1/N.
 
+#### Comparison with Main Theorem Generating Function
+
+The main theorem integral values I_k = ∫|T_{k+1}(x) - x·T_k(x)|dx also have a generating function, providing instructive contrast:
+
+**Main Theorem Sequence:**
+```
+I_1 = 4/3
+I_k = 1  (k ≥ 2)
+```
+
+**Generating Function:**
+```
+G_main(z) = Σ_{k=1}^∞ I_k·z^k
+          = (4/3)z + z² + z³ + z⁴ + ...
+          = (4/3)z + z²/(1-z)
+          = z(4-z) / [3(1-z)]
+```
+
+**Properties:**
+- **Type:** Rational function (simple closed form)
+- **Radius of convergence:** R = 1
+- **Convergence:** Converges for all |z| < 1 (closed form is finite)
+- **Special value:** G_main(1/2) = 7/6
+- **Behavior at z=1:** DIVERGES (lim_{z→1⁻} G_main(z) = ∞)
+- **Partial sums:** S_N = N + 1/3 → ∞
+
+**Comparison Table:**
+
+| Property | Main Theorem G_main(z) | Related Identity G_AB(z) |
+|----------|------------------------|--------------------------|
+| Sequence | Nearly constant (I_k≈1) | Oscillating (AB[k]~1/k) |
+| Closed form | z(4-z)/[3(1-z)] | ArcTanh(z) + Log terms |
+| Function type | Rational | Transcendental |
+| Radius | R = 1 | R = 1 |
+| For \|z\| < 1 | Converges (finite) | Converges (finite) |
+| At z → 1⁻ | DIVERGES (→ ∞) | CONVERGES (→ 1/2) |
+| Partial sums S_N | DIVERGES (~ N) | Cesàro sum = 1/2 |
+| Complexity | Simple | Complex |
+
+**Mathematical Insight:**
+
+The constant integral result (I_k = 1) produces a simple rational generating function but divergent series, while the variable integral result (AB[k] ~ 1/k) produces a complex transcendental generating function but convergent regularized sum. This illustrates the inverse relationship between sequence regularity and generating function complexity.
+
 ---
 
 ## Unified Formulas
