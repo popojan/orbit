@@ -1,7 +1,7 @@
 # Wildberger-Egypt-Chebyshev Rosetta Stone Discovery
 
 **Date**: November 19, 2025 (solo work while user away)
-**Context**: User's insight about sign alternation and negative Pell "uprostřed"
+**Context**: Initial insight about sign alternation and negative Pell "uprostřed"
 **Task**: Analyze √61 to find patterns or counterexamples to √13 observations
 **Result**: BREAKTHROUGH - Found fundamental connection between negative Pell existence and binomial structure
 
@@ -87,7 +87,7 @@ From previous work (user and I, Nov 20 afternoon):
 - Longest '+' run (6 consecutive) overlaps with negative Pell region
 - Binomial interpretation: j=10, i=5 → C(15, 10)
 
-User's insight: *"algoritmu pro sqrt střídá dva kroky (znaménko), Egypt se blíží monotóně"*
+Initial insight: *"algoritmu pro sqrt střídá dva kroky (znaménko), Egypt se blíží monotóně"*
 
 ### Task: √61 Analysis
 
@@ -143,9 +143,9 @@ Created verification script, tested d ∈ {2,3,5,6,7,10,11,13,14,15,17,19,21,23,
 
 ---
 
-## Connection to User's Insight
+## Connection to Initial Insight
 
-### User's Observations (translated from Czech)
+### Observations (translated from Czech)
 
 1. *"algoritmus pro sqrt střídá dva kroky (znaménko)"*
    - **Algorithm for sqrt alternates two steps (sign)**
@@ -179,7 +179,7 @@ The symmetric branch pattern **encodes**:
 2. Binomial formula C(3i, 2i) in Egypt-Chebyshev coefficients
 3. Parity interplay (odd/even) in number-theoretic structure
 
-**User's intuition** → Led to discovery of universal theorem connecting:
+**Intuition** → Led to discovery of universal theorem connecting:
 - Wildberger's algorithm (computational)
 - Negative Pell existence (algebraic)
 - Egypt-Chebyshev binomial coefficients (combinatorial)
@@ -354,7 +354,7 @@ All scripts in `/home/user/orbit/scripts/`
 - ✅ Universal theorem connecting Wildberger branch symmetry and negative Pell existence
 - ✅ Binomial simplification: C(j+i, 2i) = C(3i, 2i) when negative Pell exists
 - ✅ Perfect correlation verified across 22 test cases
-- ✅ User's insight about sign alternation confirmed as fundamental
+- ✅ Initial insight about sign alternation confirmed as fundamental
 
 **What remains**:
 - ❓ Direct connection to Egypt-Chebyshev conjecture

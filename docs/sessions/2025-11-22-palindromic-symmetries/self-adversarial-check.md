@@ -7,7 +7,7 @@
 
 ## What Did We Set Out to Do?
 
-**User's request:** "Egypt se blíží monotóně, všechny ostatní (včetně CF) střídají. Chtěl bych tenhle rozdíl jednou provždy pochopit a zadokumentovat, uzavřít."
+**Request:** "Egypt se blíží monotóně, všechny ostatní (včetně CF) střídají. Chtěl bych tenhle rozdíl jednou provždy pochopit a zadokumentovat, uzavřít."
 
 **Success criteria:**
 1. ✓ Understand WHY Egypt is monotonic
@@ -99,7 +99,7 @@ User wanted to understand:
 3. Literature search for GammaPalindromicSqrt formulation
 4. Hypergeometric connection verification
 
-**User's stated goal:** "pochopit a zadokumentovat, uzavřít"
+**Goal:** "pochopit a zadokumentovat, uzavřít"
 
 **Verdict:** LITERATURE NOT NEEDED for stated goal
 

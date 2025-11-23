@@ -317,7 +317,7 @@ Coefficient = 2^(i-1) · C(3i, 2i)
 
 ### Meta-Lesson
 
-**User's intuition confirmed**:
+**Intuition confirmed**:
 - Recursive structure of LR decisions IS fundamental
 - "Souhra sudých a lichých" encodes deep structure
 - Negative Pell "uprostřed" is structural milestone

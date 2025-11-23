@@ -68,11 +68,13 @@ Solutions to the equation x² + f(x, k)² = 1, excluding singularities x = ±1, 
 **2. Rotation Property:**
 Polygon is rotated such that no two vertices share the same x-coordinate, ensuring f is single-valued (proper function).
 
-**3. Unit Integral Conjecture:**
+**3. Unit Integral Identity:**
 ```
 ∫_{-1}^{1} |ChebyshevPolygonFunction[x, k]| dx = 1  for k ≥ 2
 ```
-Status: Numerically verified, not proven.
+Status: ✅ **PROVEN** (2025-11-23)
+
+See: [Chebyshev Polynomial Integral Identity](../sessions/2025-11-23-chebyshev-integral-identity/chebyshev-integral-theorem.md) for complete proof via trigonometric substitution and symmetry arguments.
 
 ### Example: Square (k=3)
 

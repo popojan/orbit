@@ -60,9 +60,10 @@ Geometric Properties:
    Polygon is rotated such that no two vertices share the same x-coordinate,
    ensuring ChebyshevPolygonFunction is single-valued (proper function).
 
-4. UNIT INTEGRAL CONJECTURE:
+4. UNIT INTEGRAL IDENTITY:
    Integrate[Abs[ChebyshevPolygonFunction[x, k]], {x, -1, 1}] == 1 for k ≥ 2
-   Status: Numerically verified, not proven.
+   Status: PROVEN (2025-11-23) via trigonometric substitution and symmetry arguments.
+   See: docs/sessions/2025-11-23-chebyshev-integral-identity/chebyshev-integral-theorem.md
 
 Examples:
   (* k=3 gives square (4 vertices, excluding x=±1) *)

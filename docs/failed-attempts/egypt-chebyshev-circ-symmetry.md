@@ -7,7 +7,7 @@
 
 ---
 
-## User's Symmetric Representation
+## Symmetric Representation
 
 User discovered symmetric representation of sin/cos via "circ" function:
 
@@ -29,7 +29,7 @@ coso[t_] := -circ[-t]
 
 ---
 
-## User's Assessment
+## Assessment
 
 > "brutal honesty, helpful, trivial fancy"
 
@@ -83,7 +83,7 @@ Where `ΔU_n(x+1) = cos((n+0.5)θ)/cos(θ/2)` with `θ = arccos(x+1)`
 
 ### Meta-Lesson 1: Exploration Value vs Direct Utility
 
-**User's process**:
+**Process**:
 1. Saw goniometric structure in ΔU
 2. Recalled symmetric representation from past work
 3. Shared it as potential connection
@@ -134,11 +134,11 @@ User called it "trivial" but still worth checking:
 
 ## Decision Process
 
-**User's question**: "Vidíš TY, jak circ/quadrance souvisí s 2^k·C(n+k,2k)?"
+**Question**: "Vidíš TY, jak circ/quadrance souvisí s 2^k·C(n+k,2k)?"
 
 **My answer**: "Nevidím přímé spojení"
 
-**User's response**: "rozhodně nevidím, zkus co říkáš :("
+**Response**: "rozhodně nevidím, zkus co říkáš :("
 
 **Outcome**: Mutual agreement it's a dead end → pivot to other approaches
 
@@ -172,7 +172,7 @@ Both more directly applicable to polynomial coefficients.
 - Move on without regret
 - Document for posterity
 
-**User's instinct was right**: "i když byla k ničemu" → still worth documenting
+**Instinct was right**: "i když byla k ničemu" → still worth documenting
 
 ---
 

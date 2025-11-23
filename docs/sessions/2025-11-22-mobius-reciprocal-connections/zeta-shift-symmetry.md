@@ -14,7 +14,7 @@ Riemann's critical line is at **Re(s) = 1/2**:
 Critical line: s = 1/2 + i·t, t ∈ ℝ
 ```
 
-**User's observation:** "1/2 mne na zeta strašně vadila - nesymetrie"
+**Observation:** "1/2 mne na zeta strašně vadila - nesymetrie"
 
 This is a **profound insight**:
 - 1/2 is a transcendental-looking position
@@ -303,7 +303,7 @@ This document captures a **conceptual idea** that emerged from:
 
 ---
 
-**User's insight:** "1/2 mne na zeta strašně vadila - nesymetrie"
+**Initial insight:** "1/2 mne na zeta strašně vadila - nesymetrie"
 
 **Our response:** Shift to make it symmetric around 0, trade functional equation for reciprocal equation.
 

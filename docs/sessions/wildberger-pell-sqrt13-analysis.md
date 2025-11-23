@@ -74,7 +74,7 @@
 
 ---
 
-## Connection to User's Insight
+## Connection to Initial Insight
 
 User said: **"Algoritmus pro sqrt střídá dva kroky (znaménko), Egypt se blíží monotóně"**
 
@@ -92,7 +92,7 @@ User said: **"Algoritmus pro sqrt střídá dva kroky (znaménko), Egypt se blí
 
 ## Binomial Structure Hypothesis
 
-**User's conjecture**: $\binom{j+i}{2i}$ counts path steps with parity constraint
+**Conjecture**: $\binom{j+i}{2i}$ counts path steps with parity constraint
 
 **From √13 data**:
 - **Pool size**: j+i = 10+5 = 15

@@ -56,7 +56,7 @@ Documentation: English with preserved Czech insights
 - ✅ Brutal honesty about publication prospects
 
 **Breakthrough moment:**
-User's adversarial question triggered proper analysis:
+Adversarial question triggered proper analysis:
 ```
 User: "insight > utility... vysvětli mi kombinatorickou strukturu,
        proč je to trivial, určit znaménko není vždy trivial"
@@ -170,7 +170,7 @@ $$P_j(x) = 1 + \sum_{i=1}^{j} 2^{i-1} \binom{j+i}{2i} x^i$$
 - ❌ "n²+4 pattern trivial → not breakthrough"
 - ❌ **Conclusion**: "Archive paper, no publishable content"
 
-### User's Correction
+### Correction
 
 **Key insight from user:**
 > "insight > utility... we both learn (já víc)"
@@ -332,7 +332,7 @@ This session demonstrates the value of **insight-driven exploration** over **pub
 
 ## Quotes to Remember
 
-**User's wisdom:**
+**Wisdom:**
 > "insight > utility... we both learn (já víc)"
 
 **Adversarial trigger:**
