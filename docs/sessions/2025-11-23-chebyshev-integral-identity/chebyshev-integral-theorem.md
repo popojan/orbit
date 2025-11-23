@@ -60,7 +60,7 @@ where T_k(x) denotes the Chebyshev polynomial of the first kind of degree k.
 
 ### Historical Form
 
-**User's Original Question:**
+**Original Problem:**
 ```
 How to show that ∫_{-1}^{1} |f(x,k)| dx = 1 for any natural k,
 where f(x,k) = T_{k+1}(x) - x·T_k(x)?
