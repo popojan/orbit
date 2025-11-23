@@ -31,6 +31,7 @@ All three connected through underlying mathematical structures but distinct mech
 - **[derivation-1plus2k-factor.md](derivation-1plus2k-factor.md)** - ✅ **PROVEN:** Algebraic derivation of (1+2k) factor from Chebyshev indices
 - **[egypt-poincare-trajectory.md](egypt-poincare-trajectory.md)** - 🔬 **NUMERICALLY VERIFIED:** Egypt trajectory in Poincaré disk with inversion symmetry
 - **[physics-connection-review.md](physics-connection-review.md)** - ⚠️ **CORRECTION:** Why hyperbolic geometry ≠ physics (Lorentzian signature explained)
+- **[riemann-historical-review.md](riemann-historical-review.md)** - 📜 **HISTORICAL CHECK:** Anachronisms corrected, Pell equation misattribution noted
 - **[factorial_term_hypergeometric_analysis.md](factorial_term_hypergeometric_analysis.md)** - Analysis: FactorialTerm is rational, NOT hypergeometric
 - **[algebraic_tangent_summary.md](algebraic_tangent_summary.md)** - Algebraic tangent multiplication formulas
 
