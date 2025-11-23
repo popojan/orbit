@@ -217,13 +217,20 @@ I_1 = (2 - (-2/3))/2 = 4/3
 
 ## Related Identity: Simplified Integrals (Without Absolute Value)
 
-**Note:** This section explores a **different integral** than the main theorem. The main theorem uses |sin(kθ)|·sin²(θ), while this uses sin(kθ)·sin²(θ) without absolute value. The results are different: main theorem gives 1, while this gives AB[k] ≠ 1.
+**Two different integrals:**
+
+| Property | Main Theorem (I_k) | Related Identity (AB[k]) |
+|----------|-------------------|--------------------------|
+| Integrand | \|sin(kθ)\|·sin²(θ) | sin(kθ)·sin²(θ) |
+| Decomposition | (1/2)[1 - cos(2θ)] | (1/2)[1 - cos(θ)] |
+| A component | ∫\|sin(kθ)\| dθ | ∫sin(kθ) dθ |
+| B component | ∫\|sin(kθ)\|·cos(2θ) dθ | ∫sin(kθ)·cos(θ) dθ |
+| Result | I_k = 1 (k≥2) | AB[k] ≠ 1 (varies with k) |
 
 ### Definitions
 
-Computing without absolute value and with cos(θ) instead of cos(2θ):
-
 ```mathematica
+(* Related identity - different from main theorem *)
 Ak[k_] := Integrate[Sin[k θ], {θ, 0, π}]
 Bk[k_] := Integrate[Sin[k θ] Cos[θ], {θ, 0, π}]
 AB[k_] := (Ak[k] - Bk[k])/2
