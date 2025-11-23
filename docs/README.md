@@ -36,6 +36,7 @@
 - [proofs/](proofs/) - Complete standalone proofs
 - [papers/](papers/) - LaTeX papers for publication
 - [sessions/](sessions/) - Discovery narratives by date
+- [reviews/historical/](reviews/historical/) - 🎭 **Historical peer reviews** (Riemann 🇩🇪, Chebyshev 🇷🇺, Hermite 🇫🇷)
 - [failed-attempts/](failed-attempts/) - Dead ends (educational)
 
 ---
