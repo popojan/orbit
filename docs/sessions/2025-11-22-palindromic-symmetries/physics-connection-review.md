@@ -5,7 +5,7 @@
 
 ## Summary
 
-Removed "Physical Analogies (Speculative)" section from `archive/egypt-poincare-trajectory-OLD.md` that claimed connections to:
+Removed "Physical Analogies (Speculative)" section from `egypt-poincare-trajectory.md` that claimed connections to:
 - AdS/CFT correspondence
 - Black hole physics
 - Thermodynamics
@@ -230,7 +230,7 @@ ds² = -dt² + dx²    [Lorentzian]
 
 ## Corrective Action Taken
 
-**Removed from `archive/egypt-poincare-trajectory-OLD.md`:**
+**Removed from `egypt-poincare-trajectory.md`:**
 - Entire "Physical Analogies (Speculative)" section
 - "Is there physical meaning to hyperbolic structure?" from open questions
 
@@ -296,7 +296,7 @@ Egypt trajectories are purely algorithmic/mathematical - no spacetime, no dynami
 - Ratcliffe, J.G. (2006). *Foundations of Hyperbolic Manifolds*. Springer.
 
 **Egypt trajectory analysis (this repository):**
-- `archive/egypt-poincare-trajectory-OLD.md` - Geometric analysis (corrected version)
+- `egypt-poincare-trajectory.md` - Geometric analysis (corrected version)
 - `triple-identity-factorial-chebyshev-hyperbolic.md` - Mathematical identities
 - `geometric-context-chebyshev-hyperbolic.md` - Hyperbolic geometry foundations
 
