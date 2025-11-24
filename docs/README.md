@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-11-23 23:45:32
+**Generated:** 2025-11-24 01:02:38
 
 ## Theorems (Master References)
 
@@ -13,20 +13,21 @@
 - [Algebraic Circle Parametrizations and Integer Periods](reference/algebraic-circle-parametrizations.md)
 - [Hyperbolic Geometry and Square Root Approximations](reference/hyperbolic-geometry-sqrt.md)
 - [Wolfram Language Namespace Organization Best Practices](reference/namespace-best-practices.md)
+- [Reading Notes: Prime Gap Theory](reference/prime-gap-theory-reading.md)
 - [Wolfram Pattern Matching vs Prolog Unification](reference/wolfram-vs-prolog-patterns.md)
 
 ## Recent Sessions (Last 10)
 
+- [Pražský orloj a OEIS posloupnosti](sessions/2025-11-24-cleanup-and-planning/prazsky-orloj-oeis.md) *()*
+- [Egypt-Chebyshev Algebraic Proof: Strategic Plan](sessions/2025-11-24-egypt-chebyshev-proof-plan.md) *()*
+- [Mason & Handscomb: Comparison with Our Results](sessions/2025-11-23-chebyshev-integral-identity/literature-comparison-mason-handscomb.md) *(2025-11-23)*
+- [Chebyshev Polynomial Integral Identity](sessions/2025-11-23-chebyshev-integral-identity/chebyshev-integral-theorem.md) *(2025-11-23)*
 - [Wildberger-Egypt-Chebyshev Rosetta Stone Discovery](sessions/wildberger-rosetta-stone-discovery.md) *(2025-11-23)*
 - [Wildberger Pell Algorithm Analysis: √13](sessions/wildberger-pell-sqrt13-analysis.md) *(2025-11-23)*
 - [Systematic Analysis of Three Open Questions](sessions/three-questions-systematic-analysis.md) *(2025-11-23)*
 - [QUICK SUMMARY: Rosetta Stone Discovery](sessions/SUMMARY-rosetta-stone.md) *(2025-11-23)*
 - [Self-Adversarial Check: Session 2025-11-22](sessions/2025-11-22-palindromic-symmetries/self-adversarial-check.md) *(2025-11-23)*
 - [Zeta Function Shift: Trading Symmetries](sessions/2025-11-22-mobius-reciprocal-connections/zeta-shift-symmetry.md) *(2025-11-23)*
-- [Session: Trigonometric Proof Attempts & Epistemology Discussion](sessions/2025-11-20-afternoon-proof-attempts.md) *(2025-11-23)*
-- [Session: Egypt-Chebyshev Equivalence Exploration](sessions/2025-11-19-egypt-chebyshev-exploration.md) *(2025-11-23)*
-- [Chebyshev Polynomial Integral Identity](sessions/2025-11-23-chebyshev-integral-identity/chebyshev-integral-theorem.md) *(2025-11-23)*
-- [Egypt Square Root Convergence Analysis](sessions/2025-11-23-egypt-convergence-analysis.md) *(2025-11-23)*
 
 ## Navigation
 

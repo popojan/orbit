@@ -44,13 +44,28 @@ wolframscript -file scripts/[script-name].wl
 
 ## Documentation
 
-Detailed reference documentation is available in `docs/reference/` covering mathematical foundations and implementation details. Papers and longer-form documents are in `docs/papers/`.
+**Quick navigation:**
+- [Documentation Index](docs/README.md) - Complete organized index of all documentation
+- [Reference Documentation](docs/reference/) - Mathematical foundations and design rationale
+- [Session Narratives](docs/sessions/) - Discovery narratives by date
+- [Papers](docs/papers/) - LaTeX papers and longer-form documents
 
 Run `make preview` to generate HTML previews of all documentation.
 
+## Recent Results
+
+**Latest work** (November 2025):
+- Chebyshev integral identity (rigorously proven)
+- Triple identity connecting factorials, Chebyshev polynomials, and hyperbolic functions (numerically verified)
+- Comprehensive literature comparison with Mason & Handscomb (2003)
+
+See [Scientific Review 2025-11-23](docs/reviews/scientific-review-2025-11-23.md) for detailed assessment.
+
 ## Status
 
-This work represents personal mathematical explorations and computational experiments. All results should be considered provisional and subject to revision. The usual caveats about unpublished research apply.
+This work represents personal mathematical explorations and computational experiments. **Nothing here has been peer-reviewed.** All results should be considered provisional and subject to revision.
+
+Individual results have different epistemic statuses (✅ PROVEN, 🔬 NUMERICALLY VERIFIED, 🤔 HYPOTHESIS) - check specific documents for details.
 
 ## Feedback Welcome
 
