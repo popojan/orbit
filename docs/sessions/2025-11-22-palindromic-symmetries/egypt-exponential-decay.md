@@ -264,7 +264,7 @@ fit = Fit[fitData, {1, x}, x];
 
 - [Triple Identity: Factorial-Chebyshev-Hyperbolic](triple-identity-factorial-chebyshev-hyperbolic.md)
 - [Derivation of the (1+2k) Factor](derivation-1plus2k-factor.md)
-- [Egypt Trajectory in Poincaré Disk](egypt-poincare-trajectory.md)
+- [Egypt Trajectory in Poincaré Disk](archive/egypt-poincare-trajectory-OLD.md)
 
 ## References
 

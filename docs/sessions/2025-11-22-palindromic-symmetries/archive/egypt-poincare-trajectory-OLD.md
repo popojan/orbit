@@ -74,12 +74,12 @@ k=10: ds/dk ≈ -9.3×10⁻¹⁴
 
 **Acceleration trend:** Positive (convergence slows near target)
 
-**NOT a geodesic:** Velocity is not constant (geodesics have constant velocity in hyperbolic space), but shows systematic exponential decay.
+**UPDATE (2025-11-24):** Initial conclusion was INCORRECT. Rigorous differential geometry analysis proves Egypt trajectory **IS a geodesic** (vertical line x=0 in upper/lower half-plane model).
 
-**Interpretation:**
-- Egypt trajectory is not a simple geodesic
-- Follows more complex path (spiral toward boundary)
-- Exponential decay typical of hyperbolic flow
+**Velocity decay explanation:**
+- Parametrizing by k (discrete index) vs s (arc length) causes apparent velocity variation
+- Geodesics have constant velocity ONLY when parametrized by arc length
+- Egypt trajectory is geodesic: y(s) = B·exp(A·s), x=0 (proven via Christoffel symbols)
 
 ## Visualizations
 
@@ -179,9 +179,11 @@ The Poincaré trajectory visualization provides **geometric interpretation** of 
 - ✅ Do Egypt trajectories stay inside Poincaré disk? → Yes (all k tested)
 
 **Still open:**
-- ❓ Why is trajectory NOT a geodesic?
 - ❓ What is the exact inversion f(x) for Egypt reciprocity?
 - ❓ Can we prove r < 1 for all k analytically?
+
+**Resolved (2025-11-24):**
+- ✅ Why is trajectory NOT a geodesic? → **IT IS!** Proven via Christoffel symbols (see `egypt_geodesic_rigorous.wl`)
 
 ## References
 
@@ -199,6 +201,9 @@ Scripts in `/scripts/experiments/`:
 - `test_high_k_identity.wl` - High-k verification (k up to 200)
 - `derive_1plus2k_factor.wl` - Derivation of (1+2k)
 - `derive_1plus2k_product.wl` - Product formula approach
+- `egypt_geodesic_rigorous.wl` - **Rigorous geodesic proof via Christoffel symbols** (2025-11-24)
+- `egypt_geodesic_correct.wl` - Corrected hyperboloid analysis
+- `test_egypt_geodesic.wl` - Three-model verification
 
 **Hyperbolic geometry background:**
 - Poincaré disk: Standard conformal model of hyperbolic plane

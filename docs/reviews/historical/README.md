@@ -182,7 +182,7 @@
 **Original work being reviewed:**
 - `docs/sessions/2025-11-22-palindromic-symmetries/` - Session where Egypt trajectory was analyzed
 - `docs/sessions/2025-11-22-palindromic-symmetries/triple-identity-factorial-chebyshev-hyperbolic.md` - The triple identity
-- `docs/sessions/2025-11-22-palindromic-symmetries/egypt-poincare-trajectory.md` - Hyperbolic geometry embedding
+- `docs/sessions/2025-11-22-palindromic-symmetries/archive/egypt-poincare-trajectory-OLD.md` - Hyperbolic geometry embedding
 
 **Physics connection removed:**
 - `docs/sessions/2025-11-22-palindromic-symmetries/physics-connection-review.md` - Why hyperbolic geometry ≠ physics

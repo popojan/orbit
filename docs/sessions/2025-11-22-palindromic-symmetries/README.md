@@ -29,7 +29,7 @@ All three connected through underlying mathematical structures but distinct mech
 - **[triple-identity-factorial-chebyshev-hyperbolic.md](triple-identity-factorial-chebyshev-hyperbolic.md)** - ⭐⭐⭐ Triple identity connecting factorial sums, Chebyshev polynomials, and hyperbolic functions
 - **[geometric-context-chebyshev-hyperbolic.md](geometric-context-chebyshev-hyperbolic.md)** - ⭐⭐ Geometric foundations: hyperboloid, Poincaré disk, and bridge to Chebyshev
 - **[derivation-1plus2k-factor.md](derivation-1plus2k-factor.md)** - ✅ **PROVEN:** Algebraic derivation of (1+2k) factor from Chebyshev indices
-- **[egypt-poincare-trajectory.md](egypt-poincare-trajectory.md)** - 🔬 **NUMERICALLY VERIFIED:** Egypt trajectory in Poincaré disk with inversion symmetry
+- **[archive/egypt-poincare-trajectory-OLD.md](archive/egypt-poincare-trajectory-OLD.md)** - 📦 **ARCHIVED:** Early Poincaré exploration (superseded by `docs/proofs/egypt-geodesic-proof.md`)
 - **[physics-connection-review.md](physics-connection-review.md)** - ⚠️ **CORRECTION:** Why hyperbolic geometry ≠ physics (Lorentzian signature explained)
 - **[riemann-historical-review.md](riemann-historical-review.md)** - 📜 **HISTORICAL CHECK:** Anachronisms corrected, Pell equation misattribution noted
 - **[chebyshev-historical-review.md](chebyshev-historical-review.md)** - 🇷🇺 **ЧЕБЫШЁВ (1885):** His polynomials used correctly! Demands rigorous proof (Russian)

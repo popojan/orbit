@@ -272,5 +272,32 @@ Tato elegantní rovnost je **algebraickým jádrem** celé ekvivalence Egypt ↔
 - `scripts/experiments/factorial_simplify_proof_clean.wl` - Algebraický důkaz (FactorialSimplify)
 - `scripts/experiments/analytical_recurrence_via_chebyshev_properties.wl` - Algebraický důkaz (Pochhammer)
 - `scripts/experiments/recurrence_proof_complete.wl` - Verifikace Chebyshev rekurence
+- `scripts/experiments/egypt_geodesic_rigorous.wl` - Rigorózní geodetický důkaz (Christoffel)
 
 **Datum:** 2025-11-24
+
+---
+
+## Geometrická unifikace (2025-11-24)
+
+**DODATEČNÝ OBJEV:**
+
+Egypt trajektorie je **geodetika na hyperbolickém manifoldu** (vertikální čára x=0 v upper/lower half-plane modelu).
+
+**Důkaz:** Christoffelovy symboly + geodetická rovnice (viz `egypt-geodesic-proof.md`)
+
+**Dokončený trojúhelník:**
+```
+    Factorial ←────→ Chebyshev
+         ↖              ↗
+           Geodesic (hyperbolic)
+```
+
+**Všechny tři perspektivy popisují STEJNÝ matematický objekt!**
+
+- Algebraická struktura (faktoriály) ↔ Analytická struktura (Chebyshev) ↔ Geometrická struktura (geodetika)
+- Monotonní konvergence = nejkratší cesta v hyperbolické metrice
+- Factorial formula kóduje geodetický pohyb
+
+**Související dokumentace:**
+- `egypt-geodesic-proof.md` - Geometrická ekvivalence (100% prokázáno)
