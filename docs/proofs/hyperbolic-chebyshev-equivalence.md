@@ -1,7 +1,7 @@
 # Proof: Hyperbolic ↔ Chebyshev Equivalence
 
 **Date:** 2025-11-24
-**Status:** ✅ PROVEN (Computational + Algebraic)
+**Status:** ✅ ALGEBRAICALLY PROVEN (hand-derivable)
 
 ---
 
@@ -21,63 +21,45 @@ Where:
 
 ## Proof Strategy
 
-**Method**: Polynomial identity verification
+**Method**: Algebraic transformation using standard identities
 
-Both forms expand to **identical polynomials in x**. This can be verified:
-1. Algebraically via TrigToExp transformation
-2. Symbolically via FullSimplify for specific k
-3. Coefficient-by-coefficient comparison
+Transform Chebyshev polynomials to hyperbolic form via:
+1. **Hyperbolic extension** of Chebyshev polynomials (standard identity)
+2. **Trigonometric identities** (sinh/cosh formulas)
+3. **Coordinate change** (s = t/2 via half-angle formula)
+
+All steps are **hand-derivable** using well-known mathematical identities.
 
 ---
 
-## Algebraic Proof (Core)
+## Algebraic Proof (Summary)
 
-### Step 1: Convert Hyperbolic to Polynomial
+**Full derivation:** See `docs/proofs/hyperbolic-chebyshev-explicit-derivation.md`
 
-The hyperbolic form contains:
-```
-Cosh[(1+2k)·ArcSinh[√(x/2)]]
-```
+### Key Steps:
 
-**Key transformation**: Using TrigToExp (exponential representation) and FullSimplify:
-```mathematica
-TrigToExp[Cosh[n·ArcSinh[z]]] → polynomial expression in z
-```
+1. **Hyperbolic extension** of Chebyshev polynomials
+   - T_n(cosh t) = cosh(nt)
+   - U_n(cosh t) = sinh((n+1)t) / sinh(t)
+   - where t = ArcCosh[x+1]
 
-For our specific case with `n = 1+2k` and `z = √(x/2)`:
-```mathematica
-Cosh[(1+2k)·ArcSinh[√(x/2)]]
-  → (√(2+x) · [polynomial in x]) / √2
-```
+2. **Simplify U_m - U_{m-1}** using sinh difference formula
+   - Result: cosh((2m+1)t/2) / cosh(t/2)
 
-### Step 2: Include Normalization
+3. **Product T_n · (U_m - U_{m-1})** using cosh product formula
+   - Factor (2n+2m+1) emerges naturally
+   - Proven: 2n+2m+1 = 1+2k for all k
 
-Full hyperbolic form with normalization:
-```mathematica
-1/2 + [above] / (√2·√(2+x))
-  = 1/2 + [polynomial] / √2 / (√2·√(2+x)) · √(2+x)
-  = polynomial in x
-```
+4. **Critical s = t/2 identity** (algebraically proven)
+   - s = ArcSinh[√(x/2)]
+   - t = ArcCosh[x+1]
+   - Proven via sinh half-angle formula: sinh(t/2) = √[(cosh(t)-1)/2]
 
-The √(2+x) terms cancel, leaving a pure polynomial.
+5. **Coordinate substitution** t = 2s
+   - Transform from Chebyshev coordinate to hyperbolic coordinate
 
-### Step 3: Chebyshev Form Expansion
-
-The Chebyshev form:
-```
-T[⌈k/2⌉, x+1] · (U[⌊k/2⌋, x+1] - U[⌊k/2⌋-1, x+1])
-```
-
-Expands directly to a polynomial in x via Chebyshev polynomial definitions.
-
-### Step 4: Identity
-
-Both expansions yield **identical polynomials**.
-
-This is verified by Mathematica's FullSimplify:
-```mathematica
-FullSimplify[D_hyp(x,k) - D_cheb(x,k)] = 0  ∀ k ∈ {1,2,3,4,5,...}
-```
+6. **Final form** using cosh(s) = √(2+x)/√2
+   - Result: 1/2 + Cosh[(1+2k)·ArcSinh[√(x/2)]] / (√2·√(2+x))
 
 ---
 
@@ -107,43 +89,49 @@ Tested for k ∈ {1, 2, ..., 200} with x ∈ {0.1, 1, 2, 5, 10, 100}:
 
 ## Proof Completeness
 
-**Algebraic component**:
-- ✅ Transformation method identified (TrigToExp)
-- ✅ Polynomial identity confirmed for specific k
-- ⚠️  General k proof: requires induction or closed-form analysis of TrigToExp[Cosh[n·ArcSinh[z]]]
+**Algebraic proof**:
+- ✅ All steps hand-derivable using standard identities
+- ✅ s = t/2 identity algebraically proven (sinh half-angle formula)
+- ✅ (1+2k) factor emergence proven for all k (ceiling/floor arithmetic)
+- ✅ Valid for general k (no induction needed - direct algebraic manipulation)
 
-**Computational component**:
+**Computational verification** (supporting evidence):
 - ✅ Symbolic verification k ≤ 5
 - ✅ Numerical verification k ≤ 200
-- ✅ Coefficient-by-coefficient matching
+- ✅ Polynomial coefficients match exactly
 
 ---
 
 ## Conclusion
 
-**Status**: ✅ PROVEN
+**Status**: ✅ **ALGEBRAICALLY PROVEN**
 
-The Hyperbolic ↔ Chebyshev equivalence is established through:
-1. **Direct polynomial identity** (both forms expand to same polynomial)
-2. **Symbolic verification** via Mathematica FullSimplify
-3. **Computational verification** k ≤ 200
+The Hyperbolic ↔ Chebyshev equivalence is **rigorously proven** through:
+1. **Pure algebraic derivation** using standard mathematical identities
+2. **Hand-checkable steps** (no black-box transformations)
+3. **Valid for all k ≥ 1** (direct proof, not inductive)
 
-**Confidence level**: 99.99%
+**Epistemic status**: ✅ PROVEN (algebraic proof with computational verification)
 
-**Remaining work**: Formal proof for general k via hypergeometric or Chebyshev identity theory (optional for practical purposes).
+**Key document**: Full step-by-step derivation in `hyperbolic-chebyshev-explicit-derivation.md`
 
 ---
 
 ## References
 
-- Verification scripts:
-  - `scripts/experiments/polynomial_identity.wl`
-  - `scripts/experiments/hyperbolic_chebyshev_bridge.wl`
-  - `scripts/experiments/explicit_polynomial_comparison.wl`
+**Algebraic proof**:
+- **Main proof**: `docs/proofs/hyperbolic-chebyshev-explicit-derivation.md` ⭐
+- Source derivation: `docs/sessions/2025-11-22-palindromic-symmetries/derivation-1plus2k-factor.md`
 
-- Session notes:
-  - `docs/sessions/2025-11-24-factorial-hyperbolic-discovery.md`
+**Verification scripts**:
+- `scripts/experiments/polynomial_identity.wl` - Computational verification
+- `scripts/experiments/hyperbolic_chebyshev_bridge.wl` - Explore transformations
+- `scripts/experiments/explicit_polynomial_comparison.wl` - Coefficient comparison
+
+**Session notes**:
+- `docs/sessions/2025-11-24-factorial-hyperbolic-discovery.md`
+- `docs/sessions/2025-11-24-proof-triangle-completed.md`
 
 ---
 
-**Next step**: Combine with Factorial ↔ Hyperbolic (computational) to complete full triangle.
+**Proof triangle status**: Hyperbolic ↔ Chebyshev now **ALGEBRAICALLY PROVEN**. Combined with Factorial ↔ Hyperbolic (computational), this completes the proof triangle.

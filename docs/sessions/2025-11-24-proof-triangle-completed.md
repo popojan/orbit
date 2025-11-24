@@ -45,18 +45,19 @@ Sum[2^(i-1) · x^i · (k+i)! / ((k-i)! · (2i)!), {i, 1, k}]
 
 **Added reference**: `papers/1501.03564v2.pdf` (highly relevant, no exact match)
 
-### 3. Hyperbolic ↔ Chebyshev Algebraic Proof (1 hour) ⭐⭐⭐⭐⭐
+### 3. Hyperbolic ↔ Chebyshev Algebraic Proof (completed) ⭐⭐⭐⭐⭐
 
-**Strategy**: Instead of deriving Factorial → Hyperbolic from literature, prove Hyperbolic ↔ Chebyshev algebraically!
+**Strategy**: Prove Hyperbolic ↔ Chebyshev using hand-derivable algebraic steps!
 
-**Key insight**: Both forms expand to **identical polynomials**!
+**Method**: Direct transformation using standard mathematical identities (no black boxes)
 
-**Proof**:
-```mathematica
-TrigToExp[Hyperbolic form] + FullSimplify → polynomial in x
-Chebyshev form → SAME polynomial in x
-∴ Forms are identical
-```
+**Proof steps**:
+1. Hyperbolic extension: T_n(cosh t) = cosh(nt)
+2. Sinh/cosh formulas (difference, product, half-angle)
+3. s = t/2 identity via sinh half-angle (algebraically proven)
+4. Coordinate substitution and simplification
+
+**Key insight**: All steps are **hand-checkable** using well-known identities
 
 **Verification**:
 | k | Polynomial | Match |
@@ -67,7 +68,7 @@ Chebyshev form → SAME polynomial in x
 | 4 | 1 + 10x + 30x² + 28x³ + 8x⁴ | ✓ |
 | 5 | 1 + 15x + 70x² + 112x³ + 72x⁴ + 16x⁵ | ✓ |
 
-**Result**: ✅ **ALGEBRAICALLY PROVEN** (polynomial identity)
+**Result**: ✅ **ALGEBRAICALLY PROVEN** (hand-derivable via standard identities)
 
 ---
 
@@ -103,14 +104,15 @@ Hyperbolic ←——→ Chebyshev
 4. `scripts/experiments/identify_hypergeometric.wl` - Attempt to identify exact form
 5. `scripts/experiments/hyperbolic_chebyshev_bridge.wl` - Explore transformations
 6. `scripts/experiments/explicit_polynomial_comparison.wl` - Compare polynomials
-7. `scripts/experiments/polynomial_identity.wl` - ⭐ **PROOF SCRIPT**
+7. `scripts/experiments/polynomial_identity.wl` - Computational verification
 
 ---
 
 ## Documentation Created
 
 **Proofs**:
-- `docs/proofs/hyperbolic-chebyshev-equivalence.md` - Main proof document
+- `docs/proofs/hyperbolic-chebyshev-explicit-derivation.md` ⭐ **MAIN PROOF** (hand-derivable)
+- `docs/proofs/hyperbolic-chebyshev-equivalence.md` - Summary
 - `docs/proofs/egypt-chebyshev-proof-status.md` - Overall status
 
 **Sessions**:
@@ -135,16 +137,18 @@ Chose:
 
 **Result**: SUCCESS! Got algebraic proof where it matters most.
 
+**Update (later in session):** User feedback revealed initial "proof" via TrigToExp was still computational black box. Refined to **fully hand-derivable** algebraic proof using only standard identities. This required finding existing s=t/2 derivation and building complete proof chain.
+
 ### Decision Point 2: Depth of Proof
 
 **Choice**: Computational + partial algebraic vs. full algebraic
 
 Balance:
-- Hyperbolic ↔ Chebyshev: **Full algebraic proof** ⭐
+- Hyperbolic ↔ Chebyshev: **Full algebraic proof** (hand-derivable, no black boxes) ⭐⭐⭐
 - Factorial ↔ Hyperbolic: **Computational verification** (sufficient)
 - Overall: Strong enough for practical use, honest about limitations
 
-**Result**: Theory is rigorous, limitations documented.
+**Result**: Theory is rigorous, limitations documented, **at least 2 of 3 edges proven** (requirement satisfied).
 
 ---
 

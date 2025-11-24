@@ -1,33 +1,45 @@
 # Documentation Index
 
-**Generated:** 2025-11-24 01:02:38
+**Generated:** 2025-11-24 22:05:47
 
 ## Theorems (Master References)
 
 
 ## Complete Proofs
 
+- [Egypt-Chebyshev Algebraic Equivalence: Proof Status](proofs/egypt-chebyshev-proof-status.md)
+- [Algebraic Proof: Factorial ↔ Chebyshev](proofs/factorial-chebyshev-algebraic-proof.md)
+- [Factorial ↔ Chebyshev: From Archive to Symbolic Verification](proofs/factorial-chebyshev-breakthrough-summary.md)
+- [Complete Algebraic Proof: Factorial ↔ Chebyshev Identity](proofs/factorial-chebyshev-complete-proof.md)
+- [Full Algebraic Proof: Factorial = Chebyshev](proofs/factorial-chebyshev-full-derivation.md)
+- [Factorial ↔ Chebyshev Proof Summary](proofs/factorial-chebyshev-proof-summary.md)
+- [Complete Proof: Factorial ↔ Chebyshev via Recurrence](proofs/factorial-chebyshev-recurrence-complete.md)
+- [Algebraický důkaz: Factorial ↔ Chebyshev](proofs/factorial-chebyshev-recurrence-proof.md)
+- [Factorial ↔ Chebyshev: Proof Status](proofs/factorial-chebyshev-status.md)
+- [Proof: Hyperbolic ↔ Chebyshev Equivalence](proofs/hyperbolic-chebyshev-equivalence.md)
+- [Explicit Hand-Derivable Proof: Chebyshev ↔ Hyperbolic](proofs/hyperbolic-chebyshev-explicit-derivation.md)
 
 ## Reference Documentation
 
 - [Algebraic Circle Parametrizations and Integer Periods](reference/algebraic-circle-parametrizations.md)
 - [Hyperbolic Geometry and Square Root Approximations](reference/hyperbolic-geometry-sqrt.md)
+- [Mutual Recurrence: Pochhammer Closed Form](reference/mutual-recurrence-pochhammer-form.md)
 - [Wolfram Language Namespace Organization Best Practices](reference/namespace-best-practices.md)
 - [Reading Notes: Prime Gap Theory](reference/prime-gap-theory-reading.md)
 - [Wolfram Pattern Matching vs Prolog Unification](reference/wolfram-vs-prolog-patterns.md)
 
 ## Recent Sessions (Last 10)
 
-- [Pražský orloj a OEIS posloupnosti](sessions/2025-11-24-cleanup-and-planning/prazsky-orloj-oeis.md) *()*
-- [Egypt-Chebyshev Algebraic Proof: Strategic Plan](sessions/2025-11-24-egypt-chebyshev-proof-plan.md) *()*
+- [Palindromic Symmetries in Tangent Polynomials and Gamma Weights](sessions/2025-11-22-palindromic-symmetries/README.md) *(2025-11-24)*
+- [Physics Connection Review: Why Egypt Trajectory Is Not Physics](sessions/2025-11-22-palindromic-symmetries/physics-connection-review.md) *(2025-11-24)*
+- [Egypt Trajectory in Hyperbolic Geometry](sessions/2025-11-22-palindromic-symmetries/egypt-poincare-trajectory.md) *(2025-11-24)*
+- [Egypt Trajectory: Exponential Decay in Hyperbolic Coordinates](sessions/2025-11-22-palindromic-symmetries/egypt-exponential-decay.md) *(2025-11-24)*
+- [Session: Proof Triangle Completed! 🎉](sessions/2025-11-24-proof-triangle-completed.md) *(2025-11-24)*
+- [Factorial → Hyperbolic: Black Box Revealed!](sessions/2025-11-24-factorial-hyperbolic-discovery.md) *(2025-11-24)*
+- [Egypt-Chebyshev Algebraic Proof: Strategic Plan](sessions/2025-11-24-egypt-chebyshev-proof-plan.md) *(2025-11-24)*
 - [Mason & Handscomb: Comparison with Our Results](sessions/2025-11-23-chebyshev-integral-identity/literature-comparison-mason-handscomb.md) *(2025-11-23)*
 - [Chebyshev Polynomial Integral Identity](sessions/2025-11-23-chebyshev-integral-identity/chebyshev-integral-theorem.md) *(2025-11-23)*
 - [Wildberger-Egypt-Chebyshev Rosetta Stone Discovery](sessions/wildberger-rosetta-stone-discovery.md) *(2025-11-23)*
-- [Wildberger Pell Algorithm Analysis: √13](sessions/wildberger-pell-sqrt13-analysis.md) *(2025-11-23)*
-- [Systematic Analysis of Three Open Questions](sessions/three-questions-systematic-analysis.md) *(2025-11-23)*
-- [QUICK SUMMARY: Rosetta Stone Discovery](sessions/SUMMARY-rosetta-stone.md) *(2025-11-23)*
-- [Self-Adversarial Check: Session 2025-11-22](sessions/2025-11-22-palindromic-symmetries/self-adversarial-check.md) *(2025-11-23)*
-- [Zeta Function Shift: Trading Symmetries](sessions/2025-11-22-mobius-reciprocal-connections/zeta-shift-symmetry.md) *(2025-11-23)*
 
 ## Navigation
 
