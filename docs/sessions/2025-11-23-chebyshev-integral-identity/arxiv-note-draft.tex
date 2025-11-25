@@ -93,7 +93,7 @@ f_k(\cos\theta) = \frac{1}{2}[\cos((k+1)\theta) - \cos((k-1)\theta)] = -\sin(k\t
 \end{equation}
 using the difference formula $\cos A - \cos B = -2\sin\frac{A+B}{2}\sin\frac{A-B}{2}$.
 
-The integral transforms to
+The integral transforms to (noting that $\sin\theta \geq 0$ on $[0,\pi]$)
 \begin{equation}
 I_k := \int_{-1}^{1} |f_k(x)| \, dx = \int_{0}^{\pi} |\sin(k\theta)| \sin^2\theta \, d\theta.
 \end{equation}
@@ -123,9 +123,11 @@ For $k \notin \tfrac{1}{2}\mathbb{Z}$, the integral $A_k \neq 2$ in general.
 $B_k = 0$ for all $k \in \tfrac{1}{2}\mathbb{Z}$ with $k \geq 3/2$.
 \end{lemma}
 \begin{proof}
-Let $\varphi = \theta - \pi/2$. The function $|\sin(k(\varphi + \pi/2))|$ is even
-in $\varphi$ for $k \in \tfrac{1}{2}\mathbb{Z}$, while $\cos(2(\varphi + \pi/2)) = -\cos(2\varphi)$
-is odd. The integral of an even function times an odd function over the symmetric
+Let $\varphi = \theta - \pi/2$. For $k \in \tfrac{1}{2}\mathbb{Z}$, we have
+$\sin(k(\varphi + \pi/2)) = \sin(k\varphi + k\pi/2) = \pm\cos(k\varphi)$ or
+$\pm\sin(k\varphi)$, both even in $\varphi$; hence $|\sin(k(\varphi + \pi/2))|$
+is even. Meanwhile, $\cos(2(\varphi + \pi/2)) = -\cos(2\varphi)$ is odd.
+The integral of an even function times an odd function over the symmetric
 interval $[-\pi/2, \pi/2]$ vanishes.
 
 For $k \notin \tfrac{1}{2}\mathbb{Z}$, the symmetry breaks and $B_k \neq 0$.

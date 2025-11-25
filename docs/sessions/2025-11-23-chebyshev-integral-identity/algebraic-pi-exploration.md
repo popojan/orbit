@@ -124,14 +124,29 @@ NIntegrate[Abs[r * fk[x/r, k]], {x, -r, r}] == r^2  (* for any r, k≥2 *)
 
 For k=3 with a = √3 = Cot(π/6):
 - circj points: angles 0, -2π/3, 2π/3
-- f_k points: angles π/2, -5π/6, -π/6
-- **Relationship: f_k = i · circj** (rotation by π/2)
+- f_k points: angles -π/6, -5π/6, π/2
 - Both form equilateral triangle, just rotated
 
-For k=4,5,6:
-- Both still form regular k-gon
-- But rotation angle varies (not simply π/2)
-- General formula for rotation angle: TBD
+### General Rotation Formula (PROVEN)
+
+**Theorem:** For all k ≥ 3:
+```
+circj_k = e^{iπ/(2k)} · f_k
+```
+
+Equivalently: f_k points are circj points rotated by **-π/(2k)**.
+
+**Proof:**
+1. f_k points satisfy x² + f_k(x)² = 1 where f_k(cos θ) = -sin(kθ)sin(θ)
+2. Condition sin²(kθ) = 1 gives θ = (2n+1)π/(2k) for n = 0, ..., k-1
+3. First f_k point (n=0):
+   - x = cos(π/(2k))
+   - y = f_k(x) = -sin(π/2)·sin(π/(2k)) = -sin(π/(2k)) < 0
+   - Angle in complex plane: **-π/(2k)**
+4. First circj point (j=0): circj[0,a] = 1, angle = **0**
+5. Rotation = 0 - (-π/(2k)) = **π/(2k)** ∎
+
+Special case k=3: rotation = π/6, and e^{iπ/6} · f_3 = circj_3
 
 ### Key Insight
 
@@ -142,7 +157,7 @@ Both constructions produce **the same geometric object** (regular k-gon inscribe
 
 ## Next Steps
 
-1. Find general formula for rotation angle between f_k and circj
+1. ~~Find general formula for rotation angle between f_k and circj~~ ✅ DONE: rotation = π/(2k)
 2. Formalize cyclotomic field connection
 3. Look for direct formula linking period and 1/π ratio
 4. Consider if this deserves separate paper or just extended remark
