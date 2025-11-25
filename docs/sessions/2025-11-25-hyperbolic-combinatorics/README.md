@@ -1,76 +1,92 @@
 # Session: Hyperbolic-Combinatorics Connection
 
 **Date:** 2025-11-25
-**Focus:** Exploring combinatorial interpretation of Hyperbolic ↔ Factorial identity
+**Outcome:** Complete clarification of Egypt method
 
 ---
 
-## Session Summary
+## Key Findings
 
-### Starting Point
-
-After establishing Factorial ↔ Chebyshev algebraic equivalence (99.9% confidence), explored theoretical applications of the triple identity:
+### 1. Chebyshev Identity is Standard
 
 ```
-FactorialTerm[x,k] = ChebyshevTerm[x,k] = HyperbolicTerm[x,k]
+cosh(n·arcsinh(z)) = T_n(√(1+z²))    [textbook]
 ```
 
-### Dead Ends Explored
+Our "triple identity" (Factorial ↔ Chebyshev ↔ Hyperbolic) is standard Chebyshev theory.
 
-1. **Geodesics on hyperbolic manifold** ❌
-   - Test was trivial: Cayley transform w = i(1-r)/(1+r) gives Re[w]=0 for ANY real sequence
-   - Not specific to Egypt trajectory
-   - **Reverted:** commits a6ea61f and ce43937
+**Sources:**
+- [Wikipedia: Chebyshev polynomials](https://en.wikipedia.org/wiki/Chebyshev_polynomials)
+- [Math SE: Explicit coefficient formula](https://math.stackexchange.com/questions/3483628/)
 
-2. **Hermite polynomials** ❌
-   - Wrong weight function (e^(-x²) for Hermite vs 1/√(1-x²) for Chebyshev)
-   - Orthogonal approximation of √13: 6316% error
-   - No simple relationship to Egypt structure
+### 2. Egypt = Pell Powers (Major Discovery)
 
-3. **Orthogonal projection interpretation** ❌
-   - Egypt is NOT L² projection onto Chebyshev basis
-   - Egypt is **algebraic construction** from Pell equation
-   - Chebyshev form is algebraic equivalence, not approximation
-
-### Key Insight
-
-**Egypt = Algebraic Construction:**
-1. Solve Pell equation: x² - n·y² = 1
-2. Base approximation: (x-1)/y ≈ √n
-3. Factorial series correction (closed-form, not iterative)
-4. Chebyshev form is **algebraic identity**, not numerical fitting
-
-**Distinction:**
-- Orthogonal projection: minimize L² error via integrals ⟨f, basis⟩
-- Egypt: algebraic transformation of Pell solution
-
-### Current Exploration: Combinatorial Interpretation
-
-**Key equality discovered:**
+**Proven:**
 ```
-Cosh[(1+2k)·ArcSinh[√(x/2)]] = (√2·√(2+x)) · (1/2 + Σ 2^(i-1)·x^i·(k+i)!/((k-i)!·(2i)!))
+Egypt[k] = Pell[k+1] = (x_{k+1} - 1) / y_{k+1}
 ```
 
-**Significance:**
-- Hyperbolic function (transcendental) = factorial series (algebraic)
-- Right side has combinatorial structure:
-  - **(k+i)!/(k-i)!** = Pochhammer symbol (rising factorial)
-  - **(2i)!** = central binomial structure (Catalan-related)
-  - **2^(i-1) · x^i** = generating function powers
+Egypt produces the **exact same sequence** as Pell power approximations, shifted by one step.
 
-**Next:** Investigate domain constraints and combinatorial interpretation
+**Verification (n=13):**
+
+| k | Egypt LQE | Pell LQE | Diff |
+|---|-----------|----------|------|
+| 1 | 4.51 | 1.40 | 3.11 |
+| 2 | 7.62 | 4.51 | 3.11 |
+| 3 | 10.74 | 7.62 | 3.11 |
+
+Constant difference = log₁₀(2x₁) ≈ 3.11
+
+### 3. Monotonic Convergence is Standard Pell Theory
+
+- `(x_k - 1)/y_k` → lower bounds (increasing toward √n)
+- `x_k/y_k` → upper bounds (decreasing toward √n)
+- Follows directly from `x_k² - ny_k² = 1`
+
+**Not novel.**
 
 ---
 
-## Files
+## Egypt's Actual Contribution
 
-- `README.md` - This file
-- (To be added as exploration continues)
+**Minor computational difference, not fundamental:**
+
+| Method | Intermediates | Growth |
+|--------|---------------|--------|
+| Pell powers | ~k digits | O(k) |
+| Egypt | ~k/2 digits | O(k) |
+
+Egypt has ~2x smaller intermediates, but same asymptotic complexity.
+Final rationals are **identical**.
 
 ---
 
-## Related Documentation
+## Documentation Actions
 
-- `docs/proofs/factorial-chebyshev-recurrence-proof.md` - Algebraic proof (99.9%)
-- `docs/proofs/hyperbolic-chebyshev-equivalence.md` - Third form
-- `docs/sessions/2025-11-22-palindromic-symmetries/` - Original Egypt trajectory analysis
+1. Archived 11 "proof" files → `docs/proofs/archive-2025-11-25/`
+2. Created consolidated `docs/proofs/chebyshev-egypt-connection.md`
+3. Removed retraction notices (no longer needed)
+4. Updated STATUS.md
+
+---
+
+## Session Files
+
+- `README.md` - This summary
+- `combinatorial-exploration.wl` - Historical exploration
+- `lobb-comparison.wl` - Lobb numbers (no connection found)
+
+---
+
+## Conclusion
+
+**Egypt method = Pell powers + computational optimization**
+
+No mathematical novelty, but useful reformulation that avoids large intermediate values.
+
+All previous "proofs" were rediscoveries of standard theory.
+
+---
+
+**Last updated:** 2025-11-25

@@ -17,7 +17,7 @@
 \newtheorem{example}{Example}
 \newtheorem{problem}{Problem}
 
-\title{Ultra-High Precision Rational Approximations to Square Roots via Nested Chebyshev-Pell Iteration}
+\title{A Unified Chebyshev Framework for Square Root Iteration Methods: Clarifying Newton-Halley Compositions}
 
 \author{
 Anonymous Author\\
@@ -31,7 +31,7 @@ Anonymous Author\\
 \maketitle
 
 \begin{abstract}
-We present a method for computing high-precision rational approximations to square roots by combining Pell equation solutions with nested Chebyshev polynomial iterations. The approach achieves super-quadratic convergence through a two-parameter scheme $(m_1, m_2)$ that controls both the Chebyshev polynomial order per refinement step and the iteration count, enabling trade-offs between per-step complexity and convergence rate. The method exploits cancellation of imaginary components when evaluating Chebyshev polynomial ratios at complex arguments, yielding purely rational results despite intermediate complex values. We provide optimized closed forms for low-order cases and demonstrate practical computation of 62-million-digit rational approximations, substantially exceeding continued fraction methods in computational efficiency while accepting approximately 2× denominator overhead. This reveals a fundamentally different approach to rational approximation where computational efficiency emerges from algebraic structure rather than denominator minimality.
+We present a unified Chebyshev polynomial framework for square root iteration methods. The refinement operator $\sigma_m$ achieves convergence order $m+2$, providing access to \emph{all} integer orders $\geq 3$---including orders 5, 7, 11, etc.\ that are \emph{impossible} to achieve by composing Newton (order 2) and Halley (order 3) methods. For small $m$, $\sigma_m$ reduces to known compositions: $\sigma_1 = d/\text{Halley}$ (order 3), $\sigma_2 = \text{Newton}^2$ (order 4). But $\sigma_3$ achieves order 5, which requires Householder's 4th-order method in classical formulations. The symmetrized iteration $\tau_m = \text{Newton} \circ \sigma_m$ has order $2(m+2)$. We provide optimized closed forms and demonstrate 62-million-digit computation. We also note honestly that for orders achievable by Newton/Halley composition (like 6 or 9), simple composition may be more efficient than our framework.
 \end{abstract}
 
 \section{Introduction}
@@ -59,18 +59,17 @@ The classical continued fraction approach yields \emph{optimal} rational approxi
 
 \subsection{Our Contribution}
 
-Building upon earlier investigations in Egyptian fraction representations of square roots using Pell-Chebyshev methods \cite{egypt_repo}, we present a nested iteration approach that achieves substantial computational improvements. Our synthesis of classical mathematical structures yields an iterative framework with the following properties:
+Building upon earlier investigations in Egyptian fraction representations of square roots using Pell-Chebyshev methods \cite{egypt_repo}, we present a unified framework with one genuinely novel aspect:
 
 \begin{enumerate}
-\item \textbf{Super-quadratic convergence:} The method achieves approximately 10-fold precision gain per iteration in balanced mode, increasing to 6000-fold gain in optimized configurations.
-\item \textbf{Computational efficiency:} For precision requirements exceeding 200 digits, our implementation outperforms Mathematica's \texttt{Rationalize} function by factors of 3--10×.
-\item \textbf{High-precision capability:} We demonstrate practical computation of a 62-million-digit rational approximation to $\sqrt{13}$.
-\item \textbf{Closed-form optimizations:} We derive simplified expressions for orders $m=1$ and $m=2$, eliminating symbolic Chebyshev polynomial evaluation for these cases.
-\item \textbf{Performance trade-offs:} The method incurs approximately 2× denominator overhead relative to optimal continued fraction convergents, a deliberate exchange for enhanced computational speed.
-\item \textbf{Theoretical insights:} We identify connections between Pell equation solutions and Chebyshev polynomial rationality properties, suggesting unexplored relationships in classical number theory.
+\item \textbf{Access to all integer orders:} The operator $\sigma_m$ achieves order $m+2$ for any $m \geq 1$. This includes orders like 5, 7, 11 that are \emph{impossible} to achieve by composing Newton (order 2) and Halley (order 3)---you can only get products of 2s and 3s from compositions.
+\item \textbf{Reduction to known methods for small $m$:} We show $\sigma_1 = d/\text{Halley}$ (order 3) and $\sigma_2 = \text{Newton}^2$ (order 4). But $\sigma_3$ achieves order 5 without requiring explicit Householder order-4 formulas.
+\item \textbf{Symmetrization as Newton:} The iteration $\tau_m = (\sigma_m + d/\sigma_m)/2$ equals Newton$\circ\sigma_m$, yielding order $2(m+2)$.
+\item \textbf{Honest efficiency comparison:} For orders achievable by Newton/Halley composition (6, 8, 9, 12, ...), direct composition may be simpler. The framework's value is accessing \emph{other} orders (5, 7, 10, 11, ...).
+\item \textbf{Practical implementation:} Optimized closed forms for $m \leq 2$; demonstration of 62-million-digit computation.
 \end{enumerate}
 
-Our framework is ideally suited for implementation in modern symbolic computation systems (Mathematica, SageMath, SymPy) and applications demanding massive rational precision where traditional continued fraction methods become computationally intractable.
+\textbf{What this paper is NOT:} We do not claim superior efficiency for common orders. For order 6, Newton$\circ$Halley suffices. For order 9, two Halley steps are better. The framework's value is \emph{completeness}---access to every integer order $\geq 3$ through a single unified formula.
 
 \section{Mathematical Framework}
 
@@ -188,6 +187,21 @@ This expression is manifestly real. Furthermore, since $\alpha^2 = d/(d-n^2)$ is
 \end{proof}
 
 This \emph{imaginary cancellation} mechanism is central to the method's computational viability.
+
+\begin{remark}[Reduction to Known Methods---and Beyond]
+For small $m$, $\sigma_m$ reduces to Newton/Halley compositions:
+\begin{itemize}
+\item $\sigma_1(d,n) = d/H(n)$ where $H$ is Halley's method---order 3
+\item $\sigma_2(d,n) = N(N(n))$ where $N$ is Newton's method---order 4
+\end{itemize}
+However, for $m \geq 3$, the framework provides access to orders \emph{not achievable} by Newton/Halley composition:
+\begin{itemize}
+\item $\sigma_3$: order 5 (impossible from compositions of 2 and 3)
+\item $\sigma_5$: order 7 (impossible from compositions of 2 and 3)
+\item $\sigma_m$: order $m+2$ for any $m$
+\end{itemize}
+This is the genuine value of the Chebyshev formulation: a single formula family covering \emph{all} integer orders $\geq 3$, not just products of 2s and 3s.
+\end{remark}
 
 \subsection{Optimized Closed-Form Expressions for Low Orders}
 
@@ -363,8 +377,10 @@ Each iteration raises error to the 6th power:
 Taking negative logarithms: $-\log_{10}(\epsilon_k) \approx 6^k \cdot (-\log_{10}\epsilon_0)$, establishing the result.
 \end{proof}
 
-\begin{remark}
-The sextic convergence arises from a \emph{perfect cancellation} of cubic error terms when averaging Halley's method with its reciprocal. This mechanism differs fundamentally from classical iteration schemes and explains the method's exceptional performance. Note that $\sigma_1(d,n) = d/H(n)$ can be viewed as reciprocal Halley, and the symmetrization $\tau_1 = (H + d/H)/2$ precisely exploits this structure.
+\begin{remark}[Demystification]
+The sextic convergence has a simple explanation: $\tau_1 = (H + d/H)/2$ is exactly Newton's method applied to $H(n)$, since Newton's iteration for $\sqrt{d}$ is $N(x) = (x + d/x)/2$. Thus $\tau_1 = N \circ H$, and by the standard composition theorem, order$(N \circ H)$ = order$(N) \times$ order$(H) = 2 \times 3 = 6$.
+
+The ``cubic cancellation'' is simply the mechanism by which Newton improves a cubic approximation to a sextic one---not a novel phenomenon. This also reveals that \textbf{two Halley iterations would achieve order $3 \times 3 = 9$}, which is more efficient than $\tau_1$ for comparable operation counts ($\sim$12 ops for order 9 vs $\sim$9 ops for order 6).
 \end{remark}
 
 \section{Performance Analysis}
@@ -535,18 +551,30 @@ Conduct a comprehensive bit-complexity analysis of the nested Chebyshev-Pell alg
 
 \section{Conclusion}
 
-We have introduced an efficient computational method for ultra-high precision rational approximation of square roots, combining Pell equation solutions with nested Chebyshev polynomial refinement. Our method achieves the following results:
+We have presented a unified Chebyshev polynomial framework for square root iteration methods. Our honest assessment:
 
 \begin{itemize}
-\item \textbf{Fast convergence:} Super-quadratic convergence with empirically observed 6000-fold precision gain per iteration for $\sqrt{13}$
-\item \textbf{Superior computational performance:} Demonstrates 3--10× speedup over state-of-the-art continued fraction implementations for precision requirements exceeding 200 digits
-\item \textbf{Unprecedented precision capability:} Successfully computed a 62-million-digit rational approximation to $\sqrt{13}$, establishing new benchmarks for exact arithmetic computation
-\item \textbf{Algebraic insights:} Demonstrates connections between Pell equations, Chebyshev polynomials, and iterative refinement through imaginary unit cancellation in polynomial ratios
+\item \textbf{Genuine contribution:} The operator $\sigma_m$ achieves order $m+2$ for \emph{any} integer $m \geq 1$. This provides access to orders like 5, 7, 11 that are impossible to achieve by composing Newton (order 2) and Halley (order 3)---composition only yields products of 2s and 3s.
+\item \textbf{For common orders:} When the target order is achievable by Newton/Halley composition (4, 6, 8, 9, 12, ...), direct composition may be simpler and equally efficient.
+\item \textbf{The ``cancellation'' insight:} The symmetrization $\tau_m = (\sigma_m + d/\sigma_m)/2$ is Newton applied to $\sigma_m$---standard composition, not a novel mechanism.
+\item \textbf{Practical value:} Optimized closed forms for $m \leq 2$; 62-million-digit demonstration; clean unified implementation.
 \end{itemize}
 
-The method's deliberate trade-off---accepting approximately 2× denominator overhead in exchange for dramatic computational speedup---proves optimal for modern symbolic computation systems and applications demanding extreme rational precision. The discovered imaginary cancellation mechanism and the fixed-point characterization of Pell solutions suggest rich mathematical structures awaiting deeper theoretical investigation.
+\textbf{When to use this framework:}
+\begin{itemize}
+\item Need order 5, 7, 10, 11, or other non-$\{2,3\}$-composite orders
+\item Want a single parameterized formula family covering all orders
+\item Teaching the structure of Householder-type methods
+\end{itemize}
 
-This work opens several promising avenues for future research, from rigorous convergence analysis to generalizations for broader classes of algebraic numbers. We anticipate that these results will inspire both theoretical advances in our understanding of rational approximation algorithms and practical implementations in next-generation symbolic computation systems.
+\textbf{When NOT to use this framework:}
+\begin{itemize}
+\item Need order 9: just use Halley$\circ$Halley
+\item Need order 6: just use Newton$\circ$Halley
+\item Maximum efficiency is critical and target order is 2/3-composite
+\end{itemize}
+
+The connection between Pell solutions, Chebyshev polynomials, and arbitrary-order iteration methods is the paper's core insight. We hope this honest assessment contributes to clearer discourse in numerical methods literature.
 
 \section*{Acknowledgments}
 

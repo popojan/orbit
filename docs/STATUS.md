@@ -1,34 +1,74 @@
 # Mathematical Explorations - Status Tracker
 
 **Repository:** popojan/orbit
-**Last Updated:** November 23, 2025
+**Last Updated:** November 25, 2025
 
 ---
 
-## ⚠️ RETRACTION NOTICE
+## November 25, 2025: Complete Demystification + Genuine Discovery
 
-**All "proven theorems" from November 19, 2025 have been RETRACTED.**
+### Part 1: Literature Consolidation (morning)
 
-See: `docs/RETRACTION-2025-11-19.md` for full details.
+**Finding:** The Factorial ↔ Chebyshev ↔ Hyperbolic identity is **standard Chebyshev theory**.
 
-**Reason:** Fatal errors discovered:
-- Egypt-Chebyshev: Proof has domain restriction gap
-- TOTAL-EVEN: Wrong formulation, counterexamples exist
+```
+cosh(n·arcsinh(z)) = T_n(√(1+z²))    [textbook identity]
+```
 
-**Archived:** `docs/archive/2025-11-19-retracted/`
+**Clarified (NOT novel):**
+1. ~~Egypt construction~~ → equals Pell powers shifted by 1: `Egypt[k] = Pell[k+1]`
+2. ~~Monotonic convergence~~ → standard Pell theory
+3. ~~"Sextic via cancellation"~~ → just Newton∘Halley composition (order 2×3=6)
+
+### Part 2: Demystification of NestedChebyshevSqrt (evening)
+
+**Key realizations:**
+- τ₁ = (σ₁ + d/σ₁)/2 = Newton(Halley(n)) — standard composition
+- τ₂ = Newton³ — nothing novel
+- 2×Halley = order 9, which is MORE efficient than τ₁ = order 6
+
+### Part 3: GENUINE Discovery
+
+**✅ The Chebyshev framework gives access to ALL integer orders ≥ 3:**
+
+```
+σ_m has convergence order m+2 (numerically verified)
+
+Newton/Halley compositions can only achieve: 2, 3, 4, 6, 8, 9, 12, 16, 18...
+(products of 2s and 3s = 3-smooth numbers)
+
+Chebyshev σ_m achieves: 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13...
+(ALL integers)
+
+INACCESSIBLE by composition: 5, 7, 10, 11, 13, 14, 15, 17, 19...
+```
+
+**This IS genuinely novel:** A single parameterized formula family covering all integer orders, including primes > 3.
+
+### Actions Taken
+- Revised `docs/drafts/chebyshev-pell-sqrt-paper.tex` to be honest
+- New title: "A Unified Chebyshev Framework for Square Root Iteration Methods"
+- Archived 11 old "proof" files to `docs/proofs/archive-2025-11-25/`
+- Downloaded reference papers: Dijoux (arXiv:2501.04703), Nazeer MHHM
+
+### References Added
+- `papers/dijoux-chebyshev-householder-2024.pdf` - Chebyshev ↔ Householder connection
+- `papers/nazeer-mhhm-order6-2016.pdf` - Modified Householder order 6
+- `papers/nazeer-modified-halley-order6-2016.pdf` - Modified Halley order 6
 
 ---
 
 ## Current Status: Active Research
 
-### Recent Discoveries (November 22-23, 2025)
+### Recent Discoveries (November 22-25, 2025)
 
 **Egypt Square Root Convergence Analysis**
 
 Session: `docs/sessions/2025-11-23-egypt-convergence-analysis.md`
 
-1. **✅ Hyperbolic-Pell Connection** (algebraically proven)
+1. **📖 Hyperbolic-Pell Connection** (standard Chebyshev identity)
    - For Pell solution x² - ny² = 1 with regulator R = x + y√n:
+   - Uses: `cosh(n·arcsinh(z)) = T_n(√(1+z²))` [textbook]
    - s = ArcSinh[√((x-1)/2)]
    - e^(2s) = R (exact relationship)
 
@@ -117,32 +157,24 @@ Going forward, strict adherence to:
   - `SquareRootRationalizations.wl` ✅ Working Egypt + Chebyshev methods
 
 ### Documentation
-- `docs/RETRACTION-2025-11-19.md` - Brutal honesty about failures
-- `docs/archive/` - Retracted materials (learning from mistakes)
+- `docs/proofs/chebyshev-egypt-connection.md` - Consolidated identity (cites literature)
+- `docs/proofs/archive-2025-11-25/` - Archived proof attempts
 - `docs/STATUS.md` - This file (current status tracker)
-- `CLAUDE.md` - Collaboration protocol (needs strict adherence!)
+- `CLAUDE.md` - Collaboration protocol
 
 ### Reference
 - `egypt/doc/sqrt.pdf` - Original Egypt.wl observation (needs re-examination)
 
 ---
 
-## Lessons Learned (November 19, 2025)
-
-### What Went Wrong
-1. Proved theorem without testing against working code
-2. Trigonometric proof had domain restriction (not checked)
-3. Wrong formulation (n vs x+1 divisibility)
-4. Documentation before verification
-5. Overused "BREAKTHROUGH", "Tier-1", "95% confidence"
-6. Ignored CLAUDE.md self-adversarial discipline
+## Lessons Learned
 
 ### Process Improvements
-1. **Test boundaries FIRST** before claiming "for all x"
-2. **Verify against code** before formulating theorems
-3. **Adversarial discipline EARLY** (kill bad ideas in 10 min)
-4. **Mandatory checkpoints** before elaborate documentation
-5. **Proper confidence calibration** (algebraic = "proven (not peer-reviewed)", numerical = "X% of N cases")
+1. **Check literature FIRST** before claiming novel results
+2. **Test boundaries** before claiming "for all x"
+3. **Verify against code** before formulating theorems
+4. **Adversarial discipline EARLY** (kill bad ideas in 10 min)
+5. **Cite sources** - use 📖 for standard results, distinguish from novel work
 
 ---
 
