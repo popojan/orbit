@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-11-25 06:05:02
+**Generated:** 2025-11-25 20:04:31
 
 ## Theorems (Master References)
 
@@ -20,7 +20,9 @@
 
 ## Recent Sessions (Last 10)
 
-- [Egypt Compact Representation: Range Quadruplets](sessions/2025-11-25-hyperbolic-combinatorics/egypt-compact-representation.md) *()*
+- [Chebyshev Polynomial Integral Identity](sessions/2025-11-23-chebyshev-integral-identity/chebyshev-integral-theorem.md) *(2025-11-25)*
+- [Algebraic π Exploration - Work in Progress](sessions/2025-11-23-chebyshev-integral-identity/algebraic-pi-exploration.md) *(2025-11-25)*
+- [Egypt Compact Representation: Range Quadruplets](sessions/2025-11-25-hyperbolic-combinatorics/egypt-compact-representation.md) *(2025-11-25)*
 - [Session: Hyperbolic-Combinatorics Connection](sessions/2025-11-25-hyperbolic-combinatorics/README.md) *(2025-11-25)*
 - [Lattice Path Synthesis: Egypt ↔ Lobb ↔ Stern-Brocot](sessions/2025-11-25-hyperbolic-combinatorics/lattice-path-synthesis.md) *(2025-11-25)*
 - [Session: Proof Triangle Completed! 🎉](sessions/2025-11-24-proof-triangle-completed.md) *(2025-11-24)*
@@ -28,8 +30,6 @@
 - [Physics Connection Review: Why Egypt Trajectory Is Not Physics](sessions/2025-11-22-palindromic-symmetries/physics-connection-review.md) *(2025-11-24)*
 - [Egypt Trajectory in Hyperbolic Geometry](sessions/2025-11-22-palindromic-symmetries/egypt-poincare-trajectory.md) *(2025-11-24)*
 - [Egypt Trajectory: Exponential Decay in Hyperbolic Coordinates](sessions/2025-11-22-palindromic-symmetries/egypt-exponential-decay.md) *(2025-11-24)*
-- [Factorial → Hyperbolic: Black Box Revealed!](sessions/2025-11-24-factorial-hyperbolic-discovery.md) *(2025-11-24)*
-- [Egypt-Chebyshev Algebraic Proof: Strategic Plan](sessions/2025-11-24-egypt-chebyshev-proof-plan.md) *(2025-11-24)*
 
 ## Navigation
 
