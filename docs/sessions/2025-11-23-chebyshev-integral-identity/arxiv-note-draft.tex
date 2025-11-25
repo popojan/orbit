@@ -1,0 +1,217 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage[hidelinks,pdfborder={0 0 0}]{hyperref}
+\usepackage{graphicx}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\title{The $1/\pi$ Invariant in Chebyshev Polynomial Geometry}
+\author{Jan Popelka\thanks{Email: popojan@protonmail.com}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We prove that the integral $\int_{-1}^{1} |T_{k+1}(x) - x \cdot T_k(x)| \, dx = 1$
+for all $k \in \tfrac{1}{2}\mathbb{Z}$ with $k \geq 3/2$, where $T_k$ denotes the
+Chebyshev polynomial of the first kind. Geometrically, this means that the area
+between the curve $y = T_{k+1}(x) - x \cdot T_k(x)$ and the $x$-axis equals exactly
+$1/\pi$ of the unit circle's area, regardless of the polynomial degree. For general
+real $k$, we analyze the complex-valued extension and show that the sum of areas
+under real and imaginary parts lies in $[1, \sqrt{2}]$. This invariant produces
+visually striking interference patterns as $k$ varies continuously.
+\end{abstract}
+
+\section{Introduction}
+
+The Chebyshev polynomials of the first kind $T_k(x) = \cos(k \arccos x)$ are
+fundamental objects in approximation theory. The combination
+$f_k(x) := T_{k+1}(x) - x \cdot T_k(x)$ arises naturally from the product identity
+\cite{mason}
+\begin{equation}
+x T_k(x) = \frac{1}{2}\bigl[T_{k+1}(x) + T_{k-1}(x)\bigr],
+\end{equation}
+which gives $f_k(x) = \frac{1}{2}[T_{k+1}(x) - T_{k-1}(x)]$.
+
+The curve $(x, f_k(x))$ oscillates within the unit disk, with increasing frequency
+as $k$ grows. Remarkably, the total unsigned area under this curve is independent
+of~$k$.
+
+A key geometric property: for integer $k \geq 2$, the equation $x^2 + f_k(x)^2 = 1$
+has exactly $k$ solutions in $(-1, 1)$. To see this, substitute $x = \cos\theta$
+and use $f_k(\cos\theta) = -\sin(k\theta)\sin\theta$ to obtain
+$\cos^2\theta + \sin^2(k\theta)\sin^2\theta = 1$, which simplifies to
+$\sin^2(k\theta) = 1$ (for $\sin\theta \neq 0$). Thus $k\theta = \frac{\pi}{2} + n\pi$,
+giving
+\begin{equation}
+x_n = \cos\frac{(2n+1)\pi}{2k}, \quad n = 0, 1, \ldots, k-1.
+\end{equation}
+These are the $x$-coordinates of vertices of a regular $k$-gon inscribed in the
+unit circle, rotated by angle $\pi/(2k)$ from the standard position. This connects
+the Chebyshev oscillations to discrete rotational symmetry.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.24\textwidth]{chebyshev-k2.pdf}%
+\includegraphics[width=0.24\textwidth]{chebyshev-k3.pdf}%
+\includegraphics[width=0.24\textwidth]{chebyshev-k17.pdf}%
+\includegraphics[width=0.24\textwidth]{chebyshev-k31.pdf}
+\caption{The curve $y = f_k(x) = T_{k+1}(x) - x \cdot T_k(x)$ for $k = 2, 3, 17, 31$.
+The shaded area equals $1$ in each case (i.e., $1/\pi$ of the unit disk area).
+Dashed lines show the regular $k$-gon whose vertices satisfy $x^2 + f_k(x)^2 = 1$.}
+\label{fig:lobes}
+\end{figure}
+
+\section{Main Result}
+
+\begin{theorem}[The $1/\pi$ Invariant]\label{thm:main}
+For all $k \in \tfrac{1}{2}\mathbb{Z}$ with $k \geq 3/2$,
+\begin{equation}
+\int_{-1}^{1} |T_{k+1}(x) - x \cdot T_k(x)| \, dx = 1.
+\end{equation}
+The identity fails for $k \notin \tfrac{1}{2}\mathbb{Z}$.
+\end{theorem}
+
+\begin{proof}
+Using the substitution $x = \cos\theta$, $dx = -\sin\theta \, d\theta$, and the
+trigonometric representation $T_n(\cos\theta) = \cos(n\theta)$, we obtain
+\begin{equation}
+f_k(\cos\theta) = \cos((k+1)\theta) - \cos\theta \cdot \cos(k\theta).
+\end{equation}
+
+Applying the product-to-sum formula
+$\cos\theta \cdot \cos(k\theta) = \frac{1}{2}[\cos((k+1)\theta) + \cos((k-1)\theta)]$,
+we get
+\begin{equation}
+f_k(\cos\theta) = \frac{1}{2}[\cos((k+1)\theta) - \cos((k-1)\theta)] = -\sin(k\theta)\sin\theta,
+\end{equation}
+using the difference formula $\cos A - \cos B = -2\sin\frac{A+B}{2}\sin\frac{A-B}{2}$.
+
+The integral transforms to
+\begin{equation}
+I_k := \int_{-1}^{1} |f_k(x)| \, dx = \int_{0}^{\pi} |\sin(k\theta)| \sin^2\theta \, d\theta.
+\end{equation}
+
+Expanding $\sin^2\theta = \frac{1}{2}(1 - \cos 2\theta)$, we have
+\begin{equation}
+I_k = \frac{1}{2}(A_k - B_k),
+\end{equation}
+where $A_k = \int_{0}^{\pi} |\sin(k\theta)| \, d\theta$ and
+$B_k = \int_{0}^{\pi} |\sin(k\theta)| \cos(2\theta) \, d\theta$.
+
+\begin{lemma}\label{lem:A}
+$A_k = 2$ for all $k \in \tfrac{1}{2}\mathbb{Z}$ with $k \geq 1$.
+\end{lemma}
+\begin{proof}
+For integer $k$, the function $|\sin(k\theta)|$ completes exactly $k$ half-periods
+over $[0,\pi]$, each contributing $2/k$, so $A_k = 2$.
+
+For half-integer $k = n + \tfrac{1}{2}$, observe that $\sin(k\pi) = \pm 1$, so the
+endpoint $\theta = \pi$ lands at a peak rather than a zero. Direct calculation shows
+$A_k = 2$ in this case as well. For example, $A_{5/2} = \tfrac{4}{5} + \tfrac{4}{5} + \tfrac{2}{5} = 2$.
+
+For $k \notin \tfrac{1}{2}\mathbb{Z}$, the integral $A_k \neq 2$ in general.
+\end{proof}
+
+\begin{lemma}\label{lem:B}
+$B_k = 0$ for all $k \in \tfrac{1}{2}\mathbb{Z}$ with $k \geq 3/2$.
+\end{lemma}
+\begin{proof}
+Let $\varphi = \theta - \pi/2$. The function $|\sin(k(\varphi + \pi/2))|$ is even
+in $\varphi$ for $k \in \tfrac{1}{2}\mathbb{Z}$, while $\cos(2(\varphi + \pi/2)) = -\cos(2\varphi)$
+is odd. The integral of an even function times an odd function over the symmetric
+interval $[-\pi/2, \pi/2]$ vanishes.
+
+For $k \notin \tfrac{1}{2}\mathbb{Z}$, the symmetry breaks and $B_k \neq 0$.
+\end{proof}
+
+Combining the lemmas: $I_k = \frac{1}{2}(2 - 0) = 1$ for $k \in \tfrac{1}{2}\mathbb{Z}$, $k \geq 3/2$.
+\end{proof}
+
+\begin{corollary}[Geometric Interpretation]
+Let $D$ denote the unit disk with area $\pi$. The region bounded by the curve
+$y = T_{k+1}(x) - x \cdot T_k(x)$ and the $x$-axis has area exactly $1/\pi$ of
+the disk area, for all $k \in \tfrac{1}{2}\mathbb{Z}$ with $k \geq 3/2$.
+\end{corollary}
+
+\section{Complex Extension for Real $k$}
+
+For non-half-integer $k$, we consider the complex-valued extension arising from
+the factor $(-1)^k = e^{ik\pi}$ in the shader implementation. Writing
+\begin{equation}
+g_k(\theta) := e^{ik\pi} \sin(k\theta) \sin\theta,
+\end{equation}
+we obtain real and imaginary parts:
+\begin{align}
+\operatorname{Re}[g_k(\theta)] &= \cos(k\pi) \sin(k\theta) \sin\theta, \\
+\operatorname{Im}[g_k(\theta)] &= \sin(k\pi) \sin(k\theta) \sin\theta.
+\end{align}
+
+\begin{theorem}[Complex Area Bounds]\label{thm:complex}
+For any real $k \geq 3/2$, define
+\begin{align}
+I_{\mathrm{Re}}(k) &:= \int_0^\pi |\operatorname{Re}[g_k(\theta)]| \sin\theta \, d\theta, \\
+I_{\mathrm{Im}}(k) &:= \int_0^\pi |\operatorname{Im}[g_k(\theta)]| \sin\theta \, d\theta.
+\end{align}
+Then
+\begin{equation}
+I_{\mathrm{Re}}(k) + I_{\mathrm{Im}}(k) = |\cos(k\pi)| + |\sin(k\pi)| \in [1, \sqrt{2}].
+\end{equation}
+The minimum value $1$ is attained precisely when $k \in \tfrac{1}{2}\mathbb{Z}$,
+and the maximum $\sqrt{2}$ is attained when $k \in \mathbb{Z} + \tfrac{1}{4}$.
+\end{theorem}
+
+\begin{proof}
+The base integral $\int_0^\pi |\sin(k\theta)| \sin^2\theta \, d\theta = 1$ for
+$k \in \tfrac{1}{2}\mathbb{Z}$. The $\cos(k\pi)$ and $\sin(k\pi)$ factors scale
+the real and imaginary contributions respectively. Since
+$|\cos\alpha| + |\sin\alpha|$ achieves its minimum $1$ at $\alpha \in \tfrac{\pi}{2}\mathbb{Z}$
+(i.e., $k \in \tfrac{1}{2}\mathbb{Z}$) and maximum $\sqrt{2}$ at $\alpha = \tfrac{\pi}{4} + \tfrac{\pi}{2}\mathbb{Z}$
+(i.e., $k \in \mathbb{Z} + \tfrac{1}{4}$), the result follows.
+\end{proof}
+
+\section{Visual Demonstration}
+
+As $k$ varies continuously, the curve $f_k(x)$ splits into real and imaginary
+components that oscillate with varying amplitudes. The total shaded area ranges
+from $1$ (at half-integers) to $\sqrt{2}$ (at quarter-integers), creating
+interference-like patterns that can be visualized interactively at:
+
+\begin{center}
+\url{https://www.shadertoy.com/view/MXc3Rj}
+\end{center}
+
+\section{Remarks}
+
+\begin{enumerate}
+\item The case $k=1$ is exceptional: $\int_{-1}^{1}|x^2 - 1|\,dx = 4/3$.
+
+\item Using the mutual recurrence relation from Mason \& Handscomb \cite{mason},
+we have $T_{k+1}(x) - x \cdot T_k(x) = -(1-x^2) U_{k-1}(x)$, where $U_k$ is the
+Chebyshev polynomial of the second kind. Thus the identity can be written as
+\[
+\int_{-1}^{1} (1-x^2)|U_{k-1}(x)| \, dx = 1 \quad \text{for } k \geq 2.
+\]
+
+\item The generating function for the sequence $(I_1, I_2, I_3, \ldots) = (4/3, 1, 1, \ldots)$
+is the rational function $G(z) = z(4-z)/[3(1-z)]$.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{mason}
+J.\,C.~Mason and D.\,C.~Handscomb,
+\textit{Chebyshev Polynomials},
+Chapman \& Hall/CRC, 2003.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions,
+\url{https://dlmf.nist.gov/18}, Release 1.2.3.
+\end{thebibliography}
+
+\end{document}
