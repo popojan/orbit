@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-11-24 22:05:47
+**Generated:** 2025-11-25 01:54:34
 
 ## Theorems (Master References)
 
@@ -30,16 +30,16 @@
 
 ## Recent Sessions (Last 10)
 
+- [Session: Hyperbolic-Combinatorics Connection](sessions/2025-11-25-hyperbolic-combinatorics/README.md) *()*
+- [Session: Proof Triangle Completed! 🎉](sessions/2025-11-24-proof-triangle-completed.md) *(2025-11-24)*
 - [Palindromic Symmetries in Tangent Polynomials and Gamma Weights](sessions/2025-11-22-palindromic-symmetries/README.md) *(2025-11-24)*
 - [Physics Connection Review: Why Egypt Trajectory Is Not Physics](sessions/2025-11-22-palindromic-symmetries/physics-connection-review.md) *(2025-11-24)*
 - [Egypt Trajectory in Hyperbolic Geometry](sessions/2025-11-22-palindromic-symmetries/egypt-poincare-trajectory.md) *(2025-11-24)*
 - [Egypt Trajectory: Exponential Decay in Hyperbolic Coordinates](sessions/2025-11-22-palindromic-symmetries/egypt-exponential-decay.md) *(2025-11-24)*
-- [Session: Proof Triangle Completed! 🎉](sessions/2025-11-24-proof-triangle-completed.md) *(2025-11-24)*
 - [Factorial → Hyperbolic: Black Box Revealed!](sessions/2025-11-24-factorial-hyperbolic-discovery.md) *(2025-11-24)*
 - [Egypt-Chebyshev Algebraic Proof: Strategic Plan](sessions/2025-11-24-egypt-chebyshev-proof-plan.md) *(2025-11-24)*
 - [Mason & Handscomb: Comparison with Our Results](sessions/2025-11-23-chebyshev-integral-identity/literature-comparison-mason-handscomb.md) *(2025-11-23)*
 - [Chebyshev Polynomial Integral Identity](sessions/2025-11-23-chebyshev-integral-identity/chebyshev-integral-theorem.md) *(2025-11-23)*
-- [Wildberger-Egypt-Chebyshev Rosetta Stone Discovery](sessions/wildberger-rosetta-stone-discovery.md) *(2025-11-23)*
 
 ## Navigation
 
