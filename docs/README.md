@@ -1,23 +1,13 @@
 # Documentation Index
 
-**Generated:** 2025-11-25 02:29:53
+**Generated:** 2025-11-25 05:24:05
 
 ## Theorems (Master References)
 
 
 ## Complete Proofs
 
-- [Egypt-Chebyshev Algebraic Equivalence: Proof Status](proofs/egypt-chebyshev-proof-status.md)
-- [Algebraic Proof: Factorial ↔ Chebyshev](proofs/factorial-chebyshev-algebraic-proof.md)
-- [Factorial ↔ Chebyshev: From Archive to Symbolic Verification](proofs/factorial-chebyshev-breakthrough-summary.md)
-- [Complete Algebraic Proof: Factorial ↔ Chebyshev Identity](proofs/factorial-chebyshev-complete-proof.md)
-- [Full Algebraic Proof: Factorial = Chebyshev](proofs/factorial-chebyshev-full-derivation.md)
-- [Factorial ↔ Chebyshev Proof Summary](proofs/factorial-chebyshev-proof-summary.md)
-- [Complete Proof: Factorial ↔ Chebyshev via Recurrence](proofs/factorial-chebyshev-recurrence-complete.md)
-- [Algebraický důkaz: Factorial ↔ Chebyshev](proofs/factorial-chebyshev-recurrence-proof.md)
-- [Factorial ↔ Chebyshev: Proof Status](proofs/factorial-chebyshev-status.md)
-- [Proof: Hyperbolic ↔ Chebyshev Equivalence](proofs/hyperbolic-chebyshev-equivalence.md)
-- [Explicit Hand-Derivable Proof: Chebyshev ↔ Hyperbolic](proofs/hyperbolic-chebyshev-explicit-derivation.md)
+- [Chebyshev-Egypt Connection](proofs/chebyshev-egypt-connection.md)
 
 ## Reference Documentation
 
@@ -30,16 +20,16 @@
 
 ## Recent Sessions (Last 10)
 
-- [Lattice Path Synthesis: Egypt ↔ Lobb ↔ Stern-Brocot](sessions/2025-11-25-hyperbolic-combinatorics/lattice-path-synthesis.md) *()*
-- [Wildberger-Egypt-Chebyshev Rosetta Stone Discovery](sessions/archive/wildberger-rosetta-stone-discovery.md) *(2025-11-25)*
-- [Wildberger Pell Algorithm Analysis: √13](sessions/archive/wildberger-pell-sqrt13-analysis.md) *(2025-11-25)*
-- [Systematic Analysis of Three Open Questions](sessions/archive/three-questions-systematic-analysis.md) *(2025-11-25)*
-- [QUICK SUMMARY: Rosetta Stone Discovery](sessions/archive/SUMMARY-rosetta-stone.md) *(2025-11-25)*
-- [Chomsky Hierarchy Exploration - LR String Analysis](sessions/archive/chomsky-lr-exploration-summary.md) *(2025-11-25)*
-- [Egypt Square Root Convergence Analysis](sessions/archive/2025-11-23/2025-11-23-egypt-convergence-analysis.md) *(2025-11-25)*
-- [Morning Reflection: Trust, Context, and Role Asymmetry](sessions/archive/2025-11-20/2025-11-20-morning-reflection.md) *(2025-11-25)*
-- [Session: Trigonometric Proof Attempts & Epistemology Discussion](sessions/archive/2025-11-20/2025-11-20-afternoon-proof-attempts.md) *(2025-11-25)*
-- [Session: Egypt-Chebyshev Equivalence Exploration](sessions/archive/2025-11-19/2025-11-19-egypt-chebyshev-exploration.md) *(2025-11-25)*
+- [Session: Hyperbolic-Combinatorics Connection](sessions/2025-11-25-hyperbolic-combinatorics/README.md) *(2025-11-25)*
+- [Lattice Path Synthesis: Egypt ↔ Lobb ↔ Stern-Brocot](sessions/2025-11-25-hyperbolic-combinatorics/lattice-path-synthesis.md) *(2025-11-25)*
+- [Session: Proof Triangle Completed! 🎉](sessions/2025-11-24-proof-triangle-completed.md) *(2025-11-24)*
+- [Palindromic Symmetries in Tangent Polynomials and Gamma Weights](sessions/2025-11-22-palindromic-symmetries/README.md) *(2025-11-24)*
+- [Physics Connection Review: Why Egypt Trajectory Is Not Physics](sessions/2025-11-22-palindromic-symmetries/physics-connection-review.md) *(2025-11-24)*
+- [Egypt Trajectory in Hyperbolic Geometry](sessions/2025-11-22-palindromic-symmetries/egypt-poincare-trajectory.md) *(2025-11-24)*
+- [Egypt Trajectory: Exponential Decay in Hyperbolic Coordinates](sessions/2025-11-22-palindromic-symmetries/egypt-exponential-decay.md) *(2025-11-24)*
+- [Factorial → Hyperbolic: Black Box Revealed!](sessions/2025-11-24-factorial-hyperbolic-discovery.md) *(2025-11-24)*
+- [Egypt-Chebyshev Algebraic Proof: Strategic Plan](sessions/2025-11-24-egypt-chebyshev-proof-plan.md) *(2025-11-24)*
+- [Mason & Handscomb: Comparison with Our Results](sessions/2025-11-23-chebyshev-integral-identity/literature-comparison-mason-handscomb.md) *(2025-11-23)*
 
 ## Navigation
 

@@ -55,11 +55,11 @@ Run `make preview` to generate HTML previews of all documentation.
 ## Recent Results
 
 **Latest work** (November 2025):
-- Chebyshev integral identity (rigorously proven)
-- Triple identity connecting factorials, Chebyshev polynomials, and hyperbolic functions (numerically verified)
-- Comprehensive literature comparison with Mason & Handscomb (2003)
+- Unified Chebyshev framework σ_m for square root iteration with arbitrary integer convergence order ≥ 3
+- Demystification: Newton/Halley compositions limited to 3-smooth orders; σ_m gives access to all integers
+- Literature comparison with Dijoux (2024), Nazeer et al. (2016), Mason & Handscomb (2003)
 
-See [Scientific Review 2025-11-23](docs/reviews/scientific-review-2025-11-23.md) for detailed assessment.
+See [STATUS.md](docs/STATUS.md) for current status and [Scientific Review 2025-11-23](docs/reviews/scientific-review-2025-11-23.md) for detailed assessment.
 
 ## Status
 
