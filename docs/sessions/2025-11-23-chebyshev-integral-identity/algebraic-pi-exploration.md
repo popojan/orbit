@@ -118,12 +118,35 @@ NIntegrate[Abs[r * fk[x/r, k]], {x, -r, r}] == r^2  (* for any r, k≥2 *)
 - `/home/jan/github/orbit/scripts/experiments/visualize_circles.wl` — circi/circj code
 - `/home/jan/github/orbit/docs/sessions/2025-11-23-chebyshev-integral-identity/arxiv-note-draft.tex` — paper
 
+## Session 2 Findings (2025-11-25 continued)
+
+### f_k and circj Generate Same Regular k-gon (Different Rotation)
+
+For k=3 with a = √3 = Cot(π/6):
+- circj points: angles 0, -2π/3, 2π/3
+- f_k points: angles π/2, -5π/6, -π/6
+- **Relationship: f_k = i · circj** (rotation by π/2)
+- Both form equilateral triangle, just rotated
+
+For k=4,5,6:
+- Both still form regular k-gon
+- But rotation angle varies (not simply π/2)
+- General formula for rotation angle: TBD
+
+### Key Insight
+
+Both constructions produce **the same geometric object** (regular k-gon inscribed in circle), just with different orientation. This suggests deep connection between:
+- Chebyshev polynomial roots
+- Algebraic circle parametrization
+- Regular polygon geometry
+
 ## Next Steps
 
-1. Formalize cyclotomic field connection
-2. Look for direct formula linking period and 1/π ratio
-3. Consider if this deserves separate paper or just extended remark
-4. Consult literature on algebraic geometry / transcendence theory
+1. Find general formula for rotation angle between f_k and circj
+2. Formalize cyclotomic field connection
+3. Look for direct formula linking period and 1/π ratio
+4. Consider if this deserves separate paper or just extended remark
+5. Consult literature on algebraic geometry / transcendence theory
 
 ---
 
