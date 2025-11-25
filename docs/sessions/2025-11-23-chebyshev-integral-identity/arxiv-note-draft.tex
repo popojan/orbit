@@ -64,7 +64,7 @@ the Chebyshev oscillations to discrete rotational symmetry.
 \includegraphics[width=0.24\textwidth]{chebyshev-k31.pdf}
 \caption{The curve $y = f_k(x) = T_{k+1}(x) - x \cdot T_k(x)$ for $k = 2, 3, 17, 31$.
 The shaded area equals $1$ in each case (i.e., $1/\pi$ of the unit disk area).
-Dashed lines show the regular $k$-gon whose vertices satisfy $x^2 + f_k(x)^2 = 1$.}
+Tick marks indicate the $k$ points where $x^2 + f_k(x)^2 = 1$.}
 \label{fig:lobes}
 \end{figure}
 
@@ -140,60 +140,15 @@ $y = T_{k+1}(x) - x \cdot T_k(x)$ and the $x$-axis has area exactly $1/\pi$ of
 the disk area, for all $k \in \tfrac{1}{2}\mathbb{Z}$ with $k \geq 3/2$.
 \end{corollary}
 
-\section{Complex Extension for Real $k$}
-
-For non-half-integer $k$, we consider the complex-valued extension arising from
-the factor $(-1)^k = e^{ik\pi}$ in the shader implementation. Writing
-\begin{equation}
-g_k(\theta) := e^{ik\pi} \sin(k\theta) \sin\theta,
-\end{equation}
-we obtain real and imaginary parts:
-\begin{align}
-\operatorname{Re}[g_k(\theta)] &= \cos(k\pi) \sin(k\theta) \sin\theta, \\
-\operatorname{Im}[g_k(\theta)] &= \sin(k\pi) \sin(k\theta) \sin\theta.
-\end{align}
-
-\begin{theorem}[Complex Area Bounds]\label{thm:complex}
-For any real $k \geq 3/2$, define
-\begin{align}
-I_{\mathrm{Re}}(k) &:= \int_0^\pi |\operatorname{Re}[g_k(\theta)]| \sin\theta \, d\theta, \\
-I_{\mathrm{Im}}(k) &:= \int_0^\pi |\operatorname{Im}[g_k(\theta)]| \sin\theta \, d\theta.
-\end{align}
-Then
-\begin{equation}
-I_{\mathrm{Re}}(k) + I_{\mathrm{Im}}(k) = |\cos(k\pi)| + |\sin(k\pi)| \in [1, \sqrt{2}].
-\end{equation}
-The minimum value $1$ is attained precisely when $k \in \tfrac{1}{2}\mathbb{Z}$,
-and the maximum $\sqrt{2}$ is attained when $k \in \mathbb{Z} + \tfrac{1}{4}$.
-\end{theorem}
-
-\begin{proof}
-The base integral $\int_0^\pi |\sin(k\theta)| \sin^2\theta \, d\theta = 1$ for
-$k \in \tfrac{1}{2}\mathbb{Z}$. The $\cos(k\pi)$ and $\sin(k\pi)$ factors scale
-the real and imaginary contributions respectively. Since
-$|\cos\alpha| + |\sin\alpha|$ achieves its minimum $1$ at $\alpha \in \tfrac{\pi}{2}\mathbb{Z}$
-(i.e., $k \in \tfrac{1}{2}\mathbb{Z}$) and maximum $\sqrt{2}$ at $\alpha = \tfrac{\pi}{4} + \tfrac{\pi}{2}\mathbb{Z}$
-(i.e., $k \in \mathbb{Z} + \tfrac{1}{4}$), the result follows.
-\end{proof}
-
-\section{Visual Demonstration}
-
-As $k$ varies continuously, the curve $f_k(x)$ splits into real and imaginary
-components that oscillate with varying amplitudes. The total shaded area ranges
-from $1$ (at half-integers) to $\sqrt{2}$ (at quarter-integers), creating
-interference-like patterns that can be visualized interactively at:
-
-\begin{center}
-\url{https://www.shadertoy.com/view/MXc3Rj}
-\end{center}
-
 \section{Remarks}
 
 \begin{enumerate}
 \item The case $k=1$ is exceptional: $\int_{-1}^{1}|x^2 - 1|\,dx = 4/3$.
 
-\item Using the mutual recurrence relation from Mason \& Handscomb \cite{mason},
-we have $T_{k+1}(x) - x \cdot T_k(x) = -(1-x^2) U_{k-1}(x)$, where $U_k$ is the
+\item Combining the product formula $xT_k(x) = \frac{1}{2}[T_{k+1}(x) + T_{k-1}(x)]$
+with the difference formula $(1-x^2)U_{k-1}(x) = \frac{1}{2}[T_{k-1}(x) - T_{k+1}(x)]$
+(see \cite{mason}, (2.39) and Exercise 2.2.12(a), or \cite{dlmf}, (18.9.10)),
+we obtain $T_{k+1}(x) - x \cdot T_k(x) = -(1-x^2) U_{k-1}(x)$, where $U_k$ is the
 Chebyshev polynomial of the second kind. Thus the identity can be written as
 \[
 \int_{-1}^{1} (1-x^2)|U_{k-1}(x)| \, dx = 1 \quad \text{for } k \geq 2.
@@ -201,6 +156,20 @@ Chebyshev polynomial of the second kind. Thus the identity can be written as
 
 \item The generating function for the sequence $(I_1, I_2, I_3, \ldots) = (4/3, 1, 1, \ldots)$
 is the rational function $G(z) = z(4-z)/[3(1-z)]$.
+
+\item For non-half-integer $k$, extending via $(-1)^k = e^{ik\pi}$ yields
+complex-valued $f_k$. The sum of areas under $|\operatorname{Re} f_k|$ and
+$|\operatorname{Im} f_k|$ lies in $[1, \sqrt{2}]$, with bounds attained at
+$k \in \tfrac{1}{2}\mathbb{Z}$ and $k \in \mathbb{Z} + \tfrac{1}{4}$ respectively.%
+\footnote{Interactive visualization: \url{https://www.shadertoy.com/view/MXc3Rj}}
+
+\item (Farey connection) Compare Remark~2: dividing the weight $(1-x^2)$ by $(1+x)$
+and removing the absolute value gives
+$J_k := \frac{1}{2}\int_{-1}^{1} (1-x) U_{k-1}(x) \, dx$, with $J_k = 1/k$ for
+odd $k$ and $J_k = -k/(k^2-1)$ for even $k$. The sign alternation arises from
+$U_{k-1}(-x) = (-1)^{k-1}U_{k-1}(x)$. The partial sums $S_n = \sum_{k=1}^n J_k$
+equal $m/(2m-1)$ for $n = 2m-1$ and $m/(2m+1)$ for $n = 2m$, which are the Farey
+neighbors of $1/2$. The Abel sum is $1/2$.
 \end{enumerate}
 
 \begin{thebibliography}{9}

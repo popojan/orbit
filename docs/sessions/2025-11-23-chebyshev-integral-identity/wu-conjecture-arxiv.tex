@@ -1,0 +1,149 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\title{Proof of Wu's Conjecture for OEIS A028355}
+\author{Jan Popelka\thanks{Email: popojan@protonmail.com}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We prove a conjecture by Chai Wah Wu (2024) concerning the OEIS sequence A028355,
+which arises from the periodic digit sequence $[1,2,3,4,3,2]$ associated with the
+striking pattern of the Prague Astronomical Clock. The recurrence
+$a(n) = 1000001 \cdot a(n-15) - 1000000 \cdot a(n-30)$ for $n > 30$
+follows directly from the periodicity of the underlying digit sequence.
+\end{abstract}
+
+\section{The Sequence A028355}
+
+The OEIS sequence A028355 \cite{oeis} is constructed from the infinite periodic
+digit sequence
+\begin{equation}
+d(k) = [1,2,3,4,3,2,1,2,3,4,3,2,\ldots]
+\end{equation}
+with period $p = [1,2,3,4,3,2]$ of length 6.
+
+For each $n \geq 1$, the term $a(n)$ is defined as the integer formed by
+concatenating certain digits from this sequence. The construction satisfies:
+\begin{itemize}
+\item $\mathrm{start}(n)$ is periodic with period 15
+\item $\mathrm{len}(n+15) = \mathrm{len}(n) + 6$
+\end{itemize}
+
+The first terms are: $1, 12, 123, 1234, 12343, 123432, 2, 23, 234, 2343, 23432, 234321, 3, 34, 343, \ldots$
+
+\section{Wu's Conjecture}
+
+\begin{conjecture}[Wu, 2024]
+For $n > 30$:
+\begin{equation}
+a(n) = 1000001 \cdot a(n-15) - 1000000 \cdot a(n-30)
+\end{equation}
+\end{conjecture}
+
+\section{Proof}
+
+\begin{lemma}\label{lem:shift}
+For all $n \geq 1$:
+\begin{equation}
+a(n+15) = a(n) \cdot 10^6 + c(n)
+\end{equation}
+where $c(n)$ is the 6-digit number formed by the appended digits.
+\end{lemma}
+
+\begin{proof}
+Since $\mathrm{start}(n+15) = \mathrm{start}(n)$ and $\mathrm{len}(n+15) = \mathrm{len}(n) + 6$,
+the term $a(n+15)$ consists of the same digits as $a(n)$ followed by 6 additional digits.
+Shifting $a(n)$ by 6 decimal places and adding the new digits gives the result.
+\end{proof}
+
+\begin{lemma}\label{lem:periodic}
+The sequence $c(n)$ is periodic with period 15, i.e., $c(n+15) = c(n)$.
+\end{lemma}
+
+\begin{proof}
+The value $c(n)$ is determined by digits $d[\mathrm{start}(n) + \mathrm{len}(n)]$ through
+$d[\mathrm{start}(n) + \mathrm{len}(n) + 5]$.
+
+For $c(n+15)$: the starting position shifts by $\mathrm{len}(n+15) - \mathrm{len}(n) = 6$.
+Since $d$ has period 6, we have $d[k+6] = d[k]$ for all $k$.
+Therefore $c(n+15) = c(n)$.
+\end{proof}
+
+\begin{theorem}
+For $n > 30$:
+\begin{equation}
+a(n) = 1000001 \cdot a(n-15) - 1000000 \cdot a(n-30)
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+From Lemma~\ref{lem:shift}:
+\begin{equation}
+a(n) = a(n-15) \cdot 10^6 + c(n-15)
+\end{equation}
+
+From Lemma~\ref{lem:periodic}, for $n > 30$:
+\begin{equation}
+c(n-15) = c(n-30)
+\end{equation}
+
+Applying Lemma~\ref{lem:shift} to $a(n-15)$:
+\begin{equation}
+a(n-15) = a(n-30) \cdot 10^6 + c(n-30)
+\end{equation}
+
+Solving for $c(n-30)$:
+\begin{equation}
+c(n-30) = a(n-15) - a(n-30) \cdot 10^6
+\end{equation}
+
+Substituting:
+\begin{align}
+a(n) &= a(n-15) \cdot 10^6 + a(n-15) - a(n-30) \cdot 10^6 \\
+     &= a(n-15) \cdot (10^6 + 1) - a(n-30) \cdot 10^6 \\
+     &= 1000001 \cdot a(n-15) - 1000000 \cdot a(n-30)
+\end{align}
+\end{proof}
+
+\section{Remarks}
+
+The sequence $[1,2,3,4,3,2]$ represents the striking pattern of the Prague
+Astronomical Clock (Pražský orloj), where the clock strikes $1, 1+2, 1+2+3, \ldots$
+times at hours $1, 2, 3, \ldots, 12$, with the pattern repeating \cite{horsky}.
+Křížek, Šolcová, and Somer \cite{krizek} introduced the mathematical theory
+of Šindel sequences in this context. This connection to medieval horology
+gives the sequence its historical significance.
+
+The proof demonstrates that Wu's conjecture is a direct consequence of the
+6-periodicity of the digit sequence combined with the 15-periodicity of the
+construction parameters.
+
+\begin{thebibliography}{9}
+\bibitem{oeis}
+OEIS Foundation Inc., \textit{The On-Line Encyclopedia of Integer Sequences},
+A028355, \url{https://oeis.org/A028355}.
+
+\bibitem{krizek}
+M.~Křížek, A.~Šolcová, and L.~Somer,
+``Šindel sequences and the Prague horologe,''
+in \textit{Programs and Algorithms of Numerical Mathematics 13},
+Institute of Mathematics AS CR, Prague, 2006, pp.~156--164.
+
+\bibitem{horsky}
+Z.~Horský,
+\textit{Pražský orloj},
+Panorama, Prague, 1988.
+\end{thebibliography}
+
+\end{document}
