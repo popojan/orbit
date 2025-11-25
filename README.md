@@ -48,7 +48,7 @@ wolframscript -file scripts/[script-name].wl
 - [Documentation Index](docs/README.md) - Complete organized index of all documentation
 - [Reference Documentation](docs/reference/) - Mathematical foundations and design rationale
 - [Session Narratives](docs/sessions/) - Discovery narratives by date
-- [Papers](docs/papers/) - LaTeX papers and longer-form documents
+- [Papers](docs/drafts/) - LaTeX papers and longer-form documents
 
 Run `make preview` to generate HTML previews of all documentation.
 
