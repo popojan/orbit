@@ -50,7 +50,7 @@ gosper.m
 visualizations/viz_*.png
 visualizations/viz_*.wl
 
-# Downloaded papers (not for version control)
-papers/
+# Downloaded papers in root (not for version control)
+/papers/
 personal/
 egypt

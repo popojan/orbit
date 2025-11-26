@@ -1,0 +1,274 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\title{Primorials as Denominators of Alternating Factorial Sums}
+\author{Jan Popelka\thanks{Email: popojan@protonmail.com. Code: \url{https://github.com/popojan/orbit}}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We prove that primorials emerge as denominators of alternating factorial sums.
+For odd $m \geq 3$, the rational number
+$S_m = \frac{1}{2} \sum_{k=1}^{(m-1)/2} \frac{(-1)^k \cdot k!}{2k+1}$
+has denominator exactly equal to the primorial $\prod_{p \leq m} p$ when reduced
+to lowest terms. The proof reveals a $p$-adic structure: each prime $p \leq m$
+appears with valuation exactly~1 in the reduced denominator, despite higher
+powers appearing in individual terms. We establish this via induction using
+Legendre's formula for factorial valuations.
+\end{abstract}
+
+\section{Introduction}
+
+The primorial function $m\# = \prod_{p \leq m} p$ appears throughout number theory,
+from bounds in prime number theory to highly composite numbers. Primorials are
+typically computed by direct multiplication. We present an alternative: they
+emerge as denominators of alternating factorial sums.
+
+This formula was discovered through computational experimentation. While
+investigating rational sum patterns, we observed that certain alternating sums
+exhibited denominators containing only products of distinct primes after
+reduction. The underlying mechanism is a systematic cancellation: although
+individual terms have denominators with prime powers ($9 = 3^2$, $25 = 5^2$,
+$27 = 3^3$, \ldots), the factorial numerators eliminate all higher powers,
+leaving exactly first powers of each prime.
+
+\section{Statement of Results}
+
+\begin{definition}
+For integer $k \geq 1$, define the partial sum:
+\[
+S_k = \frac{1}{2} \sum_{j=1}^{k} \frac{(-1)^j \cdot j!}{2j+1}
+\]
+Write $S_k = N_k / D_k$ in \emph{unreduced form}, where:
+\begin{itemize}
+\item $D_k = 2 \cdot \prod_{j=1}^{k} (2j+1) = 2 \cdot 3 \cdot 5 \cdot 7 \cdots (2k+1)$
+\item $N_k$ is the corresponding integer numerator
+\end{itemize}
+\end{definition}
+
+\begin{theorem}[Main Result]\label{thm:main}
+For all $k \geq 1$ and all primes $p \leq 2k+1$:
+\[
+\nu_p(D_k) - \nu_p(N_k) = 1
+\]
+where $\nu_p(n)$ denotes the $p$-adic valuation of $n$.
+\end{theorem}
+
+\begin{corollary}[Primorial Formula]
+For odd $m \geq 3$, let $k = (m-1)/2$. Then:
+\[
+\mathrm{den}(S_k) = \prod_{\substack{p \text{ prime} \\ p \leq m}} p = m\#
+\]
+where $\mathrm{den}(q)$ denotes the denominator of $q$ in lowest terms.
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:main}, each prime $p \leq 2k+1 = m$ satisfies
+$\nu_p(D_k) - \nu_p(N_k) = 1$. After reduction to lowest terms, each such
+prime appears exactly once in the denominator.
+\end{proof}
+
+\begin{example}
+For $m = 13$ (so $k = 6$):
+\[
+S_6 = \frac{1}{2}\left(-\frac{1}{3} + \frac{2}{5} - \frac{6}{7} + \frac{24}{9} - \frac{120}{11} + \frac{720}{13}\right) = \frac{695971}{30030}
+\]
+The denominator $30030 = 2 \times 3 \times 5 \times 7 \times 11 \times 13$ is the primorial of 13.
+\end{example}
+
+\section{Recurrence Relations}
+
+\begin{lemma}[Recurrence]\label{lem:recurrence}
+The unreduced numerators and denominators satisfy:
+\begin{align}
+D_0 &= 2, \quad N_0 = 0 \\
+D_{k+1} &= D_k \cdot (2k+3) \\
+N_{k+1} &= N_k \cdot (2k+3) + (-1)^{k+1} \cdot (k+1)! \cdot \frac{D_k}{2}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+From $S_{k+1} = S_k + \frac{(-1)^{k+1}(k+1)!}{2(2k+3)}$, expressing with common
+denominator $D_{k+1} = D_k(2k+3)$ yields the stated recurrence.
+\end{proof}
+
+\section{The Factorial Inequality}
+
+\begin{lemma}[Key Inequality]\label{lem:factorial}
+For odd prime $p \geq 3$ and integer $k \geq 1$ with $p \mid (2k+1)$ and $p < 2k+1$:
+\[
+\nu_p(k!) \geq \nu_p(2k+1) - 1
+\]
+\end{lemma}
+
+\begin{proof}
+Let $\alpha = \nu_p(2k+1) \geq 1$. Since $p < 2k+1$, we have $p^\alpha \leq 2k+1$,
+giving $k \geq (p^\alpha - 1)/2$.
+
+By Legendre's formula, $\nu_p(k!) = \sum_{i \geq 1} \lfloor k/p^i \rfloor \geq \lfloor k/p \rfloor$.
+
+\textbf{Case $\alpha = 1$:} Need $\lfloor k/p \rfloor \geq 0$. True for all $k \geq 1$.
+
+\textbf{Case $\alpha = 2$:} From $k \geq (p^2-1)/2$:
+\[
+\frac{k}{p} \geq \frac{p^2-1}{2p} = \frac{p}{2} - \frac{1}{2p} \geq \frac{3}{2} - \frac{1}{6} > 1
+\]
+So $\lfloor k/p \rfloor \geq 1 = \alpha - 1$.
+
+\textbf{Case $\alpha \geq 3$:} From $k \geq (p^\alpha - 1)/2$:
+\[
+\frac{k}{p} \geq \frac{p^\alpha - 1}{2p} \geq \frac{27 - 1}{6} > 4 \geq \alpha - 1
+\]
+So $\lfloor k/p \rfloor \geq \alpha - 1$.
+\end{proof}
+
+\section{Proof of Main Theorem}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+We prove the result separately for $p = 2$ and odd primes $p \geq 3$.
+
+\subsection*{The prime $p = 2$}
+
+The unreduced denominator $D_k = 2 \cdot 3 \cdot 5 \cdots (2k+1)$ has $\nu_2(D_k) = 1$.
+We show $\nu_2(N_k) = 0$ for all $k \geq 1$.
+
+From the recurrence, $N_{k+1} = N_k(2k+3) + (-1)^{k+1}(k+1)! \cdot D_k/2$.
+Since $2k+3$ is odd, the first term has $\nu_2(N_k(2k+3)) = \nu_2(N_k)$.
+The second term has $\nu_2((k+1)! \cdot D_k/2) = \nu_2((k+1)!) + \nu_2(D_k) - 1 = \nu_2((k+1)!)$.
+
+For $k = 1$: $N_1 = 0 \cdot 3 + (-1) \cdot 1! \cdot 1 = -1$, so $\nu_2(N_1) = 0$.
+
+For $k \geq 1$: By induction, if $\nu_2(N_k) = 0$, then both terms have finite
+2-adic valuation: Term~1 has $\nu_2 = 0$, Term~2 has $\nu_2 = \nu_2((k+1)!) \geq 0$.
+By the ultrametric property, $\nu_2(N_{k+1}) = \min(0, \nu_2((k+1)!)) = 0$.
+
+Thus $\nu_2(D_k) - \nu_2(N_k) = 1 - 0 = 1$ for all $k \geq 1$.
+
+\subsection*{Odd primes $p \geq 3$}
+
+By strong induction on $k$.
+
+\textbf{Base case $k = 1$:} $D_1 = 6$, $N_1 = -1$.
+For $p = 3$: $\nu_3(D_1) - \nu_3(N_1) = 1 - 0 = 1$. \checkmark
+
+\textbf{Inductive step:} Fix $k \geq 1$, assume the result for all $k' \leq k$.
+Let $p$ be an odd prime with $p \leq 2k+3$.
+
+From the recurrence: $\nu_p(D_{k+1}) = \nu_p(D_k) + \nu_p(2k+3)$.
+
+Let $\alpha = \nu_p(2k+3)$.
+
+\textbf{Case A ($p = 2k+3$, prime entry):}
+Prime $p$ appears for the first time. Then $\nu_p(D_k) = 0$ and $\nu_p(N_k) = 0$.
+Also $\nu_p((k+1)!) = 0$ since $k+1 < p$.
+
+From the recurrence, $N_{k+1} = N_k(2k+3) + (-1)^{k+1}(k+1)! \cdot D_k/2$.
+The first term has $\nu_p = 1$, the second has $\nu_p = 0$.
+By ultrametric property: $\nu_p(N_{k+1}) = 0$.
+
+Thus $\nu_p(D_{k+1}) - \nu_p(N_{k+1}) = 1 - 0 = 1$. \checkmark
+
+\textbf{Case B ($\alpha \geq 1$, $p < 2k+3$, synchronized jump):}
+By induction, $\nu_p(N_k) = \nu_p(D_k) - 1$.
+
+The recurrence gives:
+\begin{align*}
+\text{Term 1: } & \nu_p(N_k \cdot (2k+3)) = (\nu_p(D_k) - 1) + \alpha \\
+\text{Term 2: } & \nu_p((k+1)! \cdot D_k/2) = \nu_p((k+1)!) + \nu_p(D_k)
+\end{align*}
+
+By Lemma~\ref{lem:factorial}: $\nu_p((k+1)!) \geq \alpha - 1$.
+
+\textbf{Subcase B1} ($\nu_p((k+1)!) > \alpha - 1$): Term~1 has smaller valuation.
+\[
+\nu_p(N_{k+1}) = \nu_p(D_k) + \alpha - 1
+\]
+Thus $\nu_p(D_{k+1}) - \nu_p(N_{k+1}) = (\nu_p(D_k) + \alpha) - (\nu_p(D_k) + \alpha - 1) = 1$. \checkmark
+
+\textbf{Subcase B2} ($\nu_p((k+1)!) = \alpha - 1$, boundary):
+Both terms have valuation $\nu_p(D_k) + \alpha - 1$.
+
+This can only occur when $p = 3$ and $\alpha = 2$ (i.e., $2k+3 = 9$, so $k = 3$).
+For primes $p \geq 5$, Lemma~\ref{lem:factorial} gives strict inequality.
+
+Direct verification for $k = 3$: Computing $N_4$ from the recurrence yields
+$\nu_3(N_4) = 2$ and $\nu_3(D_4) = 3$.
+Thus $\nu_3(D_4) - \nu_3(N_4) = 1$. \checkmark
+
+\textbf{Case C ($\alpha = 0$, no new factor):}
+Prime $p$ does not divide $2k+3$, so $\nu_p(D_{k+1}) = \nu_p(D_k)$.
+
+By induction, $\nu_p(N_k) = \nu_p(D_k) - 1$. From the recurrence:
+\begin{align*}
+\text{Term 1: } & \nu_p(N_k \cdot (2k+3)) = \nu_p(D_k) - 1 \\
+\text{Term 2: } & \nu_p((k+1)! \cdot D_k/2) \geq \nu_p(D_k)
+\end{align*}
+since $\nu_p((k+1)!) \geq 0$.
+
+Term~1 has strictly smaller $p$-adic valuation, so by the ultrametric property:
+\[
+\nu_p(N_{k+1}) = \nu_p(D_k) - 1 = \nu_p(D_{k+1}) - 1
+\]
+Thus $\nu_p(D_{k+1}) - \nu_p(N_{k+1}) = 1$. \checkmark
+
+This completes the induction.
+\end{proof}
+
+\section{Remarks}
+
+\begin{enumerate}
+\item The alternating sign is essential. Without it, the formula loses the
+factor 3 at $k = 4$ (where $2k+1 = 9 = 3^2$) and yields $\text{Primorial}/3$
+for all $m \geq 9$.
+
+\item The numerator sequence $(-1, 23, 719, 5039, 40319, \ldots)$ for
+$m = 3, 5, 7, 9, 11, \ldots$ contains many primes (23, 719 are prime;
+$5039 = 7! - 1$, $40319 = 8! - 1$). This structure remains unexplained.
+
+\item For comparison, the denominators of harmonic sums $H_n = \sum_{k=1}^n 1/k$
+satisfy $\mathrm{den}(H_n) \mid \mathrm{lcm}(1,\ldots,n)$, which contains prime
+powers. Our formula yields squarefree denominators (primorials) via factorials.
+
+\item The GCD used in reducing $N_k/D_k$ to lowest terms has an explicit form:
+$\gcd(N_k, D_k) = 2 \cdot \prod_{c} c$ where the product runs over odd
+composites $c \leq m$. (For $m < 9$, the product is empty, giving $\gcd = 2$.)
+Thus primes appear in the reduced denominator while composites appear in the
+GCD---a complementary structure.
+
+\item When $m$ is prime, $S_k \cdot (m-1)!$ has fractional part $n/m$ where
+$n \equiv (-1)^{(m+1)/2} \cdot ((m-1)/2)! \pmod{m}$. This follows from Wilson's
+theorem: only the last term (with denominator $2k+1 = m$) contributes to the
+fractional part, and $(m-1)! \equiv -1 \pmod{m}$. The sign connects to the
+Stickelberger relation and quadratic residue theory.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{legendre}
+A.-M. Legendre,
+\emph{Th\'eorie des nombres}, Firmin Didot Fr\`eres, Paris, 1830.
+
+\bibitem{oeis}
+OEIS Foundation Inc., The On-Line Encyclopedia of Integer Sequences,
+\url{https://oeis.org}. Sequences A002110 (primorials).
+\end{thebibliography}
+
+\end{document}

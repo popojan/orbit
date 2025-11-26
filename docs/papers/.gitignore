@@ -1,0 +1,18 @@
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+
+# Compiled PDFs (generate locally or via CI)
+*.pdf
+
+# Keep figure PDFs
+!figures/*.pdf

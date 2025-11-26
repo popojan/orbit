@@ -1,0 +1,199 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{A Chebyshev Framework for Square Root Iteration:\\All Integer Convergence Orders}
+\author{Jan Popelka\thanks{Email: popojan@protonmail.com. Code: \url{https://github.com/popojan/orbit}}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We present a Chebyshev polynomial framework for square root iteration achieving
+convergence order $m+2$ for any integer $m \geq 1$. This provides access to
+\emph{all} integer orders $\geq 3$, including orders 5, 7, 11, etc.\ that cannot
+be achieved by composing Newton (order 2) and Halley (order 3) methods. For
+small $m$, the operator reduces to known methods: $\sigma_1 = d/\text{Halley}$
+(order 3), $\sigma_2 = \text{Newton}^2$ (order 4). The symmetrization
+$\tau_m = \text{Newton} \circ \sigma_m$ achieves order $2(m+2)$.
+\end{abstract}
+
+\section{Introduction}
+
+Newton's method for $\sqrt{d}$ has order 2; Halley's method has order 3.
+Composing these yields orders that are products of 2s and 3s: 4, 6, 8, 9, 12,
+16, 18, \ldots (3-smooth numbers). Orders like 5, 7, 10, 11, 13 are inaccessible
+by composition.
+
+We present a single parameterized operator $\sigma_m$ achieving order $m+2$ for
+any $m \geq 1$, thus covering all integer orders $\geq 3$ through one formula.
+
+\textbf{Honest assessment:} For orders achievable by Newton/Halley composition,
+direct composition may be simpler. The framework's value is \emph{completeness}
+and unified access to all orders.
+
+\section{The Refinement Operator}
+
+\begin{definition}
+For $d, n \in \mathbb{Q}$ with $n^2 \neq d$, and $m \in \mathbb{Z}^+$, define:
+\begin{equation}
+\sigma_m(d, n) = \frac{n^2 + d}{2n} + \frac{n^2 - d}{2n} \cdot \frac{U_{m-1}(\alpha)}{U_{m+1}(\alpha)}
+\end{equation}
+where $U_k$ is the Chebyshev polynomial of the second kind and
+$\alpha = \sqrt{d/(d-n^2)}$.
+\end{definition}
+
+When $n^2 < d$, the argument $\alpha$ is purely imaginary. However, the ratio
+$U_{m-1}(i\beta)/U_{m+1}(i\beta)$ simplifies to a real rational expression
+due to systematic cancellation of $i^k$ factors in Chebyshev polynomials.
+
+\begin{theorem}[Convergence Order]
+The operator $\sigma_m$ has convergence order $m+2$.
+\end{theorem}
+
+\begin{proof}
+The operator $\sigma_m$ is the Householder method of order $d = m+1$ applied to
+$f(t) = t^2 - d$ (see~\cite{householder,dijoux}). Householder's method of order
+$d$ has convergence order $d+1$, hence $\sigma_m$ has order $(m+1)+1 = m+2$.
+\end{proof}
+
+\subsection{Reduction to Known Methods}
+
+For small $m$, explicit computation yields:
+
+\begin{proposition}
+\begin{align}
+\sigma_1(d, n) &= \frac{d(3n^2 + d)}{n(n^2 + 3d)} = \frac{d}{H(n)} \quad \text{(order 3)} \\
+\sigma_2(d, n) &= \frac{n^4 + 6n^2d + d^2}{4n(n^2 + d)} = N(N(n)) \quad \text{(order 4)}
+\end{align}
+where $H(n) = n(n^2+3d)/(3n^2+d)$ is Halley's method and $N(n) = (n+d/n)/2$
+is Newton's method.
+\end{proposition}
+
+For $m \geq 3$, $\sigma_m$ provides orders not achievable by Newton/Halley
+composition (which only yields 3-smooth numbers). Examples: order 5 ($m=3$),
+order 7 ($m=5$), order 11 ($m=9$).
+
+\section{Symmetrization}
+
+\begin{definition}
+The symmetrized operator is:
+\begin{equation}
+\tau_m(d, n) = \frac{1}{2}\left(\sigma_m(d,n) + \frac{d}{\sigma_m(d,n)}\right)
+\end{equation}
+\end{definition}
+
+\begin{theorem}
+$\tau_m = N \circ \sigma_m$, where $N$ is Newton's method. Thus $\tau_m$ has
+convergence order $2(m+2)$.
+\end{theorem}
+
+\begin{proof}
+Newton's method for $\sqrt{d}$ is $N(x) = (x + d/x)/2$. Applying $N$ to
+$\sigma_m(d,n)$ gives exactly $\tau_m(d,n)$. By the composition theorem,
+$\text{order}(N \circ \sigma_m) = \text{order}(N) \times \text{order}(\sigma_m) = 2(m+2)$.
+\end{proof}
+
+\begin{corollary}[Sextic Convergence of $\tau_1$]
+$\tau_1 = N \circ (d/H) = N \circ H'$ has order $2 \times 3 = 6$. The error
+satisfies $\epsilon_{k+1} \approx C \epsilon_k^6$.
+\end{corollary}
+
+\section{Nested Iteration}
+
+Starting from a Pell equation solution $(x_0, y_0)$ with $x_0^2 - dy_0^2 = 1$,
+set $n_0 = x_0/y_0$ as initial approximation. Then iterate:
+\begin{equation}
+n_{k+1} = \tau_m(d, n_k)
+\end{equation}
+
+After $k$ iterations with order-$r$ method: $\epsilon_k \approx \epsilon_0^{r^k}$.
+
+For $\tau_1$ (order 6): precision (in digits) grows as $6^k$.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|c|c|c}
+$m$ & order $m+2$ & order $2(m+2)$ & 3-smooth? \\ \hline
+1 & 3 & 6 & Yes \\
+2 & 4 & 8 & Yes \\
+3 & 5 & 10 & \textbf{No} \\
+4 & 6 & 12 & Yes \\
+5 & 7 & 14 & \textbf{No} \\
+9 & 11 & 22 & \textbf{No} \\
+\end{tabular}
+\caption{Orders $m+2$ (for $\sigma_m$) and $2(m+2)$ (for $\tau_m$). Non-3-smooth
+orders are inaccessible by Newton/Halley composition.}
+\end{table}
+
+\section{When to Use This Framework}
+
+\textbf{Use when:}
+\begin{itemize}
+\item Need order 5, 7, 10, 11, or other non-3-smooth orders
+\item Want unified parameterized formula for all orders
+\item Teaching structure of Householder-type methods
+\end{itemize}
+
+\textbf{Don't use when:}
+\begin{itemize}
+\item Need order 6: use Newton$\circ$Halley directly
+\item Need order 9: use Halley$\circ$Halley
+\item Maximum efficiency for 3-smooth orders
+\end{itemize}
+
+\section{Computational Results}
+
+Using optimized closed forms for $m \leq 2$ and Pell-based initialization:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|c|c|c}
+Method & Iterations & Time & Precision (digits) \\ \hline
+$\tau_1$ (order 6) & 10 & 100ms & 62,749,264 \\
+$\tau_2$ (order 8) & 5 & 12ms & 34,003 \\
+$\tau_3$ (order 10) & 3 & 1.5ms & 1,555 \\
+\end{tabular}
+\caption{Performance for $\sqrt{13}$ (Wolfram Language, Dell Latitude).}
+\end{table}
+
+The convergence order $m+2$ has been verified numerically for $m = 1, 2, 3, 5, 10$
+using two-step error ratio analysis.
+
+\section{Conclusion}
+
+The Chebyshev operator $\sigma_m$ provides a unified framework achieving any
+integer convergence order $\geq 3$. While not more efficient than Newton/Halley
+composition for 3-smooth orders, it uniquely enables prime orders $> 3$ and
+offers a single parameterized formula family.
+
+\begin{thebibliography}{9}
+\bibitem{halley}
+E.~Halley, ``A new method of finding roots,''
+\emph{Phil.\ Trans.\ Roy.\ Soc.}, 18:136--148, 1694.
+
+\bibitem{householder}
+A.~S.~Householder, \emph{Principles of Numerical Analysis}, McGraw-Hill, 1953.
+
+\bibitem{dijoux}
+Y.~Dijoux, ``Chebyshev polynomials in Householder's method for square roots,''
+arXiv:2501.04703, 2024.
+\end{thebibliography}
+
+\end{document}
