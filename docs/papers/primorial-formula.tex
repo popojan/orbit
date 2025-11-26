@@ -38,7 +38,7 @@ Legendre's formula for factorial valuations.
 
 \section{Introduction}
 
-The primorial function $m\# = \prod_{p \leq m} p$ appears throughout number theory,
+The primorial function $m\# = \prod_{p \leq m} p$~\cite{oeis} appears throughout number theory,
 from bounds in prime number theory to highly composite numbers. Primorials are
 typically computed by direct multiplication. We present an alternative: they
 emerge as denominators of alternating factorial sums.
@@ -124,7 +124,7 @@ For odd prime $p \geq 3$ and integer $k \geq 1$ with $p \mid (2k+1)$ and $p < 2k
 Let $\alpha = \nu_p(2k+1) \geq 1$. Since $p < 2k+1$, we have $p^\alpha \leq 2k+1$,
 giving $k \geq (p^\alpha - 1)/2$.
 
-By Legendre's formula, $\nu_p(k!) = \sum_{i \geq 1} \lfloor k/p^i \rfloor \geq \lfloor k/p \rfloor$.
+By Legendre's formula~\cite{legendre}, $\nu_p(k!) = \sum_{i \geq 1} \lfloor k/p^i \rfloor \geq \lfloor k/p \rfloor$.
 
 \textbf{Case $\alpha = 1$:} Need $\lfloor k/p \rfloor \geq 0$. True for all $k \geq 1$.
 
