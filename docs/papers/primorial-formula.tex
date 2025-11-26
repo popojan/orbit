@@ -233,33 +233,11 @@ Thus $\nu_p(D_{k+1}) - \nu_p(N_{k+1}) = 1$. \checkmark
 This completes the induction.
 \end{proof}
 
-\section{Remarks}
-
-\begin{enumerate}
-\item The alternating sign is essential. Without it, the formula loses the
+\begin{remark}
+The alternating sign is essential. Without it, the formula loses the
 factor 3 at $k = 4$ (where $2k+1 = 9 = 3^2$) and yields $\text{Primorial}/3$
 for all $m \geq 9$.
-
-\item The numerator sequence $(-1, 23, 719, 5039, 40319, \ldots)$ for
-$m = 3, 5, 7, 9, 11, \ldots$ contains many primes (23, 719 are prime;
-$5039 = 7! - 1$, $40319 = 8! - 1$). This structure remains unexplained.
-
-\item For comparison, the denominators of harmonic sums $H_n = \sum_{k=1}^n 1/k$
-satisfy $\mathrm{den}(H_n) \mid \mathrm{lcm}(1,\ldots,n)$, which contains prime
-powers. Our formula yields squarefree denominators (primorials) via factorials.
-
-\item The GCD used in reducing $N_k/D_k$ to lowest terms has an explicit form:
-$\gcd(N_k, D_k) = 2 \cdot \prod_{c} c$ where the product runs over odd
-composites $c \leq m$. (For $m < 9$, the product is empty, giving $\gcd = 2$.)
-Thus primes appear in the reduced denominator while composites appear in the
-GCD---a complementary structure.
-
-\item When $m$ is prime, $S_k \cdot (m-1)!$ has fractional part $n/m$ where
-$n \equiv (-1)^{(m+1)/2} \cdot ((m-1)/2)! \pmod{m}$. This follows from Wilson's
-theorem: only the last term (with denominator $2k+1 = m$) contributes to the
-fractional part, and $(m-1)! \equiv -1 \pmod{m}$. The sign connects to the
-Stickelberger relation and quadratic residue theory.
-\end{enumerate}
+\end{remark}
 
 \begin{thebibliography}{9}
 \bibitem{legendre}
