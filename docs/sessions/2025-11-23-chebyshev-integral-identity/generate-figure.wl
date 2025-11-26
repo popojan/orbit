@@ -9,10 +9,10 @@ kgonVertices[k_] := Table[
   {j, 0, k - 1}
 ]
 
-(* Tick mark in radial direction (crossing the circle) *)
-tickMark[{x_, y_}, len_:0.06] := Module[{},
-  (* radial direction *)
-  Line[{{(1 - len) x, (1 - len) y}, {(1 + len) x, (1 + len) y}}]
+(* Tick mark in radial direction (outside the circle only) *)
+tickMark[{x_, y_}, len_:0.08] := Module[{},
+  (* radial direction, from circle edge outward *)
+  Line[{{x, y}, {(1 + len) x, (1 + len) y}}]
 ]
 
 (* Single panel for given k - using Plot with Prolog/Epilog *)
