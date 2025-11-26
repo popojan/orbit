@@ -124,11 +124,81 @@ This provides an ``analytic'' primality criterion ($n$ prime iff $M(n) = 0$),
 though not a practical one.
 \end{remark}
 
+\section{Relations at Special Points}
+
+For $s_n = 1/(2^n+1)$, we have $2^n s_n = 1 - s_n$, so the functional equation
+$\zeta(1-s) = f(s)\zeta(s)$ where $f(s) = 2^{1-s}\pi^{-s}\cos(\pi s/2)\Gamma(s)$
+relates $\zeta(2^n s_n)$ to $\zeta(s_n)$.
+
+Combined with the $L_P$ identity, this yields polynomial relations among
+$\zeta(s_n), \zeta(2s_n), \ldots, \zeta(2^{n-1}s_n)$:
+\begin{align*}
+\zeta(2^k s_n)^2 - \zeta(2^{k+1} s_n) &= 2L_P(2^k s_n), \quad k = 0, \ldots, n-2, \\
+\zeta(2^{n-1} s_n)^2 - f(s_n)\zeta(s_n) &= 2L_P(2^{n-1} s_n).
+\end{align*}
+
+\begin{remark}[Convergence Constraint]
+The Dirichlet series $L_P(s) = \sum_{n=1}^{\infty} P(n)/n^s$ converges only for
+$\Re(s) > 1$. For the special points $s_n = 1/(2^n+1) < 1$, the values $L_P(2^k s_n)$
+require analytic continuation, which itself depends on $\zeta$ values via
+$L_P(s) = \frac{\zeta(s)^2 - \zeta(2s)}{2}$. Thus these relations do not provide
+an independent method for computing $\zeta(s_n)$.
+\end{remark}
+
+\section{Combinatorial Structure of Iterated Squaring}
+
+The recurrence $C_{n+1} = C_n^2 - 2L_n$ with $C_1 = -2L_0$ generates polynomials
+in $L_0, L_1, \ldots$ with interesting combinatorial structure.
+The constant term $C_n$ satisfies
+\[
+C_1 = -2L_0, \qquad C_{n+1} = C_n^2 - 2L_n,
+\]
+where $L_k = L_P(2^k s_n)$. This recurrence mirrors the forward chain for $\zeta$ values.
+
+\begin{theorem}[Bijection with Binary Partitions]
+The constant term $C_n$ is a polynomial in $L_0, L_1, \ldots, L_{n-1}$ whose monomials
+are in bijection with partitions of $2^{n-1}$ into powers of $2$: the monomial
+$L_0^{a_0} L_1^{a_1} \cdots L_{n-1}^{a_{n-1}}$ corresponds to the partition with
+$a_k$ parts of size $2^k$. The number of such monomials is sequence A002577~\cite{oeis}.
+\end{theorem}
+
+\begin{theorem}[Closed Form for Coefficients]\label{thm:coef}
+For $\alpha = (a_0, \ldots, a_{n-1})$ with $\sum_k a_k \cdot 2^k = 2^{n-1}$,
+define the \emph{remaining capacity} $r_k = 2^{n-1} - \sum_{j=k}^{n-1} a_j \cdot 2^j$.
+Then the coefficient of $L_0^{a_0} \cdots L_{n-1}^{a_{n-1}}$ in $C_n$ is
+\[
+\mathrm{coef}_L(\alpha) = (-1)^{|\alpha|} \cdot 2^{|\alpha|} \cdot \prod_{k=1}^{n-1} \binom{r_k/2^k}{a_k},
+\]
+where $|\alpha| = \sum_k a_k$ is the total degree.
+\end{theorem}
+
+\begin{proof}
+The substitution $x_k = -2L_k$ transforms the recurrence to $D_{n+1} = D_n^2 + x_n$
+with $D_1 = x_0$. The $x$-coefficient $\mathrm{coef}_x(\alpha) = \prod_{k=1}^{n-1} \binom{r_k/2^k}{a_k}$
+counts ways to assign $a_k$ blocks of size $2^k$ to the $r_k/2^k$ available slots
+at level $k$ in a binary tree of depth $n-1$. The factor $(-2)^{|\alpha|}$ arises
+from the substitution.
+\end{proof}
+
+\begin{corollary}
+The first few constant terms are:
+\begin{align*}
+C_1 &= -2L_0, \\
+C_2 &= 4L_0^2 - 2L_1, \\
+C_3 &= 16L_0^4 - 16L_0^2 L_1 + 4L_1^2 - 2L_2.
+\end{align*}
+\end{corollary}
+
 \begin{thebibliography}{9}
 \bibitem{apostol}
 T.\,M.~Apostol,
 \emph{Introduction to Analytic Number Theory},
 Springer, 1976.
+
+\bibitem{oeis}
+OEIS Foundation Inc.,
+\emph{The On-Line Encyclopedia of Integer Sequences},
+\url{https://oeis.org/A002577}, 2024.
 \end{thebibliography}
 
 \end{document}
