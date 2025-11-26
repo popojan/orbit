@@ -16,7 +16,7 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
-\title{Dirichlet Series for Divisor Counts Below the Square Root}
+\title{Dirichlet Series for Ordered Divisor Pairs}
 \author{Jan Popelka\thanks{Email: popojan@protonmail.com}}
 \date{}
 
@@ -25,97 +25,103 @@
 \maketitle
 
 \begin{abstract}
-We derive a closed form for the Dirichlet series $L_M(s) = \sum_{n=2}^{\infty} M(n)/n^s$,
-where $M(n) = \lfloor(\tau(n)-1)/2\rfloor$ counts divisors of $n$ in $[2, \sqrt{n}]$.
-Despite the non-multiplicative nature of $M(n)$, the series admits the closed form
-$L_M(s) = \frac{1}{2}[\zeta(s)^2 + \zeta(2s)] - \zeta(s)$ for $s > 1$.
+We derive a closed form for the Dirichlet series of the function counting
+ordered divisor pairs. For $P(n) = \lfloor\tau(n)/2\rfloor$, which counts
+divisor pairs $(d, n/d)$ with $d < n/d$, the Dirichlet series admits the
+elegant closed form $L_P(s) = \frac{\zeta(s)^2 - \zeta(2s)}{2}$ for $s > 1$.
 \end{abstract}
 
-\section{The Function $M(n)$}
+\section{Ordered Divisor Pairs}
 
 \begin{definition}
-For $n \geq 2$, define
+For $n \geq 1$, define
 \[
-M(n) = \#\{d \in \mathbb{Z} : d \mid n, \, 2 \leq d \leq \sqrt{n}\}.
+P(n) = \#\{d \in \mathbb{Z} : d \mid n, \, 1 \leq d < \sqrt{n}\}
 \]
+the count of divisors strictly below $\sqrt{n}$.
 \end{definition}
 
+This counts \emph{ordered divisor pairs}: factorizations $n = d \cdot e$ with $d < e$.
+
 \begin{proposition}[Closed Form]
-For $n \geq 2$, $M(n) = \lfloor (\tau(n) - 1)/2 \rfloor$ where $\tau(n)$ is the
-divisor function.
+For $n \geq 1$, $P(n) = \lfloor \tau(n)/2 \rfloor$ where $\tau(n)$ is the divisor function.
 \end{proposition}
 
 \begin{proof}
-Divisors pair as $(d, n/d)$. Those with $d \leq \sqrt{n}$ constitute exactly half
-of divisors $\geq 2$, with the floor handling perfect squares.
+Divisors pair as $(d, n/d)$ with $d \cdot (n/d) = n$. Exactly half satisfy $d < n/d$,
+i.e., $d < \sqrt{n}$. For perfect squares, $d = \sqrt{n}$ pairs with itself and is
+excluded by the strict inequality. The floor handles both cases.
 \end{proof}
 
 \begin{remark}[Non-multiplicativity]
-$M(n)$ is not multiplicative: $M(6) = 1$ but $M(2) \cdot M(3) = 0$.
-This precludes a standard Euler product for its Dirichlet series.
+$P(n)$ is not multiplicative: $P(6) = 2$ but $P(2) \cdot P(3) = 1$.
 \end{remark}
 
 \section{The Dirichlet Series}
 
-\begin{theorem}[Closed Form for $L_M(s)$]
+\begin{theorem}[Main Result]
 For $s > 1$,
 \[
-L_M(s) = \sum_{n=2}^{\infty} \frac{M(n)}{n^s} = \frac{\zeta(s)^2 + \zeta(2s)}{2} - \zeta(s).
+L_P(s) = \sum_{n=1}^{\infty} \frac{P(n)}{n^s} = \frac{\zeta(s)^2 - \zeta(2s)}{2}.
 \]
 \end{theorem}
 
 \begin{proof}
-Rewrite as a double sum over divisor pairs:
+Since $P(n) = \lfloor \tau(n)/2 \rfloor$ and $\tau(n)$ is odd iff $n$ is a perfect square:
 \[
-L_M(s) = \sum_{n=2}^{\infty} \frac{1}{n^s} \sum_{\substack{d \mid n \\ 2 \leq d \leq \sqrt{n}}} 1
-= \sum_{d=2}^{\infty} \sum_{\substack{n : d \mid n \\ d \leq \sqrt{n}}} \frac{1}{n^s}.
+P(n) = \frac{\tau(n)}{2} - \frac{1}{2}\mathbf{1}_{n \text{ is square}}.
 \]
-For fixed $d$, write $n = kd$ where $k \geq d$ (from $d \leq \sqrt{kd}$):
+Therefore
 \[
-L_M(s) = \sum_{d=2}^{\infty} \frac{1}{d^s} \sum_{k=d}^{\infty} \frac{1}{k^s}
-= \sum_{d=2}^{\infty} \frac{\zeta(s) - H_{d-1}(s)}{d^s}
-\]
-where $H_j(s) = \sum_{k=1}^{j} k^{-s}$.
-
-Expanding and using $\sum_{d=2}^{\infty} d^{-s} = \zeta(s) - 1$:
-\[
-L_M(s) = \zeta(s)[\zeta(s) - 1] - \sum_{d=2}^{\infty} \frac{H_{d-1}(s)}{d^s}.
-\]
-
-The correction sum equals $\sum_{1 \leq j < k} (jk)^{-s} = (\zeta(s)^2 - \zeta(2s))/2$.
-Substituting:
-\[
-L_M(s) = \zeta(s)^2 - \zeta(s) - \frac{\zeta(s)^2 - \zeta(2s)}{2}
-= \frac{\zeta(s)^2 + \zeta(2s)}{2} - \zeta(s). \qedhere
+L_P(s) = \frac{1}{2}\sum_{n=1}^{\infty} \frac{\tau(n)}{n^s}
+       - \frac{1}{2}\sum_{k=1}^{\infty} \frac{1}{k^{2s}}
+       = \frac{\zeta(s)^2 - \zeta(2s)}{2}. \qedhere
 \]
 \end{proof}
 
-\begin{corollary}[Special Value]
-$L_M(2) = \dfrac{\pi^2(7\pi^2 - 60)}{360} \approx 0.2491$.
+\begin{corollary}[Special Values]
+$L_P(2) = \dfrac{\pi^4 - 90}{180} = \dfrac{\pi^2(\pi^2-9)}{180}$, \quad
+$L_P(3) = \dfrac{\zeta(3)^2 - \zeta(6)}{2}$.
 \end{corollary}
 
-\begin{remark}[Convergence Rate]
-The direct sum $\sum_{n \leq N} M(n)/n^s$ converges to $L_M(s)$ at rate $O(N^{-1/2})$,
-which is slow. This follows from the error term in divisor sum asymptotics.
+\section{Variants}
+
+\begin{remark}[Non-trivial Divisor Pairs]\label{rem:M}
+If we exclude the trivial pair $(1, n)$ and count $M(n) = \#\{d : 2 \leq d \leq \sqrt{n}, d \mid n\}$,
+then $M(n) = \lfloor(\tau(n)-1)/2\rfloor$ and
+\[
+L_M(s) = \frac{\zeta(s)^2 + \zeta(2s)}{2} - \zeta(s).
+\]
+The relationship is $L_P(s) - L_M(s) = \zeta(s) - \zeta(2s)$, accounting for:
+\begin{itemize}
+\item Adding the pair $(1, n)$ contributes $+\zeta(s)$
+\item Changing $d \leq \sqrt{n}$ to $d < \sqrt{n}$ for squares contributes $-\zeta(2s)$
+\end{itemize}
 \end{remark}
 
-\section{Connection to Regularized Sums}
+\begin{remark}[Hadamard Product Representation]
+The closed form $L_P(s) = \frac{\zeta(s)^2 - \zeta(2s)}{2}$ admits interpretation
+via Hadamard products over the nontrivial zeros $\rho$ of $\zeta$.
+Using the identity $(1-s/\rho)^2 = (1-2s/\rho) + s^2/\rho^2$, one obtains
+\[
+\prod_\rho (1-s/\rho)^2 = \prod_\rho (1-2s/\rho) \cdot C(s),
+\]
+where $C(s) = \prod_\rho \left(1 + \frac{s^2}{\rho(\rho-2s)}\right)$
+is an absolutely convergent product (terms decay as $O(|\rho|^{-2})$).
+This reveals how the structure of $L_P(s)$ relates to products over zeta zeros,
+though it does not simplify computation.
+\end{remark}
 
 \begin{remark}[Epsilon-Pole Formulation]
-The function $M(n)$ also appears as a residue. Define for $\alpha > 1/2$:
+The variant $M(n)$ from Remark~\ref{rem:M} also appears as a residue. Define for $\alpha > 1/2$:
 \[
 F_n(\alpha, \varepsilon) = \sum_{d=2}^{\infty} \sum_{k=0}^{\infty}
 \left[(n - kd - d^2)^2 + \varepsilon\right]^{-\alpha}.
 \]
-Then $\lim_{\varepsilon \to 0^+} \varepsilon^\alpha F_n(\alpha, \varepsilon) = M(n)$.
-
-The sum has poles at $\varepsilon = 0$ precisely when $n = kd + d^2 = d(k+d)$ for some
-$d \geq 2$, $k \geq 0$---i.e., when $d$ divides $n$ with $d \leq \sqrt{n}$.
-The residue counts these poles, giving $M(n)$.
-
-This provides an ``analytic'' primality criterion: $n$ is prime iff $M(n) = 0$
-iff $F_n$ is analytic at $\varepsilon = 0$. However, this is not computationally
-useful since evaluating $M(n)$ requires knowing divisors.
+The sum has poles at $n = d(k+d)$ with $d \geq 2$ and $k \geq 0$, i.e., at divisor pairs
+$(d, n/d)$ with $2 \leq d \leq n/d$. Thus $\lim_{\varepsilon \to 0^+} \varepsilon^\alpha F_n(\alpha, \varepsilon) = M(n)$.
+This provides an ``analytic'' primality criterion ($n$ prime iff $M(n) = 0$),
+though not a practical one.
 \end{remark}
 
 \begin{thebibliography}{9}
