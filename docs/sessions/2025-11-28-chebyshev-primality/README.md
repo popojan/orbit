@@ -1,7 +1,7 @@
 # Chebyshev Geometry and Primality
 
 **Date:** 2025-11-28
-**Status:** ✅ SOLVED for ω ≤ 3 (CRT parity formula)
+**Status:** ✅ SOLVED for ω ≤ 3, 🔬 EXPLORED for ω = 4 (additive structure with lookup tables)
 
 ## Motivation
 
@@ -590,17 +590,76 @@ The CRT parity approach should extend to 4+ primes, but:
 
 This is left for future work.
 
+## ω=4 Exploration and Additive Structure (Update 10)
+
+### Additive Formula for ω=3
+🔬 **VERIFIED** for 308 cases with 61 joint patterns
+
+The sign sum for three primes follows an **additive formula**:
+
+$$\boxed{\Sigma\text{signs}(p_1 p_2 p_3) = \Sigma\text{signs}(p_1 p_2) + \Sigma\text{signs}(p_1 p_3) + \Sigma\text{signs}(p_2 p_3) + c}$$
+
+where the **correction $c \in \{-4, 0, 4, 8\}$** is constant for each combination of:
+- The triple $(\text{ss}_{12}, \text{ss}_{13}, \text{ss}_{23}) \in \{-3, 1\}^3$
+- The parity vector $(b_1, b_2, b_3) \in \{0, 1\}^3$
+
+**Result:** All 61 joint patterns have constant correction → lookup table approach works!
+
+### ω=4 Results
+🔬 **VERIFIED** for 165 cases (products of 4 small primes)
+
+For $k = p_1 p_2 p_3 p_4$:
+
+**Congruence:** $\Sigma\text{signs}(k) \equiv 1 - 2(4) = -7 \equiv 1 \pmod{4}$ ✓
+
+**Observed values:** $\{-23, -19, -15, -11, -7, -3, 1, 5, 9, 13, 17, 21\}$
+- All ≡ 1 (mod 4) ✓
+- Spacing of 4 between values ✓
+
+**Additive structure:**
+$$\text{ss}_4 = \text{sum of triples} - \text{sum of pairs} + \text{correction}$$
+
+where correction ∈ $\{-17, -13, -9, -5, -1, 3, 7, 11\}$ (also spacing 4).
+
+### Connection to Permutation Signs
+
+The parity of modular inverses has **symmetric structure**:
+$$e_{ij} + e_{ji} \equiv 0 \pmod{2}$$
+
+where $e_{ij} = p_i^{-1} \bmod p_j \pmod{2}$.
+
+This means: if $p_i^{-1} \bmod p_j$ is odd, then $p_j^{-1} \bmod p_i$ is also odd.
+
+**Observation:** The alternating congruence pattern:
+- ω=1: ss ≡ 3 (mod 4)
+- ω=2: ss ≡ 1 (mod 4)
+- ω=3: ss ≡ 3 (mod 4)
+- ω=4: ss ≡ 1 (mod 4)
+
+behaves like $(-1)^\omega$, reminiscent of permutation signatures!
+
+### Closed Form: Factorization Does NOT Work
+
+**Attempted:** $\Sigma\text{signs} = -\prod_i f(p_i, b_i)$ where $f(p,0) = p-2$, $f(p,1) = 1$
+
+**Result:** ❌ Fails (718/759 errors for ω=3)
+
+**Reason:** The mod $k$ operation in CRT reconstruction introduces "carry" that breaks factorization:
+$$n \bmod 2 \neq (a_1 b_1 + a_2 b_2 + a_3 b_3) \bmod 2$$
+
+The floor division $\lfloor S/k \rfloor$ affects parity unpredictably.
+
 ## Open Questions
 
 1. ~~**Formula for Σsigns (ω=2):** What determines whether a semiprime $pq$ has Σsigns = +1 or -3?~~ **SOLVED** (Update 6)
 
 2. ~~**Formula for Σsigns (ω=3):** What structure governs Σsigns for products of three primes?~~ **SOLVED** (Update 9 - CRT parity formula)
 
-3. **Formula for Σsigns (ω≥4):** Can the CRT parity approach extend to 4+ primes?
+3. ~~**Formula for Σsigns (ω≥4):** Can the CRT parity approach extend to 4+ primes?~~ **EXPLORED** (Update 10 - additive structure with lookup tables)
 
 4. **Deeper meaning:** Why does the parity of CRT reconstruction control the sign structure of Chebyshev lobes? Is there a connection to character sums or L-functions?
 
-5. **Closed form:** Is there an explicit formula for #{odd} - #{even} in terms of $(p_1, p_2, p_3)$ without iterating over signatures?
+5. ~~**Closed form:** Is there an explicit formula for #{odd} - #{even} in terms of $(p_1, p_2, p_3)$ without iterating over signatures?~~ **NEGATIVE** (Update 10 - factorization fails due to carries)
 
 6. **Computational use:** Can this geometric structure provide any computational advantage for primality testing?
 
@@ -631,3 +690,13 @@ This is left for future work.
 - `omega3-verify-formula.wl` - Extended verification for p₁=3 (3528 cases)
 - `additive-residues.wl` - Analysis of CRT signature structure
 - `closed-form-attempt.wl` - Counting formula derivation
+
+### ω=4 and Additive Structure (Update 10)
+
+- `additive-formula.wl` - Testing ss₃ = ss₁₂ + ss₁₃ + ss₂₃ + c (308 cases, 61 patterns)
+- `omega4-test.wl` - ω=4 exploration (165 cases)
+- `pattern-search.wl` - Pattern analysis by b-vector
+- `constant-patterns.wl` - Finding constant b-patterns
+- `closed-form-omega3.wl` - Attempted closed form (factorization fails)
+- `debug-factorization.wl` - Debugging why factorization fails
+- `permutation-connection.wl` - Exploring connection to permutation signs
