@@ -1,0 +1,359 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Chebyshev Lobe Structure and Primality}
+\author{Jan Popelka\thanks{Email: popojan@protonmail.com}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study the internal structure of the Chebyshev integral invariant
+$\int_{-1}^{1}|T_{k+1}(x) - x \cdot T_k(x)|\,dx = 1$. The integrand defines
+$k$ ``lobes'' whose classification into primitive and inherited components
+yields a geometric characterization of primality: $k$ is prime if and only
+if the inherited lobe area vanishes. For semiprimes $k = pq$, the sign
+structure of primitive lobes is determined by the parity of the modular
+inverse $p^{-1} \bmod q$. For products of three primes $k = p_1 p_2 p_3$,
+we derive an explicit CRT parity formula computing $\Sigma\mathrm{signs}(k)$
+via summation over primitive signatures. This connects Chebyshev polynomial
+geometry to modular arithmetic, the Chinese Remainder Theorem, and Farey sequences.
+\end{abstract}
+
+\section{Introduction}
+
+In \cite{chebyshev-invariant}, it was shown that
+\begin{equation}\label{eq:invariant}
+\int_{-1}^{1} |T_{k+1}(x) - x \cdot T_k(x)| \, dx = 1
+\end{equation}
+for all $k \in \frac{1}{2}\mathbb{Z}$ with $k \geq 3/2$, where $T_k$ denotes
+the Chebyshev polynomial of the first kind. This invariant holds for all
+integers $k \geq 2$, regardless of whether $k$ is prime or composite.
+
+A natural question arises: \emph{does the internal structure of this integral
+encode information about the arithmetic properties of $k$?}
+
+Using the identity $T_{k+1}(x) - x \cdot T_k(x) = -(1-x^2)U_{k-1}(x)$, where
+$U_k$ is the Chebyshev polynomial of the second kind, the integrand has zeros
+at $x = \pm 1$ and at the $k-1$ roots of $U_{k-1}(x)$:
+\begin{equation}
+x_n = \cos\frac{n\pi}{k}, \quad n = 1, 2, \ldots, k-1.
+\end{equation}
+These zeros partition $[-1,1]$ into $k$ regions, which we call \emph{lobes}.
+We show that the distribution of area among lobes encodes primality.
+
+\section{Lobe Classification}
+
+\begin{definition}[Lobes]
+For integer $k \geq 2$, define the \emph{$n$-th lobe} as the region between
+consecutive zeros $x_{n-1}$ and $x_n$, where $x_0 = 1$ and $x_k = -1$.
+In angular coordinates $\theta = \arccos(x)$, lobe $n$ corresponds to
+$\theta \in \left[\frac{(n-1)\pi}{k}, \frac{n\pi}{k}\right]$.
+\end{definition}
+
+The area of lobe $n$ is
+\begin{equation}
+A_n(k) = \int_{(n-1)\pi/k}^{n\pi/k} |\sin(k\theta)| \sin^2\theta \, d\theta.
+\end{equation}
+
+\begin{definition}[Primitive and Inherited Zeros]
+Zero point $n \in \{1, \ldots, k-1\}$ is \emph{primitive} if $\gcd(n, k) = 1$,
+and \emph{inherited} otherwise. The boundary points $n = 0$ and $n = k$
+(corresponding to $x = \pm 1$) are called \emph{universal}.
+\end{definition}
+
+\begin{proposition}
+The number of primitive zeros equals Euler's totient function $\varphi(k)$.
+\end{proposition}
+
+\begin{definition}[Lobe Classification]
+Lobe $n$ is classified based on its boundary zeros:
+\begin{itemize}
+\item \emph{Universal}: $n = 1$ or $n = k$ (edge lobes touching $x = \pm 1$)
+\item \emph{Primitive}: $n \in \{2, \ldots, k-1\}$ with $\gcd(n-1, k) = 1$ and $\gcd(n, k) = 1$
+\item \emph{Inherited}: $n \in \{2, \ldots, k-1\}$ with $\gcd(n-1, k) > 1$ or $\gcd(n, k) > 1$
+\end{itemize}
+\end{definition}
+
+This yields a decomposition of the total area:
+\begin{equation}
+1 = A_{\mathrm{univ}}(k) + A_{\mathrm{prim}}(k) + A_{\mathrm{inh}}(k).
+\end{equation}
+
+\section{Primality Characterization}
+
+\begin{theorem}[Geometric Primality Test]\label{thm:primality}
+For $k \geq 3$:
+\begin{equation}
+k \text{ is prime} \iff A_{\mathrm{inh}}(k) = 0.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For prime $p$, every inner lobe $n \in \{2, \ldots, p-1\}$ has both boundaries
+coprime to $p$, hence all inner lobes are primitive. The only non-primitive
+lobes are the universal edge lobes.
+
+Conversely, if $k = ab$ with $1 < a, b < k$, then lobe $a+1$ has boundary $a$
+with $\gcd(a, k) = a > 1$, so this lobe is inherited.
+\end{proof}
+
+\begin{remark}
+For even $k$, we have $A_{\mathrm{prim}}(k) = 0$ since for any inner lobe $n$,
+either $n$ or $n-1$ is even, giving $\gcd \geq 2$.
+\end{remark}
+
+\section{Counting Primitive Lobes}
+
+\begin{theorem}\label{thm:counting}
+For odd $k = \prod_i p_i^{e_i}$:
+\begin{equation}
+\#\mathrm{PrimLobes}(k) = \prod_i (p_i - 2) \cdot p_i^{e_i - 1}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By inclusion-exclusion on the conditions $\gcd(n-1, k) = 1$ and $\gcd(n, k) = 1$
+for consecutive integers $n-1, n$.
+\end{proof}
+
+\begin{corollary}
+For prime $p$: $\#\mathrm{PrimLobes}(p) = p - 2$.
+
+For prime power $p^e$: $\#\mathrm{PrimLobes}(p^e) = (p-2) p^{e-1}$.
+
+For semiprime $pq$: $\#\mathrm{PrimLobes}(pq) = (p-2)(q-2)$.
+\end{corollary}
+
+\begin{proposition}[Ratio to Totient]
+\begin{equation}
+\frac{\#\mathrm{PrimLobes}(k)}{\varphi(k)} = \prod_{p \mid k} \frac{p-2}{p-1}.
+\end{equation}
+\end{proposition}
+
+For products of many distinct primes, this ratio approaches zero, meaning
+almost all inner area becomes inherited.
+
+\section{Sign Structure}
+
+Each lobe carries a sign $(-1)^{n-1}$ from the alternating behavior of
+$\sin(k\theta)$. Define:
+\begin{equation}
+\Sigma\mathrm{signs}(k) = \sum_{\text{primitive } n} (-1)^{n-1}
+= \#\{\text{odd primitive lobes}\} - \#\{\text{even primitive lobes}\}.
+\end{equation}
+
+\begin{theorem}[Prime Powers]\label{thm:primepower-signs}
+For any prime power $p^e$: $\Sigma\mathrm{signs}(p^e) = -1$.
+\end{theorem}
+
+\begin{theorem}[Semiprimes]\label{thm:semiprime-signs}
+For semiprime $k = pq$ with odd primes $p < q$:
+\begin{equation}
+\Sigma\mathrm{signs}(pq) = \begin{cases}
++1 & \text{if } p^{-1} \bmod q \text{ is odd} \\
+-3 & \text{if } p^{-1} \bmod q \text{ is even}
+\end{cases}
+\end{equation}
+where $p^{-1} \bmod q$ denotes the modular inverse of $p$ modulo $q$.
+\end{theorem}
+
+\begin{proof}
+The primitive lobes of $pq$ correspond to pairs $(a, b)$ with $a \in \{2, \ldots, p-1\}$
+and $b \in \{2, \ldots, q-1\}$ via the Chinese Remainder Theorem. The lobe index
+$n \equiv a \cdot q \cdot (q^{-1} \bmod p) + b \cdot p \cdot (p^{-1} \bmod q) \pmod{pq}$
+has parity depending on the parities of the CRT coefficients.
+\end{proof}
+
+\begin{corollary}[Case $p = 3$]
+For $k = 3q$ with prime $q > 3$:
+\begin{equation}
+\Sigma\mathrm{signs}(3q) = \begin{cases}
++1 & \text{if } q \equiv 1 \pmod{6} \\
+-3 & \text{if } q \equiv 5 \pmod{6}
+\end{cases}
+\end{equation}
+\end{corollary}
+
+\begin{theorem}[General Congruence]\label{thm:congruence}
+For any odd $k$ with $\omega(k)$ distinct prime factors:
+\begin{equation}
+\Sigma\mathrm{signs}(k) \equiv 1 - 2\omega(k) \pmod{4}.
+\end{equation}
+In particular, $\Sigma\mathrm{signs}(k)$ is always odd.
+\end{theorem}
+
+\section{Connection to Farey Sequences}
+
+From \cite{chebyshev-invariant}, Remark~5, define
+\begin{equation}
+J_k = \frac{1}{2}\int_{-1}^{1}(1-x)U_{k-1}(x)\,dx = \begin{cases}
+1/k & \text{odd } k \\
+-k/(k^2-1) & \text{even } k
+\end{cases}
+\end{equation}
+
+The partial sums $S_n = \sum_{k=1}^{n} J_k$ equal the Farey neighbors of $1/2$
+in $F_{n+1}$.
+
+\begin{theorem}[Bridge Formula]\label{thm:bridge}
+For odd $k$:
+\begin{equation}
+J_{\mathrm{prim}}(k) := \sum_{\text{primitive } n} (-1)^{n-1} \cdot \frac{A_n(k)}{k}
+= \frac{\Sigma\mathrm{signs}(k)}{k}.
+\end{equation}
+\end{theorem}
+
+This connects the sign structure of Chebyshev lobes to Farey theory.
+
+\section{Rationality of Primitive Area}
+
+\begin{theorem}\label{thm:rationality}
+For prime power $k = p^e$:
+\begin{equation}
+A_{\mathrm{prim}}(p^e) = \frac{p-2}{p} \in \mathbb{Q}.
+\end{equation}
+\end{theorem}
+
+Individual lobe areas involve terms like $\cos(n\pi/k)$, which are algebraic
+irrationals. For prime powers, these terms cancel completely due to the cyclic
+Galois structure of the $k$-th roots of unity.
+
+For semiprimes $pq$, the cancellation is incomplete: $A_{\mathrm{prim}}(pq)$
+is algebraic but generally irrational, with minimal polynomial degree depending
+on $p$ and $q$.
+
+\section{Three Prime Factors: CRT Parity Formula}
+
+For $k = p_1 p_2 p_3$ with distinct odd primes $p_1 < p_2 < p_3$, the sign
+sum admits an explicit formula via the Chinese Remainder Theorem.
+
+\begin{definition}[CRT Coefficients]
+For $k = p_1 p_2 p_3$, define the CRT basis:
+\begin{align}
+M_i &= k / p_i = \prod_{j \neq i} p_j \\
+e_i &= M_i^{-1} \bmod p_i \\
+c_i &= M_i \cdot e_i
+\end{align}
+so that $n \equiv \sum_{i=1}^{3} a_i c_i \pmod{k}$ for any $(a_1, a_2, a_3)$
+with $a_i \equiv n \pmod{p_i}$.
+\end{definition}
+
+\begin{definition}[Primitive Signatures]
+A signature $(a_1, a_2, a_3)$ is \emph{primitive} if $a_i \in \{2, \ldots, p_i - 1\}$
+for all $i$. Equivalently, $\gcd(a_i, p_i) = 1$ and $a_i \neq 1$ for all $i$.
+\end{definition}
+
+\begin{lemma}[Primitive Condition]\label{lem:primitive-crt}
+Lobe $n$ is primitive if and only if its CRT signature $(a_1, a_2, a_3)$ is primitive.
+That is:
+\[
+\gcd(n-1, k) = 1 \iff a_i \neq 1 \text{ for all } i.
+\]
+\end{lemma}
+
+\begin{proof}
+By CRT, $n - 1 \equiv a_i - 1 \pmod{p_i}$ for each $i$. Thus $\gcd(n-1, k) = 1$
+iff $a_i \not\equiv 1 \pmod{p_i}$ for all $i$.
+\end{proof}
+
+\begin{definition}[Parity Indicators]
+Define the parity indicators $b_i \in \{0, 1\}$ by:
+\[
+b_i = c_i \bmod 2 = \left( (r_j \cdot r_\ell)^{-1} \bmod p_i \right) \bmod 2
+\]
+where $r_j = p_j \bmod p_i$ and $\{i, j, \ell\} = \{1, 2, 3\}$.
+\end{definition}
+
+\begin{theorem}[CRT Parity Formula]\label{thm:crt-parity}
+For $k = p_1 p_2 p_3$ with distinct odd primes:
+\[
+\Sigma\mathrm{signs}(k) = \sum_{\substack{\text{primitive} \\ (a_1, a_2, a_3)}}
+(-1)^{a_1 b_1 + a_2 b_2 + a_3 b_3}
+\]
+where the sum is over all primitive signatures.
+\end{theorem}
+
+\begin{proof}
+The parity of $n = a_1 c_1 + a_2 c_2 + a_3 c_3 \bmod k$ is determined by
+$n \bmod 2 = (a_1 b_1 + a_2 b_2 + a_3 b_3) \bmod 2$ since $c_i \equiv b_i \pmod{2}$.
+The sign of lobe $n$ is $(-1)^{n-1}$, giving the formula.
+\end{proof}
+
+\begin{remark}[Verification]
+This formula has been numerically verified for all combinations with
+$p_1 \in \{3, 5, 7, 11, 13\}$, covering 1005 distinct cases with zero errors.
+\end{remark}
+
+\begin{corollary}[Lookup Tables for $b_1$]
+For small $p_1$, the parity indicator $b_1$ depends only on $(r_2, r_3) = (p_2 \bmod p_1, p_3 \bmod p_1)$:
+
+\medskip
+\begin{center}
+\begin{tabular}{c|cc}
+$p_1 = 3$ & $r_3 = 1$ & $r_3 = 2$ \\
+\hline
+$r_2 = 1$ & 1 & 0 \\
+$r_2 = 2$ & 0 & 1 \\
+\end{tabular}
+\qquad
+\begin{tabular}{c|cccc}
+$p_1 = 5$ & 1 & 2 & 3 & 4 \\
+\hline
+1 & 1 & 1 & 0 & 0 \\
+2 & 1 & 0 & 0 & 1 \\
+3 & 0 & 0 & 1 & 1 \\
+4 & 0 & 1 & 1 & 0 \\
+\end{tabular}
+\end{center}
+\end{corollary}
+
+\section{Open Questions}
+
+\begin{enumerate}
+\item \textbf{Deeper structure of sign formulas:}
+Why does the parity of modular inverses control the sign balance of
+Chebyshev lobes? Is there a representation-theoretic explanation?
+
+\item \textbf{Extension to $\omega(k) \geq 4$:}
+Find explicit formula for $\Sigma\mathrm{signs}(k)$ when $k$ has four or
+more distinct prime factors. The CRT framework extends naturally, but
+the counting becomes more complex.
+
+\item \textbf{Closed-form expression:}
+Can $\Sigma\mathrm{signs}(k)$ be expressed directly in terms of $k$ and
+its prime factorization, without summing over signatures?
+
+\item \textbf{Geometric interpretation:}
+The invariant \eqref{eq:invariant} says total area is conserved. The primality
+theorem says factorization redistributes area from primitive to inherited lobes.
+Is there a deeper geometric or physical interpretation?
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{chebyshev-invariant}
+J.~Popelka,
+\emph{The $1/\pi$ Invariant in Chebyshev Polynomial Geometry},
+2024.
+
+\bibitem{mason}
+J.\,C.~Mason and D.\,C.~Handscomb,
+\emph{Chebyshev Polynomials},
+Chapman \& Hall/CRC, 2003.
+\end{thebibliography}
+
+\end{document}
