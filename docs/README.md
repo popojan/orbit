@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-11-25 20:04:31
+**Generated:** 2025-11-28 02:19:07
 
 ## Theorems (Master References)
 
@@ -20,16 +20,16 @@
 
 ## Recent Sessions (Last 10)
 
-- [Chebyshev Polynomial Integral Identity](sessions/2025-11-23-chebyshev-integral-identity/chebyshev-integral-theorem.md) *(2025-11-25)*
-- [Algebraic π Exploration - Work in Progress](sessions/2025-11-23-chebyshev-integral-identity/algebraic-pi-exploration.md) *(2025-11-25)*
-- [Egypt Compact Representation: Range Quadruplets](sessions/2025-11-25-hyperbolic-combinatorics/egypt-compact-representation.md) *(2025-11-25)*
-- [Session: Hyperbolic-Combinatorics Connection](sessions/2025-11-25-hyperbolic-combinatorics/README.md) *(2025-11-25)*
-- [Lattice Path Synthesis: Egypt ↔ Lobb ↔ Stern-Brocot](sessions/2025-11-25-hyperbolic-combinatorics/lattice-path-synthesis.md) *(2025-11-25)*
-- [Session: Proof Triangle Completed! 🎉](sessions/2025-11-24-proof-triangle-completed.md) *(2025-11-24)*
-- [Palindromic Symmetries in Tangent Polynomials and Gamma Weights](sessions/2025-11-22-palindromic-symmetries/README.md) *(2025-11-24)*
-- [Physics Connection Review: Why Egypt Trajectory Is Not Physics](sessions/2025-11-22-palindromic-symmetries/physics-connection-review.md) *(2025-11-24)*
-- [Egypt Trajectory in Hyperbolic Geometry](sessions/2025-11-22-palindromic-symmetries/egypt-poincare-trajectory.md) *(2025-11-24)*
-- [Egypt Trajectory: Exponential Decay in Hyperbolic Coordinates](sessions/2025-11-22-palindromic-symmetries/egypt-exponential-decay.md) *(2025-11-24)*
+- [Unit Fraction Discovery: Primality & Factorization](sessions/2025-11-27-semiprime-gamma-form/unit-fraction-discovery.md) *(2025-11-28)*
+- [Semiprime Formula: Gamma/Factorial Reformulation](sessions/2025-11-27-semiprime-gamma-form/README.md) *(2025-11-28)*
+- [Tensorový produkt involucí](sessions/2025-11-27-dirichlet-divisor-pairs/tensor-product.md) *(2025-11-28)*
+- [Co je standard vs. co jsme přidali](sessions/2025-11-27-dirichlet-divisor-pairs/summary-what-is-new.md) *(2025-11-28)*
+- [Dirichletova řada pro uspořádané páry dělitelů](sessions/2025-11-27-dirichlet-divisor-pairs/README.md) *(2025-11-28)*
+- [Fermionový Primon Gas — Implementace a propojení s L_P](sessions/2025-11-27-dirichlet-divisor-pairs/primon-gas.md) *(2025-11-28)*
+- [Vnořený radikál: Algebraická identita pro L_P a Z_F](sessions/2025-11-27-dirichlet-divisor-pairs/nested-radical-identity.md) *(2025-11-28)*
+- [Párování dělitelů jako involuce](sessions/2025-11-27-dirichlet-divisor-pairs/involuce.md) *(2025-11-28)*
+- [Fermion/Boson interpretace](sessions/2025-11-27-dirichlet-divisor-pairs/fermion-boson.md) *(2025-11-28)*
+- [Fermionová algebra — detailní analýza](sessions/2025-11-27-dirichlet-divisor-pairs/fermion-algebra.md) *(2025-11-28)*
 
 ## Navigation
 
