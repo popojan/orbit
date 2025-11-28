@@ -478,3 +478,104 @@ Quantum advantage is finding such x in O((log n)³) instead of O(√n).
 - `scripts/functional-equations.wl` - Additivity of S(n)
 - `scripts/p-adic-exploration.wl` - Wilson in Q_p
 - `scripts/optimization-perspective.wl` - Fermat connection
+
+## Euler Totient Connection (Nov 27, continued)
+
+### Key Identity: S_∞ and φ(n)
+
+For semiprime n = pq:
+
+```
+φ(n) = (p-1)(q-1) = n - (p+q) + 1
+p + q = n + 1 - φ(n)
+```
+
+Our formula gives: `p + q = n(2 - S_∞)`
+
+Combining these:
+
+```
+φ(n) = 1 - n + n·S_∞
+```
+
+**S_∞ and φ(n) encode the SAME information!**
+
+### Tested Totient Formulas
+
+| Formula | Usefulness for Factoring |
+|---------|-------------------------|
+| `a\|b ⟹ φ(a)\|φ(b)` | Divisibility property, not computational |
+| `m\|φ(a^m - 1)` | Requires factoring a^m - 1 (harder!) |
+| `φ(mn) = φ(m)φ(n)·d/φ(d)` | Multiplicative, needs factors |
+| `Σ_{d\|n} μ²(d)/φ(d) = n/φ(n)` | Sum over divisors (need to know them!) |
+| `Σ_{gcd(k,n)=1} k = n·φ(n)/2` | Computing totatives requires factors |
+| `φ(n)/n = φ(rad(n))/rad(n)` | Trivial for squarefree n |
+
+**Conclusion:** All φ-based formulas are **circular** - they require factors to compute, but would give factors if computed.
+
+### Cyclotomic Resultant Detection
+
+```
+Res(Φ_m, Φ_n) = 1  when gcd(m,n) = 1
+Res(Φ_m, Φ_n) ≠ 1  when m | n (or related)
+```
+
+For n = 143 = 11 × 13:
+- `Res(Φ₁₁, Φ₁₄₃) = 137858491849` ← detects 11!
+- `Res(Φ₇, Φ₁₄₃) = 1` ← 7 doesn't divide 143
+
+But computing for all candidates is still O(√n).
+
+## Reciprocal Sum Analysis (Nov 27, continued)
+
+### The Question
+
+What if we sum reciprocals without fractional part regularization?
+
+```
+S_recip = Σ (2i+1)/f(n,i) where f(n,i) = ∏_{j=1}^{i}(n² - j²)
+```
+
+### Surprising Pattern
+
+```
+S_recip × n² → 3 as n → ∞
+```
+
+| n | S × n² |
+|---|--------|
+| 15 | 3.013 |
+| 35 | 3.007 |
+| 77 | 3.001 |
+| 143 | 3.0004 |
+| 323 | 3.00008 |
+
+### Explanation: First Term Dominance
+
+```
+T₁ = 3/(n²-1)
+T₁ × n² = 3n²/(n²-1) → 3
+```
+
+All higher terms vanish as O(n^{2-2i}) for i ≥ 2.
+
+**This pattern has NOTHING to do with factors p, q!**
+It's purely the asymptotic behavior of the first term.
+
+### Epsilon Regularization
+
+Tried exponential damping: `S_ε = Σ (2i+1)/f(n,i) × e^{-εi}`
+
+Result: As ε → 0, we get S × n² → 3 again.
+No factor information encoded in the sum VALUE.
+
+The factor information is in **WHERE** we stop summing (singularity at i where f = 0 would occur at i = n, not useful).
+
+### Scripts Created
+
+- `scripts/reciprocal-sum-analysis.wl` - Why S×n² → 3
+- `scripts/reciprocal-deviation.wl` - Deviation analysis
+- `scripts/epsilon-regularization.wl` - Damping approaches
+- `scripts/analytic-continuation.wl` - Fourier/Ramanujan detection
+- `scripts/euler-totient-factoring.wl` - φ(n) formulas
+- `scripts/totient-lcm-gcd.wl` - LCM/GCD φ formulas
