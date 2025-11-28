@@ -1,7 +1,7 @@
 # Chebyshev Geometry and Primality
 
 **Date:** 2025-11-28
-**Status:** ✅ SOLVED for ω ≤ 3, 🔬 EXPLORED for ω = 4 (additive structure with lookup tables)
+**Status:** ✅ SOLVED for ω ≤ 3, 🔬 EXPLORED for ω = 4 (hierarchical pattern determines everything, but no simple closed form)
 
 ## Motivation
 
@@ -718,3 +718,131 @@ The simple formula $\Sigma\text{signs} = C - 4 \times (\text{\#inv} + \text{\#1s
 - `closed-form-omega3.wl` - Attempted closed form (factorization fails)
 - `debug-factorization.wl` - Debugging why factorization fails
 - `permutation-connection.wl` - Exploring connection to permutation signs
+- `permutation-analogy.wl` - ε_ij as inversion indicator
+- `omega4-lookup.wl` - Building lookup tables for ω=4
+- `omega4-full-pattern.wl` - Testing full (ε, b) pattern for ω=4
+- `omega4-recursive.wl` - Inclusion-exclusion structure analysis
+- `omega4-all-levels.wl` - Multi-level b-pattern analysis
+- `sign-mod8-fixed.wl` - Finding sign structure for mod 8
+- `omega4-summary.wl` - Comparison to permutation signs
+- `omega5-test.wl` - Testing ω=5 hierarchical pattern (56 cases verified)
+- `epsilon-is-b2.wl` - Testing if ε equals b₂
+- `epsilon-complement.wl` - Proving ε + b₂ = 1 (complementarity)
+
+## ω=4 Deep Structure and Permutation Analogy (Update 11)
+
+### The Key Question: What is the "Sign" for Prime Tuples?
+
+For **permutations**: `sign(σ) = (-1)^{#inversions}` — a single bit!
+
+For **our prime tuples**:
+
+| ω | Σsigns formula | "Sign" structure |
+|---|----------------|------------------|
+| 2 | ss = 1 - 4ε | ε ∈ {0,1} (1 bit) |
+| 3 | ss = 11 - 4(#inv + #b) | (#inv + #b) mod 2 (1 bit) |
+| 4 | ss = f(full pattern) | **Hierarchical** (multi-bit!) |
+
+### ω=4: Full Pattern Determines Everything
+
+🔬 **VERIFIED** for 275 cases
+
+The full pattern **(ε, b₄, b₁₂₃, b₁₂₄, b₁₃₄, b₂₃₄)** uniquely determines:
+- Σsigns exactly: **274/274 constant patterns** ✓
+- Σsigns mod 8: **274/274 constant** ✓
+
+But simpler patterns fail:
+- (ε, b₄) alone: only 204/225 constant
+- (#inv, #b₄, sumTripleB): only 37/74 constant
+- Any linear combination of parities: **none** determine mod 8
+
+### Recursive Structure for ω=4
+
+$$\boxed{\Sigma\text{signs}_4 = \sum_{\text{triples}} \Sigma\text{signs} - \sum_{\text{pairs}} \Sigma\text{signs} + \text{correction}}$$
+
+where:
+- Sum over all 4 triples: ss₁₂₃ + ss₁₂₄ + ss₁₃₄ + ss₂₃₄
+- Sum over all 6 pairs: ss₁₂ + ss₁₃ + ss₁₄ + ss₂₃ + ss₂₄ + ss₃₄
+- **Correction** depends on full (ε, b₄, all triple b's)
+
+### Why More Complex Than Permutations?
+
+| Permutations | Our Structure |
+|--------------|---------------|
+| Sign = (-1)^{#inversions} | Sign = hierarchical pattern |
+| One level: pairs only | Multiple levels: pairs, triples, ... |
+| Multiplicative | Additive with corrections |
+| No "carries" | CRT introduces carries |
+
+**Root cause:** Chinese Remainder Theorem reconstruction introduces "carries" when computing n from (a₁, ..., aω). These carries create additional structure beyond simple inversions.
+
+For ω ≤ 3, the carries can be captured by a single parity.
+For ω ≥ 4, carries at different levels **interact**, requiring full pattern.
+
+### Conjectures
+
+1. **General determination:** For any ω, Σsigns is uniquely determined by (ε-pattern, all b-patterns at levels 3...ω) ✓
+
+2. **Inclusion-exclusion:** The formula follows:
+   $$\Sigma\text{signs}_\omega = \sum_{|S|=\omega-1} \Sigma\text{signs}_S - \sum_{|S|=\omega-2} \Sigma\text{signs}_S + \cdots + \text{correction}$$
+
+3. **Congruence:** $\Sigma\text{signs}_\omega \equiv 1 - 2\omega \pmod{4}$ ✓
+
+### Open: Explicit Formula for ω=4 Correction
+
+The correction in the recursive formula is NOT a simple function of scalar quantities.
+It requires the full hierarchical pattern.
+
+**Question:** Is there a "generating function" or algebraic structure that unifies these patterns?
+
+## Unified Framework: ε = 1 - b₂ (Update 12)
+
+### Key Discovery: Complementarity
+
+The inversion indicator ε and CRT parity b are **complementary**, not independent:
+
+$$\boxed{\varepsilon_{pq} + b_2 \equiv 1 \pmod{2}}$$
+
+**Why?**
+- ε_{pq} = 1 iff p⁻¹ mod q is **even**
+- b₂ = (p · (p⁻¹ mod q)) mod 2 = (p⁻¹ mod q) mod 2 (since p is odd)
+- So ε = 1 ⟺ b₂ = 0
+
+### Unified Notation: Hierarchical b-Vectors
+
+Everything can be expressed using **only b-vectors at all levels**:
+
+| Level | Objects | Count |
+|-------|---------|-------|
+| 2 | pairs {pᵢ, pⱼ} | (ω choose 2) |
+| 3 | triples {pᵢ, pⱼ, pₖ} | (ω choose 3) |
+| ... | ... | ... |
+| ω | full set | 1 |
+
+The "ε pattern" is just the b-vectors at level 2!
+
+### Total Complexity
+
+$$\text{Total bits} = \sum_{\ell=2}^{\omega} \ell \cdot \binom{\omega}{\ell} = \omega \cdot 2^{\omega-1}$$
+
+| ω | Total bits |
+|---|------------|
+| 2 | 2 |
+| 3 | 12 |
+| 4 | 32 |
+| 5 | 80 |
+| 6 | 192 |
+
+**Exponential growth** - each new prime factor doubles the information needed!
+
+### Comparison with Permutation Signs
+
+| Aspect | Permutations | Our Structure |
+|--------|--------------|---------------|
+| Object | σ ∈ Sₙ | k = p₁...pω |
+| Sign | (-1)^{#inversions} | Σsigns(k) |
+| Structure | Single level (pairs) | Hierarchical (2 to ω) |
+| Complexity | O(n²) | O(ω · 2^ω) |
+
+For ω ≤ 3: simple closed form exists
+For ω ≥ 4: full hierarchy required
