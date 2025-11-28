@@ -290,6 +290,15 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - NEVER skip hooks (--no-verify) unless user requests
 - Before amending: check authorship with `git log -1 --format='%an %ae'`
 
+**Release tagging convention:**
+- Version per-paper, not per-repository
+- Format: `v{major}.{minor}.{patch}-{paper-name}`
+- Examples:
+  - `v0.1.0-primorial` - Primorial formula paper
+  - `v0.1.0-chebyshev-integral` - Chebyshev integral identity paper
+- Start with `v0.1.0` for initial drafts/preprints
+- Increment to `v1.0.0` after peer review/publication
+
 ---
 
 ## Technical Notes
