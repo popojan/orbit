@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-11-28 02:19:07
+**Generated:** 2025-11-28 18:55:25
 
 ## Theorems (Master References)
 
@@ -20,6 +20,7 @@
 
 ## Recent Sessions (Last 10)
 
+- [Chebyshev Geometry and Primality](sessions/2025-11-28-chebyshev-primality/README.md) *(2025-11-28)*
 - [Unit Fraction Discovery: Primality & Factorization](sessions/2025-11-27-semiprime-gamma-form/unit-fraction-discovery.md) *(2025-11-28)*
 - [Semiprime Formula: Gamma/Factorial Reformulation](sessions/2025-11-27-semiprime-gamma-form/README.md) *(2025-11-28)*
 - [Tensorový produkt involucí](sessions/2025-11-27-dirichlet-divisor-pairs/tensor-product.md) *(2025-11-28)*
@@ -29,7 +30,6 @@
 - [Vnořený radikál: Algebraická identita pro L_P a Z_F](sessions/2025-11-27-dirichlet-divisor-pairs/nested-radical-identity.md) *(2025-11-28)*
 - [Párování dělitelů jako involuce](sessions/2025-11-27-dirichlet-divisor-pairs/involuce.md) *(2025-11-28)*
 - [Fermion/Boson interpretace](sessions/2025-11-27-dirichlet-divisor-pairs/fermion-boson.md) *(2025-11-28)*
-- [Fermionová algebra — detailní analýza](sessions/2025-11-27-dirichlet-divisor-pairs/fermion-algebra.md) *(2025-11-28)*
 
 ## Navigation
 

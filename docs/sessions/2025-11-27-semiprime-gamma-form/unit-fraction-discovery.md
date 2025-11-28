@@ -297,6 +297,89 @@ Sum[(-1)^n × f₁₀[n], n=2..∞] ≈ 0.9106691107943440...
 - Numerators: n for n prime, largest odd divisor otherwise
 - Denominators: 1, 32, 221, 46624, 2029667, 524854336, ... (not in OEIS)
 
+## Separated Product Variant
+
+Formula with product separated from sum:
+```mathematica
+fSep[n_, k_] := -1/(1 - Product[n^2 - j^2, {j, 1, k}] * (HarmonicNumber[2n-1] - HarmonicNumber[n-1]/2))
+```
+
+**Key identity for odd harmonic sum:**
+```
+1 + 1/3 + 1/5 + ... + 1/(2n-1) = HarmonicNumber[2n-1] - HarmonicNumber[n-1]/2
+```
+
+**Properties of fSep[n, n-1]:**
+- Numerator = n for primes
+- Numerator = 1 for composites (simpler than f₁₀!)
+- BUT: Pk[n, n-1] = (2n-1)!/n — larger than Wilson's (n-1)!
+
+## Original FractionalPart Formula (forfacti)
+
+The original "closed form" factorization without explicit gcd:
+```mathematica
+forfacti[n_] := Module[{m = Floor[(Sqrt[n]-1)/2]},
+  Sum[FractionalPart[Gamma[1+i+n]/(n*(1+2i)*Gamma[n-i])], {i, 1, m}]]
+
+factor[n_] := 1/(1 - forfacti[n])
+```
+
+**Results:**
+| n | p (smaller) | forfacti[n] | 1/(1-forfacti) |
+|---|-------------|-------------|----------------|
+| 15 | 3 | 2/3 | **3** |
+| 35 | 5 | 4/5 | **5** |
+| 77 | 7 | 6/7 | **7** |
+| 143 | 11 | 10/11 | **11** |
+| prime | — | 0 | undefined |
+
+**No explicit gcd!** Just evaluate and invert.
+
+### Analysis of Each Term
+
+```
+Term = Gamma[1+i+n]/(n*(1+2i)*Gamma[n-i])
+     = Product[j, j=n-i..n+i] / (n*(2i+1))
+     = (2i+1 consecutive integers centered at n) / (n*(2i+1))
+```
+
+**Key pattern:**
+```
+FracPart ≠ 0  ⟺  2i+1 = p (smaller factor)
+              ⟺  i = (p-1)/2
+
+When nonzero: FracPart = (p-1)/p
+```
+
+**Why?** At i = (p-1)/2, the Wilson singularity creates a non-integer quotient. FractionalPart captures exactly (p-1)/p.
+
+### The Catch: Still Trial Division!
+
+The iteration i = 1, 2, 3, ... tests 2i+1 = 3, 5, 7, ...
+
+First nonzero FracPart occurs when 2i+1 = p (smallest factor).
+
+**This IS trial division by odd numbers!**
+
+| Trial division | forfacti |
+|----------------|----------|
+| n mod 3 = 0? | FracPart at i=1 ≠ 0? |
+| n mod 5 = 0? | FracPart at i=2 ≠ 0? |
+| n mod 7 = 0? | FracPart at i=3 ≠ 0? |
+
+Moreover, each iteration computes Gamma ratios — **more expensive** than n mod p!
+
+## Final Verdict: All Roads Lead to Trial Division
+
+| Approach | Why it's trial division |
+|----------|------------------------|
+| Full computation | O(n²) digits, singularity at Wilson points |
+| Mod n computation | Singularity detection = trial division |
+| forfacti iteration | Testing i=1,2,3... means testing 2i+1=3,5,7... |
+| FractionalPart | Implicit gcd via Wilson singularity |
+| Separated product | Still needs huge (2n-1)! computation |
+| Linear combinations | Requires O(n²)-digit numbers |
+
 ## Conclusion
 
 Beautiful mathematical structure connecting:
@@ -307,7 +390,16 @@ Beautiful mathematical structure connecting:
 - Primality testing
 - Factorization
 
-**Key theorem:** A ≡ ±q (mod p) explains why linear combinations with small b work for factorization.
+**Key theorems:**
+1. A ≡ ±q (mod p) explains why linear combinations with small b work
+2. forfacti[n] = (p-1)/p gives closed form without explicit gcd
+3. FractionalPart detects Wilson singularity implicitly
 
-But **no computational advantage** - all roads lead to the O(√n) barrier.
-The Wilson singularities in the mod arithmetic are **exactly** where trial division succeeds.
+**But NO computational advantage** — all roads lead to the O(√n) barrier.
+
+The Wilson singularities are **exactly** where trial division succeeds. Every "closed form" either:
+- Requires O(n²)-digit arithmetic, or
+- Iterates through potential factors (= trial division), or
+- Uses implicit gcd via fraction reduction
+
+**Mathematically elegant. Computationally useless.**
