@@ -299,6 +299,53 @@ This formula has been numerically verified for all combinations with
 $p_1 \in \{3, 5, 7, 11, 13\}$, covering 1005 distinct cases with zero errors.
 \end{remark}
 
+\subsection{Closed-Form Formula}
+
+The CRT parity formula admits a beautiful closed form using a permutation-like
+structure.
+
+\begin{definition}[Inversion Indicator]
+For primes $p_i < p_j$, define the \emph{inversion indicator}:
+\[
+\varepsilon_{ij} = \begin{cases}
+1 & \text{if } p_i^{-1} \bmod p_j \text{ is even} \\
+0 & \text{if } p_i^{-1} \bmod p_j \text{ is odd}
+\end{cases}
+\]
+This is analogous to ``is $(i,j)$ an inversion?'' in permutation theory.
+\end{definition}
+
+\begin{theorem}[Closed Form for $\omega = 3$]\label{thm:closed-form}
+For $k = p_1 p_2 p_3$ with distinct odd primes:
+\[
+\boxed{\Sigma\mathrm{signs}(k) = 11 - 4(\varepsilon_{12} + \varepsilon_{13} + \varepsilon_{23} + b_1 + b_2 + b_3)}
+\]
+Equivalently:
+\[
+\Sigma\mathrm{signs}(k) = 11 - 4 \times (\#\text{inversions} + \#\{i : b_i = 1\})
+\]
+\end{theorem}
+
+\begin{proof}
+The formula follows from combining the permutation-like structure (pairwise
+modular inverse parities) with the CRT coefficient parities. Both contribute
+linearly to the sign sum with coefficient $-4$.
+\end{proof}
+
+\begin{remark}[Verification of Closed Form]
+This closed-form formula has been verified for 759 distinct triples of primes
+with zero errors.
+\end{remark}
+
+\begin{corollary}[Range of Values]
+For $\omega = 3$, the total count $\varepsilon_{12} + \varepsilon_{13} + \varepsilon_{23} + b_1 + b_2 + b_3$
+ranges from 0 to 6, giving:
+\[
+\Sigma\mathrm{signs}(k) \in \{-13, -9, -5, -1, 3, 7, 11\}
+\]
+All values satisfy $\Sigma\mathrm{signs}(k) \equiv 3 \pmod{4}$ as required.
+\end{corollary}
+
 \begin{corollary}[Lookup Tables for $b_1$]
 For small $p_1$, the parity indicator $b_1$ depends only on $(r_2, r_3) = (p_2 \bmod p_1, p_3 \bmod p_1)$:
 

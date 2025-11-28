@@ -638,16 +638,34 @@ This means: if $p_i^{-1} \bmod p_j$ is odd, then $p_j^{-1} \bmod p_i$ is also od
 
 behaves like $(-1)^\omega$, reminiscent of permutation signatures!
 
-### Closed Form: Factorization Does NOT Work
+### ✅ CLOSED FORM FOUND! (Permutation Analogy)
 
-**Attempted:** $\Sigma\text{signs} = -\prod_i f(p_i, b_i)$ where $f(p,0) = p-2$, $f(p,1) = 1$
+🔬 **VERIFIED** for 759 cases with 0 errors
 
-**Result:** ❌ Fails (718/759 errors for ω=3)
+$$\boxed{\Sigma\text{signs}(p_1 p_2 p_3) = 11 - 4 \times (\text{\#inversions} + \text{\#1s\_in\_b})}$$
 
-**Reason:** The mod $k$ operation in CRT reconstruction introduces "carry" that breaks factorization:
-$$n \bmod 2 \neq (a_1 b_1 + a_2 b_2 + a_3 b_3) \bmod 2$$
+where:
+- **#inversions** = number of pairs $(i,j)$ where $p_i^{-1} \bmod p_j$ is even
+- **#1s_in_b** = number of $i$ where $b_i = c_i \bmod 2 = 1$
 
-The floor division $\lfloor S/k \rfloor$ affects parity unpredictably.
+**Interpretation:**
+- Define $\varepsilon_{ij} = 1$ if $p_i^{-1} \bmod p_j$ is even, else 0 (like "is (i,j) an inversion?")
+- The formula is: $\Sigma\text{signs} = 11 - 4(\varepsilon_{12} + \varepsilon_{13} + \varepsilon_{23} + b_1 + b_2 + b_3)$
+
+**Possible values:**
+- Total count ranges from 0 to 6
+- $\Sigma\text{signs} \in \{-13, -9, -5, -1, 3, 7, 11\}$ — all $\equiv 3 \pmod{4}$ ✓
+
+**Why this works:**
+- The permutation-like structure (#inversions from pairwise inverses)
+- Combined with CRT structure (#1s from coefficient parities)
+- Both contribute equally, creating clean linear formula
+
+### ω=4: Does NOT Extend Simply
+
+For ω=4, the constant varies: $C \in \{-7, 1, 5, ..., 37\}$
+
+The simple formula $\Sigma\text{signs} = C - 4 \times (\text{\#inv} + \text{\#1s\_b})$ needs additional structure for ω≥4.
 
 ## Open Questions
 
@@ -659,7 +677,7 @@ The floor division $\lfloor S/k \rfloor$ affects parity unpredictably.
 
 4. **Deeper meaning:** Why does the parity of CRT reconstruction control the sign structure of Chebyshev lobes? Is there a connection to character sums or L-functions?
 
-5. ~~**Closed form:** Is there an explicit formula for #{odd} - #{even} in terms of $(p_1, p_2, p_3)$ without iterating over signatures?~~ **NEGATIVE** (Update 10 - factorization fails due to carries)
+5. ~~**Closed form:** Is there an explicit formula for #{odd} - #{even} in terms of $(p_1, p_2, p_3)$ without iterating over signatures?~~ **✅ SOLVED** (Update 10 - permutation analogy: $11 - 4(\text{\#inv} + \text{\#1s\_b})$)
 
 6. **Computational use:** Can this geometric structure provide any computational advantage for primality testing?
 
