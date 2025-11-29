@@ -1237,3 +1237,139 @@ This is because OR = LEFT + RIGHT - AND, and LEFT = RIGHT = 0, so OR = -AND.
 The **AND definition** (both consecutive integers coprime to $n$) is the **unique non-trivial choice** from geometry. The complexity at $\omega \geq 4$ is intrinsic to the **consecutive coprime pair** structure, not an artifact of definition choice.
 
 This validates our approach: the Boolean complexity we observe for $\omega = 4$ reflects genuine mathematical structure, not a suboptimal formulation.
+
+## Hierarchical Lobe Partition and Massive Cancellation (Update 20 - Nov 29, 2025)
+
+### Four-Way Partition of Lobes
+
+Every lobe $k$ in $n = p_1 \cdots p_\omega$ can be classified by its boundary conditions:
+
+| Type | Condition | Sum of Parities |
+|------|-----------|-----------------|
+| **Primitive (AND)** | $\gcd(n-k, n)=1$ AND $\gcd(n-k+1, n)=1$ | = LobeParitySum |
+| **LEFT-only** | $\gcd(n-k, n)=1$ AND $\gcd(n-k+1, n)>1$ | = 0 |
+| **RIGHT-only** | $\gcd(n-k, n)>1$ AND $\gcd(n-k+1, n)=1$ | = 0 |
+| **NEITHER** | $\gcd(n-k, n)>1$ AND $\gcd(n-k+1, n)>1$ | = 0 |
+
+**Key Discovery:** Non-primitive lobes (LEFT-only, RIGHT-only, NEITHER) **always sum to zero**.
+
+### Symmetry Within Primitives
+
+Within primitive lobes, there's a further k ↔ n-k symmetry:
+- **Paired:** Both k and n-k are primitive → **opposite parities** → sum = 0
+- **Unpaired:** k is primitive but n-k is not → **contribute to LobeParitySum**
+
+**Example for n = 13×17×19 = 4199:**
+- #Primitive = 2805 (matches formula ∏(pᵢ-2) = 11×15×17)
+- #Paired = 2240 → sum = 0
+- #Unpaired = 565 → sum = **-7** = LobeParitySum
+
+### Inclusion-Exclusion Decomposition
+
+The unpaired primitives can be decomposed by which divisor divides k+1:
+
+$$\text{LobeParitySum} = \sum_{\emptyset \neq S \subseteq \{p_1, \ldots, p_\omega\}} S\left[\prod_{p \in S} p\right]$$
+
+where $S[d]$ is the sum of parities for lobes with $\gcd(k+1, n) = d$ exactly.
+
+**Invariant:** $S[n] = 1$ always (the unique lobe k = n-1).
+
+**For n = 13×17×19:**
+```
+S[13]  = -4,  S[17]  = -2,  S[19]  = -8
+S[221] = +2,  S[247] = +2,  S[323] = +2
+S[4199] = +1
+Total = -4 + (-2) + (-8) + 2 + 2 + 2 + 1 = -7 ✓
+```
+
+### Three-Dimensional Structure
+
+This reveals a natural 3D organization:
+
+1. **Dimension 1:** Lobe type (Primitive/LEFT/RIGHT/NEITHER)
+2. **Dimension 2:** ω (number of prime factors)
+3. **Dimension 3:** Divisor level (single p, pair pq, triple pqr, ...)
+
+### Massive Cancellation Ratio
+
+For n = 13×17×19:
+- Total lobes: 4199
+- Non-zero contributors: 565 (unpaired primitives)
+- Cancellation ratio: 86.5%
+
+Even among unpaired: (+1) count ≈ (-1) count, leading to sum = -7 from 565 terms.
+
+This explains why |LobeParitySum| ~ O(ω) despite #PrimitivePairs ~ O(∏(pᵢ-2)).
+
+### Implications for ω=4
+
+The decomposition structure extends to ω=4 with 15 divisor levels (2⁴-1):
+- 4 single primes: S[p₁], S[p₂], S[p₃], S[p₄]
+- 6 pairs: S[p₁p₂], ...
+- 4 triples: S[p₁p₂p₃], ...
+- 1 quad: S[n] = 1
+
+Each S[d] involves a sub-sum that may have closed form related to Legendre symbols.
+
+## ω=4 Phase Transition: Complexity Jump (Update 21 - Nov 29, 2025)
+
+### Key Finding: Simplified Patterns Have Conflicts
+
+🔬 **TESTED** on 495 ω=4 cases
+
+Unlike ω ≤ 3 where simplified CRT patterns uniquely determine LobeParitySum:
+
+| Pattern Type | Unique Patterns | Conflicts |
+|--------------|-----------------|-----------|
+| Full 22-bit (b₂, b₃, b₄) | 35/35 | **0** ✓ |
+| Simplified (Σb₂, Σb₃, Σb₄) | 465/495 | **12** ✗ |
+
+**Example conflict:**
+- 1365 = 3×5×7×13 → LobeParitySum = 3
+- 42427 = 7×11×19×29 → LobeParitySum = 11
+- Both have **same** simplified pattern!
+
+### Jacobi Symbols Don't Determine k
+
+For the inclusion-exclusion correction k = (δ-1)/4 where δ = S₄ - ΣS₃ + ΣS₂ - 4:
+
+| Feature | k=1 | k=2 | k=3 | k=4 |
+|---------|-----|-----|-----|-----|
+| prodJ=+1 | ✓ | ✓ | ✓ | ✓ |
+| prodJ=-1 | ✓ | ✓ | ✓ | ✓ |
+
+**All Jacobi symbol products map to all k values!**
+
+### Recursive Structure Still Holds
+
+$$\boxed{\text{LobeParitySum}_4 = \Sigma S_3 - \Sigma S_2 + 4 + \delta}$$
+
+where δ ∈ {-7, -3, 1, 5, 9} (all ≡ 1 mod 4).
+
+But δ requires the **full 22-bit pattern**, not scalar aggregates.
+
+### Why This Is a Phase Transition
+
+| ω | Correction Term | Complexity |
+|---|-----------------|------------|
+| 2 | 0 | No CRT interaction |
+| 3 | 4b₃ | 3 bits → 1 bit |
+| 4 | 4k where k=f(22 bits) | **Non-compressible** |
+
+For ω ≤ 3, CRT "carries" cancel or reduce to single parity.
+For ω = 4, carries at different levels **interact irreducibly**.
+
+### Implications
+
+1. **No simple closed form** for ω=4 likely exists
+2. The 22-bit pattern is the **minimal sufficient statistic**
+3. Suggests connection to computational complexity (Boolean function complexity)
+
+### S[p] Pattern for Single Primes
+
+For ω=4 with n = p₁p₂p₃p₄, the number of non-zero S[pᵢ] varies:
+- 0 non-zero: e.g., 3×5×11×19
+- 1 non-zero: most common (e.g., 3×5×7×11)
+- 2-4 non-zero: also occur
+
+Unlike ω=3 where S[p₁] is always the only non-zero S[p], for ω=4 the pattern is complex.

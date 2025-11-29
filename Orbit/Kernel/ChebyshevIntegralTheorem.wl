@@ -96,6 +96,30 @@ Examples:
 Note: Formula is undefined for n = 2 (denominator vanishes).
 See: docs/sessions/2025-11-23-chebyshev-integral-identity/chebyshev-integral-theorem.md";
 
+ChebyshevLobeAreaSymbolic::usage = "ChebyshevLobeAreaSymbolic[n, k] computes lobe area symbolically (no Integer constraint).
+
+Unlike ChebyshevLobeArea which requires integer n >= 3 and 1 <= k <= n,
+this version accepts symbolic arguments for algebraic manipulation.
+
+Continuous Integral Identity:
+  Integrate[ChebyshevLobeAreaSymbolic[n, k], {k, 0, n}] == 1
+
+This holds because:
+  - The oscillating cosine terms integrate to zero over [0, n]
+  - The constant term integrates to exactly 1
+
+Together with the discrete sum identity (Chebyshev Integral Theorem):
+  Sum[ChebyshevLobeArea[n, k], {k, 1, n}] == 1
+
+Both discrete and continuous views yield the same total: 1.
+
+Examples:
+  ChebyshevLobeAreaSymbolic[n, k]  (* returns symbolic expression *)
+  Integrate[ChebyshevLobeAreaSymbolic[n, k], {k, 0, n}] // Simplify  (* -> 1 *)
+  ChebyshevLobeAreaSymbolic[5, 3] // Simplify  (* same as ChebyshevLobeArea[5, 3] *)
+
+Note: For n = 2, the formula has a singularity (denominator = 0).";
+
 ChebyshevLobeClass::usage = "ChebyshevLobeClass[n, k] returns the classification of lobe k (k = 1, ..., n).
 
 Returns one of:
@@ -430,6 +454,48 @@ Examples:
 
 See: CRTParityB2, LobeParitySumClosedForm";
 
+ChebyshevLobeDistribution::usage = "ChebyshevLobeDistribution[n] returns a ProbabilityDistribution on the Chebyshev domain [-1, 1].
+
+Parameters:
+  n - granularity parameter (n > 2), controls the number of lobes per period
+
+The PDF on [-1, 1] is:
+  f(x) = (1/2) [1 + α(n) cos(π(1/n - x))]
+where α(n) = n² cos(π/n) / (n² - 4)
+
+Properties:
+  - Domain: x ∈ [-1, 1] (canonical Chebyshev interval, one period)
+  - Integral: ∫₋₁¹ f(x) dx = 1
+  - Non-negative: f(x) ≥ 0 for all x ∈ [-1, 1] when n > 2
+  - Symmetric center: Mean → 0 as n → ∞
+  - Limit: as n → ∞, converges to Hann-like window
+
+Extended forms (symmetric parametrization like Normal distribution):
+  ChebyshevLobeDistribution[n]        - one period on [-1, 1], center 0
+  ChebyshevLobeDistribution[n, μ]     - one period on [μ-1, μ+1], center μ
+  ChebyshevLobeDistribution[n, μ, m]  - m periods on [μ-m, μ+m], center μ
+
+Design rationale:
+  The canonical domain [-1, 1] matches Chebyshev polynomials T_n(x).
+  The parametrization (n, μ, m) is analogous to Normal(μ, σ):
+    - n = shape (lobe count)
+    - μ = location (center) - most commonly varied parameter
+    - m = scale (number of periods, half-width)
+
+Examples:
+  dist = ChebyshevLobeDistribution[10];
+  Plot[PDF[dist, x], {x, -1, 1}]    (* Chebyshev domain *)
+
+  (* One period centered at 5 *)
+  dist5 = ChebyshevLobeDistribution[10, 5];
+  Plot[PDF[dist5, x], {x, 4, 6}]
+
+  (* Two periods centered at 0 *)
+  dist2 = ChebyshevLobeDistribution[10, 0, 2];
+  Plot[PDF[dist2, x], {x, -2, 2}]
+
+See: ChebyshevLobeAreaSymbolic, docs/drafts/lobe-area-kernel.tex";
+
 PrimitivePairQ::usage = "PrimitivePairQ[n, m] tests whether (m, m+1) forms a primitive pair modulo n.
 
 A primitive pair is a pair of consecutive integers that are both coprime to n.
@@ -459,6 +525,11 @@ ChebyshevPolygonFunction[x_, k_Integer] := ChebyshevT[k + 1, x] - x * ChebyshevT
    This is a closed form of: (-1)^(n-k) * Integrate[Sin[n θ] Sin[θ]^2, {θ, (n-k) π/n, (n-k+1) π/n}]
    Sum over all k from 1 to n equals 1 (Chebyshev Integral Theorem) *)
 ChebyshevLobeArea[n_Integer /; n >= 3, k_Integer /; k >= 1] /; k <= n :=
+  (8 - 2 n^2 + n^2 (Cos[(2 (k - 1) Pi)/n] + Cos[(2 k Pi)/n])) / (8 n - 2 n^3)
+
+(* Symbolic version - no Integer constraint, works for algebraic manipulation
+   Continuous Integral Identity: Integrate[..., {k, 0, n}] == 1 *)
+ChebyshevLobeAreaSymbolic[n_, k_] :=
   (8 - 2 n^2 + n^2 (Cos[(2 (k - 1) Pi)/n] + Cos[(2 k Pi)/n])) / (8 n - 2 n^3)
 
 (* Chebyshev lobe sign - alternating sign based on lobe position
@@ -600,6 +671,45 @@ LobeParitySumClosedForm[n_Integer] /; PrimeNu[n] == 3 && OddQ[n] :=
     1 + 4 * (sumBtriple - sumB2pairs)
   ]
 LobeParitySumClosedForm[n_Integer] /; PrimeNu[n] == 3 && EvenQ[n] := 0
+
+(* ===== PROBABILITY DISTRIBUTION LAYER ===== *)
+
+(* Normalized lobe area PDF: f(t) = 1 - α(n) cos(π(1/n - 2t))
+   where α(n) = n² cos(π/n) / (n² - 4)
+   This is Ã(n,t) = n * A(n, n*t) from the normalization *)
+
+(* Helper: amplitude function *)
+lobeAmplitude[n_] := n^2 Cos[Pi/n] / (n^2 - 4)
+
+(* Helper: PDF on Chebyshev domain [-1, 1]
+   Derived from [0,1] PDF via x = 2t - 1, so t = (x+1)/2
+   f(x) = (1/2) * [1 + α(n) * cos(π(1/n - x))] *)
+lobePDFChebyshev[n_, x_] := (1/2) (1 + lobeAmplitude[n] Cos[Pi (1/n - x)])
+
+(* Basic form: one period on [-1, 1] - canonical Chebyshev domain *)
+ChebyshevLobeDistribution[n_ /; n > 2] :=
+  ProbabilityDistribution[
+    lobePDFChebyshev[n, x],
+    {x, -1, 1},
+    Assumptions -> n > 2
+  ]
+
+(* Two-parameter form: one period centered at μ, on [μ-1, μ+1] *)
+ChebyshevLobeDistribution[n_ /; n > 2, mu_] :=
+  ProbabilityDistribution[
+    lobePDFChebyshev[n, x - mu],
+    {x, mu - 1, mu + 1},
+    Assumptions -> n > 2
+  ]
+
+(* Full form: m periods centered at μ, on [μ-m, μ+m] *)
+(* Period width = 2, so m periods span 2m *)
+ChebyshevLobeDistribution[n_ /; n > 2, mu_, m_Integer /; m >= 1] :=
+  ProbabilityDistribution[
+    lobePDFChebyshev[n, Mod[x - mu + 1, 2] - 1] / m,
+    {x, mu - m, mu + m},
+    Assumptions -> n > 2
+  ]
 
 End[];
 

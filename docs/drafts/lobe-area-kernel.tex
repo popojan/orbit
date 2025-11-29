@@ -1,0 +1,371 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\geometry{margin=2.5cm}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+
+\title{Chebyshev Lobe Area Kernel}
+\author{Jan Popelka}
+\date{November 29, 2025}
+
+\begin{document}
+\maketitle
+
+\section{Definition}
+
+\begin{definition}[Chebyshev Lobe Area Function]
+For $n \in \mathbb{C} \setminus \{0, \pm 2\}$ and $k \in \mathbb{C}$, define:
+\begin{equation}
+A(n,k) = \frac{8 - 2n^2 + n^2\left(\cos\frac{2(k-1)\pi}{n} + \cos\frac{2k\pi}{n}\right)}{8n - 2n^3}
+\end{equation}
+\end{definition}
+
+The denominator simplifies to $8n - 2n^3 = 2n(4-n^2)$.
+
+\section{Fundamental Decomposition}
+
+\begin{theorem}[Decomposition]
+The function $A(n,k)$ decomposes as:
+\begin{equation}
+A(n,k) = \underbrace{\frac{1}{n}}_{\text{constant}} + \underbrace{\frac{n}{2(4-n^2)}\left(\cos\frac{2(k-1)\pi}{n} + \cos\frac{2k\pi}{n}\right)}_{\text{oscillating, mean zero}}
+\end{equation}
+\end{theorem}
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Component & Formula & $\int_0^n (\cdot)\, dk$ \\
+\midrule
+Constant & $\dfrac{1}{n}$ & $n \cdot \dfrac{1}{n} = 1$ \\[1em]
+Oscillating & $\dfrac{n}{2(4-n^2)}(\cos\ldots)$ & $0$ \\[1em]
+\textbf{Total} & $A(n,k)$ & $\mathbf{1}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Key Properties}
+
+\subsection{Periodicity}
+
+\begin{proposition}
+$A(n,k)$ has period $n$ in $k$:
+\begin{equation}
+A(n, k+n) = A(n, k) \quad \forall k
+\end{equation}
+\end{proposition}
+
+\subsection{Integral Identities}
+
+\begin{theorem}[Discrete Sum --- Chebyshev Integral Theorem]
+\begin{equation}
+\sum_{k=1}^{n} A(n,k) = 1 \quad \forall n \geq 3
+\end{equation}
+\end{theorem}
+
+\begin{theorem}[Continuous Integral Identity]
+\begin{equation}
+\int_{0}^{n} A(n,k) \, dk = 1 \quad \forall n > 2
+\end{equation}
+\end{theorem}
+
+\begin{theorem}[Multiple Periods]
+\begin{equation}
+\int_{0}^{mn} A(n,k) \, dk = m \quad \forall m \in \mathbb{Z}^+
+\end{equation}
+\end{theorem}
+
+\subsection{Normalization}
+
+$A(n,k)$ acts as a \textbf{probability density} on $[0,n]$:
+\begin{itemize}
+\item Integrates to 1 over one period
+\item Discrete samples at $k=1,\ldots,n$ give lobe areas summing to 1
+\end{itemize}
+
+\subsection{Asymptotic Behavior}
+
+As $n \to \infty$:
+\begin{align}
+\text{Constant part:} \quad & \frac{1}{n} \to 0 \\
+\text{Oscillation amplitude:} \quad & \frac{n}{2(4-n^2)} \sim -\frac{1}{2n} \to 0
+\end{align}
+The function becomes increasingly flat, but $\int_0^n A\,dk = 1$ (conservation).
+
+\section{Comparison with Classical Kernels}
+
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+Kernel & Period & $\int$ (1 period) & Sign changes & Structure \\
+\midrule
+Dirichlet $D_n(\theta)$ & $2\pi$ & $2\pi$ & Yes & $\dfrac{\sin((n+\frac{1}{2})\theta)}{2\sin(\theta/2)}$ \\[1em]
+Fejér $F_n(\theta)$ & $2\pi$ & $2\pi$ & No ($\geq 0$) & $\dfrac{1}{n}\left(\dfrac{\sin(n\theta/2)}{\sin(\theta/2)}\right)^2$ \\[1em]
+\textbf{Lobe Area} $A(n,k)$ & $n$ & $\mathbf{1}$ & Yes & $\dfrac{1}{n} + \text{osc}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Key distinction:}
+\begin{itemize}
+\item Fejér kernel achieves constant integral trivially (always non-negative)
+\item Lobe Area achieves constant integral \textbf{non-trivially} (has sign changes)
+\end{itemize}
+
+\section{Fourier Structure}
+
+Using the product-to-sum identity:
+\begin{equation}
+\cos\frac{2(k-1)\pi}{n} + \cos\frac{2k\pi}{n} = 2\cos\frac{\pi}{n}\cos\frac{(2k-1)\pi}{n}
+\end{equation}
+
+Therefore:
+\begin{equation}
+\boxed{A(n,k) = \frac{1}{n} + \frac{n\cos(\pi/n)}{4-n^2}\cos\frac{(2k-1)\pi}{n}}
+\end{equation}
+
+This is a \textbf{DC component plus single harmonic} at frequency $1/n$.
+
+\section{Potential Applications}
+
+\subsection{Low-Pass Filter}
+
+Define the operator:
+\begin{equation}
+\mathcal{L}_n[f](x) = \int_0^n f(k) A(n,k) \, dk
+\end{equation}
+
+Properties:
+\begin{itemize}
+\item $\mathcal{L}_n[1] = 1$ (preserves constants)
+\item $\mathcal{L}_n[\cos(2\pi mk/n)] = 0$ for $m \neq 0$ (filters oscillations)
+\item Bandwidth decreases with $n$
+\end{itemize}
+
+\subsection{Multi-Scale Averaging}
+
+Different $n$ provides different ``resolution'':
+\begin{itemize}
+\item Small $n$: coarse averaging (fewer lobes)
+\item Large $n$: fine averaging (many lobes, small amplitude)
+\end{itemize}
+
+\section{Connection to Polygon Function}
+
+The lobe areas originate from the polygon function:
+\begin{equation}
+f_k(x) = T_{k+1}(x) - x \cdot T_k(x) = -(1-x^2)U_{k-1}(x)
+\end{equation}
+where $T_k$, $U_k$ are Chebyshev polynomials of first and second kind.
+
+For $x = \cos\theta$:
+\begin{equation}
+f_k(\cos\theta) = -\sin\theta \sin(k\theta)
+\end{equation}
+
+The $n$ zeros of $f_{n-1}(x)$ divide $[-1,1]$ into $n$ lobes, and $A(n,k)$ is the area of the $k$-th lobe.
+
+\section{Complex Analysis}
+
+The function $A(n,k)$ extends naturally to complex variables, revealing rich analytic structure.
+
+\subsection{Domain and Analyticity}
+
+\begin{theorem}[Two-Variable Extension]
+$A(n,k)$ extends to a function on $\mathbb{C}^2$ with:
+\begin{itemize}
+\item \textbf{In $k$}: Entire function for each fixed $n \neq 0$
+\item \textbf{In $n$}: Meromorphic with singularities at $n \in \{0, \pm 2\}$
+\end{itemize}
+\end{theorem}
+
+\subsection{Singularity Classification}
+
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Point & Type & Residue & Limit \\
+\midrule
+$n = 2$ & Removable & $0$ & $\dfrac{4 - \pi\sin(k\pi)}{8}$ \\[1em]
+$n = -2$ & Removable & $0$ & $\dfrac{-4 + \pi\sin(k\pi)}{8}$ \\[1em]
+$n = 0$ & Essential & --- & (oscillates wildly) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Digon limit:} At $n = 2$ with $k \in \mathbb{Z}$, we get $A(2,k) = \frac{1}{2}$ (two equal lobes).
+
+\subsection{Complex Periodicity}
+
+\begin{theorem}[Complex Period]
+For all $n, k \in \mathbb{C}$ with $n \neq 0$:
+\begin{equation}
+A(n, k+n) = A(n, k)
+\end{equation}
+The period $n$ itself can be complex.
+\end{theorem}
+
+\subsection{Path-Independent Integral}
+
+\begin{theorem}[Complex Integral Identity]
+For any $n \in \mathbb{C} \setminus \{0, \pm 2\}$ and any contour $\gamma$ from $0$ to $n$:
+\begin{equation}
+\int_\gamma A(n,k)\, dk = 1
+\end{equation}
+The integral is path-independent because $A(n,k)$ is entire in $k$.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+Since $A(n,k)$ is entire in $k$, Cauchy's theorem implies path independence.
+The primitive function evaluated at endpoints gives:
+\begin{itemize}
+\item Oscillating terms: $0$ at both $k=0$ and $k=n$ (periodicity)
+\item Constant term $\frac{1}{n}$: integrates to $\frac{k}{n}\big|_0^n = 1$
+\end{itemize}
+\end{proof}
+
+\subsection{Behavior Near Essential Singularity}
+
+Near $n = 0$, the function $A(n,k)$ exhibits essential singularity behavior:
+\begin{itemize}
+\item Values on circles $|n| = \varepsilon$ vary wildly (from $O(1)$ to $O(1/\varepsilon^2)$)
+\item By Picard's theorem, $A(n,k)$ takes almost every complex value infinitely often in any neighborhood of $n = 0$
+\end{itemize}
+
+\section{Unit Period Normalization}
+
+The variable period $n$ can be normalized to a fixed unit period via substitution.
+
+\subsection{Definition}
+
+\begin{definition}[Normalized Lobe Area Function]
+For $n > 2$ and $t \in [0,1]$, define:
+\begin{equation}
+\tilde{A}(n,t) = n \cdot A(n, nt)
+\end{equation}
+\end{definition}
+
+Explicitly:
+\begin{equation}
+\tilde{A}(n,t) = 1 - \frac{n^2\cos(\pi/n)}{n^2-4}\cos\left(\pi\left(\frac{1}{n} - 2t\right)\right)
+\end{equation}
+
+\subsection{Properties}
+
+\begin{theorem}[Unit Period Density]
+For all $n > 2$:
+\begin{enumerate}
+\item \textbf{Fixed period:} $\tilde{A}(n,t)$ has period $1$ in $t$
+\item \textbf{Normalization:} $\displaystyle\int_0^1 \tilde{A}(n,t)\, dt = 1$
+\item \textbf{Non-negativity:} $\tilde{A}(n,t) \geq 0$ for all $t \in [0,1]$
+\end{enumerate}
+\end{theorem}
+
+The non-negativity follows from the amplitude bound:
+\begin{equation}
+\alpha(n) = \frac{n^2\cos(\pi/n)}{n^2-4} < 1 \quad \text{for all } n > 2
+\end{equation}
+
+with $\lim_{n \to 2^+} \alpha(n) = \pi/4 \approx 0.785$ and $\lim_{n \to \infty} \alpha(n) = 1$.
+
+\subsection{Limiting Behavior}
+
+\begin{theorem}[Hann Window Limit]
+\begin{equation}
+\lim_{n \to \infty} \tilde{A}(n,t) = 2\sin^2(\pi t) = 1 - \cos(2\pi t)
+\end{equation}
+\end{theorem}
+
+This is the \textbf{Hann window} (raised cosine), a standard window function in signal processing.
+
+\textbf{Remark (Parameter roles in limits).} In the two-parameter extension $\tilde{A}_{[a,b]}(n,x)$ with $m$ periods:
+\begin{itemize}
+\item Parameter $n$ controls \textbf{shape} (lobe structure). Only $n \to \infty$ produces Hann limit.
+\item Parameter $m$ (number of periods) controls \textbf{repetition count} only---does not affect shape.
+\item For fixed $n$, $m \to \infty$: infinitely many copies of the $n$-lobed pattern (no convergence to Hann).
+\item For $n \to \infty$, any $m$: $m$ copies of the Hann window.
+\end{itemize}
+Thus the Hann window is an attractor only in the $n$-direction of parameter space.
+
+\subsection{Interpretation}
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Property & Original $A(n,k)$ & Normalized $\tilde{A}(n,t)$ \\
+\midrule
+Period & $n$ (variable) & $1$ (fixed) \\
+Integral & $\int_0^n = 1$ & $\int_0^1 = 1$ \\
+Non-negative? & No (sign changes) & \textbf{Yes} for $n > 2$ \\
+DC component & $1/n$ & $1$ \\
+Limit $n \to \infty$ & flat & Hann window \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The parameter $n$ controls the \textbf{granularity}: smaller $n$ gives fewer, more pronounced lobes; larger $n$ approaches the smooth Hann window. This defines a one-parameter family of probability densities on $[0,1]$.
+
+\subsection{Extension to Arbitrary Intervals}
+
+For any interval $[a,b]$ with width $w = b-a$, define:
+\begin{equation}
+\tilde{A}_{[a,b]}(n,x) = \frac{1}{w} \cdot \tilde{A}\left(n, \frac{x-a}{w}\right)
+\end{equation}
+
+\begin{theorem}[Two-Parameter Family]
+For $n > 2$ and $w > 0$:
+\begin{enumerate}
+\item \textbf{Period:} $\tilde{A}_{[a,b]}(n,x)$ has period $w$ in $x$
+\item \textbf{Normalization:} $\displaystyle\int_a^b \tilde{A}_{[a,b]}(n,x)\, dx = 1$
+\item \textbf{Multiple periods:} $\displaystyle\int_a^{a+mw} \tilde{A}_{[a,b]}(n,x)\, dx = m$
+\item \textbf{Non-negativity:} $\tilde{A}_{[a,b]}(n,x) \geq 0$ for all $x$
+\end{enumerate}
+\end{theorem}
+
+This gives a \textbf{two-parameter family} of probability densities:
+\begin{itemize}
+\item Parameter $n > 2$: granularity (number of lobes per period)
+\item Parameter $w > 0$: period width
+\end{itemize}
+
+The structure is analogous to Fourier series, which can be defined on any interval with periodic extension to $\mathbb{R}$.
+
+\section{Summary}
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Property & Value/Formula \\
+\midrule
+Definition & $\dfrac{8 - 2n^2 + n^2(\cos\frac{2(k-1)\pi}{n} + \cos\frac{2k\pi}{n})}{2n(4-n^2)}$ \\[1em]
+Period & $n$ \\
+Discrete sum & $\sum_{k=1}^n A(n,k) = 1$ \\
+Continuous integral & $\int_0^n A(n,k)\,dk = 1$ \\
+Decomposition & $\dfrac{1}{n} + O(1/n)$ oscillation \\
+Domain & $n \in \mathbb{C} \setminus \{0, \pm 2\}$, $k \in \mathbb{C}$ \\
+Normalized form & $\tilde{A}(n,t) = n \cdot A(n, nt)$ on $[0,1]$ \\
+Limit $n \to \infty$ & $\tilde{A} \to 2\sin^2(\pi t)$ (Hann window) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Implementation}
+
+Available in the Orbit Mathematica paclet:
+\begin{verbatim}
+<< Orbit`
+ChebyshevLobeAreaSymbolic[n, k]  (* symbolic version *)
+ChebyshevLobeArea[n, k]          (* integer n >= 3, 1 <= k <= n *)
+
+(* Normalized version on [0,1] *)
+NormalizedLobeArea[n_, t_] := n * ChebyshevLobeAreaSymbolic[n, n*t]
+\end{verbatim}
+
+\end{document}
