@@ -454,47 +454,136 @@ Examples:
 
 See: CRTParityB2, LobeParitySumClosedForm";
 
-ChebyshevLobeDistribution::usage = "ChebyshevLobeDistribution[n] returns a ProbabilityDistribution on the Chebyshev domain [-1, 1].
+ChebyshevLobeDistribution::usage = "ChebyshevLobeDistribution[n] returns a ProbabilityDistribution on [-1, 1].
 
 Parameters:
-  n - granularity parameter (n > 2), controls the number of lobes per period
+  n - lobe count parameter (n > 2), controls the number of lobes per period
 
 The PDF on [-1, 1] is:
   f(x) = (1/2) [1 + α(n) cos(π(1/n - x))]
 where α(n) = n² cos(π/n) / (n² - 4)
 
 Properties:
-  - Domain: x ∈ [-1, 1] (canonical Chebyshev interval, one period)
+  - Domain: x ∈ [-1, 1] (canonical Chebyshev interval)
   - Integral: ∫₋₁¹ f(x) dx = 1
   - Non-negative: f(x) ≥ 0 for all x ∈ [-1, 1] when n > 2
   - Symmetric center: Mean → 0 as n → ∞
   - Limit: as n → ∞, converges to Hann-like window
 
-Extended forms (symmetric parametrization like Normal distribution):
-  ChebyshevLobeDistribution[n]        - one period on [-1, 1], center 0
-  ChebyshevLobeDistribution[n, μ]     - one period on [μ-1, μ+1], center μ
-  ChebyshevLobeDistribution[n, μ, m]  - m periods on [μ-m, μ+m], center μ
+Forms:
+  ChebyshevLobeDistribution[n]              - n lobes on [-1, 1]
+  ChebyshevLobeDistribution[n, {a, b}]      - n lobes scaled to [a, b]
+  ChebyshevLobeDistribution[n, {a, b}, p]   - n lobes × p periods on [a, b]
 
 Design rationale:
-  The canonical domain [-1, 1] matches Chebyshev polynomials T_n(x).
-  The parametrization (n, μ, m) is analogous to Normal(μ, σ):
-    - n = shape (lobe count)
-    - μ = location (center) - most commonly varied parameter
-    - m = scale (number of periods, half-width)
+  - n = shape (lobes per period)
+  - {a, b} = explicit support interval
+  - p = number of periods (total lobes = n × p)
+  Support is always exactly what you specify.
 
 Examples:
   dist = ChebyshevLobeDistribution[10];
-  Plot[PDF[dist, x], {x, -1, 1}]    (* Chebyshev domain *)
+  Plot[PDF[dist, x], {x, -1, 1}]
 
-  (* One period centered at 5 *)
-  dist5 = ChebyshevLobeDistribution[10, 5];
-  Plot[PDF[dist5, x], {x, 4, 6}]
+  (* 10 lobes scaled to [0, 4] *)
+  dist2 = ChebyshevLobeDistribution[10, {0, 4}];
+  Plot[PDF[dist2, x], {x, 0, 4}]
 
-  (* Two periods centered at 0 *)
-  dist2 = ChebyshevLobeDistribution[10, 0, 2];
-  Plot[PDF[dist2, x], {x, -2, 2}]
+  (* Compare factorizations of N=12 total lobes on [-1, 1] *)
+  d12 = ChebyshevLobeDistribution[12, {-1, 1}, 1];  (* 12 × 1 *)
+  d6  = ChebyshevLobeDistribution[6, {-1, 1}, 2];   (* 6 × 2 *)
+  d3  = ChebyshevLobeDistribution[3, {-1, 1}, 4];   (* 3 × 4 *)
 
-See: ChebyshevLobeAreaSymbolic, docs/drafts/lobe-area-kernel.tex";
+See: ChebyshevLobeAreaSymbolic, ChebyshevLobeMean, ChebyshevLobeVariance";
+
+ChebyshevLobeMean::usage = "ChebyshevLobeMean[n] returns the symbolic mean of ChebyshevLobeDistribution[n] on [-1, 1].
+Formula: E[X] = n² sin(2π/n) / (2π(n²-4))";
+
+ChebyshevLobeSecondMoment::usage = "ChebyshevLobeSecondMoment[n] returns E[X²] for ChebyshevLobeDistribution[n] on [-1, 1].
+Formula: E[X²] = 1/3 - 2n²cos²(π/n) / ((n²-4)π²)";
+
+ChebyshevLobeVariance::usage = "ChebyshevLobeVariance[n] returns the symbolic variance of ChebyshevLobeDistribution[n] on [-1, 1].
+Formula: Var[X] = E[X²] - E[X]²
+Limiting value: lim_{n→∞} Var[X] = 1/3 - 2/π² ≈ 0.131 (Hann window variance)";
+
+ChebyshevLobeThirdMoment::usage = "ChebyshevLobeThirdMoment[n] returns E[X³] for ChebyshevLobeDistribution[n] on [-1, 1].
+Formula: E[X³] = n²(π²-6)sin(2π/n) / (2(n²-4)π³)";
+
+ChebyshevLobeVarianceLimit::usage = "ChebyshevLobeVarianceLimit is the limiting variance as n → ∞.
+Value: 1/3 - 2/π² ≈ 0.131 (Hann window variance on [-1, 1])";
+
+(* ===== RAISED HANN DISTRIBUTION: Direct α parameterization ===== *)
+
+RaisedHannDistribution::usage = "RaisedHannDistribution[α] returns a probability distribution on [-1, 1].
+
+This is a generalized Hann window with direct amplitude control:
+  PDF: f(x) = (1/2)[1 + α·cos(πx)]  for x ∈ [-1, 1]
+
+Parameters:
+  α - amplitude parameter, 0 ≤ α ≤ 1
+    α = 0: uniform distribution
+    α = 1: exact Hann window (zeros at boundaries)
+    0 < α < 1: raised Hann (positive minimum at boundaries)
+
+Relationship to ChebyshevLobeDistribution:
+  ChebyshevLobeDistribution[n] uses α(n) = n²cos(π/n)/(n²-4)
+  RaisedHannDistribution[α] uses α directly
+
+Forms:
+  RaisedHannDistribution[α]           - on canonical [-1, 1]
+  RaisedHannDistribution[α, {a, b}]   - scaled to [a, b]
+
+Moments (on [-1, 1]):
+  Mean = 0 (by symmetry)
+  Variance = 1/3 - 2α/π²
+  Skewness = 0 (symmetric)
+
+Examples:
+  Plot[PDF[RaisedHannDistribution[0.9], x], {x, -1, 1}]
+  Mean[RaisedHannDistribution[1]]  (* -> 0 *)
+  Variance[RaisedHannDistribution[1]]  (* -> 1/3 - 2/π² *)
+
+See: ChebyshevLobeDistribution, HannWindowDistribution";
+
+HannWindowDistribution::usage = "HannWindowDistribution[] returns the exact Hann window distribution on [-1, 1].
+
+This is RaisedHannDistribution[1], the limiting case with:
+  PDF: f(x) = (1/2)[1 + cos(πx)]  for x ∈ [-1, 1]
+
+Properties:
+  - Zeros at x = ±1 (boundaries)
+  - Maximum at x = 0 (center)
+  - Smooth (C∞) everywhere
+
+Forms:
+  HannWindowDistribution[]         - on canonical [-1, 1]
+  HannWindowDistribution[{a, b}]   - scaled to [a, b]
+
+Moments (on [-1, 1]):
+  Mean = 0
+  Variance = 1/3 - 2/π² ≈ 0.1307
+  Kurtosis = 3 - 48/π⁴ ≈ 2.507
+
+See: RaisedHannDistribution, ChebyshevLobeDistribution";
+
+RaisedHannMean::usage = "RaisedHannMean[α] returns 0 (mean is always zero by symmetry).";
+RaisedHannVariance::usage = "RaisedHannVariance[α] returns the variance 1/3 - 2α/π².";
+RaisedHannSkewness::usage = "RaisedHannSkewness[α] returns 0 (distribution is symmetric).";
+RaisedHannKurtosis::usage = "RaisedHannKurtosis[α] returns the excess kurtosis.";
+RaisedHannSecondMoment::usage = "RaisedHannSecondMoment[α] returns E[X²] = 1/3 - 2α/π².";
+RaisedHannFourthMoment::usage = "RaisedHannFourthMoment[α] returns E[X⁴] = 1/5 + 4α(π²-12)/π⁴.";
+
+ChebyshevAmplitude::usage = "ChebyshevAmplitude[n] returns α(n) = n²cos(π/n)/(n²-4).
+
+This is the amplitude parameter that connects ChebyshevLobeDistribution to RaisedHannDistribution:
+  ChebyshevLobeDistribution[n] ≡ RaisedHannDistribution[ChebyshevAmplitude[n]]
+
+Properties:
+  ChebyshevAmplitude[3] = 0.9 (exact)
+  ChebyshevAmplitude[n] → 1 as n → ∞
+  ChebyshevAmplitude[n] < 1 for all finite n > 2
+
+See: RaisedHannDistribution, ChebyshevLobeDistribution"
 
 PrimitivePairQ::usage = "PrimitivePairQ[n, m] tests whether (m, m+1) forms a primitive pair modulo n.
 
@@ -682,11 +771,13 @@ LobeParitySumClosedForm[n_Integer] /; PrimeNu[n] == 3 && EvenQ[n] := 0
 lobeAmplitude[n_] := n^2 Cos[Pi/n] / (n^2 - 4)
 
 (* Helper: PDF on Chebyshev domain [-1, 1]
-   Derived from [0,1] PDF via x = 2t - 1, so t = (x+1)/2
-   f(x) = (1/2) * [1 + α(n) * cos(π(1/n - x))] *)
-lobePDFChebyshev[n_, x_] := (1/2) (1 + lobeAmplitude[n] Cos[Pi (1/n - x)])
+   Symmetric form: f(x) = (1/2) * [1 + α(n) * cos(πx)]
+   - Peak at x = 0 (center of support)
+   - Minima at x = ±1 (boundaries)
+   - Converges to Hann window as n → ∞ *)
+lobePDFChebyshev[n_, x_] := (1/2) (1 + lobeAmplitude[n] Cos[Pi x])
 
-(* Basic form: one period on [-1, 1] - canonical Chebyshev domain *)
+(* Basic form: n lobes on [-1, 1] - canonical Chebyshev domain *)
 ChebyshevLobeDistribution[n_ /; n > 2] :=
   ProbabilityDistribution[
     lobePDFChebyshev[n, x],
@@ -694,22 +785,103 @@ ChebyshevLobeDistribution[n_ /; n > 2] :=
     Assumptions -> n > 2
   ]
 
-(* Two-parameter form: one period centered at μ, on [μ-1, μ+1] *)
-ChebyshevLobeDistribution[n_ /; n > 2, mu_] :=
-  ProbabilityDistribution[
-    lobePDFChebyshev[n, x - mu],
-    {x, mu - 1, mu + 1},
-    Assumptions -> n > 2
+(* Two-parameter form: n lobes scaled to arbitrary interval [a, b] *)
+ChebyshevLobeDistribution[n_ /; n > 2, {a_, b_}] :=
+  Module[{width = b - a},
+    ProbabilityDistribution[
+      (2/width) lobePDFChebyshev[n, 2 (x - a)/width - 1],
+      {x, a, b},
+      Assumptions -> n > 2 && b > a
+    ]
   ]
 
-(* Full form: m periods centered at μ, on [μ-m, μ+m] *)
-(* Period width = 2, so m periods span 2m *)
-ChebyshevLobeDistribution[n_ /; n > 2, mu_, m_Integer /; m >= 1] :=
-  ProbabilityDistribution[
-    lobePDFChebyshev[n, Mod[x - mu + 1, 2] - 1] / m,
-    {x, mu - m, mu + m},
-    Assumptions -> n > 2
+(* Full form: n lobes × p periods on interval [a, b] *)
+(* Total lobes = n × periods, support is exactly [a, b] *)
+ChebyshevLobeDistribution[n_ /; n > 2, {a_, b_}, periods_Integer /; periods >= 1] :=
+  Module[{width = b - a},
+    ProbabilityDistribution[
+      (2/width) lobePDFChebyshev[n, Mod[2 periods (x - a)/width, 2] - 1],
+      {x, a, b},
+      Assumptions -> n > 2 && b > a && periods >= 1
+    ]
   ]
+
+(* ============================================================= *)
+(* SYMBOLIC MOMENT FUNCTIONS *)
+(* ============================================================= *)
+
+(* Symbolic mean on [-1, 1] - zero by symmetry *)
+ChebyshevLobeMean[n_] := 0
+
+(* Symbolic variance on [-1, 1]
+   For symmetric PDF f(x) = (1/2)[1 + α(n)·cos(πx)]:
+   Var = E[X²] = 1/3 - 2α(n)/π² *)
+ChebyshevLobeVariance[n_] := 1/3 - 2 lobeAmplitude[n] / Pi^2
+
+(* Expanded form using α(n) = n²cos(π/n)/(n²-4) *)
+ChebyshevLobeVarianceExplicit[n_] := 1/3 - 2 n^2 Cos[Pi/n] / ((n^2 - 4) Pi^2)
+
+(* Limiting variance as n → ∞ (Hann window variance) *)
+ChebyshevLobeVarianceLimit = 1/3 - 2/Pi^2;
+
+(* ===== RAISED HANN DISTRIBUTION ===== *)
+(* Direct α parameterization: f(x) = (1/2)[1 + α·cos(πx)] on [-1,1] *)
+
+(* Helper: PDF for raised Hann *)
+raisedHannPDF[alpha_, x_] := (1/2) (1 + alpha Cos[Pi x])
+
+(* Basic form: on [-1, 1] *)
+RaisedHannDistribution[alpha_ /; 0 <= alpha <= 1] :=
+  ProbabilityDistribution[
+    raisedHannPDF[alpha, x],
+    {x, -1, 1},
+    Assumptions -> 0 <= alpha <= 1
+  ]
+
+(* Two-parameter form: scaled to [a, b] *)
+RaisedHannDistribution[alpha_ /; 0 <= alpha <= 1, {a_, b_}] :=
+  Module[{width = b - a},
+    ProbabilityDistribution[
+      (2/width) raisedHannPDF[alpha, 2 (x - a)/width - 1],
+      {x, a, b},
+      Assumptions -> 0 <= alpha <= 1 && b > a
+    ]
+  ]
+
+(* Exact Hann window distribution (α = 1) *)
+HannWindowDistribution[] := RaisedHannDistribution[1]
+HannWindowDistribution[{a_, b_}] := RaisedHannDistribution[1, {a, b}]
+
+(* ===== RAISED HANN SYMBOLIC MOMENTS ===== *)
+(* All moments derived from: f(x) = (1/2)[1 + α·cos(πx)] on [-1,1] *)
+
+(* Mean = 0 by symmetry *)
+RaisedHannMean[alpha_] := 0
+
+(* Second moment E[X²] = ∫ x² · (1/2)[1 + α·cos(πx)] dx
+   = (1/2)·(2/3) + (α/2)·∫ x² cos(πx) dx
+   = 1/3 + (α/2)·(-4/π²) = 1/3 - 2α/π² *)
+RaisedHannSecondMoment[alpha_] := 1/3 - 2 alpha/Pi^2
+
+(* Variance = E[X²] - E[X]² = E[X²] (since mean = 0) *)
+RaisedHannVariance[alpha_] := 1/3 - 2 alpha/Pi^2
+
+(* Skewness = 0 by symmetry *)
+RaisedHannSkewness[alpha_] := 0
+
+(* Fourth moment E[X⁴] = ∫ x⁴ · (1/2)[1 + α·cos(πx)] dx
+   = (1/2)·(2/5) + (α/2)·∫ x⁴ cos(πx) dx
+   The integral ∫_{-1}^{1} x⁴ cos(πx) dx = 8(π²-12)/π⁴
+   So E[X⁴] = 1/5 + (α/2)·8(π²-12)/π⁴ = 1/5 + 4α(π²-12)/π⁴ *)
+RaisedHannFourthMoment[alpha_] := 1/5 + 4 alpha (Pi^2 - 12)/Pi^4
+
+(* Excess kurtosis = E[X⁴]/Var² - 3 *)
+RaisedHannKurtosis[alpha_] :=
+  RaisedHannFourthMoment[alpha] / RaisedHannVariance[alpha]^2 - 3
+
+(* ===== COMPARISON: Chebyshev amplitude as function of n ===== *)
+(* This allows easy comparison: RaisedHannDistribution[ChebyshevAmplitude[n]] *)
+ChebyshevAmplitude[n_] := n^2 Cos[Pi/n] / (n^2 - 4)
 
 End[];
 

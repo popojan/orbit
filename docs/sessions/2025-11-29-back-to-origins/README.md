@@ -283,6 +283,26 @@ $$\alpha(n) = \frac{n^2 \cos(\pi/n)}{n^2 - 4}$$
 - Non-negative for n > 2 (proven)
 - Limit as n → ∞ is Hann window (raised cosine)
 
+### Symbolic Moments
+
+On the canonical domain $[-1, 1]$:
+
+| Moment | Formula |
+|--------|---------|
+| Mean | $E[X] = \frac{n^2 \sin(2\pi/n)}{2\pi(n^2-4)}$ |
+| Second | $E[X^2] = \frac{1}{3} - \frac{2n^2\cos^2(\pi/n)}{(n^2-4)\pi^2}$ |
+| Third | $E[X^3] = \frac{n^2(\pi^2-6)\sin(2\pi/n)}{2(n^2-4)\pi^3}$ |
+
+### Limiting Behavior (n → ∞)
+
+| Property | Limit | Notes |
+|----------|-------|-------|
+| Mean | $0$ | Symmetric |
+| Variance | $\frac{1}{3} - \frac{2}{\pi^2} \approx 0.131$ | Hann window |
+| Skewness | $0$ | Symmetric |
+
+The limiting variance $\frac{1}{3} - \frac{2}{\pi^2}$ is characteristic of the **Hann window** (raised cosine distribution), which is only 39% of the uniform distribution variance on the same interval.
+
 ## LobeParitySum Mod 4 Identity
 
 **🔬 NUMERICALLY VERIFIED (100% of tested cases)**

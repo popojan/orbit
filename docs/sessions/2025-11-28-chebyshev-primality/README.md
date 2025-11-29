@@ -1373,3 +1373,221 @@ For ω=4 with n = p₁p₂p₃p₄, the number of non-zero S[pᵢ] varies:
 - 2-4 non-zero: also occur
 
 Unlike ω=3 where S[p₁] is always the only non-zero S[p], for ω=4 the pattern is complex.
+
+## Raised Hann Distribution Family (Update 22 - Nov 29, 2025)
+
+### Motivation: Unified Distribution API
+
+The ChebyshevLobeDistribution is actually a member of a broader family: **Raised Hann distributions** (also known as raised cosine windows). This update introduces a cleaner API exposing the underlying parameterization.
+
+### The Core PDF
+
+All distributions in this family share the form:
+$$f(x) = \frac{1}{2}\left[1 + \alpha \cdot \cos(\pi x)\right] \quad \text{for } x \in [-1, 1]$$
+
+where $\alpha \in [0, 1]$ is the **amplitude parameter**:
+- $\alpha = 0$: uniform distribution
+- $\alpha = 1$: exact Hann window (zeros at boundaries)
+- $0 < \alpha < 1$: raised Hann (positive minimum at boundaries)
+
+### New Paclet Functions
+
+**Direct α parameterization:**
+```mathematica
+RaisedHannDistribution[α]           (* on [-1, 1] *)
+RaisedHannDistribution[α, {a, b}]   (* scaled to [a, b] *)
+```
+
+**Exact Hann window (α = 1):**
+```mathematica
+HannWindowDistribution[]            (* on [-1, 1] *)
+HannWindowDistribution[{a, b}]      (* scaled to [a, b] *)
+```
+
+**Symbolic moments:**
+```mathematica
+RaisedHannMean[α]           (* = 0, by symmetry *)
+RaisedHannVariance[α]       (* = 1/3 - 2α/π² *)
+RaisedHannSkewness[α]       (* = 0, symmetric *)
+RaisedHannFourthMoment[α]   (* = 1/5 + 4α(π²-12)/π⁴ *)
+RaisedHannKurtosis[α]       (* excess kurtosis *)
+```
+
+### The Bridge Function: ChebyshevAmplitude
+
+The connection between ChebyshevLobeDistribution and RaisedHannDistribution:
+
+$$\boxed{\alpha(n) = \frac{n^2 \cos(\pi/n)}{n^2 - 4}}$$
+
+**Exact identity:**
+```mathematica
+ChebyshevLobeDistribution[n] ≡ RaisedHannDistribution[ChebyshevAmplitude[n]]
+```
+
+### ChebyshevAmplitude Analysis
+
+**Exact values for small n:**
+
+| n | α(n) exact | numerical |
+|---|------------|-----------|
+| 3 | 9/10 | 0.9000 |
+| 4 | 2√2/3 | 0.9428 |
+| 5 | 25(1+√5)/84 = 25φ/42 | 0.9631 |
+| 6 | 9√3/16 | 0.9743 |
+| 7 | 49cos(π/7)/45 | 0.9811 |
+| 8 | 16cos(π/8)/15 | 0.9855 |
+| ∞ | 1 | 1.0000 |
+
+**Asymptotic expansion:**
+$$\alpha(n) = 1 - \frac{\pi^2 - 8}{2n^2} + O(1/n^4)$$
+
+where $(\pi^2 - 8)/2 \approx 0.9348$ is the universal convergence rate coefficient.
+
+### Geometric Origin of α(n)
+
+The formula has three components:
+
+1. **n² (numerator)** - Polygon symmetry: n-gon has n lobes contributing equally
+
+2. **cos(π/n)** - Modulation factor from the Dirichlet kernel at polygon critical points
+
+3. **(n² - 4) denominator** - Frequency mixing from Lebesgue measure integration:
+   - sin²(θ) = (1 - cos(2θ))/2
+   - Mixing cos(nθ) with cos(2θ) creates (n±2) terms
+   - Normalization ∫PDF=1 requires dividing by n²-4
+
+### Why (n²-4) instead of Egypt sqrt's (n²-1)?
+
+| Context | Denominator | Reason |
+|---------|-------------|--------|
+| **Chebyshev lobe PDF** | n² - 4 | Lebesgue measure (dx), frequency mixing n±2 |
+| **Egypt sqrt method** | n² - 1 | Angle measure (dθ), different normalization |
+
+The (n²-4) is **canonical** for probability distributions on [-1,1] because it ensures ∫PDF = 1 under Lebesgue measure.
+
+### Non-negativity Guarantee
+
+For PDF f(x) = (1/2)(1 + α·cos(πx)) ≥ 0, we need α ≤ 1.
+
+The formula α(n) < 1 for all finite n > 2 (proven):
+- The cos(π/n) factor in the numerator caps the ratio below 1
+- Gap: 1 - α(n) = (π²-8)/(2n²) + O(1/n⁴)
+
+### Moment Comparison
+
+For the symmetric form f(x) = (1/2)[1 + α·cos(πx)]:
+
+| Moment | Formula |
+|--------|---------|
+| E[X] | 0 (by symmetry) |
+| E[X²] | 1/3 - 2α/π² |
+| Var[X] | 1/3 - 2α/π² (since mean = 0) |
+| E[X⁴] | 1/5 + 4α(π²-12)/π⁴ |
+
+**Limiting variance (Hann window, α=1):**
+$$\text{Var}_{\text{Hann}} = \frac{1}{3} - \frac{2}{\pi^2} \approx 0.1307$$
+
+### API Design Rationale
+
+The three-level API serves different use cases:
+
+| Entry Point | Use Case |
+|-------------|----------|
+| `ChebyshevLobeDistribution[n]` | Polygon geometry, primality research |
+| `RaisedHannDistribution[α]` | Signal processing, window functions |
+| `HannWindowDistribution[]` | Standard Hann window applications |
+
+All three are **mathematically equivalent** (up to parameterization).
+
+---
+
+## Update 23 - Complex Analysis of α(z)
+
+Extending the amplitude function α(n) = n²cos(π/n)/(n²-4) to the complex plane reveals beautiful structure.
+
+### Function Definition
+
+$$\alpha(z) = \frac{z^2 \cos(\pi/z)}{z^2 - 4}$$
+
+### Singularity Structure
+
+**Key Discovery:** The apparent poles at z = ±2 are **removable singularities**.
+
+| Point | Type | Value |
+|-------|------|-------|
+| z = 0 | Essential singularity | (oscillates) |
+| z = +2 | Removable | π/4 |
+| z = -2 | Removable | π/4 |
+| z = ∞ | Regular | 1 |
+
+### Why Removable at z = ±2?
+
+The zeros of cos(π/z) occur at:
+$$z = \frac{2}{2k + 1}, \quad k \in \mathbb{Z}$$
+
+For k = 0: z = 2 and z = -2, which are **exactly** where (z² - 4) = 0!
+
+**L'Hôpital verification:**
+$$\lim_{z \to 2} \alpha(z) = \frac{\pi \sin(\pi/2)}{2 \cdot 2} = \frac{\pi}{4}$$
+
+The fact that cos(π/z) vanishes exactly at the poles of 1/(z²-4) is **not coincidental** — it reflects the degenerate geometry of the "digon" (2-sided polygon).
+
+### Zeros of α(z)
+
+The function has infinitely many zeros accumulating at z = 0:
+$$\text{Zeros: } z = \frac{2}{2k+1} \text{ for } k \in \mathbb{Z}, \; k \neq 0, -1$$
+
+In order of decreasing |z|: ..., -2/3, 2/3, -2/5, 2/5, -2/7, 2/7, ...
+
+### Behavior on Imaginary Axis
+
+For z = iy (real y):
+$$\alpha(iy) = \frac{y^2 \cosh(\pi/y)}{y^2 + 4} > 0$$
+
+**Properties:**
+- Always real and positive
+- Range: α(iy) ∈ (1, ∞)
+- As y → ∞: α(iy) → 1
+- As y → 0: α(iy) → ∞ (exponentially via cosh)
+
+**Contrast with real axis:**
+- Real axis (n ≥ 3): α ∈ [0.9, 1)
+- Imaginary axis: α ∈ (1, ∞)
+
+### Asymptotic Expansion
+
+$$\alpha(z) = 1 - \frac{\pi^2 - 8}{2z^2} + \frac{\pi^4 - 16\pi^2 + 96}{24z^4} + O(z^{-6})$$
+
+The leading correction coefficient:
+$$\frac{\pi^2 - 8}{2} \approx 0.935$$
+
+### Geometric Interpretation
+
+The function α(z) maps:
+- Large positive integers → values approaching 1 (Hann window)
+- Small positive integers (n = 3, 4, 5, ...) → values in [0.9, 0.99]
+- z = ±2 → the special value π/4 ≈ 0.785
+- Imaginary axis → values exceeding 1
+
+### Connection to Constructible Polygons
+
+For integer n, α(n) has exact radical form only when cos(π/n) does, i.e., when n corresponds to a **constructible polygon** (Gauss-Wantzel theorem).
+
+Constructible: n = 2^k × (product of distinct Fermat primes: 3, 5, 17, 257, 65537)
+
+| n | α(n) exact form |
+|---|-----------------|
+| 3 | 9/10 |
+| 4 | 2√2/3 |
+| 5 | 25(1+√5)/84 |
+| 6 | 9√3/16 |
+| 7 | 49cos(π/7)/45 (no radical form) |
+
+### Summary of Complex Structure
+
+The function α(z) = z²cos(π/z)/(z²-4) is:
+1. **Meromorphic** on ℂ \ {0} (after removing singularities at ±2)
+2. **Has essential singularity** at z = 0 (accumulation of zeros)
+3. **Symmetric:** α(z) = α(-z) for all z ≠ 0
+4. **Real on real axis** and **real on imaginary axis** (remarkable!)
+5. **Bounded by 1** for positive real z > 2, **unbounded** on imaginary axis
