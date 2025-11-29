@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-11-28 21:45:28
+**Generated:** 2025-11-29 08:09:48
 
 ## Theorems (Master References)
 
@@ -20,16 +20,16 @@
 
 ## Recent Sessions (Last 10)
 
+- [Chebyshev Sign Sum - Aktuální stav výzkumu](sessions/2025-11-28-chebyshev-primality/STATUS.md) *()*
+- [Chebyshev Sign Sum - Session Handoff](sessions/2025-11-28-chebyshev-primality/HANDOFF.md) *()*
+- [Proof Chain Sanity Check: x₀ mod p Classification](sessions/2025-11-28-chebyshev-primality/pell-mod8-original.md) *(2025-11-29)*
+- [Mod 8 Unification: From Pell to Inverse Parity](sessions/2025-11-28-chebyshev-primality/mod8-unification.md) *(2025-11-29)*
+- [Od Chebyshevovy geometrie k hierarchickým b-vektorům](sessions/2025-11-28-chebyshev-primality/journey-geometry-to-algebra.md) *(2025-11-28)*
 - [Chebyshev Geometry and Primality](sessions/2025-11-28-chebyshev-primality/README.md) *(2025-11-28)*
 - [Unit Fraction Discovery: Primality & Factorization](sessions/2025-11-27-semiprime-gamma-form/unit-fraction-discovery.md) *(2025-11-28)*
 - [Semiprime Formula: Gamma/Factorial Reformulation](sessions/2025-11-27-semiprime-gamma-form/README.md) *(2025-11-28)*
 - [Tensorový produkt involucí](sessions/2025-11-27-dirichlet-divisor-pairs/tensor-product.md) *(2025-11-28)*
 - [Co je standard vs. co jsme přidali](sessions/2025-11-27-dirichlet-divisor-pairs/summary-what-is-new.md) *(2025-11-28)*
-- [Dirichletova řada pro uspořádané páry dělitelů](sessions/2025-11-27-dirichlet-divisor-pairs/README.md) *(2025-11-28)*
-- [Fermionový Primon Gas — Implementace a propojení s L_P](sessions/2025-11-27-dirichlet-divisor-pairs/primon-gas.md) *(2025-11-28)*
-- [Vnořený radikál: Algebraická identita pro L_P a Z_F](sessions/2025-11-27-dirichlet-divisor-pairs/nested-radical-identity.md) *(2025-11-28)*
-- [Párování dělitelů jako involuce](sessions/2025-11-27-dirichlet-divisor-pairs/involuce.md) *(2025-11-28)*
-- [Fermion/Boson interpretace](sessions/2025-11-27-dirichlet-divisor-pairs/fermion-boson.md) *(2025-11-28)*
 
 ## Navigation
 

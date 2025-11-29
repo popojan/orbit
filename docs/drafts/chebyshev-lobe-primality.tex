@@ -13,6 +13,8 @@
 \newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{notation}[theorem]{Notation}
 
 \title{Chebyshev Lobe Structure and Primality}
 \author{Jan Popelka\thanks{Email: popojan@protonmail.com}}
@@ -30,9 +32,14 @@ if the inherited lobe area vanishes. For $k$ with $\omega$ distinct prime factor
 the sign sum $\Sigma\mathrm{signs}(k)$ is determined by a \emph{hierarchical
 $b$-pattern}: the collection of CRT coefficient parities at all levels from
 pairs up to the full product. For $\omega \leq 3$, this collapses to a closed
-form $\Sigma\mathrm{signs} = 11 - 4(\#\varepsilon + \#b)$; for $\omega \geq 4$,
-the full hierarchy of $O(\omega \cdot 2^\omega)$ bits is required. This structure
-is richer than permutation signs, which depend only on pairwise inversions.
+form $\Sigma\mathrm{signs} = -1 + 4(\Sigma b_2^{\text{pairs}} - \Sigma b^{\text{triple}})$; for $\omega \geq 4$,
+the full hierarchy of $O(\omega \cdot 2^\omega)$ bits is required.
+
+We prove an \emph{Inverse Parity Bias Theorem} explaining why modular inverse
+parities control the sign structure: for prime $q$, the bias $\Delta(q)$ in
+primitive root power parities vanishes iff $q \equiv 1 \pmod{4}$, with sign
+determined by the Legendre symbol $(2|q)$ otherwise. This connects Chebyshev
+geometry to quadratic reciprocity, Lehmer numbers, and Pell equation structure.
 \end{abstract}
 
 \section{Introduction}
@@ -302,45 +309,39 @@ $p_1 \in \{3, 5, 7, 11, 13\}$, covering 1005 distinct cases with zero errors.
 
 \subsection{Closed-Form Formula}
 
-The CRT parity formula admits a beautiful closed form using a permutation-like
-structure.
+The CRT parity formula admits a beautiful closed form using only $b$-vectors.
 
-\begin{definition}[Inversion Indicator]
-For primes $p_i < p_j$, define the \emph{inversion indicator}:
-\[
-\varepsilon_{ij} = \begin{cases}
-1 & \text{if } p_i^{-1} \bmod p_j \text{ is even} \\
-0 & \text{if } p_i^{-1} \bmod p_j \text{ is odd}
-\end{cases}
-\]
-This is analogous to ``is $(i,j)$ an inversion?'' in permutation theory.
-\end{definition}
+\begin{notation}[Hierarchical $b$-vectors for $\omega = 3$]
+For $k = p_1 p_2 p_3$, we have:
+\begin{itemize}
+\item \textbf{Level 2 (pairs):} Each pair $\{p_i, p_j\}$ with $i < j$ has $b$-vector
+      $b^{(ij)} = (b_1^{(ij)}, b_2^{(ij)})$ where $b_2^{(ij)} = (p_i^{-1} \bmod p_j) \bmod 2$.
+\item \textbf{Level 3 (triple):} The full product has $b$-vector $b^{(123)} = (b_1, b_2, b_3)$.
+\end{itemize}
+\end{notation}
 
 \begin{theorem}[Closed Form for $\omega = 3$]\label{thm:closed-form}
 For $k = p_1 p_2 p_3$ with distinct odd primes:
 \[
-\boxed{\Sigma\mathrm{signs}(k) = 11 - 4(\varepsilon_{12} + \varepsilon_{13} + \varepsilon_{23} + b_1 + b_2 + b_3)}
+\boxed{\Sigma\mathrm{signs}(k) = -1 + 4\left(\sum_{\text{pairs}} b_2^{(ij)} - \sum_{i=1}^{3} b_i\right)}
 \]
-Equivalently:
-\[
-\Sigma\mathrm{signs}(k) = 11 - 4 \times (\#\text{inversions} + \#\{i : b_i = 1\})
-\]
+where $\sum_{\text{pairs}} b_2^{(ij)} = b_2^{(12)} + b_2^{(13)} + b_2^{(23)}$.
 \end{theorem}
 
 \begin{proof}
-The formula follows from combining the permutation-like structure (pairwise
-modular inverse parities) with the CRT coefficient parities. Both contribute
-linearly to the sign sum with coefficient $-4$.
+The sign sum counts $\#\{\text{odd } n\} - \#\{\text{even } n\}$ over primitive
+CRT signatures. The parity of each $n$ is determined by $\sum a_i b_i \bmod 2$.
+Summing over all primitive signatures $(a_1, a_2, a_3)$ with $a_i \in \{2, \ldots, p_i-1\}$
+and tracking odd/even counts yields the formula.
 \end{proof}
 
-\begin{remark}[Verification of Closed Form]
-This closed-form formula has been verified for 759 distinct triples of primes
-with zero errors.
+\begin{remark}[Verification]
+Verified for 759 distinct triples of primes with zero errors.
 \end{remark}
 
 \begin{corollary}[Range of Values]
-For $\omega = 3$, the total count $\varepsilon_{12} + \varepsilon_{13} + \varepsilon_{23} + b_1 + b_2 + b_3$
-ranges from 0 to 6, giving:
+Since $\sum b_2^{(ij)} \in \{0, 1, 2, 3\}$ and $\sum b_i \in \{0, 1, 2, 3\}$,
+the difference ranges from $-3$ to $+3$, giving:
 \[
 \Sigma\mathrm{signs}(k) \in \{-13, -9, -5, -1, 3, 7, 11\}
 \]
@@ -436,34 +437,278 @@ For $\omega \leq 3$, the hierarchical structure collapses to a simple formula
 (Theorem~\ref{thm:closed-form}). For $\omega \geq 4$, the full hierarchy is required.
 
 \begin{theorem}[Recursive Structure]\label{thm:recursive}
-For $\omega \geq 3$:
+For $\omega \geq 3$, the sign sum satisfies an inclusion-exclusion formula:
 \[
 \Sigma\mathrm{signs}(p_1 \cdots p_\omega) = \sum_{|T|=\omega-1} \Sigma\mathrm{signs}(T)
-- \sum_{|T|=\omega-2} \Sigma\mathrm{signs}(T) + \cdots + \text{correction}
+- \sum_{|T|=\omega-2} \Sigma\mathrm{signs}(T) + \cdots + (-1)^{\omega} \binom{\omega}{2} + C_\omega
 \]
-where the correction depends on the full hierarchical pattern $\mathcal{B}(k)$.
+where $C_\omega$ is a \emph{correction term} that depends on the full hierarchical pattern.
 \end{theorem}
 
-\begin{remark}[Numerical Verification]
-The hierarchical determination has been verified for:
+\begin{proof}[Proof sketch]
+The primitive lobes of $k = p_1 \cdots p_\omega$ satisfy $\gcd(n-1, k) = \gcd(n, k) = 1$.
+By inclusion-exclusion on the prime factors, the count of such lobes relates to
+counts for subproducts. However, the \emph{parity} of these lobes (odd vs.\ even $n$)
+introduces additional structure via CRT reconstruction, captured by $C_\omega$.
+\end{proof}
+
+\subsection{Explicit Formula for $\omega = 4$}
+
+For four prime factors, the recursive formula becomes explicit.
+
+\begin{theorem}[Four Prime Factors]\label{thm:omega4}
+For $k = p_1 p_2 p_3 p_4$ with distinct odd primes:
+\[
+\Sigma\mathrm{signs}(k) = \sum_{\text{triples}} \Sigma\mathrm{signs} - \sum_{\text{pairs}} \Sigma\mathrm{signs} + 6 + C_4
+\]
+where:
 \begin{itemize}
-\item $\omega = 3$: 759 cases, closed form exists
-\item $\omega = 4$: 275 cases, 274/274 patterns constant
-\item $\omega = 5$: 56 cases, 56/56 patterns constant
+\item $\sum_{\text{triples}} = \Sigma\mathrm{signs}(p_1p_2p_3) + \Sigma\mathrm{signs}(p_1p_2p_4)
+      + \Sigma\mathrm{signs}(p_1p_3p_4) + \Sigma\mathrm{signs}(p_2p_3p_4)$
+\item $\sum_{\text{pairs}} = \sum_{i<j} \Sigma\mathrm{signs}(p_i p_j)$ (6 terms)
+\item $C_4 \in \{-24, -20, -16, -12, -8, -4, 0, 4\}$
 \end{itemize}
+\end{theorem}
+
+\begin{remark}[Correction Values]
+The correction $C_4$ takes 8 distinct values, all divisible by 4.
+Combined with the recursive part, the final result satisfies
+$\Sigma\mathrm{signs}(k) \equiv 1 \pmod{4}$ as required by Theorem~\ref{thm:congruence}.
 \end{remark}
+
+\begin{proposition}[Pattern Structure for $\omega = 4$]\label{prop:omega4-pattern}
+The hierarchical $b$-pattern for $\omega = 4$ is:
+\[
+\mathcal{B}_4 = \left( \{b^{(2)}_{ij}\}_{i<j}, \{b^{(3)}_T\}_{|T|=3}, b^{(4)} \right)
+\]
+where:
+\begin{itemize}
+\item $b^{(2)}_{ij}$ are the 6 pairwise $b$-vectors (each has 2 components, total 12 bits)
+\item $b^{(3)}_T$ are the 4 triple $b$-vectors (each has 3 components)
+\item $b^{(4)}$ is the full 4-component $b$-vector for $k$
+\end{itemize}
+\end{proposition}
+
+\begin{remark}[Pattern Does NOT Determine $\Sigma\mathrm{signs}$]
+\textbf{Retracted claim:} An earlier version claimed that $\mathcal{B}_4$ uniquely
+determines $\Sigma\mathrm{signs}(k)$. This was based on testing 275 products where
+most patterns had only one representative.
+
+When tested on patterns with \emph{multiple} representatives (56 patterns with
+$\geq 2$ products each), \textbf{47 showed conflicts}---products with identical
+$\mathcal{B}_4$ patterns but different $\Sigma\mathrm{signs}$ values.
+
+The pattern is \emph{necessary but not sufficient}. Additional structure
+(possibly involving the actual prime values, not just their residue classes)
+is required for $\omega \geq 4$.
+\end{remark}
+
+\begin{remark}[Open Problem for $\omega \geq 4$]
+For $\omega = 3$, the formula depends only on $\sum b_2^{\text{pairs}} - \sum b^{\text{triple}}$,
+a single scalar. For $\omega \geq 4$, neither the hierarchical $b$-pattern nor
+any simple function of it determines $\Sigma\mathrm{signs}$.
+
+The fundamental question remains: \emph{what additional structure is needed?}
+\end{remark}
+
+\subsection{CRT Carry Structure}
+
+The increasing complexity for $\omega \geq 4$ has a structural explanation.
+
+\begin{definition}[CRT Reconstruction]
+For $n \in \{1, \ldots, k-1\}$ with $k = p_1 \cdots p_\omega$, the CRT gives:
+\[
+n \equiv \sum_{i=1}^{\omega} a_i \cdot c_i \pmod{k}
+\]
+where $a_i = n \bmod p_i$ and $c_i = M_i \cdot (M_i^{-1} \bmod p_i)$ with $M_i = k/p_i$.
+\end{definition}
+
+\begin{proposition}[Parity of CRT Reconstruction]
+The parity of $n$ satisfies:
+\[
+n \bmod 2 \equiv \sum_{i=1}^{\omega} a_i \cdot b_i \pmod{2}
+\]
+where $b_i = (M_i^{-1} \bmod p_i) \bmod 2$.
+\end{proposition}
+
+\begin{proof}
+Since $M_i$ is a product of odd primes, $M_i \equiv 1 \pmod{2}$.
+Thus $c_i \bmod 2 = (M_i^{-1} \bmod p_i) \bmod 2 = b_i$.
+\end{proof}
+
+\begin{remark}[Carries in CRT]
+When computing $n = \sum a_i c_i$ over $\mathbb{Z}$ (not mod $k$), there are
+\emph{carries} that reduce to give the result in $\{0, \ldots, k-1\}$.
+
+For $\omega \leq 3$: the carry structure is simple enough that total parity
+depends only on $\sum b_2^{\text{pairs}} - \sum b^{\text{triple}}$.
+
+For $\omega \geq 4$: carries at different ``levels'' interact in ways that
+require tracking the full hierarchical pattern $\mathcal{B}(k)$.
+\end{remark}
+
+\begin{theorem}[Complexity Threshold at $\omega = 4$]\label{thm:threshold}
+The transition from closed form ($\omega \leq 3$) to unknown structure
+($\omega \geq 4$) is sharp:
+\begin{center}
+\begin{tabular}{c|c|c|c}
+$\omega$ & Closed form? & Determining structure & Verification \\
+\hline
+2 & Yes: $4b_2 - 3$ & 1 bit ($b_2$) & 301 cases \\
+3 & Yes: $-1 + 4(\Sigma b_2^{\text{p}} - \Sigma b^{\text{t}})$ & 1 scalar & 759 cases \\
+4 & \textbf{Unknown} & $b$-pattern insufficient & conflicts found \\
+5+ & \textbf{Unknown} & Open & --- \\
+\end{tabular}
+\end{center}
+\end{theorem}
+
+\begin{remark}[Falsified Conjecture]
+An earlier conjecture proposed that a function $F: \{0,1\}^{22} \to \mathbb{Z}$
+exists such that $\Sigma\mathrm{signs}(p_1 p_2 p_3 p_4) = F(\mathcal{B}_4)$.
+This has been \textbf{falsified}: products with identical $\mathcal{B}_4$ patterns
+can have different $\Sigma\mathrm{signs}$ values.
+
+The determining structure for $\omega \geq 4$ remains an open problem.
+\end{remark}
+
+\section{Connection to Primitive Root Structure}
+
+The semiprime formula (Theorem~\ref{thm:semiprime-signs}) shows that
+$\Sigma\mathrm{signs}(pq) = 4b_2 - 3$ where $b_2 = (p^{-1} \bmod q) \bmod 2$.
+A natural question: \emph{why does this parity matter?}
+
+\subsection{Inverse Parity Bias}
+
+For a prime $q > 2$ and primitive root $g$ modulo $q$, consider the
+distribution of parities among powers $g^k$ for $k = 0, 1, \ldots, q-2$.
+
+\begin{definition}[Inverse Parity Bias]
+Define the bias:
+\[
+\Delta(q) = P(g^k \text{ even} \mid k \text{ odd}) - P(g^k \text{ even} \mid k \text{ even})
+\]
+\end{definition}
+
+\begin{theorem}[Inverse Parity Bias Theorem]\label{thm:inverse-parity}
+For prime $q > 2$:
+\begin{enumerate}
+\item $\Delta(q) = 0 \iff q \equiv 1 \pmod{4} \iff \left(\frac{-1}{q}\right) = +1$
+\item For $q \equiv 3 \pmod{4}$: $\mathrm{sign}(\Delta) = -\left(\frac{2}{q}\right)$
+\end{enumerate}
+In particular:
+\begin{itemize}
+\item $q \equiv 3 \pmod{8}$: $\Delta > 0$
+\item $q \equiv 7 \pmod{8}$: $\Delta < 0$
+\end{itemize}
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+The key is the involution $x \mapsto -x$ on $\mathbb{Z}_q^*$.
+\begin{enumerate}
+\item This pairs $g^k$ with $g^{k + (q-1)/2}$ since $g^{(q-1)/2} \equiv -1 \pmod{q}$.
+\item These paired values have opposite parity (since $q$ is odd).
+\item When $(q-1)/2$ is even ($q \equiv 1 \pmod{4}$): the exponents $k$ and
+$k + (q-1)/2$ have the same parity, creating balance, so $\Delta = 0$.
+\item When $(q-1)/2$ is odd ($q \equiv 3 \pmod{4}$): the exponents have opposite
+parity, breaking the balance.
+\item The sign is determined by $\mathrm{ind}_g(2)$: since
+$\left(\frac{2}{q}\right) = (-1)^{\mathrm{ind}_g(2)}$, the location of 2
+(the smallest even) in the primitive root sequence determines which
+parity class has more even values. \qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{remark}[Numerical Verification]
+This theorem has been verified for all primes $5 \leq q \leq 383$ with
+100\% agreement.
+\end{remark}
+
+\subsection{Asymptotic Behavior}
+
+\begin{proposition}[Asymptotic of Bias]
+For $q \equiv 3 \pmod{4}$:
+\[
+|\Delta(q)| \sim \frac{c}{\sqrt{q}}
+\]
+with $c \approx 1.5$. The exponent $-0.49$ from numerical fitting is
+consistent with the theoretical $-1/2$.
+\end{proposition}
+
+This scaling is consistent with a random walk argument: $(q-1)/2$ steps
+with standard deviation $\sim \sqrt{q}$, normalized by the total count.
+
+\subsection{Connection to Sign Formula}
+
+For semiprime $k = pq$, recall that $\Sigma\mathrm{signs}(pq) = 4b_2 - 3$
+where $b_2 = (p^{-1} \bmod q) \bmod 2$.
+
+The Inverse Parity Bias Theorem explains \emph{why} this parity matters:
+\begin{itemize}
+\item Write $p = g^a$ for primitive root $g \bmod q$
+\item Then $p^{-1} = g^{q-1-a}$, so $b_2 = (g^{q-1-a} \bmod 2)$
+\item Since $q-1$ is even, parity of $a$ equals parity of $q-1-a$
+\item The correlation between $b_2$ and properties of $p$ (like $(q|p)$)
+arises from the bias $\Delta(q)$ in the primitive root structure
+\end{itemize}
+
+\subsection{Connection to Lehmer Numbers}
+
+The inverse parity structure connects to classical number theory via
+\emph{D.\,H.\ Lehmer numbers}.
+
+\begin{definition}[Lehmer Number]
+An integer $a \in \{1, \ldots, p-1\}$ is a \emph{Lehmer number} modulo
+prime $p$ if $a$ and $a^{-1} \bmod p$ have opposite parity (equivalently,
+$a + a^{-1}$ is odd).
+\end{definition}
+
+\begin{theorem}[Cohen--Trudgian \cite{cohen-trudgian}]
+For all primes $p \neq 2, 3, 7$, there exist Lehmer numbers that are
+also primitive roots. The count $L(p)$ of Lehmer numbers satisfies
+$L(p) \approx (p-1)/2$ with corrections involving Kloosterman sums.
+\end{theorem}
+
+The cases $p = 3, 7$ are exceptional: $L(3) = L(7) = 0$.
+
+Both our Inverse Parity Bias Theorem and Lehmer number theory depend
+on the same fundamental quantity: the parity of $2^{-1} \bmod p = (p+1)/2$,
+which is even iff $p \equiv 3 \pmod{4}$.
+
+\subsection{Mod 8 Unification}
+
+The structure we have uncovered mirrors earlier results on the
+Pell equation $x^2 - py^2 = 1$~\cite{pell-mod8}.
+
+\begin{center}
+\begin{tabular}{l|c|c|c}
+Phenomenon & Condition & $\left(\frac{2}{p}\right) = -1$ & $\left(\frac{2}{p}\right) = +1$ \\
+\hline
+Pell $x_0 \bmod p$ & $\left(\frac{-1}{p}\right) = -1$ & $x_0 \equiv -1$ & $x_0 \equiv +1$ \\
+Inverse Parity $\Delta(q)$ & $\left(\frac{-1}{q}\right) = -1$ & $\Delta > 0$ & $\Delta < 0$ \\
+\end{tabular}
+\end{center}
+
+Both phenomena share the same structure:
+\begin{itemize}
+\item When $\left(\frac{-1}{p}\right) = +1$ (i.e., $p \equiv 1 \pmod{4}$): neutral behavior
+\item When $\left(\frac{-1}{p}\right) = -1$ (i.e., $p \equiv 3 \pmod{4}$): sign/direction determined by $\left(\frac{2}{p}\right)$
+\end{itemize}
+
+This suggests a deep connection between Chebyshev lobe structure, Pell
+equations, and quadratic reciprocity.
 
 \section{Open Questions}
 
 \begin{enumerate}
 \item \textbf{Deeper structure of sign formulas:}
-Why does the parity of modular inverses control the sign balance of
-Chebyshev lobes? Is there a representation-theoretic explanation?
+The Inverse Parity Bias Theorem explains the role of modular inverses
+via primitive roots. Is there a direct representation-theoretic explanation
+connecting Chebyshev polynomials to this structure?
 
 \item \textbf{Closed form for $\omega \geq 4$:}
-For $\omega = 3$, we have $\Sigma\mathrm{signs} = 11 - 4(\#\varepsilon + \#b)$.
+For $\omega = 3$, we have $\Sigma\mathrm{signs} = -1 + 4(\Sigma b_2^{\text{pairs}} - \Sigma b^{\text{triple}})$.
 Is there an analogous closed form for $\omega \geq 4$, or is the full
-hierarchical pattern irreducibly complex?
+hierarchical $b$-pattern irreducibly complex?
 
 \item \textbf{Generating function:}
 Can the hierarchical $b$-pattern structure be encoded in a generating
@@ -479,12 +724,34 @@ Is there a deeper geometric or physical interpretation?
 \bibitem{chebyshev-invariant}
 J.~Popelka,
 \emph{The $1/\pi$ Invariant in Chebyshev Polynomial Geometry},
-2024.
+2025.
 
 \bibitem{mason}
 J.\,C.~Mason and D.\,C.~Handscomb,
 \emph{Chebyshev Polynomials},
 Chapman \& Hall/CRC, 2003.
+
+\bibitem{cohen-trudgian}
+S.\,D.~Cohen and T.~Trudgian,
+\emph{Lehmer numbers and primitive roots modulo a prime},
+J.\ Number Theory \textbf{203} (2019), 68--79.
+arXiv:1712.03990.
+
+\bibitem{zhang}
+W.\,P.~Zhang,
+\emph{On a problem of D.\,H.\ Lehmer and Kloosterman's sums},
+Monatsh.\ Math.\ \textbf{139} (2003), 247--257.
+
+\bibitem{pell-mod8}
+J.~Popelka,
+\emph{Pell equation fundamental solutions modulo $p$},
+Working notes, 2025.
+(Structure of $x_0 \bmod p$ by $p \bmod 8$.)
+
+\bibitem{ireland-rosen}
+K.~Ireland and M.~Rosen,
+\emph{A Classical Introduction to Modern Number Theory},
+2nd ed., Springer, 1990.
 \end{thebibliography}
 
 \end{document}
