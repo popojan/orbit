@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-11-29 08:09:48
+**Generated:** 2025-11-30 08:32:54
 
 ## Theorems (Master References)
 
@@ -20,16 +20,16 @@
 
 ## Recent Sessions (Last 10)
 
-- [Chebyshev Sign Sum - Aktuální stav výzkumu](sessions/2025-11-28-chebyshev-primality/STATUS.md) *()*
-- [Chebyshev Sign Sum - Session Handoff](sessions/2025-11-28-chebyshev-primality/HANDOFF.md) *()*
-- [Proof Chain Sanity Check: x₀ mod p Classification](sessions/2025-11-28-chebyshev-primality/pell-mod8-original.md) *(2025-11-29)*
+- [The Altsum Circle Identity](sessions/2025-11-30-altsum-circle/README.md) *()*
+- [Back to Origins: Connecting Old Code to Chebyshev Integral Theorem](sessions/2025-11-29-back-to-origins/README.md) *(2025-11-29)*
+- [Chebyshev Geometry and Primality](sessions/2025-11-28-chebyshev-primality/README.md) *(2025-11-29)*
+- [Chebyshev Sign Sum - Aktuální stav výzkumu](sessions/2025-11-28-chebyshev-primality/STATUS.md) *(2025-11-29)*
 - [Mod 8 Unification: From Pell to Inverse Parity](sessions/2025-11-28-chebyshev-primality/mod8-unification.md) *(2025-11-29)*
+- [Chebyshev Sign Sum - Session Handoff](sessions/2025-11-28-chebyshev-primality/HANDOFF.md) *(2025-11-29)*
+- [Theorem: Inverse Parity Bias and Legendre Symbols](sessions/2025-11-28-chebyshev-primality/inverse-parity-theorem.md) *(2025-11-29)*
+- [ASIDE: Lissajous Figures and Modular Inverses](sessions/2025-11-28-chebyshev-primality/aside-lissajous-inverse.md) *(2025-11-29)*
+- [Proof Chain Sanity Check: x₀ mod p Classification](sessions/2025-11-28-chebyshev-primality/pell-mod8-original.md) *(2025-11-29)*
 - [Od Chebyshevovy geometrie k hierarchickým b-vektorům](sessions/2025-11-28-chebyshev-primality/journey-geometry-to-algebra.md) *(2025-11-28)*
-- [Chebyshev Geometry and Primality](sessions/2025-11-28-chebyshev-primality/README.md) *(2025-11-28)*
-- [Unit Fraction Discovery: Primality & Factorization](sessions/2025-11-27-semiprime-gamma-form/unit-fraction-discovery.md) *(2025-11-28)*
-- [Semiprime Formula: Gamma/Factorial Reformulation](sessions/2025-11-27-semiprime-gamma-form/README.md) *(2025-11-28)*
-- [Tensorový produkt involucí](sessions/2025-11-27-dirichlet-divisor-pairs/tensor-product.md) *(2025-11-28)*
-- [Co je standard vs. co jsme přidali](sessions/2025-11-27-dirichlet-divisor-pairs/summary-what-is-new.md) *(2025-11-28)*
 
 ## Navigation
 
