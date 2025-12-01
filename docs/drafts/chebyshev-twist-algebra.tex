@@ -1,0 +1,245 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\title{Chebyshev Polynomials as Rational Twist Algebra:\\
+A Bridge to Wildberger's Program}
+
+\author{Jan Popelka \and Claude (Anthropic)}
+
+\date{December 1, 2025\\
+\small Draft -- Not peer-reviewed}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We observe that Chebyshev polynomials provide a natural algebraic framework
+for encoding rotational structure without explicit reference to $\pi$.
+The ``twist count'' $n$ (an integer) replaces the continuous angle $\theta$
+(which requires $\pi$), while the composition property $T_m \circ T_n = T_{mn}$
+captures the multiplicative structure of combined rotations.
+We show that the total normalized area of Chebyshev polygon lobes equals
+exactly 1 for all $n \geq 3$, giving a rational area ratio of $1/4$
+relative to the bounding square. This suggests Chebyshev polynomials
+may serve as a bridge between classical trigonometry and Wildberger's
+rational geometry program, recovering orientation/twist within a
+purely algebraic framework.
+\end{abstract}
+
+\section{Motivation: The Missing Orientation}
+
+Norman Wildberger's \emph{Rational Trigonometry} \cite{wildberger2005}
+replaces the classical notions of distance and angle with:
+\begin{itemize}
+    \item \textbf{Quadrance}: $Q = d^2$ (square of distance, avoiding $\sqrt{\cdot}$)
+    \item \textbf{Spread}: $s = \sin^2\theta$ (avoiding $\pi$ in angle measurement)
+\end{itemize}
+
+This framework successfully avoids transcendental numbers in many geometric
+computations. However, a common critique is that it loses the notion of
+\emph{orientation} or \emph{twist}---the sense of ``going around'' that
+angles naturally encode.
+
+\textbf{Question:} Can we recover orientation within a rational/algebraic
+framework?
+
+\section{Chebyshev Polynomials as Twist Encoding}
+
+\subsection{The Classical Definition}
+
+The Chebyshev polynomials of the first kind are defined by:
+\begin{equation}
+    T_n(\cos\theta) = \cos(n\theta)
+\end{equation}
+
+This definition explicitly uses $\pi$ (via $\theta$). However, the
+polynomials themselves are purely algebraic:
+\begin{align}
+    T_0(x) &= 1 \\
+    T_1(x) &= x \\
+    T_{n+1}(x) &= 2x \cdot T_n(x) - T_{n-1}(x)
+\end{align}
+
+\subsection{The Key Insight: Integer Twist Count}
+
+Instead of measuring \emph{how much} rotation (angle $\theta \in [0, 2\pi)$),
+we measure \emph{how many} twists (integer $n \in \mathbb{Z}^+$):
+
+\begin{center}
+\begin{tabular}{lll}
+\textbf{Framework} & \textbf{Rotation measure} & \textbf{Needs $\pi$?} \\
+\hline
+Classical & angle $\theta \in [0, 2\pi)$ & Yes \\
+Wildberger & spread $s \in [0, 1]$ & No, but loses orientation \\
+Chebyshev & twist count $n \in \mathbb{Z}^+$ & No, preserves ``how many times''
+\end{tabular}
+\end{center}
+
+\subsection{Composition Property}
+
+The Chebyshev composition identity:
+\begin{equation}
+    T_m(T_n(x)) = T_{mn}(x)
+\end{equation}
+encodes the multiplicative structure of rotations:
+\begin{quote}
+``$m$ groups of $n$ twists equals $mn$ twists total.''
+\end{quote}
+
+This is the algebraic shadow of the angle addition formula,
+expressed without any reference to $\pi$.
+
+\section{The Chebyshev Polygon and Lobe Areas}
+
+\subsection{Definition}
+
+For $n \geq 3$, the \emph{Chebyshev polygon function} traces a curve
+in the complex plane as $x$ ranges over $[-1, 1]$. The curve has $n$
+lobes, with vertices on the unit circle.
+
+\subsection{Lobe Area Identity}
+
+\begin{theorem}[Lobe Sum Identity]
+For $n \geq 3$, let $A(n,k)$ denote the normalized area of the $k$-th
+lobe of the Chebyshev polygon. Then:
+\begin{equation}
+    \sum_{k=1}^{n} A(n,k) = 1
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+The lobe area formula involves terms $\cos(2\pi k/n)$, which are
+algebraic numbers (real parts of $n$-th roots of unity). The sum
+over all $k$ invokes the root sum identity:
+\[
+    \sum_{k=0}^{n-1} e^{2\pi i k/n} = 0
+\]
+The oscillatory terms cancel, leaving only the constant contribution,
+which sums to exactly 1.
+\end{proof}
+
+\subsection{Rational Area Ratio}
+
+\begin{proposition}[Rational Ratio]
+The Chebyshev polygon area, relative to natural reference regions,
+gives rational ratios:
+\begin{align}
+    \frac{\text{Polygon area}}{\text{Circumscribed square area}}
+        &= \frac{1}{4} \\
+    \frac{\text{Polygon area}}{\text{Inscribed square area}}
+        &= \frac{1}{2}
+\end{align}
+\end{proposition}
+
+\begin{remark}
+The circumscribed square (bounding box) has vertices at $(\pm 1, \pm 1)$
+and area 4. No $\sqrt{2}$ appears in either the coordinates or the area.
+The ratio $1/4$ is purely rational.
+\end{remark}
+
+\section{The Bridge to Rational Geometry}
+
+\subsection{What Chebyshev Provides}
+
+\begin{enumerate}
+    \item \textbf{Discrete twist count} $n$ replaces continuous angle $\theta$
+    \item \textbf{Algebraic polynomials} $T_n(x)$ encode rotational structure
+    \item \textbf{Composition law} $T_m \circ T_n = T_{mn}$ preserves multiplicativity
+    \item \textbf{Rational invariant} (area ratio $1/4$) independent of $n$
+    \item \textbf{Individual areas} are algebraic (roots of unity), sum is integer
+\end{enumerate}
+
+\subsection{Where $\pi$ Hides}
+
+We are honest about where $\pi$ remains:
+
+\begin{itemize}
+    \item \textbf{Motivation}: The connection $T_n(\cos\theta) = \cos(n\theta)$
+          explains \emph{why} these polynomials encode rotation.
+    \item \textbf{Notation}: Writing $\cos(2\pi k/n)$ is shorthand for
+          $\text{Re}(\zeta_n^k)$ where $\zeta_n$ is a primitive $n$-th
+          root of unity.
+    \item \textbf{Circle reference}: Comparing to disk area gives ratio
+          $1/\pi$ (transcendental). We avoid this by using the square.
+\end{itemize}
+
+The key observation: $\pi$ is needed to \emph{ask} the question
+(why Chebyshev?), not to \emph{answer} it (what is the area ratio?).
+
+\section{Proposal for Wildberger's Program}
+
+We propose that Chebyshev polynomials could complement Wildberger's
+rational trigonometry by providing:
+
+\begin{enumerate}
+    \item A \textbf{rational theory of twist/orientation} via integer $n$
+    \item \textbf{Algebraic encoding} of ``going around'' without angles
+    \item \textbf{Multiplicative structure} via composition $T_m \circ T_n = T_{mn}$
+    \item \textbf{Rational invariants} that are independent of twist count
+\end{enumerate}
+
+\subsection{The Multiplicative Decomposition}
+
+The recent result on lobe area decomposition supports this view:
+
+\begin{theorem}[Multiplicative Decomposition, Dec 2025]
+For $n = m \cdot d$ with $m, d \geq 2$:
+\begin{equation}
+    \sum_{k \equiv r \pmod{m}} A(n, k) = \frac{1}{m}
+    \quad \text{for all } r \in \{1, \ldots, m\}
+\end{equation}
+\end{theorem}
+
+This shows that lobe areas ``factor'' according to the factorization
+of $n$, providing a geometric analogue of divisor structure---all
+within a rational framework.
+
+\section{Conclusion}
+
+Chebyshev polynomials may offer a path to recovering orientation
+within Wildberger's program. The key insight is replacing continuous
+angle measurement (requiring $\pi$) with discrete twist counting
+(using integers). The algebraic structure of Chebyshev polynomials
+encodes rotational information, while the area identities yield
+purely rational invariants.
+
+This is not a claim to have ``solved'' the reformulation of
+transcendental constants. Rather, it is an observation that
+Chebyshev geometry might be a productive direction for investigation.
+
+\section*{Acknowledgments}
+
+This exploration arose from a conversation about the Chebyshev
+Integral Identity and its connection to lobe areas. The ``Wildberger
+framing'' emerged from asking adversarial questions about whether
+$\pi$ could be eliminated from the results.
+
+\begin{thebibliography}{9}
+
+\bibitem{wildberger2005}
+N.~J. Wildberger,
+\emph{Divine Proportions: Rational Trigonometry to Universal Geometry},
+Wild Egg Books, 2005.
+
+\bibitem{chebyshev}
+P.~L. Chebyshev,
+``Th\'eorie des m\'ecanismes connus sous le nom de parall\'elogrammes,''
+\emph{M\'emoires pr\'esent\'es \`a l'Acad\'emie Imp\'eriale des Sciences
+de St-P\'etersbourg}, 1854.
+
+\bibitem{orbit}
+J.~Popelka,
+``Orbit: Mathematical Explorations,''
+\url{https://github.com/popojan/orbit}, 2025.
+
+\end{thebibliography}
+
+\end{document}
