@@ -108,9 +108,14 @@ expressed without any reference to $\pi$.
 
 \subsection{Definition}
 
-For $n \geq 3$, the \emph{Chebyshev polygon function} traces a curve
-in the complex plane as $x$ ranges over $[-1, 1]$. The curve has $n$
-lobes, with vertices on the unit circle.
+\begin{definition}[Chebyshev Polygon \cite{chebyshev-integral}]
+For $n \geq 3$, the \emph{Chebyshev polygon} is the curve defined by
+\begin{equation}
+    L_n(x) = T_{n+1}(x) - x \cdot T_n(x), \quad x \in [-1, 1]
+\end{equation}
+This function creates $n$ lobes between consecutive roots of $T_n$,
+with vertices on the unit circle.
+\end{definition}
 
 \subsection{Lobe Area Identity}
 
@@ -267,6 +272,12 @@ P.~L. Chebyshev,
 ``Th\'eorie des m\'ecanismes connus sous le nom de parall\'elogrammes,''
 \emph{M\'emoires pr\'esent\'es \`a l'Acad\'emie Imp\'eriale des Sciences
 de St-P\'etersbourg}, 1854.
+
+\bibitem{chebyshev-integral}
+J.~Popelka and Claude (Anthropic),
+``Chebyshev Integral Identity and Lobe Areas,''
+Orbit repository, v0.1.0-chebyshev-integral,
+\url{https://github.com/popojan/orbit}, November 2025.
 
 \bibitem{orbit}
 J.~Popelka,
