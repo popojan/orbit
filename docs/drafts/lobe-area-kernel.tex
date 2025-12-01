@@ -14,7 +14,7 @@
 
 \title{Chebyshev Lobe Area Kernel}
 \author{Jan Popelka}
-\date{November 29, 2025}
+\date{November 29, 2025 (updated December 1, 2025)}
 
 \begin{document}
 \maketitle
@@ -29,6 +29,16 @@ A(n,k) = \frac{8 - 2n^2 + n^2\left(\cos\frac{2(k-1)\pi}{n} + \cos\frac{2k\pi}{n}
 \end{definition}
 
 The denominator simplifies to $8n - 2n^3 = 2n(4-n^2)$.
+
+\textbf{Notation clarification.} The parameter $k$ is the \emph{lobe index}:
+\begin{itemize}
+\item \textbf{Discrete interpretation:} For integer $n \geq 3$, lobes are numbered $k = 1, 2, \ldots, n$.
+\item \textbf{Continuous extension:} The formula accepts any $k \in \mathbb{C}$, with period $n$.
+\item \textbf{Not to be confused with:} The Chebyshev polynomial argument $t \in [-1, 1]$ (integration domain).
+\end{itemize}
+
+The reflection symmetry $A(n, 1-k) = A(n, k)$ holds for the \emph{continuous} parameter $k$.
+For discrete lobes, the equivalent statement is $A(n, k) = A(n, n+1-k)$, since $1-k \equiv n+1-k \pmod{n}$.
 
 \section{Fundamental Decomposition}
 
@@ -337,6 +347,306 @@ This gives a \textbf{two-parameter family} of probability densities:
 
 The structure is analogous to Fourier series, which can be defined on any interval with periodic extension to $\mathbb{R}$.
 
+\section{Root Sum Identity (General Form)}
+
+The lobe area function exhibits a fundamental reflection symmetry that implies a universal root sum identity.
+
+\subsection{Reflection Symmetry}
+
+\begin{theorem}[Reflection Symmetry]
+For all $n \in \mathbb{C} \setminus \{0, \pm 2\}$ and all $k \in \mathbb{C}$:
+\begin{equation}
+\boxed{A(n, 1-k) = A(n, k)}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Using the Fourier form $A(n,k) = \frac{1}{n} + \frac{n\cos(\pi/n)}{4-n^2}\cos\frac{(2k-1)\pi}{n}$:
+\begin{align}
+A(n, 1-k) &= \frac{1}{n} + \frac{n\cos(\pi/n)}{4-n^2}\cos\frac{(2(1-k)-1)\pi}{n} \\
+&= \frac{1}{n} + \frac{n\cos(\pi/n)}{4-n^2}\cos\frac{(1-2k)\pi}{n} \\
+&= \frac{1}{n} + \frac{n\cos(\pi/n)}{4-n^2}\cos\frac{-(2k-1)\pi}{n} \\
+&= A(n, k) \qquad \text{(since $\cos(-\theta) = \cos\theta$)}
+\end{align}
+\end{proof}
+
+\textbf{Discrete vs.\ continuous.} The symmetry $k \leftrightarrow 1-k$ is around the axis $k = \frac{1}{2}$.
+For discrete lobes ($k \in \{1, \ldots, n\}$), the equivalent symmetry is $k \leftrightarrow n+1-k$ (around $k = \frac{n+1}{2}$),
+since $1-k \equiv n+1-k \pmod{n}$.
+
+\subsection{General Root Sum Theorem}
+
+\begin{theorem}[Universal Root Sum Identity]
+For any $n > 2$ and any $c \in \mathbb{R}$ such that $A(n, k) = c$ has real solutions:
+\begin{equation}
+\boxed{k_1 + k_2 \equiv 1 \pmod{n}}
+\end{equation}
+where $k_1, k_2$ are any two roots in the same period.
+
+In particular, for roots in the \textbf{principal period} $[\frac{1}{2} - \frac{n}{2}, \frac{1}{2} + \frac{n}{2}]$:
+\begin{equation}
+k_1 + k_2 = 1 \quad \text{(exactly)}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The reflection symmetry $A(n, 1-k) = A(n, k)$ implies that if $k_1$ is a root of $A(n, k) = c$, then so is $1-k_1$. These roots are symmetric around $k = \frac{1}{2}$ and sum to $1$.
+
+By periodicity $A(n, k+n) = A(n, k)$, roots in other periods differ by multiples of $n$, giving $k_1 + k_2 \equiv 1 \pmod{n}$.
+\end{proof}
+
+\subsection{Special Cases}
+
+\subsubsection{Integer $n$-gons: $A(n, k) = 1/n$}
+
+For integer $n \geq 3$, the mean value $c = 1/n$ gives roots in $[\frac{1-n}{2}, \frac{1+n}{2}]$:
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+$n$ & $k_1$ & $k_2$ & $k_1 + k_2$ \\
+\midrule
+3 & $-0.25$ & $1.25$ & $1$ \\
+4 & $-0.50$ & $1.50$ & $1$ \\
+5 & $-0.75$ & $1.75$ & $1$ \\
+6 & $-1.00$ & $2.00$ & $1$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection{Fractional $\sqrt{m}$-gons: $A(\sqrt{m}, k) = 1/m$}
+
+For integer $m \geq 3$, $m \neq 4$, the equation $A(\sqrt{m}, k) = 1/m$ (where $1/m = 1/n^2$) gives roots summing to $1$ in the principal period. In the standard period $[0, \sqrt{m}]$:
+\begin{equation}
+k_1 + k_2 = \sqrt{m} \quad \text{(shifted by $\frac{\sqrt{m}-1}{2}$ from principal period)}
+\end{equation}
+
+\textbf{Exceptional cases:}
+\begin{itemize}
+\item $m = 2$: Period $\sqrt{2}$ is irrational; symbolic solvers may mix periods.
+\item $m = 4$: Singularity at $n = 2$; digon limit applies.
+\end{itemize}
+
+\subsubsection{Other level sets: $A(n, k) = c$}
+
+For $c \neq 1/n$, roots still satisfy $k_1 + k_2 = 1$ (in principal period), but may be complex if $|c - 1/n|$ exceeds the oscillation amplitude $\left|\frac{n\cos(\pi/n)}{4-n^2}\right|$.
+
+\textbf{Example:} $A(3, k) = 1/2$ gives roots $\{-1.469, -0.531\}$ summing to $-2$.
+These are in period $[-2.5, 0.5]$; shifting by $+3$ gives $\{1.531, 2.469\}$ in $[0.5, 3.5]$, summing to $4 = 1 + 3$.
+
+\subsection{Geometric Interpretation}
+
+The reflection symmetry $A(n, 1-k) = A(n, k)$ means:
+\begin{itemize}
+\item The lobe area function is symmetric around $k = \frac{1}{2}$ (continuous) or around $k = \frac{n+1}{2}$ (discrete)
+\item Level curves of $A(n, k)$ come in symmetric pairs
+\item The ``center of mass'' of any level set is at $k = \frac{1}{2}$ (mod $n$)
+\end{itemize}
+
+This extends naturally to fractional ``polygon numbers'' $n = \sqrt{m}$, $n = \sqrt[3]{m}$, etc.
+
+\subsection{Functional Equation (Riemann $\xi$ Analogy)}
+
+The symmetry structure of $A(n,k)$ is reminiscent of the Riemann zeta functional equation.
+
+\subsubsection{Symmetry Properties of $A(n,k)$}
+
+\begin{theorem}[Triple Symmetry]
+The function $A(n,k)$ satisfies three fundamental symmetries:
+\begin{align}
+A(n, 1-k) &= A(n, k) \qquad \text{(reflection in $k$ around $1/2$)} \\
+A(-n, k) &= -A(n, k) \qquad \text{(antisymmetry in $n$)} \\
+A(\bar{n}, \bar{k}) &= \overline{A(n, k)} \qquad \text{(Schwarz reflection)}
+\end{align}
+\end{theorem}
+
+The Schwarz reflection principle ensures that $A$ maps real arguments to real values and preserves the conjugation structure in the complex plane.
+
+\subsubsection{Completed Form}
+
+Define the \textbf{completed lobe area function}:
+\begin{equation}
+B(n, k) := n \cdot A(n, k)
+\end{equation}
+
+\begin{theorem}[Double Even Symmetry]
+$B(n,k)$ is even in both variables:
+\begin{equation}
+\boxed{B(n, 1-k) = B(n, k), \qquad B(-n, k) = B(n, k)}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+\begin{align}
+B(-n, k) &= (-n) \cdot A(-n, k) = (-n) \cdot (-A(n, k)) = n \cdot A(n, k) = B(n, k) \\
+B(n, 1-k) &= n \cdot A(n, 1-k) = n \cdot A(n, k) = B(n, k)
+\end{align}
+\end{proof}
+
+\textbf{Geometric interpretation.} The completed form $B(n,k) = n \cdot A(n,k)$ has a natural geometric meaning:
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Form & Disk radius & Disk area & Total lobe area \\
+\midrule
+$A(n,k)$ & $1$ & $\pi$ & $1$ \\
+$B(n,k)$ & $\sqrt{n}$ & $\pi n$ & $n$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Since area scales as (radius)$^2$, scaling the inscribed curve to a disk of radius $\sqrt{n}$ multiplies all areas by $n$. The completed form normalizes each lobe area to be $O(1)$ regardless of $n$, paralleling how $\xi(s)$ incorporates natural scaling factors to achieve its symmetry.
+
+\subsubsection{Analogy Tables}
+
+\textbf{Raw functions} (original geometric definitions):
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Property & Riemann $\zeta(s)$ & Lobe Area $A(n, k)$ \\
+\midrule
+Schwarz reflection & $\zeta(\bar{s}) = \overline{\zeta(s)}$ & $A(\bar{n}, \bar{k}) = \overline{A(n, k)}$ \\
+Sign at negative & $\zeta(-m) = -\frac{B_{m+1}}{m+1}$ ($m \in \mathbb{Z}^+$, $B_j$ = Bernoulli) & $A(-n, k) = -A(n, k)$ (exact) \\
+Singularities & $s = 1$ (simple pole) & $n = 0, \pm 2$ (poles) \\
+Periodicity & --- & $A(n, k+n) = A(n, k)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Completed functions} (symmetric forms):
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Property & Completed $\xi(s)$ & Completed $B(n, k) = nA(n,k)$ \\
+\midrule
+Reflection symmetry & $\xi(1-s) = \xi(s)$ & $B(n, 1-k) = B(n, k)$ \\
+Sign symmetry & $\xi(-s) = \xi(s)$ (even) & $B(-n, k) = B(n, k)$ (even) \\
+Schwarz reflection & $\xi(\bar{s}) = \overline{\xi(s)}$ & $B(\bar{n}, \bar{k}) = \overline{B(n, k)}$ \\
+Symmetry center & $s = 1/2$ & $k = 1/2$ \\
+Critical region & $0 < \mathrm{Re}(s) < 1$ & $|n| > 2$ \\
+Root pairing & $\rho \leftrightarrow 1-\rho$ & $k \leftrightarrow 1-k$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The parallel suggests that $B(n,k)$ may have deeper analytic structure worth investigating.
+
+\section{Multiplicative Decomposition}
+
+The lobe area function exhibits a remarkable multiplicative structure that mirrors the Chebyshev polynomial composition property.
+
+\subsection{Chebyshev Composition Property}
+
+Chebyshev polynomials satisfy the composition identity:
+\begin{equation}
+T_m(T_d(x)) = T_{md}(x)
+\end{equation}
+
+This means an $md$-gon can be viewed as a ``composition'' of an $m$-gon with a $d$-gon.
+
+\subsection{Multiplicative Decomposition Theorem}
+
+\begin{theorem}[Multiplicative Decomposition of Lobe Areas]
+For composite $n = md$ with $m \geq 2$, $d \geq 2$, and $n > 2$:
+\begin{equation}
+\boxed{\sum_{k \equiv r \pmod{m}} A(n, k) = \frac{1}{m} \quad \text{for all } r \in \{1, \ldots, m\}}
+\end{equation}
+Equivalently, using the completed form:
+\begin{equation}
+\sum_{k \equiv r \pmod{m}} B(n, k) = d \quad \text{for all } r
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Using the decomposition $A(n,k) = \frac{1}{n} + \text{oscillating}(\cos\frac{2\pi k}{n})$:
+
+\textbf{1. Constant part:} Summing over $k = r, r+m, r+2m, \ldots, r+(d-1)m$:
+\begin{equation}
+\sum_{j=0}^{d-1} \frac{1}{n} = \frac{d}{n} = \frac{d}{md} = \frac{1}{m}
+\end{equation}
+
+\textbf{2. Oscillating part:} The sum over an arithmetic progression with common difference $m$:
+\begin{equation}
+\sum_{j=0}^{d-1} e^{2\pi i(r+jm)/(md)} = e^{2\pi ir/(md)} \cdot \sum_{j=0}^{d-1} e^{2\pi ij/d} = e^{2\pi ir/(md)} \cdot 0 = 0
+\end{equation}
+The geometric sum vanishes because the terms are $d$-th roots of unity.
+
+Therefore only the constant part survives, giving $\frac{1}{m}$.
+\end{proof}
+
+\subsection{Geometric Interpretation}
+
+The $md$-gon can be ``viewed'' in two equivalent ways:
+\begin{itemize}
+\item As $m$ groups of $d$ lobes each, with each group having total area $\frac{1}{m}$
+\item As $d$ groups of $m$ lobes each, with each group having total area $\frac{1}{d}$
+\end{itemize}
+
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Grouping & Number of groups & Lobes per group & Area per group \\
+\midrule
+By $k \bmod m$ & $m$ & $d$ & $1/m$ \\
+By $k \bmod d$ & $d$ & $m$ & $1/d$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Divisor Decomposition Structure}
+
+This multiplicative structure is reminiscent of (but distinct from) how $L$-functions factor over primes:
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Property & $L$-functions & Lobe Areas \\
+\midrule
+Factorization base & Primes $p$ & Divisors of $n$ \\
+Product structure & $L(s) = \prod_p F_p(s)$ & $\sum_{k \equiv r} A(md,k) = \frac{1}{m}$ \\
+Composition & --- & $T_m(T_d) = T_{md}$ \\
+Local-global & Each prime contributes & Each divisor contributes \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The lobe areas ``factor'' according to the divisor structure of $n$, providing a geometric analogue of arithmetic multiplicativity.
+
+\subsection{Example: 12-gon}
+
+For $n = 12 = 3 \times 4$:
+
+\textbf{Grouped by $k \bmod 3$:}
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+$k \equiv 1 \pmod{3}$ & $k \equiv 2 \pmod{3}$ & $k \equiv 0 \pmod{3}$ \\
+\midrule
+$k = 1, 4, 7, 10$ & $k = 2, 5, 8, 11$ & $k = 3, 6, 9, 12$ \\
+Sum $= 4 = d$ & Sum $= 4$ & Sum $= 4$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Grouped by $k \bmod 4$:}
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+$k \equiv 1$ & $k \equiv 2$ & $k \equiv 3$ & $k \equiv 0$ \\
+\midrule
+$k = 1, 5, 9$ & $k = 2, 6, 10$ & $k = 3, 7, 11$ & $k = 4, 8, 12$ \\
+Sum $= 3 = m$ & Sum $= 3$ & Sum $= 3$ & Sum $= 3$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Open Questions}
+
+\begin{enumerate}
+\item \textbf{Prime powers:} Does a similar decomposition hold for $n = p^k$?
+\item \textbf{Three or more factors:} For $n = abc$, how do the groupings interact?
+\item \textbf{Continuous extension:} What happens for non-integer divisors?
+\item \textbf{Connection to characters:} Is there a Dirichlet character interpretation?
+\end{enumerate}
+
 \section{Summary}
 
 \begin{center}
@@ -352,9 +662,18 @@ Decomposition & $\dfrac{1}{n} + O(1/n)$ oscillation \\
 Domain & $n \in \mathbb{C} \setminus \{0, \pm 2\}$, $k \in \mathbb{C}$ \\
 Normalized form & $\tilde{A}(n,t) = n \cdot A(n, nt)$ on $[0,1]$ \\
 Limit $n \to \infty$ & $\tilde{A} \to 2\sin^2(\pi t)$ (Hann window) \\
+Reflection Symmetry & $A(n, 1-k) = A(n, k)$ \\
+Root Sum Identity & $A(n, k_1) = A(n, k_2) = c \Rightarrow k_1 + k_2 \equiv 1 \pmod{n}$ \\
+Completed form $B$ & $B(n,k) := n \cdot A(n,k)$; even in both $n$ and around $k=\frac{1}{2}$ \\
+$n$-antisymmetry & $A(-n, k) = -A(n, k)$ \\
+Schwarz reflection & $A(\bar{n}, \bar{k}) = \overline{A(n, k)}$ \\
+Multiplicative decomp. & $\sum_{k \equiv r \pmod{m}} A(md, k) = \frac{1}{m}$ \\
 \bottomrule
 \end{tabular}
 \end{center}
+
+\textbf{Notation:} $k$ is the lobe index (discrete: $k \in \{1, \ldots, n\}$; continuous extension: $k \in \mathbb{C}$).
+The symmetry $k \leftrightarrow 1-k$ is equivalent to $k \leftrightarrow n+1-k$ for discrete lobes via periodicity.
 
 \section{Implementation}
 
