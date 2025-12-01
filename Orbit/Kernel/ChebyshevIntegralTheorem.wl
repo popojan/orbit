@@ -6,6 +6,19 @@ BeginPackage["Orbit`"];
 
 ChebyshevPolygonFunction::usage = "ChebyshevPolygonFunction[x, k] computes ChebyshevT[k+1, x] - x*ChebyshevT[k, x].
 
+Cyclotomic Connection (Watkins-Zeitlin 1993):
+  For prime p >= 5, the function factors as:
+    f_p(x) = -1 * (1-x) * (1+x) * MinPoly[cos(Pi/p)] * MinPoly[cos(2*Pi/p)]
+  where MinPoly denotes MinimalPolynomial over Q.
+  Both core factors have degree (p-1)/2 = EulerPhi[p]/2.
+
+  Example for p=7:
+    Factor[ChebyshevPolygonFunction[x, 7]] gives 5 factors:
+    -1, (1-x), (1+x), (1 - 4x - 4x^2 + 8x^3), (-1 - 4x + 4x^2 + 8x^3)
+    where the cubics are MinimalPolynomial[Cos[Pi/7], x] and MinimalPolynomial[Cos[2*Pi/7], x].
+
+  Note: Mathematica's Factor[] is faster than constructing via MinimalPolynomial directly.
+
 Geometric Properties:
 
 1. REGULAR POLYGON VERTICES:
