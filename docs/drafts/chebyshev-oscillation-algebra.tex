@@ -60,7 +60,7 @@ twice gives the same turn as going around once.
 \textbf{Question:} Can we encode the \emph{winding number}---how many complete
 cycles---within a rational/algebraic framework?
 
-\section{Chebyshev Polynomials as Twist Encoding}
+\section{Chebyshev Polynomials as Oscillation Encoding}
 
 \subsection{The Classical Definition}
 
@@ -77,18 +77,18 @@ polynomials themselves are purely algebraic:
     T_{n+1}(x) &= 2x \cdot T_n(x) - T_{n-1}(x)
 \end{align}
 
-\subsection{The Key Insight: Integer Twist Count}
+\subsection{The Key Insight: Integer Oscillation Count}
 
 Instead of measuring \emph{how much} rotation (angle $\theta \in [0, 2\pi)$),
-we measure \emph{how many} twists (integer $n \in \mathbb{Z}^+$):
+we measure \emph{how many} oscillations (integer $n \in \mathbb{Z}^+$):
 
 \begin{center}
 \begin{tabular}{lll}
-\textbf{Framework} & \textbf{Rotation measure} & \textbf{Needs $\pi$?} \\
+\textbf{Framework} & \textbf{What it measures} & \textbf{Needs $\pi$?} \\
 \hline
 Classical & angle $\theta \in [0, 2\pi)$ & Yes \\
 Wildberger & spread $s \in [0, 1]$ & No, but loses global count \\
-Chebyshev & twist count $n \in \mathbb{Z}^+$ & No, preserves ``how many times''
+Chebyshev & oscillation count $n \in \mathbb{Z}^+$ & No, preserves ``how many times''
 \end{tabular}
 \end{center}
 
@@ -109,7 +109,8 @@ the ``$n$-fold oscillation'':
           has exactly $n$ lobes (sign changes) over $[-1,1]$.
     \item \textbf{Circle touchings:} The parametric curve
           $(x, L_n(x))$ touches the unit circle at exactly $n$ points,
-          located at the vertices of a regular $n$-gon (rotated by $\pi/2n$).
+          located at the vertices of a regular $n$-gon (the $x$-coordinates
+          being roots of $T_n$).
     \item \textbf{Algebraic degree:} $\deg(T_n) = n$, and this degree
           is preserved under composition: $\deg(T_m \circ T_n) = mn$.
 \end{enumerate}
@@ -345,12 +346,15 @@ Thus $s_n(x)$ is defined purely algebraically---no trigonometry required.
 \begin{tabular}{ccc}
 $n$ & $U_{n-1}(x)$ & $s_n(x) = (1-x^2)U_{n-1}(x)^2$ \\
 \hline
-$1$ & $1$ & $1 - x^2$ \\
+$1$ & $1$ & $1 - x^2$ \quad (Wildberger's spread!) \\
 $2$ & $2x$ & $4x^2(1-x^2)$ \\
 $3$ & $4x^2-1$ & $(1-x^2)(4x^2-1)^2$ \\
 $4$ & $8x^3-4x$ & $(1-x^2)(8x^3-4x)^2$ \\
 \end{tabular}
 \end{center}
+
+\noindent The case $n=1$ recovers Wildberger's original spread $s = \sin^2\theta = 1 - \cos^2\theta = 1 - x^2$ exactly.
+Higher $n$ give the ``spread of the $n$-fold angle.''
 
 This suggests a potential bridge: Wildberger's spread algebra could be
 reformulated entirely in terms of Chebyshev polynomials $U_n$, with
