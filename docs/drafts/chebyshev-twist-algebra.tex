@@ -34,7 +34,7 @@ rational geometry program, recovering orientation/twist within a
 purely algebraic framework.
 \end{abstract}
 
-\section{Motivation: The Missing Orientation}
+\section{Motivation: Local vs Global Orientation}
 
 Norman Wildberger's \emph{Rational Trigonometry} \cite{wildberger2005}
 replaces the classical notions of distance and angle with:
@@ -44,12 +44,19 @@ replaces the classical notions of distance and angle with:
 \end{itemize}
 
 This framework successfully avoids transcendental numbers in many geometric
-computations. However, a common critique is that it loses the notion of
-\emph{orientation} or \emph{twist}---the sense of ``going around'' that
-angles naturally encode.
+computations. Wildberger also introduces an oriented version: the \textbf{turn}
+$u(l_1, l_2) = \tan\theta$ between lines, with the property that
+$\text{twist} = \text{turn}^2$ and $u(l_1, l_2) = -u(l_2, l_1)$.
+The Triple Turn Formula $u_1 + u_2 + u_3 = u_1 u_2 u_3$ elegantly captures
+local angular relationships.
 
-\textbf{Question:} Can we recover orientation within a rational/algebraic
-framework?
+However, Wildberger's turn measures \emph{local} orientation---the angular
+displacement between two specific lines. It does not capture \emph{global}
+orientation: how many times one has ``gone around.'' Going around the circle
+twice gives the same turn as going around once.
+
+\textbf{Question:} Can we encode the \emph{winding number}---how many complete
+cycles---within a rational/algebraic framework?
 
 \section{Chebyshev Polynomials as Twist Encoding}
 
@@ -173,6 +180,32 @@ We are honest about where $\pi$ remains:
 
 The key observation: $\pi$ is needed to \emph{ask} the question
 (why Chebyshev?), not to \emph{answer} it (what is the area ratio?).
+
+\section{Comparison: Turn vs Twist Count}
+
+Wildberger's \textbf{turn} and our Chebyshev \textbf{twist count} address
+different aspects of orientation:
+
+\begin{center}
+\begin{tabular}{lll}
+\textbf{Aspect} & \textbf{Wildberger's Turn} & \textbf{Chebyshev $n$} \\
+\hline
+Type & Rational number $u \in \mathbb{Q}$ & Integer $n \in \mathbb{Z}^+$ \\
+Measures & Local angle between lines & Global winding count \\
+``Go around once'' & $u = \tan\theta$ & $n = 1$ \\
+``Go around twice'' & $u = \tan\theta$ (same!) & $n = 2$ \\
+Key formula & $u_1 + u_2 + u_3 = u_1 u_2 u_3$ & $T_m \circ T_n = T_{mn}$ \\
+Structure & Additive (linear in each $u_i$) & Multiplicative \\
+\end{tabular}
+\end{center}
+
+The Chebyshev composition property $T_m(T_n(x)) = T_{mn}(x)$ encodes that
+``$m$ groups of $n$ twists equals $mn$ twists''---a statement about
+\emph{counting} rotations that Wildberger's local turn cannot express.
+
+Thus, Chebyshev polynomials complement rational trigonometry by providing
+\textbf{discrete global orientation} (winding number) alongside
+Wildberger's \textbf{continuous local orientation} (turn).
 
 \section{Proposal for Wildberger's Program}
 
