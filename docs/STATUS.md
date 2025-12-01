@@ -1,7 +1,42 @@
 # Mathematical Explorations - Status Tracker
 
 **Repository:** popojan/orbit
-**Last Updated:** November 25, 2025
+**Last Updated:** December 1, 2025
+
+---
+
+## December 1, 2025: Multiplicative Decomposition of Chebyshev Lobe Areas
+
+### Discovery
+
+✅ **PROVEN** (algebraic proof via roots of unity cancellation)
+
+**Theorem (Multiplicative Decomposition):** For composite n = md with m, d ≥ 2 and n > 2:
+
+$$\sum_{k \equiv r \pmod{m}} A(n, k) = \frac{1}{m} \quad \text{for all } r \in \{1, \ldots, m\}$$
+
+where A(n,k) is the normalized lobe area of the k-th lobe of the n-gon Chebyshev polygon function.
+
+**Equivalently:** Σ B(n, k≡r mod m) = d, where B(n,k) = n·A(n,k).
+
+### Proof Sketch
+
+1. Lobe area decomposes as: A(n,k) = 1/n + oscillatory term with cos(2πk/n)
+2. Sum over arithmetic progression k = r, r+m, ..., r+(d-1)m:
+   - Constant: d · (1/n) = d · (1/md) = 1/m
+   - Oscillatory: Σ exp(2πi(r+jm)/(md)) = exp(2πir/(md)) · Σ exp(2πij/d) = 0
+3. Sum of d-th roots of unity vanishes → oscillatory term cancels
+
+### Significance
+
+- **Geometric analogue of divisor decomposition**: Lobe areas "factor" according to factorization of n
+- mn-gon can be viewed as m copies of n-gon structure (each with 1/m area)
+- Connects Chebyshev composition property Tₘ(Tₙ(x)) = Tₘₙ(x) to geometric areas
+
+### Documentation
+
+- LaTeX: `docs/drafts/lobe-area-kernel.tex` Section 11
+- Session: `docs/sessions/2025-12-01-multiplicative-decomposition/README.md`
 
 ---
 

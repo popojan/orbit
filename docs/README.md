@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-11-30 08:32:54
+**Generated:** 2025-12-01 20:06:05
 
 ## Theorems (Master References)
 
@@ -20,16 +20,16 @@
 
 ## Recent Sessions (Last 10)
 
-- [The Altsum Circle Identity](sessions/2025-11-30-altsum-circle/README.md) *()*
+- [Multiplicative Decomposition of Chebyshev Lobe Areas](sessions/2025-12-01-multiplicative-decomposition/README.md) *(2025-12-01)*
+- [Rotated Chebyshev Polygon Functions](sessions/2025-12-01-chebyshev-polygon-transforms/rotated-polygon-functions.md) *()*
+- [Chebyshev Polygon Function Transforms](sessions/2025-12-01-chebyshev-polygon-transforms/README.md) *(2025-12-01)*
+- [SignSum for Semiprimes: Connection to Factorization](sessions/2025-11-30-pattern-falsification/semiprime-ss-theorem.md) *(2025-12-01)*
+- [Falsification of 22-bit Pattern Hypothesis](sessions/2025-11-30-pattern-falsification/README.md) *(2025-12-01)*
+- [The Altsum Circle Identity](sessions/2025-11-30-altsum-circle/README.md) *(2025-11-30)*
 - [Back to Origins: Connecting Old Code to Chebyshev Integral Theorem](sessions/2025-11-29-back-to-origins/README.md) *(2025-11-29)*
 - [Chebyshev Geometry and Primality](sessions/2025-11-28-chebyshev-primality/README.md) *(2025-11-29)*
 - [Chebyshev Sign Sum - Aktuální stav výzkumu](sessions/2025-11-28-chebyshev-primality/STATUS.md) *(2025-11-29)*
 - [Mod 8 Unification: From Pell to Inverse Parity](sessions/2025-11-28-chebyshev-primality/mod8-unification.md) *(2025-11-29)*
-- [Chebyshev Sign Sum - Session Handoff](sessions/2025-11-28-chebyshev-primality/HANDOFF.md) *(2025-11-29)*
-- [Theorem: Inverse Parity Bias and Legendre Symbols](sessions/2025-11-28-chebyshev-primality/inverse-parity-theorem.md) *(2025-11-29)*
-- [ASIDE: Lissajous Figures and Modular Inverses](sessions/2025-11-28-chebyshev-primality/aside-lissajous-inverse.md) *(2025-11-29)*
-- [Proof Chain Sanity Check: x₀ mod p Classification](sessions/2025-11-28-chebyshev-primality/pell-mod8-original.md) *(2025-11-29)*
-- [Od Chebyshevovy geometrie k hierarchickým b-vektorům](sessions/2025-11-28-chebyshev-primality/journey-geometry-to-algebra.md) *(2025-11-28)*
 
 ## Navigation
 
