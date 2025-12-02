@@ -623,15 +623,189 @@ Structural facts that might help:
 
 **Open:** Can B-geometry or other structural constraints prove non-existence of common zeros?
 
+## Horizontal Zero Pairs and Over-Determination
+
+### The Rectangle Symmetry of Zeta Zeros
+
+If s₀ = σ + it is a zeta zero (with σ ≠ 1/2), then by:
+1. **Complex conjugate symmetry:** σ - it is also a zero
+2. **Functional equation:** (1-σ) - it is also a zero
+3. **Conjugate of functional equation:** (1-σ) + it is also a zero
+
+**Result:** One off-critical-line zero generates FOUR zeros forming a rectangle:
+```
+    σ + it  ●───────────────● (1-σ) + it
+            │               │
+            │   Re = 1/2    │
+            │               │
+    σ - it  ●───────────────● (1-σ) - it
+```
+
+### Key Consequence: Horizontal Partners
+
+If η(σ + it) = 0 for any σ ≠ 1/2, then **automatically**:
+```
+η((1-σ) + it) = 0   (horizontal partner, same height t!)
+```
+
+This means:
+- F(t) = η(σ+it) + η((1-σ)+it) = 0 + 0 = 0
+- G(t) = η(σ+it) - η((1-σ)+it) = 0 - 0 = 0
+- Common zero of η_c and η_d automatically exists!
+
+### The Over-Determination Argument
+
+**Observation:** η(s) = 0 and η(s') = 0 (where s' = (1-σ)+it) impose TWO constraints on a ONE-parameter space (values of t).
+
+```
+η(s)  = Σ (-1)^{n-1} a_n · e^{iθ_n}  = 0   where a_n = n^{-σ}
+η(s') = Σ (-1)^{n-1} b_n · e^{iθ_n}  = 0   where b_n = n^{-(1-σ)}
+```
+
+Same phases θ_n = -t·log(n), but DIFFERENT weight vectors (a_n) and (b_n).
+
+**Generically:** Two different weighted sums with the same phases will have DISJOINT zero sets.
+
+**But:** The functional equation creates a "conspiracy" that forces common zeros for off-critical-line zeta zeros.
+
+### Numerical Evidence: Zero Repulsion
+
+At σ = 0.4, tracking |F(t)| and |G(t)|:
+
+| t | |F(t)| | |G(t)| | Both small? |
+|---|-------|-------|-------------|
+| 0 | 1.21 | 0.04 | No |
+| 25 | 0.07 | 0.47 | No |
+| 48 | 0.09 | 0.62 | No |
+
+**Pattern:** When |F| is small, |G| remains bounded away from zero (and vice versa).
+
+This "repulsion" is consistent with RH: no common zeros exist.
+
+### Why Zeros Repel: Structural Argument
+
+At zeros of F (F=0):
+```
+η(s) = G/2,  η(s') = -G/2
+|η(s)| = |η(s')| = |G|/2
+```
+If G ≠ 0, neither η(s) nor η(s') is zero!
+
+At zeros of G (G=0):
+```
+η(s) = F/2,  η(s') = F/2
+|η(s)| = |η(s')| = |F|/2
+```
+If F ≠ 0, neither η(s) nor η(s') is zero!
+
+**Conclusion:** F=0 AND G=0 simultaneously ⟺ η(s) = η(s') = 0
+
+### The Structural Gap: d₁ = 0
+
+Critical coefficient difference:
+```
+c₁ = 1^{-σ} + 1^{-(1-σ)} = 1 + 1 = 2   (constant term!)
+d₁ = 1^{-σ} - 1^{-(1-σ)} = 1 - 1 = 0   (no constant term!)
+```
+
+Series structure:
+```
+F(t) = 2 - c₂·2^{-it} + c₃·3^{-it} - c₄·4^{-it} + ...   [has DC offset 2]
+G(t) = 0 - d₂·2^{-it} + d₃·3^{-it} - d₄·4^{-it} + ...   [purely oscillatory]
+```
+
+F has a "pedestal" of 2; G oscillates around 0. Different phase-locking requirements for zeros.
+
+### Open: Can We Prove Non-Intersection?
+
+To prove RH via this route, we need:
+
+**Claim:** For σ ≠ 1/2, there exists no t such that F(t) = G(t) = 0.
+
+**Equivalent:** The zero sets Z_F = {t : F(t)=0} and Z_G = {t : G(t)=0} are disjoint.
+
+Potential approaches:
+1. **Topological:** F and G wind around origin differently (different winding numbers)
+2. **Analytic:** The ratio F/G never hits 0 or ∞ simultaneously
+3. **Spectral:** Related to eigenvalues of some operator with positivity constraint
+4. **Measure-theoretic:** Zero sets have measure zero; intersection doubly so
+
+## Explored Approaches (December 2, 2025 continuation)
+
+### 1. Linear Independence of log(n)
+
+**Key facts:**
+- {log 2, log 3, log 5, ...} are linearly independent over ℚ
+- This allows viewing η(s) as a function on infinite-dimensional torus T^∞
+- The diagonal curve γ(t) = (2^{-it}, 3^{-it}, 5^{-it}, ...) is **dense** in T^∞ (Weyl equidistribution)
+
+**Application to RH:**
+- η(σ+it) = 0 defines a "variety" V_σ in T^∞
+- η((1-σ)+it) = 0 defines another variety V_{1-σ}
+- RH ⟺ γ(t) never hits V_σ ∩ V_{1-σ} for σ ≠ 1/2
+
+**Limitation:** Dense ≠ surjective. Even if V_σ ∩ V_{1-σ} is non-empty, γ might miss it.
+
+### 2. Li's Criterion
+
+**Li's Theorem (1997):** RH ⟺ λ_n ≥ 0 for all n ≥ 1, where
+```
+λ_n = Σ_ρ [1 - (1 - 1/ρ)^n]
+```
+
+**Key observation:**
+- For ρ on critical line: |1 - 1/ρ| = 1 exactly
+- Contribution: 1 - cos(n·arg) ≥ 0 always (positive!)
+- For hypothetical off-line pair {ρ₁, ρ₂} at σ and 1-σ:
+  - |1 - 1/ρ₁| > 1, |1 - 1/ρ₂| < 1 (balanced!)
+  - Numerical tests show contributions still positive
+
+**Limitation:** Li criterion doesn't distinguish between "no zeros exist" and "zeros exist but balance out."
+
+### 3. Measure-Theoretic Approach
+
+**Observation:** Zero sets Z_F, Z_G have measure zero in ℝ.
+
+**Problem:** Measure 0 ∩ Measure 0 = Measure 0, which can still be non-empty!
+
+**Wronskian test:** W(F,G) = F·G' - F'·G ≠ 0, confirming F and G are linearly independent.
+
+**Limitation:** Linear independence doesn't imply disjoint zero sets.
+
+### 4. The Ratio Argument (Key Insight)
+
+**Algebraic fact:**
+- Let r = η(s')/η(s) where s' = (1-σ)+it
+- F = η(s)(1 + r), G = η(s)(1 - r)
+- F = 0 requires r = -1 (or η(s) = 0)
+- G = 0 requires r = +1 (or η(s) = 0)
+- Both F = 0 AND G = 0 with η(s) ≠ 0 requires r = -1 AND r = +1 — **IMPOSSIBLE!**
+
+**Conclusion:** F = 0 AND G = 0 ⟺ η(s) = η(s') = 0 (both must vanish)
+
+This is a clean algebraic proof of the equivalence, but doesn't prove RH.
+
+### Summary
+
+| Approach | Insight | Proves RH? |
+|----------|---------|------------|
+| log independence | T^∞ structure, Bohr picture | No |
+| Li criterion | Positivity from critical line | No |
+| Measure theory | Linear independence of F, G | No |
+| Ratio argument | r = ±1 impossibility | No (equivalence only) |
+
+**Overall:** The c/d decomposition provides a valid and elegant reformulation of RH, with the ratio argument giving a clean characterization of common zeros. However, none of the explored approaches yields a direct proof
+
 ## Open Questions
 
 1. Can the slow convergence on critical line be accelerated?
 2. ~~Is there a geometric interpretation of complex k?~~ **ANSWERED: Wick rotation to hyperbolic geometry**
 3. Does this identity have number-theoretic applications?
 8. **NEW (RH Reformulation):** Can we prove η_c and η_d have no common zeros for σ ≠ 1/2?
-   - Structural approach: use c_n > 0, d_n fixed sign
+   - Structural approach: use c_n > 0, d_n fixed sign, d₁ = 0
    - B-geometric approach: use conjugation failure off critical line
    - Analytic approach: study zero sets of related Dirichlet series
+   - **Over-determination:** Two constraints on one parameter (generically impossible)
 4. ~~What is the hyperbolic analog of "lobe area"?~~ **ANSWERED: Signed hyperbolic area; zeros = sign change points**
 5. ~~Why does cosine appear in B(n,k)?~~ **ANSWERED: It's the unique function enabling n^{-s} extraction**
 6. ~~Can B-symmetries derive the functional equation?~~ **PARTIALLY ANSWERED: On critical line yes; full equation requires Γ/π factors**

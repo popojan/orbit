@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-02 12:35:25
+**Generated:** 2025-12-02 17:49:11
 
 ## Theorems (Master References)
 
@@ -21,11 +21,11 @@
 ## Recent Sessions (Last 10)
 
 - [Session: Exact n^{-s} Identity via B(n,k)](sessions/2025-12-02-eta-identity/README.md) *(2025-12-02)*
+- [Rotated Chebyshev Polygon Functions](sessions/2025-12-01-chebyshev-polygon-transforms/rotated-polygon-functions.md) *(2025-12-02)*
 - [Complex Analysis of the Completed Lobe Area Function B(n,k)](sessions/2025-12-02-chebyshev-complex-analysis/README.md) *(2025-12-02)*
 - [Chebyshev Polygon Function Transforms](sessions/2025-12-01-chebyshev-polygon-transforms/README.md) *(2025-12-02)*
 - [Retiring Pi: A Wildberger-Style Look at Chebyshev Lobe Areas](sessions/2025-12-01-wildberger-chebyshev/README.md) *(2025-12-01)*
 - [Multiplicative Decomposition of Chebyshev Lobe Areas](sessions/2025-12-01-multiplicative-decomposition/README.md) *(2025-12-01)*
-- [Rotated Chebyshev Polygon Functions](sessions/2025-12-01-chebyshev-polygon-transforms/rotated-polygon-functions.md) *()*
 - [SignSum for Semiprimes: Connection to Factorization](sessions/2025-11-30-pattern-falsification/semiprime-ss-theorem.md) *(2025-12-01)*
 - [Falsification of 22-bit Pattern Hypothesis](sessions/2025-11-30-pattern-falsification/README.md) *(2025-12-01)*
 - [The Altsum Circle Identity](sessions/2025-11-30-altsum-circle/README.md) *(2025-11-30)*
