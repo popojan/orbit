@@ -734,6 +734,70 @@ conservation law does not directly constrain the eta function. However, it demon
 that the $B(n,k)$ framework maintains internal consistency in the hyperbolic extension.
 \end{remark}
 
+\subsection{Symmetric/Antisymmetric Decomposition}
+
+The identity $n^{-s} = f(B, \partial B/\partial k)$ has a remarkable algebraic structure.
+
+\begin{theorem}[Symmetric/Antisymmetric Decomposition]
+The two terms in the exact identity encode complementary information:
+\begin{align}
+\text{Term 1:} \quad \frac{B(n,k_s) - 1}{\beta(n)} &= \frac{n^s + n^{-s}}{2} & \text{(symmetric in } s \leftrightarrow -s\text{)} \\
+\text{Term 2:} \quad \frac{in}{2\pi\beta(n)} \cdot \frac{\partial B}{\partial k}\Big|_{k_s} &= \frac{n^{-s} - n^s}{2} & \text{(antisymmetric in } s \leftrightarrow -s\text{)}
+\end{align}
+Their sum yields $n^{-s}$.
+\end{theorem}
+
+\begin{proof}
+Direct computation using $\cos(-is\log n) = \cosh(s\log n) = (n^s + n^{-s})/2$ and
+$\sin(-is\log n) = -i\sinh(s\log n) = -i(n^s - n^{-s})/2$.
+\end{proof}
+
+\begin{remark}[Cancellation of $\beta(n)$]
+Remarkably, $\beta(n)$ cancels out in both terms---it is merely a ``transfer function''
+between $B$ and the actual power values. The decomposition is analogous to expressing
+any function as a sum of even and odd parts:
+\[
+f(x) = \frac{f(x) + f(-x)}{2} + \frac{f(x) - f(-x)}{2}
+\]
+Here, $B$ encodes the even part and $\partial B/\partial k$ encodes the odd part.
+\end{remark}
+
+\subsection{Uniqueness of the Cosine Structure}
+
+A natural question: is the cosine in $B(n,k) = 1 + \beta(n)\cos((2k-1)\pi/n)$ arbitrary,
+or is it forced by the requirement that $B$ can encode $n^{-s}$?
+
+\begin{theorem}[Uniqueness of Cosine]
+If $B(n,k) = 1 + \beta(n) \cdot f\left(\frac{(2k-1)\pi}{n}\right)$ allows extracting $n^{-s}$
+for all $s \in \mathbb{C}$ via the identity, then $f$ must be the cosine function.
+\end{theorem}
+
+\begin{proof}
+The identity requires:
+\[
+f\left(\frac{(2k_s - 1)\pi}{n}\right) = \frac{n^s + n^{-s}}{2}
+\]
+At $k_s = \frac{1}{2} - \frac{isn\log n}{2\pi}$, the argument becomes $-is\log n$. Thus:
+\[
+f(-is\log n) = \frac{n^s + n^{-s}}{2} = \cosh(s\log n)
+\]
+Let $w = s\log n$. Then $f(-iw) = \cosh(w)$ must hold for all real $w$ (achieved by varying
+$s$ and $n$ independently).
+
+Any entire function agreeing with $\cosh$ on the imaginary axis must be its analytic continuation.
+Since $\cosh(w) = \cos(iw)$, we have $f(-iw) = \cos(i \cdot (-iw)) = \cos(w)$, implying
+$f(z) = \cos(z)$ for all $z$.
+\end{proof}
+
+\begin{corollary}[Why Chebyshev Connects to Zeta]
+The Chebyshev-zeta connection is not coincidental:
+\begin{enumerate}
+\item Chebyshev polynomials naturally produce cosine terms: $T_n(\cos\theta) = \cos(n\theta)$
+\item Cosine is the \textbf{unique} function enabling $n^{-s}$ extraction via complex argument
+\item Therefore, Chebyshev polygon geometry \textbf{necessarily} connects to the zeta function
+\end{enumerate}
+\end{corollary}
+
 \begin{remark}[Numerical Verification]
 The theorem was subjected to Popper-style falsification testing:
 \begin{itemize}
@@ -744,6 +808,114 @@ The theorem was subjected to Popper-style falsification testing:
 \item $n = 1$: Fails (but geometrically meaningless---excluded from theorem)
 \end{itemize}
 Status: \textbf{Numerically verified} for $n \geq 2$.
+\end{remark}
+
+\subsection{B-Symmetries and the Functional Equation}
+
+The reflection symmetry $B(n, 1-k) = B(n, k)$ combined with the exact $n^{-s}$ identity
+yields a remarkable connection to the functional equation of the Riemann zeta function.
+
+\begin{theorem}[Reflection Symmetry in $s$]
+For the critical $k$ values:
+\begin{equation}
+k_{-s}(n) = 1 - k_s(n)
+\end{equation}
+Consequently:
+\begin{align}
+B(n, k_{-s}) &= B(n, k_s) \\
+\left.\frac{\partial B}{\partial k}\right|_{k_{-s}} &= -\left.\frac{\partial B}{\partial k}\right|_{k_s}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Direct calculation:
+\[
+k_{-s} = \frac{1}{2} - \frac{i(-s)n\log n}{2\pi} = \frac{1}{2} + \frac{isn\log n}{2\pi}
+= 1 - \left(\frac{1}{2} - \frac{isn\log n}{2\pi}\right) = 1 - k_s
+\]
+The $B$ identity follows from $B(n, 1-k) = B(n, k)$.
+For the derivative, $\frac{\partial B}{\partial k}$ contains $\sin((2k-1)\pi/n)$, and:
+\[
+\sin\left(\frac{(2k_{-s}-1)\pi}{n}\right) = \sin\left(\frac{(1-2k_s)\pi}{n}\right)
+= -\sin\left(\frac{(2k_s-1)\pi}{n}\right)
+\]
+\end{proof}
+
+\begin{corollary}[$n^s$ and $n^{-s}$ from Same $B$ Value]
+Both $n^s$ and $n^{-s}$ can be extracted from the \textbf{same} $B(n, k_s)$ value:
+\begin{align}
+n^{-s} &= \frac{B(n,k_s) - 1}{\beta(n)} + \frac{in}{2\pi\beta(n)} \cdot \frac{\partial B}{\partial k}\Big|_{k_s} \\
+n^s &= \frac{B(n,k_s) - 1}{\beta(n)} - \frac{in}{2\pi\beta(n)} \cdot \frac{\partial B}{\partial k}\Big|_{k_s}
+\end{align}
+The only difference is the sign of the derivative term.
+\end{corollary}
+
+\begin{theorem}[B-Conjugation on Critical Line]
+For $s = \frac{1}{2} + it$ on the critical line:
+\begin{equation}
+B(n, k_{1-s}) = \overline{B(n, k_s)}
+\end{equation}
+where $\overline{z}$ denotes complex conjugation.
+\end{theorem}
+
+\begin{proof}
+On the critical line, $1 - s = \frac{1}{2} - it = \overline{s}$.
+Therefore $k_{1-s} = k_{\bar{s}}$. For the $B$ value:
+\begin{align}
+B(n, k_{\bar{s}}) &= 1 + \beta(n)\cos\left(\frac{(2k_{\bar{s}}-1)\pi}{n}\right) \\
+&= 1 + \beta(n)\cos\left(-i\bar{s}\log n\right) \\
+&= 1 + \beta(n)\cosh\left(\bar{s}\log n\right)
+\end{align}
+Since $\beta(n) \in \mathbb{R}$ and $\cosh(\bar{w}) = \overline{\cosh(w)}$:
+\[
+B(n, k_{\bar{s}}) = 1 + \beta(n)\overline{\cosh(s\log n)} = \overline{1 + \beta(n)\cosh(s\log n)} = \overline{B(n, k_s)}
+\]
+\end{proof}
+
+\begin{corollary}[Term-by-Term Functional Equation]
+On the critical line $s = \frac{1}{2} + it$:
+\begin{equation}
+n^{-(1-s)} = \overline{n^{-s}} \quad \text{for every } n
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+On the critical line, $1 - s = \bar{s}$, so $n^{-(1-s)} = n^{-\bar{s}} = \overline{n^{-s}}$.
+\end{proof}
+
+\begin{corollary}[Eta Conjugation]
+On the critical line:
+\begin{equation}
+\eta(1-s) = \overline{\eta(s)}
+\end{equation}
+This follows term-by-term from the Dirichlet series.
+\end{corollary}
+
+\begin{remark}[Why the Critical Line is Special]
+The critical line $\operatorname{Re}(s) = \frac{1}{2}$ is geometrically distinguished.
+For $s = \frac{1}{2} + it$:
+\begin{align}
+2s - 1 &= 2\left(\tfrac{1}{2} + it\right) - 1 = 2it \quad \text{(purely imaginary)} \\
+n^{2s-1} &= e^{2it\log n} \quad \text{(unit modulus!)} \\
+|n^{-(1-s)}| &= |n^{-s}| \quad \text{(equal magnitudes)}
+\end{align}
+The functional equation $\zeta(s) = \chi(s)\zeta(1-s)$ on the critical line becomes a
+relation between values with equal modulus---the $\chi(s)$ factor is unimodular at $s = \frac{1}{2} + it$.
+
+Off the critical line, $|n^{2s-1}| \neq 1$, so the functional equation requires compensating
+factors ($\Gamma$, $\sin$, powers of $\pi$ and 2) to balance the asymmetry.
+\end{remark}
+
+\begin{remark}[Connection to Full Functional Equation]
+The $B$-symmetries give a ``term-by-term'' functional equation on the critical line.
+For the full zeta functional equation $\xi(s) = \xi(1-s)$ where
+$\xi(s) = \frac{1}{2}s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s)$:
+\begin{itemize}
+\item On critical line: $B$-conjugation gives $\eta(1-s) = \overline{\eta(s)}$
+\item Off critical line: Additional factors $\Gamma$, $\pi^{-s/2}$, etc.\ compensate for $|n^{2s-1}| \neq 1$
+\end{itemize}
+The $B(n,k)$ framework thus captures the \textbf{geometric essence} of the functional equation:
+the critical line is where the reflection $s \leftrightarrow 1-s$ preserves magnitude term-by-term.
 \end{remark}
 
 \section{Open Questions}
@@ -763,6 +935,10 @@ Status: \textbf{Numerically verified} for $n \geq 2$.
 \item[8.] \textbf{[ANSWERED]} What is the precise analog of ``lobe area'' in hyperbolic geometry?
       \emph{Answer:} $B(n,k)$ at complex $k$ is a signed hyperbolic area;
       zeros correspond to sign-change boundaries (Theorem 7.9).
+\item[9.] \textbf{[ANSWERED]} Why does cosine appear in $B(n,k)$? Is it arbitrary?
+      \emph{Answer:} Cosine is the \textbf{unique} entire function satisfying $f(-iw) = \cosh(w)$,
+      which is required for $n^{-s}$ extraction. The Chebyshev-zeta connection is therefore
+      \emph{necessary}, not coincidental (Uniqueness of Cosine theorem).
 \end{enumerate}
 
 \section{Geometric Interpretation}

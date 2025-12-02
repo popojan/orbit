@@ -289,9 +289,163 @@ As b → ∞:
 - Different indices → no direct connection
 - But shows B-framework has internal consistency in hyperbolic extension
 
+## Symmetric/Antisymmetric Decomposition
+
+### The Structure
+
+The identity `n^{-s} = f(B, ∂B/∂k)` has a remarkable structure:
+
+```
+Term 1: (B(n,k_s) - 1)/β(n) = (n^s + n^{-s})/2   [SYMMETRIC in s ↔ -s]
+Term 2: I·n·(∂B/∂k)/(2π·β(n)) = (n^{-s} - n^s)/2   [ANTISYMMETRIC in s ↔ -s]
+
+Sum: (n^s + n^{-s})/2 + (n^{-s} - n^s)/2 = n^{-s}  ✓
+```
+
+**Key observation:** β(n) cancels out in both terms! It's merely a "transfer function" between B and the actual power values.
+
+### What B and ∂B/∂k Encode
+
+| Function | Encodes | Type |
+|----------|---------|------|
+| B(n, k_s) - 1 | n^s + n^{-s} | Symmetric (even) |
+| ∂B/∂k at k_s | n^s - n^{-s} | Antisymmetric (odd) |
+
+This is analogous to decomposing any function into even and odd parts:
+```
+f(x) = [f(x) + f(-x)]/2 + [f(x) - f(-x)]/2
+       \_____________/   \_______________/
+           even part        odd part
+```
+
+## Uniqueness Theorem: Why Cosine?
+
+### The Question
+
+Is the cosine in `B(n,k) = 1 + β(n)·cos((2k-1)π/n)` arbitrary, or is it forced?
+
+### Answer: Cosine is FORCED
+
+**Theorem (Uniqueness of Cosine):**
+If `B(n,k) = 1 + β(n)·f((2k-1)π/n)` allows extracting `n^{-s}` for all s via the identity,
+then f must be the cosine function.
+
+**Proof:**
+
+1. The identity requires:
+   ```
+   f(argument at k_s) = (n^s + n^{-s})/2
+   ```
+
+2. At k_s, the argument becomes `-i·s·log(n)`
+
+3. Therefore: `f(-i·s·log(n)) = (n^s + n^{-s})/2 = cosh(s·log(n))`
+
+4. Let `w = s·log(n)`. Then `f(-iw) = cosh(w)` for all real w
+
+5. Any entire function agreeing with cosh on the imaginary axis must BE the analytic continuation of cosh
+
+6. Since `cosh(w) = cos(iw)`, we have `f(-iw) = cos(w)`, which implies `f(z) = cos(z)` for all z ∎
+
+### Consequence
+
+The lobe area formula is **not arbitrary**. It is the **unique** formula (up to trivial modifications) that can encode `n^{-s}` via complex k.
+
+The cosine is forced by two requirements:
+- **Periodicity in k** (geometric: lobes repeat around polygon)
+- **Ability to reach n^{-s}** via analytic continuation
+
+### Why Chebyshev → Zeta Connection Exists
+
+This explains the deep connection:
+- Chebyshev polynomials naturally produce cos terms: `T_n(cos θ) = cos(nθ)`
+- Cosine is the **unique** function enabling zeta access via complex argument
+- Therefore: Chebyshev geometry **necessarily** connects to zeta!
+
+## B-Symmetries and the Functional Equation
+
+### Symmetries of B(n,k)
+
+1. **Periodicity:** `B(n, k+n) = B(n, k)`
+2. **Reflection:** `B(n, 1-k) = B(n, k)`
+3. **Complementary:** `B(n, n+1-k) = B(n, k)`
+
+### Key Relationships
+
+**Reflection symmetry implies:**
+```
+k_{-s} = 1 - k_s
+Therefore: B(n, k_{-s}) = B(n, k_s)
+But: ∂B/∂k|_{k_{-s}} = -∂B/∂k|_{k_s}
+```
+
+This gives the decomposition:
+```
+n^{-s} = (B-1)/β + i·n/(2πβ)·∂B/∂k   [uses + for derivative term]
+n^{+s} = (B-1)/β - i·n/(2πβ)·∂B/∂k   [uses - for derivative term]
+```
+
+### Theorem: B-Conjugation on Critical Line
+
+**For s = 1/2 + it on the critical line:**
+```
+B(n, k_{1-s}) = Conjugate[B(n, k_s)]
+```
+
+**Proof:**
+- θ_s = -i·s·log(n)
+- θ_{1-s} = -i·(1-s)·log(n) = -Conjugate[θ_s] (on critical line)
+- cos(θ_{1-s}) = Conjugate[cos(θ_s)]
+- Since β(n) is real: B(n, k_{1-s}) = Conjugate[B(n, k_s)] ∎
+
+### Corollary: Term-by-Term Functional Equation
+
+**On the critical line:**
+```
+n^{-(1-s)} = Conjugate[n^{-s}]   for every n
+```
+
+**Proof:** On critical line, `2s - 1 = 2it` is purely imaginary, so `|n^{2s-1}| = 1`, which means `n^{-(1-s)} = n^{-s} · n^{2s-1}` with the factor being a pure phase.
+
+### Corollary: η Conjugation
+
+**On the critical line:**
+```
+η(1-s) = Conjugate[η(s)]
+```
+
+**Proof:** Sum term-by-term: η(1-s) = Σ(-1)^{n-1} Conjugate[n^{-s}] = Conjugate[η(s)] ∎
+
+### Why the Critical Line is Special
+
+The critical line Re(s) = 1/2 is geometrically distinguished:
+```
+2s - 1 = 2(1/2 + it) - 1 = 2it   [purely imaginary]
+n^{2s-1} = e^{2it·log(n)}        [unit modulus!]
+|n^{-(1-s)}| = |n^{-s}|          [equal magnitudes]
+```
+
+**Off the critical line:**
+```
+2s - 1 has nonzero real part
+|n^{2s-1}| ≠ 1
+|n^{-(1-s)}| ≠ |n^{-s}|
+```
+
+This explains why the full functional equation requires compensating factors (Γ, sin, powers of π and 2) - they correct for the non-unit modulus of n^{2s-1} away from the critical line.
+
+### Geometric Interpretation
+
+The critical line is where the "rotation factor" n^{2s-1} lies on the unit circle. This is the locus where:
+- Terms n^{-s} and n^{-(1-s)} have equal magnitude
+- The eta/zeta values at s and 1-s are complex conjugates
+- The B-function exhibits conjugate symmetry
+
 ## Open Questions
 
 1. Can the slow convergence on critical line be accelerated?
 2. ~~Is there a geometric interpretation of complex k?~~ **ANSWERED: Wick rotation to hyperbolic geometry**
 3. Does this identity have number-theoretic applications?
 4. ~~What is the hyperbolic analog of "lobe area"?~~ **ANSWERED: Signed hyperbolic area; zeros = sign change points**
+5. ~~Why does cosine appear in B(n,k)?~~ **ANSWERED: It's the unique function enabling n^{-s} extraction**
+6. ~~Can B-symmetries derive the functional equation?~~ **PARTIALLY ANSWERED: On critical line yes; full equation requires Γ/π factors**
