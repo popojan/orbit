@@ -12,6 +12,7 @@ Get["Orbit`SemiprimeFactorization`"];
 Get["Orbit`ModularFactorials`"];
 Get["Orbit`SquareRootRationalizations`"];
 Get["Orbit`ChebyshevIntegralTheorem`"];
+Get["Orbit`ChebyshevZeta`"];
 Get["Orbit`LegacyPolynomials`"];
 
 (* The package context is now populated with symbols from submodules *)
