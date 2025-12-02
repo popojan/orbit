@@ -242,15 +242,27 @@ This explains why:
 
 **Proof:**
 ```
-B(n, k+ib) = 1 + β(n)·cos((2k-1)π/n + 2ibπ/n)
+1. B(n, k+ib) = 1 + β(n)·cos((2k-1)π/n + 2ibπ/n)
 
-Σ B(n, k+ib) = n + β(n)·cosh(2bπ/n)·Σcos((2k-1)π/n)
-                - i·β(n)·sinh(2bπ/n)·Σsin((2k-1)π/n)
+2. Σ_{k=1}^n B(n, k+ib) = n + β(n)·Σ cos((2k-1)π/n + 2ibπ/n)
 
-But: Σcos((2k-1)π/n) = 0  (root of unity symmetry)
-     Σsin((2k-1)π/n) = 0  (root of unity symmetry)
+3. Using cos(A+iB) = cos(A)cosh(B) - i·sin(A)sinh(B):
 
-=> Σ B(n, k+ib) = n  ∎
+   Σ cos(...) = cosh(2bπ/n)·Σcos((2k-1)π/n)
+              - i·sinh(2bπ/n)·Σsin((2k-1)π/n)
+
+4. Key lemma (roots of unity):
+
+   Let ω = e^{2πi/n}. Then:
+
+   Σ_{k=1}^n e^{i(2k-1)π/n} = e^{iπ/n} · Σ_{j=0}^{n-1} ω^j
+                            = e^{iπ/n} · (1 - ω^n)/(1 - ω)
+                            = 0
+
+   Therefore: Σcos((2k-1)π/n) = 0,  Σsin((2k-1)π/n) = 0
+
+5. Substitution:
+   Σ B(n, k+ib) = n + β(n)·(cosh(...)·0 - i·sinh(...)·0) = n  ∎
 ```
 
 **Numerical verification (n=5):**

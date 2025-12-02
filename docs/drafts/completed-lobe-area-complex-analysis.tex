@@ -694,10 +694,19 @@ The case $n=1$ is excluded as geometrically undefined (no 1-gon exists).
 Expanding $B(n, k+ib) = 1 + \beta(n)\cos\frac{(2(k+ib)-1)\pi}{n}$:
 \begin{align}
 \sum_{k=1}^{n} B(n, k+ib) &= n + \beta(n) \sum_{k=1}^{n} \cos\left(\frac{(2k-1)\pi}{n} + \frac{2ib\pi}{n}\right) \\
-&= n + \beta(n)\cosh\frac{2b\pi}{n} \underbrace{\sum_{k=1}^{n}\cos\frac{(2k-1)\pi}{n}}_{=0}
-   - i\beta(n)\sinh\frac{2b\pi}{n} \underbrace{\sum_{k=1}^{n}\sin\frac{(2k-1)\pi}{n}}_{=0}
+&= n + \beta(n)\cosh\frac{2b\pi}{n} \sum_{k=1}^{n}\cos\frac{(2k-1)\pi}{n}
+   - i\beta(n)\sinh\frac{2b\pi}{n} \sum_{k=1}^{n}\sin\frac{(2k-1)\pi}{n}
 \end{align}
-Both sums vanish by root-of-unity symmetry (the $(2k-1)$-th roots are symmetric about the origin).
+
+\textbf{Key lemma:} Let $\omega = e^{2\pi i/n}$. Then:
+\[
+\sum_{k=1}^{n} e^{i(2k-1)\pi/n} = e^{i\pi/n} \sum_{j=0}^{n-1} \omega^j
+= e^{i\pi/n} \cdot \frac{1 - \omega^n}{1 - \omega} = e^{i\pi/n} \cdot \frac{1-1}{1-\omega} = 0
+\]
+Therefore $\sum \cos\frac{(2k-1)\pi}{n} = \operatorname{Re}(0) = 0$ and
+$\sum \sin\frac{(2k-1)\pi}{n} = \operatorname{Im}(0) = 0$.
+
+Substituting: $\sum_{k=1}^{n} B(n, k+ib) = n + \beta(n)(\cosh(\cdot)\cdot 0 - i\sinh(\cdot)\cdot 0) = n$.
 \end{proof}
 
 \begin{remark}[Physical Interpretation]
