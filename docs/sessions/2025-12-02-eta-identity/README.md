@@ -228,6 +228,50 @@ This explains why:
 
 **Verdict:** More than just algebraic trick. The sign-change interpretation gives geometric meaning to zeros. Elevates the identity from "reverse engineering" to "natural hyperbolic extension."
 
+### Hyperbolic Area Invariance (Conservation Law)
+
+**Theorem:** The Chebyshev integral theorem extends to the hyperbolic setting:
+```
+Σ_{k=1}^{n} B(n, k+ib) = n   for any b ∈ ℂ
+```
+
+**Proof:**
+```
+B(n, k+ib) = 1 + β(n)·cos((2k-1)π/n + 2ibπ/n)
+
+Σ B(n, k+ib) = n + β(n)·cosh(2bπ/n)·Σcos((2k-1)π/n)
+                - i·β(n)·sinh(2bπ/n)·Σsin((2k-1)π/n)
+
+But: Σcos((2k-1)π/n) = 0  (root of unity symmetry)
+     Σsin((2k-1)π/n) = 0  (root of unity symmetry)
+
+=> Σ B(n, k+ib) = n  ∎
+```
+
+**Numerical verification (n=5):**
+
+| b | Individual lobes | Sum |
+|---|------------------|-----|
+| 0 | [0.22, 0.22, 1.30, 1.96, 1.30] | 5 |
+| 0.5 | [0.06, 0.06, 1.36, 2.16, 1.36] | 5 |
+| 2.0 | [−3.84, −3.84, 2.85, 6.98, 2.85] | 5 |
+
+**Physical analogy: Conservation law!**
+- Circular: all lobes positive, sum = n
+- Hyperbolic: some positive, some negative, sum = n
+- **Excess of positive = |Deficit of negative|** (exact compensation)
+
+As b → ∞:
+- Individual lobes diverge to ±∞
+- But sum remains exactly n
+- Like energy conservation: kinetic ↔ potential, total constant
+
+**Connection to zeta:**
+- Area invariance: sum over k (fixed n)
+- Dirichlet eta: sum over n (varying k_s)
+- Different indices → no direct connection
+- But shows B-framework has internal consistency in hyperbolic extension
+
 ## Open Questions
 
 1. Can the slow convergence on critical line be accelerated?

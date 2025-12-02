@@ -677,6 +677,52 @@ it demonstrates that the $B(n,k)$ framework has genuine geometric depth beyond i
 original circular polygon setting.
 \end{remark}
 
+\subsection{Hyperbolic Area Invariance}
+
+The Chebyshev integral theorem (area invariance) extends naturally to the hyperbolic setting.
+
+\begin{theorem}[Hyperbolic Conservation Law]
+For any $n \geq 1$ and any $b \in \mathbb{C}$:
+\begin{equation}
+\sum_{k=1}^{n} B(n, k+ib) = n
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Expanding $B(n, k+ib) = 1 + \beta(n)\cos\frac{(2(k+ib)-1)\pi}{n}$:
+\begin{align}
+\sum_{k=1}^{n} B(n, k+ib) &= n + \beta(n) \sum_{k=1}^{n} \cos\left(\frac{(2k-1)\pi}{n} + \frac{2ib\pi}{n}\right) \\
+&= n + \beta(n)\cosh\frac{2b\pi}{n} \underbrace{\sum_{k=1}^{n}\cos\frac{(2k-1)\pi}{n}}_{=0}
+   - i\beta(n)\sinh\frac{2b\pi}{n} \underbrace{\sum_{k=1}^{n}\sin\frac{(2k-1)\pi}{n}}_{=0}
+\end{align}
+Both sums vanish by root-of-unity symmetry (the $(2k-1)$-th roots are symmetric about the origin).
+\end{proof}
+
+\begin{remark}[Physical Interpretation]
+This is a \textbf{conservation law} for hyperbolic lobe areas:
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Setting & Individual lobes & Sum \\
+\midrule
+Circular ($b=0$) & All positive & $n$ \\
+Hyperbolic ($b \neq 0$) & Some positive, some negative & $n$ \\
+Limit ($b \to \infty$) & Diverge to $\pm\infty$ & $n$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The excess of positive lobes exactly compensates the deficit of negative lobes,
+analogous to energy conservation where kinetic and potential energies exchange
+but total energy remains constant.
+\end{remark}
+
+\begin{remark}[Relation to Zeta]
+The area invariance sums over $k$ for fixed $n$, while the Dirichlet eta sums over $n$
+with $k = k_s(n)$ depending on $n$. These are different summation structures, so the
+conservation law does not directly constrain the eta function. However, it demonstrates
+that the $B(n,k)$ framework maintains internal consistency in the hyperbolic extension.
+\end{remark}
+
 \section{Open Questions}
 
 \begin{enumerate}
