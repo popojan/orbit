@@ -521,11 +521,117 @@ Possible directions:
 2. **Measure-theoretic:** What is the "probability" of zero off vs on critical line?
 3. **Spectral:** Is there an operator whose eigenvalues correspond to zeta zeros?
 
+## RH Reformulation via Symmetric/Antisymmetric Dirichlet Series
+
+### The c/d Decomposition
+
+For s = σ + it with σ ≠ 1/2, define coefficient sequences:
+```
+c_n = n^{-σ} + n^{-(1-σ)}   [symmetric under σ ↔ 1-σ, always POSITIVE]
+d_n = n^{-σ} - n^{-(1-σ)}   [antisymmetric, has FIXED SIGN for all n]
+```
+
+Key structural property:
+- For σ < 1/2: d_n > 0 for all n ≥ 2
+- For σ > 1/2: d_n < 0 for all n ≥ 2
+- For σ = 1/2: d_n = 0 for all n (critical line!)
+
+### The Four Equations
+
+For η(σ + it) = 0 off the critical line, the E/O decomposition requires:
+
+1. Re[Σ E_n] = 0: `Σ (-1)^{n-1} c_n cos(t log n) = 0`
+2. Im[Σ E_n] = 0: `Σ (-1)^{n-1} d_n sin(t log n) = 0`
+3. Re[Σ O_n] = 0: `Σ (-1)^{n-1} d_n cos(t log n) = 0`
+4. Im[Σ O_n] = 0: `Σ (-1)^{n-1} c_n sin(t log n) = 0`
+
+### Reduction to Two Dirichlet Series
+
+Define:
+```
+η_c(t) = Σ (-1)^{n-1} c_n · n^{it}   [c-weighted eta]
+η_d(t) = Σ (-1)^{n-1} d_n · n^{it}   [d-weighted eta]
+```
+
+Equations (1)+(4) ⟺ η_c(t) = 0
+Equations (2)+(3) ⟺ η_d(t) = 0
+
+### Key Algebraic Relations
+
+```
+η_c(t) + η_d(t) = 2·η(σ - it)
+η_c(t) - η_d(t) = 2·η((1-σ) - it)
+```
+
+Therefore:
+```
+η_c(t) = 0 AND η_d(t) = 0
+⟺
+η(σ - it) = 0 AND η((1-σ) - it) = 0
+```
+
+### The RH Equivalence
+
+**Theorem (RH Reformulation):**
+
+RH is equivalent to the statement:
+
+> For any σ ≠ 1/2, the Dirichlet series η_c(t) and η_d(t) have no common zeros.
+
+**Proof:**
+
+(⟹) Assume RH. All zeros have Re = 1/2. For σ ≠ 1/2:
+- η(σ - it) ≠ 0 for all t (no zeros at real part σ)
+- Therefore η_c(t) = η(σ-it) + η((1-σ)-it) ≠ 0 generically
+- Common zero would require η(σ-it) = η((1-σ)-it) = 0, impossible under RH
+
+(⟸) Assume η_c and η_d have no common zeros for σ ≠ 1/2.
+If there were a zero at s₀ = σ₀ + it₀ with σ₀ ≠ 1/2, then:
+- By conjugate symmetry: η(σ₀ - it₀) = 0
+- By functional equation: η((1-σ₀) - it₀) = 0
+- Therefore η_c(t₀) = 0 AND η_d(t₀) = 0 (common zero!)
+- Contradiction. ∎
+
+### Critical Line Degeneracy
+
+On the critical line (σ = 1/2):
+- d_n = 0 for all n
+- η_d(t) ≡ 0 (identically zero!)
+- Only η_c(t) = 0 is required (reduces to standard eta zeros)
+
+This explains why critical line is special: the antisymmetric constraint **vanishes entirely**.
+
+### Geometric Interpretation via B-Conjugation
+
+The d_n coefficients measure the **asymmetry** between n^{-σ} and n^{-(1-σ)}:
+- On critical line: B(n, k_{1-s}) = Conj[B(n, k_s)] ⟹ perfect symmetry ⟹ d_n = 0
+- Off critical line: B-conjugation fails ⟹ asymmetry ⟹ d_n ≠ 0
+
+The B-geometry provides a **geometric explanation** for why the antisymmetric part vanishes on the critical line.
+
+### What Remains to Prove RH
+
+To prove RH via this formulation, one must show:
+
+> η_c(t) and η_d(t) cannot share a common zero for σ ≠ 1/2.
+
+Structural facts that might help:
+1. c_n > 0 for all n (positive coefficients)
+2. d_n has fixed sign for all n (monotone structure)
+3. Asymptotically: c_n/d_n → ±1 as n → ∞
+4. Both series converge for Re(it) = 0 (on imaginary axis)
+
+**Open:** Can B-geometry or other structural constraints prove non-existence of common zeros?
+
 ## Open Questions
 
 1. Can the slow convergence on critical line be accelerated?
 2. ~~Is there a geometric interpretation of complex k?~~ **ANSWERED: Wick rotation to hyperbolic geometry**
 3. Does this identity have number-theoretic applications?
+8. **NEW (RH Reformulation):** Can we prove η_c and η_d have no common zeros for σ ≠ 1/2?
+   - Structural approach: use c_n > 0, d_n fixed sign
+   - B-geometric approach: use conjugation failure off critical line
+   - Analytic approach: study zero sets of related Dirichlet series
 4. ~~What is the hyperbolic analog of "lobe area"?~~ **ANSWERED: Signed hyperbolic area; zeros = sign change points**
 5. ~~Why does cosine appear in B(n,k)?~~ **ANSWERED: It's the unique function enabling n^{-s} extraction**
 6. ~~Can B-symmetries derive the functional equation?~~ **PARTIALLY ANSWERED: On critical line yes; full equation requires Γ/π factors**
