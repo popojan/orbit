@@ -363,11 +363,135 @@ Equations & $\zeta(3)$ error & $\zeta(5)$ error \\
 The method works for complex arguments: $\zeta(3+i)$, $\zeta(7/2)$, etc.
 \end{remark}
 
+\begin{remark}[Computational Assessment---Honest Evaluation]
+While the triangular system provides an elegant identity, its \textbf{practical computational value is negligible}:
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Criterion & Result \\
+\midrule
+Speed & $\sim$3000$\times$ slower than built-in $\zeta$ \\
+Region & $\operatorname{Re}(s) > 1$ only (where Dirichlet series converges anyway) \\
+Accuracy & $10^{-4}$ to $10^{-5}$ (worse than direct methods) \\
+Critical strip & Inaccessible (Gap $\frac{1}{2}$ barrier) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The value of this work lies in the \textbf{identity itself}---an unexpected connection
+between Chebyshev polygon geometry and the Riemann zeta function---not in computational
+utility. The constant $\pi^2 - 8$ appearing in both contexts suggests deeper structure,
+but the method provides no new information about $\zeta$ that simpler approaches cannot obtain.
+
+For practical zeta computation, standard methods (Euler-Maclaurin, Riemann-Siegel, eta function)
+remain vastly superior.
+\end{remark}
+
 \begin{remark}[Limitation: Critical Line]
 To compute $\zeta(\tfrac{1}{2} + it)$ would require $s_0 = -\tfrac{1}{2} + it$,
 but $M_3(s)$ only converges for $\operatorname{Re}(s) > 0$. Thus the critical line
 is not directly accessible via this method. Analytic continuation of $M_3(s)$
 remains an open question.
+\end{remark}
+
+\subsection{The Gap $\frac{1}{2}$ Barrier}
+
+A natural question: can we choose a different $k$ value to extend the convergence region
+and reach the critical line? We systematically investigated this.
+
+\begin{theorem}[Decay Classification]
+The asymptotic decay of $B(n,k)$ depends on the choice of $k$:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Choice of $k$ & Decay & Convergence of $M_k(s)$ \\
+\midrule
+$k = \frac{1}{2}$ & $O(1/n^2)$ & $\operatorname{Re}(s) > 0$ \\
+$k = m$ (integer) & $O(1/n^3)$ & $\operatorname{Re}(s) > -1$ \\
+$k = \alpha n$ (linear) & $O(1)$ & Diverges \\
+$k = \sqrt{n}$ & $O(1/n^{3/2})$ & $\operatorname{Re}(s) > \frac{1}{2}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{theorem}
+
+\begin{proof}
+For integer $k$, we have the lobe area formula $B(n,k) = \pi k/n - \sin(2\pi k/n)/2$.
+Taylor expansion gives:
+\[
+B(n,k) = \frac{2\pi^3 k^3}{3n^3} - \frac{2\pi^5 k^5}{15 n^5} + O(1/n^7)
+\]
+The leading term is $O(1/n^3)$ for any fixed integer $k$.
+
+For $k = \alpha n$ with $0 < \alpha < 1$:
+\[
+B(n, \alpha n) = \pi\alpha - \frac{\sin(2\pi\alpha)}{2} = \text{constant}
+\]
+No decay at all---the series diverges.
+
+For $k = \sqrt{n}$, the decay is $O(1/n^{3/2})$, \emph{slower} than fixed integer $k$.
+\end{proof}
+
+\begin{theorem}[Universal Gap $\frac{1}{2}$]
+For any choice of $k$, the critical line $\operatorname{Re}(s) = \frac{1}{2}$ lies exactly
+$\frac{1}{2}$ outside the convergence region for accessing $\zeta(\frac{1}{2} + it)$.
+
+Specifically, if $M_k(s)$ involves $\zeta(s + d)$ as its leading zeta term (where $d$ is
+the offset determined by the Taylor expansion), then:
+\begin{itemize}
+\item To access $\zeta(\frac{1}{2} + it)$, we need $s = \frac{1}{2} - d + it$
+\item The convergence region is $\operatorname{Re}(s) > 1 - d$
+\item The gap is: $(1 - d) - (\frac{1}{2} - d) = \frac{1}{2}$
+\end{itemize}
+\end{theorem}
+
+\begin{center}
+\begin{tabular}{lccccc}
+\toprule
+$k$ & Offset $d$ & Need $s$ for $\zeta(\frac{1}{2})$ & Convergence & Gap \\
+\midrule
+$\frac{1}{2}$ & 1 & $s = -\frac{1}{2}$ & $\operatorname{Re}(s) > 0$ & $\frac{1}{2}$ \\
+1 (integer) & 2 & $s = -\frac{3}{2}$ & $\operatorname{Re}(s) > -1$ & $\frac{1}{2}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}[The Critical Line as Fixed Point]
+This universal gap of $\frac{1}{2}$ is not coincidental---it reflects a deeper truth.
+The critical line $\operatorname{Re}(s) = \frac{1}{2}$ is the \textbf{symmetry axis}
+of Riemann's functional equation $\zeta(s) = \chi(s)\zeta(1-s)$.
+
+Attempts to overcome the barrier via functional equation fail because:
+\begin{itemize}
+\item At $s = \frac{1}{2}$, the equation relates $\zeta(\frac{1}{2})$ to itself (tautology)
+\item At $s = \frac{1}{2} + it$, it relates conjugate values on the same line
+\item No ``external'' information is provided---the critical line maps to itself
+\end{itemize}
+
+This explains why the critical line is simultaneously:
+\begin{enumerate}
+\item Just outside convergence for our $M_k(s)$ series (gap $\frac{1}{2}$)
+\item A fixed set of the functional equation (no new constraints)
+\item The locus of the Riemann Hypothesis (hardest to analyze)
+\end{enumerate}
+
+All three approaches to overcome the barrier were tested and failed:
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Approach & Result \\
+\midrule
+Ramanujan summation & Requires analytic continuation (circular) \\
+$B$-symmetry $\to$ functional eq. & Gives $M_{1-k}(s) = M_k(s)$, not $s$-reflection \\
+Integral representation & Regularization needs $\zeta$ values (circular) \\
+Self-referential trick & $\zeta(\frac{1}{2})$ appears with coefficient 1 (tautology) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The $B(n,k)$ framework elegantly reaches the boundary of what is achievable without
+invoking the functional equation of $\zeta$ itself---and then stops.
 \end{remark}
 
 \section{Open Questions}
@@ -379,6 +503,11 @@ remains an open question.
 \item What is the geometric meaning of the Taylor coefficients $c_{2k}$ coupling to $\zeta(s+2k-1)$?
 \item Does $M_3(s)$ admit analytic continuation to $\operatorname{Re}(s) < 0$, enabling computation
       of $\zeta$ on the critical line via the triangular system method?
+\item \textbf{Is the Gap $\frac{1}{2}$ barrier fundamental?} Can any regularization, functional equation,
+      or integral representation overcome this barrier and provide non-circular access to $\zeta(\frac{1}{2}+it)$
+      via the $B(n,k)$ framework?
+\item Does the symmetry $B(n,1-k) = B(n,k)$ induce a functional equation for $M_k(s)$ analogous
+      to the Riemann functional equation $\xi(s) = \xi(1-s)$?
 \end{enumerate}
 
 \section{Geometric Interpretation}
