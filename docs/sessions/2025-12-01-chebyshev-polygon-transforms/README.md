@@ -30,7 +30,7 @@ Only **two non-zero Fourier coefficients** regardless of k!
 | Skip-pattern sums | **Yes** | But equivalent to trial division |
 | Inner product matrix | Only parity | Tridiagonal in Chebyshev weight |
 | GCD of polynomials | Complex | Not directly related to divisibility |
-| Möbius-weighted integral | **Yes** | Gives μ(k)·π/8, but requires divisors |
+| Möbius-weighted integral | ~~**Yes**~~ | **ERROR:** ∫f² = π/4 constant, so Möbius sum = 0 |
 
 ## Detailed Findings
 
@@ -46,15 +46,15 @@ Example (k=5, 6-gon):
 
 **Conclusion:** Detects compositeness, but finding which d works = finding divisor.
 
-### 2. Möbius-Weighted Integral
+### 2. Möbius-Weighted Integral (RETRACTED)
 
+**Original claim:**
 $$M(k) = \sum_{d|k} \mu(d) \int_0^\pi f(\theta, k/d)^2 d\theta = \mu(k) \cdot \frac{\pi}{8}$$
 
-- Primes: -π/8
-- Squarefree composites: +π/8
-- Numbers with squared factors: 0
+**Problem:** The integral ∫f_k² = π/4 is **constant** for all k ≥ 2. Therefore:
+$$M(k) = \frac{\pi}{4} \sum_{d|k} \mu(d) = \frac{\pi}{4} \cdot [k=1] = 0 \text{ for } k > 1$$
 
-**Conclusion:** Clean formula, but requires knowing divisors of k.
+The original formula is **incorrect**. No Möbius inversion applies here.
 
 ### 3. Polynomial Factorization
 
@@ -249,13 +249,156 @@ They did NOT investigate integral properties with absolute values.
 1. **Connection to φ(k)?** ✅ YES - Factor degrees are exactly φ(k)/2 for primitive zeros
 2. **Relationship to cyclotomic polynomials?** ✅ YES - F_odd = MinimalPolynomial[cos(π/p)]
 
+## Farey-Egypt Structural Analogy
+
+**Discovery:** The Farey gap formula and Egypt sqrt quadratic error share identical "almost-square" structure.
+
+### Farey Gap Around 1/2
+
+From Remark 5 in the paper, partial sums $S_n = \sum_{k=1}^n J_k$ oscillate between:
+- Upper bounds: $\frac{m}{2m-1}$ (odd partial sums)
+- Lower bounds: $\frac{m}{2m+1}$ (even partial sums)
+
+The gap between consecutive bounds:
+$$\text{gap} = \frac{m}{2m-1} - \frac{m}{2m+1} = \frac{2m}{(2m-1)(2m+1)} = \frac{n}{n^2-1}$$
+where $n = 2m$.
+
+### Egypt Sqrt Quadratic Error
+
+For Pell solution $(x, y)$ with $x^2 - ny^2 = 1$, the Egypt starting approximation $r = (x-1)/y$:
+$$n - r^2 = \frac{2(x-1)}{y^2} = \frac{2n}{x+1}$$
+
+Key identity: $(x-1)(x+1) = ny^2$
+
+**Example** ($n=13$, Pell: $x=649$, $y=180$):
+- Error = $2 \cdot 13 / 650 = 1/25$
+- Verification: $13 - (648/180)^2 = 13 - 324/25 = 1/25$ ✓
+
+### Structural Parallel
+
+| Quantity | Farey Gap | Egypt Error |
+|----------|-----------|-------------|
+| **Formula** | $\frac{n}{(n-1)(n+1)}$ | $\frac{2n}{x+1}$ |
+| **Structure** | $\frac{n}{\text{almost-square}}$ | $\frac{n}{\text{Pell}+1}$ |
+| **Denominator** | $n^2-1$ | $x+1$ where $(x-1)(x+1)=ny^2$ |
+| **Approximates** | rational 1/2 | irrational $\sqrt{n}$ |
+| **Method** | $\int(1-x)U_{k-1}(x)dx$ | Pell + Chebyshev terms |
+
+Both share:
+1. Form "$n$ divided by (something+1)" where "something" relates to almost-square
+2. Chebyshev polynomial structure (U_k in both cases)
+3. Continued fraction / Stern-Brocot tree connection
+
+### Potential Applications
+
+**Speculative:**
+1. Could Farey-style weighted integrals give better sqrt approximation sequences?
+2. Could Pell-style error analysis improve understanding of Farey convergence?
+3. Unified framework: "Chebyshev approximation via almost-square denominators"?
+
+**Status:** 🤔 HYPOTHESIS - Structural analogy observed, utility unclear.
+
 ## Remaining Open Questions
 
 1. Can the factorization structure distinguish prime from prime-power (p vs p²)?
 2. For composite k, explicit formula for factor count in terms of divisor structure?
 3. Is there a "spectral" signature that counts factors without computing them?
 4. Connection to Chebyshev's theorem on primes in arithmetic progressions?
+5. **NEW:** Is the Farey-Egypt structural analogy more than coincidence?
+
+## Cumulative Vertex Density (Limiting Distribution)
+
+**Question:** What is the density of vertices when we superimpose ALL k-gons for k = 2, 3, ..., n as n → ∞?
+
+### Vertex Positions
+
+For k-gon in canonical position, vertices are at angles:
+$$\varphi_{k,m} = (-1)^{m+1} \cdot \frac{(2m+1)\pi}{2k}, \quad m = 0, 1, \ldots, k-1$$
+
+These form a **regular k-gon** with spacing 2π/k between consecutive vertices.
+
+### Cumulative Set
+
+Define the cumulative vertex set:
+$$V_n = \bigcup_{k=2}^{n} \{\varphi_{k,m} : m = 0, \ldots, k-1\}$$
+
+**Total count:**
+$$|V_n| = \sum_{k=2}^{n} k = \frac{n(n+1)}{2} - 1 \sim \frac{n^2}{2}$$
+
+### Theorem: Limiting Density is Uniform
+
+**Claim:** For any interval $[a, b] \subset [0, 2\pi)$:
+$$\lim_{n \to \infty} \frac{|\{\varphi \in V_n : \varphi \in [a,b]\}|}{|V_n|} = \frac{b-a}{2\pi}$$
+
+**Proof:**
+
+Each k-gon is a regular polygon with vertices at $\alpha_k + \frac{2\pi j}{k}$ for $j = 0, \ldots, k-1$, where $\alpha_k = 2\pi - \frac{\pi}{2k}$ is the first vertex position.
+
+The count of k-gon vertices in $[a, b]$ deviates from the "ideal" by a bounded amount:
+$$N_k([a,b]) = k \cdot \frac{b-a}{2\pi} + \varepsilon_k([a,b])$$
+where $|\varepsilon_k| \leq 1$ for each k (rounding error from discrete vertices).
+
+**Key subtlety:** The errors $\varepsilon_k$ are NOT independent—they can accumulate coherently!
+
+For example, interval $[0, \pi/4]$ never contains a first vertex (since $\alpha_k \in [7\pi/4, 2\pi)$ for all $k \geq 2$). This creates systematic bias:
+$$\sum_{k=2}^{n} \varepsilon_k([0, \pi/4]) \approx -0.31 \cdot n$$
+
+However, total count is $O(n^2)$:
+$$|V_n| = \sum_{k=2}^{n} k = \frac{n(n+1)}{2} - 1 \sim \frac{n^2}{2}$$
+
+Therefore:
+$$\text{relative error} = \frac{O(n)}{O(n^2)} = O(1/n) \to 0$$
+
+**Conclusion:** Despite $O(n)$ systematic bias in absolute counts, the limiting density is uniform because total count grows faster ($O(n^2)$). ∎
+
+**Numerical verification (interval [0, π/4]):**
+
+| n | Actual | Expected | Diff | RelError |
+|---|--------|----------|------|----------|
+| 50 | 144 | 159 | -15 | -9.6% |
+| 100 | 600 | 631 | -31 | -4.9% |
+| 500 | 15,500 | 15,656 | -156 | -1.0% |
+
+### First-Vertex Pile-Up (Transient Effect)
+
+The first vertex of each k-gon is at:
+$$\varphi_{k,0} = 2\pi - \frac{\pi}{2k}$$
+
+These accumulate near $2\pi$ as k increases.
+
+**Count in $[2\pi - \varepsilon, 2\pi)$:**
+Need $\pi/(2k) < \varepsilon$, i.e., $k > \pi/(2\varepsilon)$
+
+So approximately $n - \pi/(2\varepsilon)$ first vertices fall in this interval.
+
+**But:** This is $O(n)$ out of $O(n^2)$ total vertices:
+$$\frac{n - \pi/(2\varepsilon)}{n^2/2} \sim \frac{2}{n} \to 0$$
+
+The pile-up effect **vanishes** in the limit.
+
+### Numerical Verification
+
+| n | Total vertices | First vertex fraction | CV (non-uniformity) |
+|---|----------------|----------------------|---------------------|
+| 20 | 209 | 9.1% | ~0.23 |
+| 50 | 1,274 | 3.8% | ~0.10 |
+| 100 | 5,049 | 2.0% | ~0.05 |
+| 200 | 20,099 | 1.0% | ~0.02 |
+| 500 | 125,249 | 0.4% | ~0.01 |
+
+CV = coefficient of variation of bin counts (20 equal bins).
+
+### Connection to Chebyshev Density
+
+**Twist:** While density in angle $\varphi$ is uniform, the density in **x-coordinate** $x = \cos\varphi$ follows the **arcsine distribution**:
+
+$$\rho(x) = \frac{1}{\pi\sqrt{1-x^2}}$$
+
+This is exactly the **Chebyshev weight function**!
+
+**Interpretation:** Vertices of regular polygons, when projected onto the x-axis, cluster at the boundaries $x = \pm 1$. This is the same distribution as Chebyshev nodes used for optimal polynomial interpolation.
 
 ## Files
 
 - `README.md` - This summary
+- `rotated-polygon-functions.md` - Polynomial formulas for arbitrarily rotated polygon curves

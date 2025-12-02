@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-01 20:06:05
+**Generated:** 2025-12-02 01:01:32
 
 ## Theorems (Master References)
 
@@ -20,6 +20,7 @@
 
 ## Recent Sessions (Last 10)
 
+- [Retiring Pi: A Wildberger-Style Look at Chebyshev Lobe Areas](sessions/2025-12-01-wildberger-chebyshev/README.md) *(2025-12-01)*
 - [Multiplicative Decomposition of Chebyshev Lobe Areas](sessions/2025-12-01-multiplicative-decomposition/README.md) *(2025-12-01)*
 - [Rotated Chebyshev Polygon Functions](sessions/2025-12-01-chebyshev-polygon-transforms/rotated-polygon-functions.md) *()*
 - [Chebyshev Polygon Function Transforms](sessions/2025-12-01-chebyshev-polygon-transforms/README.md) *(2025-12-01)*
@@ -29,7 +30,6 @@
 - [Back to Origins: Connecting Old Code to Chebyshev Integral Theorem](sessions/2025-11-29-back-to-origins/README.md) *(2025-11-29)*
 - [Chebyshev Geometry and Primality](sessions/2025-11-28-chebyshev-primality/README.md) *(2025-11-29)*
 - [Chebyshev Sign Sum - Aktuální stav výzkumu](sessions/2025-11-28-chebyshev-primality/STATUS.md) *(2025-11-29)*
-- [Mod 8 Unification: From Pell to Inverse Parity](sessions/2025-11-28-chebyshev-primality/mod8-unification.md) *(2025-11-29)*
 
 ## Navigation
 

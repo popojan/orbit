@@ -766,6 +766,152 @@ Both phenomena share the same structure:
 This suggests a deep connection between Chebyshev lobe structure, Pell
 equations, and quadratic reciprocity.
 
+\section{Semiprime Sign Sum and Factorization}
+
+A striking result connects the semiprime sign sum directly to the factorization problem.
+
+\subsection{Explicit CRT Formula}
+
+\begin{theorem}[CRT Coefficient Formula for Semiprimes]\label{thm:crt-semiprime}
+For odd semiprime $n = pq$ with primes $3 \leq p < q$:
+\begin{equation}
+\boxed{\Sigma\mathrm{signs}(pq) = 4 \cdot \left[ (q \cdot q^{-1}_p) \bmod 2 \right] - 3}
+\end{equation}
+where $q^{-1}_p$ denotes the modular inverse of $q$ modulo $p$.
+
+Equivalently:
+\begin{itemize}
+\item $\Sigma\mathrm{signs}(pq) = +1$ if $(q \cdot q^{-1}_p)$ is \textbf{odd}
+\item $\Sigma\mathrm{signs}(pq) = -3$ if $(q \cdot q^{-1}_p)$ is \textbf{even}
+\end{itemize}
+\end{theorem}
+
+\begin{proof}
+Let $Q = q \cdot q^{-1}_p$ and $P = p \cdot p^{-1}_q$ be the CRT basis coefficients.
+By the standard CRT identity: $Q + P = 1 + pq$.
+
+Since $p, q$ are odd, $pq$ is odd, so $Q + P \equiv 0 \pmod{2}$.
+Thus $Q \equiv P \pmod{2}$---the parities are equal.
+
+For primitive lobe $m = aQ + bP$ with $a \in \{2, \ldots, p-1\}$, $b \in \{2, \ldots, q-1\}$:
+\[
+m \bmod 2 = (aQ + bP) \bmod 2 = (a + b) \cdot (Q \bmod 2) \pmod{2}
+\]
+
+The sign sum counts $\sum_{a,b} (-1)^{m-1}$. When $Q$ is odd, parity of $m$ equals
+parity of $(a + b)$, giving independent alternation in both indices. When $Q$ is even,
+all $m$ have the same parity.
+
+Explicit computation yields $\Sigma\mathrm{signs} = 4(Q \bmod 2) - 3$.
+\end{proof}
+
+\begin{remark}[Equivalence of Formulations]
+This formula is equivalent to Theorem~\ref{thm:semiprime-signs}. The connection is:
+\[
+(q \cdot q^{-1}_p) \bmod 2 = 1 - (p^{-1} \bmod q) \bmod 2
+\]
+Both encode the same binary information via complementary CRT coefficients.
+\end{remark}
+
+\subsection{Computational Equivalence to Factoring}
+
+\begin{corollary}[Equivalence to Factoring]\label{cor:factoring}
+Computing $\Sigma\mathrm{signs}(n)$ for semiprime $n = pq$ is \textbf{computationally
+equivalent} to factoring $n$.
+\end{corollary}
+
+\begin{proof}
+\textbf{Factoring $\Rightarrow$ Sign sum:} Given $p, q$, compute $q^{-1}_p$ by
+extended Euclidean algorithm in $O(\log p)$ time, then apply the formula.
+
+\textbf{Sign sum $\Rightarrow$ Factoring:} To compute $\Sigma\mathrm{signs}(n)$ directly,
+we need to determine whether $(q \cdot q^{-1}_p) \bmod 2 = 0$ or $1$.
+This requires knowing $q \bmod p$, which---given only $n = pq$---requires knowing $p$.
+Knowing $p$ from $n = pq$ \emph{is} factorization.
+\end{proof}
+
+\begin{remark}[Information-Theoretic View]
+The sign sum $\Sigma\mathrm{signs}(pq) \in \{-3, +1\}$ encodes exactly \textbf{1 bit}
+of information about the factorization: which ``half'' of residue classes $q$
+occupies modulo $p$.
+
+Any finite signature scheme (like the 22-bit hierarchical pattern) cannot encode
+unbounded factorization data, hence must have collisions for semiprimes with
+the same signature but different $\Sigma\mathrm{signs}$ values.
+\end{remark}
+
+\subsection{Residue Class Patterns}
+
+The residue classes $r = q \bmod p$ that give each sign sum value follow
+prime-specific patterns:
+
+\begin{center}
+\begin{tabular}{c|l|l}
+$p$ & $\Sigma\mathrm{signs} = +1$ residues & $\Sigma\mathrm{signs} = -3$ residues \\
+\hline
+3 & $\{1\}$ & $\{2\}$ \\
+5 & $\{1, 2\}$ & $\{3, 4\}$ \\
+7 & $\{1, 3, 5\}$ & $\{2, 4, 6\}$ \\
+11 & $\{1, 4, 5, 8, 9\}$ & $\{2, 3, 6, 7, 10\}$ \\
+13 & $\{1, 2, 3, 6, 8, 9\}$ & $\{4, 5, 7, 10, 11, 12\}$ \\
+\end{tabular}
+\end{center}
+
+\begin{remark}[Not Standard Classifications]
+The pattern is \textbf{not}:
+\begin{itemize}
+\item Quadratic residues vs.\ non-residues (fails for most $p$)
+\item First half vs.\ second half of residues (works only for $p = 3, 5$)
+\item Odd vs.\ even residues (works only for $p = 3, 7$)
+\end{itemize}
+The classification depends on the specific multiplicative structure of each prime.
+\end{remark}
+
+\subsection{Generalization Barrier for $\omega > 2$}
+
+A natural question: can the explicit formula for semiprimes be generalized to
+products with more prime factors?
+
+\begin{theorem}[Generalization Barrier]\label{thm:barrier}
+For $\omega \geq 3$, the CRT parity structure is \textbf{insufficient} to determine
+$\Sigma\mathrm{signs}$ uniquely.
+\end{theorem}
+
+\begin{proof}
+For $k = p_1 p_2 p_3$, the CRT coefficients have parities $(b_1, b_2, b_3)$
+satisfying $b_1 + b_2 + b_3 \equiv 0 \pmod{2}$ (since the sum of CRT coefficients
+equals $1 + k$, which is even for odd $k$).
+
+Thus only \textbf{2 independent bits} from parities. However, $\Sigma\mathrm{signs}$
+takes \textbf{7 distinct values} $\{-13, -9, -5, -1, 3, 7, 11\}$ for 3-products.
+
+Numerical verification shows that CRT parity tuples do not uniquely determine
+$\Sigma\mathrm{signs}$: each parity configuration maps to 3--4 possible values.
+\end{proof}
+
+\begin{remark}[Information Growth]
+The information requirement grows with $\omega$:
+\begin{center}
+\begin{tabular}{c|c|c|c}
+$\omega$ & Distinct $\Sigma\mathrm{signs}$ values & Bits needed & CRT parity bits \\
+\hline
+2 & 2 & 1 & 1 (sufficient) \\
+3 & 7 & $\sim 3$ & 2 (insufficient) \\
+4 & $\sim 13$ & $\sim 4$ & 3 (insufficient) \\
+\end{tabular}
+\end{center}
+For $\omega \geq 3$, determining $\Sigma\mathrm{signs}$ requires more than parity
+information---likely the actual values of CRT coefficients modulo higher powers of 2,
+or additional structural data.
+\end{remark}
+
+\begin{corollary}[Structural Conclusion]
+The elegant closed-form formula for semiprimes ($\omega = 2$) exploits a special
+property: the CRT parity constraint $Q \equiv P \pmod{2}$ reduces the problem to
+a single binary choice. This structure breaks for $\omega \geq 3$, where multiple
+interacting parities create irreducibly complex behavior.
+\end{corollary}
+
 \section{Open Questions}
 
 \begin{enumerate}

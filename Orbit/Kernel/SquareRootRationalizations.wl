@@ -98,6 +98,81 @@ CONJECTURE: FactorialTerm[x,j] = ChebyshevTerm[x,j] for all x,j (numerically ver
 This formula comes from the Egypt repository's closed-form representation of sqrt via Egyptian fractions.
 For details see: https://github.com/popojan/egypt and docs/egypt-chebyshev-equivalence.md";
 
+ChebyshevPolygonCurve::usage = "ChebyshevPolygonCurve[k, delta][t] returns {x, y} point on the k-polygon Chebyshev curve rotated by angle delta.
+
+Parameters:
+  k     - polygon order (number of inscribed vertices)
+  delta - rotation angle in radians (0 = natural Chebyshev orientation)
+  t     - parameter in [-1, 1]
+
+Formula (polynomial form):
+  x = cos(delta) * t + sin(delta) * (1-t²) * U_{k-1}(t)
+  y = sin(delta) * t - cos(delta) * (1-t²) * U_{k-1}(t)
+
+where U_k is the Chebyshev polynomial of the second kind.
+
+Properties:
+  - For delta=0: y = -(1-t²)*U_{k-1}(t) = ChebyshevPolygonFunction[t, k]
+  - Curve has k vertices on the unit circle
+  - L¹ norm integral equals 1 for all k >= 2
+
+Examples:
+  ChebyshevPolygonCurve[5, 0][0.5]           (* Natural orientation *)
+  ChebyshevPolygonCurve[5, Pi/10][0.5]       (* Base position, first vertex at angle 0 *)
+
+See: docs/sessions/2025-12-01-chebyshev-polygon-transforms/rotated-polygon-functions.md";
+
+ChebyshevPolygonCurveNormalized::usage = "ChebyshevPolygonCurveNormalized[k][t] returns {x, y} point on the k-polygon Chebyshev curve in 'base position' (first vertex at angle 0).
+
+Equivalent to: ChebyshevPolygonCurve[k, Pi/(2k)][t]
+
+This normalization allows comparing polygon curves across different k values with aligned vertex positions.
+
+Parameters:
+  k - polygon order (number of inscribed vertices)
+  t - parameter in [-1, 1]
+
+Examples:
+  ChebyshevPolygonCurveNormalized[3][0.5]    (* Triangle, normalized *)
+  ChebyshevPolygonCurveNormalized[5][0.5]    (* Pentagon, normalized *)
+
+Note: After normalization, the 'diameter' points (originally at angles 0 and π) move to angles π/(2k) and π + π/(2k).";
+
+PolygonRotationConstants::usage = "PolygonRotationConstants[k] returns {c, s} = {Cos[π/(2k)], Sin[π/(2k)]} in algebraic form.
+
+For 'constructible' k (products of powers of 2 and distinct Fermat primes 3, 5, 17, 257, 65537),
+the result is expressed as nested square roots.
+
+For non-constructible k (e.g., 7, 9, 11), the result involves higher roots and may contain
+complex intermediate forms that simplify to real values.
+
+Properties:
+  - c² + s² = 1 (always)
+  - c = Cos[π/(2k)] > 0 for k ≥ 1
+  - s = Sin[π/(2k)] > 0 for k ≥ 1
+
+Nested radical pattern (powers of 2):
+  k = 2:  c = √2/2
+  k = 4:  c = √(2+√2)/2
+  k = 8:  c = √(2+√(2+√2))/2
+  k = 16: c = √(2+√(2+√(2+√2)))/2
+
+Golden ratio connection (k = 5):
+  c = √((5+√5)/8)
+  s = (√5-1)/4 = (φ-1)/2
+
+Constructible k values up to 100:
+  2, 3, 4, 5, 6, 8, 10, 12, 15, 16, 17, 20, 24, 30, 32, 34, 40, 48, 51, 60, 64, 68, 80, 85, 96
+
+Examples:
+  PolygonRotationConstants[3]   (* {√3/2, 1/2} *)
+  PolygonRotationConstants[5]   (* Golden ratio related *)
+  PolygonRotationConstants[8]   (* Triple nested radical *)
+
+References:
+  - Watkins & Zeitlin (1993): Minimal polynomial of cos(2π/n)
+  - Gauss (1801): Constructibility of regular polygons";
+
 NestedChebyshevSqrt::usage = "NestedChebyshevSqrt[nn, start, {m1, m2}] computes ultra-high precision rational sqrt approximation bounds using nested Chebyshev iterations.
 
 Parameters:
@@ -402,6 +477,54 @@ AlgebraicCirclePoint[k_Integer, a_] := Module[{z},
   z = (a - I)^(4*k) / (1 + a^2)^(2*k);
   {Re[z], Im[z]} // Simplify
 ]
+
+(* ===================================================================
+   CHEBYSHEV POLYGON CURVES - Rotated parametric curves
+   =================================================================== *)
+
+(* Rotated Chebyshev Polygon Curve - polynomial form *)
+ChebyshevPolygonCurve[k_Integer, delta_][t_] := Module[
+  {c = Cos[delta], s = Sin[delta], u = ChebyshevU[k - 1, t]},
+  {c*t + s*(1 - t^2)*u, s*t - c*(1 - t^2)*u}
+]
+
+(* Normalized version - first vertex at angle 0 *)
+ChebyshevPolygonCurveNormalized[k_Integer][t_] :=
+  ChebyshevPolygonCurve[k, Pi/(2*k)][t]
+
+(* ===================================================================
+   POLYGON ROTATION CONSTANTS - Algebraic forms of cos/sin(π/(2k))
+   =================================================================== *)
+
+(* Check if k gives constructible polygon (Gauss-Wantzel theorem) *)
+(* Constructible iff k = 2^a * p1 * p2 * ... where pi are distinct Fermat primes *)
+constructibleQ[k_Integer] := Module[{n = k, fermat = {3, 5, 17, 257, 65537}},
+  (* Remove all factors of 2 *)
+  While[EvenQ[n], n = n/2];
+  (* Check remaining odd part is product of distinct Fermat primes *)
+  n == 1 || (And @@ (PrimeQ /@ FactorInteger[n][[All, 1]]) &&
+             SubsetQ[fermat, FactorInteger[n][[All, 1]]] &&
+             Max[FactorInteger[n][[All, 2]]] == 1)
+]
+
+(* Algebraic rotation constants for normalized polygon curve *)
+PolygonRotationConstants[k_Integer /; k >= 2] := Module[{c, s},
+  c = Cos[Pi/(2*k)] // FullSimplify // ToRadicals // ComplexExpand // FullSimplify;
+  s = Sin[Pi/(2*k)] // FullSimplify // ToRadicals // ComplexExpand // FullSimplify;
+  {c, s}
+]
+
+(* Specialized forms for common cases - cleaner output *)
+PolygonRotationConstants[2] := {1/Sqrt[2], 1/Sqrt[2]}
+PolygonRotationConstants[3] := {Sqrt[3]/2, 1/2}
+PolygonRotationConstants[4] := {Sqrt[2 + Sqrt[2]]/2, Sqrt[2 - Sqrt[2]]/2}
+PolygonRotationConstants[5] := {Sqrt[(5 + Sqrt[5])/8], (Sqrt[5] - 1)/4}
+PolygonRotationConstants[6] := {Sqrt[2 + Sqrt[3]]/2, Sqrt[2 - Sqrt[3]]/2}
+PolygonRotationConstants[8] := {Sqrt[2 + Sqrt[2 + Sqrt[2]]]/2, Sqrt[2 - Sqrt[2 + Sqrt[2]]]/2}
+PolygonRotationConstants[10] := Module[{phi = (1 + Sqrt[5])/2},
+  {Sqrt[(2 + phi)/4], Sqrt[(2 - phi)/4]}  (* Verified numerically *)
+]
+PolygonRotationConstants[12] := {Sqrt[2 + Sqrt[2 + Sqrt[3]]]/2, Sqrt[2 - Sqrt[2 + Sqrt[3]]]/2}
 
 (* Sum of Chebyshev terms *)
 sqrtTerms[x_, n_] :=
