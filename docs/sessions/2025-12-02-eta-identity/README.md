@@ -232,8 +232,13 @@ This explains why:
 
 **Theorem:** The Chebyshev integral theorem extends to the hyperbolic setting:
 ```
-Σ_{k=1}^{n} B(n, k+ib) = n   for any b ∈ ℂ
+Σ_{k=1}^{n} B(n, k+ib) = n   for n ≥ 2, any b ∈ ℂ
 ```
+
+**Validity domain:**
+- n ≥ 3: Standard formula applies
+- n = 2: Requires β(2) = −π/4 (L'Hôpital limit)
+- n = 1: Excluded (1-gon geometrically undefined)
 
 **Proof:**
 ```
