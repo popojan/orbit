@@ -558,6 +558,125 @@ critical line means practical computation still requires many terms, and the loc
 zeros is encoded non-obviously in the interplay of infinitely many $B(n,k_s)$ values.
 \end{remark}
 
+\subsection{Geometric Interpretation: Wick Rotation}
+
+The complex $k$ values used in the exact identity have a natural geometric interpretation
+as a \textbf{Wick rotation} from circular to hyperbolic geometry.
+
+\begin{theorem}[Circle-to-Hyperbola Transition]
+The fundamental identity
+\begin{equation}
+\cos(i\varphi) = \cosh(\varphi)
+\end{equation}
+transforms circular geometry (bounded) into hyperbolic geometry (unbounded):
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Argument & Function & Curve & Range \\
+\midrule
+Real $\theta$ & $\cos\theta, \sin\theta$ & Circle $x^2 + y^2 = 1$ & Bounded $[-1,1]$ \\
+Imaginary $i\varphi$ & $\cosh\varphi, \sinh\varphi$ & Hyperbola $x^2 - y^2 = 1$ & Unbounded $[1,\infty)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{theorem}
+
+\begin{definition}[Circular vs Hyperbolic Chebyshev Structures]
+\textbf{Circular case} (real $k$):
+\begin{itemize}
+\item Polygon vertices at $e^{2\pi ij/n}$ on unit circle
+\item Chebyshev curve: $T_n(\cos\theta) = \cos(n\theta)$, bounded
+\item Lobes: bounded regions with area $B(n,k) \in [B_{\min}, B_{\max}]$
+\end{itemize}
+
+\textbf{Hyperbolic case} (complex $k$):
+\begin{itemize}
+\item ``Vertices'' at $(\cosh(t_j), \sinh(t_j))$ on hyperbola
+\item Hyperbolic Chebyshev: $T_n(\cosh\varphi) = \cosh(n\varphi)$, unbounded
+\item ``Lobes'': unbounded regions extending to infinity
+\end{itemize}
+\end{definition}
+
+\begin{remark}[Why Hyperbolic Geometry Enables $n^{-s}$]
+For the special value $k_s = \frac{1}{2} - \frac{isn\log n}{2\pi}$:
+\begin{equation}
+\frac{(2k_s - 1)\pi}{n} = -is\log n
+\end{equation}
+Therefore:
+\begin{equation}
+\cos\left(-is\log n\right) = \cosh(s\log n) = \frac{n^s + n^{-s}}{2}
+\end{equation}
+The \textbf{unboundedness} of hyperbolic geometry allows $B(n,k)$ to take values like
+$(n^s + n^{-s})/2$ for any $s$, which would be impossible in the bounded circular setting
+where $\cos(\cdot) \in [-1,1]$.
+\end{remark}
+
+\begin{remark}[Physical Analogy]
+In physics, \textbf{Wick rotation} $t \to i\tau$ transforms:
+\begin{itemize}
+\item Minkowski spacetime $\leftrightarrow$ Euclidean spacetime
+\item Oscillating solutions $e^{i\omega t}$ $\leftrightarrow$ Exponential decay $e^{-\omega\tau}$
+\item Real frequencies $\leftrightarrow$ Imaginary (evanescent) modes
+\end{itemize}
+Similarly here, extending $k$ to complex values transforms:
+\begin{itemize}
+\item Bounded circular lobe areas $\leftrightarrow$ Unbounded hyperbolic ``lobe areas''
+\item Oscillating $\cos(\cdot)$ $\leftrightarrow$ Exponential $\cosh(\cdot)$
+\item Access to $B \in [B_{\min}, B_{\max}]$ $\leftrightarrow$ Access to $n^{\pm s}$ for any $s$
+\end{itemize}
+\end{remark}
+
+\begin{theorem}[Hyperbolic Lobe Area and Sign Change]
+For $k = \frac{1}{2} + ib$ with $b \in \mathbb{R}$, the function
+\begin{equation}
+B\left(n, \tfrac{1}{2} + ib\right) = 1 + \beta(n) \cosh\frac{2b\pi}{n}
+\end{equation}
+represents a \textbf{signed hyperbolic lobe area} that changes sign at $b = \delta(n)$:
+\begin{center}
+\begin{tabular}{lcl}
+\toprule
+Region & Value & Interpretation \\
+\midrule
+$b < \delta(n)$ & $B > 0$ & Positive hyperbolic area \\
+$b = \delta(n)$ & $B = 0$ & \textbf{Zero of $B(n,k)$} \\
+$b > \delta(n)$ & $B < 0$ & Negative hyperbolic area \\
+\bottomrule
+\end{tabular}
+\end{center}
+where $\delta(n) = \frac{n}{2\pi}\operatorname{arccosh}\left(-\frac{1}{\beta(n)}\right)$
+is the imaginary offset from the critical line $\operatorname{Re}(k) = \frac{1}{2}$.
+\end{theorem}
+
+\begin{proof}
+Since $\beta(n) < 0$ for all $n > 2$, and $\cosh(x) \geq 1$ for all real $x$:
+\begin{itemize}
+\item At $b = 0$: $B = 1 + \beta(n) > 0$ (since $|\beta(n)| < 1$ for large $n$)
+\item As $b \to \infty$: $\cosh(2b\pi/n) \to \infty$, so $B \to -\infty$
+\item $B = 0$ when $\cosh(2b\pi/n) = -1/\beta(n)$, i.e., $b = \delta(n)$
+\end{itemize}
+\end{proof}
+
+\begin{remark}[Geometric Meaning of Zeros]
+The zeros of $B(n,k)$ on the critical line are \emph{not} arbitrary points---they are
+precisely the values where the hyperbolic lobe area transitions from positive to negative.
+This provides a natural geometric interpretation: just as a function's roots are where it
+crosses the $x$-axis, the zeros of $B(n,k)$ are where the hyperbolic ``area'' changes sign.
+
+The universal limit $\delta_\infty = \frac{\sqrt{\pi^2-8}}{2\pi}$ is therefore the
+asymptotic sign-change threshold for hyperbolic lobe areas as $n \to \infty$.
+\end{remark}
+
+\begin{remark}[Assessment]
+This interpretation elevates the Wick rotation from a mere algebraic trick to a
+geometrically meaningful extension. The zeros of $B(n,k)$ now have intrinsic meaning
+as sign-change boundaries in hyperbolic geometry, analogous to how roots of polynomials
+mark transitions between positive and negative regions.
+
+While this does not provide new computational capabilities for studying zeta zeros,
+it demonstrates that the $B(n,k)$ framework has genuine geometric depth beyond its
+original circular polygon setting.
+\end{remark}
+
 \section{Open Questions}
 
 \begin{enumerate}
@@ -572,6 +691,9 @@ zeros is encoded non-obviously in the interplay of infinitely many $B(n,k_s)$ va
       via the $B(n,k)$ framework?
 \item Does the symmetry $B(n,1-k) = B(n,k)$ induce a functional equation for $M_k(s)$ analogous
       to the Riemann functional equation $\xi(s) = \xi(1-s)$?
+\item[8.] \textbf{[ANSWERED]} What is the precise analog of ``lobe area'' in hyperbolic geometry?
+      \emph{Answer:} $B(n,k)$ at complex $k$ is a signed hyperbolic area;
+      zeros correspond to sign-change boundaries (Theorem 7.9).
 \end{enumerate}
 
 \section{Geometric Interpretation}
