@@ -34,6 +34,18 @@ VerifyPowerIdentity::usage = "VerifyPowerIdentity[n, s] verifies that PowerMinus
 
 VerifyZetaViaB::usage = "VerifyZetaViaB[s, nmax] compares RiemannZetaViaB[s, nmax] with built-in Zeta[s] and returns {computed, true, error}.";
 
+(* === Infinite Series via NSum === *)
+
+DirichletEtaViaBNSum::usage = "DirichletEtaViaBNSum[s, opts] computes \[Eta](s) as infinite sum using NSum with Method->\"AlternatingSigns\". Pass WorkingPrecision and other NSum options.";
+
+RiemannZetaViaBNSum::usage = "RiemannZetaViaBNSum[s, opts] computes \[Zeta](s) via NSum. Uses alternating series acceleration for better convergence.";
+
+(* === Partial Sums and Remainders === *)
+
+DirichletEtaViaBPartial::usage = "DirichletEtaViaBPartial[s, nmax] returns Around[partial_sum, remainder_bound] where remainder is O(1/nmax^Re[s]). The Around type integrates with N[], arithmetic, and uncertainty propagation.";
+
+RiemannZetaViaBPartial::usage = "RiemannZetaViaBPartial[s, nmax] returns Around[partial_zeta, uncertainty] computed via DirichletEtaViaBPartial. Uncertainty propagates through the eta-to-zeta conversion.";
+
 Begin["`Private`"];
 
 (* === Implementation === *)
@@ -88,6 +100,27 @@ VerifyZetaViaB[s_, nmax_:100] := Module[{computed, true, err},
   <|"s" -> s, "nmax" -> nmax, "computed" -> computed,
     "true" -> true, "error" -> err|>
 ];
+
+(* === NSum versions for infinite series === *)
+
+DirichletEtaViaBNSum[s_, opts___] :=
+  NSum[(-1)^(n-1) PowerMinusSViaB[n, s], {n, 1, Infinity},
+    Method -> "AlternatingSigns", opts];
+
+RiemannZetaViaBNSum[s_, opts___] :=
+  DirichletEtaViaBNSum[s, opts] / (1 - 2^(1-s));
+
+(* === Partial sum with remainder estimate === *)
+
+DirichletEtaViaBPartial[s_, nmax_] := Module[{partial, remainder},
+  partial = DirichletEtaViaB[s, nmax];
+  (* For alternating series, |remainder| <= |a_{nmax+1}| = 1/(nmax+1)^Re[s] *)
+  remainder = 1/(nmax + 1)^Re[s];
+  Around[partial, remainder]
+];
+
+RiemannZetaViaBPartial[s_, nmax_] :=
+  DirichletEtaViaBPartial[s, nmax] / (1 - 2^(1-s));
 
 End[];
 EndPackage[];
