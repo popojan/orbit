@@ -1,0 +1,344 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{booktabs}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Complex Analysis of the Completed Lobe Area Function $B(n,k)$}
+\author{Jan Popelka}
+\date{December 2025}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study the analytic properties of the Completed Lobe Area function $B(n,k)$ as a function
+of complex $k$. This Chebyshev-derived function exhibits remarkable parallels to Riemann's
+xi function: it is entire, satisfies a functional equation, and has all zeros on a critical line.
+Unlike the Riemann Hypothesis, these properties are \emph{proven} from the explicit Fourier structure.
+The universal constant $\pi^2 - 8$ emerges in three independent contexts.
+\end{abstract}
+
+\section{Definitions}
+
+\begin{definition}[Lobe Area Function]
+The lobe area function is defined as
+\begin{equation}
+A(n,k) = \frac{1}{n} + \alpha(n) \cos\frac{(2k-1)\pi}{n}
+\end{equation}
+where $\alpha(n) = \frac{n\cos(\pi/n)}{4-n^2} < 0$ for $n > 2$.
+\end{definition}
+
+\begin{definition}[Completed Lobe Area]
+The completed lobe area function is
+\begin{equation}
+B(n,k) = n \cdot A(n,k) = 1 + \beta(n) \cos\frac{(2k-1)\pi}{n}
+\end{equation}
+where $\beta(n) = \frac{n^2\cos(\pi/n)}{4-n^2}$.
+\end{definition}
+
+\section{Key Results}
+
+\subsection{Holomorphicity}
+
+\begin{theorem}
+$B(n,k)$ is an entire function in $k$ (holomorphic on all of $\mathbb{C}$).
+\end{theorem}
+
+\begin{proof}
+$B(n,k)$ is a composition of polynomial and cosine functions, both entire.
+\end{proof}
+
+\subsection{Symmetries}
+
+\begin{theorem}[Symmetry Properties]
+The function $B(n,k)$ satisfies:
+\begin{enumerate}
+\item Periodicity: $B(n, k+n) = B(n, k)$
+\item Reflection: $B(n, 1-k) = B(n, k)$
+\item Complementary: $B(n, n+1-k) = B(n, k)$
+\item Even in $n$: $B(-n, k) = B(n, k)$
+\end{enumerate}
+\end{theorem}
+
+\subsection{Critical Points}
+
+\begin{theorem}
+The critical points of $B(n,k)$ for real $k$ are:
+\begin{itemize}
+\item Maximum at $k = \frac{n+1}{2}$, with value $\to 2$ as $n \to \infty$
+\item Minimum at $k = \frac{1}{2}$, with value $\to 0$ as $n \to \infty$
+\end{itemize}
+\end{theorem}
+
+\subsection{Zeros}
+
+\begin{theorem}[Closed-Form Zeros]
+The zeros of $B(n,k)$ are located at
+\begin{equation}
+k = \frac{1}{2} + mn \pm i\delta(n), \quad m \in \mathbb{Z}
+\end{equation}
+where
+\begin{equation}
+\delta(n) = \frac{n}{2\pi} \operatorname{arccosh}\left(-\frac{1}{\beta(n)}\right)
+= \frac{n}{2\pi} \operatorname{arccosh}\frac{n^2 - 4}{n^2 \cos(\pi/n)}
+\end{equation}
+\end{theorem}
+
+\begin{remark}[Removable Singularity at $n=2$]
+The formula for $\beta(n)$ has a $\frac{0}{0}$ form at $n = 2$:
+\[
+\beta(2) = \frac{4 \cdot \cos(\pi/2)}{4 - 4} = \frac{0}{0}
+\]
+By L'H\^{o}pital's rule:
+\[
+\lim_{n \to 2} \beta(n) = -\frac{\pi}{4}, \qquad
+\lim_{n \to 2} \delta(n) = \frac{\operatorname{arccosh}(4/\pi)}{\pi} \approx 0.23026
+\]
+\end{remark}
+
+\begin{theorem}[Universal Limit]
+As $n \to \infty$,
+\begin{equation}
+\delta(n) \to \delta_\infty = \frac{\sqrt{\pi^2 - 8}}{2\pi} = 0.21761808912708625\ldots
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For large $n$:
+\begin{align}
+\beta(n) &= -1 + \frac{\pi^2/2 - 4}{n^2} + O(1/n^4) \\
+-\frac{1}{\beta(n)} &= 1 + \frac{\pi^2/2 - 4}{n^2} + O(1/n^4)
+\end{align}
+Using $\operatorname{arccosh}(1 + \epsilon) \sim \sqrt{2\epsilon}$ for small $\epsilon$:
+\[
+\operatorname{arccosh}\left(-\frac{1}{\beta(n)}\right) \sim \frac{\sqrt{\pi^2 - 8}}{n}
+\]
+Therefore $\delta(n) = \frac{n}{2\pi} \cdot \frac{\sqrt{\pi^2 - 8}}{n} = \frac{\sqrt{\pi^2 - 8}}{2\pi}$.
+\end{proof}
+
+\subsection{Critical Line Property}
+
+\begin{theorem}
+All zeros of $B(n,k)$ lie on the critical lines $\operatorname{Re}(k) \equiv \frac{1}{2} \pmod{n}$.
+\end{theorem}
+
+\begin{proof}
+From the closed form, zeros are at $k = \frac{1}{2} + mn \pm i\delta(n)$,
+so $\operatorname{Re}(k) = \frac{1}{2} + mn \equiv \frac{1}{2} \pmod{n}$.
+\end{proof}
+
+\begin{remark}
+Unlike the Riemann Hypothesis, this is not a conjecture but a \emph{proven fact}
+following from the explicit Fourier structure.
+\end{remark}
+
+\subsection{No Real Zeros}
+
+\begin{theorem}
+$B(n,k)$ has no real zeros for any $n \geq 1$.
+\end{theorem}
+
+\begin{proof}
+Zeros occur where $\cos\frac{(2k-1)\pi}{n} = -\frac{1}{\beta(n)}$.
+For all $n \geq 1$, we have $-\frac{1}{\beta(n)} > 1$, so the equation has no real solutions.
+\end{proof}
+
+\subsection{Hadamard Factorization}
+
+\begin{theorem}
+As an entire function of order 1, $B(n,k)$ admits the product representation:
+\begin{equation}
+B(n,k) = B\left(n, \frac{n+1}{2}\right) \cdot \prod_{m \in \mathbb{Z}}
+\left[1 + \left(\frac{k - \frac{1}{2} - mn}{\delta(n)}\right)^2\right]
+\end{equation}
+\end{theorem}
+
+\section{Comparison with Riemann Xi}
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Property & Riemann $\xi(s)$ & $B(n,k)$ \\
+\midrule
+Type & Entire function & Entire function \\
+Order & 1 & 1 \\
+Critical line & $\operatorname{Re}(s) = \frac{1}{2}$ & $\operatorname{Re}(k) \equiv \frac{1}{2} \pmod{n}$ \\
+Zeros on CL & Conjectured (RH) & \textbf{Proven} \\
+Functional equation & $\xi(s) = \xi(1-s)$ & $B(n,1-k) = B(n,k)$ \\
+Zero locations & Unknown & Explicit formula \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{The Universal Constant $\pi^2 - 8$}
+
+The constant $\pi^2 - 8 \approx 1.8696$ appears in three independent contexts:
+
+\subsection{Zero Offset}
+\begin{equation}
+\delta_\infty = \frac{\sqrt{\pi^2 - 8}}{2\pi} \approx 0.2176
+\end{equation}
+
+\subsection{Asymptotic Decay}
+\begin{equation}
+B\left(n, \frac{1}{2}\right) \sim \frac{\pi^2 - 8}{2n^2} \quad \text{as } n \to \infty
+\end{equation}
+
+\subsection{Multiplicativity Correction}
+\begin{equation}
+\frac{B(mn, \frac{1}{2})}{B(m, \frac{1}{2}) \cdot B(n, \frac{1}{2})} \to \frac{2}{\pi^2 - 8} \approx 1.0697
+\end{equation}
+This shows $B$ is \emph{not} multiplicative, but the deviation is controlled by $\pi^2 - 8$.
+
+\subsection{Algebraic Origin}
+
+The constant $\pi^2 - 8$ is a \emph{hybrid} of geometry and algebra:
+\begin{itemize}
+\item \textbf{Source of $\pi^2$}: From Taylor expansion $\cos(\pi/n) = 1 - \frac{\pi^2}{2n^2} + O(1/n^4)$
+\item \textbf{Source of 8}: From the pole at $n = 2$ (digon): $\beta(n) = \frac{n^2\cos(\pi/n)}{4-n^2}$
+\end{itemize}
+
+\section{Connection to Riemann Zeta}
+
+\subsection{Sum Formula}
+
+\begin{theorem}
+The sum of $B(n, \frac{1}{2})$ over all $n \geq 1$ equals a power series in $\pi$:
+\begin{equation}
+\sum_{n=1}^{\infty} B\left(n, \frac{1}{2}\right) =
+\frac{2}{3} + \left(1 - \frac{\pi}{4}\right) +
+\sum_{k=1}^{\infty} c_{2k} \cdot \left(\zeta(2k) - 1 - 2^{-2k}\right)
+\end{equation}
+where $c_{2k}$ are the Taylor coefficients of $B(n, \frac{1}{2})$ at $n = \infty$.
+\end{theorem}
+
+\begin{proof}
+\textbf{Step 1: Taylor expansion of $B(n, \frac{1}{2})$.}
+
+At $k = \frac{1}{2}$, the argument of cosine is $\frac{(2 \cdot \frac{1}{2} - 1)\pi}{n} = 0$,
+so $\cos(0) = 1$ and:
+\[
+B\left(n, \frac{1}{2}\right) = 1 + \beta(n)
+\]
+
+For the Taylor expansion of $\beta(n)$ at $n = \infty$, we expand each factor:
+\begin{align}
+\cos\frac{\pi}{n} &= 1 - \frac{\pi^2}{2n^2} + \frac{\pi^4}{24n^4} - \cdots \\
+\frac{1}{4 - n^2} &= -\frac{1}{n^2} \cdot \frac{1}{1 - 4/n^2}
+= -\frac{1}{n^2}\left(1 + \frac{4}{n^2} + \frac{16}{n^4} + \cdots\right)
+\end{align}
+
+Combining:
+\[
+\beta(n) = n^2 \cdot \cos\frac{\pi}{n} \cdot \frac{1}{4 - n^2}
+= -1 + \frac{\pi^2/2 - 4}{n^2} + O(1/n^4)
+\]
+
+Therefore:
+\[
+B\left(n, \frac{1}{2}\right) = 1 + \beta(n) = \frac{\pi^2 - 8}{2n^2} + \frac{c_4}{n^4} + \cdots
+= \sum_{k=1}^{\infty} \frac{c_{2k}}{n^{2k}}
+\]
+where $c_2 = \frac{\pi^2 - 8}{2}$ is the leading coefficient.
+
+\textbf{Step 2: Sum over $n \geq 3$.}
+
+For $n \geq 3$, sum term by term:
+\[
+\sum_{n=3}^{\infty} B\left(n, \frac{1}{2}\right)
+= \sum_{n=3}^{\infty} \sum_{k=1}^{\infty} \frac{c_{2k}}{n^{2k}}
+= \sum_{k=1}^{\infty} c_{2k} \sum_{n=3}^{\infty} \frac{1}{n^{2k}}
+= \sum_{k=1}^{\infty} c_{2k} \left(\zeta(2k) - 1 - \frac{1}{2^{2k}}\right)
+\]
+
+\textbf{Step 3: Special values at $n = 1, 2$.}
+
+For $n = 1$: $\beta(1) = \frac{1 \cdot \cos\pi}{4 - 1} = \frac{-1}{3}$, so $B(1, \frac{1}{2}) = 1 - \frac{1}{3} = \frac{2}{3}$.
+
+For $n = 2$: Using L'H\^{o}pital (removable singularity), $\lim_{n \to 2} \beta(n) = -\frac{\pi}{4}$,
+so $B(2, \frac{1}{2}) = 1 - \frac{\pi}{4}$.
+
+\textbf{Step 4: Euler's formula converts $\zeta(2k)$ to powers of $\pi$.}
+
+By Euler's formula:
+\[
+\zeta(2k) = (-1)^{k+1} \frac{(2\pi)^{2k} B_{2k}}{2(2k)!}
+\]
+where $B_{2k}$ are Bernoulli numbers. Thus each term $c_{2k} \cdot \zeta(2k)$ contributes
+a rational multiple of $\pi^{2k}$, and the full sum is a power series in $\pi$.
+\end{proof}
+
+\textbf{Truncated approximation} (first 4 terms):
+\begin{equation}
+\sum_{n=1}^{\infty} B\left(n, \frac{1}{2}\right) \approx
+\frac{408960 - 4320\pi - 59040\pi^2 - 867\pi^4 + 384\pi^6 - 8\pi^8}{17280}
+\approx 1.244
+\end{equation}
+
+\subsection{Mellin-Type Sum}
+
+\begin{theorem}
+Define the Mellin-type sum
+\begin{equation}
+M(s) = \sum_{n \geq 1} \frac{B(n, \frac{1}{2})}{n^{s-1}}
+\end{equation}
+Then asymptotically:
+\begin{equation}
+M(s) \sim \frac{\pi^2-8}{2} \cdot \zeta(s+1)
+\end{equation}
+\end{theorem}
+
+\begin{corollary}[Geometric Representation of Zeta]
+The Riemann zeta function admits a representation via the Chebyshev lobe area:
+\begin{equation}
+\zeta(s+1) \sim \frac{2}{\pi^2-8} \sum_{n=1}^{\infty} \frac{B(n, \frac{1}{2})}{n^{s-1}}
+\end{equation}
+where $B(n, \frac{1}{2}) = 1 + \frac{n^2 \cos(\pi/n)}{4-n^2}$ is defined purely in terms of
+elementary functions (no zeta dependence).
+\end{corollary}
+
+\begin{remark}[Non-circularity]
+This representation is \emph{not} circular. The function $B(n,k)$ has a closed form
+derived from Chebyshev polygon geometry:
+\[
+B(n, \tfrac{1}{2}) = 1 + \beta(n), \quad \beta(n) = \frac{n^2 \cos(\pi/n)}{4-n^2}
+\]
+containing only $n$, $\pi$, $\cos$, and rational arithmetic. The appearance of $\zeta$
+in the sum is a \emph{discovered consequence}, not a defining dependency.
+\end{remark}
+
+\subsection{Mean Value Identity}
+
+\begin{theorem}
+For all $n$:
+\begin{equation}
+\sum_{k=1}^{n} B(n, k) = n
+\end{equation}
+\end{theorem}
+
+\section{Open Questions}
+
+\begin{enumerate}
+\item Why does the digon ($n=2$) singularity contribute exactly 8?
+\item Does the $M(s) \sim \zeta(s+1)$ relation have analytic continuation?
+\item Can the ``proven RH'' structure inform approaches to the actual RH?
+\end{enumerate}
+
+\section{Geometric Interpretation}
+
+The zeros form a \textbf{lattice} in the complex plane:
+\begin{itemize}
+\item Real coordinates: $\frac{1}{2}, \frac{1}{2} + n, \frac{1}{2} + 2n, \ldots$ (critical lines)
+\item Imaginary coordinates: $\pm \delta(n)$ (symmetric about real axis)
+\end{itemize}
+
+As $n \to \infty$, the lattice becomes denser along the real axis while maintaining
+fixed imaginary offset $\approx 0.2176$.
+
+\end{document}
