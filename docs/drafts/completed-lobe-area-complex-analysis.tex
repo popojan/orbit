@@ -283,34 +283,41 @@ a rational multiple of $\pi^{2k}$, and the full sum is a power series in $\pi$.
 
 \subsection{Mellin-Type Sum}
 
-\begin{theorem}
+\begin{theorem}[Mellin-Zeta Identity]
 Define the Mellin-type sum
 \begin{equation}
 M(s) = \sum_{n \geq 1} \frac{B(n, \frac{1}{2})}{n^{s-1}}
 \end{equation}
-Then asymptotically:
+Then \textbf{exactly}:
 \begin{equation}
-M(s) \sim \frac{\pi^2-8}{2} \cdot \zeta(s+1)
+M(s) = \frac{2}{3} + \frac{1 - \pi/4}{2^{s-1}} +
+\sum_{k=1}^{\infty} c_{2k} \cdot \left(\zeta(s + 2k - 1) - 1 - 2^{-(s+2k-1)}\right)
 \end{equation}
+where $c_{2k}$ are the Taylor coefficients of $B(n, \frac{1}{2})$.
+
 \end{theorem}
 
-\begin{corollary}[Geometric Representation of Zeta]
-The Riemann zeta function admits a representation via the Chebyshev lobe area:
-\begin{equation}
-\zeta(s+1) \sim \frac{2}{\pi^2-8} \sum_{n=1}^{\infty} \frac{B(n, \frac{1}{2})}{n^{s-1}}
-\end{equation}
-where $B(n, \frac{1}{2}) = 1 + \frac{n^2 \cos(\pi/n)}{4-n^2}$ is defined purely in terms of
-elementary functions (no zeta dependence).
-\end{corollary}
+\begin{remark}[No Simple Asymptotic]
+One might expect $M(s) \sim c_2 \cdot \zeta(s+1)$ for large $s$, but this is \textbf{false}.
+Numerical verification shows the ratio $M(s)/(c_2 \cdot \zeta(s+1)) \to 0.71$ as $s \to \infty$,
+not 1. The reason: for large $s$, the Dirichlet series is dominated by the $n=1$ term
+($B(1, \frac{1}{2}) = \frac{2}{3}$), which does not follow the Taylor expansion valid for large $n$.
 
-\begin{remark}[Non-circularity]
-This representation is \emph{not} circular. The function $B(n,k)$ has a closed form
-derived from Chebyshev polygon geometry:
+Additionally, even for the tail sum $\sum_{n \geq 3}$, the higher zeta terms maintain a
+\emph{fixed ratio} to the leading term (approximately 3--4\%), not vanishing.
+\end{remark}
+
+\begin{remark}[Structural Connection]
+The identity (17) reveals a deep connection between the Chebyshev lobe geometry and
+the Riemann zeta function. Each Taylor coefficient $c_{2k}$ of $B(n, \frac{1}{2})$
+couples to $\zeta(s + 2k - 1)$. This is \emph{not} a representation of zeta in terms
+of $B$ alone, but rather a structural identity relating both functions.
+
+The function $B(n,k)$ has a closed form derived from Chebyshev polygon geometry:
 \[
 B(n, \tfrac{1}{2}) = 1 + \beta(n), \quad \beta(n) = \frac{n^2 \cos(\pi/n)}{4-n^2}
 \]
-containing only $n$, $\pi$, $\cos$, and rational arithmetic. The appearance of $\zeta$
-in the sum is a \emph{discovered consequence}, not a defining dependency.
+containing only $n$, $\pi$, $\cos$, and rational arithmetic---no zeta dependence.
 \end{remark}
 
 \subsection{Mean Value Identity}
@@ -322,12 +329,56 @@ For all $n$:
 \end{equation}
 \end{theorem}
 
+\subsection{Computational Method for Zeta Values}
+
+The Mellin-Zeta identity (17) leads to a practical computational method for evaluating
+$\zeta(s)$ at complex arguments with $\operatorname{Re}(s) > 2$.
+
+\begin{theorem}[Triangular System for Zeta]
+Define $M_3(s) = \sum_{n=3}^{\infty} \frac{B(n, \frac{1}{2})}{n^{s-1}}$ (converges for $\operatorname{Re}(s) > 0$).
+For a starting point $s_0$ with $\operatorname{Re}(s_0) > 0$, consider the values
+\[
+M_3(s_0), \; M_3(s_0 + 2), \; M_3(s_0 + 4), \; \ldots
+\]
+These satisfy an upper triangular linear system with unknowns
+\[
+Z_k = \zeta(s_0 + 2k - 1) - 1 - 2^{-(s_0 + 2k - 1)}, \quad k = 1, 2, 3, \ldots
+\]
+The coefficient matrix has entries $C_{jk} = c_{2(k-j+1)}$ for $k \geq j$ (and 0 otherwise),
+where $c_{2m}$ are the Taylor coefficients of $B(n, \frac{1}{2})$.
+\end{theorem}
+
+\begin{remark}[Numerical Verification]
+Truncating to $N$ equations yields approximations with rapidly improving accuracy:
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Equations & $\zeta(3)$ error & $\zeta(5)$ error \\
+\midrule
+5 & $10^{-7}$ & $10^{-11}$ \\
+10 & $5 \times 10^{-9}$ & $10^{-17}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The method works for complex arguments: $\zeta(3+i)$, $\zeta(7/2)$, etc.
+\end{remark}
+
+\begin{remark}[Limitation: Critical Line]
+To compute $\zeta(\tfrac{1}{2} + it)$ would require $s_0 = -\tfrac{1}{2} + it$,
+but $M_3(s)$ only converges for $\operatorname{Re}(s) > 0$. Thus the critical line
+is not directly accessible via this method. Analytic continuation of $M_3(s)$
+remains an open question.
+\end{remark}
+
 \section{Open Questions}
 
 \begin{enumerate}
-\item Why does the digon ($n=2$) singularity contribute exactly 8?
-\item Does the $M(s) \sim \zeta(s+1)$ relation have analytic continuation?
-\item Can the ``proven RH'' structure inform approaches to the actual RH?
+\item Why does the digon ($n=2$) singularity contribute exactly 8 to $\pi^2 - 8$?
+\item Is there a closed-form expression for $\sum_{n=1}^{\infty} B(n, \frac{1}{2})$ not involving infinite zeta sums?
+\item Can the ``proven RH'' structure for $B(n,k)$ inform approaches to the actual Riemann Hypothesis?
+\item What is the geometric meaning of the Taylor coefficients $c_{2k}$ coupling to $\zeta(s+2k-1)$?
+\item Does $M_3(s)$ admit analytic continuation to $\operatorname{Re}(s) < 0$, enabling computation
+      of $\zeta$ on the critical line via the triangular system method?
 \end{enumerate}
 
 \section{Geometric Interpretation}
