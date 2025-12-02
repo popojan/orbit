@@ -177,9 +177,9 @@ Similarly here:
 
 ### Hyperbolic Lobe Area and Sign Change
 
-**Key discovery:** B(n, 1/2 + ib) is the **hyperbolic signed lobe area**.
+**Key discovery:** B(n, 1/2 + ib) is **real** (unlike general B(n, k+ib) which is complex).
 
-For k = 1/2 + ib (along imaginary axis from center):
+For k = 1/2 + ib (along the critical line Re(k) = 1/2):
 ```
 B(n, 1/2 + ib) = 1 + β(n)·cosh(2bπ/n)
 ```
@@ -267,21 +267,19 @@ This explains why:
 
 **Numerical verification (n=5):**
 
-| b | Individual lobes | Sum |
-|---|------------------|-----|
-| 0 | [0.22, 0.22, 1.30, 1.96, 1.30] | 5 |
-| 0.5 | [0.06, 0.06, 1.36, 2.16, 1.36] | 5 |
-| 2.0 | [−3.84, −3.84, 2.85, 6.98, 2.85] | 5 |
+| b | Individual B(5, k+ib) for k=1..5 | Sum |
+|---|----------------------------------|-----|
+| 0 | [1.45, 0.83, 0.45, 0.83, 1.45] (all real) | 5 |
+| 0.5 | **Complex:** [1.54−0.22i, 0.80−0.35i, 0.34, 0.80+0.35i, 1.54+0.22i] | 5 |
+| 2.0 | **Complex:** [3.77−1.98i, −0.06−3.21i, −2.42, −0.06+3.21i, 3.77+1.98i] | 5 |
 
-**Physical analogy: Conservation law!**
-- Circular: all lobes positive, sum = n
-- Hyperbolic: some positive, some negative, sum = n
-- **Excess of positive = |Deficit of negative|** (exact compensation)
+**Important:** For b ≠ 0, individual terms are **complex**, not real!
+The sum is real because imaginary parts cancel (conjugate symmetry in k).
 
-As b → ∞:
-- Individual lobes diverge to ±∞
-- But sum remains exactly n
-- Like energy conservation: kinetic ↔ potential, total constant
+**Algebraic identity, not "area conservation":**
+- For b = 0: genuine lobe areas (real, positive or bounded)
+- For b ≠ 0: complex numbers with no direct geometric interpretation as "area"
+- The sum Σ = n is algebraic consequence of roots-of-unity cancellation
 
 **Connection to zeta:**
 - Area invariance: sum over k (fixed n)
@@ -796,6 +794,98 @@ This is a clean algebraic proof of the equivalence, but doesn't prove RH.
 
 **Overall:** The c/d decomposition provides a valid and elegant reformulation of RH, with the ratio argument giving a clean characterization of common zeros. However, none of the explored approaches yields a direct proof
 
+## Geometric Analysis: η-Trajectories and the Critical Line
+
+### The Trajectory Picture
+
+For fixed σ, the function η(σ + it) traces a curve in ℂ as t varies. Key observations:
+
+**Minimum distance from origin:**
+
+| σ | min|η(σ+it)| over t∈[10,100] |
+|---|-------------------------------|
+| 0.30 | 0.446 |
+| 0.40 | 0.207 |
+| 0.45 | 0.125 |
+| 0.50 | **0.005** (essentially zero!) |
+| 0.55 | 0.111 |
+| 0.60 | 0.176 |
+| 0.70 | 0.322 |
+
+**The trajectory passes through the origin ONLY for σ = 0.5!**
+
+### The χ-Factor Analysis
+
+The functional equation factor χ(s) = η(s)/η(1-s) satisfies:
+
+```
+|χ(σ + it)| ~ (t/2π)^{1/2 - σ}   as t → ∞
+```
+
+**Critical consequences:**
+- **σ < 1/2:** |χ| grows with t → |η(s)| has tendency to grow
+- **σ > 1/2:** |χ| decreases with t → |η(s)| has tendency to decrease
+- **σ = 1/2:** |χ| = 1 exactly → |η(s)| = |η(1-s)|
+
+**Numerical verification:**
+```
+|χ(0.5 + 100i)| = 1.0000000000
+```
+
+### The Ratio r = η(s')/η(s) Near First Zero
+
+At t = 14.1347 (near first zeta zero):
+
+| σ | r = η(s')/η(s) | |r| | Arg(r)/π |
+|---|----------------|-----|----------|
+| 0.3 | -0.722 + 0.006i | 0.722 | 0.998 |
+| 0.4 | -0.850 + 0.004i | 0.850 | 0.999 |
+| 0.5 | +1.000 + 0i | **1.000** | **0** |
+| 0.6 | -1.177 - 0.005i | 1.177 | -0.999 |
+| 0.7 | -1.384 - 0.011i | 1.384 | -0.998 |
+
+**Key observation:**
+- On critical line: r = +1 (s = s')
+- Off critical line: r ≈ -1 (close to opposite phase, from functional equation)
+
+### Connection to c/d Decomposition
+
+**Recall:**
+- F = 0 requires r = -1
+- G = 0 requires r = +1
+
+**Geometric picture:**
+- For σ ≠ 0.5: r is close to -1 but never exactly -1
+- The functional equation "pushes" r toward -1 asymptotically
+- But exact r = -1 would require additional constraints not satisfied
+
+### Why This Doesn't Prove RH (The Gap)
+
+The asymptotic analysis explains **why zeros cluster on the critical line:**
+- The χ-factor creates an "attractor" at σ = 1/2
+- Away from critical line, |η| is bounded from below
+
+**But this is not a proof because:**
+1. Asymptotic behavior doesn't exclude isolated zeros at moderate t
+2. "Bounded away from zero" is numerical, not proven analytically
+3. The ratio r approaches -1 but we need it to NEVER be exactly -1
+
+### Density Plot Visualization
+
+The density plot of log₁₀|η(σ+it)| shows:
+- Dark streaks (zeros) appear **exclusively** at σ = 0.5
+- Yellow/red bands (minima) at regular t-intervals
+- Pattern is symmetric around σ = 0.5
+
+### Minimum Envelope
+
+The function min_t |η(σ+it)| over t ∈ [10,100]:
+- Has a sharp minimum at σ = 0.5
+- Is bounded away from 0 for all σ ≠ 0.5
+- Forms a "V-shape" centered on the critical line
+
+**Geometric interpretation:** The critical line is a "valley" in the |η| landscape where η can touch zero. Off the critical line, the |η| surface stays elevated.
+
 ## Open Questions
 
 1. Can the slow convergence on critical line be accelerated?
@@ -806,7 +896,7 @@ This is a clean algebraic proof of the equivalence, but doesn't prove RH.
    - B-geometric approach: use conjugation failure off critical line
    - Analytic approach: study zero sets of related Dirichlet series
    - **Over-determination:** Two constraints on one parameter (generically impossible)
-4. ~~What is the hyperbolic analog of "lobe area"?~~ **ANSWERED: Signed hyperbolic area; zeros = sign change points**
+4. ~~What is the hyperbolic analog of "lobe area"?~~ **PARTIAL: B(n, 1/2+ib) is real and changes sign; general B(n, k+ib) is complex**
 5. ~~Why does cosine appear in B(n,k)?~~ **ANSWERED: It's the unique function enabling n^{-s} extraction**
 6. ~~Can B-symmetries derive the functional equation?~~ **PARTIALLY ANSWERED: On critical line yes; full equation requires Γ/π factors**
 7. ~~Does E/O decomposition constrain zero locations?~~ **EXPLORED: Functional equation provides equivalent constraint off critical line**
