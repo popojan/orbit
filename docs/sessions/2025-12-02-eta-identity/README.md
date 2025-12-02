@@ -441,6 +441,86 @@ The critical line is where the "rotation factor" n^{2s-1} lies on the unit circl
 - The eta/zeta values at s and 1-s are complex conjugates
 - The B-function exhibits conjugate symmetry
 
+## Even/Odd Decomposition Under s ↔ 1-s
+
+### The Decomposition
+
+Define:
+```
+Epart[n,s] = (n^{-s} + n^{-(1-s)})/2   [EVEN under s ↔ 1-s]
+Opart[n,s] = (n^{-s} - n^{-(1-s)})/2   [ODD under s ↔ 1-s]
+```
+
+Then `n^{-s} = Epart[n,s] + Opart[n,s]` and:
+```
+η(s) = Σ (-1)^{n-1} Epart[n,s] + Σ (-1)^{n-1} Opart[n,s]
+```
+
+### Critical Line Special Property
+
+**On the critical line s = 1/2 + it:**
+```
+1 - s = 1/2 - it = Conjugate[s]
+n^{-(1-s)} = Conjugate[n^{-s}]
+
+Therefore:
+  Epart[n,s] = (n^{-s} + Conj[n^{-s}])/2 = Re[n^{-s}]   ← REAL
+  Opart[n,s] = (n^{-s} - Conj[n^{-s}])/2 = i·Im[n^{-s}] ← PURE IMAGINARY
+```
+
+**Numerical verification (s = 1/2 + 14.1347i, n = 5):**
+```
+Epart[5,s] = -0.3248... + 0i     ✓ Real
+Opart[5,s] = 0 + 0.3074i         ✓ Pure imaginary
+```
+
+### Consequence for Zeros
+
+**On critical line:** η(s) = [REAL] + [PURE IMAGINARY] = 0
+- Requires: Re[η] = Σ Epart = 0 AND Im[η] = Σ Opart = 0
+- These are **two independent conditions** (algebraically decoupled)
+
+**Off critical line:** η(s) = [COMPLEX] + [COMPLEX] = 0
+- Could potentially have cancellation within each sum
+- BUT the functional equation saves the day...
+
+### The Functional Equation Equivalence
+
+**Key insight:** If ζ(s₀) = 0 with s₀ off critical line, then ζ(1-s₀) = 0 also.
+
+This means:
+```
+η(s₀)   = Σ Epart + Σ Opart = 0   ...(1)
+η(1-s₀) = Σ Epart - Σ Opart = 0   ...(2)
+
+Adding: 2·Σ Epart = 0  ⟹  Σ Epart = 0
+Subtracting: 2·Σ Opart = 0  ⟹  Σ Opart = 0
+```
+
+**Conclusion:** Whether on or off the critical line, zeros require:
+- Σ Epart = 0 AND Σ Opart = 0 **separately**
+
+| Location | Why both sums must vanish |
+|----------|--------------------------|
+| On critical line | Algebraic orthogonality (Real ⊥ Imaginary) |
+| Off critical line | Functional equation pairing |
+
+### What This Doesn't Prove
+
+This structural equivalence means we cannot derive RH just from the E/O decomposition.
+The functional equation provides the same constraint off the critical line that
+the algebraic structure provides on it.
+
+### Open Question
+
+Is there something that makes simultaneous vanishing Σ Epart = 0 and Σ Opart = 0
+**easier** or **uniquely possible** on the critical line?
+
+Possible directions:
+1. **Phase structure:** log(n) values are linearly independent - does this constrain cancellation patterns?
+2. **Measure-theoretic:** What is the "probability" of zero off vs on critical line?
+3. **Spectral:** Is there an operator whose eigenvalues correspond to zeta zeros?
+
 ## Open Questions
 
 1. Can the slow convergence on critical line be accelerated?
@@ -449,3 +529,4 @@ The critical line is where the "rotation factor" n^{2s-1} lies on the unit circl
 4. ~~What is the hyperbolic analog of "lobe area"?~~ **ANSWERED: Signed hyperbolic area; zeros = sign change points**
 5. ~~Why does cosine appear in B(n,k)?~~ **ANSWERED: It's the unique function enabling n^{-s} extraction**
 6. ~~Can B-symmetries derive the functional equation?~~ **PARTIALLY ANSWERED: On critical line yes; full equation requires Γ/π factors**
+7. ~~Does E/O decomposition constrain zero locations?~~ **EXPLORED: Functional equation provides equivalent constraint off critical line**

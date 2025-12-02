@@ -918,6 +918,79 @@ The $B(n,k)$ framework thus captures the \textbf{geometric essence} of the funct
 the critical line is where the reflection $s \leftrightarrow 1-s$ preserves magnitude term-by-term.
 \end{remark}
 
+\subsection{Even/Odd Decomposition and Zero Structure}
+
+The functional equation symmetry $s \leftrightarrow 1-s$ leads to a natural decomposition
+of each term in the Dirichlet series.
+
+\begin{definition}[Even/Odd Decomposition]
+For each $n \geq 1$ and $s \in \mathbb{C}$:
+\begin{align}
+E_n(s) &= \frac{n^{-s} + n^{-(1-s)}}{2} \quad \text{(even under } s \leftrightarrow 1-s\text{)} \\
+O_n(s) &= \frac{n^{-s} - n^{-(1-s)}}{2} \quad \text{(odd under } s \leftrightarrow 1-s\text{)}
+\end{align}
+Then $n^{-s} = E_n(s) + O_n(s)$ and $\eta(s) = \sum (-1)^{n-1} E_n(s) + \sum (-1)^{n-1} O_n(s)$.
+\end{definition}
+
+\begin{theorem}[Critical Line Property]
+On the critical line $s = \frac{1}{2} + it$:
+\begin{align}
+E_n(s) &= \operatorname{Re}[n^{-s}] \in \mathbb{R} \\
+O_n(s) &= i \cdot \operatorname{Im}[n^{-s}] \in i\mathbb{R}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+On the critical line, $1 - s = \frac{1}{2} - it = \overline{s}$, so $n^{-(1-s)} = \overline{n^{-s}}$.
+Therefore:
+\[
+E_n(s) = \frac{n^{-s} + \overline{n^{-s}}}{2} = \operatorname{Re}[n^{-s}], \quad
+O_n(s) = \frac{n^{-s} - \overline{n^{-s}}}{2} = i \cdot \operatorname{Im}[n^{-s}]
+\]
+\end{proof}
+
+\begin{corollary}[Decoupled Zero Conditions on Critical Line]
+For $\eta(s) = 0$ on the critical line:
+\[
+\sum_{n=1}^{\infty} (-1)^{n-1} E_n(s) = 0 \quad \text{AND} \quad
+\sum_{n=1}^{\infty} (-1)^{n-1} O_n(s) = 0
+\]
+These are \textbf{two independent real conditions}, automatically decoupled because
+$E_n$ is real and $O_n$ is pure imaginary.
+\end{corollary}
+
+\begin{theorem}[Functional Equation Equivalence]
+If $\zeta(s_0) = 0$ with $s_0$ \textbf{off} the critical line, then by the functional equation
+$\zeta(1-s_0) = 0$ also. This implies:
+\begin{align}
+\eta(s_0) &= \textstyle\sum E_n + \sum O_n = 0 \\
+\eta(1-s_0) &= \textstyle\sum E_n - \sum O_n = 0
+\end{align}
+Adding and subtracting yields $\sum E_n = 0$ and $\sum O_n = 0$ separately.
+\end{theorem}
+
+\begin{remark}[Structural Equivalence]
+This reveals a surprising equivalence:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Location & Constraint source & Result \\
+\midrule
+On critical line & Algebraic orthogonality & $\sum E_n = 0$ and $\sum O_n = 0$ \\
+Off critical line & Functional equation pairing & $\sum E_n = 0$ and $\sum O_n = 0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The same conditions must hold in both cases! The functional equation provides off the
+critical line what algebraic structure provides on it.
+\end{remark}
+
+\begin{remark}[What This Doesn't Prove]
+This structural equivalence means the E/O decomposition alone cannot prove the Riemann
+Hypothesis. The question becomes: is there something that makes simultaneous vanishing
+of $\sum E_n$ and $\sum O_n$ \textbf{easier} or \textbf{uniquely possible} on the critical line?
+\end{remark}
+
 \section{Open Questions}
 
 \begin{enumerate}
