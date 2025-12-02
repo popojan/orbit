@@ -143,6 +143,40 @@ Note: For n = 2, the formula has a singularity (denominator = 0).
 
 See: ChebyshevLobeAreaIntegral for the explicit formula.";
 
+CompletedLobeArea::usage = "CompletedLobeArea[n, k] computes the completed lobe area B(n,k) = n * A(n,k).
+
+The completed form has enhanced symmetry properties analogous to the Riemann xi function:
+  B(n, 1-k) = B(n, k)     (reflection symmetry, same as A)
+  B(-n, k) = B(n, k)      (EVEN in n, unlike A which is antisymmetric)
+  B(n̄, k̄) = conj(B(n,k)) (Schwarz reflection)
+
+Geometric interpretation:
+  A(n,k): disk radius 1, total lobe area 1, individual lobes ~ O(1/n)
+  B(n,k): disk radius sqrt(n), total lobe area n, individual lobes ~ O(1)
+
+Scaling rationale: A(n,k) = 1/n + oscillations. Multiplying by n removes
+the 1/n decay, so B(n,k) stays bounded as n varies (while lobes still
+differ in size for each k within fixed n).
+
+Integral identity: Integrate[CompletedLobeArea[n, k], {k, 0, n}] == n
+
+Riemann xi analogy table:
+  ξ(1-s) = ξ(s)     ↔  B(n, 1-k) = B(n, k)
+  ξ(-s) = ξ(s)      ↔  B(-n, k) = B(n, k)
+  Symmetry s = 1/2  ↔  Symmetry k = 1/2
+  Critical strip    ↔  |n| > 2
+
+See: ChebyshevLobeAreaSymbolic, docs/drafts/lobe-area-kernel.pdf section 10.5";
+
+CompletedLobeAreaFourier::usage = "CompletedLobeAreaFourier[n, k] returns the Fourier form of B(n,k).
+
+Formula: B(n,k) = 1 + n² cos(π/n)/(4-n²) cos((2k-1)π/n)
+
+This is a DC component (=1) plus single harmonic at frequency 1/n.
+Compare with A(n,k) which has DC = 1/n.
+
+See: CompletedLobeArea, ChebyshevLobeAreaSymbolic";
+
 ChebyshevLobeAreaIntegral::usage = "ChebyshevLobeAreaIntegral[n, m] computes the continuous integral of lobe areas.
 
 Formula:
@@ -709,6 +743,14 @@ ChebyshevLobeArea[n_Integer /; n >= 3, k_Integer /; k >= 1] /; k <= n :=
    Continuous Integral Identity: Integrate[..., {k, 0, n}] == 1 *)
 ChebyshevLobeAreaSymbolic[n_, k_] :=
   (8 - 2 n^2 + n^2 (Cos[(2 (k - 1) Pi)/n] + Cos[(2 k Pi)/n])) / (8 n - 2 n^3)
+
+(* Completed lobe area B(n,k) = n * A(n,k) - enhanced symmetry form
+   Key properties: B(n, 1-k) = B(n, k) AND B(-n, k) = B(n, k)
+   Analogous to Riemann xi function's double even symmetry. *)
+CompletedLobeArea[n_, k_] := n * ChebyshevLobeAreaSymbolic[n, k]
+
+(* Fourier form of completed lobe area: DC=1 + single harmonic *)
+CompletedLobeAreaFourier[n_, k_] := 1 + (n^2 Cos[Pi/n] / (4 - n^2)) Cos[(2 k - 1) Pi / n]
 
 (* Continuous integral of lobe areas - soft-floor function
    ∫_{-mn}^{mn} LobeArea[n,k] dk = 2m - σ(n) Sin[2mπ]/π
