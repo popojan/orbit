@@ -407,6 +407,39 @@ Positive and negative residues are **exactly opposite**!
 The Dirichlet eta function η(s) measures the **asymmetry** between positive and negative poles.
 Selecting only positive poles (right half-plane) extracts the eta value.
 
+## Numerical Contour Integration
+
+### Symbolic Residue (exact)
+
+Mathematica's `Residue` function gives exact results:
+```
+Res[B(n,k), n=1/m] = (-1)^m / (4πm)
+```
+
+The alternating sign comes from cos(mπ) = (-1)^m evaluated at the pole.
+
+Sum: Σ_{m=1}^∞ (-1)^m/(4πm) = -log(2)/(4π) = -η(1)/(4π)
+
+### NContourIntegrate (numerical)
+
+Single-pole circles work well:
+- Circle around n=1/2: result ≈ 0.25i (expected i/4)
+- Circle around n=1/3: numerical issues begin
+
+Shifted circle (center 1/2, r=0.6):
+- Imaginary part: -0.348i ≈ -0.347i = -i·log(2)/2
+- Real part: -0.094 (should be 0, cluster point error)
+
+### Ellipse contour
+
+Ellipse centered at (1/2, 0) with semi-axes (a, b):
+- a < 0.5: avoids cluster point, but excludes n=1 pole
+- a > 0.5: includes all positive poles, approaches singularity
+
+Best results for a ≈ 0.55: error ~5×10⁻⁵
+
+**Conclusion:** Numerical contour integration confirms the theory but offers no computational advantage over direct residue summation (which is the eta series).
+
 ## Open Avenues (for the curious червíček)
 
 1. **Product constant:** What is c ≈ 0.00734 in closed form?
@@ -414,7 +447,6 @@ Selecting only positive poles (right half-plane) extracts the eta value.
 3. **Polylogarithm extension:** Does non-integer k path lead anywhere?
 4. **Functional equation:** Is there k ↔ n symmetry like ζ(s) ↔ ζ(1-s)?
 5. **Character weighting:** Better choice of weights for L-function connection?
-6. **Contour optimization:** Better contour than shifted circle for numerical stability?
 
 ## Files
 
