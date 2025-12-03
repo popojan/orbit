@@ -6,6 +6,10 @@ authors:
   - family-names: Popelka
     given-names: Jan
 repository-code: "https://github.com/popojan/orbit"
+url: "https://github.com/popojan/orbit"
+doi: "10.5281/zenodo.17802021"
+version: "0.1.0"
+date-released: "2025-12-03"
 license: MIT
 keywords:
   - Chebyshev polynomials

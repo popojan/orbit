@@ -1,5 +1,7 @@
 # Orbit: Mathematical Explorations
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17802021.svg)](https://doi.org/10.5281/zenodo.17802021)
+
 This repository contains computational explorations in number theory and related mathematics, implemented as a Wolfram Language paclet. The work is ongoing, unpublished, and has not been peer-reviewed.
 
 ## What's Here
