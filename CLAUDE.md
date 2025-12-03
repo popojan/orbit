@@ -228,6 +228,72 @@ HONEST ASSESSMENT: Pattern is real but utility is limited. Useful for theory, no
 **User's guidance:** "Buď opatrný a pokládej si sám adversarial otázky, ať to nemusím dělat sám."
 
 
+### Hypothesis-First Protocol (Added Dec 3, 2025)
+
+**Purpose:** Document hypotheses BEFORE testing to prevent hindsight bias and ensure fair evaluation of both successes and failures.
+
+**Context:** When exploring mathematical conjectures, it's easy to:
+- Adjust hypothesis after seeing results (hindsight bias)
+- Only document successes (publication bias)
+- Forget what we actually predicted vs. what we found
+
+**Protocol:**
+
+#### Step 1: DOCUMENT HYPOTHESIS FIRST
+
+Before running any experiment or computation to test an idea:
+
+1. **State the hypothesis clearly:**
+   - What do we predict?
+   - What would confirm it?
+   - What would falsify it?
+
+2. **Write it to documentation** with status `🤔 HYPOTHESIS` or `Untested`
+
+3. **Include:**
+   - The "algebra" or reasoning behind the prediction
+   - Specific numerical predictions if possible
+   - Clear success/failure criteria
+
+#### Step 2: RUN THE TEST
+
+Execute the experiment/computation.
+
+#### Step 3: UPDATE STATUS HONESTLY
+
+- If confirmed: Change to `✅ CONFIRMED` with results
+- If falsified: Change to `❌ FALSIFIED` with what we learned
+- If inconclusive: Note what additional tests are needed
+
+**Example (Dec 3, 2025 - Unfolding Hypothesis):**
+```markdown
+## 🤔 HYPOTHESIS: Unfolding Connection
+**Status:** Untested hypothesis, documented before verification
+
+**Prediction:**
+- k=0 (LambertW) should give uniform spacings (like Chebyshev)
+- k>0 (with primes) should introduce GUE-like variance
+
+**What would confirm:** Var(k=0) ≈ 0, Var(k=100) ≈ 0.178
+**What would falsify:** Both having similar variance
+```
+
+Then after testing:
+```markdown
+## ✅ CONFIRMED: Unfolding Connection
+**Status:** Experimentally confirmed
+
+**Results:** Var(k=0) = 2.4×10⁻¹³, Var(k=100) = 0.185
+```
+
+**Benefits:**
+- Fair to failures (they get documented too)
+- Prevents "I knew it all along" bias
+- Creates honest scientific record
+- Doesn't take much extra time (~2-5 minutes)
+
+**User's guidance:** "je to fér i pro situace, kdy to 'nevyjde'"
+
 ---
 
 ## Documentation Standards
