@@ -568,9 +568,9 @@ None of the natural matrix constructions from B(n,k) produce eigenvalues resembl
 2. If a spectral interpretation exists, it requires additional structure beyond B(n,k) alone
 3. The connection B → η is beautiful but may not directly lead to zeros
 
-## ✅ CONFIRMED: Unfolding Connection (Dec 3, 2025 evening)
+## ⚠️ Unfolding Observation (Dec 3, 2025 evening)
 
-**Status:** Experimentally confirmed (see results below)
+**Status:** Partial result with caveats (see adversarial check below)
 
 ### The "Algebra"
 
@@ -682,20 +682,28 @@ This provides a computational laboratory for testing:
 - k=0 (LambertW only) gives **perfectly uniform** spacings (variance essentially zero)
 - k=100 (with primes) gives **GUE-like** statistics (variance matches GUE)
 
-**Conclusion:** The hypothesis is **CONFIRMED**:
+### Adversarial Check
 
-```
-LambertW approximation = uniform "skeleton" (like Chebyshev)
-Prime oscillations S(t) = "structured noise" (creates GUE)
+**What we actually showed:**
+- k=0 (LambertW) gives uniform spacings (Var ≈ 0)
+- k=100 (with primes) gives GUE-like variance (Var ≈ 0.18)
 
-Therefore: Chebyshev ≈ zeros - noise ≈ LambertW
-```
+**What we did NOT show:**
+- Any direct computation involving Chebyshev or B(n,k)
+- The "Chebyshev ≈ LambertW" claim is **interpretation only**
 
-This provides a concrete decomposition:
-- **Smooth part:** θ(t)/π gives uniform (Chebyshev-like) spacing
-- **Fluctuating part:** S(t) = Σ_p contributions creates GUE statistics
+**Caveats:**
+1. LambertW being uniform is almost tautological (it's the inverse of the smooth counting function)
+2. "Prime oscillations create GUE" is vague - they are deterministic, not random
+3. Smooth transformation of uniform points does NOT create GUE correlations
+4. The Chebyshev connection remains a **conceptual analogy**, not a proven equivalence
 
-The "algebra" `zeta = Chebyshev + noise` has physical meaning!
+**What is genuinely interesting:**
+- Clear decomposition: γ_m = θ⁻¹(mπ) + fluctuations from primes
+- The fluctuations come from incommensurate phases t·log(p)
+- Geometric picture: zeta zeros as "uniform angles + perturbations" on infinite spiral
+
+**Open direction:** Could projecting the spiral onto a circle (mod 2π) with points from different rotations create quasiperiodic structure with GUE-like statistics? (Not tested.)
 
 ---
 
