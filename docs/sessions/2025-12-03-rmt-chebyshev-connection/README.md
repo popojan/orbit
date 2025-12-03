@@ -189,6 +189,37 @@ where $C = \sum (-1)^n \cdot \text{(scaled zero)} \cdot n^{-1}$
 
 This may explain their connection to random matrix theory: the **exponential orthogonality weight** (e^{-x²} for Hermite, x^α e^{-x} for Laguerre) creates a natural scaling that aligns with eta function structure.
 
+## Operator Question: Preliminary Exploration
+
+### Sturm-Liouville Connection
+
+$T_n(x)$ is eigenfunction of:
+$$L = (1-x^2)\frac{d^2}{dx^2} - x\frac{d}{dx}$$
+
+with eigenvalue $\lambda_n = n^2$.
+
+**Interpretation:**
+- $B(n,k)$ = integral of $|T_n(\cos\theta)|$ over k-th arc
+- Like "local probability density" in quantum mechanics
+- Sum $\sum_k B(n,k) = n$ acts as normalization (but to n, not 1)
+
+### Spectral Zeta Analogy
+
+Standard spectral ζ-function: $\zeta_L(s) = \sum_n \lambda_n^{-s} = \text{Tr}(L^{-s})$
+
+Our formula: $\sum_n B(n,k) \cdot n^{-s} \to \eta(s)$
+
+**Key difference:** B(n,k) introduces alternating signs through cot(π/n) pole structure.
+
+### Transfer Matrix Approach (Negative Result)
+
+Tried constructing circulant matrix from B(n,k) values:
+- Spectral radius ρ = n always
+- Determinant = 0 for n ≥ 4 (singular)
+- Does not obviously produce η(s)
+
+**Conclusion:** The operator question remains open. B(n,k) acts as spectral weight but the underlying operator is not a simple Sturm-Liouville or transfer matrix.
+
 ## Open Questions
 
 1. **Can we prove** Laguerre correction is exactly O(1/n)?
@@ -198,6 +229,8 @@ This may explain their connection to random matrix theory: the **exponential ort
 3. **Can the semicircle distribution of Hermite** lead to GUE-like statistics?
 
 4. **What operator** would have B(n,k) as its spectral characteristics?
+   - Not simple Sturm-Liouville (verified)
+   - Not obvious transfer matrix (verified)
 
 5. **Is there a deeper reason** why exponential weights align with η(s)?
 
