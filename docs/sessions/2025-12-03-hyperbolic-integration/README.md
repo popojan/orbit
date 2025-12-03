@@ -16,6 +16,19 @@ The hyperbolic generalization (from 2025-12-02-eta-identity) extends the discret
 
 ## Results
 
+### Core Insight: Integration Order Matters
+
+B(n,k) has **orthogonal integration directions** with fundamentally different results:
+
+| Direction | Formula | Result | Domain |
+|-----------|---------|--------|--------|
+| **k-direction** | ∫₀ⁿ B(n,k) dk | n | Geometry |
+| **n-direction** | ∮ n^{s-1} B(n,k) dn | -η(s)/(4π) | Number theory |
+
+- Integrating over k preserves the geometric parameter n
+- Integrating over n (via contour) yields Dirichlet eta function
+- This duality connects hyperbolic geometry to the Riemann zeta world
+
 ### ✅ Continuous integral works for complex offset
 
 ```
@@ -464,6 +477,186 @@ doesn't converge as a standard improper integral. The **contour interpretation**
 
 This is a **regularization** - the contour integral selects which poles contribute, making the divergent integral well-defined.
 
+## d-Dimensional Chebyshev Theorem: The Eta Tower
+
+### Discovery: B^p generates towers of eta functions
+
+**Question:** Where are the "higher dimensions" in the B(n,k) framework?
+
+**Answer:** The power p in B(n,k)^p controls the **dimensional depth** — each power adds layers to a tower of eta functions!
+
+### The Wallis Factors
+
+Define the **Wallis factors** (famous from probability, arcsine distribution):
+
+```
+W_j = (2j-1)!! / (2j)!! = 1·3·5···(2j-1) / 2·4·6···(2j)
+```
+
+| j | W_j | Decimal |
+|---|-----|---------|
+| 0 | 1 | 1.000 |
+| 1 | 1/2 | 0.500 |
+| 2 | 3/8 | 0.375 |
+| 3 | 5/16 | 0.3125 |
+| 4 | 35/128 | 0.2734 |
+
+**Closed form:** W_j = C(2j, j) / 4^j (central binomial coefficient scaled)
+
+### Power Sum Formula
+
+**Theorem:** For integer p ≥ 1,
+
+$$\sum_{k=1}^{n} B(n,k)^p = n \cdot \sum_{j=0}^{\lfloor p/2 \rfloor} c_{p,j} \cdot \beta(n)^{2j}$$
+
+where the coefficients are:
+
+$$c_{p,j} = \binom{p}{2j} \cdot W_j = \binom{p}{2j} \cdot \frac{(2j-1)!!}{(2j)!!}$$
+
+**Explicit formulas:**
+
+| p | Σ B^p | Coefficients |
+|---|-------|--------------|
+| 1 | n | {1} |
+| 2 | n(1 + β²/2) | {1, 1/2} |
+| 3 | n(1 + 3β²/2) | {1, 3/2} |
+| 4 | n(1 + 3β² + 3β⁴/8) | {1, 3, 3/8} |
+| 5 | n(1 + 5β² + 15β⁴/8) | {1, 5, 15/8} |
+| 6 | n(1 + 15β²/2 + 45β⁴/8 + 5β⁶/16) | {1, 15/2, 45/8, 5/16} |
+
+**Verification:** Numerically exact to machine precision for all tested n, p.
+
+### The Dimensional Ladder
+
+Each term β^{2j} contributes to η(s+j) via contour integration:
+
+$$\oint n^{s-1} \cdot \beta(n)^{2j} \, dn \propto \eta(s+j)$$
+
+**Key insight:** Power p "opens" ⌊p/2⌋ dimensions in eta-function space!
+
+| Power p | Eta functions generated | "Dimension" |
+|---------|------------------------|-------------|
+| p = 1 | η(s) | 1D |
+| p = 2 | η(s), η(s+1) | 2D |
+| p = 3 | η(s), η(s+1) | 2D (same as p=2) |
+| p = 4 | η(s), η(s+1), η(s+2) | 3D |
+| p = 2m | η(s), η(s+1), ..., η(s+m) | (m+1)D |
+
+### Residue Structure for β^{2j}
+
+At pole n = 1/m:
+
+$$\text{Res}[n^{s-1} \cdot \beta(n)^{2j}, n = 1/m] = f_j(s) \cdot m^{-s}$$
+
+where f_j(s) is a polynomial in s of degree j.
+
+**For j = 1 (β² term):**
+$$\text{Res} = \frac{2\pi + s - 1}{16\pi^2} \cdot m^{-s}$$
+
+The linear dependence on s mixes geometry (2π) with analysis (s).
+
+### Contour Integral for Σ B²
+
+**Theorem:**
+
+$$\frac{1}{2\pi i} \oint n^{s-1} \sum_{k=1}^{n} B(n,k)^2 \, dn = -\frac{(2\pi + s) \cdot \eta(s+1)}{32\pi^2}$$
+
+**Verification at s = 1:**
+- Theory: −(2π+1) · η(2) / (32π²) = −(2π+1) · (π²/12) / (32π²) ≈ −0.01897
+- Numerical residue sum: ≈ −0.01896
+
+### Geometric Interpretation
+
+The original lobe B(n,k) lives in **2D** (unit disk with n-gon inscribed).
+
+Taking power B(n,k)^p:
+- p = 2: "squared lobe" — like a 3D cone with circular cross-section
+- p = 4: "quartic lobe" — 4D hypercone
+- General: p adds ⌊p/2⌋ "analytical dimensions" via the eta tower
+
+**The Wallis factors (2j-1)!!/(2j)!! appear because:**
+1. B^p expands via binomial theorem
+2. Only even powers of cos survive (odd powers sum to 0)
+3. Σ_k cos^{2j}(θ_k) = n · W_j (discrete orthogonality)
+
+This connects **Chebyshev geometry** to **[arcsine distributions](../2025-12-03-primitive-lobe-signs/README.md#arcsine-distribution)** to **eta function towers**!
+
+### Potential Applications
+
+1. **New integral representations:** Each B^p gives a geometric integral producing specific η(s+j) combinations
+
+2. **Multi-zeta values:** Products η(s)·η(s+1)·...·η(s+m) appear naturally — connection to MZVs?
+
+3. **RMT connection:** The Wallis factors W_j = (2j-1)!!/(2j)!! are exactly the moments of the [arcsine distribution](../2025-12-03-primitive-lobe-signs/README.md#arcsine-distribution). In Random Matrix Theory, arcsine is the "edge" density (dual to Wigner semicircle which is "bulk")
+
+4. **Dimensional analysis:** Understanding how "adding dimensions" affects number-theoretic sums
+
+### Open Questions (d-dimensional)
+
+1. Is there a closed form for the general coefficient f_j(s) in the residue formula?
+
+2. Can the η-tower structure reveal new identities among zeta values?
+
+3. What is the "inverse problem" — given a linear combination of η(s+j), can we find the corresponding B^p?
+
+4. ~~Does the Wallis-eta connection extend to other polynomial families beyond Chebyshev?~~ **NO** - The integral theorem forces f(n) = π/n, which uniquely selects Chebyshev (see [Uniqueness Theorem](../2025-12-02-eta-identity/README.md#uniqueness-theorem-why-cosine)). The Wallis-eta connection is canonical, not generalizable.
+
+## Random Matrix Theory Connection
+
+### Chebyshev Nodes as Log-Gas Equilibrium
+
+**Key insight:** Chebyshev nodes are the **equilibrium configuration** of a 2D Coulomb log-gas on [-1,1]:
+
+$$\text{Chebyshev nodes minimize: } -\sum_{i<j} \log|x_i - x_j|$$
+
+This is the **deterministic limit of Random Matrix Theory**:
+- GUE eigenvalues have joint PDF ∝ ∏|λ_i - λ_j|² × exp(-Σλ_i²)
+- For large N, bulk eigenvalue density → **semicircle** (Wigner)
+- But energy-minimizing nodes → **arcsine** distribution
+
+Our B(n,k) values are affine transforms of Chebyshev nodes, inheriting this RMT structure.
+
+### RMT Dictionary
+
+| Our Framework | RMT Interpretation |
+|--------------|-------------------|
+| B(n,k) values | Transformed "eigenvalues" |
+| Wallis factors W_j = (2j-1)!!/(2j)!! | Moments of arcsine distribution |
+| Arcsine on [1-β, 1+β] | Edge spectral density |
+| Semicircle | Bulk spectral density (dual) |
+| ∏B(n,k) | Characteristic polynomial analog |
+
+### Geometric Mean: Exact Formula
+
+**Theorem (Geometric Mean):** For finite n:
+
+$$\left(\prod_{k=1}^n B(n,k)\right)^{1/n} = \frac{1 + \sqrt{1 - \beta(n)^2}}{2}$$
+
+where β(n) = (n - cot(π/n))/(4n).
+
+**Proof:** Uses the arcsine integral identity:
+$$\frac{1}{\pi}\int_0^\pi \log(1 + a\cos\theta)\, d\theta = \log\frac{1 + \sqrt{1-a^2}}{2}$$
+
+**Asymptotic limit:**
+
+$$\beta(n) \to \frac{\pi - 1}{4\pi} \approx 0.1704 \quad \text{as } n \to \infty$$
+
+Therefore:
+
+$$\lim_{n\to\infty} \left(\prod_{k=1}^n B(n,k)\right)^{1/n} = \frac{4\pi + \sqrt{15\pi^2 + 2\pi - 1}}{8\pi} \approx 0.9927$$
+
+The radicand simplifies: $1 - \left(\frac{\pi-1}{4\pi}\right)^2 = \frac{15\pi^2 + 2\pi - 1}{16\pi^2}$
+
+**Numerical verification:**
+
+| n | (∏B)^{1/n} | Predicted |
+|---|-----------|-----------|
+| 10 | 0.99246 | 0.99246 |
+| 100 | 0.99268 | 0.99268 |
+| 1000 | 0.99269 | 0.99269 |
+
+Match to 15+ decimal places.
+
 ## Files
 
 - README.md (this file)
@@ -472,3 +665,4 @@ This is a **regularization** - the contour integral selects which poles contribu
 - ellipse_contour.wl - ellipse numerical experiments
 - contour_residue_sum.wl - symbolic residue verification
 - contour_multiple.wl - ContourIntegrate with multiple poles
+- dimension_ladder.wl - B^p power analysis and eta tower verification

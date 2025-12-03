@@ -372,6 +372,12 @@ Documentation: English technical details, Czech insights preserved
 
 **Note:** This is NOT a rigid rule—code-switching is natural and acceptable. The framework optimizes for cognitive load, not linguistic purity.
 
+### Tool Aliases
+
+| Command | Description |
+|---------|-------------|
+| **ack** | Perl-based grep alternative (Fedora: `perl-ack` package). Fast code search with smart defaults. |
+
 ---
 
 ## 📚 Czech Mathematical Terminology (Komplexní analýza)
