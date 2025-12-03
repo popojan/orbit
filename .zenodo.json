@@ -1,0 +1,29 @@
+{
+  "title": "Orbit: Computational Tools for Mathematical Explorations",
+  "description": "A Wolfram Language paclet for recreational and research mathematics, including Chebyshev polygon geometry, prime orbit analysis, and connections to Dirichlet eta/zeta functions.",
+  "upload_type": "software",
+  "creators": [
+    {
+      "name": "Popelka, Jan",
+      "orcid": ""
+    }
+  ],
+  "keywords": [
+    "Chebyshev polynomials",
+    "Dirichlet eta function",
+    "Riemann zeta function",
+    "computational mathematics",
+    "Wolfram Language",
+    "number theory"
+  ],
+  "license": "MIT",
+  "access_right": "open",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/popojan/orbit",
+      "relation": "isSupplementTo",
+      "resource_type": "software"
+    }
+  ],
+  "notes": "This is exploratory computational mathematics - numerically verified results, not peer-reviewed proofs. Key findings include: (1) Chebyshev integral theorem generalizations, (2) B-function pole structure encoding Dirichlet eta values, (3) Connections between polygon geometry and zeta functions."
+}

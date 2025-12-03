@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+title: "Orbit: Computational Tools for Mathematical Explorations"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - family-names: Popelka
+    given-names: Jan
+repository-code: "https://github.com/popojan/orbit"
+license: MIT
+keywords:
+  - Chebyshev polynomials
+  - Dirichlet eta function
+  - Riemann zeta function
+  - computational mathematics
+  - Wolfram Language
+abstract: >-
+  A Wolfram Language paclet for recreational and research mathematics.
+  Key results include Chebyshev integral theorem generalizations and
+  the discovery that B-function pole structure encodes Dirichlet eta values:
+  (1/2πi) ∮ n^{s-1} · B(n,k) dn = -η(s) / (4π)
