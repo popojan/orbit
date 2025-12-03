@@ -170,15 +170,65 @@ This creates Cot[π/n] in β(n), which has poles at n = 1/k → cluster point at
 | ∫₀ⁿ B dk = n | ✅ exact | ❌ fails |
 | No cluster point | ❌ at n = 0 | ✅ poles at integers |
 
+## Orthogonal Integration Directions
+
+**Key discovery:** B(n,k) has two natural integration directions with fundamentally different results:
+
+### k-integration (fixed n): Chebyshev Geometry
+
+```
+∫₀ⁿ B(n,k) dk = n
+```
+
+- Path independent in complex k-plane
+- Result equals upper limit (average value = 1)
+- Encodes Chebyshev polygon geometry
+
+### n-integration (fixed integer k): Dirichlet Eta!
+
+For integer k, the residues at n = 1/m are:
+```
+Res[B(n,k), n = 1/m] = (-1)^m / (4πm)
+```
+
+Summing over all poles:
+```
+Σₘ₌₁^∞ Res[B, n=1/m] = (1/4π) · Σₘ₌₁^∞ (-1)^m / m
+                      = -(1/4π) · η(1)
+                      = -ln(2) / (4π)
+```
+
+**Connection to Dirichlet eta:**
+```
+η(1) = Σₙ₌₁^∞ (-1)^{n+1}/n = ln(2)
+```
+
+### Summary Table
+
+| Direction | Integral | Result | Meaning |
+|-----------|----------|--------|---------|
+| Over k | ∫₀ⁿ B dk | n | Chebyshev geometry preserved |
+| Over n | ∮ B dn | -ln(2)/(4π) | Dirichlet η(1) emerges! |
+
+**Geometric interpretation:**
+- k-integration: lobe areas sum to polygon "size" n
+- n-integration: pole structure encodes η(1) = ln(2)
+
+This reveals a **deep duality** in the B-function:
+- One direction preserves geometric information (n)
+- Orthogonal direction yields number-theoretic constant (ln 2)
+
 ## Open Questions
 
 1. ~~**Contour integrals encircling singularities:** What are the residues at n = ±1?~~ **ANSWERED:** Res[β, n=1/k] = 1/(4πk)
 
-2. **Connection to zeta:** The eta-identity uses k_s(n) = 1/2 - i·s·n·log(n)/(2π). Can contour methods in the n-plane reveal structure?
+2. ~~**Connection to zeta:** Can contour methods in the n-plane reveal structure?~~ **PARTIALLY ANSWERED:** n-integration yields η(1) = ln(2)
 
-3. **d-dimensional extension:** Does ∫...∫ V^(d) dk₁...dk_d = ∏ nᵢ hold for complex nᵢ?
+3. **Generalization to η(s)?** Can we modify the n-contour to get η(s) for s ≠ 1?
 
-4. **Holomorphic part h(n):** What is the explicit form of h(n) in the partial Mittag-Leffler expansion?
+4. **d-dimensional extension:** Does ∫...∫ V^(d) dk₁...dk_d = ∏ nᵢ hold for complex nᵢ?
+
+5. **Holomorphic part h(n):** What is the explicit form of h(n) in the partial Mittag-Leffler expansion?
 
 ## Files
 
