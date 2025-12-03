@@ -218,13 +218,60 @@ This reveals a **deep duality** in the B-function:
 - One direction preserves geometric information (n)
 - Orthogonal direction yields number-theoretic constant (ln 2)
 
+### Generalization to η(s): Weighted n-integration
+
+**Question:** Can we get η(s) for arbitrary s, not just η(1)?
+
+**Answer: YES!** Weight the integrand by n^{s-1}:
+
+```
+┌───────────────────────────────────────────────────┐
+│  (1/2πi) ∮ n^{s-1} · B(n,k) dn = -η(s) / (4π)    │
+└───────────────────────────────────────────────────┘
+```
+
+**Derivation:**
+
+For pole at n = 1/m, the residue of n^{s-1} · B(n,k) is:
+```
+Res[n^{s-1} · B(n,k), n = 1/m] = (1/m)^{s-1} · (-1)^m / (4πm)
+                                = (-1)^m / (4π · m^s)
+```
+
+Summing over all poles (m = 1, 2, 3, ...):
+```
+Σₘ₌₁^∞ (-1)^m / (4π · m^s) = -(1/4π) · Σₘ₌₁^∞ (-1)^{m+1} / m^s
+                            = -η(s) / (4π)
+```
+
+**Special cases:**
+
+| s | η(s) | Contour integral | Closed form |
+|---|------|------------------|-------------|
+| 1 | ln(2) | -ln(2)/(4π) | -ln(2)/(4π) ✓ |
+| 2 | π²/12 | -π²/(48π) | -π/48 |
+| 3 | 3ζ(3)/4 | -3ζ(3)/(16π) | Apéry's constant appears! |
+| s | η(s) | -η(s)/(4π) | General formula |
+
+**Connection to Riemann zeta:**
+```
+η(s) = (1 - 2^{1-s}) · ζ(s)
+```
+
+For s = 2: η(2) = (1 - 2^{-1}) · ζ(2) = (1/2) · π²/6 = π²/12 ✓
+
+**Significance:**
+- The B-function's pole structure encodes ALL values of η(s)
+- Weighting by n^{s-1} "tunes" which eta value emerges
+- This connects Chebyshev geometry to the Dirichlet eta function family
+
 ## Open Questions
 
 1. ~~**Contour integrals encircling singularities:** What are the residues at n = ±1?~~ **ANSWERED:** Res[β, n=1/k] = 1/(4πk)
 
-2. ~~**Connection to zeta:** Can contour methods in the n-plane reveal structure?~~ **PARTIALLY ANSWERED:** n-integration yields η(1) = ln(2)
+2. ~~**Connection to zeta:** Can contour methods in the n-plane reveal structure?~~ **ANSWERED:** n-integration yields η(s) via weighting by n^{s-1}
 
-3. **Generalization to η(s)?** Can we modify the n-contour to get η(s) for s ≠ 1?
+3. ~~**Generalization to η(s)?** Can we modify the n-contour to get η(s) for s ≠ 1?~~ **ANSWERED:** Weight by n^{s-1}, see above
 
 4. **d-dimensional extension:** Does ∫...∫ V^(d) dk₁...dk_d = ∏ nᵢ hold for complex nᵢ?
 
