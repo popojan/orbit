@@ -448,6 +448,27 @@ Best results for a ≈ 0.55: error ~5×10⁻⁵
 4. **Functional equation:** Is there k ↔ n symmetry like ζ(s) ↔ ζ(1-s)?
 5. **Character weighting:** Better choice of weights for L-function connection?
 
+## Contour = Regularized "Improper" Integral
+
+The original formula:
+```
+∫₀^∞ n^{s-1} B(n,k) dn = -η(s)/(4π)
+```
+
+doesn't converge as a standard improper integral. The **contour interpretation** gives it meaning:
+
+**Shifted circle** (center 1/2, radius r > 1/2) encloses all positive poles:
+```
+(1/2πi) ∮ n^{s-1} B(n,k) dn = Σ_{m=1}^∞ Res[..., n=1/m] = -η(s)/(4π)
+```
+
+This is a **regularization** - the contour integral selects which poles contribute, making the divergent integral well-defined.
+
 ## Files
 
 - README.md (this file)
+- symmetry.wl - pole symmetry analysis (n ↔ -n cancellation)
+- shifted_circle.wl - shifted circle contour exploration
+- ellipse_contour.wl - ellipse numerical experiments
+- contour_residue_sum.wl - symbolic residue verification
+- contour_multiple.wl - ContourIntegrate with multiple poles
