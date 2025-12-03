@@ -5,6 +5,7 @@ type: software
 authors:
   - family-names: Popelka
     given-names: Jan
+    orcid: "https://orcid.org/0009-0001-6412-9933"
 repository-code: "https://github.com/popojan/orbit"
 url: "https://github.com/popojan/orbit"
 doi: "10.5281/zenodo.17802021"
