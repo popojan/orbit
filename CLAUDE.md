@@ -374,3 +374,59 @@ Documentation: English technical details, Czech insights preserved
 
 ---
 
+## 📚 Czech Mathematical Terminology (Komplexní analýza)
+
+Reference: Veselý, J.: *Komplexní analýza pro učitele*, UK Praha, 2000
+
+### Singularity / Singularita
+
+| Czech | English | Notes |
+|-------|---------|-------|
+| izolovaná singularita | isolated singularity | bod kde f není holomorfní, ale okolí ano |
+| odstranitelná singularita | removable singularity | limita existuje, lze rozšířit holomorfně |
+| pól | pole | limita = ∞, konečně mnoho záporných členů v Laurentově řadě |
+| podstatná (esenciální) singularita | essential singularity | nekonečně mnoho záporných členů |
+| hromadný bod pólů | cluster point of poles | akumulační bod singularit (NOT essential!) |
+| přirozená hranice | natural boundary | hranice za kterou nelze analyticky pokračovat |
+
+### Řady / Series
+
+| Czech | English |
+|-------|---------|
+| mocninná řada | power series |
+| Laurentova řada | Laurent series |
+| regulární část | regular part (positive powers) |
+| hlavní část | principal part (negative powers) |
+| poloměr konvergence | radius of convergence |
+| prstenec konvergence | annulus of convergence |
+
+### Funkce / Functions
+
+| Czech | English |
+|-------|---------|
+| holomorfní funkce | holomorphic function |
+| meromorfní funkce | meromorphic function |
+| celá funkce | entire function |
+| primitivní funkce | primitive function / antiderivative |
+
+### Věty / Theorems
+
+| Czech | English |
+|-------|---------|
+| Cauchyho věta | Cauchy's theorem |
+| Cauchyho vzorec | Cauchy's formula |
+| reziduová věta | residue theorem |
+| Mittag-Lefflerova věta | Mittag-Leffler theorem |
+| věta o jednoznačnosti | uniqueness theorem |
+
+### Rezidua / Residues
+
+| Czech | English |
+|-------|---------|
+| reziduum | residue |
+| výpočet reziduí | computation of residues |
+| konturový integrál | contour integral |
+| křivkový integrál | line integral |
+
+---
+
