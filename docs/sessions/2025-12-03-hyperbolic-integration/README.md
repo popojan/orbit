@@ -362,6 +362,51 @@ where Li_s is the polylogarithm. Integer k gives η(s), non-integer k gives poly
 
 **Status:** Mathematical poetry — interesting connection, not a breakthrough.
 
+## Pole Symmetry and Contour Selection
+
+### n ↔ -n Symmetry
+
+B(n,k) has poles at n = 1/m for ALL non-zero integers m:
+- Positive: n = 1, 1/2, 1/3, ... (accumulate at 0⁺)
+- Negative: n = -1, -1/2, -1/3, ... (accumulate at 0⁻)
+
+**Key symmetry:**
+```
+Res[B, n = 1/m] = (-1)^m / (4πm)
+Res[B, n = -1/m] = (-1)^{m+1} / (4πm) = -Res[B, n = 1/m]
+```
+
+Positive and negative residues are **exactly opposite**!
+
+### Contour Selection
+
+| Contour | Poles enclosed | Integral |
+|---------|---------------|----------|
+| Circle \|n\| = r (any r) | both ±1/m | **0** (cancellation) |
+| Right half-plane Re(n) > 0 | only +1/m | **-η(s)/(4π)** |
+
+**Shifted circle:** Center (1/2, 0), radius r
+- r < 1/2: encloses finitely many positive poles, avoids n=0
+- r → 1/2: limit gives -η(s)/(4π)
+- r = 1/2: touches cluster point n=0 (numerically ill-defined)
+
+### Geometric Interpretation
+
+```
+     Im(n)
+       ↑
+       │      ╭─────╮
+  -1 × │      │ 1/2 │× 1
+ -1/2 ×│      │× 1/3│
+ -1/3 ×│      │ ×1/4│
+───────┼──────╰──●──╯───→ Re(n)
+       │      cluster
+       │      point
+```
+
+The Dirichlet eta function η(s) measures the **asymmetry** between positive and negative poles.
+Selecting only positive poles (right half-plane) extracts the eta value.
+
 ## Open Avenues (for the curious червíček)
 
 1. **Product constant:** What is c ≈ 0.00734 in closed form?
@@ -369,6 +414,7 @@ where Li_s is the polylogarithm. Integer k gives η(s), non-integer k gives poly
 3. **Polylogarithm extension:** Does non-integer k path lead anywhere?
 4. **Functional equation:** Is there k ↔ n symmetry like ζ(s) ↔ ζ(1-s)?
 5. **Character weighting:** Better choice of weights for L-function connection?
+6. **Contour optimization:** Better contour than shifted circle for numerical stability?
 
 ## Files
 
