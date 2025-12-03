@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-03 16:10:00
+**Generated:** 2025-12-03 16:15:32
 
 ## Theorems (Master References)
 
@@ -20,7 +20,7 @@
 
 ## Recent Sessions (Last 10)
 
-- [Session: Random Matrix Theory and Chebyshev Lobe Areas](sessions/2025-12-03-rmt-chebyshev-connection/README.md) *()*
+- [Session: Random Matrix Theory and Chebyshev Lobe Areas](sessions/2025-12-03-rmt-chebyshev-connection/README.md) *(2025-12-03)*
 - [Session: Primitive Lobe Signs and Number Theory](sessions/2025-12-03-primitive-lobe-signs/README.md) *(2025-12-03)*
 - [Session: Hyperbolic Integration of B(n,k)](sessions/2025-12-03-hyperbolic-integration/README.md) *(2025-12-03)*
 - [Session: Exact n^{-s} Identity via B(n,k)](sessions/2025-12-02-eta-identity/README.md) *(2025-12-03)*
