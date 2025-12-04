@@ -325,11 +325,15 @@ When viewed as B = 1 + β·x where x = cos((2k-1)π/n):
 - B_geom(x) = 1 - 0.98x (decreasing, steep)
 - B_res(x) = 1 + 0.18x (increasing, gentle)
 
-Both lines pass through (0, 1).
+Both lines pass through (x=0, B=1) in this abstract (x, B) space.
+Note: x here is the **phase parameter** cos(θ), not the geometric x-coordinate of a lobe.
 
 ### Physical Interpretation
 
-- **A_geom**: Represents actual Chebyshev lobe areas (tiny at edges, large in center)
+- **A_geom**: Represents actual Chebyshev lobe areas
+  - Edge lobes (k=1, k=n; geometrically near x = ±1): **tiny** areas
+  - Center lobes (k ≈ n/2; geometrically near x = 0): **largest** areas
+  - "Fair" lobes (B=1): **average** area, at intermediate geometric positions
 - **A_res**: Artificial construction that does NOT represent geometric reality
 
 The negative β_geom arises naturally from Chebyshev geometry:
@@ -392,3 +396,483 @@ The exploration in this session attempted to find a modified `circ` function tha
 - **Conclusion:** No such `circ` modification exists
 
 This proves the two β functions are **fundamentally different** and cannot be unified by any symmetric sin/cos deformation.
+
+---
+
+## Fixed Point Analysis: B(n,k) = 1
+
+### Motivation
+
+The affine transformation between B_geom and B_res has a **fixed point** at B = 1:
+
+```mathematica
+Solve[BResToBGeom[n, x] == BGeomToBRes[n, x], x]
+(* {{x -> 1}} *)
+```
+
+At B = 1, both representations are identical — no transformation needed.
+
+### Derivation: Where Does B = 1 Occur?
+
+**Starting point:**
+$$B(n,k) = 1 + \beta \cdot \cos\left(\frac{(2k-1)\pi}{n}\right)$$
+
+**Condition B = 1:**
+$$\beta \cdot \cos\left(\frac{(2k-1)\pi}{n}\right) = 0$$
+
+Since β ≠ 0 for n > 2:
+$$\cos\left(\frac{(2k-1)\pi}{n}\right) = 0$$
+
+**Solving cos(θ) = 0:**
+$$\theta = \frac{\pi}{2} + m\pi, \quad m \in \mathbb{Z}$$
+
+**Substituting θ = (2k-1)π/n:**
+$$\frac{(2k-1)\pi}{n} = \frac{\pi}{2} + m\pi$$
+
+$$\frac{2k-1}{n} = \frac{1}{2} + m$$
+
+$$2k - 1 = \frac{n}{2} + mn$$
+
+$$k = \frac{n + 2 + 2mn}{4}$$
+
+### Result: Crossing Points
+
+For k ∈ [1, n], two solutions exist:
+
+$$k_1(n) = \frac{n + 2}{4} \quad (m = 0)$$
+
+$$k_2(n) = \frac{3n + 2}{4} \quad (m = 1)$$
+
+### Properties
+
+| Property | Value |
+|----------|-------|
+| Symmetry | k₁ + k₂ = n + 1 (symmetric around center) |
+| Integer k | Only when n ≡ 2 (mod 4) |
+| Examples | n=6: k∈{2,5}, n=10: k∈{3,8}, n=14: k∈{4,11} |
+
+### Geometric Interpretation
+
+**Important clarification:** The parameter θ(k) = (2k-1)π/n in the formula is a **phase parameter**, NOT the geometric x-coordinate of lobe k on the Chebyshev curve.
+
+When θ(k) = π/2 or 3π/2, we have cos(θ) = 0, so B = 1. But this does **not** mean lobe k is geometrically located at x = 0.
+
+**Example for n = 10:**
+- "Fair" lobes k = 3, 8 have B = 1
+- But geometrically, lobe 3 is at x ∈ [-0.81, -0.59], lobe 8 is at x ∈ [0.59, 0.81]
+- Lobes at x ≈ 0 (lobes 5, 6) have B ≈ 1.94 (the largest!)
+
+The cos((2k-1)π/n) factor modulates how much lobe k deviates from the baseline B = 1, but its value is determined by the lobe INDEX k, not its geometric position.
+
+### Why This Matters
+
+1. **Representation-independent:** At B = 1, the choice of β is irrelevant
+2. **Pivot point:** Both B_geom and B_res oscillate around this common baseline
+3. **Normalization anchor:** The value B = 1 corresponds to uniform lobe area 1/n
+
+### Special Case: n ≡ 2 (mod 4)
+
+**When do actual lobes have B = 1 exactly?**
+
+The crossing points k₁ = (n+2)/4 and k₂ = (3n+2)/4 are integers only when:
+- (n+2) is divisible by 4
+- This happens when n ≡ 2 (mod 4)
+
+**Examples:**
+
+| n | k₁ = (n+2)/4 | k₂ = (3n+2)/4 | Lobe positions |
+|---|--------------|---------------|----------------|
+| 6 | 2 | 5 | x ∈ [-0.87, -0.5] and [0.5, 0.87] |
+| 10 | 3 | 8 | x ∈ [-0.81, -0.59] and [0.59, 0.81] |
+| 14 | 4 | 11 | x ∈ [-0.78, -0.62] and [0.62, 0.78] |
+
+**For n NOT ≡ 2 (mod 4):** k₁, k₂ are non-integers, so no actual lobe has B = 1 exactly. The "fair" point exists only as interpolation between adjacent lobes.
+
+**Key insight:** These "fair" lobes are at **intermediate geometric positions** — not at the edges (smallest lobes) nor at the center (largest lobes).
+
+### Fair Lobes: Position and Number-Theoretic Properties
+
+**Position within the lobe sequence:**
+
+Fair lobes are located at the **quartile positions**:
+- k₁/n = (n+2)/(4n) → **1/4** as n → ∞
+- k₂/n = (3n+2)/(4n) → **3/4** as n → ∞
+
+This means fair lobes **separate** the three regions:
+```
+Lobes 1 to k₁-1:     cos > 0 → B < 1 (small, edge lobes)
+Lobe k₁:             cos = 0 → B = 1 (fair, first quartile)
+Lobes k₁+1 to k₂-1:  cos < 0 → B > 1 (large, central lobes)
+Lobe k₂:             cos = 0 → B = 1 (fair, third quartile)
+Lobes k₂+1 to n:     cos > 0 → B < 1 (small, edge lobes)
+```
+
+**Critical observation: Fair lobes vs primes**
+
+| n mod 4 | k₁, k₂ integers? | Examples | Primality |
+|---------|------------------|----------|-----------|
+| 0 | NO | n = 4, 8, 12, ... | Composite |
+| 1 | NO | n = 5, 9, 13, 17, ... | **Includes primes** |
+| 2 | **YES** | n = 2, 6, 10, 14, ... | Composite (except n=2) |
+| 3 | NO | n = 3, 7, 11, 19, ... | **Includes primes** |
+
+**Key result:**
+- **For odd primes p:** Fair lobes do NOT exist (k₁, k₂ are non-integers)
+- **For n ≡ 2 (mod 4):** Fair lobes exist, but n is composite (except n=2)
+
+This explains why the sign asymmetry theorem A(p) = ±2 for primes involves an **imbalance** — there are no exact B = 1 lobes to provide a neutral boundary! The "fair point" falls between two adjacent lobes.
+
+### Fair Lobes: Primitive vs Inherited Classification
+
+**Question:** Are fair lobes primitive (gcd(k,n) = 1) or inherited (gcd(k,n) > 1)?
+
+**Answer:** Fair lobes always form a **mixed pair** — one primitive, one inherited!
+
+**Analysis for n = 4m + 2:**
+
+| m | n | k₁ = m+1 | k₂ = 3m+2 | Pattern |
+|---|---|----------|-----------|---------|
+| 1 (odd) | 6 | 2 (even→I) | 5 (odd→P) | I/P |
+| 2 (even) | 10 | 3 (odd→P) | 8 (even→I) | P/I |
+| 3 (odd) | 14 | 4 (even→I) | 11 (odd→P) | I/P |
+| 4 (even) | 18 | 5 (odd→P) | 14 (even→I) | P/I |
+| 5 (odd) | 22 | 6 (even→I) | 17 (odd→P) | I/P |
+
+**Algebraic explanation:**
+
+For n = 4m + 2 = 2(2m+1) where (2m+1) is odd:
+- k₁ = m + 1, k₂ = 3m + 2
+- When m is odd: k₁ is even (shares factor 2 with n) → **inherited**
+- When m is even: k₁ is odd (coprime with n) → **primitive**
+- k₂ has opposite parity to k₁
+
+**Key insight:** Since n = 2·(odd), the factor 2 is the only common factor possible. One of {k₁, k₂} is even (inherited), the other is odd (primitive).
+
+**Consequence:**
+- Fair lobes are NOT purely inherited (under INDEX definition)
+- One fair lobe always participates in primitive sums from primitive-lobe-signs theorems
+- The primitive fair lobe contributes B = 1 to ∑_{gcd(k,n)=1} B(n,k)
+
+### Important: Two Different "Primitive" Definitions!
+
+**Warning:** Two sessions use DIFFERENT definitions of "primitive lobe":
+
+| Session | Definition | Condition | #Primitive |
+|---------|------------|-----------|------------|
+| **primitive-lobe-signs** | INDEX | gcd(k, n) = 1 | = φ(n) |
+| **chebyshev-primality** | BOTH | gcd(k-1, n)=1 AND gcd(k, n)=1 | < φ(n) |
+
+**Example for n = 15:**
+- INDEX definition: 8 primitive lobes (= φ(15))
+- BOTH definition: 3 primitive lobes
+
+**Why BOTH is stricter:** Requires BOTH boundary indices to be coprime to n, not just the lobe index.
+
+**Why this matters for fair lobes:**
+- Under INDEX: Fair lobe k=3 (for n=10) IS primitive (gcd(3,10)=1)
+- Under BOTH: Fair lobe k=3 is NOT primitive (gcd(2,10)=2 ≠ 1)
+
+**Key result from chebyshev-primality:** The BOTH definition is the **unique non-trivial choice** — only AND (both boundaries) gives non-zero sign sum. LEFT-only, RIGHT-only, and NEITHER all sum to zero.
+
+See: `docs/sessions/2025-11-28-chebyshev-primality/README.md` section "Why Primitive Pair is the Only Non-Trivial Definition"
+
+---
+
+## Open Directions
+
+### Direction 1: Continuous Extension
+
+What if k is not an integer? B(n, k) as a continuous function of k:
+- Physical interpretation of fractional lobes?
+- Connection to continuous Fourier transform?
+
+### Direction 2: Fourier Interpretation
+
+B = 1 is the "DC component" (zero frequency). The β·cos term is the fundamental mode.
+- Higher harmonics?
+- Spectral decomposition of lobe areas?
+
+### Direction 3: Is There a Deeper Connection?
+
+**Observation:** At B = 1, both β functions give the same result:
+- B_geom = 1 + β_geom · 0 = 1
+- B_res = 1 + β_res · 0 = 1
+
+**Adversarial check:** This is **trivially true** — anything times zero equals zero. The equality `1 + A·0 = 1 + B·0` holds for ANY A, B and says nothing about a relationship between them.
+
+**What would be meaningful:**
+- A non-trivial relationship between β_geom and β_res at points where cos ≠ 0
+- A deeper reason why the formula has the form `B = 1 + β·cos(θ)` with baseline exactly 1
+- Understanding why β_res (constructed for η(s) poles) produces valid lobe areas at all
+
+**Current status:** The "unification at B = 1" is a **structural coincidence** of the formula, not evidence of a deep connection. The η(s) link via β_res remains unexplained.
+
+### Final Assessment: Fair Lobes Do NOT Connect β_geom to η(s)
+
+**Why this path fails:**
+
+1. **Fair lobes exist only for composite n:** n ≡ 2 (mod 4) means n is even (except n=2)
+2. **Under BOTH definition, all lobes are inherited:** For even n, consecutive integers always share factor 2 with n
+3. **The B = 1 agreement is trivial:** Both β_geom·cos(θ) and β_res·cos(θ) equal zero when cos(θ) = 0
+4. **η(s) poles come from β_res structure:** The poles at n = 1/k arise from cot(π/n) in β_res, unrelated to fair lobes
+
+**Conclusion:** The fair lobe analysis reveals interesting structural properties of B(n,k), but does NOT provide a geometric justification for β_res or the Dirichlet eta construction. The connection between Chebyshev geometry (β_geom) and η(s) (β_res) remains an open question.
+
+---
+
+## Polygon Hierarchy: How 2p-Polygon Splits p-Polygon Lobes
+
+### Setup: Two Related Polygons
+
+For prime p, consider TWO Chebyshev polygons:
+- **p-polygon:** has p lobes, roots at cos(jπ/p) for j = 0, 1, ..., p
+- **2p-polygon:** has 2p lobes, roots at cos(jπ/(2p)) for j = 0, 1, ..., 2p
+
+**Key observation:** The 2p-polygon roots CONTAIN all p-polygon roots!
+- Even indices of 2p-roots = p-roots
+- Odd indices of 2p-roots = NEW "interpolated" roots
+
+### Geometric Meaning: Each p-Lobe Splits into Two 2p-Lobes
+
+**Example for p = 5:**
+
+```
+p-roots (boundaries): cos(jπ/5) for j = 0,...,5
+  = [1.0, 0.809, 0.309, -0.309, -0.809, -1.0]
+
+2p-roots (boundaries): cos(jπ/10) for j = 0,...,10
+  = [1.0, 0.951, 0.809, 0.588, 0.309, 0, -0.309, -0.588, -0.809, -0.951, -1.0]
+
+Observe: 2p-roots at EVEN indices = p-roots
+         2p-roots at ODD indices = NEW interpolated roots
+```
+
+**How p-lobe 2 splits:**
+- p-lobe 2 spans [p-root 1, p-root 2] = [0.809, 0.309] on x-axis
+- 2p-polygon inserts NEW root at x = 0.588 = cos(3π/10)
+- Result: two 2p-lobes
+  - 2p-lobe 3: [0.809, 0.588]
+  - 2p-lobe 4: [0.588, 0.309]
+
+**Important distinction:** The "fair" condition B = 1 comes from the ARGUMENT (2k-1)π/(2p) = π/2 in the Fourier formula, NOT from geometric x-position = 0. For k = 3: argument = 5π/10 = π/2, so cos = 0, hence B = 1.
+
+### Where Does the Fair Lobe Come From?
+
+The fair lobe (B = 1) occurs when cos((2k-1)π/(2p)) = 0, i.e., when the argument equals π/2.
+
+For 2p-lobe k = 2j-1 (first half of p-lobe j):
+- Argument = (4j-3)π/(2p)
+- Fair when 4j - 3 = p, i.e., j = (p+3)/4
+- This is an integer only when **p ≡ 1 (mod 4)**
+
+For 2p-lobe k = 2j (second half of p-lobe j):
+- Argument = (4j-1)π/(2p)
+- Fair when 4j - 1 = p, i.e., j = (p+1)/4
+- This is an integer only when **p ≡ 3 (mod 4)**
+
+### The Dichotomy Theorem
+
+**Theorem:** For n = 2p where p is an odd prime:
+
+| p mod 4 | Host p-lobe j | Which half is FAIR | Host lobe size |
+|---------|---------------|-------------------|----------------|
+| **1** | j = (p+3)/4 | FIRST (k = 2j-1) | **LARGE** (B > 1) |
+| **3** | j = (p+1)/4 | SECOND (k = 2j) | **SMALL** (B < 1) |
+
+**Geometric interpretation:**
+- **p ≡ 1 (mod 4):** Fair point (B=1) arises from splitting a LARGE p-lobe
+- **p ≡ 3 (mod 4):** Fair point arises from splitting a SMALL p-lobe
+
+### Numerical Verification
+
+```
+p    mod4   host j   B(p,j)    FAIR half   2p-lobe k
+--   ----   ------   ------    ---------   ---------
+5    1      2        1.298     FIRST       3
+7    3      2        0.782     SECOND      4
+13   1      4        1.120     FIRST       7
+17   1      5        1.092     FIRST       9
+19   3      5        0.918     SECOND      10
+```
+
+### Significance
+
+This provides a **geometric interpretation of the mod 4 dichotomy** for primes:
+- The dichotomy p ≡ 1 vs 3 (mod 4) manifests in polygon hierarchy
+- It determines whether the "fair point" splits a large or small lobe
+- This connects to the sign asymmetry theorem A(p) = ±2
+
+However, this still does NOT directly connect to η(s), as the fair lobes only exist for composite n = 2p, not for primes themselves.
+
+### Direction 4: Inverse Problem
+
+Given B = 1 constraint, what curves (beyond Chebyshev) satisfy it?
+- Family of curves through fixed crossing points
+- Uniqueness under additional constraints
+
+---
+
+## Appendix: Three β Functions (Notation Clarification)
+
+### Context
+
+During review of the primitive-lobe-signs session (2025-12-03), we found a **third** β function being used, creating potential confusion.
+
+### The Three Functions
+
+| Function | Formula | Limit n→∞ | Origin |
+|----------|---------|-----------|--------|
+| β_geom | n²cos(π/n)/(4-n²) | **-1** | Derived from Chebyshev lobe geometry |
+| β_res | (n - cot(π/n))/(4n) | **(π-1)/(4π) ≈ 0.170** | Constructed for η(s) poles |
+| β_signs | (sin(π/n) - (π/n)cos(π/n))/(2sin³(π/n)) | **1/6 ≈ 0.167** | Ad hoc choice (see analysis below) |
+
+**Simplified form of β_signs:**
+$$\beta_{\text{signs}} = \frac{(n - \pi\cot(\pi/n)) \csc^2(\pi/n)}{2n}$$
+
+Compare with β_res = (n - cot(π/n))/(4n) — note the **π** factor in the cot argument differs.
+
+### Common Properties
+
+All three β functions share:
+1. **Same form:** B(n,k) = 1 + β·cos((2k-1)π/n)
+2. **Same normalization:** ∑_{k=1}^n B(n,k) = n (because ∑cos = 0)
+3. **Primitive sum formula:** ∑_{gcd(k,n)=1} B(n,k) = φ(n) + β·μ(n)·cos(π/n)
+
+### Key Finding: Formulas Work for ANY β
+
+The primitive sum formula and other results from primitive-lobe-signs session are **not specific to β_signs**. They work for any β function.
+
+**Verification (n = 15, μ(15) = 1):**
+- With β_geom: ∑B_primitive = 7.026 ✓
+- With β_signs: ∑B_primitive = 8.166 ✓
+
+Both match their respective formula predictions.
+
+### Why β_signs and Not β = 1?
+
+Analysis reveals β_signs was likely chosen for specific properties:
+
+1. **Positive sign required:** β > 0 ensures the sign asymmetry theorem gives A(p) = -2 for p ≡ 1 (mod 4).
+   - With β_geom < 0: A(p) = +2 (opposite convention)
+   - With any β > 0: A(p) = -2
+
+2. **Bounded oscillation:** Limit 1/6 gives B ∈ [5/6, 7/6] as n → ∞
+   - With β = 1: B ∈ [0, 2] (wider range)
+   - With β = 1/6: Nice bounded variation around baseline
+
+3. **Nice variance:** Var[B] = β²/2 → 1/72 in the limit
+
+**But the specific formula is suspect:** The formula `(sin θ - θ cos θ)/(2 sin³ θ)` has no documented derivation. It could be:
+- A convenient formula that happens to have limit 1/6
+- Derived from some forgotten integral
+- An error (a simpler formula like β = 1/6 would work equally well)
+
+**Recommendation:** For future work, consider using β = 1/6 (constant) instead of β_signs. The theorems work identically, and it avoids the unexplained formula.
+
+### Conclusion: Notation Coincidence
+
+**β_signs is NOT uniquely determined** by the theorems in primitive-lobe-signs session. It was likely **chosen** for nice properties rather than **derived** from geometry.
+
+The primitive-lobe-signs session uses B(n,k) notation but represents a different quantity than B_geom (actual lobe areas) or B_res (η(s) construction).
+
+### Recommendation
+
+When citing results from primitive-lobe-signs session, clarify which β is meant:
+- Results about **structure** (Möbius, Gauss sums, Legendre symbols) → hold for any β
+- Results about **specific values** (e.g., "variance = 1/72") → depend on β_signs with limit 1/6
+
+### β-Dependence Classification (Key Insight)
+
+**What depends on β and what doesn't?**
+
+| Property | β-dependent? | Why |
+|----------|--------------|-----|
+| ∑B(n,k) = n | NO | ∑cos((2k-1)π/n) = 0 |
+| B(n, k_fair) = 1 | NO | cos = 0 at fair lobes |
+| Ratio fair/total = 2/n | NO | β cancels (both numerator and denominator β-independent) |
+| Primitive sum formula structure | NO | ∑_{gcd}B = φ(n) + β·μ(n)·cos(π/n) works for any β |
+| Sign asymmetry A(p) = ±2 | **SIGN of β only** | Sign of β determines which lobes are "large" |
+| B(n,k) for specific k ≠ fair | YES | cos ≠ 0, so β·cos term matters |
+| Actual geometric lobe areas | YES | Only β_geom gives correct values |
+
+**Practical consequence:**
+- Questions about **ratios** and **structural properties** → β is irrelevant
+- Questions about **actual lobe sizes** → must use β_geom
+- Questions about **which lobes are large/small** → only sign of β matters
+
+**Example verification:**
+```
+n = 10, fair lobes k ∈ {3, 8}
+
+β_geom = -0.991:  ∑B = 10, B_fair = 2, ratio = 0.2
+β_res  =  0.173:  ∑B = 10, B_fair = 2, ratio = 0.2
+β = 42.7:         ∑B = 10, B_fair = 2, ratio = 0.2
+β = -1000:        ∑B = 10, B_fair = 2, ratio = 0.2
+
+→ Ratio 2/n = 0.2 for ANY β (β cancels out)
+```
+
+---
+
+## BOTH-Primitive Primality Test: Classical Result Rediscovery
+
+### The Discovery Path
+
+Starting from polygon hierarchy analysis, we asked: can Chebyshev structure provide non-binary primality scoring?
+
+**BOTH-primitive count:** Number of k ∈ [1,n] where gcd(k-1, n) = 1 AND gcd(k, n) = 1
+
+**Normalized score:**
+$$\text{Score}(n) = \frac{\text{BOTH}(n)}{n - 2}$$
+
+**Empirical finding:**
+- All odd primes: Score = 1 exactly
+- All odd composites: Score < 1
+- Smooth gradation by factorization complexity
+
+### Classical Formula (Known Result)
+
+**This is a known result in number theory!**
+
+$$\text{BOTH}(n) = n \cdot \prod_{p \mid n} \left(1 - \frac{2}{p}\right)$$
+
+**Primality criterion follows immediately:**
+- For prime p: BOTH(p) = p · (1 - 2/p) = **p - 2**
+- For composite n: Product has multiple factors → BOTH(n) < n - 2
+
+**Verification:**
+
+| n | Type | BOTH(n) | Formula n·∏(1-2/p) | Match |
+|---|------|---------|-------------------|-------|
+| 7 | prime | 5 | 7·(5/7) = 5 | ✓ |
+| 15 | 3×5 | 3 | 15·(1/3)·(3/5) = 3 | ✓ |
+| 35 | 5×7 | 15 | 35·(3/5)·(5/7) = 15 | ✓ |
+| 77 | 7×11 | 45 | 77·(5/7)·(9/11) = 45 | ✓ |
+
+### What Does Chebyshev Visualization Add?
+
+**Honest assessment:**
+
+| Aspect | Added Value |
+|--------|-------------|
+| **Mathematical content** | ❌ Nothing new — classical NT result |
+| **Computational power** | ❌ No improvement over direct formula |
+| **Geometric intuition** | ✓ Visual interpretation of coprime pairs |
+| **Pedagogical value** | ✓ "Primitive lobe = both boundaries coprime to n" |
+| **Connection discovery** | ? Chebyshev ↔ coprime counting link (novelty unclear) |
+
+**The Chebyshev framing is "syntactic sugar"** over known number theory.
+
+### Potentially Novel Elements (To Be Falsified)
+
+The following claims need verification against existing literature:
+
+1. **Explicit Chebyshev connection:** Is the link between T_{n+1}(x) - x·T_n(x) lobes and coprime consecutive pairs documented?
+
+2. **Sign asymmetry theorem:** A(p) = ∑_{primitive} sign(B(p,k) - 1) = ±2 for primes — is this known?
+
+3. **Polygon hierarchy splitting:** The observation that 2p-polygon lobes split p-polygon lobes, with fair lobe position depending on p mod 4 — is this documented?
+
+4. **β-function role:** The analysis showing β cancels in structural formulas but determines actual areas — is this perspective published?
+
+**Status:** 🔬 UNDER INVESTIGATION — need literature search to confirm novelty or rediscovery
