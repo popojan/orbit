@@ -23,7 +23,7 @@ $$A(p) = \begin{cases} -2 & \text{if } p \equiv 1 \pmod{4} \\ 0 & \text{if } p \
 
 **Origin:** This arose from studying Chebyshev polygon lobe areas B(n,k) = 1 + β·cos((2k-1)π/n).
 
-**Numerical verification:** 98 primes tested, all correct.
+**Status:** ✅ **PROVEN** — see [rigorous proof](main-theorem-proof.md)
 
 **Related results:**
 - [Algebraic proof of complementarity with Aladov (1896)](complementarity-proof.md)
