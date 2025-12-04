@@ -915,14 +915,56 @@ The "bridge" interpretation — that Chebyshev lobes geometrically encode coprim
 
 **Intermediate verdict:** The individual components are known; the CONNECTION may be novel.
 
-#### Items 3-5: Sign Asymmetry, Polygon Hierarchy, β-role
+#### Item 3: Sign Asymmetry — RELATED RESULTS FOUND
 
-**Search terms tried:**
-- "sign asymmetry primitive roots prime sum ±2" → No results
-- "Chebyshev polynomial lobe area integral n-gon" → No relevant results
-- Ramanujan sums use cos(2πkn/q), NOT our cos((2k-1)π/n) — different argument
+**Search results (Dec 4, 2025):**
 
-**Status:** No falsifying references found yet. Search continues.
+Several structurally related results found, but NOT our specific claim:
+
+1. **Quadratic Excess E(p)** ([John D. Cook blog](https://www.johndcook.com/blog/2019/07/12/distribution-of-quadratic-residues/)):
+   - p ≡ 1 (mod 4): E(p) = 0 (QRs symmetric around p/2)
+   - p ≡ 3 (mod 4): E(p) > 0 (more QRs in first half)
+
+2. **Sum of primitive roots for p ≡ 1 (mod 4)** ([Math.SE](https://math.stackexchange.com/questions/2730263)):
+   - If g is primitive root, so is -g (when p ≡ 1 mod 4)
+   - Therefore sum of primitive roots ≡ 0 (mod p)
+
+3. **Sum of consecutive Legendre symbol products** ([Math.SE](https://math.stackexchange.com/questions/333704)):
+   - $\sum_{a=1}^{p-2} \left(\frac{a(a+1)}{p}\right) = -1$
+   - Related to our BOTH condition (consecutive coprimality)
+
+**Key observation — REVERSED mod 4 structure:**
+
+| Property | p ≡ 1 (mod 4) | p ≡ 3 (mod 4) |
+|----------|---------------|---------------|
+| Quadratic excess E(p) | = 0 (balanced) | > 0 (unbalanced) |
+| **Our A(p)** | **= ±2** (unbalanced) | **= 0** (balanced) |
+
+The mod 4 conditions are **complementary**! This suggests:
+- Our sign asymmetry A(p) measures something **dual** to quadratic excess
+- Both arise from -1 being QR iff p ≡ 1 (mod 4)
+- The "reversal" may be due to cos((2k-1)π/p) vs QR counting
+
+**Verdict:** No direct falsification. Related results exist but measure different quantities.
+
+#### Item 4: Polygon Hierarchy — NO DIRECT REFERENCE
+
+**Searched:**
+- "Chebyshev polynomial n-gon lobe area splitting refinement" → No results
+- [Wolfram Demonstrations: n-gon polynomials](https://demonstrations.wolfram.com/NGonPolynomials/) — shows T_n connection but no splitting analysis
+- SIAM papers on domain splitting for Chebyshev interpolation — numerical analysis, not number theory
+
+**Verdict:** The 2p-polygon splits p-polygon lobes observation appears **novel**.
+
+#### Item 5: β-function Cancellation — NO ANALOG
+
+**The observation:** β cancels in structural formulas (primitive sums, normalization) but determines actual lobe sizes.
+
+**Searched:**
+- Fourier coefficient cancellation in character sums → Not the same structure
+- Amplitude vs phase in trigonometric sums → Too general
+
+**Verdict:** This perspective on β appears **undocumented**.
 
 ---
 
@@ -1039,13 +1081,19 @@ is a root of Chebyshev T_n(x).
 
 ---
 
-### Summary: What's Known vs Potentially Novel
+### Summary: What's Known vs Potentially Novel (Updated Dec 4, 2025)
 
 | Claim | Status | Known Analog |
 |-------|--------|--------------|
 | BOTH(n) = n·∏(1-2/p) | ❌ KNOWN | Elkies (CRT) |
 | T_{n+1}-xT_n = -(1-x²)U_{n-1} | ❌ KNOWN | Standard Chebyshev |
-| Bridge: Chebyshev lobes ↔ coprime pairs | ❓ UNCLEAR | No direct reference |
-| Sign asymmetry A(p) ∈ {±2, 0} | ❓ NOT FOUND | QR sum mod 4 has same structure |
-| Polygon hierarchy (mod 4) | ❓ NOT FOUND | Gauss sums have mod 4 structure |
-| β-function cancellation | ❓ NOT FOUND | No analog found |
+| Bridge: Chebyshev lobes ↔ coprime pairs | ❓ UNCLEAR | No direct reference found |
+| Sign asymmetry A(p) ∈ {±2, 0} | ❓ RELATED | QR excess has **reversed** mod 4 structure |
+| Polygon hierarchy (mod 4) | ✓ NOVEL? | No reference found |
+| β-function cancellation | ✓ NOVEL? | No analog found |
+
+**Key insight from search:** Our A(p) and quadratic excess E(p) have **complementary** mod 4 dependence:
+- E(p): balanced when p ≡ 1 (mod 4)
+- A(p): balanced when p ≡ 3 (mod 4)
+
+This duality suggests both phenomena arise from the same root cause (-1 is QR iff p ≡ 1 mod 4) but measure **dual quantities**.
