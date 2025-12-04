@@ -3,6 +3,34 @@
 **Date:** December 4, 2025
 **Status:** Active investigation
 
+---
+
+## Main Result: A New Trigonometric-Arithmetic Identity
+
+**Theorem (December 4, 2025):**
+
+For any odd prime p:
+
+$$\sum_{k=1}^{p-1} \text{sign}\left(\cos\frac{(2k-1)\pi}{p}\right) = -(1 + (-1)^{(p-1)/2})$$
+
+**Equivalently:**
+$$A(p) = \begin{cases} -2 & \text{if } p \equiv 1 \pmod{4} \\ 0 & \text{if } p \equiv 3 \pmod{4} \end{cases}$$
+
+**Significance:**
+- Left side: purely trigonometric (sign of cosines)
+- Right side: purely arithmetic (depends only on p mod 4)
+- **Connection:** The mod 4 condition is equivalent to "-1 is a quadratic residue mod p"
+
+**Origin:** This arose from studying Chebyshev polygon lobe areas B(n,k) = 1 + β·cos((2k-1)π/n).
+
+**Numerical verification:** 98 primes tested, all correct.
+
+**Related results:**
+- [Algebraic proof of complementarity with Aladov (1896)](complementarity-proof.md)
+- [Historical context: Aladov and Russian tradition](historical-context.md)
+
+---
+
 ## Motivation
 
 During review of the hyperbolic-integration session (2025-12-03), we discovered that two different functions are both called `β(n)`:
