@@ -836,6 +836,15 @@ $$\text{Score}(n) = \frac{\text{BOTH}(n)}{n - 2}$$
 
 $$\text{BOTH}(n) = n \cdot \prod_{p \mid n} \left(1 - \frac{2}{p}\right)$$
 
+**Reference:** [MathOverflow: Consecutive integers coprime to a given number](https://mathoverflow.net/questions/412076/consecutive-integers-that-are-coprime-to-a-given-number)
+
+Answer by **Noam D. Elkies** (Harvard):
+> "For the first question it's n times the product of (p-2)/p over all prime factors of n
+> (regardless of multiplicity). [...] These all fall quickly to the Chinese remainder theorem."
+
+**Why it works:** For each prime p|n, exactly 2 residue classes mod p (namely 0 and -1)
+cause either k or k+1 to be divisible by p. Hence factor (p-2)/p for each prime.
+
 **Primality criterion follows immediately:**
 - For prime p: BOTH(p) = p · (1 - 2/p) = **p - 2**
 - For composite n: Product has multiple factors → BOTH(n) < n - 2
@@ -867,12 +876,14 @@ $$\text{BOTH}(n) = n \cdot \prod_{p \mid n} \left(1 - \frac{2}{p}\right)$$
 
 The following claims need verification against existing literature:
 
-1. **Explicit Chebyshev connection:** Is the link between T_{n+1}(x) - x·T_n(x) lobes and coprime consecutive pairs documented?
+1. ~~**BOTH primality test:**~~ → ❌ **KNOWN** (Elkies, MathOverflow) — classical NT via CRT
 
-2. **Sign asymmetry theorem:** A(p) = ∑_{primitive} sign(B(p,k) - 1) = ±2 for primes — is this known?
+2. **Explicit Chebyshev connection:** Is the link between T_{n+1}(x) - x·T_n(x) lobes and coprime consecutive pairs documented?
 
-3. **Polygon hierarchy splitting:** The observation that 2p-polygon lobes split p-polygon lobes, with fair lobe position depending on p mod 4 — is this documented?
+3. **Sign asymmetry theorem:** A(p) = ∑_{primitive} sign(B(p,k) - 1) = ±2 for primes — is this known?
 
-4. **β-function role:** The analysis showing β cancels in structural formulas but determines actual areas — is this perspective published?
+4. **Polygon hierarchy splitting:** The observation that 2p-polygon lobes split p-polygon lobes, with fair lobe position depending on p mod 4 — is this documented?
 
-**Status:** 🔬 UNDER INVESTIGATION — need literature search to confirm novelty or rediscovery
+5. **β-function role:** The analysis showing β cancels in structural formulas but determines actual areas — is this perspective published?
+
+**Status:** 🔬 UNDER INVESTIGATION — items 2-5 pending literature search
