@@ -887,3 +887,39 @@ The following claims need verification against existing literature:
 5. **β-function role:** The analysis showing β cancels in structural formulas but determines actual areas — is this perspective published?
 
 **Status:** 🔬 UNDER INVESTIGATION — items 2-5 pending literature search
+
+---
+
+### Literature Search Progress (Dec 4, 2025)
+
+#### Item 2: Chebyshev Connection — PARTIALLY KNOWN
+
+**Known fact discovered:**
+$$T_{n+1}(x) - x \cdot T_n(x) = -(1-x^2) \cdot U_{n-1}(x)$$
+
+This is a **standard Chebyshev identity**. The "lobes" are zeros of U_{n-1}(x) plus boundary ±1.
+
+**Sources checked:**
+- [Chebyshev Polynomials and Primality Testing (Math.SE)](https://math.stackexchange.com/questions/109214/chebyshev-polynomials-and-primality-testing) — irreducibility criterion, NO coprime connection
+- [Rayes et al. 2005: Factorization Properties of Chebyshev Polynomials](papers/rayes2005.pdf) — GCD, divisibility, finite field factorization, NO coprime connection
+- [Chebyshev Wikipedia](https://en.wikipedia.org/wiki/Chebyshev_polynomials) — standard properties
+- [Brilliant.org Chebyshev](https://brilliant.org/wiki/chebyshev-polynomials-definition-and-properties/) — T_n, U_n identities
+
+**Key observation:** Literature knows BOTH sides separately:
+- Number theory: BOTH(n) = n·∏(1-2/p) (coprime consecutive pairs)
+- Chebyshev theory: T_{n+1}-xT_n = -(1-x²)U_{n-1} (lobe polynomial)
+
+**BUT: No reference found connecting these two!**
+
+The "bridge" interpretation — that Chebyshev lobes geometrically encode coprime structure — appears **undocumented**.
+
+**Intermediate verdict:** The individual components are known; the CONNECTION may be novel.
+
+#### Items 3-5: Sign Asymmetry, Polygon Hierarchy, β-role
+
+**Search terms tried:**
+- "sign asymmetry primitive roots prime sum ±2" → No results
+- "Chebyshev polynomial lobe area integral n-gon" → No relevant results
+- Ramanujan sums use cos(2πkn/q), NOT our cos((2k-1)π/n) — different argument
+
+**Status:** No falsifying references found yet. Search continues.
