@@ -1229,4 +1229,7 @@ Paper: *"Distribution Properties of Consecutive Quadratic Residue Sequences"* (W
 
 **Conclusion:** Russian mathematical tradition maintains awareness of Aladov (1896), while most Western/Chinese literature does not. Our Chebyshev polynomial connection appears in **neither** tradition.
 
-**Further reading:** [Historical Context document](historical-context.md)
+**Further reading:**
+- [Historical Context: Aladov and Russian Mathematical Tradition](historical-context.md)
+- [The Aladov Mystery: Who Was N. S. Aladov?](aladov-mystery.md)
+- [Algebraic Proof: Why A(p) and Aladov Are Complementary](complementarity-proof.md)
