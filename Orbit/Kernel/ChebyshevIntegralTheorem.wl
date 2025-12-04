@@ -177,6 +177,69 @@ Compare with A(n,k) which has DC = 1/n.
 
 See: CompletedLobeArea, ChebyshevLobeAreaSymbolic";
 
+BetaGeometric::usage = "BetaGeometric[n] returns the geometric beta from Chebyshev lobe areas.
+
+Formula: β_geom(n) = n² cos(π/n) / (4 - n²)
+
+This is the natural beta arising from the Fourier decomposition of Chebyshev lobe areas.
+It determines the amplitude of oscillation in B(n,k) = 1 + β(n) cos((2k-1)π/n).
+
+Properties:
+  - Poles at n = ±2 (removable singularities, cos(π/2) = 0 in numerator)
+  - Limit as n → ∞: -1
+  - β_geom(2) = -π/4 (L'Hôpital limit)
+  - Always NEGATIVE for n > 2
+
+Geometric meaning:
+  - Edge lobes (k = 1, n) are SMALL
+  - Center lobes (k ≈ n/2) are LARGE
+  - This matches actual Chebyshev polynomial behavior
+
+See: BetaResidual, CompletedLobeAreaFourier";
+
+BetaResidual::usage = "BetaResidual[n] returns the 'residual' beta function.
+
+Formula: β_res(n) = (n - cot(π/n)) / (4n)
+
+CAUTION: This is NOT the geometric beta from Chebyshev lobe areas!
+It was constructed in the hyperbolic-integration session to have poles at n = 1/k,
+which produce the Dirichlet eta function η(s) via contour integration.
+
+Properties:
+  - Poles at n = 1/k for all k ∈ ℤ \\ {0}
+  - Residue at n = 1/k is 1/(4πk)
+  - Limit as n → ∞: (π-1)/(4π) ≈ 0.1704
+  - β_res(2) = 1/4
+
+Compare with geometric beta (from CompletedLobeAreaFourier):
+  β_geom(n) = n² cos(π/n) / (4 - n²)
+  - Poles at n = ±2 (removable)
+  - Limit as n → ∞: -1
+
+The two betas are related by an exact transformation involving θ = π/n.
+See: docs/sessions/2025-12-04-beta-functions-analysis/README.md
+
+See: CompletedLobeAreaResidual";
+
+CompletedLobeAreaResidual::usage = "CompletedLobeAreaResidual[n, k] returns B(n,k) using BetaResidual.
+
+Formula: B_res(n,k) = 1 + β_res(n) cos((2k-1)π/n)
+
+CAUTION: This does NOT represent actual Chebyshev lobe areas!
+It is an analytical construction for the η(s) connection.
+
+Key differences from CompletedLobeAreaFourier:
+  - Uses β_res > 0 (positive) vs β_geom < 0 (negative)
+  - Lobe distribution is INVERTED (larger at edges, smaller in center)
+  - Both sum to n over k ∈ [0, n]
+  - Both give the same n^{-s} identity (β cancels)
+  - Only this version gives η(s) via contour integration over n
+
+Origin: Constructed via Mittag-Leffler to have poles at n = 1/k.
+See: docs/sessions/2025-12-04-beta-functions-analysis/README.md
+
+See: BetaResidual, CompletedLobeAreaFourier";
+
 ChebyshevLobeAreaIntegral::usage = "ChebyshevLobeAreaIntegral[n, m] computes the continuous integral of lobe areas.
 
 Formula:
@@ -749,8 +812,21 @@ ChebyshevLobeAreaSymbolic[n_, k_] :=
    Analogous to Riemann xi function's double even symmetry. *)
 CompletedLobeArea[n_, k_] := n * ChebyshevLobeAreaSymbolic[n, k]
 
+(* Geometric beta from Chebyshev lobe areas - the natural/physical one *)
+BetaGeometric[n_] := n^2 Cos[Pi/n] / (4 - n^2)
+
 (* Fourier form of completed lobe area: DC=1 + single harmonic *)
-CompletedLobeAreaFourier[n_, k_] := 1 + (n^2 Cos[Pi/n] / (4 - n^2)) Cos[(2 k - 1) Pi / n]
+CompletedLobeAreaFourier[n_, k_] := 1 + BetaGeometric[n] Cos[(2 k - 1) Pi / n]
+
+(* Residual beta - analytical construction for η(s) connection
+   WARNING: This is NOT the geometric beta from Chebyshev lobes!
+   Origin unclear - appeared in hyperbolic-integration session.
+   See: docs/sessions/2025-12-04-beta-functions-analysis/README.md *)
+BetaResidual[n_] := (n - Cot[Pi/n]) / (4 n)
+
+(* Completed lobe area using residual beta
+   WARNING: Does NOT represent actual lobe areas - analytical construction only *)
+CompletedLobeAreaResidual[n_, k_] := 1 + BetaResidual[n] Cos[(2 k - 1) Pi / n]
 
 (* Continuous integral of lobe areas - soft-floor function
    ∫_{-mn}^{mn} LobeArea[n,k] dk = 2m - σ(n) Sin[2mπ]/π
