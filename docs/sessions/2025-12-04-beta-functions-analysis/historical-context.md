@@ -122,6 +122,48 @@ This uniform bound, valid for all r, superseded all previous ad hoc methods.
 | 1906 | Exact formulas for length 2–3 | Jacobsthal | Berlin |
 | 1930s | Extension to length ≥ 4 | Davenport | Cambridge |
 | 1948 | Definitive O(√p) bound | Weil | — |
+| 2019 | Unpublished K3 surface result | Goncharova | Russia |
+| 2024 | Algebraic geometry formalization | Kiritchenko et al. | Moscow/Marseille/Berkeley |
+
+---
+
+## The Modern Russian Continuation (2024)
+
+### Lydia Goncharova
+
+**Lydia Goncharova** was a Russian mathematician whose unpublished work on quadratic residue patterns remained in notes and email correspondence until her death. Her main result concerned squares whose differences are also squares—a problem that leads to counting points on a K3 surface.
+
+In December 2019, she discussed her result with Valentina Kiritchenko. Unfortunately, she never wrote down her elementary proof, and it could not be recovered from her notes.
+
+### Kiritchenko, Tsfasman, Vlăduț, and Zakharevich (2024)
+
+A team of Russian and international mathematicians formalized and proved Goncharova's result using algebraic geometry. Their paper *"Quadratic residue patterns, algebraic curves and a K3 surface"* (arXiv:2403.16326) is dedicated to her memory.
+
+**Crucially, they cite Aladov (1896)** in Section 2.1 "Early history":
+> "First works known to us dedicated to ℓ ≥ 2 date back to the end of the XIX century. Namely, Aladov's paper [A] gives the answer for ℓ = 2"
+
+This demonstrates that **Russian mathematicians maintain awareness of Aladov** while most Western literature does not.
+
+**Authors and affiliations:**
+- Valentina Kiritchenko (HSE University, Moscow, Russia)
+- Michael Tsfasman (Higher School of Modern Mathematics MIPT, Russia)
+- Serge Vlăduț (Aix Marseille Université, CNRS, France)
+- Ilya Zakharevich (University of California, Berkeley, USA)
+
+**Source:** [arXiv:2403.16326](https://arxiv.org/abs/2403.16326)
+
+### The Bibliographic Divergence
+
+A striking pattern emerges when comparing Russian and Western literature on quadratic residue patterns:
+
+| Source | Cites Aladov (1896)? | Earliest reference |
+|--------|---------------------|-------------------|
+| Kiritchenko et al. 2024 | ✅ Yes | Aladov 1896 |
+| Conrad (expository) | ✅ Yes | Aladov 1896 |
+| Wang & Fang 2023 (Wiley) | ❌ No | Carlitz 1956 |
+| MathOverflow discussions | ❌ No | Davenport 1939 |
+
+This divergence illustrates how **mathematical knowledge fragments along linguistic and institutional lines**. The Russian tradition preserved awareness of Aladov; the anglophone tradition "forgot" him until Conrad's expository work.
 
 ---
 

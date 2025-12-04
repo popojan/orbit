@@ -1136,3 +1136,45 @@ is a root of Chebyshev T_n(x).
 2. The **geometric interpretation** via Chebyshev lobes
 3. The **polygon hierarchy** observation (2p splits p)
 4. The **β-cancellation** analysis
+
+---
+
+### Russian Sources Search (Dec 4, 2025)
+
+Extended literature search covering Russian mathematical tradition.
+
+#### Kiritchenko, Tsfasman, Vlăduț, Zakharevich (2024)
+
+Paper: *"Quadratic residue patterns, algebraic curves and a K3 surface"* (arXiv:2403.16326)
+
+**Key findings:**
+- ✅ **Cites Aladov (1896)** — Section 2.1 "Early history": "Namely, Aladov's paper [A] gives the answer for ℓ = 2"
+- ✅ **Extensive mod 4 analysis** — exact formulas matching Aladov's
+- ✅ **Preserves Goncharova's unpublished work** — K3 surface result
+- ❌ **No Chebyshev polynomial connection** — uses algebraic geometry (curves, Jacobians, K3 surfaces)
+- ❌ **No sign asymmetry formula like our A(p)**
+
+**Authors:** Moscow HSE, MIPT (Russia), Aix-Marseille (France), UC Berkeley (USA)
+
+#### Wang & Fang (2023)
+
+Paper: *"Distribution Properties of Consecutive Quadratic Residue Sequences"* (Wiley)
+
+**Key findings:**
+- ❌ **Does NOT cite Aladov** — starts history at Carlitz (1956)
+- ✅ Has mod 4 structure (works with p ≡ 3 mod 4 specifically)
+- ❌ No Chebyshev connection
+- ❌ Character sum methods only
+
+#### The Bibliographic Divergence
+
+| Source | Cites Aladov? | Chebyshev? | Our A(p)? |
+|--------|---------------|------------|-----------|
+| Kiritchenko et al. 2024 (Russian) | ✅ Yes | ❌ No | ❌ No |
+| Wang & Fang 2023 (Chinese) | ❌ No | ❌ No | ❌ No |
+| Conrad (expository, USA) | ✅ Yes | ❌ No | ❌ No |
+| MathOverflow discussions | ❌ No | ❌ No | ❌ No |
+
+**Conclusion:** Russian mathematical tradition maintains awareness of Aladov (1896), while most Western/Chinese literature does not. Our Chebyshev polynomial connection appears in **neither** tradition.
+
+**Further reading:** [Historical Context document](historical-context.md)
