@@ -1043,6 +1043,40 @@ Possible deep connection? Needs investigation.
 **Possible deep connection:** Both phenomena arise from the same mod 4 structure of primes.
 The sign of cos((2k-1)π/p) for primitive k may be related to quadratic character!
 
+#### Aladov's Exact Formulas (1896) — HIGHLY RELEVANT
+
+**Primary reference:** N. S. Aladov, "Sur la distribution des résidus quadratiques et non-quadratiques d'un nombre premier P dans la suite 1, 2, . . . , P − 1," (Russian) *Mat. Sb.* **18** (1896), 61–75. [URL](http://mi.mathnet.ru/eng/msb/v18/i1/p61)
+
+**Expository source:** Keith Conrad, ["Quadratic Residue Patterns Modulo a Prime"](https://kconrad.math.uconn.edu/blurbs/ugradnumthy/QuadraticResiduePatterns.pdf) (contains modern exposition and historical overview)
+
+Aladov (1896) found **exact formulas** for consecutive QR patterns depending on p mod 4:
+
+| p mod 4 | N_p(+,+) | N_p(+,-) | N_p(-,+) | N_p(-,-) |
+|---------|----------|----------|----------|----------|
+| **1** | (p-5)/4 | (p-1)/4 | (p-1)/4 | (p-1)/4 |
+| **3** | (p-3)/4 | **(p+1)/4** | (p-3)/4 | (p-3)/4 |
+
+**Key observations:**
+- For p ≡ 1 (mod 4): Pattern (+,+) is **under-represented** by exactly 1
+- For p ≡ 3 (mod 4): Pattern (+,-) is **over-represented** by exactly 1
+- The "anomalous" pattern differs based on p mod 4
+
+**Connection to our work:**
+- Aladov counts (a, a+1) pairs by QR pattern — uses Legendre symbols
+- We count (k-1, k) pairs by coprimality — uses gcd
+- Both show **exact mod 4 dependence** in the count deviations
+- The STRUCTURE is identical even though the QUANTITY measured differs
+
+**Historical chain:**
+- Aladov (1896): Exact length-2 formulas
+- von Sterneck (1898): Length 3-4 with restrictions
+- Jacobsthal (1906): Exact length 2-3 formulas
+- Davenport (1930s): Extended to length ≥ 4
+- Weil (1948): Definitive O(√p) bound via Riemann hypothesis for curves
+
+**Verdict:** The mod 4 structure in consecutive-pair counting is **classical** (Aladov 1896).
+Our specific formula A(p) = ±2 or 0 may be a different manifestation of the same phenomenon.
+
 ### Convention Note: Sign Asymmetry A(p)
 
 **Fundamental result (dichotomy):**
@@ -1088,12 +1122,17 @@ is a root of Chebyshev T_n(x).
 | BOTH(n) = n·∏(1-2/p) | ❌ KNOWN | Elkies (CRT) |
 | T_{n+1}-xT_n = -(1-x²)U_{n-1} | ❌ KNOWN | Standard Chebyshev |
 | Bridge: Chebyshev lobes ↔ coprime pairs | ❓ UNCLEAR | No direct reference found |
-| Sign asymmetry A(p) ∈ {±2, 0} | ❓ RELATED | QR excess has **reversed** mod 4 structure |
+| Sign asymmetry A(p) ∈ {±2, 0} | ❓ RELATED | **Aladov (1896)** has exact mod 4 formulas for consecutive QR patterns |
 | Polygon hierarchy (mod 4) | ✓ NOVEL? | No reference found |
 | β-function cancellation | ✓ NOVEL? | No analog found |
 
-**Key insight from search:** Our A(p) and quadratic excess E(p) have **complementary** mod 4 dependence:
-- E(p): balanced when p ≡ 1 (mod 4)
-- A(p): balanced when p ≡ 3 (mod 4)
+**Key insight from Conrad/Aladov:**
+- Aladov (1896) proved **exact** mod 4 dependence for consecutive QR pattern counts
+- Our A(p) has analogous mod 4 structure but measures different quantity (sign of cosine vs Legendre symbol)
+- The underlying cause is the same: -1 is QR iff p ≡ 1 (mod 4)
 
-This duality suggests both phenomena arise from the same root cause (-1 is QR iff p ≡ 1 mod 4) but measure **dual quantities**.
+**What remains potentially novel:**
+1. The **specific formula** A(p) = 2·sign(β)·𝟙_{p≡1(mod 4)} for sign sums
+2. The **geometric interpretation** via Chebyshev lobes
+3. The **polygon hierarchy** observation (2p splits p)
+4. The **β-cancellation** analysis
