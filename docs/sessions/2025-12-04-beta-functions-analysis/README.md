@@ -1139,7 +1139,59 @@ is a root of Chebyshev T_n(x).
 
 ---
 
-### Russian Sources Search (Dec 4, 2025)
+### Numerical Comparison: A(p) vs Aladov (Dec 4, 2025)
+
+### Definitions
+
+**Our sign asymmetry A(p):**
+$$A(p) = \sum_{k=1}^{p-1} \text{sign}\left(\cos\frac{(2k-1)\pi}{p}\right)$$
+
+**Aladov's consecutive pair asymmetry:**
+$$\text{Alad}_2(p) = N_p(+,-) - N_p(-,+)$$
+
+where $N_p(\epsilon_1, \epsilon_2)$ counts consecutive pairs $(k, k+1)$ with Legendre symbols $(\epsilon_1, \epsilon_2)$.
+
+### Experimental Results (98 primes tested)
+
+| p mod 4 | A(p) | Alad₂(p) | Interpretation |
+|---------|------|----------|----------------|
+| **1** | **-2** | 0 | Cosine signs asymmetric |
+| **3** | 0 | **1** | QR pairs asymmetric |
+
+**Verified formula:**
+$$A(p) = -2 \cdot \mathbf{1}_{p \equiv 1 \pmod{4}}$$
+
+### The Complementarity
+
+A(p) and Aladov's asymmetry are **mod 4 complementary**:
+- A(p) ≠ 0 exactly when Alad₂(p) = 0
+- A(p) = 0 exactly when Alad₂(p) ≠ 0
+
+Both depend on whether **-1 is a quadratic residue mod p** (true iff p ≡ 1 mod 4).
+
+### Not Trivial!
+
+These are genuinely different quantities:
+- **Aladov**: Local property (consecutive pairs in sequence 1,2,...,p-1)
+- **A(p)**: Global property (sign distribution around the circle)
+
+Gauss sum analysis shows they are NOT simple transforms of each other:
+- Gauss sum |G|² = p (exactly)
+- Our exponential sum |E|² ~ p² (different scaling)
+
+### Open Question
+
+**Why are they complementary?**
+
+Both arise from -1 being QR iff p ≡ 1 (mod 4), but the mechanism connecting:
+- sign(cos((2k-1)π/p)) distribution
+- consecutive Legendre symbol patterns
+
+remains unclear. This may be a deeper number-theoretic relationship worth investigating.
+
+---
+
+## Russian Sources Search (Dec 4, 2025)
 
 Extended literature search covering Russian mathematical tradition.
 

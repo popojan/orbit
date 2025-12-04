@@ -63,6 +63,12 @@ Run `make preview` to generate HTML previews of all documentation.
 
 See [STATUS.md](docs/STATUS.md) for current status and [lobe-area-kernel.tex](docs/drafts/lobe-area-kernel.tex) for the mathematical details.
 
+### A Historical Note
+
+During literature review, we traced the history of quadratic residue pattern counting back to **N. S. Aladov (1896)** — a mathematician virtually unknown in anglophone literature. This attribution comes from Keith Conrad's [expository notes](https://kconrad.math.uconn.edu/blurbs/ugradnumthy/QuadraticResiduePatterns.pdf); Russian mathematicians (Kiritchenko, Tsfasman, Vlăduț) have maintained awareness of Aladov independently.
+
+Aladov's identity remains a minor historical mystery — see [our investigation](docs/sessions/2025-12-04-beta-functions-analysis/aladov-mystery.md).
+
 ## Status
 
 This work represents personal mathematical explorations and computational experiments. **Nothing here has been peer-reviewed.** All results should be considered provisional and subject to revision.
