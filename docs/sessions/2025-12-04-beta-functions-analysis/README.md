@@ -343,10 +343,10 @@ The negative β_geom arises naturally from Chebyshev geometry:
 
 ### Visualizations
 
-- `lobe_comparison_n7.png` - A_geom vs A_res for n=7
-- `lobe_comparison_n20.png` - A_geom vs A_res for n=20
-- `B_vs_x_linear.png` - B as linear function of x
-- `B_vs_k.png` - B as function of lobe index k
+- `figures/lobe_comparison_n7.png` - A_geom vs A_res for n=7
+- `figures/lobe_comparison_n20.png` - A_geom vs A_res for n=20
+- `figures/B_vs_x_linear.png` - B as linear function of x
+- `figures/B_vs_k.png` - B as function of lobe index k
 
 ## Appendix: Symmetrized Trigonometric Functions
 
@@ -901,7 +901,7 @@ This is a **standard Chebyshev identity**. The "lobes" are zeros of U_{n-1}(x) p
 
 **Sources checked:**
 - [Chebyshev Polynomials and Primality Testing (Math.SE)](https://math.stackexchange.com/questions/109214/chebyshev-polynomials-and-primality-testing) — irreducibility criterion, NO coprime connection
-- [Rayes et al. 2005: Factorization Properties of Chebyshev Polynomials](papers/rayes2005.pdf) — GCD, divisibility, finite field factorization, NO coprime connection
+- Rayes et al. 2005: "Factorization Properties of Chebyshev Polynomials" — GCD, divisibility, finite field factorization, NO coprime connection
 - [Chebyshev Wikipedia](https://en.wikipedia.org/wiki/Chebyshev_polynomials) — standard properties
 - [Brilliant.org Chebyshev](https://brilliant.org/wiki/chebyshev-polynomials-definition-and-properties/) — T_n, U_n identities
 
