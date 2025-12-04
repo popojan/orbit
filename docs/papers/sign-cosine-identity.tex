@@ -1,0 +1,180 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}{Remark}
+
+\title{A Sign-Cosine Identity and Its Connection to Quadratic Residues}
+\author{Jan Popelka}
+\date{December 2025}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We prove an elementary identity for the sum of signs of cosines at odd multiples of $\pi/p$ for prime $p$. The result exhibits a dichotomy depending on $p \bmod 4$, mirroring classical results on quadratic residue patterns dating to Aladov (1896). We establish a connection between this trigonometric sum and the theory of quadratic residues, showing that both phenomena arise from the same underlying arithmetic structure.
+\end{abstract}
+
+\section{Introduction}
+
+For an odd prime $p$, consider the sum
+\begin{equation}\label{eq:Ap}
+A(p) = \sum_{k=1}^{p-1} \operatorname{sign}\left(\cos\frac{(2k-1)\pi}{p}\right).
+\end{equation}
+
+This sum arises naturally in the study of Chebyshev polynomial lobe areas, where one considers functions of the form $B(n,k) = 1 + \beta\cos\frac{(2k-1)\pi}{n}$ for geometric constants $\beta$.
+
+The main result of this note is:
+
+\begin{theorem}\label{thm:main}
+For any odd prime $p$,
+\[
+A(p) = \begin{cases}
+-2 & \text{if } p \equiv 1 \pmod{4}, \\
+0 & \text{if } p \equiv 3 \pmod{4}.
+\end{cases}
+\]
+Equivalently, $A(p) = -(1 + (-1)^{(p-1)/2})$.
+\end{theorem}
+
+The mod~4 dichotomy in this result is not coincidental. The condition $p \equiv 1 \pmod 4$ is equivalent to $-1$ being a quadratic residue modulo $p$, a fact that underlies both our theorem and classical results on consecutive quadratic residue patterns.
+
+\section{Historical Context}
+
+The study of consecutive quadratic residue patterns modulo a prime $p$ dates back to \textbf{N.~S.~Aladov} (1896), who proved exact formulas for the counts $N_p(\varepsilon_1, \varepsilon_2)$ of consecutive pairs $(k, k+1)$ with prescribed Legendre symbols $(\varepsilon_1, \varepsilon_2)$ \cite{Aladov1896}.
+
+Aladov's results show that these counts depend on $p \bmod 4$:
+\begin{center}
+\begin{tabular}{c|cccc}
+$p \bmod 4$ & $N_p(+,+)$ & $N_p(+,-)$ & $N_p(-,+)$ & $N_p(-,-)$ \\
+\hline
+1 & $(p-5)/4$ & $(p-1)/4$ & $(p-1)/4$ & $(p-1)/4$ \\
+3 & $(p-3)/4$ & $(p+1)/4$ & $(p-3)/4$ & $(p-3)/4$
+\end{tabular}
+\end{center}
+
+The work was extended by von~Sterneck (1898) and Jacobsthal (1906), with the definitive asymptotic result established by Weil (1948) as a consequence of the Riemann hypothesis for curves over finite fields.
+
+Our Theorem~\ref{thm:main} concerns a different quantity---a sum of signs of cosines rather than counts of Legendre symbol patterns---but exhibits the same mod~4 structure. In Section~\ref{sec:connection}, we explain this connection.
+
+\begin{remark}
+Aladov's priority was preserved in Russian mathematical literature (see Kiritchenko et al.\ \cite{KTVZ2024}) but remained largely unknown in anglophone sources until Keith Conrad's expository notes \cite{Conrad}.
+\end{remark}
+
+\section{Proof of the Main Theorem}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Let $N^+$ denote the number of $k \in \{1, \ldots, p-1\}$ with $\cos\frac{(2k-1)\pi}{p} > 0$, and let $N^- = (p-1) - N^+$. Then
+\[
+A(p) = N^+ - N^- = 2N^+ - (p-1).
+\]
+
+The cosine is positive when its argument lies in $(0, \pi/2) \cup (3\pi/2, 2\pi)$. For $\theta_k = \frac{(2k-1)\pi}{p}$, this gives two conditions:
+
+\begin{enumerate}
+\item[(i)] $\frac{(2k-1)\pi}{p} < \frac{\pi}{2}$, i.e., $k < \frac{p+2}{4}$;
+\item[(ii)] $\frac{(2k-1)\pi}{p} > \frac{3\pi}{2}$, i.e., $k > \frac{3p+2}{4}$.
+\end{enumerate}
+
+\textbf{Case 1:} $p \equiv 1 \pmod 4$. Write $p = 4m + 1$.
+
+From (i): $k < m + \frac{3}{4}$, so $k \in \{1, \ldots, m\}$. Count: $m$.
+
+From (ii): $k > 3m + \frac{5}{4}$, so $k \in \{3m+2, \ldots, 4m\}$. Count: $m - 1$.
+
+Thus $N^+ = m + (m-1) = 2m - 1$, and
+\[
+A(p) = 2(2m-1) - 4m = -2.
+\]
+
+\textbf{Case 2:} $p \equiv 3 \pmod 4$. Write $p = 4m + 3$.
+
+From (i): $k < m + \frac{5}{4}$, so $k \in \{1, \ldots, m+1\}$. Count: $m + 1$.
+
+From (ii): $k > 3m + \frac{11}{4}$, so $k \in \{3m+3, \ldots, 4m+2\}$. Count: $m$.
+
+Thus $N^+ = (m+1) + m = 2m + 1$, and
+\[
+A(p) = 2(2m+1) - (4m+2) = 0.
+\]
+
+Finally, we verify the closed form: $(-1)^{(p-1)/2} = 1$ when $p \equiv 1 \pmod 4$ (since $(p-1)/2$ is even), and $(-1)^{(p-1)/2} = -1$ when $p \equiv 3 \pmod 4$. Hence $-(1 + (-1)^{(p-1)/2})$ equals $-2$ and $0$ respectively.
+\end{proof}
+
+\section{Connection to Quadratic Residues}\label{sec:connection}
+
+The appearance of $(-1)^{(p-1)/2}$ in our theorem is significant: this expression equals the Legendre symbol $\left(\frac{-1}{p}\right)$, which determines whether $-1$ is a quadratic residue modulo $p$.
+
+To understand the connection more deeply, define the \emph{character-weighted sum}
+\[
+W(p) = \sum_{k=1}^{p-1} \chi(k) \cdot \operatorname{sign}\left(\cos\frac{(2k-1)\pi}{p}\right),
+\]
+where $\chi(k) = \left(\frac{k}{p}\right)$ is the Legendre symbol.
+
+\begin{theorem}\label{thm:Wp}
+For any prime $p \equiv 3 \pmod 4$, we have $W(p) = 2$.
+\end{theorem}
+
+The proof uses the symmetry $\chi(p-k) = \chi(-1)\chi(k) = -\chi(k)$ for $p \equiv 3 \pmod 4$, which causes cancellation in pairs $(k, p-k)$ except at a single boundary point. This boundary point $k_B = \lfloor(p+1)/4\rfloor$ satisfies $k_B \equiv (2^{-1})^2 \pmod p$, hence is always a quadratic residue.
+
+The relation between $A(p)$ and $W(p)$ is:
+\[
+A(p) = A_{\text{QR}} + A_{\text{QNR}}, \qquad W(p) = A_{\text{QR}} - A_{\text{QNR}},
+\]
+where $A_{\text{QR}}$ and $A_{\text{QNR}}$ are the contributions from quadratic residues and non-residues respectively.
+
+For $p \equiv 3 \pmod 4$: $W(p) = 2$ and $A(p) = 0$ imply $A_{\text{QR}} = 1$ and $A_{\text{QNR}} = -1$---exact cancellation.
+
+For $p \equiv 1 \pmod 4$: The pairing symmetry is different ($\chi(p-k) = \chi(k)$), preventing cancellation and yielding $A(p) = -2$.
+
+\section{Geometric Origin}
+
+This investigation arose from studying Chebyshev polynomial lobe areas. For the $n$-gon Chebyshev polygon, the normalized lobe area at position $k$ is
+\[
+B(n,k) = 1 + \beta_{\text{geom}}(n) \cos\frac{(2k-1)\pi}{n},
+\]
+where $\beta_{\text{geom}}(n) = \frac{n^2\cos(\pi/n)}{4-n^2}$ is a geometric constant derived from the Chebyshev polynomial $T_n(x)$.
+
+The sign of $B(n,k) - 1$ is determined by $\operatorname{sign}(\cos\frac{(2k-1)\pi}{n})$, leading naturally to the sum $A(p)$ when $n = p$ is prime.
+
+This provides a geometric interpretation: Theorem~\ref{thm:main} counts how Chebyshev polynomial lobes distribute around the unit circle for prime-sided polygons, with the distribution depending on the prime's residue class modulo 4.
+
+\begin{thebibliography}{99}
+
+\bibitem{Aladov1896}
+N.~S.~Aladov,
+\emph{Sur la distribution des r\'esidus quadratiques et non-quadratiques d'un nombre premier $P$ dans la suite $1, 2, \ldots, P-1$},
+Mat.\ Sb.\ \textbf{18} (1896), 61--75.
+\url{http://mi.mathnet.ru/eng/msb/v18/i1/p61}
+
+\bibitem{Conrad}
+K.~Conrad,
+\emph{Quadratic Residue Patterns Modulo a Prime},
+expository notes, University of Connecticut.
+\url{https://kconrad.math.uconn.edu/blurbs/ugradnumthy/QuadraticResiduePatterns.pdf}
+
+\bibitem{KTVZ2024}
+V.~Kiritchenko, M.~Tsfasman, S.~Vl\u{a}du\c{t}, I.~Zakharevich,
+\emph{Quadratic residue patterns, algebraic curves and a K3 surface},
+arXiv:2403.16326 (2024).
+
+\bibitem{Jacobsthal1906}
+E.~Jacobsthal,
+\emph{Anwendung einer Formel aus der Theorie der quadratischen Reste},
+Dissertation, University of Berlin, 1906.
+
+\bibitem{Weil1948}
+A.~Weil,
+\emph{On some exponential sums},
+Proc.\ Nat.\ Acad.\ Sci.\ U.S.A.\ \textbf{34} (1948), 204--207.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-04 16:04:58
+**Generated:** 2025-12-04 19:49:15
 
 ## Theorems (Master References)
 
@@ -21,31 +21,15 @@
 ## Recent Sessions (Last 10)
 
 - [Session: Two Beta Functions - Analysis and Disambiguation](sessions/2025-12-04-beta-functions-analysis/README.md) *(2025-12-04)*
-- [Session: Random Matrix Theory and Chebyshev Lobe Areas](sessions/2025-12-03-rmt-chebyshev-connection/README.md) *(2025-12-03)*
+- [Rigorous Proof: Sign Sum of Cosines Identity](sessions/2025-12-04-beta-functions-analysis/main-theorem-proof.md) *(2025-12-04)*
+- [Algebraic Proof: Why A(p) and Aladov's Asymmetry Are Complementary](sessions/2025-12-04-beta-functions-analysis/complementarity-proof.md) *(2025-12-04)*
+- [The Aladov Mystery: Who Was N. S. Aladov?](sessions/2025-12-04-beta-functions-analysis/aladov-mystery.md) *(2025-12-04)*
+- [Historical Context: Quadratic Residue Patterns and the Russian Mathematical Tradition](sessions/2025-12-04-beta-functions-analysis/historical-context.md) *(2025-12-04)*
+- [Session: Random Matrix Theory and Chebyshev Lobe Areas](sessions/2025-12-03-rmt-chebyshev-connection/README.md) *(2025-12-04)*
 - [Session: Primitive Lobe Signs and Number Theory](sessions/2025-12-03-primitive-lobe-signs/README.md) *(2025-12-03)*
 - [Session: Hyperbolic Integration of B(n,k)](sessions/2025-12-03-hyperbolic-integration/README.md) *(2025-12-03)*
 - [Session: Exact n^{-s} Identity via B(n,k)](sessions/2025-12-02-eta-identity/README.md) *(2025-12-03)*
 - [Rotated Chebyshev Polygon Functions](sessions/2025-12-01-chebyshev-polygon-transforms/rotated-polygon-functions.md) *(2025-12-02)*
-- [Complex Analysis of the Completed Lobe Area Function B(n,k)](sessions/2025-12-02-chebyshev-complex-analysis/README.md) *(2025-12-02)*
-- [Chebyshev Polygon Function Transforms](sessions/2025-12-01-chebyshev-polygon-transforms/README.md) *(2025-12-02)*
-- [Retiring Pi: A Wildberger-Style Look at Chebyshev Lobe Areas](sessions/2025-12-01-wildberger-chebyshev/README.md) *(2025-12-01)*
-- [Multiplicative Decomposition of Chebyshev Lobe Areas](sessions/2025-12-01-multiplicative-decomposition/README.md) *(2025-12-01)*
-
-## A Note on Historical Sources
-
-During literature review for this project, we encountered Keith Conrad's expository notes, which trace the history of quadratic residue pattern counting back to **N. S. Aladov (1896)** — a mathematician virtually unknown in anglophone literature.
-
-This is not our discovery; Conrad did the historical work. We mention it here because:
-
-1. It illustrates how mathematical knowledge fragments along linguistic and geopolitical lines
-2. Expository work (like Conrad's) deserves recognition for preserving intellectual heritage
-3. Anyone building on this area should know the actual historical priority
-
-Russian mathematicians (e.g., Kiritchenko, Tsfasman, Vladuts) have maintained awareness of Aladov independently, but this knowledge did not cross into Western number theory literature until Conrad's work.
-
-**Further reading:** [Historical Context: Quadratic Residue Patterns and the Russian Mathematical Tradition](sessions/2025-12-04-beta-functions-analysis/historical-context.md)
-
----
 
 ## Navigation
 
