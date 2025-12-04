@@ -923,3 +923,75 @@ The "bridge" interpretation — that Chebyshev lobes geometrically encode coprim
 - Ramanujan sums use cos(2πkn/q), NOT our cos((2k-1)π/n) — different argument
 
 **Status:** No falsifying references found yet. Search continues.
+
+---
+
+### Related Known Results (Reference Points)
+
+The following classical results are **structurally similar** but **not identical** to our claims.
+Documented here as reference for future deeper search.
+
+#### Ramanujan Sums (1918)
+
+**Definition:**
+$$c_q(n) = \sum_{\substack{k=1 \\ \gcd(k,q)=1}}^{q} e^{2\pi i k n / q} = \sum_{\substack{k=1 \\ \gcd(k,q)=1}}^{q} \cos\left(\frac{2\pi k n}{q}\right)$$
+
+**Applications:**
+- Fourier-like expansions of arithmetic functions (τ(n), φ(n), μ(n))
+- Representation of numbers as sums of squares
+- Vinogradov's theorem (odd numbers as sum of 3 primes)
+- Modern: signal processing, denoising, DFT acceleration
+
+**Key difference from our formula:**
+| Aspect | Ramanujan | Our formula |
+|--------|-----------|-------------|
+| Argument | cos(2πkn/q) | cos((2k-1)π/n) |
+| Variables | Two (k, n) | One effective (k/n ratio) |
+| Sum over | gcd(k,q) = 1 | gcd(k,n)=1 AND gcd(k-1,n)=1 |
+
+**Reference:** [MathWorld: Ramanujan's Sum](https://mathworld.wolfram.com/RamanujansSum.html)
+
+#### Möbius Function as Sum of Primitive Roots of Unity
+
+**Known theorem:**
+$$\mu(n) = \sum_{\substack{k=1 \\ \gcd(k,n)=1}}^{n} e^{2\pi i k / n}$$
+
+The Möbius function μ(n) equals the sum of primitive n-th roots of unity.
+
+**Corollary (Gauss):** For prime p, sum of primitive roots mod p ≡ μ(p-1) (mod p).
+
+**Key difference from our sign asymmetry:**
+| Aspect | Known μ(n) result | Our A(p) = ±2 |
+|--------|-------------------|---------------|
+| Sum of | exp(2πik/n) | sign(cos((2k-1)π/n)) |
+| Over | gcd(k,n) = 1 | BOTH-primitive (gcd(k,n)=gcd(k-1,n)=1) |
+| Result | μ(n) ∈ {-1, 0, 1} | ±2 for primes |
+| Depends on | Squarefreeness of n | p mod 4 |
+
+**Reference:** [Math.SE: Möbius as sum of primitive roots](https://math.stackexchange.com/questions/1892410/the-m%C3%B6bius-function-is-the-sum-of-the-primitive-nth-roots-of-unity)
+
+#### Gauss Sums and mod 4 Dichotomy
+
+**Known:** Quadratic Gauss sum evaluation depends on k mod 4:
+- k ≡ 0 (mod 4): (1+i)√k
+- k ≡ 1 (mod 4): √k
+- k ≡ 2 (mod 4): 0
+- k ≡ 3 (mod 4): i√k
+
+**Our polygon hierarchy** also shows mod 4 dependence (p ≡ 1 vs 3 determines which lobe splits).
+Possible deep connection? Needs investigation.
+
+**Reference:** [Wikipedia: Quadratic Gauss sum](https://en.wikipedia.org/wiki/Quadratic_Gauss_sum)
+
+---
+
+### Summary: What's Known vs Potentially Novel
+
+| Claim | Status | Known Analog |
+|-------|--------|--------------|
+| BOTH(n) = n·∏(1-2/p) | ❌ KNOWN | Elkies (CRT) |
+| T_{n+1}-xT_n = -(1-x²)U_{n-1} | ❌ KNOWN | Standard Chebyshev |
+| Bridge: Chebyshev lobes ↔ coprime pairs | ❓ UNCLEAR | No direct reference |
+| Sign asymmetry A(p) = ±2 | ❓ NOT FOUND | μ(n) sum is similar but different |
+| Polygon hierarchy (mod 4) | ❓ NOT FOUND | Gauss sums have mod 4 structure |
+| β-function cancellation | ❓ NOT FOUND | No analog found |
