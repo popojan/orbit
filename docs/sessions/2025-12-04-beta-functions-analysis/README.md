@@ -983,6 +983,44 @@ Possible deep connection? Needs investigation.
 
 **Reference:** [Wikipedia: Quadratic Gauss sum](https://en.wikipedia.org/wiki/Quadratic_Gauss_sum)
 
+#### Quadratic Residue Sums and mod 4 (KEY FINDING)
+
+**Known theorem:** The sum of quadratic residues vs nonresidues depends on p mod 4:
+
+| p mod 4 | Sum(QR) vs Sum(QNR) | Reason |
+|---------|---------------------|--------|
+| p ≡ 1 (mod 4) | **Equal** (balanced) | -1 is QR, so negation preserves QR/QNR |
+| p ≡ 3 (mod 4) | **Unequal** (QR < QNR in first half) | -1 is QNR, negation swaps QR ↔ QNR |
+
+**Key insight:** -1 is quadratic residue mod p **iff** p ≡ 1 (mod 4).
+
+**Our sign asymmetry A(p) = ±2** also depends on p mod 4!
+- p ≡ 1 (mod 4): A(p) = -2
+- p ≡ 3 (mod 4): A(p) = +2
+
+**Possible deep connection:** Both phenomena arise from the same mod 4 structure of primes.
+The sign of cos((2k-1)π/p) for BOTH-primitive k may be related to quadratic character!
+
+**Reference:** [arXiv:1512.00896 - Sums of Quadratic Residues](https://arxiv.org/abs/1512.00896)
+
+#### Chebyshev ↔ Cyclotomic Deep Connection (KEY FINDING)
+
+**Known theorem:** Let ζ be a primitive 4n-th root of unity. Then:
+$$\alpha = \frac{\zeta + \zeta^{-1}}{2} = \cos\left(\frac{\pi}{2n}\right)$$
+is a root of Chebyshev T_n(x).
+
+**Structural relationship:**
+- α generates the **maximal real subfield** of the 4n-th cyclotomic field
+- Degree over ℚ: φ(4n)/2
+- T_n is irreducible over ℚ **iff** n is a power of 2
+
+**Why this matters:**
+- Chebyshev polynomial roots = real parts of roots of unity
+- Cyclotomic field = algebraic structure of primitive roots
+- Our "primitive lobe" structure may be encoding cyclotomic arithmetic
+
+**Reference:** [MathOverflow: Chebyshev factoring mod primes](https://mathoverflow.net/questions/191377/chebyshev-polynomials-factoring-uniformly-modulo-all-primes)
+
 ---
 
 ### Summary: What's Known vs Potentially Novel
