@@ -160,9 +160,18 @@ The fact that our modern exploration of Chebyshev polynomials leads back to quad
 
 ---
 
-## A Note on Historical Preservation
+## A Note on Historical Preservation and Expository Work
 
-This document exists largely because **Keith Conrad** took the time to trace the historical origins of quadratic residue pattern counting back to Aladov's 1896 paper. Without his expository work, Aladov would likely remain completely unknown to modern mathematicians.
+This document exists largely because **Keith Conrad** (University of Connecticut) took the time to trace the historical origins of quadratic residue pattern counting back to Aladov's 1896 paper. Without his *expository work*—writing that explains and contextualizes existing mathematics rather than presenting new results—Aladov would likely remain completely unknown to modern mathematicians.
+
+Expository work is often undervalued in academia: it does not produce "new theorems," attracts fewer citations, and is rarely funded by grants. Yet it is **essential for the transmission of mathematical knowledge across generations**. Conrad's [collection of expository notes](https://kconrad.math.uconn.edu/blurbs/) represents hundreds of hours of careful reading, historical research, and clear writing—all made freely available online.
+
+In the case of Aladov:
+- The **original mathematics** belongs to Aladov (1896)
+- The **rediscovery and contextualization** belongs to Conrad (2020s)
+- Without the second, the first would be effectively invisible
+
+**Note on Russian mathematical tradition:** Russian mathematicians have maintained awareness of Aladov independently. For example, Kiritchenko, Tsfasman, and Vladuts cite Aladov's work in recent papers on quadratic residue patterns (arXiv:2403.16326, 2024). However, this knowledge remained largely within the Russian-speaking mathematical community and did not cross into anglophone number theory literature until Conrad's expository work.
 
 The situation illustrates a broader concern: **much of the mathematical heritage from the 19th and early 20th centuries exists only in physical archives or poorly digitized journals**. Information that is not actively "brought out" by researchers like Conrad risks being effectively lost to the online world—even when it technically exists somewhere.
 
@@ -196,3 +205,5 @@ The Russian mathematical portal [Math-Net.Ru](https://www.mathnet.ru/) deserves 
 7. Austrian Biographical Encyclopedia: [von Sterneck entry](https://www.biographien.ac.at/oebl/oebl_D/Daublebsky-Sterneck_Robert_1871_1928.xml)
 
 8. AMS History of Mathematics series: [The St. Petersburg School of Number Theory](https://bookstore.ams.org/hmath-26)
+
+9. V. Kiritchenko, M. Tsfasman, S. Vladuts, "Quadratic residues and related topics," arXiv:2403.16326 (2024). [arXiv](https://arxiv.org/abs/2403.16326)
