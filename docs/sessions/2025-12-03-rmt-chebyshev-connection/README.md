@@ -703,7 +703,239 @@ This provides a computational laboratory for testing:
 - The fluctuations come from incommensurate phases t·log(p)
 - Geometric picture: zeta zeros as "uniform angles + perturbations" on infinite spiral
 
-**Open direction:** Could projecting the spiral onto a circle (mod 2π) with points from different rotations create quasiperiodic structure with GUE-like statistics? (Not tested.)
+### ❌ Spiral Projection: Tested and Falsified (Dec 3, 2025 evening)
+
+**Original hope:** Projecting θ(γ_m) mod 2π onto circle might create GUE-like statistics without random noise.
+
+**Tests performed:**
+
+| Transformation | Result | Why it fails |
+|---------------|--------|--------------|
+| θ mod 2π | Poisson | Points from different rotations are independent |
+| W(θ/c) mod 2π | Clustering | Exponential compression creates horrible bunching |
+| θ/log(θ) mod 2π | Poisson | Still independent across rotations |
+| "centered θ" mod 2π | GUE-like | **Cheating** - scales to 1 rotation = sequential spacings |
+
+**Key insight:**
+```
+Zeta zeros: ~500 "rotations" for heights 10000-11000
+θ mod 2π: mixes points from ALL rotations
+Result: effectively independent points → Poisson statistics
+```
+
+**Why LambertW transformation doesn't help:**
+- LambertW is the inverse of θ(t) ≈ t·log(t)
+- Applying W to angles doesn't "undo" the rotation count
+- It just creates exponential compression/expansion
+- The fundamental issue is mixing independent rotations
+
+**Fundamental problem:**
+- GUE statistics require **correlations** between points
+- Projection mod 2π destroys the sequential ordering
+- No smooth transformation can create correlations from independent points
+
+**Conclusion:** The spiral projection approach is a dead end. GUE correlations in zeta zeros are a property of **sequential** spacings, not geometric projection onto a circle.
+
+### ✅ AlgebraicCirclePoint Reconstruction (Dec 3, 2025 late evening)
+
+**Hypothesis (documented post-hoc):** Can we use the AlgebraicCirclePoint construction to encode rotation information that survives projection?
+
+**Key insight from Orbit paclet:**
+```mathematica
+z = (a - I)^(4k) / (1 + a²)^(2k)
+```
+
+For **integer** `a`, the denominator `(1+a²)^(2k)` grows with k and **encodes k exactly**:
+```
+k = log(denominator) / (2 log(1 + a²))
+```
+
+**Application to zeta zeros:**
+1. Map θ(γ_m) to AlgebraicCirclePoint parameter: `k_m = θ(γ_m) / (4·arctan(1/a))`
+2. Define formal denominator: `den_m = (1+a²)^(2k_m)`
+3. Use weighted NN: `distance = |angle_diff| + β·|den_diff|`
+
+**Results (a=2, 1000 zeros):**
+
+| β (den weight) | Exact matches | Correlation |
+|----------------|---------------|-------------|
+| 0 (angle only) | 3/1000 | 0.002 |
+| 0.1 | 10/1000 | 0.962 |
+| 1 | 3/1000 | 0.854 |
+| **10** | **1000/1000** | **1.000** |
+| **100** | **1000/1000** | **1.000** |
+
+**Perfect reconstruction with β ≥ 10!**
+
+**Why integer a (not algebraic) is essential:**
+- Algebraic a = 2+√2+√3+√6 → integer period 24 → denominator periodic
+- Integer a = 2 → irrational period ≈ 3.39 → denominator grows unboundedly
+- For infinite spirals (zeta zeros), we need unbounded denominator to encode ∞ rotations
+
+**Mathematical interpretation:**
+- Position on circle: `arg(z) mod 2π` (loses rotation info)
+- Formal denominator: `(1+a²)^(2k)` (preserves rotation info)
+- Together: complete reconstruction possible
+
+**What this shows:**
+- ✅ The rotation information CAN be encoded in a rational-like structure
+- ✅ NN reconstruction works perfectly with denominator weighting
+- ⚠️ BUT: this requires knowing θ (not just position on circle)
+- ⚠️ It's a reformulation, not a new source of information
+
+**Open question:** Is there a way to discover the "formal denominator" structure from the zeros themselves, without computing θ(γ_m)?
+
+### ✅ LambertW as Mean-Field Approximation (Dec 3, 2025 late evening)
+
+**Key insight:** Replacing zeta zeros with LambertW approximations (no GUE noise) gives MORE regular structure:
+
+| Source | Variance/Mean² of spacings |
+|--------|---------------------------|
+| 24-gon (polygon) | **0** |
+| **LambertW approx** | **0.159** |
+| Zeta zeros | 0.585 |
+| GUE expected | ~0.286 |
+
+**LambertW approximation:**
+```mathematica
+γ_m^approx = 2πe·m / W(2πe·m)
+```
+
+where W = ProductLog (LambertW function).
+
+**Hierarchy of regularity:**
+```
+Polygon      →  LambertW        →  Zeta zeros
+(uniformní)     (kvazi-period.)    (GUE fluktuace)
+Var = 0         Var = 0.16        Var = 0.59
+```
+
+**Interpretation:**
+- **LambertW = "mean field"** (deterministický základ)
+- **Zeta - LambertW = GUE fluktuace** (from prime oscillations)
+
+**B(n,k) analogy:**
+| Chebyshev polygon | Zeta zeros |
+|-------------------|------------|
+| B(n,k) = 1/n | B_zeta(k) = ΔN_k ≈ 1 |
+| Variance = 0 | Variance = 0.13-0.29 (GUE) |
+
+### Quasi-Periodic Structure of LambertW
+
+When LambertW "zeros" (k = 1, 2, 3, ...) are mapped to circle with a=2:
+- Period ≈ 3.39 (irrational)
+- Only **3 distinct spacing values**: 6.4°, 17.4°, 23.8°
+- This is quasi-periodic, not uniform
+
+**Why not exact polygon?** The rotation number 2π/(4·ArcTan[2,-1]) ≈ 3.39 is irrational.
+
+### 🔬 Can We Slow LambertW to Exact Polygon?
+
+**Question:** Is there a choice of parameter `a` that makes LambertW approximations form exact n-gon?
+
+**Mathematical requirement:**
+For n-gon: angle after n steps = 2π
+```
+4n · ArcTan[a, -1] = 2π
+ArcTan[a, -1] = π/(2n)
+a = Cot[π/(2n)]
+```
+
+**This is exactly `RegularPolygonParameter[n]` from the paclet!**
+
+**Implication:** Using `a = Cot[π/(2n)]` would project LambertW approximations onto exact n-gon.
+
+**Status:** ✅ CONFIRMED numerically!
+
+**Test (n=24, a = Cot[π/48] ≈ 15.26):**
+```
+θ step = exactly -15°
+Period = exactly 24
+All spacings = 15° (to machine precision)
+Variance/Mean² = 4×10⁻³⁰ ≈ 0  ✅
+```
+
+**Complete hierarchy:**
+```
+n-gon (a = Cot[π/(2n)])    LambertW (a = 2)         Zeta zeros
+        |                        |                       |
+   k = 1,2,...,n           k = 1,2,...,n          k = N(γ_m)
+        |                        |                       |
+   uniform 360°/n          quasi-periodic            GUE spacing
+        |                        |                       |
+   Var/Mean² = 0           Var/Mean² ≈ 0.16       Var/Mean² ≈ 0.3-0.6
+```
+
+**Key insight:** The same AlgebraicCirclePoint construction, with different parameter `a`:
+- `a = Cot[π/(2n)]` → exact n-gon (integer period)
+- `a = 2` (or any integer) → quasi-periodic (irrational period)
+- The difference in statistics comes from rational vs irrational rotation number!
+
+---
+
+### ✅ Derivative Correlation: |f'(x_k)| vs |Z'(γ_m)| (Dec 3, 2025 night)
+
+**Question:** Is there an analog of |Z'(γ_m)| (steepness at zeros) for polygon?
+
+**Polygon (n=15):**
+```
+f(x, n) = T_n(x) - x·T_{n-1}(x)
+Zeros at x_k = cos(kπ/n)
+
+|f'(x_k)|: large at edges (12.7), small in middle (1.4)
+Correlation with gap: -0.92 (strong negative!)
+```
+
+**Zeta:**
+```
+|Z'(γ_m)|: varies 0.8 to 3.0, Mean=1.73
+Correlation with gap: -0.33 (negative, with GUE noise)
+```
+
+**Both show same direction:** Steep crossing → small gap, flat crossing → large gap
+
+| | Polygon | Zeta |
+|--|---------|------|
+| Corr(|deriv|, gap) | **-0.92** | **-0.33** |
+| Structure | deterministic | stochastic (GUE) |
+
+---
+
+### B(n,k) vs Prime Contributions |S_p(T)| (Dec 3, 2025 night)
+
+**Explicit formula contribution:**
+```
+S_p(T) = sin(T·log(p)) / (π·√p)
+```
+
+**Comparison:**
+
+| Property | B(15,k) | \|S_p(T)\| |
+|----------|---------|-----------|
+| Shape | Symmetric (arcsine-like) | Oscillatory (sin × 1/√p) |
+| Correlation | -0.07 (none) | |
+| Structure | Geometric | Number-theoretic |
+
+**Key difference:** B(n,k) has geometric symmetry, |S_p| has arithmetic oscillation.
+
+---
+
+### Variance Hierarchy and Transformations (Dec 3, 2025 night)
+
+**Full hierarchy of normalized spacing variance:**
+```
+Polygon     LambertW     Zeta        Poisson
+(exact)     (mean-field) (GUE)       (random)
+   0          0.024       0.218        1.0
+   ↓            ↓           ↓            ↓
+determin.   quasi-per.   correlated   independent
+```
+
+**Transformations:**
+- Polygon → Zeta: Add cumulative GUE noise
+- Zeta → Polygon: Apply unfolding N(γ_m)
+
+**Unfolding reduces but doesn't eliminate variance:** 0.22 → 0.13
 
 ---
 

@@ -880,7 +880,7 @@ The following claims need verification against existing literature:
 
 2. **Explicit Chebyshev connection:** Is the link between T_{n+1}(x) - x·T_n(x) lobes and coprime consecutive pairs documented?
 
-3. **Sign asymmetry theorem:** A(p) = ∑_{primitive} sign(B(p,k) - 1) = ±2 for primes — is this known?
+3. **Sign asymmetry theorem:** A(p) = ±2 if p≡1(mod 4), A(p) = 0 if p≡3(mod 4) (sign fixed by β) — is this known?
 
 4. **Polygon hierarchy splitting:** The observation that 2p-polygon lobes split p-polygon lobes, with fair lobe position depending on p mod 4 — is this documented?
 
@@ -994,12 +994,28 @@ Possible deep connection? Needs investigation.
 
 **Key insight:** -1 is quadratic residue mod p **iff** p ≡ 1 (mod 4).
 
-**Our sign asymmetry A(p) = ±2** also depends on p mod 4!
-- p ≡ 1 (mod 4): A(p) = -2
-- p ≡ 3 (mod 4): A(p) = +2
+**Our sign asymmetry A(p)** also depends on p mod 4!
+- p ≡ 1 (mod 4): A(p) = **±2** (sign fixed by β choice)
+- p ≡ 3 (mod 4): A(p) = **0**
 
 **Possible deep connection:** Both phenomena arise from the same mod 4 structure of primes.
-The sign of cos((2k-1)π/p) for BOTH-primitive k may be related to quadratic character!
+The sign of cos((2k-1)π/p) for primitive k may be related to quadratic character!
+
+### Convention Note: Sign Asymmetry A(p)
+
+**Fundamental result (dichotomy):**
+$$A(p) = 2 \cdot \text{sign}(\beta) \cdot \mathbf{1}_{p \equiv 1 \pmod{4}}$$
+
+**Sign depends on β choice:**
+
+| Session | β used | Sign of β | A(p≡1 mod 4) |
+|---------|--------|-----------|--------------|
+| primitive-lobe-signs | β_signs ≈ 1/6 | **+** | **-2** |
+| This session | β_geom ≈ -1 | **-** | **+2** |
+
+**Reason:** A(p) counts sign(B-1) = sign(β·cos(...)). Flipping β flips the sign.
+
+**When citing:** Always specify which β convention is used.
 
 **Reference:** [arXiv:1512.00896 - Sums of Quadratic Residues](https://arxiv.org/abs/1512.00896)
 
@@ -1030,6 +1046,6 @@ is a root of Chebyshev T_n(x).
 | BOTH(n) = n·∏(1-2/p) | ❌ KNOWN | Elkies (CRT) |
 | T_{n+1}-xT_n = -(1-x²)U_{n-1} | ❌ KNOWN | Standard Chebyshev |
 | Bridge: Chebyshev lobes ↔ coprime pairs | ❓ UNCLEAR | No direct reference |
-| Sign asymmetry A(p) = ±2 | ❓ NOT FOUND | μ(n) sum is similar but different |
+| Sign asymmetry A(p) ∈ {±2, 0} | ❓ NOT FOUND | QR sum mod 4 has same structure |
 | Polygon hierarchy (mod 4) | ❓ NOT FOUND | Gauss sums have mod 4 structure |
 | β-function cancellation | ❓ NOT FOUND | No analog found |

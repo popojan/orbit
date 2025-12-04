@@ -68,6 +68,46 @@ Examples:
   AlgebraicCirclePoint[k, 2 + Sqrt[2]]
 ";
 
+AlgebraicCirclePointTracked::usage = "AlgebraicCirclePointTracked[k, a] returns {point, logDen} where:
+  - point = {x, y} on unit circle (same as AlgebraicCirclePoint)
+  - logDen = 2k * Log[1 + a^2] (log of formal denominator)
+
+This version works with ANY k (integer, rational, or real) and preserves
+rotation information in logDen even when position is projected onto circle.
+
+Parameters:
+  k - any real number (index/rotation parameter)
+  a - algebraic parameter (use integer for irrational period)
+
+Key insight: For integer a, the denominator (1+a^2)^(2k) grows unboundedly,
+allowing k to be recovered exactly:
+  k = logDen / (2 * Log[1 + a^2])
+
+This is essential for tracking 'rotation count' in spiral projections
+where mod 2π loses rotation information.
+
+Why use integer a (e.g., a=2) rather than algebraic (e.g., 2+√2+√3+√6)?
+  - Algebraic a → integer period → denominator periodic → can't encode infinite rotations
+  - Integer a → irrational period → denominator grows → encodes any rotation count
+
+Examples:
+  (* Track rotation for real k *)
+  AlgebraicCirclePointTracked[3.5, 2]  (* → {{x, y}, logDen} *)
+
+  (* Recover k from logDen *)
+  {pt, logDen} = AlgebraicCirclePointTracked[k, 2];
+  kRecovered = logDen / (2 * Log[5])  (* → k exactly *)
+
+  (* Application to zeta zeros *)
+  theta = t/2 * Log[t/(2*Pi)] - t/2 - Pi/8;  (* Riemann-Siegel theta *)
+  angleStep = 4 * ArcTan[1/2];
+  k = theta / angleStep;
+  {point, logDen} = AlgebraicCirclePointTracked[k, 2];
+  (* logDen encodes the rotation count for nearest-neighbor reconstruction *)
+
+See: docs/sessions/2025-12-03-rmt-chebyshev-connection/README.md for application.
+";
+
 RegularPolygonParameter::usage = "RegularPolygonParameter[n] returns the algebraic parameter a for a regular n-gon inscribed in the unit circle.
 
 Parameter: n - number of vertices (n ≥ 3)
@@ -476,6 +516,24 @@ AlgebraicCirclePoint[k_Integer, a_] := Module[{z},
   (* z = (a - I)^(4k) / (1 + a^2)^(2k) *)
   z = (a - I)^(4*k) / (1 + a^2)^(2*k);
   {Re[z], Im[z]} // Simplify
+]
+
+(* Tracked version: returns {point, logDen} for any real k *)
+(* logDen encodes rotation count: k = logDen / (2 * Log[1 + a^2]) *)
+AlgebraicCirclePointTracked[k_, a_] := Module[{z, logDen, point, theta},
+  (* For real k, use polar form to avoid complex power issues *)
+  (* z = |a - I|^(4k) * exp(i * 4k * arg(a - I)) / (1 + a^2)^(2k) *)
+  (* But |a - I|^2 = 1 + a^2, so |a - I|^(4k) = (1 + a^2)^(2k) *)
+  (* Therefore z = exp(i * 4k * arg(a - I)) *)
+  (* arg(a - I) = ArcTan[a, -1] (Mathematica convention: ArcTan[x, y] for point (x,y)) *)
+  theta = ArcTan[a, -1];  (* = -ArcTan[1/a] for a > 0 *)
+  z = Exp[I * 4 * k * theta];
+  point = {Re[z], Im[z]} // Simplify;
+
+  (* Formal log-denominator: tracks rotation count *)
+  logDen = 2 * k * Log[1 + a^2];
+
+  {point, logDen}
 ]
 
 (* ===================================================================

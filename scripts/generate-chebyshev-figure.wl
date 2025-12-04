@@ -1,0 +1,1 @@
+/home/jan/github/orbit/docs/sessions/2025-11-23-chebyshev-integral-identity/generate-figure.wl

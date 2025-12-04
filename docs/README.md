@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-03 17:02:45
+**Generated:** 2025-12-04 16:04:58
 
 ## Theorems (Master References)
 
@@ -20,6 +20,7 @@
 
 ## Recent Sessions (Last 10)
 
+- [Session: Two Beta Functions - Analysis and Disambiguation](sessions/2025-12-04-beta-functions-analysis/README.md) *(2025-12-04)*
 - [Session: Random Matrix Theory and Chebyshev Lobe Areas](sessions/2025-12-03-rmt-chebyshev-connection/README.md) *(2025-12-03)*
 - [Session: Primitive Lobe Signs and Number Theory](sessions/2025-12-03-primitive-lobe-signs/README.md) *(2025-12-03)*
 - [Session: Hyperbolic Integration of B(n,k)](sessions/2025-12-03-hyperbolic-integration/README.md) *(2025-12-03)*
@@ -29,7 +30,6 @@
 - [Chebyshev Polygon Function Transforms](sessions/2025-12-01-chebyshev-polygon-transforms/README.md) *(2025-12-02)*
 - [Retiring Pi: A Wildberger-Style Look at Chebyshev Lobe Areas](sessions/2025-12-01-wildberger-chebyshev/README.md) *(2025-12-01)*
 - [Multiplicative Decomposition of Chebyshev Lobe Areas](sessions/2025-12-01-multiplicative-decomposition/README.md) *(2025-12-01)*
-- [SignSum for Semiprimes: Connection to Factorization](sessions/2025-11-30-pattern-falsification/semiprime-ss-theorem.md) *(2025-12-01)*
 
 ## Navigation
 
