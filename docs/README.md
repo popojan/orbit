@@ -31,6 +31,22 @@
 - [Retiring Pi: A Wildberger-Style Look at Chebyshev Lobe Areas](sessions/2025-12-01-wildberger-chebyshev/README.md) *(2025-12-01)*
 - [Multiplicative Decomposition of Chebyshev Lobe Areas](sessions/2025-12-01-multiplicative-decomposition/README.md) *(2025-12-01)*
 
+## A Note on Historical Sources
+
+During literature review for this project, we encountered Keith Conrad's expository notes, which trace the history of quadratic residue pattern counting back to **N. S. Aladov (1896)** — a mathematician virtually unknown in anglophone literature.
+
+This is not our discovery; Conrad did the historical work. We mention it here because:
+
+1. It illustrates how mathematical knowledge fragments along linguistic and geopolitical lines
+2. Expository work (like Conrad's) deserves recognition for preserving intellectual heritage
+3. Anyone building on this area should know the actual historical priority
+
+Russian mathematicians (e.g., Kiritchenko, Tsfasman, Vladuts) have maintained awareness of Aladov independently, but this knowledge did not cross into Western number theory literature until Conrad's work.
+
+**Further reading:** [Historical Context: Quadratic Residue Patterns and the Russian Mathematical Tradition](sessions/2025-12-04-beta-functions-analysis/historical-context.md)
+
+---
+
 ## Navigation
 
 - [STATUS.md](STATUS.md) - Master status tracker
