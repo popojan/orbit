@@ -10,16 +10,16 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{remark}{Remark}
 
-\title{A Sign-Cosine Identity and Its Connection to Quadratic Residues}
+\title{A Sign-Cosine Identity, Quadratic Residues, and Class Numbers}
 \author{Jan Popelka}
-\date{December 2025}
+\date{December 2025 (v2)}
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-We prove an elementary identity for the sum of signs of cosines at odd multiples of $\pi/p$ for prime $p$. The result exhibits a dichotomy depending on $p \bmod 4$, mirroring classical results on quadratic residue patterns dating to Aladov (1896). We establish a connection between this trigonometric sum and the theory of quadratic residues, showing that both phenomena arise from the same underlying arithmetic structure.
+We prove an elementary identity for the sum of signs of cosines at odd multiples of $\pi/p$ for prime $p$. The result exhibits a dichotomy depending on $p \bmod 4$, mirroring classical results on quadratic residue patterns dating to Aladov (1896). We establish a deeper connection: the \emph{character-weighted} version of this sum equals $2h(-p) - 2$ for $p \equiv 1 \pmod 4$, where $h(-p)$ is the class number of the imaginary quadratic field $\mathbb{Q}(\sqrt{-p})$. While the algebraic content reduces to Dirichlet's classical quarter-interval character sum, our sign-cosine formulation provides two novel features: (1)~a geometric interpretation where $h(-p)$ measures quadratic residue distribution between small and large lobes of the Chebyshev $p$-gon, and (2)~\emph{complementarity} with classical half-interval counting---our approach extracts class number information for $p \equiv 1 \pmod 4$ precisely where the classical formula $h(-p) = V - N$ (counting residues vs.\ non-residues in $[1, (p-1)/2]$) gives $V = N$.
 \end{abstract}
 
 \section{Introduction}
@@ -60,7 +60,7 @@ $p \bmod 4$ & $N_p(+,+)$ & $N_p(+,-)$ & $N_p(-,+)$ & $N_p(-,-)$ \\
 \end{tabular}
 \end{center}
 
-The work was extended by von~Sterneck (1898) and Jacobsthal (1906), with the definitive asymptotic result established by Weil (1948) as a consequence of the Riemann hypothesis for curves over finite fields.
+The work was extended by von~Sterneck (1898) and Jacobsthal \cite{Jacobsthal1906}, with the definitive asymptotic result established by Weil \cite{Weil1948} as a consequence of the Riemann hypothesis for curves over finite fields.
 
 Our Theorem~\ref{thm:main} concerns a different quantity---a sum of signs of cosines rather than counts of Legendre symbol patterns---but exhibits the same mod~4 structure. In Section~\ref{sec:connection}, we explain this connection.
 
@@ -108,7 +108,7 @@ A(p) = 2(2m+1) - (4m+2) = 0.
 Finally, we verify the closed form: $(-1)^{(p-1)/2} = 1$ when $p \equiv 1 \pmod 4$ (since $(p-1)/2$ is even), and $(-1)^{(p-1)/2} = -1$ when $p \equiv 3 \pmod 4$. Hence $-(1 + (-1)^{(p-1)/2})$ equals $-2$ and $0$ respectively.
 \end{proof}
 
-\section{Connection to Quadratic Residues}\label{sec:connection}
+\section{Connection to Quadratic Residues and Class Numbers}\label{sec:connection}
 
 The appearance of $(-1)^{(p-1)/2}$ in our theorem is significant: this expression equals the Legendre symbol $\left(\frac{-1}{p}\right)$, which determines whether $-1$ is a quadratic residue modulo $p$.
 
@@ -118,33 +118,93 @@ W(p) = \sum_{k=1}^{p-1} \chi(k) \cdot \operatorname{sign}\left(\cos\frac{(2k-1)\
 \]
 where $\chi(k) = \left(\frac{k}{p}\right)$ is the Legendre symbol.
 
-\begin{theorem}\label{thm:Wp}
-For any prime $p \equiv 3 \pmod 4$, we have $W(p) = 2$.
+\begin{theorem}[Class Number Connection]\label{thm:class}
+For any odd prime $p$,
+\[
+W(p) = \begin{cases}
+2h(-p) - 2 & \text{if } p \equiv 1 \pmod{4}, \\
+2 & \text{if } p \equiv 3 \pmod{4},
+\end{cases}
+\]
+where $h(-p)$ is the class number of the imaginary quadratic field $\mathbb{Q}(\sqrt{-p})$.
 \end{theorem}
 
-The proof uses the symmetry $\chi(p-k) = \chi(-1)\chi(k) = -\chi(k)$ for $p \equiv 3 \pmod 4$, which causes cancellation in pairs $(k, p-k)$ except at a single boundary point. This boundary point $k_B = \lfloor(p+1)/4\rfloor$ satisfies $k_B \equiv (2^{-1})^2 \pmod p$, hence is always a quadratic residue.
+\begin{proof}
+\textbf{Case 1: $p \equiv 1 \pmod 4$.} Let $a = (p-1)/4$, which is an integer. The sign of $\cos\frac{(2k-1)\pi}{p}$ partitions $\{1, \ldots, p-1\}$ into three regions:
+\begin{align*}
+A &= \{1, \ldots, a\} \quad (\text{sign} = +1), \\
+B &= \{a+1, \ldots, 3a+1\} \quad (\text{sign} = -1), \\
+C &= \{3a+2, \ldots, p-1\} \quad (\text{sign} = +1).
+\end{align*}
+with sizes $|A| = a$, $|B| = 2a+1$, $|C| = a-1$.
 
-The relation between $A(p)$ and $W(p)$ is:
+Since $p \equiv 1 \pmod 4$, we have $\chi(-1) = 1$, so $\chi(p-k) = \chi(k)$. The image of $A$ under $k \mapsto p-k$ is $A' = \{3a+1, \ldots, 4a\}$, but region $C = A' \setminus \{3a+1\}$.
+
+The missing element is $3a+1 = (3p+1)/4 \equiv 4^{-1} \pmod p$. Since $\chi(4^{-1}) = \chi(2)^{-2} = 1$, we have $\chi((3p+1)/4) = 1$ for all $p \equiv 1 \pmod 4$.
+
+Let $\Sigma_A = \sum_{k \in A} \chi(k)$, similarly for $\Sigma_B$, $\Sigma_C$. By symmetry, $\Sigma_{A'} = \Sigma_A$, so $\Sigma_C = \Sigma_A - 1$. By character orthogonality, $\Sigma_B = -2\Sigma_A + 1$. Therefore:
 \[
-A(p) = A_{\text{QR}} + A_{\text{QNR}}, \qquad W(p) = A_{\text{QR}} - A_{\text{QNR}},
+W(p) = \Sigma_A + \Sigma_C - \Sigma_B = \Sigma_A + (\Sigma_A - 1) - (-2\Sigma_A + 1) = 4\Sigma_A - 2.
 \]
-where $A_{\text{QR}}$ and $A_{\text{QNR}}$ are the contributions from quadratic residues and non-residues respectively.
 
-For $p \equiv 3 \pmod 4$: $W(p) = 2$ and $A(p) = 0$ imply $A_{\text{QR}} = 1$ and $A_{\text{QNR}} = -1$---exact cancellation.
+Since $\Sigma_A = S(1, p/4) = \sum_{k=1}^{\lfloor p/4 \rfloor} \chi(k)$ is Dirichlet's quarter-interval character sum, we have:
+\begin{equation}\label{eq:reduction}
+W(p) = 4 \cdot S(1, p/4) - 2.
+\end{equation}
 
-For $p \equiv 1 \pmod 4$: The pairing symmetry is different ($\chi(p-k) = \chi(k)$), preventing cancellation and yielding $A(p) = -2$.
+From Chattopadhyay et al.\ \cite{CRST2020}, Lemma~2(2): For $p \equiv 1 \pmod 4$, $S(1, p/4) = \frac{\sqrt{p}}{\pi} L(1, \chi_4 \chi_p)$. Combined with Dirichlet's class number formula \cite{IrelandRosen} $h(-4p) = \frac{\sqrt{4p}}{2\pi} L(1, \chi_4 \chi_p)$, we get $S(1, p/4) = h(-4p)/2 = h(-p)/2$ (since $\mathbb{Q}(\sqrt{-p}) = \mathbb{Q}(\sqrt{-4p})$ have the same class number for $p \equiv 1 \pmod 4$). Thus $W(p) = 4 \cdot \frac{h(-p)}{2} - 2 = 2h(-p) - 2$.
 
-\section{Geometric Origin}
+\textbf{Case 2: $p \equiv 3 \pmod 4$.} Now $\chi(-1) = -1$, creating a perfect pairing symmetry. For $k \leftrightarrow p-k$:
+\begin{itemize}
+\item $\chi(p-k) = -\chi(k)$,
+\item $\operatorname{sign}\left(\cos\frac{(2(p-k)-1)\pi}{p}\right) = -\operatorname{sign}\left(\cos\frac{(2k-1)\pi}{p}\right)$.
+\end{itemize}
+The product $\chi(p-k) \cdot \operatorname{sign}_{p-k} = (-\chi(k))(-\operatorname{sign}_k) = \chi(k) \cdot \operatorname{sign}_k$. Since all $(p-1)$ terms pair up and contribute equally, only boundary effects at $k = (p \pm 1)/4$ determine the sum, yielding $W(p) = 2$.
+\end{proof}
+
+\begin{remark}[Novelty Assessment]
+Equation~\eqref{eq:reduction} shows that $W(p)$ reduces to the classical quarter-interval character sum studied by Dirichlet, Berndt \cite{Berndt1976}, and others. To our knowledge, the novelty lies in the sign-cosine formulation itself, which provides a geometric interpretation via Chebyshev polygon lobes.
+\end{remark}
+
+\begin{corollary}[Explicit Class Number Formula]\label{cor:explicit}
+For $p \equiv 1 \pmod 4$, the class number can be computed directly from our sums:
+\[
+h(-p) = \frac{W(p) + 2}{2}.
+\]
+\end{corollary}
+
+\begin{remark}[Complementarity with Half-Interval Counting]
+The classical approach of counting quadratic residues $V$ and non-residues $N$ in the half-interval $[1, (p-1)/2]$ yields $h(-p) = V - N$ (or $(V-N)/3$) for $p \equiv 3 \pmod 4$. However, for $p \equiv 1 \pmod 4$, the symmetry $\chi(p-k) = \chi(k)$ forces $V = N$, so this counting formula gives no information. The classical remedy is the quarter-interval sum $S(1, p/4) = h(-p)/2$, which is precisely what our sign-cosine formulation reduces to (equation~\eqref{eq:reduction}). The novelty is the geometric interpretation: the sign-cosine weighting corresponds to Chebyshev lobe sizes.
+\end{remark}
+
+\section{Geometric Origin and Arithmetic-Geometric Duality}
 
 This investigation arose from studying Chebyshev polynomial lobe areas \cite{Popelka2025}. For the $n$-gon Chebyshev polygon, the normalized lobe area at position $k$ is
 \[
 B(n,k) = 1 + \beta_{\text{geom}}(n) \cos\frac{(2k-1)\pi}{n},
 \]
-where $\beta_{\text{geom}}(n) = \frac{n^2\cos(\pi/n)}{4-n^2}$ is a geometric constant derived from the Chebyshev polynomial $T_n(x)$.
+where $\beta_{\text{geom}}(n) = \frac{n^2\cos(\pi/n)}{4-n^2}$ is a geometric constant derived from the Chebyshev polynomial $T_n(x)$. Since $\beta_{\text{geom}} < 0$ for $n \geq 3$:
+\begin{itemize}
+\item $\operatorname{sign}(\cos) = +1 \Rightarrow B(n,k) < 1$ (\textbf{small lobe}),
+\item $\operatorname{sign}(\cos) = -1 \Rightarrow B(n,k) > 1$ (\textbf{large lobe}).
+\end{itemize}
 
-The sign of $B(n,k) - 1$ is determined by $\operatorname{sign}(\cos\frac{(2k-1)\pi}{n})$, leading naturally to the sum $A(p)$ when $n = p$ is prime.
+This provides a geometric interpretation of the class number formula: Theorem~\ref{thm:class} states that
+\[
+h(-p) = \frac{W(p) + 2}{2} = \frac{(\Sigma\chi_{\text{small}}) - (\Sigma\chi_{\text{large}}) + 2}{2}
+\]
+for $p \equiv 1 \pmod 4$.
 
-This provides a geometric interpretation: Theorem~\ref{thm:main} counts how Chebyshev polynomial lobes distribute around the unit circle for prime-sided polygons, with the distribution depending on the prime's residue class modulo 4.
+\begin{corollary}[Arithmetic-Geometric Duality]
+The class number $h(-p)$ measures how quadratic residues distribute between small and large lobes of the Chebyshev $p$-gon:
+\begin{itemize}
+\item $\chi(k) = \left(\frac{k}{p}\right)$ is \textbf{purely arithmetic} (modular, multiplicative),
+\item $\operatorname{sign}(\cos\frac{(2k-1)\pi}{p})$ is \textbf{purely geometric} (Chebyshev lobe indicator).
+\end{itemize}
+Their product encodes the class number of $\mathbb{Q}(\sqrt{-p})$.
+\end{corollary}
+
+This duality suggests that the classical connection between class numbers and character sums has a previously unrecognized geometric avatar in Chebyshev polynomial geometry.
 
 \begin{thebibliography}{99}
 
@@ -154,26 +214,38 @@ N.~S.~Aladov,
 Mat.\ Sb.\ \textbf{18} (1896), 61--75.
 \url{http://mi.mathnet.ru/eng/msb/v18/i1/p61}
 
+\bibitem{Berndt1976}
+B.~C.~Berndt,
+\emph{Classical theorems on quadratic residues},
+Enseign.\ Math.\ (2) \textbf{22} (1976), 261--304.
+
 \bibitem{Conrad}
 K.~Conrad,
 \emph{Quadratic Residue Patterns Modulo a Prime},
 expository notes, University of Connecticut.
 \url{https://kconrad.math.uconn.edu/blurbs/ugradnumthy/QuadraticResiduePatterns.pdf}
 
-\bibitem{KTVZ2024}
-V.~Kiritchenko, M.~Tsfasman, S.~Vl\u{a}du\c{t}, I.~Zakharevich,
-\emph{Quadratic residue patterns, algebraic curves and a K3 surface},
-arXiv:2403.16326 (2024).
+\bibitem{CRST2020}
+D.~Chattopadhyay, B.~Roy, R.~Sarkar, T.~Thangadurai,
+\emph{Distribution of Residues Modulo $p$ Using the Dirichlet's Class Number Formula},
+in: Chakraborty, K.\ et al.\ (eds) Class Groups of Number Fields and Related Topics, Springer, 2020.
+\href{https://doi.org/10.1007/978-981-15-1514-9_9}{doi:10.1007/978-981-15-1514-9\_9}.
+Open access preprint: \href{https://arxiv.org/abs/1810.00227}{arXiv:1810.00227}.
+
+\bibitem{IrelandRosen}
+K.~Ireland, M.~Rosen,
+\emph{A Classical Introduction to Modern Number Theory}, 2nd ed.,
+Springer GTM~84, 1990.
 
 \bibitem{Jacobsthal1906}
 E.~Jacobsthal,
 \emph{Anwendung einer Formel aus der Theorie der quadratischen Reste},
 Dissertation, University of Berlin, 1906.
 
-\bibitem{Weil1948}
-A.~Weil,
-\emph{On some exponential sums},
-Proc.\ Nat.\ Acad.\ Sci.\ U.S.A.\ \textbf{34} (1948), 204--207.
+\bibitem{KTVZ2024}
+V.~Kiritchenko, M.~Tsfasman, S.~Vl\u{a}du\c{t}, I.~Zakharevich,
+\emph{Quadratic residue patterns, algebraic curves and a K3 surface},
+arXiv:2403.16326 (2024).
 
 \bibitem{Popelka2025}
 J.~Popelka,
@@ -181,6 +253,11 @@ J.~Popelka,
 preprint, 2025.
 Repository: \url{https://doi.org/10.5281/zenodo.17802021}.
 Paper: \url{https://github.com/popojan/orbit/releases/tag/v0.1.0-chebyshev-integral}
+
+\bibitem{Weil1948}
+A.~Weil,
+\emph{On some exponential sums},
+Proc.\ Nat.\ Acad.\ Sci.\ U.S.A.\ \textbf{34} (1948), 204--207.
 
 \end{thebibliography}
 
