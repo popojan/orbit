@@ -46,6 +46,9 @@ Examples:
 
 RawFractionsSymbolic::usage = "RawFractionsSymbolic[q] returns symbolic form {{u, v, i, j}, ...}.
 
+CONSTRAINT: Only defined for proper fractions 0 < q < 1.
+Returns unevaluated for q ≤ 0 or q ≥ 1.
+
 Each tuple represents: Σₖ₌ᵢʲ 1/((u+vk)(u+v(k-1)))
 
 This is the 'raw' algebraic form that preserves structure.
@@ -78,8 +81,11 @@ Example:
 
 RawFractionsFromCF::usage = "RawFractionsFromCF[q] constructs raw fractions directly from continued fraction.
 
+CONSTRAINT: Only defined for proper fractions 0 < q < 1.
+Returns unevaluated for q ≤ 0 or q ≥ 1.
+
 ALTERNATIVE CONSTRUCTION proving Egypt ↔ CF equivalence:
-  RawFractionsSymbolic[q] === RawFractionsFromCF[q]  (* Always True *)
+  RawFractionsSymbolic[q] === RawFractionsFromCF[q]  (* Always True for 0 < q < 1 *)
 
 Algorithm:
   1. Compute CF = ContinuedFraction[q]
@@ -102,7 +108,7 @@ Begin["`Private`"];
    =================================================================== *)
 
 (* Raw symbolic form: each {u, v, i, j} represents telescoping sum *)
-RawFractionsSymbolic[q_Rational] := Module[
+RawFractionsSymbolic[q_Rational /; 0 < q < 1] := Module[
   {result = {}, v, a, b, t},
   {a, b} = NumeratorDenominator[q];
 
@@ -112,9 +118,6 @@ RawFractionsSymbolic[q_Rational] := Module[
     b -= t*v;
     PrependTo[result, {b, v, 1, t}];
   ];
-
-  (* Handle remaining unit fraction if any *)
-  If[a > 0 && b == 1, PrependTo[result, {1, 0, 0, 0}]];
 
   result
 ]
@@ -127,10 +130,11 @@ RawFractionsSymbolic[q_Rational] := Module[
 RawStep[{a1_, b1_, 1, j1_}, {b2_, j2_}] := {#, b1 + b2 * #, 1, j2} &[a1 + j1 * b1]
 
 (* Construct raw fractions directly from continued fraction *)
-RawFractionsFromCF[q_Rational] := Module[
+RawFractionsFromCF[q_Rational /; 0 < q < 1] := Module[
   {cf = ContinuedFraction[q], cfTail, pairs, eg},
 
-  cfTail = Drop[cf, 1];  (* Remove a₀ *)
+  (* For proper fractions, CF = {0, a₁, a₂, ...} *)
+  cfTail = Drop[cf, 1];  (* Remove a₀ = 0 *)
 
   (* Edge case: CF tail has only one element (e.g., 1/n → {0,n}) *)
   (* For 1/n, the tuple is {1, n-1, 1, 1} giving value 1/n *)
@@ -142,12 +146,9 @@ RawFractionsFromCF[q_Rational] := Module[
   pairs = Partition[cfTail, 2];
   eg = Drop[FoldList[RawStep, {1, 0, 1, 0}, pairs], 1];
 
-  (* Handle integer part if present *)
-  If[First[cf] > 0, PrependTo[eg, {1, 0, 0, 0}]];
-
-  (* Handle even-length CF: last coefficient has no pair *)
-  If[EvenQ[Length[cf]] && Length[eg] > 0,
-    AppendTo[eg, RawStep[Last[eg], {Last[cf] - 1, 1}]]
+  (* Handle odd-length CF tail: last coefficient has no pair *)
+  If[OddQ[Length[cfTail]] && Length[eg] > 0,
+    AppendTo[eg, RawStep[Last[eg], {Last[cfTail] - 1, 1}]]
   ];
 
   eg
