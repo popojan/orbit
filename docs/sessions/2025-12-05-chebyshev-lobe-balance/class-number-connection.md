@@ -7,12 +7,50 @@
 
 | Aspect | Result |
 |--------|--------|
-| Formula W(p) = 2h(-p) - 2 | ✅ Verified to p = 10009 |
+| Formula W(p) = 2h(-p) - 2 | ✅ Verified to p = 100000 |
 | Computational speedup | ❌ No (W(p) is ~16× slower than built-in) |
-| Known in literature | 🤔 Sign(cos) weighting not found in standard references |
+| **Novelty** | ❌ Equivalent to classical 1/4-th character sum |
 | LCM pattern for h(-p)-1 | ❌ Falsified at p=257 |
 
-**Value:** Conceptual — connects Chebyshev lobe geometry to class numbers. Not practical for computation.
+## 🎯 Key Finding: Reduction to Classical Results
+
+**Our formula is equivalent to Dirichlet's 1/4-th character sum!**
+
+$$W(p) = 4 \cdot S(1, p/4) - 2$$
+
+where $S(1, \ell) = \sum_{1 \leq k < \ell} \chi(k)$ is the classical character sum.
+
+Combined with $W(p) = 2h(-p) - 2$, this gives:
+
+$$S(1, p/4) = \frac{h(-p)}{2} \quad \text{for } p \equiv 1 \pmod 4$$
+
+### Derivation from Classical Results
+
+From [arXiv:1810.00227] Lemma 2(2): For $p \equiv 1 \pmod 4$:
+$$S(1, p/4) = \frac{\sqrt{p}}{\pi} L(1, \chi_4 \chi_p)$$
+
+From Dirichlet's class number formula:
+$$h(-4p) = \frac{\sqrt{4p}}{2\pi} L(1, \chi_4 \chi_p)$$
+
+Combining: $S(1, p/4) = h(-4p)/2$. Since $h(-4p) = h(-p)$ for $p \equiv 1 \pmod 4$ (same field!), we get $S(1, p/4) = h(-p)/2$.
+
+**Value:** Formula is classical, but our **sign(cos) formulation** gives NEW geometric meaning:
+
+## Geometric Interpretation: Arithmetic-Geometric Duality
+
+$$W(p) = \sum_{k=1}^{p-1} \chi(k) \cdot \text{sign}(\cos) = (\Sigma\chi \text{ over small lobes}) - (\Sigma\chi \text{ over large lobes})$$
+
+Since Chebyshev lobe areas satisfy $B(p,k) = 1 + \beta \cos\frac{(2k-1)\pi}{p}$ with $\beta < 0$:
+- **sign(cos) = +1** → small lobe ($B < 1$)
+- **sign(cos) = -1** → large lobe ($B > 1$)
+
+**Therefore:** The class number $h(-p)$ measures how quadratic residues are distributed between small and large lobes of the Chebyshev p-gon!
+
+$$h(-p) = \frac{W(p) + 2}{2} = \frac{(\Sigma\chi_{\text{small}}) - (\Sigma\chi_{\text{large}}) + 2}{2}$$
+
+This is an **arithmetic-geometric duality**:
+- $\chi(k)$ = quadratic character (pure arithmetic, modular)
+- sign(cos) = lobe size indicator (pure geometry, Chebyshev polygon)
 
 ---
 
@@ -153,6 +191,25 @@ Table[
 
 ## References
 
-- Class number formula: Dirichlet (1839)
-- Connection to L-functions: $h(-p) = \frac{\sqrt{p}}{\pi} L(1, \chi)$
-- Ireland & Rosen, Chapter 16 (Class Number Formula)
+### Primary Sources
+
+1. **Chattopadhyay, Roy, Sarkar & Thangadurai** (2020). "Distribution of Residues Modulo p Using the Dirichlet's Class Number Formula". In: Chakraborty, K. et al. (eds) *Class Groups of Number Fields and Related Topics*, Springer. [doi:10.1007/978-981-15-1514-9_9](https://link.springer.com/chapter/10.1007/978-981-15-1514-9_9). Open access preprint: [arXiv:1810.00227](https://arxiv.org/abs/1810.00227)
+   - Lemma 2: $S(1, p/4) = \frac{\sqrt{p}}{\pi} L(1, \chi_4 \chi_p)$ for $p \equiv 1 \pmod 4$
+   - Key paper connecting quarter-interval character sums to class numbers
+
+2. **Berndt & Chowla** (1974). "Zero sums of the Legendre symbol". *Nordisk Mat. Tidskr.* 22, 5-8.
+   - Lemma 3 in [1]: Vanishing sums $\sum_{n=1}^{(p-1)/2} \chi(n) = 0$ for $p \equiv 1 \pmod 4$
+
+3. **Berndt, B.C.** (1976). "Classical theorems on quadratic residues". *Enseign. Math.* (2) 22, 261-304.
+   - Comprehensive treatment of character sum identities
+
+### Textbooks
+
+4. **Ireland & Rosen**. *A Classical Introduction to Modern Number Theory*, 2nd ed., Springer GTM 84.
+   - Chapter 16: Class Number Formula
+
+5. **Wright, S.** (2016). "Quadratic residues and non-residues: Selected topics". [arXiv:1408.0235](https://arxiv.org/abs/1408.0235)
+
+### Classical
+
+6. **Dirichlet, P.G.L.** (1839). Class number formula for quadratic fields.
