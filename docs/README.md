@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-04 20:07:35
+**Generated:** 2025-12-05 11:24:33
 
 ## Theorems (Master References)
 

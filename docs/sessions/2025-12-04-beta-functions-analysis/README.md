@@ -1261,3 +1261,122 @@ Paper: *"Distribution Properties of Consecutive Quadratic Residue Sequences"* (W
 - [Historical Context: Aladov and Russian Mathematical Tradition](historical-context.md)
 - [The Aladov Mystery: Who Was N. S. Aladov?](aladov-mystery.md)
 - [Algebraic Proof: Why A(p) and Aladov Are Complementary](complementarity-proof.md)
+
+---
+
+## Stronger Identity: Cosine Sum Without Sign (Dec 5, 2025)
+
+### The "Information Loss" Question
+
+The sign function in A(p) discards magnitude information from the cosine values.
+Is there a closed form for the full cosine sum?
+
+### Theorem (Cosine Sum Identity)
+
+For any integer $n \geq 2$:
+
+$$\sum_{k=1}^{n-1} \cos\frac{(2k-1)\pi}{n} = -\cos\frac{\pi}{n}$$
+
+**Proof:** Using complex exponentials with $\omega = e^{i\pi/n}$:
+
+$$\sum_{k=1}^{n-1} \cos\frac{(2k-1)\pi}{n} = \frac{1}{2}\left(\omega^{-1}\sum_{k=1}^{n-1}\omega^{2k} + \omega\sum_{k=1}^{n-1}\omega^{-2k}\right)$$
+
+Since $\omega^2 = e^{2\pi i/n}$ is a primitive n-th root of unity, $\sum_{k=1}^{n-1}\omega^{2k} = -1$.
+
+Therefore:
+$$= \frac{1}{2}\left(\omega^{-1}(-1) + \omega(-1)\right) = -\frac{\omega + \omega^{-1}}{2} = -\cos\frac{\pi}{n} \quad \square$$
+
+### Comparison: Two Identities
+
+| Property | Cosine Sum | Sign Sum A(p) |
+|----------|------------|---------------|
+| Formula | $\sum \cos = -\cos(\pi/n)$ | $\sum \text{sign}(\cos) = -(1 + (-1)^{(p-1)/2})$ |
+| Result | Depends on n continuously | Only 0 or -2 |
+| Valid for | Any integer n ≥ 2 | Odd primes p |
+| Proof | Complex exponentials | Interval counting |
+| Information | Full magnitudes | Signs only |
+
+### Key Observation: Sign Does NOT Follow from Cosine
+
+The sign formula **cannot be derived** from the cosine sum:
+- Knowing $\sum \cos\theta_k = c$ doesn't determine $\sum \text{sign}(\cos\theta_k)$
+- Example: sum -0.8 could be (3 positive, 1 negative) or (2 positive, 2 negative) with different magnitudes
+
+**Conclusion:** The two identities are **complementary**, not hierarchical.
+
+### Wolfram Verification
+
+```mathematica
+(* Cosine identity *)
+Table[{n, Sum[Cos[(2k-1) Pi/n], {k, 1, n-1}] + Cos[Pi/n] // Chop}, {n, 3, 20}]
+
+(* Sign identity (primes only) *)
+Table[{p, Sum[Sign[Cos[(2k-1) Pi/p]], {k, 1, p-1}] + (1 + (-1)^((p-1)/2))}, {p, Prime[Range[2, 20]]}]
+```
+
+---
+
+## Weil's Asymptotic Bound (Context)
+
+### Statement (Weil 1948)
+
+For polynomial character sums over finite fields:
+
+$$\left| \sum_{x \in \mathbb{F}_p} \chi(f(x)) \right| \leq (d-1)\sqrt{p}$$
+
+where:
+- $\chi$ is a non-trivial multiplicative character (e.g., Legendre symbol)
+- $f(x)$ is a polynomial of degree $d$
+- $\gcd(d, p) = 1$
+
+### Historical Context
+
+| Year | Author | Result | Method |
+|------|--------|--------|--------|
+| 1896 | Aladov | Exact formulas for ℓ=2 | Counting |
+| 1906 | Jacobsthal | Exact formulas for ℓ=2,3 | Character sums |
+| 1918 | Pólya-Vinogradov | $O(\sqrt{p} \log p)$ | Elementary |
+| 1948 | **Weil** | $O(\sqrt{p})$ | Riemann hypothesis for curves |
+| 1957 | Burgess | Improved short intervals | Amplification |
+
+### Why Weil Is "Definitive"
+
+Weil's bound is **optimal up to constants** — it follows from the Riemann Hypothesis for curves over finite fields, which Weil proved using deep algebraic geometry.
+
+### Our Result vs Weil
+
+| Aspect | Weil | Our A(p) |
+|--------|------|----------|
+| Type | Asymptotic upper bound | **Exact formula** |
+| Scope | General character sums | Specific sign-cosine sum |
+| Result | $\leq c\sqrt{p}$ | Exactly 0 or -2 |
+| Proof | Algebraic geometry | Elementary (interval counting) |
+
+**Key point:** Having an **exact** result for a specific sum is more valuable than a general bound, even if the proof is elementary.
+
+### Reference
+
+A. Weil, *"On some exponential sums"*, Proc. Nat. Acad. Sci. U.S.A. **34** (1948), 204–207.
+[Semantic Scholar](https://www.semanticscholar.org/paper/On-Some-Exponential-Sums.-Weil/e901626b9e8776f0f2ed435b875566a9a5ea75fc)
+
+---
+
+## Paper Status (Dec 5, 2025)
+
+### sign-cosine-identity.tex
+
+**Location:** `docs/papers/sign-cosine-identity.tex`
+
+**Contents:**
+- Main theorem with rigorous proof (interval counting)
+- Historical context (Aladov 1896, Jacobsthal 1906, Weil 1948)
+- Connection to quadratic residues (W(p), mod 4 complementarity)
+- Geometric origin (Chebyshev polynomial lobes)
+- Self-citation to Chebyshev integral paper (Zenodo + GitHub release)
+
+**Status:** ✅ Compiles, awaiting verification of all claims before release.
+
+**Potential additions:**
+- [ ] Stronger cosine sum identity as Corollary
+- [ ] More explicit comparison with Weil
+- [ ] Numerical verification table
