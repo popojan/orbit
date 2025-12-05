@@ -3,6 +3,17 @@
 **Date:** December 5, 2025
 **Status:** Numerically verified, proof needed
 
+## Adversarial Check Summary
+
+| Aspect | Result |
+|--------|--------|
+| Formula W(p) = 2h(-p) - 2 | ✅ Verified to p = 10009 |
+| Computational speedup | ❌ No (W(p) is ~16× slower than built-in) |
+| Known in literature | 🤔 Sign(cos) weighting not found in standard references |
+| LCM pattern for h(-p)-1 | ❌ Falsified at p=257 |
+
+**Value:** Conceptual — connects Chebyshev lobe geometry to class numbers. Not practical for computation.
+
 ---
 
 ## Definition
@@ -22,6 +33,8 @@ For odd prime $p$:
 $$W(p) = \begin{cases} 2h(-p) - 2 & p \equiv 1 \pmod 4 \\ 2 & p \equiv 3 \pmod 4 \end{cases}$$
 
 where $h(-p)$ is the class number of the imaginary quadratic field $\mathbb{Q}(\sqrt{-p})$.
+
+**Notation:** $h(-p)$ is standard notation in algebraic number theory. In Mathematica: `NumberFieldClassNumber[Sqrt[-p]]`. The discriminant of $\mathbb{Q}(\sqrt{-p})$ is $-p$ when $p \equiv 3 \pmod 4$ and $-4p$ when $p \equiv 1 \pmod 4$.
 
 ---
 
@@ -120,34 +133,13 @@ Table[
 
 ---
 
-## LCM-like Growth Pattern
+## ❌ FALSIFIED: LCM-like Growth Pattern
 
-The sequence $h(-p) - 1$ for $p \equiv 1 \pmod 4$:
+**Initial observation:** First ~24 values of $h(-p) - 1$ appeared to be prime powers only.
 
-$$1, 1, 3, 5, 1, 7, 5, 5, 3, 11, 3, 13, 5, 7, 7, 13, 5, 13, 9, 3, 9, 9, ...$$
+**Adversarial check:** FALSIFIED at p = 257 where $h(-p) - 1 = 15 = 3 \times 5$.
 
-**Observation:** These are mostly **primes or prime powers**!
-
-| h(-p) - 1 | Factorization | First appearance |
-|-----------|---------------|------------------|
-| 1 | 1 | p = 5 |
-| 3 | 3¹ | p = 17 |
-| 5 | 5¹ | p = 29 |
-| 7 | 7¹ | p = 41 |
-| 9 | **3²** | p = 181 |
-| 11 | 11¹ | p = 89 |
-| 13 | 13¹ | p = 101 |
-
-This mirrors LCM@@Range@n growth:
-- n = 3: adds 3¹
-- n = 5: adds 5¹
-- n = 7: adds 7¹
-- n = 9: adds **3²**
-- n = 11: adds 11¹
-
-**Analogy:** $\exp(\psi(n)) = \text{lcm}(1, 2, ..., n)$ where $\psi$ is Chebyshev's function.
-
-The class numbers h(-p) seem to grow by "adding" prime powers in a similar fashion!
+**Why this rules out LCM analogy:** LCM@@Range[n] can only add ONE prime at a time (when n is a prime power). If n+1 is composite, all its prime factors are already in Range[n]. Value 15 = 3×5 has two distinct primes — impossible for LCM growth.
 
 ---
 
@@ -155,8 +147,7 @@ The class numbers h(-p) seem to grow by "adding" prime powers in a similar fashi
 
 1. **Prove** the formula $W(p) = 2h(-p) - 2$ for $p \equiv 1 \pmod 4$
 2. **Explain** why $W(p) = 2$ for $p \equiv 3 \pmod 4$ (sketch above, needs rigor)
-3. **LCM connection:** Why does $h(-p) - 1$ follow prime-power pattern?
-4. **Generalize:** What is $W(n)$ for composite $n$?
+3. **Generalize:** What is $W(n)$ for composite $n$?
 
 ---
 
