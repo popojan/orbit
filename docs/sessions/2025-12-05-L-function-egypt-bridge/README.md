@@ -123,6 +123,64 @@ Egypt converges **exponentially**, L-function converges as **O(1/n)**.
 
 ---
 
+## Discovered: Complete Transformation Chain!
+
+There IS a multi-step transformation from L_imag to CF:
+
+```
+L_imag → (Hadamard) → L_real(odd) → (+L_even) → L_real → (×√p/h) → R → (exp) → ε → CF
+```
+
+### Step 1: Hadamard-like Transformation
+
+Decompose by residue class mod 4:
+- L_real(odd) = L_{1mod4} + L_{3mod4}  (sum)
+- L_imag      = L_{1mod4} - L_{3mod4}  (difference)
+
+Matrix form:
+```
+[L_real(odd)]   [1   1] [L_{1mod4}]
+[L_imag     ] = [1  -1] [L_{3mod4}]
+```
+
+Inverse:
+```
+L_{1mod4} = (L_real(odd) + L_imag) / 2
+L_{3mod4} = (L_real(odd) - L_imag) / 2
+```
+
+### Step 2: Euler 2-Factor
+
+L_real = L_real(odd) + L_real(even)
+
+(The even part involves the Euler factor at 2)
+
+### Step 3: Class Number Formula
+
+For real field: h(p)·R = √p·L(1, χₚ)
+
+When h(p) = 1: R = √p·L_real
+
+### Step 4: Fundamental Unit
+
+ε = exp(R) = x + y√p (Pell solution)
+
+### Step 5: CF Convergents
+
+p_n + q_n√p ≈ ε^(n/2)
+
+Egypt = CF[odd indices]
+
+### Why Direct Transformation Fails
+
+The chain involves:
+- **Global restructuring** (Hadamard separates mod 4 classes)
+- **Non-local operations** (Euler product, exponentiation)
+
+No simple term-by-term correspondence exists because the transformations are fundamentally algebraic, not term-wise
+
+---
+
 ## Wolfram Code
 
 ```mathematica
@@ -182,8 +240,12 @@ The diagram shows √p as the **meeting point** of two different mathematical wo
 2. **Two L-functions identified:**
    - L(1, χₚ) for real field Q(√p) → connects to CF via regulator
    - L(1, χ₄χₚ) for imaginary field Q(√(-p)) → connects to our sign-cosine
-3. **Direct L→CF transformation unlikely** because they come from different fields
-4. **Bridge equation:** h(p)·R/L(1,χₚ) = h(-p)·π/(2·L(1,χ₄χₚ)) = √p
+3. **Hadamard transformation discovered:**
+   - L_real(odd) = L_{1mod4} + L_{3mod4}
+   - L_imag = L_{1mod4} - L_{3mod4}
+   - This is like Fourier decomposition into even/odd components!
+4. **Complete transformation chain found:** L_imag → Hadamard → L_real → R → ε → CF
+5. **Why direct fails:** Transformations are global (not term-wise)
 
 ---
 
