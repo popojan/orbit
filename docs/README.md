@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-05 11:24:33
+**Generated:** 2025-12-05 18:08:03
 
 ## Theorems (Master References)
 
@@ -20,16 +20,16 @@
 
 ## Recent Sessions (Last 10)
 
-- [Session: Two Beta Functions - Analysis and Disambiguation](sessions/2025-12-04-beta-functions-analysis/README.md) *(2025-12-04)*
+- [L-Function ↔ Egypt/CF Bridge: Open Research Direction](sessions/2025-12-05-L-function-egypt-bridge/README.md) *(2025-12-05)*
+- [W(p) and Class Number Connection](sessions/2025-12-05-chebyshev-lobe-balance/class-number-connection.md) *(2025-12-05)*
+- [Session: Chebyshev Polygon Lobe Balance](sessions/2025-12-05-chebyshev-lobe-balance/README.md) *(2025-12-05)*
+- [Session: Two Beta Functions - Analysis and Disambiguation](sessions/2025-12-04-beta-functions-analysis/README.md) *(2025-12-05)*
 - [Rigorous Proof: Sign Sum of Cosines Identity](sessions/2025-12-04-beta-functions-analysis/main-theorem-proof.md) *(2025-12-04)*
 - [Algebraic Proof: Why A(p) and Aladov's Asymmetry Are Complementary](sessions/2025-12-04-beta-functions-analysis/complementarity-proof.md) *(2025-12-04)*
 - [The Aladov Mystery: Who Was N. S. Aladov?](sessions/2025-12-04-beta-functions-analysis/aladov-mystery.md) *(2025-12-04)*
 - [Historical Context: Quadratic Residue Patterns and the Russian Mathematical Tradition](sessions/2025-12-04-beta-functions-analysis/historical-context.md) *(2025-12-04)*
 - [Session: Random Matrix Theory and Chebyshev Lobe Areas](sessions/2025-12-03-rmt-chebyshev-connection/README.md) *(2025-12-04)*
 - [Session: Primitive Lobe Signs and Number Theory](sessions/2025-12-03-primitive-lobe-signs/README.md) *(2025-12-03)*
-- [Session: Hyperbolic Integration of B(n,k)](sessions/2025-12-03-hyperbolic-integration/README.md) *(2025-12-03)*
-- [Session: Exact n^{-s} Identity via B(n,k)](sessions/2025-12-02-eta-identity/README.md) *(2025-12-03)*
-- [Rotated Chebyshev Polygon Functions](sessions/2025-12-01-chebyshev-polygon-transforms/rotated-polygon-functions.md) *(2025-12-02)*
 
 ## Navigation
 
