@@ -79,6 +79,85 @@ Example:
   (* → 3/4, which equals 1/2 + 1/6 + 1/12 *)
 ";
 
+TupleBits::usage = "TupleBits[{u, v, i, j}] computes bit complexity of a raw tuple.
+
+Formula: Log₂(u) + Log₂(v) + Log₂(j)   (for v > 0)
+For v = 0: Log₂(u)
+
+This is the canonical complexity measure for Egyptian representations.
+
+Example:
+  TupleBits[{1, 1, 1, 2023}]  (* ≈ 10.98 bits *)
+";
+
+RawDenominators::usage = "RawDenominators[tuples] extracts all denominators from raw tuples.
+
+Example:
+  RawDenominators[{{1, 2, 1, 1}, {3, 8, 1, 2}}]  (* {3, 33, 209} *)
+";
+
+DisjointRawQ::usage = "DisjointRawQ[tuples1, tuples2] tests if two raw tuple lists have disjoint denominators.
+
+Example:
+  DisjointRawQ[RawFractionsSymbolic[1/3], RawFractionsSymbolic[2/5]]
+";
+
+EgyptianInteger::usage = "EgyptianInteger[n] returns optimized disjoint Egyptian representation for integer n.
+
+OPTIMIZED ALGORITHM using 1/1:
+  - n=1: Canonical split 1 = 1/3 + (1/2 + 1/6) → 2 tuples
+  - n=2: 1/1 + canonical(1) → 3 tuples (vs 12 with old method, 75% savings)
+  - n≥3: 1/1 + consecutive harmonics H[2,k] → O(e^(n-1)) tuples
+
+Key insight: Denominator 1 is disjoint from ALL other denominators (≥2).
+This breaks the recursive disjointness constraint that caused exponential growth.
+
+The tuple {1, 0, 0, 0} represents integer 1 via formula: 1/u = 1/1 = 1.
+
+Options:
+  Method -> \"List\" (default) | \"Raw\" | \"Expression\"
+
+Complexity comparison:
+  n | EgyptianInteger | DisjointEgyptianInteger | Savings
+  1 |       2         |           2             |   0%
+  2 |       3         |          12             |  75%
+  3 |      ~k         |          31             |  58%
+
+Example:
+  EgyptianInteger[2]                       (* {1, 1/2, 1/3, 1/6} *)
+  EgyptianInteger[2, Method -> \"Raw\"]     (* {{1,0,0,0}, {1,2,1,1}, {1,1,1,2}} *)
+  EgyptianInteger[2, Method -> \"Expression\"] (* Symbolic forms *)
+";
+
+
+CanonicalEgyptian::usage = "CanonicalEgyptian[q] returns canonical Egyptian representation.
+
+For proper fractions (0 < q < 1): returns RawFractionsSymbolic[q]
+For integers: searches for disjoint split with minimal tuple bits
+For improper fractions: splits into integer + fractional parts
+
+Options:
+  MaxSplits -> 3         Maximum number of splits for integer search
+  MaxDenominator -> 100  Maximum denominator in split search
+  \"All\" -> False        Return all candidates instead of best one
+
+Returns list of raw tuples {{u, v, i, j}, ...}.
+With \"All\" -> True, returns {{tuples, tupleCount, bits}, ...}.
+
+Canonicity criteria (in priority order):
+  1. Minimal number of raw tuples
+  2. Minimal total tuple bits
+
+Note: 'Minimal k (splits)' is redundant - minimizing tuples yields reasonable k.
+
+Example:
+  CanonicalEgyptian[1]                 (* {1/2, 1/3, 1/6} as raw tuples *)
+  CanonicalEgyptian[1, \"All\" -> True]  (* All disjoint reps of 1 *)
+  CanonicalEgyptian[7/19]              (* Same as RawFractionsSymbolic *)
+
+Note: For n >= 2, finding disjoint representations requires larger search space.
+";
+
 RawFractionsFromCF::usage = "RawFractionsFromCF[q] constructs raw fractions directly from continued fraction.
 
 CONSTRAINT: Only defined for proper fractions 0 < q < 1.
@@ -196,6 +275,169 @@ FormatRawFraction[{u_, v_, i_, j_}] := Which[
 ]
 
 (* ===================================================================
+   CANONICAL REPRESENTATION HELPERS
+   =================================================================== *)
+
+(* Tuple bit complexity - canonical measure *)
+TupleBits[{u_, v_, _, j_}] := If[v == 0, Log2[u], Log2[u] + Log2[v] + Log2[j]]
+
+(* Total bits for list of tuples *)
+TotalTupleBits[tuples_List] := Total[TupleBits /@ tuples]
+
+(* Extract all denominators from raw tuples *)
+RawDenominators[tuples_List] := Denominator /@ Flatten[ExpandRawFraction /@ tuples]
+
+(* Check if two tuple lists have disjoint denominators *)
+DisjointRawQ[tuples1_List, tuples2_List] :=
+  DisjointQ[RawDenominators[tuples1], RawDenominators[tuples2]]
+
+(* Check if list of tuple lists are mutually disjoint *)
+MutuallyDisjointQ[tupleLists_List] := Module[{allDenoms},
+  allDenoms = RawDenominators /@ tupleLists;
+  Length[Union @@ allDenoms] === Total[Length /@ allDenoms]
+]
+
+
+(* ===================================================================
+   OPTIMIZED EGYPTIAN INTEGER (with 1/1 allowed)
+   =================================================================== *)
+
+Options[EgyptianInteger] = {Method -> "List"}
+
+(* Core optimized algorithm using 1/1 *)
+(* Returns raw tuples directly *)
+EgyptianIntegerRaw[1] := {{1, 2, 1, 1}, {1, 1, 1, 2}}  (* 1 = 1/3 + (1/2 + 1/6), 2 tuples *)
+
+EgyptianIntegerRaw[2] := {{1, 0, 0, 0}, {1, 2, 1, 1}, {1, 1, 1, 2}}  (* 2 = 1/1 + canonical(1), 3 tuples *)
+
+EgyptianIntegerRaw[n_Integer /; n >= 3] := Module[
+  {remaining = n - 1, d = 2, usedDenoms = {1}, harmonicK, tailFracs = {}, maxIter = 10000},
+
+  (* Start with 1/1 tuple *)
+  (* Then consecutive harmonics H[2,k] for remaining n-1 *)
+
+  (* Phase 1: Consecutive harmonic part starting from d=2 *)
+  While[remaining > 0 && 1/d <= remaining,
+    remaining = remaining - 1/d;
+    AppendTo[usedDenoms, d];
+    harmonicK = d;
+    d++;
+  ];
+
+  (* Phase 2: Greedy tail for remainder (avoiding used denoms) *)
+  While[remaining > 0 && Length[tailFracs] < maxIter,
+    d = Max[2, Ceiling[1/remaining]];
+    While[MemberQ[usedDenoms, d], d++];
+    AppendTo[tailFracs, 1/d];
+    AppendTo[usedDenoms, d];
+    remaining = remaining - 1/d;
+  ];
+
+  (* Construct raw tuples *)
+  Join[
+    {{1, 0, 0, 0}},  (* 1/1 *)
+    Table[{1, dd - 1, 1, 1}, {dd, 2, harmonicK}],  (* consecutive harmonics *)
+    Table[{1, Denominator[f] - 1, 1, 1}, {f, tailFracs}]  (* greedy tail *)
+  ]
+]
+
+(* Main API with Method option *)
+EgyptianInteger[n_Integer /; n >= 1, OptionsPattern[]] := Module[
+  {raw},
+
+  raw = EgyptianIntegerRaw[n];
+
+  Switch[OptionValue[Method],
+    "Raw",
+      raw,
+
+    "Expression",
+      FormatRawFraction /@ raw,
+
+    "List" | _,
+      Sort[Flatten[ExpandRawFraction /@ raw], Greater]
+  ]
+]
+
+
+(* Generate k-splits of integer n into proper fractions *)
+(* Returns list of {q1, q2, ...} where each qi is a proper fraction *)
+GenerateSplits[n_Integer, k_Integer, maxDenom_Integer: 100] := Module[
+  {fracs, result},
+
+  Which[
+    k == 2,
+      (* k=2: enumerate q1 = a/b, q2 = n - q1 *)
+      fracs = Flatten[Table[
+        {a/b, n - a/b},
+        {b, 2, maxDenom}, {a, 1, b - 1}
+      ], 1];
+      (* Filter: both must be proper fractions *)
+      Select[fracs, 0 < #[[1]] < 1 && 0 < #[[2]] < 1 &],
+
+    k == 3,
+      (* k=3: enumerate q1, q2, then q3 = n - q1 - q2 *)
+      result = {};
+      Do[
+        Do[
+          q3 = n - a1/b1 - a2/b2;
+          If[0 < q3 < 1 && q3 =!= a1/b1 && q3 =!= a2/b2,
+            AppendTo[result, {a1/b1, a2/b2, q3}]
+          ],
+          {b2, b1, Min[maxDenom, 20]}, {a2, 1, b2 - 1}  (* limit inner loop for speed *)
+        ],
+        {b1, 2, Min[maxDenom, 20]}, {a1, 1, b1 - 1}
+      ];
+      DeleteDuplicatesBy[result, Sort],
+
+    True,
+      (* k > 3: not implemented *)
+      {}
+  ]
+]
+
+(* Find canonical disjoint representation for integer n *)
+(* returnAll: if True, return all candidates sorted by (tupleCount, bits) *)
+(* Priority: 1. minimal raw tuples, 2. minimal bits (k is irrelevant) *)
+FindCanonicalInteger[n_Integer, maxSplits_Integer: 3, maxDenom_Integer: 100, returnAll_: False] :=
+  Module[
+    {splits, rawLists, allCandidates = {}},
+
+    (* Search ALL k values, collect ALL candidates *)
+    Do[
+      splits = GenerateSplits[n, k, maxDenom];
+
+      (* For each split, compute raw tuples and check disjointness *)
+      Do[
+        (* Skip splits with repeated fractions *)
+        If[Length[DeleteDuplicates[split]] == Length[split],
+          rawLists = RawFractionsSymbolic /@ split;
+          If[MutuallyDisjointQ[rawLists],
+            AppendTo[allCandidates, {
+              Join @@ rawLists,  (* combined tuples *)
+              Length[Join @@ rawLists],  (* tuple count *)
+              TotalTupleBits[Join @@ rawLists]  (* total bits *)
+            }]
+          ]
+        ],
+        {split, splits}
+      ],
+      {k, 2, maxSplits}
+    ];
+
+    (* Sort by (tupleCount, bits) - k is NOT a criterion *)
+    If[Length[allCandidates] > 0,
+      allCandidates = DeleteDuplicatesBy[SortBy[allCandidates, {#[[2]] &, #[[3]] &}], First];
+      If[returnAll,
+        allCandidates,
+        First[allCandidates][[1]]  (* return just the tuples *)
+      ],
+      (* No candidates found *)
+      If[returnAll, {}, $Failed]
+    ]
+  ]
+
+(* ===================================================================
    MAIN API
    =================================================================== *)
 
@@ -255,6 +497,43 @@ EgyptianFractions[q_Rational, opts:OptionsPattern[]] /; q >= 1 := Module[
     Join[{intPart}, EgyptianFractions[fracPart, opts]]
   ]
 ] /; q > 1
+
+(* ===================================================================
+   CANONICAL EGYPTIAN REPRESENTATION
+   =================================================================== *)
+
+Options[CanonicalEgyptian] = {MaxSplits -> 3, MaxDenominator -> 100, "All" -> False}
+
+(* Proper fractions: just use RawFractionsSymbolic *)
+CanonicalEgyptian[q_Rational /; 0 < q < 1, OptionsPattern[]] :=
+  If[OptionValue["All"],
+    {{RawFractionsSymbolic[q], Length[RawFractionsSymbolic[q]],
+      TotalTupleBits[RawFractionsSymbolic[q]]}},
+    RawFractionsSymbolic[q]
+  ]
+
+(* Integers: search for disjoint representation *)
+CanonicalEgyptian[n_Integer /; n >= 1, OptionsPattern[]] :=
+  FindCanonicalInteger[n, OptionValue[MaxSplits], OptionValue[MaxDenominator], OptionValue["All"]]
+
+(* Improper fractions: split into integer + fractional, combine *)
+CanonicalEgyptian[q_Rational /; q > 1, opts:OptionsPattern[]] := Module[
+  {intPart = Floor[q], fracPart = FractionalPart[q], intRaw, fracRaw},
+  fracRaw = RawFractionsSymbolic[fracPart];
+  If[intPart == 0,
+    fracRaw,
+    intRaw = CanonicalEgyptian[intPart, opts];
+    If[intRaw === $Failed,
+      $Failed,
+      (* Check disjointness with fractional part *)
+      If[DisjointRawQ[intRaw, fracRaw],
+        Join[intRaw, fracRaw],
+        (* Not disjoint - need more sophisticated search *)
+        $Failed
+      ]
+    ]
+  ]
+]
 
 End[];
 
