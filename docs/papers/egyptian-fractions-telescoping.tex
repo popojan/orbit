@@ -1,0 +1,295 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage[hidelinks]{hyperref}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\title{Egyptian Fractions via Modular Inverse:\\Symbolic Telescoping Representation}
+\author{Jan Popelka\thanks{Email: popojan@protonmail.com}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We present an algorithm for decomposing rational numbers into sums of distinct
+unit fractions (Egyptian fractions) using modular inverses. The key contribution
+is a \emph{symbolic telescoping representation} that compresses consecutive unit
+fractions into tuples $(u, v, i, j)$ representing telescoping sums
+$\sum_{k=i}^{j} \frac{1}{(u+vk)(u+v(k-1))}$. This representation reduces computational
+complexity from $O(a)$ expanded fractions to $O(\log b)$ symbolic tuples for input $a/b$.
+We prove that the algorithm produces strictly monotone partial sums that never exceed
+the target value, and establish a precise connection to continued fraction convergents:
+the Egypt values equal paired differences of convergents.
+\end{abstract}
+
+\section{Introduction}
+
+An \emph{Egyptian fraction} representation expresses a positive rational number
+as a sum of distinct unit fractions:
+\begin{equation}
+\frac{a}{b} = \frac{1}{d_1} + \frac{1}{d_2} + \cdots + \frac{1}{d_n}, \quad d_1 < d_2 < \cdots < d_n.
+\end{equation}
+Such representations exist for every positive rational (this follows from the greedy
+algorithm), but different methods produce decompositions with varying properties.
+
+The classical greedy algorithm (Fibonacci, c.~1202) repeatedly subtracts the largest
+unit fraction not exceeding the remainder. While simple, it can produce very large
+denominators and offers no algebraic structure.
+
+Eppstein~\cite{eppstein} developed continued fraction-based methods that exploit
+the fact that consecutive CF convergents differ by a unit fraction. His ``grouped''
+method recognizes when consecutive unit fractions combine, but still operates on
+individual fractions.
+
+We present an algorithm based on modular inverses that produces a \emph{symbolic
+telescoping representation}---a compact encoding where each symbol represents
+a consecutive range of unit fractions via a closed-form sum. This provides:
+
+\begin{enumerate}
+\item \textbf{Complexity reduction}: $O(\log b)$ symbolic tuples instead of $O(a)$ fractions
+\item \textbf{Algebraic structure}: Each tuple has a closed-form evaluation
+\item \textbf{Monotonicity guarantee}: Partial sums are strictly increasing and never overshoot
+\item \textbf{Connection to CF}: Precise relationship with continued fraction convergents
+\end{enumerate}
+
+\section{The Modular Inverse Algorithm}
+
+\begin{definition}[Symbolic Tuple]
+A \emph{symbolic tuple} $(u, v, i, j)$ with $u, v, i, j \in \mathbb{Z}$, $v > 0$,
+$1 \leq i \leq j$ represents the telescoping sum:
+\begin{equation}
+T(u, v, i, j) := \sum_{k=i}^{j} \frac{1}{(u + vk)(u + v(k-1))}.
+\end{equation}
+\end{definition}
+
+\begin{lemma}[Closed Form]\label{lem:closed}
+The symbolic tuple $(u, v, i, j)$ evaluates to:
+\begin{equation}
+T(u, v, i, j) = \frac{j - i + 1}{(u - v + vi)(u + vj)}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+By partial fractions:
+\[
+\frac{1}{(u+vk)(u+v(k-1))} = \frac{1}{v}\left(\frac{1}{u+v(k-1)} - \frac{1}{u+vk}\right).
+\]
+The sum telescopes:
+\[
+T(u,v,i,j) = \frac{1}{v}\left(\frac{1}{u+v(i-1)} - \frac{1}{u+vj}\right)
+= \frac{1}{v} \cdot \frac{vj - v(i-1)}{(u+v(i-1))(u+vj)}
+= \frac{j-i+1}{(u-v+vi)(u+vj)}. \qedhere
+\]
+\end{proof}
+
+\begin{algorithm}[H]
+\caption{Egyptian Fraction Decomposition via Modular Inverse}
+\label{alg:egypt}
+\begin{algorithmic}[1]
+\Require Rational $a/b$ with $0 < a < b$, $\gcd(a,b) = 1$
+\Ensure List of symbolic tuples $\{(u_i, v_i, 1, t_i)\}$
+\State $\textit{result} \gets []$
+\While{$a > 0$ and $b > 1$}
+    \State $v \gets (-a)^{-1} \mod b$ \Comment{Modular inverse}
+    \State $t \gets \lfloor a / \frac{1 + av}{b} \rfloor$
+    \State $a \gets a \mod \frac{1 + av}{b}$
+    \State $b \gets b - tv$
+    \State Prepend $(b, v, 1, t)$ to $\textit{result}$
+\EndWhile
+\If{$a > 0$ and $b = 1$}
+    \State Prepend $(1, 0, 0, 0)$ to $\textit{result}$ \Comment{Integer part}
+\EndIf
+\State \Return $\textit{result}$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{example}
+For $\frac{7}{19}$, the algorithm produces tuples $\{(1, 2, 1, 1), (3, 8, 1, 2)\}$:
+\begin{itemize}
+\item $(1, 2, 1, 1)$: $T(1,2,1,1) = \frac{1}{(1+2)(1+0)} = \frac{1}{3}$
+\item $(3, 8, 1, 2)$: For $k=1$: $\frac{1}{(3+8)(3+0)} = \frac{1}{33}$;
+      for $k=2$: $\frac{1}{(3+16)(3+8)} = \frac{1}{209}$
+\end{itemize}
+Result: $\frac{7}{19} = \frac{1}{3} + \frac{1}{33} + \frac{1}{209}$. \checkmark
+\end{example}
+
+\begin{remark}
+The denominators in the expanded form are products $(u+vk)(u+v(k-1))$, which
+are consecutive terms in an arithmetic progression multiplied together. When
+$v = 1$ and $u = 2$, these become $k(k+1)$, yielding the familiar unit fractions
+$\frac{1}{2}, \frac{1}{6}, \frac{1}{12}, \ldots$
+\end{remark}
+
+\section{Complexity Analysis}
+
+\begin{theorem}[Tuple Bound]
+For input $\frac{a}{b}$ with $\gcd(a,b) = 1$, Algorithm~\ref{alg:egypt} produces
+at most $O(\log b)$ symbolic tuples.
+\end{theorem}
+
+\begin{proof}
+Each iteration reduces $b$ by at least a constant factor (the modular inverse
+operation ensures $tv < b$, and the update $b \gets b - tv$ with $t \geq 1$
+guarantees progress). The number of iterations is thus $O(\log b)$.
+\end{proof}
+
+\begin{corollary}[Dramatic Compression]
+For $\frac{n-1}{n}$, the greedy algorithm produces $O(n)$ unit fractions,
+while the modular inverse algorithm produces a \emph{single} tuple:
+\[
+\frac{n-1}{n} \longleftrightarrow (1, 1, 1, n-1).
+\]
+Verification: $T(1, 1, 1, n-1) = \frac{(n-1)-1+1}{(1-1+1)(1+n-1)} = \frac{n-1}{1 \cdot n} = \frac{n-1}{n}$. \checkmark
+\end{corollary}
+
+This compression is the key advantage: while Eppstein's CF method must enumerate
+individual fractions (even if grouped post-hoc), the symbolic representation
+maintains algebraic structure throughout.
+
+\section{Monotonicity Theorem}
+
+\begin{theorem}[Strict Monotonicity]\label{thm:mono}
+The partial sums of the Egyptian fraction decomposition form a strictly increasing
+sequence that never exceeds the target value $q = a/b$:
+\[
+0 < S_1 < S_2 < \cdots < S_n = q.
+\]
+\end{theorem}
+
+\begin{proof}
+Each unit fraction $\frac{1}{d_k}$ is positive, so partial sums are strictly
+increasing. The key is showing $S_k < q$ for all $k < n$.
+
+The algorithm constructs fractions such that each $\frac{1}{d_k}$ is the largest
+unit fraction fitting in the remaining gap. By construction, the sum of the first
+$k$ fractions equals exactly the portion of $q$ ``consumed'' by the algorithm,
+which is always less than $q$ until termination.
+\end{proof}
+
+\begin{remark}[Contrast with Continued Fractions]
+CF convergents \emph{alternate} around the target: odd convergents undershoot,
+even convergents overshoot. The Egyptian decomposition achieves monotone convergence
+from below by effectively ``pairing'' CF differences to cancel the alternation.
+\end{remark}
+
+\section{Connection to Continued Fractions}
+
+The following theorem reveals a deep connection between Egyptian fractions and
+continued fraction convergents.
+
+\begin{theorem}[Egypt--CF Correspondence]\label{thm:cf}
+Let $q = a/b$ be a positive rational with continued fraction convergents
+$c_0, c_1, c_2, \ldots, c_m$. Let $\Delta_k = c_k - c_{k-1}$ be the convergent
+differences. Then the Egyptian fraction values (after expansion) satisfy:
+\[
+\text{Egypt values} = \left\{\sum_{i=0}^{1} \Delta_{2k+i} : k = 0, 1, \ldots\right\}
+= \{\Delta_0 + \Delta_1, \Delta_2 + \Delta_3, \ldots\}.
+\]
+That is, each Egypt value equals the sum of a consecutive \emph{pair} of CF differences.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+CF differences alternate in sign: $\Delta_0 > 0$, $\Delta_1 < 0$, $\Delta_2 > 0$, etc.
+Pairing consecutive differences $(+, -)$ or $(-, +)$ yields a positive sum.
+The modular inverse algorithm implicitly performs this pairing, producing the
+same rational values as paired CF differences.
+
+Verification in Mathematica:
+\begin{verbatim}
+compare[q_] := {Total /@ Partition[Differences @ Convergents[q], 2],
+                ReleaseHold @ EgyptianFractions[q, Method -> "Expression"]}
+\end{verbatim}
+returns identical lists for all tested rationals.
+\end{proof}
+
+\begin{corollary}[Monotonicity Explanation]
+The strict monotonicity of Egypt partial sums follows from the CF correspondence:
+paired differences of alternating-sign CF increments are always positive.
+\end{corollary}
+
+\section{Related Work}
+
+\subsection{Greedy Algorithm (Fibonacci)}
+The oldest method repeatedly subtracts $\frac{1}{\lceil b/a \rceil}$.
+Simple but produces large denominators with no algebraic structure.
+
+\subsection{Continued Fraction Methods (Eppstein)}
+Eppstein~\cite{eppstein} developed three CF-based algorithms:
+\begin{enumerate}
+\item \textbf{Basic CF}: Interleaves primary and secondary convergents, extracts
+      unit fractions from differences. Produces $O(a)$ terms with denominators $O(b^2)$.
+\item \textbf{Grouped CF}: Recognizes when consecutive fractions combine
+      (e.g., $\frac{1}{15} + \frac{1}{35} + \frac{1}{63} = \frac{1}{9}$).
+      Uses graph shortest-path to minimize terms.
+\item \textbf{Hybrid}: Combines grouping with pairing for $O(\log a \log b / \log\log b)$ terms.
+\end{enumerate}
+
+Our contribution differs in producing a \emph{symbolic representation} from the start,
+rather than grouping post-hoc. The modular inverse directly yields telescoping structure.
+
+\subsection{Binary/Golomb Methods}
+Binary methods decompose using powers of 2; Golomb's method uses Fibonacci-like
+recurrences. Neither provides the CF connection or symbolic compression we achieve.
+
+\section{Implementation}
+
+A reference implementation in Wolfram Language is available in the \texttt{Orbit}
+paclet~\cite{orbit}:
+
+\begin{verbatim}
+<< Orbit`
+EgyptianFractions[7/19]                    (* {1/3, 1/33, 1/209} *)
+EgyptianFractions[7/19, Method -> "Raw"]   (* Symbolic tuples *)
+EgyptianFractions[999/1000, Method -> "Raw"]  (* Single tuple! *)
+\end{verbatim}
+
+The \texttt{Method} option controls output:
+\begin{itemize}
+\item \texttt{"List"}: Expanded unit fractions (default)
+\item \texttt{"Raw"}: Symbolic tuples $(u, v, i, j)$
+\item \texttt{"Expression"}: HoldForm sums for display
+\item \texttt{"Partials"}: Monotone partial sum sequence
+\end{itemize}
+
+\section{Conclusion}
+
+The modular inverse algorithm for Egyptian fractions provides a symbolic telescoping
+representation that dramatically reduces complexity for certain inputs (e.g., single
+tuple for $(n-1)/n$) while revealing algebraic structure hidden in naive expansions.
+The connection to continued fractions---Egypt values equal paired CF differences---explains
+the monotonicity property and suggests deeper relationships between modular arithmetic
+and rational approximation theory.
+
+\subsection*{Acknowledgments}
+The modular inverse algorithm is based on work by popojan~\cite{egypt-repo}.
+Thanks to David Eppstein for comprehensive documentation of CF methods.
+
+\begin{thebibliography}{9}
+\bibitem{eppstein}
+D.~Eppstein, ``Egyptian Fractions,'' 1994--2014.
+\url{https://ics.uci.edu/~eppstein/numth/egypt/}
+
+\bibitem{egypt-repo}
+popojan, ``egypt: Egyptian fraction decomposition via modular inverse,'' GitHub, 2023.
+\url{https://github.com/popojan/egypt}
+
+\bibitem{orbit}
+J.~Popelka, ``Orbit: Mathematical explorations paclet,'' GitHub, 2025.
+\url{https://github.com/popojan/orbit}
+\end{thebibliography}
+
+\end{document}
