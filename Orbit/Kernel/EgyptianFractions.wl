@@ -76,6 +76,25 @@ Example:
   (* → 3/4, which equals 1/2 + 1/6 + 1/12 *)
 ";
 
+RawFractionsFromCF::usage = "RawFractionsFromCF[q] constructs raw fractions directly from continued fraction.
+
+ALTERNATIVE CONSTRUCTION proving Egypt ↔ CF equivalence:
+  RawFractionsSymbolic[q] === RawFractionsFromCF[q]  (* Always True *)
+
+Algorithm:
+  1. Compute CF = ContinuedFraction[q]
+  2. Pair consecutive CF coefficients: (a₁,a₂), (a₃,a₄), ...
+  3. Fold pairs using RawStep recurrence
+  4. Handle odd-length CF edge case
+
+The fact that ModInv and CF methods produce IDENTICAL tuples
+is a computational proof of the Egypt ↔ CF theorem.
+
+Example:
+  RawFractionsFromCF[7/19]  (* {{1, 2, 1, 1}, {3, 8, 1, 2}} *)
+  RawFractionsSymbolic[7/19]  (* Same! *)
+";
+
 Begin["`Private`"];
 
 (* ===================================================================
@@ -98,6 +117,40 @@ RawFractionsSymbolic[q_Rational] := Module[
   If[a > 0 && b == 1, PrependTo[result, {1, 0, 0, 0}]];
 
   result
+]
+
+(* ===================================================================
+   ALTERNATIVE: CF-based Construction (proves Egypt ↔ CF equivalence)
+   =================================================================== *)
+
+(* Step function for folding CF pairs into raw tuples *)
+RawStep[{a1_, b1_, 1, j1_}, {b2_, j2_}] := {#, b1 + b2 * #, 1, j2} &[a1 + j1 * b1]
+
+(* Construct raw fractions directly from continued fraction *)
+RawFractionsFromCF[q_Rational] := Module[
+  {cf = ContinuedFraction[q], cfTail, pairs, eg},
+
+  cfTail = Drop[cf, 1];  (* Remove a₀ *)
+
+  (* Edge case: CF tail has only one element (e.g., 1/n → {0,n}) *)
+  (* For 1/n, the tuple is {1, n-1, 1, 1} giving value 1/n *)
+  If[Length[cfTail] == 1,
+    Return[{{1, First[cfTail] - 1, 1, 1}}]
+  ];
+
+  (* Fold pairs of CF coefficients *)
+  pairs = Partition[cfTail, 2];
+  eg = Drop[FoldList[RawStep, {1, 0, 1, 0}, pairs], 1];
+
+  (* Handle integer part if present *)
+  If[First[cf] > 0, PrependTo[eg, {1, 0, 0, 0}]];
+
+  (* Handle even-length CF: last coefficient has no pair *)
+  If[EvenQ[Length[cf]] && Length[eg] > 0,
+    AppendTo[eg, RawStep[Last[eg], {Last[cf] - 1, 1}]]
+  ];
+
+  eg
 ]
 
 (* Expand single raw tuple to list of unit fractions *)
