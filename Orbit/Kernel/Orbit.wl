@@ -15,6 +15,7 @@ Get["Orbit`ChebyshevIntegralTheorem`"];
 Get["Orbit`ChebyshevZeta`"];
 Get["Orbit`LegacyPolynomials`"];
 Get["Orbit`EgyptianFractions`"];
+Get["Orbit`CunninghamRepresentation`"];
 
 (* The package context is now populated with symbols from submodules *)
 (* All usage messages and definitions are in the respective submodule files *)
