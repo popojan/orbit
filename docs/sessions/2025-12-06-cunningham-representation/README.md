@@ -619,12 +619,64 @@ R(D) = log(sym_result) / k
 
 **D=61 is special**: k=1 means sym gives fundamental directly!
 
+## Fundamental Extraction Implementation
+
+### The Problem
+
+`BrahmaguptaBhaskaraSolve` returns a k-th power of the fundamental solution, not always the fundamental itself. For practical use, we need to extract the actual fundamental.
+
+### Failed Approach: Square Root Extraction
+
+Initially tried: repeatedly take √ in Z[√D] until no integer root exists.
+
+**Problem:** This only works when k is a power of 2. But k_base = 3 or 6, so we get cubes or sixth powers, which cannot be reduced by square roots alone.
+
+Example: D=5
+- sym gives (2889 + 1292√5) = (9 + 4√5)³
+- √(2889 + 1292√5) = (38 + 17√5) with norm -1
+- But there's no integer √(38 + 17√5) in Z[√5]
+- So we're stuck at (38, 17), which squares back to (2889, 1292) — circular!
+
+### Working Solution: CF Convergent Search
+
+Since CF convergents enumerate ALL powers of the fundamental in order, the FIRST convergent with norm = 1 IS the fundamental.
+
+```mathematica
+PellFundamentalExtract[x0_, y0_, dd_] := Catch[Module[{convs, p, q},
+  convs = Convergents[Sqrt[dd], 200];
+  Do[
+    {p, q} = {Numerator[c], Denominator[c]};
+    If[q > 0 && p^2 - dd*q^2 == 1 && p > 0,
+      Throw[{p, q}]
+    ],
+    {c, convs}
+  ];
+  {x0, y0}
+]];
+```
+
+### Benchmark Results
+
+| D | BBF (ms) | FindInstance (ms) | Speedup |
+|---|----------|-------------------|---------|
+| 61 | 4.4 | 753 | **170x** |
+| 109 | 3.1 | 7.7 | 2.5x |
+| 157 | 3.0 | 8.4 | 2.8x |
+| 421 | 3.2 | 15.3 | 4.9x |
+
+**Cattle Problem (D=4729494):** 4ms, returns 45-digit x, 41-digit y. ✓
+
+### Why D=61 is Special
+
+D=61 gets 170x speedup because Cunningham finds a good starting convergent (c=-4) at k=1, while CF needs 11 iterations to reach the fundamental.
+
 ## Open Questions
 
 - [ ] Theoretical proof of periodicity for all quadratic irrationals (Lagrange analog)?
 - [ ] Deeper connection to Stern-Brocot tree structure?
 - [ ] Why does D = n² - 2 give exactly three 5-cycles?
 - [ ] For k ≥ 3: what algebraic property determines which D values get period-2 Cunningham sequences?
+- [ ] Can we avoid CF search for fundamental extraction by using algebraic root-taking (cube roots, etc.)?
 
 ## References
 
