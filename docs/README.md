@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-06 10:43:16
+**Generated:** 2025-12-06 18:01:09
 
 ## Theorems (Master References)
 
@@ -20,7 +20,7 @@
 
 ## Recent Sessions (Last 10)
 
-- [Cunningham Representation and Pell Equations](sessions/2025-12-06-cunningham-representation/README.md) *(2025-12-06)*
+- [Cunningham Representation and Brahmagupta-Bhaskara Equation](sessions/2025-12-06-cunningham-representation/README.md) *(2025-12-06)*
 - [Mondrian Clock - Complete Subset Sum Representation](sessions/2025-12-06-mondrian-clock/README.md) *(2025-12-06)*
 - [Egyptian Fractions Exploration](sessions/2025-12-05-egyptian-fractions-exploration/README.md) *(2025-12-06)*
 - [Prime DNA Review: Gap Distribution and Chebyshev-like Bias](sessions/2025-12-05-prime-dna-review/README.md) *(2025-12-05)*

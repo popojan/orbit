@@ -962,36 +962,106 @@ bbGoodVals = {-4, -2, -1, 1, 2, 4};
 (* k_base depends on starting c value *)
 bbKBase[c_] := If[MemberQ[{-2, 2}, c], 3, 6];
 
-(* Find good starting point from Cunningham or CF convergents *)
-bbFindStart[d_, maxK_: 100] := Catch[Module[{convs, cc, p, q, val},
-  (* Try Cunningham first - often gives good result quickly *)
-  convs = Quiet[CunninghamConvergents[Sqrt[d], maxK]];
-  Do[
-    cc = convs[[k]];
-    {p, q} = {Numerator[cc], Denominator[cc]};
-    If[q == 0, Continue[]];
-    val = p^2 - d*q^2;
-    If[MemberQ[bbGoodVals, val], Throw[{p/q, val}]];
-  , {k, Length[convs]}];
+(* Racing between selected methods - all fully incremental *)
+(* Returns {ratio, c, winner, step} as soon as ANY method finds c ∈ {±1, ±2, ±4} *)
+(* winner: "C" = Cunningham, "F" = CF, "W" = Wildberger *)
+(* step: which iteration found the result *)
+(* racers: subset of {"C", "F", "W"}, default all three *)
+bbFindStart[d_, racers_List: {"C", "F", "W"}] := Catch[Module[
+  {
+    (* Cunningham state: x for sequence, (cP, cQ) for convergents *)
+    z, cx, cPrec, cP = 0, cQ = 1, cA, cDone = False, cStep = 0,
+    (* CF state *)
+    cf, a0, period, fP2 = 1, fP1, fQ2 = 0, fQ1 = 1, fA, fStep = 0,
+    (* Wildberger state: (wa,wb,wc) form, (wu,wv) = x, (wr,ws) = y *)
+    wa = 1, wb = 0, wc, wt, wu = 1, wv = 0, wr = 0, ws = 1, wDone = False, wStep = 0,
+    (* Common *)
+    p, q, val, safetyLimit = 10000, useC, useF, useW
+  },
 
-  (* Fall back to regular CF convergents *)
-  convs = Quiet[Convergents[Sqrt[d], maxK]];
-  Do[
-    cc = convs[[k]];
-    {p, q} = {Numerator[cc], Denominator[cc]};
-    If[q == 0, Continue[]];
-    val = p^2 - d*q^2;
-    If[MemberQ[bbGoodVals, val], Throw[{p/q, val}]];
-  , {k, Length[convs]}];
+  (* Initialize *)
+  z = Floor[Sqrt[d]];
+  wc = -d;
+  useC = MemberQ[racers, "C"];
+  useF = MemberQ[racers, "F"];
+  useW = MemberQ[racers, "W"];
 
-  {None, None}
+  (* Cunningham setup - high precision for incremental generation *)
+  If[useC,
+    cPrec = Max[100, 20*Floor[Log10[d + 1]]];
+    cx = N[Sqrt[d] - z, cPrec],
+    cDone = True
+  ];
+
+  (* CF setup *)
+  If[useF,
+    cf = ContinuedFraction[Sqrt[d]];
+    a0 = cf[[1]]; period = cf[[2]];
+    fP1 = a0;
+    (* Check CF k=0 (p=a0, q=1) *)
+    val = a0^2 - d;
+    If[MemberQ[bbGoodVals, val], Throw[{a0, val, "F", 0}]],
+    fDone = True
+  ];
+
+  If[!useW, wDone = True];
+
+  (* Race: interleave selected methods *)
+  Do[
+    (* === Cunningham step k (incremental) === *)
+    If[useC && !cDone && cx > 10^(-cPrec + 10),
+      cStep++;
+      cA = Floor[cx/(1 - cx)];
+      cx = cx/(1 - cx) - cA;
+      If[cx >= 1, cDone = True; cx = 0];
+      {cP, cQ} = {cP + cA*cQ, cP + (cA + 1)*cQ};
+      p = z*cQ + cP; q = cQ;
+      val = p^2 - d*q^2;
+      If[MemberQ[bbGoodVals, val], Throw[{p/q, val, "C", cStep}]],
+      If[useC, cDone = True]
+    ];
+
+    (* === CF step k (cycles through period) === *)
+    If[useF,
+      fStep++;
+      fA = period[[Mod[k - 1, Length[period]] + 1]];
+      p = fA*fP1 + fP2;
+      q = fA*fQ1 + fQ2;
+      val = p^2 - d*q^2;
+      If[MemberQ[bbGoodVals, val], Throw[{p/q, val, "F", fStep}]];
+      fP2 = fP1; fP1 = p;
+      fQ2 = fQ1; fQ1 = q;
+    ];
+
+    (* === Wildberger step k === *)
+    If[useW && !wDone,
+      wStep++;
+      wt = wa + 2*wb + wc;
+      If[wt > 0,
+        wa = wt; wb += wc; wu += wv; wr += ws,
+        wb += wa; wc = wt; wv += wu; ws += wr
+      ];
+      (* Check if Wildberger completed *)
+      If[wa == 1 && wb == 0 && wc == -d,
+        wDone = True;
+        Throw[{wu/wr, 1, "W", wStep}]
+      ];
+      (* Check intermediate values *)
+      If[wr != 0,
+        val = wu^2 - d*wr^2;
+        If[MemberQ[bbGoodVals, val], Throw[{wu/wr, val, "W", wStep}]]
+      ];
+    ];
+  , {k, 1, safetyLimit}];
+
+  {None, None, None, None}
 ]];
 
 (* Main solver - returns solution (possibly k-th power of fundamental) *)
-BrahmaguptaBhaskaraSolve[d_Integer] := Module[{start, c, result, rx, ry},
+BrahmaguptaBhaskaraSolve[d_Integer] := Module[{start, c, winner, step, result, rx, ry},
   If[IntegerQ[Sqrt[d]], Return[$Failed]];
 
-  {start, c} = bbFindStart[d];
+  {start, c, winner, step} = bbFindStart[d];
   If[start === None, Return[$Failed]];
 
   (* Apply ChebyshevBabylonianStep transformation *)
@@ -1001,14 +1071,14 @@ BrahmaguptaBhaskaraSolve[d_Integer] := Module[{start, c, result, rx, ry},
   (* Verify solution *)
   If[rx^2 - d*ry^2 != 1, Return[$Failed]];
 
-  <|"D" -> d, "x" -> rx, "y" -> ry, "c" -> c|>
+  <|"D" -> d, "x" -> rx, "y" -> ry, "c" -> c, "winner" -> winner, "step" -> step|>
 ];
 
 (* Regulator solver - returns R(D) without computing huge solution *)
-BrahmaguptaBhaskaraRegulator[d_Integer] := Module[{start, c, result, rx, ry, logSym, kb},
+BrahmaguptaBhaskaraRegulator[d_Integer] := Module[{start, c, winner, step, result, rx, ry, logSym, kb},
   If[IntegerQ[Sqrt[d]], Return[$Failed]];
 
-  {start, c} = bbFindStart[d];
+  {start, c, winner, step} = bbFindStart[d];
   If[start === None, Return[$Failed]];
 
   result = ChebyshevBabylonianStep[d, start, 1];
@@ -1018,9 +1088,10 @@ BrahmaguptaBhaskaraRegulator[d_Integer] := Module[{start, c, result, rx, ry, log
 
   (* Compute regulator: R = log(solution) / k *)
   kb = bbKBase[c];
-  logSym = Log[rx + ry*Sqrt[d]];  (* logSym is historical name *)
+  logSym = Log[rx + ry*Sqrt[d]];
 
-  <|"D" -> d, "R" -> logSym/kb, "kBase" -> kb, "c" -> c|>
+  <|"D" -> d, "R" -> logSym/kb, "kBase" -> kb, "c" -> c,
+    "winner" -> winner, "step" -> step|>
 ];
 
 (* ===================================================================
@@ -1048,22 +1119,41 @@ pellSqrtInt[x_, y_, d_] := Catch[Module[{a2, a, b},
   $Failed
 ]];
 
-(* Extract fundamental Pell solution from k-th power *)
-(* Uses CF convergents to find the minimal solution *)
-PellFundamentalExtract[x0_, y0_, dd_] := Catch[Module[{convs, p, q},
-  (* Search through CF convergents for the FIRST positive Pell solution *)
-  (* CF convergents give solutions in order of size, so first norm=1 is fundamental *)
-  convs = Convergents[Sqrt[dd], 200];
-  Do[
-    {p, q} = {Numerator[c], Denominator[c]};
-    If[q > 0 && p^2 - dd*q^2 == 1 && p > 0,
-      (* This is the fundamental solution *)
-      Throw[{p, q}]
-    ],
-    {c, convs}
-  ];
+(* Extract fundamental Pell solution using incremental CF convergents *)
+(* Generates convergents one at a time, stops at first norm=1 solution *)
+PellFundamentalExtract[x0_, y0_, dd_] := Catch[Module[
+  {cf, a0, period, pPrev2, pPrev1, qPrev2, qPrev1, p, q, a, maxIter},
 
-  (* Fallback - shouldn't happen for valid input *)
+  (* Get CF expansion: [a0; period] *)
+  cf = ContinuedFraction[Sqrt[dd]];
+  a0 = cf[[1]];
+  period = cf[[2]];
+
+  (* Initialize: p_{-1}=1, p_0=a0, q_{-1}=0, q_0=1 *)
+  pPrev2 = 1; pPrev1 = a0;
+  qPrev2 = 0; qPrev1 = 1;
+
+  (* Check k=0 *)
+  If[a0^2 - dd == 1, Throw[{a0, 1}]];
+
+  (* Iterate through periodic part - need at most 2*period iterations *)
+  maxIter = 2 * Length[period] + 2;
+  Do[
+    a = period[[Mod[k - 1, Length[period]] + 1]];
+    p = a*pPrev1 + pPrev2;
+    q = a*qPrev1 + qPrev2;
+
+    (* Check for fundamental solution *)
+    If[p^2 - dd*q^2 == 1,
+      Throw[{p, q}]
+    ];
+
+    (* Update for next iteration *)
+    pPrev2 = pPrev1; pPrev1 = p;
+    qPrev2 = qPrev1; qPrev1 = q;
+  , {k, 1, maxIter}];
+
+  (* Fallback - shouldn't happen *)
   {x0, y0}
 ]];
 

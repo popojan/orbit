@@ -670,6 +670,312 @@ PellFundamentalExtract[x0_, y0_, dd_] := Catch[Module[{convs, p, q},
 
 D=61 gets 170x speedup because Cunningham finds a good starting convergent (c=-4) at k=1, while CF needs 11 iterations to reach the fundamental.
 
+## Performance Benchmark: Triple Racing Implementation
+
+### Racing Algorithm
+
+The final implementation races three methods in parallel, returning as soon as ANY finds a good starting value c ∈ {±1, ±2, ±4}:
+
+| Method | Type | Pros | Cons |
+|--------|------|------|------|
+| **C** (Cunningham) | Floating-point | Sometimes fastest | Precision-limited |
+| **F** (CF) | Symbolic | Reliable, periodic | More steps usually |
+| **W** (Wildberger) | Integer-only | Exact arithmetic | Slowest (gives fundamental directly) |
+
+### Step Count Comparison
+
+| D | C steps | F steps | W steps | Winner |
+|---|---------|---------|---------|--------|
+| 5 | 1 | 0 | 3 | F |
+| 13 | 2 | 0 | 6 | F |
+| 61 | 1 | 2 | 21 | **C** |
+| 109 | - | 4 | 36 | F |
+| 421 | - | 12 | 93 | F |
+
+Cunningham wins for D=61 at step 1, while CF needs 2 steps!
+
+### Winner Distribution (D ∈ [2, 1000])
+
+| Method | Wins | Percentage |
+|--------|------|------------|
+| CF | 943 | 97.3% |
+| Cunningham | 26 | 2.7% |
+| Wildberger | 0 | 0% |
+
+Cunningham winners: {22, 43, 58, 59, 61, 74, 114, 162, 164, 185, ...}
+
+### Wolfram Comparison
+
+**Our BB method vs Wolfram's FindInstance:**
+
+| D | BB (ms) | FindInstance (ms) | Speedup | Winner | Step |
+|---|---------|-------------------|---------|--------|------|
+| 61 | 1.8 | 750 | **419×** | C | 1 |
+| 421 | 0.9 | 17 | 18× | F | 12 |
+| 4729494 | 3.2 | 15 | 4.4× | F | 91 |
+| 100003 | 5.4 | 16 | 2.9× | F | 170 |
+| 1000003 | 6.3 | 18 | 2.8× | F | 228 |
+
+### Cattle Problem Benchmarks
+
+**Archimedes' Cattle Problem D values:**
+
+| Form | D value | Factorization | Notes |
+|------|---------|---------------|-------|
+| Original | 410,286,423,278,424 | 2³·3·7·11·29·353·4657² | Historical form |
+| Standard | **4,729,494** | 2·3·7·11·29·353 | Square-free part |
+
+```
+410286423278424 = 4 × 4657² × 4729494
+```
+
+**Benchmark:**
+
+| D | BB (ms) | FindInstance (ms) | Speedup | CF period |
+|---|---------|-------------------|---------|-----------|
+| 4,729,494 | 3.2 | 15 | 4.4× | 92 |
+
+The solution has 45-digit x and 41-digit y, computed in ~3ms.
+
+### PARI/GP Comparison
+
+PARI/GP's `quadunit()` is the fastest known implementation:
+
+| D | BB (ms) | PARI (ms) | Ratio |
+|---|---------|-----------|-------|
+| 61 | 1.8 | <1 | ~2× |
+| 4729494 | 3.2 | <1 | ~3× |
+| 10^9+7 | 110 | 1 | **110×** |
+
+**Conclusion:** PARI is production-optimized C code. Our implementation is valuable for:
+- Educational/exploratory purposes
+- Understanding algorithmic tradeoffs
+- When PARI is unavailable
+- Analyzing algebraic structure (winners, steps, c values)
+
+### API Output
+
+```mathematica
+BrahmaguptaBhaskaraSolve[61]
+(* <|"D" -> 61, "x" -> 1766319049, "y" -> 226153980,
+     "c" -> -4, "winner" -> "C", "step" -> 1|> *)
+
+BrahmaguptaBhaskaraSolve[4729494]
+(* <|"D" -> 4729494, "x" -> (45 digits), "y" -> (41 digits),
+     "c" -> 1, "winner" -> "F", "step" -> 91|> *)
+```
+
+### Parameterized Racing
+
+```mathematica
+(* Use only CF *)
+bbFindStart[61, {"F"}]
+
+(* Use only Wildberger (integer-only) *)
+bbFindStart[61, {"W"}]
+
+(* Race CF and Cunningham *)
+bbFindStart[61, {"C", "F"}]
+```
+
+## CF Step Analysis: How Much of Period Do We Need?
+
+### Average Steps to Find c ∈ {±1,±2,±4}
+
+For D ∈ [2, 1000]: mean = **6.5 steps**, median = 5, max = 41
+
+As fraction of CF period:
+- Mean: **55%** of period
+- 9% of D values find c immediately (step=0)
+
+### Scaling with D Size
+
+**The situation worsens as D grows:**
+
+| D range | All D (mean) | Primes only | Δ |
+|---------|--------------|-------------|---|
+| [2, 100] | 33% | 27% | -6% |
+| [100, 500] | 53% | 45% | -7% |
+| [1000, 5000] | 68% | 57% | -11% |
+| [10000, 50000] | **76%** | **61%** | **-15%** |
+
+**Key findings:**
+1. For large D, we traverse ~75% of CF period on average
+2. **Primes are significantly better** - need less of the period
+3. The prime advantage **grows with D size** (6% → 15%)
+
+### Position Pattern for Different c Values
+
+Relative positions (as fraction of period) where each c appears:
+
+| c | Position | Pattern |
+|---|----------|---------|
+| **-4** | ~0.2 | **Earliest** - best for sym[]! |
+| 4 | ~0.6 | Middle of period |
+| -1 | ~0.9 | Just before period end |
+| 1 | ~1.9 | Almost 2 full periods |
+
+This explains why c=-4 is so useful: it appears at only ~20% into the period, while c=1 (direct fundamental) requires almost 2 full periods.
+
+## CF Convergent Symmetry Theorem
+
+### The Palindromic Property of Pell Norms
+
+For the continued fraction of √D, the sequence of convergent norms p² - D·q² exhibits beautiful symmetry.
+
+**Theorem (Verified for D ∈ [2, 1000]):**
+```
+For |c| ∈ {1, 2, 4, 8, 16, ...}:
+    pos(+c) + pos(-c) = period - 2
+
+where pos(c) = first position in CF period where norm = c
+```
+
+**Verification results:**
+
+| |c| | Cases with both ±c | Symmetry holds |
+|-----|-------------------|----------------|
+| 4 | 20 | **100%** |
+| 8 | 7 | 100% |
+| 16 | 3 | 100% |
+
+### Corollary: First Occurrence Before Half Period
+
+From the symmetry pos(+c) + pos(-c) = period - 2, it follows that:
+```
+min(pos(+c), pos(-c)) < period/2 - 1
+```
+
+**Corrected Statement:** When BOTH +c and -c exist, the earlier one is guaranteed before half period.
+
+### BUT: What If Only One Sign Exists?
+
+Many D values have only one sign of a given |c|:
+
+| |c| | D with only +c | +c before half | D with only -c | -c before half |
+|-----|----------------|----------------|----------------|----------------|
+| 1 | 97 | **0%** | 71 | **0%** |
+| 2 | 43 | **100%** | 44 | **89%** |
+| 4 | 7 | **0%** | 0 | - |
+
+**Key Insight:**
+- **c = ±2**: Almost always appears before half period ✓
+- **c = ±4**: When BOTH exist → one before half (symmetry). When only +4 → late.
+- **c = ±1**: ALWAYS at end of period (~95% position)
+
+This is why **c = ±2 is the fastest starting value** for the racing algorithm.
+
+### Why c = 8 Doesn't Work for sym[]
+
+**Experimental Evidence:**
+
+```mathematica
+(* c = 8 test *)
+ChebyshevBabylonianStep[73, 9/1, 1]  (* 9² - 73·1² = 8 *)
+(* Result: 455609/53325, check = 256 = 8² ≠ 1 *)
+
+(* c = 4 test *)
+ChebyshevBabylonianStep[13, 11/3, 1]  (* 11² - 13·3² = 4 *)
+(* Result: x/y, check = 1 ✓ *)
+```
+
+**The Critical Difference:**
+
+| Input c | Output norm after ChebyshevBabylonianStep |
+|---------|-------------------------------------------|
+| ±1 | **1** ✓ |
+| ±2 | **1** ✓ |
+| ±4 | **1** ✓ |
+| ±8 | 256 = 8² ✗ |
+| ±16 | 65536 = 16² ✗ |
+
+Multiple applications make it **worse**, not better:
+```
+c=8 → 256 → 2^38 → 2^218 → 2^1298 → ... (exponential blowup!)
+```
+
+### Algebraic Explanation
+
+The divisors of 4 = {±1, ±2, ±4} are special because they form a **closed group** under the Brahmagupta composition combined with the Chebyshev-Babylonian transformation.
+
+For c = 8 = 2³:
+- The quantity t = a² + D·b² has only **one factor of 2** when a² - D·b² = 8
+- The ChebyshevBabylonianStep requires t^k / c^k to be an integer
+- With only one factor of 2 in t, we can never cancel c^k = 2^(3k)
+
+**Verification for D = 73, c = 8:**
+```
+(a, b) = (9, 1), a² - 73·b² = 8
+t = a² + D·b² = 81 + 73 = 154 = 2 × 7 × 11
+t has exactly ONE factor of 2
+c^k = 8^k = 2^(3k) needs 3k factors of 2
+→ t^k / c^k is NEVER an integer!
+```
+
+### Summary Table
+
+| c | Symmetry | First occurrence | Works for sym[] | k_base |
+|---|----------|------------------|-----------------|--------|
+| ±1 | ✓ | Late (~95%) | ✅ | 6 |
+| ±2 | ✓ | **Early** (~20%) | ✅ | 3 |
+| ±4 | ✓ | Middle (~50%) | ✅ | 6 |
+| ±8 | ✓ | - | ❌ (→256) | - |
+| ±16 | ✓ | - | ❌ (→65536) | - |
+
+**The universal starting values are exactly the divisors of 4: {±1, ±2, ±4}.**
+
+The symmetry pos(+c) + pos(-c) = period - 2 holds for ALL these values, but only divisors of 4 can be transformed to norm 1 by ChebyshevBabylonianStep.
+
+## Limitations and Scope
+
+### Complexity Reality Check
+
+Our CF-based racing method is **exponential** in the input size, not subexponential.
+
+| D size | N = log₂(D) | CF: √D | Buchmann | CF/Buchmann |
+|--------|-------------|--------|----------|-------------|
+| 10³ | 10 | 32 | 120 | **0.26× (CF wins!)** |
+| 10⁶ | 20 | 1000 | 2259 | **0.44× (CF wins!)** |
+| 10⁹ | 30 | 3×10⁴ | 2×10⁴ | ~1× (crossover) |
+| 10¹² | 40 | 10⁶ | 2×10⁵ | 5× slower |
+| 10²⁰ | 66 | 10¹⁰ | 2×10⁷ | 560× slower |
+| 10⁵⁰ | 166 | 10²⁵ | 5×10¹² | **10¹²× slower!** |
+
+### State of the Art Comparison
+
+| Method | Complexity | Notes |
+|--------|------------|-------|
+| **Our CF racing** | O(√D) = exp(N/2) | Exponential in input size |
+| Buchmann (1989) | exp(O(√(N·logN))) | Subexponential, requires GRH |
+| Hallgren (2002) | Polynomial | Quantum computer required |
+
+### What We Actually Achieved
+
+✅ **Constant factor speedup** (~2-3×) within CF paradigm
+✅ **Elegant racing** between Cunningham, CF, and Wildberger
+✅ **Algebraic insight** into CF convergent symmetry
+✅ **Practical** for D < 10¹² (where CF beats Buchmann!)
+
+❌ **No asymptotic improvement** over classical CF
+❌ **Exponential** in log(D) - unsuitable for cryptographic sizes
+❌ **10¹²× slower** than Buchmann for D ~ 10⁵⁰
+
+### When to Use Our Implementation
+
+| Use Case | Recommendation |
+|----------|----------------|
+| D < 10⁹ | ✅ Our method (faster than Buchmann!) |
+| Educational/exploratory | ✅ Our method (transparent structure) |
+| Algebraic analysis | ✅ Our method (winner/step tracking) |
+| D > 10¹² | ❌ Use PARI/GP or Buchmann implementation |
+| Cryptographic sizes | ❌ Use subexponential methods |
+
+### References
+
+- Buchmann, J. (1989): [A subexponential algorithm for class groups and regulators](https://www.semanticscholar.org/paper/A-subexponential-algorithm-for-the-determination-of-Buchmann/1fcf84e0eba173f72e87bfabcd14979f7b4325c5)
+- Hallgren, S. (2002): [Polynomial-time quantum algorithms for Pell's equation](https://dl.acm.org/doi/10.1145/1206035.1206039)
+- Lenstra, H.W.: [Solving the Pell Equation](https://www.math.leidenuniv.nl/~psh/ANTproc/01lenstra.pdf)
+
 ## Open Questions
 
 - [ ] Theoretical proof of periodicity for all quadratic irrationals (Lagrange analog)?
@@ -677,6 +983,128 @@ D=61 gets 170x speedup because Cunningham finds a good starting convergent (c=-4
 - [ ] Why does D = n² - 2 give exactly three 5-cycles?
 - [ ] For k ≥ 3: what algebraic property determines which D values get period-2 Cunningham sequences?
 - [ ] Can we avoid CF search for fundamental extraction by using algebraic root-taking (cube roots, etc.)?
+- [ ] Understand and potentially implement Buchmann's subexponential algorithm
+
+## Appendix: Understanding Buchmann's Subexponential Algorithm
+
+### Why CF is Exponential
+
+The continued fraction method computes convergents one-by-one:
+- Period length can be O(√D)
+- Each convergent requires O(1) arithmetic operations
+- Total: O(√D) = O(exp(N/2)) where N = log₂(D)
+
+This is **exponential** in the input size N.
+
+### Buchmann's Key Insight
+
+Instead of sequential iteration, use **random sampling with sieving**:
+
+1. Sample many "candidate" elements in Q(√D)
+2. Test which ones are **smooth** (factor over small primes)
+3. Collect enough relations → solve via linear algebra
+
+The magic: sieving tests smoothness in **amortized O(log log B)** time per candidate!
+
+### The Algorithm (Simplified)
+
+**Input:** Discriminant Δ of real quadratic field K = Q(√Δ)
+
+**Output:** Class number h_Δ and regulator R_Δ
+
+**Step 1: Choose factor base**
+```
+B = {prime ideals p : N(p) < B₁}
+where B₁ = exp(c√(log Δ · log log Δ))
+```
+
+**Step 2: Collect relations via sieving**
+
+A **relation** is a principal ideal (α) that factors completely over B:
+```
+(α) = p₁^e₁ · p₂^e₂ · ... · pₙ^eₙ
+```
+This gives vector `(e₁, e₂, ..., eₙ, log|α|) ∈ Zⁿ × R`
+
+To find smooth ideals efficiently:
+- Start with ideal a = p₁^e₁...pₙ^eₙ (random exponents)
+- For α ∈ a, compute N(α) = a·(ax² + bxy + cy²)/d²
+- **Sieve** the polynomial φ(x) = ax² + bx + c for B-smooth values
+- Sieving: for each prime p, mark positions where p | φ(x) (arithmetic progression!)
+- Amortized cost: O(log log B) per candidate (vs O(B) for trial division)
+
+**Step 3: Linear algebra**
+
+Collect k > |B| relations. Form matrix M with rows = integer parts of relations.
+
+```
+           p₁  p₂  p₃  ...  pₙ
+Relation 1: [2   0   1  ...  0]  ← exponent vector mod 2
+Relation 2: [0   1   1  ...  1]
+    ⋮
+Relation k: [1   0   0  ...  1]
+```
+
+- Hermite Normal Form of M → determinant → class number h_Δ
+- Kernel of M → vectors (k₁,...,kₘ) where Σ kᵢ log|αᵢ| = m·R_Δ
+- GCD of kernel vectors → regulator R_Δ
+
+**Step 4: Verify**
+
+Approximate h_Δ·R_Δ via L-function. Check computed value is consistent.
+
+### Complexity Comparison
+
+| Method | # of "steps" | Cost per step | Total |
+|--------|-------------|---------------|-------|
+| CF | O(√D) = exp(N/2) | O(1) | **exp(N/2)** |
+| Buchmann | O(B) = exp(√(N log N)) | O(log log B) | **exp(O(√(N log N)))** |
+
+The subexponential complexity comes from:
+- Factor base size B = exp(O(√(N log N)))
+- Need O(B) relations
+- Each relation found in amortized O(log log B) via sieving
+- Linear algebra: O(B²·⁴) with structured methods
+
+### Why Sieving is Magic
+
+**Trial division** to check if m is B-smooth:
+- Test divisibility by each prime ≤ B
+- Cost: O(π(B)) ≈ O(B/log B) per number
+
+**Sieving** to find ALL B-smooth numbers in range [1, X]:
+- For each prime p ≤ B: mark multiples (cost X/p)
+- Total cost: X · Σ(1/p) ≈ X · log log B
+- Per number: **O(log log B)** amortized
+
+For B = 10⁶: trial division costs ~10⁵, sieving costs ~4. That's 25,000× faster!
+
+### Connection to Pell Equation
+
+The fundamental unit ε_Δ of Q(√Δ) satisfies:
+```
+x² - Δy² = ±1  where  ε_Δ = x + y√Δ
+```
+
+Once we have R_Δ = log(ε_Δ), we can recover ε_Δ = exp(R_Δ).
+
+But for very large D, we don't need the actual solution - just the regulator suffices for many applications (cryptography, class number computation).
+
+### Implementation Status
+
+We have NOT implemented Buchmann's algorithm. Our racing implementation uses CF, which is:
+- ✅ Simpler to implement and understand
+- ✅ Faster for D < 10⁹ (no sieving overhead)
+- ❌ Exponential - unsuitable for D > 10¹²
+
+For production use with large D: use PARI/GP's `quadregulator()` and `quadclassunit()`.
+
+### References for Buchmann's Algorithm
+
+1. [Pomerance: Smooth numbers and the quadratic sieve](https://math.dartmouth.edu/~carlp/PDF/qs08.pdf) - Best introduction to sieving
+2. [Biasse & Jacobson: Practical improvements (2010)](https://arxiv.org/pdf/1005.0205) - Modern implementation details
+3. [Lenstra: Solving the Pell Equation](https://pub.math.leidenuniv.nl/~psh/ANTproc/01lenstra.pdf) - Comprehensive survey
+4. Cohen: *A Course in Computational Algebraic Number Theory* (1993) - Textbook treatment
 
 ## References
 
