@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-05 18:08:03
+**Generated:** 2025-12-05 19:57:27
 
 ## Theorems (Master References)
 
@@ -20,6 +20,7 @@
 
 ## Recent Sessions (Last 10)
 
+- [Egyptian Fractions Exploration](sessions/2025-12-05-egyptian-fractions-exploration/README.md) *()*
 - [L-Function ↔ Egypt/CF Bridge: Open Research Direction](sessions/2025-12-05-L-function-egypt-bridge/README.md) *(2025-12-05)*
 - [W(p) and Class Number Connection](sessions/2025-12-05-chebyshev-lobe-balance/class-number-connection.md) *(2025-12-05)*
 - [Session: Chebyshev Polygon Lobe Balance](sessions/2025-12-05-chebyshev-lobe-balance/README.md) *(2025-12-05)*
@@ -29,7 +30,6 @@
 - [The Aladov Mystery: Who Was N. S. Aladov?](sessions/2025-12-04-beta-functions-analysis/aladov-mystery.md) *(2025-12-04)*
 - [Historical Context: Quadratic Residue Patterns and the Russian Mathematical Tradition](sessions/2025-12-04-beta-functions-analysis/historical-context.md) *(2025-12-04)*
 - [Session: Random Matrix Theory and Chebyshev Lobe Areas](sessions/2025-12-03-rmt-chebyshev-connection/README.md) *(2025-12-04)*
-- [Session: Primitive Lobe Signs and Number Theory](sessions/2025-12-03-primitive-lobe-signs/README.md) *(2025-12-03)*
 
 ## Navigation
 
