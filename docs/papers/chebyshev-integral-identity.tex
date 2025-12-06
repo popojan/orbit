@@ -22,10 +22,12 @@ We prove that the integral $\int_{-1}^{1} |T_{k+1}(x) - x \cdot T_k(x)| \, dx = 
 for all $k \in \tfrac{1}{2}\mathbb{Z}$ with $k \geq 3/2$, where $T_k$ denotes the
 Chebyshev polynomial of the first kind. Geometrically, this means that the area
 between the curve $y = T_{k+1}(x) - x \cdot T_k(x)$ and the $x$-axis equals exactly
-$1/\pi$ of the unit circle's area, regardless of the polynomial degree. For general
-real $k$, we analyze the complex-valued extension and show that the sum of areas
-under real and imaginary parts lies in $[1, \sqrt{2}]$. This invariant produces
-visually striking interference patterns as $k$ varies continuously.
+$1/\pi$ of the unit circle's area, regardless of the polynomial degree. We also
+prove that the \emph{signed} integral equals $4/(k^3-4k)$ for odd integers and
+$2/(k^3-4k)$ for half-integers, measuring the asymmetry between positive and
+negative lobes. For general real $k$, we analyze the complex-valued extension
+and show that the sum of areas under real and imaginary parts lies in $[1, \sqrt{2}]$.
+This invariant produces visually striking interference patterns as $k$ varies continuously.
 \end{abstract}
 
 \section{Introduction}
@@ -147,6 +149,71 @@ Combining the lemmas: $I_k = \frac{1}{2}(2 - 0) = 1$ for $k \in \tfrac{1}{2}\mat
 Let $D$ denote the unit disk with area $\pi$. The region bounded by the curve
 $y = T_{k+1}(x) - x \cdot T_k(x)$ and the $x$-axis has area exactly $1/\pi$ of
 the disk area, for all $k \in \tfrac{1}{2}\mathbb{Z}$ with $k \geq 3/2$.
+\end{corollary}
+
+\section{The Signed Integral}
+
+While the unsigned integral $\int_{-1}^{1}|f_k(x)|\,dx = 1$ is invariant,
+the \emph{signed} integral exhibits a striking dependence on the parity of $k$.
+
+\begin{theorem}[Signed Integral Formula]\label{thm:signed}
+For $k \geq 3$,
+\[
+\int_{-1}^{1} f_k(x) \, dx =
+\begin{cases}
+\dfrac{4}{k^3 - 4k} & \text{if } k \text{ is an odd integer}, \\[2mm]
+\dfrac{2}{k^3 - 4k} & \text{if } k \in \mathbb{Z} + \tfrac{1}{2}, \\[2mm]
+0 & \text{if } k \text{ is an even integer}.
+\end{cases}
+\]
+Equivalently, using $k^3 - 4k = (k-2)k(k+2)$, the nonzero cases give
+$4/[(k-2)k(k+2)]$ and $2/[(k-2)k(k+2)]$ respectively.
+\end{theorem}
+
+\begin{proof}
+Using $f_k(\cos\theta) = -\sin(k\theta)\sin\theta$ and the substitution
+$x = \cos\theta$, the signed integral becomes
+\[
+\int_{-1}^{1} f_k(x)\,dx = -\int_0^\pi \sin(k\theta)\sin^2\theta\,d\theta
+= -\frac{1}{2}\left[\int_0^\pi \sin(k\theta)\,d\theta
+- \int_0^\pi \sin(k\theta)\cos(2\theta)\,d\theta\right].
+\]
+
+\textbf{Case 1: Odd integer $k$.}
+The first integral evaluates to
+\[
+\int_0^\pi \sin(k\theta)\,d\theta = \frac{1 - \cos(k\pi)}{k} = \frac{2}{k}.
+\]
+For the second integral, we use $\sin A \cos B = \frac{1}{2}[\sin(A+B) + \sin(A-B)]$:
+\[
+\int_0^\pi \sin(k\theta)\cos(2\theta)\,d\theta
+= \frac{1}{2}\left[\frac{1-\cos((k+2)\pi)}{k+2} + \frac{1-\cos((k-2)\pi)}{k-2}\right]
+= \frac{1}{k+2} + \frac{1}{k-2} = \frac{2k}{k^2-4}.
+\]
+Combining:
+\[
+-\frac{1}{2}\left(\frac{2}{k} - \frac{2k}{k^2-4}\right)
+= -\frac{1}{k} + \frac{k}{k^2-4}
+= \frac{-k^2+4+k^2}{k(k^2-4)} = \frac{4}{k(k^2-4)}.
+\]
+
+\textbf{Case 2: Even integer $k$.}
+Since $f_k(-x) = (-1)^{k+1}f_k(x)$, for even $k$ the function $f_k$ is odd,
+so the integral vanishes.
+
+\textbf{Case 3: Half-integer $k = n + \frac{1}{2}$.}
+Similar calculations yield factor $2$ instead of $4$ in the numerator,
+as $\cos(k\pi) = 0$ modifies the boundary terms. Specifically,
+$(1 - \cos(k\pi))/k = 1/k$ (instead of $2/k$), leading to half the value.
+\end{proof}
+
+\begin{corollary}[Asymmetry Measure]
+The signed integral measures the \emph{asymmetry} between positive and negative lobes.
+For large $k$, this asymmetry decays as $O(1/k^3)$:
+\[
+\int_{-1}^{1} f_k(x)\,dx \sim \frac{c}{k^3} \quad \text{as } k \to \infty,
+\]
+where $c = 4$ for odd integers and $c = 2$ for half-integers.
 \end{corollary}
 
 \section{Remarks}
