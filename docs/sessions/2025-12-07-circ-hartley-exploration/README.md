@@ -239,9 +239,35 @@ Choosing one over the other is analogous to:
 - Choosing +i over −i
 - Choosing right-handed over left-handed coordinates
 
-**What we lose by choosing 5/4:**
+**The Unifying Relationship:**
 
-Nothing mathematically — the structures are isomorphic via S. But the choice breaks a symmetry. A fully symmetric treatment would track **both** frameworks simultaneously, recognizing them as S-conjugate twins.
+$$P_B[t] = P_A[1 - t]$$
+
+The two frameworks are related by **reflection around t = 1/2**. This t ↔ 1−t symmetry is structurally analogous to the functional equation of the Riemann zeta function.
+
+**The Full Symmetry Group (D₄):**
+
+Define two operators:
+- **S**: shift t → t + 1/2 (quarter turn, S⁴ = 1)
+- **T**: reflect t → 1 − t (swaps A ↔ B, T² = 1)
+
+Together they generate the **dihedral group D₄**:
+
+| Element | Action on t | Geometric meaning |
+|---------|-------------|-------------------|
+| 1 | t | identity |
+| S | t + 1/2 | 90° rotation (×i) |
+| S² | t + 1 | 180° rotation (×−1) |
+| S³ | t + 3/2 | 270° rotation (×−i) |
+| T | 1 − t | reflection (A↔B) |
+| S²T | −t | coordinate swap |
+
+**The Unified Framework:**
+
+Instead of choosing between A and B, work with the pair:
+$$Q[t] := (P_A[t], P_A[1-t])$$
+
+This is invariant under full D₄ symmetry. The 5/4 vs 7/4 choice becomes a **gauge choice** — necessary to break symmetry for explicit computation, but not fundamental.
 
 **Why 5/4 was chosen:** It corresponds to phase 3π/4, which gives Circ[t] = −cas(πt)/√2, making the Hartley connection most direct.
 
