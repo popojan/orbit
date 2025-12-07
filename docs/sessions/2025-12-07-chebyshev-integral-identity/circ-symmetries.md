@@ -184,14 +184,25 @@ $$\text{Circ}(s_{n+1}) = 2\,\text{Circ}(t)\,\text{Circ}(s_n) - \text{Circ}(s_{n-
 
 where $s_n = nt + 3(n-1)/4$.
 
-### Preservation of Structure
+### Preservation of Circ Symmetry
 
-**Unit circle identity preserved:**
-$$\text{Circ}(s)^2 + \text{Circ}(-s)^2 = 1$$
+The key question: does the pair $\{T_n(\text{Circ}(t)), T_n(\text{Circ}(-t))\}$ stay on the unit circle?
 
-holds for $s = nt + 3(n-1)/4$, so Chebyshev polynomials map the unit circle to itself in Circ coordinates.
+Define $r^2(n,t) = \text{Circ}(nt+c)^2 + \text{Circ}(-nt+c)^2$ where $c = 3(n-1)/4$.
 
-**Lorentz norm preserved:** For complex $t$, the split-quaternion norm $N = 1/2$ is invariant under Chebyshev application — the polynomials act as "isometries" on the hyperboloid.
+Using product-to-sum identity:
+$$r^2 = 1 + \sin(2\pi c) \cdot \sin(2\pi nt)$$
+
+| n parity | $\sin(3\pi(n-1)/2)$ | $r^2$ | range |
+|----------|---------------------|-------|-------|
+| **odd** | 0 | 1 | unit circle ✓ |
+| **even** | ±1 | $1 \pm \sin(2\pi nt)$ | [0, 2] |
+
+**Result:** Only **odd** Chebyshev polynomials preserve the Circ t↔-t symmetry!
+
+For even n, the point oscillates from the origin (r=0) through the unit circle to r=√2.
+
+*Note:* This follows from the shift $c = 3(n-1)/4$ being a half-integer multiple of period for odd n (making $\sin(2\pi c) = 0$). Triviální, but documents how Circ symmetry interacts with Chebyshev parity.
 
 ### Composition Law
 
