@@ -83,6 +83,12 @@ copy-assets:
 		cp reports/*.svg preview/reports/ 2>/dev/null || true; \
 		echo "✓ Copied SVG assets to preview/reports/"; \
 	fi
+	@for figdir in $$(find docs -type d -name 'figures'); do \
+		DESTDIR="preview/$$figdir"; \
+		mkdir -p "$$DESTDIR"; \
+		cp "$$figdir"/* "$$DESTDIR/" 2>/dev/null || true; \
+	done
+	@echo "✓ Copied figures from session directories"
 
 check-links:
 	@echo "🔗 Checking documentation links..."

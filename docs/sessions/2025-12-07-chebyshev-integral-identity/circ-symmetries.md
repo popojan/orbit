@@ -511,7 +511,8 @@ The 3π/4 phase that defines Circ is geometrically special: it places the functi
 
 5. **Other Lorentz-invariant phases:** Are there other phase choices besides 3π/4 (mod π/2) that give constant norm?
 
-6. **Connection to Egypt trajectory:** In Nov 2025, we found Egypt approximations embed in hyperbolic geometry (Poincaré disk), but rejected physics connections due to missing Lorentz signature. Now we have Lorentz signature in Circ! Is there a bridge?
-   - Both involve hyperbolic geometry
-   - Both connect to Chebyshev polynomials
-   - See: [Physics connection review](../2025-11-22-palindromic-symmetries/physics-connection-review.md#update-december-7-2025--lorentz-signature-found)
+6. ~~Connection to Egypt trajectory~~ **SOLVED!** Egypt = CircS on imaginary axis!
+   - $\cosh[(1+2k)s] = -\text{CircS}(i(1+2k)s/\pi)$
+   - Both have constant Lorentz norm = 1
+   - Both lie on hyperboloid in split-quaternion space
+   - See: **[Egypt-Circ Bridge](egypt-circ-bridge.md)** for full analysis
