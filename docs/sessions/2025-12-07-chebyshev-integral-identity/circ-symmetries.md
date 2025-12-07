@@ -458,8 +458,8 @@ The 3π/4 phase that defines Circ is geometrically special: it places the functi
 
 3. ~~Quaternion extension:~~ **Answered!** The structure is split-quaternionic with Lorentz signature.
 
-4. **Physical interpretation:** Does the constant Lorentz norm have physical meaning (special relativity, signal processing)?
+4. ~~Physical interpretation:~~ **Premature.** Lorentz signature in abstract algebra ≠ physics. Missing: time coordinate, fields, equations of motion. See [physics-connection-review.md](../2025-11-22-palindromic-symmetries/physics-connection-review.md).
 
-5. **Other Lorentz-invariant phases:** Are there other phase choices besides 3π/4 (mod π/2) that give constant norm?
+5. ~~Other Lorentz-invariant phases:~~ **Answered.** Four phases (π/4, 3π/4, 5π/4, 7π/4) all work. Choice of 3π/4 is conventional; π/4 would start in first quadrant but adds minus sign to cos reconstruction. Trade-off, not worth changing.
 
 6. ~~Z/8Z symmetry:~~ **Debunked.** Period 8 is trivial arithmetic (denominator 4, period 2). Not related to D4.
