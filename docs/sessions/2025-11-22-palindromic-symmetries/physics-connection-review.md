@@ -344,21 +344,29 @@ Egypt trajectories are purely algorithmic/mathematical - no spacetime, no dynami
 
 ---
 
-### Follow-up: December 7, 2025 (later same day) — BRIDGE FOUND!
+### Follow-up: December 7, 2025 (later same day) — Reformulation, Not Bridge
 
-**Egypt = CircS on imaginary axis!**
+**Egypt = CircS on imaginary axis:**
 
 $$\cosh[(1+2k)s] = -\text{CircS}(i(1+2k)s/\pi)$$
 
-Key findings:
-- Egypt trajectory has **constant Lorentz norm = 1**
-- Chebyshev (real axis) also has norm = 1
-- Both lie on **unit hyperboloid** in split-quaternion space
-- Split-quaternions unify Chebyshev and Egypt as two faces of same structure
+**Honest assessment after adversarial review:**
 
-**Updated checklist:** 2/5 requirements now satisfied (Lorentz signature + invariant norm)!
+This is a **reformulation using standard identity** $\cos(iy) = \cosh(y)$, not a discovery.
 
-**See:** [Egypt-Circ Bridge](../2025-12-07-chebyshev-integral-identity/egypt-circ-bridge.md) for full analysis.
+The "constant Lorentz norm" for Egypt is just $\cosh^2 - \sinh^2 = 1$, the defining property of hyperbola — known for centuries.
+
+Split-quaternions and their connection to Lorentz geometry are well-studied since Cockle (1849). Our observation fits existing theory, it doesn't extend it.
+
+**Checklist remains essentially unchanged:**
+- ⚠️ "Lorentz signature" = relabeling Pythagorean identities
+- ❌ Still no actual time coordinate
+- ❌ Still no dynamical equations
+- ❌ Still no physics
+
+**What has value:** CircS notation for organizational purposes, learning material about split-quaternions.
+
+**See:** [Egypt-Circ Bridge](../2025-12-07-chebyshev-integral-identity/egypt-circ-bridge.md) — now with honest caveats.
 
 ---
 

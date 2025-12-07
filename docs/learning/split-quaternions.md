@@ -1,11 +1,13 @@
 # Split-kvaterniony (Coquaterniony)
 
 **Datum:** 7. prosince 2025
-**Kontext:** Objeveno při analýze komplexního rozšíření Circ funkce
+**Kontext:** Výukový materiál vytvořený při práci s Circ funkcí
 
 ## Motivace
 
-Při práci s funkcí $\text{Circ}(x + iy)$ jsme zjistili, že přirozeně žije ve 4D algebře, která **není** standardními kvaterniony. Důvod: míchání kruhových a hyperbolických funkcí.
+Při práci s komplexním rozšířením trigonometrických funkcí (cos, cosh) se přirozeně objevuje struktura split-kvaternionů. Tento dokument vysvětluje co jsou split-kvaterniony a jak se liší od standardních kvaternionů.
+
+**Poznámka:** Split-kvaterniony jsou známá algebra od roku 1849 (Cockle). Tento dokument je výukový materiál, ne popis nového objevu.
 
 ## Srovnání: Kvaterniony vs Split-kvaterniony
 

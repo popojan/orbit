@@ -511,8 +511,8 @@ The 3π/4 phase that defines Circ is geometrically special: it places the functi
 
 5. **Other Lorentz-invariant phases:** Are there other phase choices besides 3π/4 (mod π/2) that give constant norm?
 
-6. ~~Connection to Egypt trajectory~~ **SOLVED!** Egypt = CircS on imaginary axis!
+6. **Connection to Egypt trajectory:** Egypt = CircS on imaginary axis (via $\cos(iy)=\cosh(y)$)
    - $\cosh[(1+2k)s] = -\text{CircS}(i(1+2k)s/\pi)$
-   - Both have constant Lorentz norm = 1
-   - Both lie on hyperboloid in split-quaternion space
-   - See: **[Egypt-Circ Bridge](egypt-circ-bridge.md)** for full analysis
+   - ⚠️ This is a **reformulation**, not a discovery — uses standard complex analysis identity
+   - May have organizational value for unified notation
+   - See: [Egypt-Circ Bridge](egypt-circ-bridge.md) (with honest caveats)
