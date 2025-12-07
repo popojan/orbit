@@ -398,10 +398,115 @@ Key identities:
 
 ---
 
+## Split-Quaternion Structure (Dec 7, 2025)
+
+The complex extension of Circ reveals a beautiful connection to **split-quaternions** — a 4D algebra related to Lorentz geometry.
+
+### The Algebra
+
+The split-quaternion algebra has basis $\{1, i, j, k\}$ with:
+- $i^2 = -1$ (imaginary unit)
+- $j^2 = +1$ (hyperbolic unit)
+- $k = ij$, $k^2 = +1$
+- $ij = -ji$ (anti-commute)
+
+This is NOT standard quaternions (where $i^2 = j^2 = k^2 = -1$).
+
+### Circ in Split-Quaternion Basis
+
+For complex argument $t = x + iy$, Circ decomposes into all four components:
+
+$$\text{Circ}(x+iy) = a \cdot 1 + b \cdot i + c \cdot j + d \cdot k$$
+
+where (with shorthand $c_x = \cos\pi x$, $s_x = \sin\pi x$, $C_y = \cosh\pi y$, $S_y = \sinh\pi y$):
+
+| Component | Formula | Meaning |
+|-----------|---------|---------|
+| $a$ | $-c_x C_y / \sqrt{2}$ | real, compact |
+| $b$ | $-s_x C_y / \sqrt{2}$ | imaginary, compact |
+| $c$ | $-c_x S_y / \sqrt{2}$ | real, hyperbolic |
+| $d$ | $+s_x S_y / \sqrt{2}$ | imaginary, hyperbolic |
+
+### The Constant Lorentz Norm
+
+The split-quaternion norm is:
+$$N(q) = a^2 + b^2 - c^2 - d^2$$
+
+**Remarkable fact:** For Circ, this norm is **constant**:
+$$N(\text{Circ}) = \frac{1}{2}$$
+
+independent of $x$ and $y$!
+
+### Why 3π/4 is Special
+
+The constancy comes from $|\cos(3\pi/4)| = |\sin(3\pi/4)| = 1/\sqrt{2}$:
+
+1. All four components scale with the **same factor** $1/\sqrt{2}$
+2. This enables: $a^2 + b^2 = (c_x^2 + s_x^2) C_y^2/2 = C_y^2/2$
+3. Similarly: $c^2 + d^2 = S_y^2/2$
+4. The Pythagorean identity $c_x^2 + s_x^2 = 1$ **eliminates x-dependence**
+5. Then: $N = C_y^2/2 - S_y^2/2 = (C_y^2 - S_y^2)/2 = 1/2$ ✓
+
+**Contrast with CircS:** For CircS ($\phi = \pi$), only the diagonal components survive ($b = c = 0$), so the Pythagorean cancellation doesn't apply:
+$$N(\text{CircS}) = c_x^2 C_y^2 - s_x^2 S_y^2 = \frac{1 + \cos(2\pi x)\cosh(2\pi y)}{2}$$
+
+This **varies** with $x$ and $y$.
+
+### Geometric Interpretation
+
+Circ traces a **Lorentz-invariant surface** in the 4D split-quaternion space:
+- Signature (+,+,-,-) — two compact dimensions, two hyperbolic
+- The 3π/4 phase rotates CircS (which lies in a 2D subspace) into all four dimensions
+- This rotation gives constant Lorentz norm
+
+### Idempotent Decomposition
+
+Since $j^2 = 1$, we have idempotents $e_{\pm} = (1 \pm j)/2$ satisfying:
+- $e_+^2 = e_+$, $e_-^2 = e_-$
+- $e_+ \cdot e_- = 0$
+- $e_+ + e_- = 1$
+
+For CircS (which has only 1 and k components):
+
+$$\text{CircS}(x+iy) = \text{CircS}(t) \cdot e_+ + \text{CircS}(\bar{t}) \cdot e_-$$
+
+The split-quaternion structure **naturally packages $t$ and $\bar{t}$ together**!
+
+### Connection to Lorentz Geometry
+
+The split-quaternion algebra is isomorphic to $2 \times 2$ real matrices:
+- $1 \to \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$
+- $i \to \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}$
+- $j \to \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}$
+- $k \to \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}$
+
+The Lorentz norm is the determinant: $N(q) = \det(M_q)$.
+
+Circ with constant norm $1/2$ lies on a **hyperboloid** in this 4D space — the analog of the unit sphere, but with Lorentz signature.
+
+### Summary
+
+| Function | Components | Lorentz Norm |
+|----------|------------|--------------|
+| Circ | all four | $1/2$ (constant!) |
+| CircS | only $(1, k)$ | variable |
+
+The 3π/4 phase that defines Circ is geometrically special: it places the function on a **Lorentz-invariant surface** where the norm is independent of the argument.
+
+*Note: This is the "quaternion connection" mentioned in Open Questions — it turns out to be split-quaternions rather than standard quaternions, which is fitting since we're mixing compact (circular) and non-compact (hyperbolic) structures.*
+
+**See also:** [Split-quaternions learning doc](../../learning/split-quaternions.md) for a detailed introduction to split-quaternions vs standard quaternions.
+
+---
+
 ## Open Questions
 
 1. **Circ polynomials:** Are there "Circ polynomials" analogous to Chebyshev polynomials?
 
 2. **The circle[x,y,m] function:** What was the intended use of the Chebyshev-based circle function?
 
-3. **Quaternion extension:** Does the 2×2 decomposition suggest a quaternionic structure?
+3. ~~Quaternion extension:~~ **Answered!** The structure is split-quaternionic with Lorentz signature.
+
+4. **Physical interpretation:** Does the constant Lorentz norm have physical meaning (special relativity, signal processing)?
+
+5. **Other Lorentz-invariant phases:** Are there other phase choices besides 3π/4 (mod π/2) that give constant norm?
