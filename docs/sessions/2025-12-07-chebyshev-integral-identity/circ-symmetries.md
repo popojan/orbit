@@ -1,0 +1,407 @@
+# Circ Symmetries and Chebyshev Connections
+
+**Date:** December 7, 2025
+**Status:** Exploration documenting circ function properties and applications
+
+## Core Definition
+
+The **circ** function unifies sine and cosine through a single definition:
+
+$$\text{Circ}(t) = \cos\left(\frac{3\pi}{4} + \pi t\right)$$
+
+### Special Values
+
+| t | Circ(t) |
+|---|---------|
+| −3/4 | 1 |
+| −1/2 | 1/√2 |
+| −1/4 | 0 |
+| 0 | −1/√2 |
+| 1/4 | −1 |
+| 1/2 | −1/√2 |
+| 3/4 | 0 |
+| 1 | 1/√2 |
+
+**Period:** Circ(t + 2) = Circ(t)
+
+## Fundamental Identities
+
+### Unit Circle Identity
+$$\text{Circ}(t)^2 + \text{Circ}(-t)^2 = 1$$
+
+This allows parametrizing the unit circle as {Circ(t), Circ(−t)}.
+
+### Sum and Difference
+$$\text{Circ}(t) + \text{Circ}(-t) = -\sqrt{2}\cos(\pi t)$$
+$$\text{Circ}(t) - \text{Circ}(-t) = -\sqrt{2}\sin(\pi t)$$
+
+### Product
+$$\text{Circ}(t) \cdot \text{Circ}(-t) = \frac{1}{2}\cos(2\pi t)$$
+$$\text{Circ}(s) \cdot \text{Circ}(t) = \frac{1}{2}\left[\cos(\pi(s-t)) + \sin(\pi(s+t))\right]$$
+
+### Square
+$$\text{Circ}(t)^2 = \frac{1 + \sin(2\pi t)}{2}$$
+
+## Shift Identities
+
+| Expression | Simplification |
+|------------|----------------|
+| Circ(t + 1) | sin(π/4 + πt) |
+| Circ(t + 1/2) | −cos(π/4 + πt) |
+| Circ(−t) | −cos(π/4 + πt) |
+| Circ(1 − t) | cos(π/4 + πt) |
+| Circ(1/2 − t) | −sin(π/4 + πt) |
+
+**Key relation:** Circ(1 − t) = −Circ(−t)
+
+## Shifted Circ (circS)
+
+Define the **shifted circ**:
+$$\text{circS}(t) = \text{Circ}(t + 1/4) = -\cos(\pi t)$$
+
+### Properties
+
+- **Even function:** circS(t) = circS(−t)
+- **Simple form:** circS(t) = −cos(πt)
+- **Period:** circS(t + 2) = circS(t)
+
+### Special Values
+
+| t | circS(t) |
+|---|----------|
+| 0 | −1 |
+| ±1/4 | −1/√2 |
+| ±1/3 | −1/2 |
+| ±1/2 | 0 |
+| ±2/3 | 1/2 |
+| ±1 | 1 |
+
+## Reconstructing Standard Trig
+
+Both Sin and Cos derive from Circ with the **same formula structure**:
+
+$$\sin(\theta) = \text{Circ}\left(\frac{\theta}{\pi} - \frac{5}{4}\right)$$
+$$\cos(\theta) = \text{Circ}\left(-\frac{\theta}{\pi} + \frac{5}{4}\right)$$
+
+The unification: sin and cos are Circ with **opposite argument signs**.
+
+## Spread Connection
+
+The connection to Wildberger's rational trigonometry:
+
+$$\text{spread} = \frac{1 - \text{Circ}(t)}{2}$$
+$$\text{Circ}(t) = 1 - 2 \cdot \text{spread}$$
+
+| Circ(t) | spread | geometric meaning |
+|---------|--------|-------------------|
+| 1 | 0 | parallel |
+| 1/2 | 1/4 | 30° |
+| 0 | 1/2 | 45° |
+| −1/2 | 3/4 | 60° |
+| −1 | 1 | perpendicular |
+
+---
+
+## Application: Chebyshev Lobe Areas
+
+### The Lobe Area Formula
+
+For the Chebyshev difference function $f_n(x) = T_{n+1}(x) - xT_n(x)$, the area of lobe $k$ is:
+
+$$A(n,k) = \frac{1}{n} + \beta(n) \cos\left(\frac{(2k-1)\pi}{n}\right)$$
+
+where $\beta(n) = \frac{n\cos(\pi/n)}{4 - n^2}$
+
+### Via circS
+
+Since $\cos(\theta) = -\text{circS}(\theta/\pi)$:
+
+$$A(n,k) = \frac{1}{n} - \beta(n) \cdot \text{circS}\left(\frac{2k-1}{n}\right)$$
+
+### Lobe Symmetry Explained
+
+The symmetry $A(n,k) = A(n, n+1-k)$ follows directly from circS being **even**:
+
+- Lobe $k$: argument $u = (2k-1)/n$
+- Lobe $n+1-k$: argument $= (2n+1-2k)/n = 2 - u$
+
+Since $\text{circS}(2-u) = -\cos(\pi(2-u)) = -\cos(\pi u) = \text{circS}(u)$:
+$$A(n,k) = A(n, n+1-k) \quad \checkmark$$
+
+### circS Values for Special n
+
+For $n \in \{2, 3, 4, 6\}$ (crystallographic values), the circS arguments are:
+
+**n = 2:** args {1/2, 3/2} → circS = {0, 0}
+
+**n = 3:** args {1/3, 1, 5/3} → circS = {−1/2, 1, −1/2}
+
+**n = 4:** args {1/4, 3/4, 5/4, 7/4} → circS = {−1/√2, 1/√2, 1/√2, −1/√2}
+
+**n = 6:** args {1/6, 1/2, 5/6, 7/6, 3/2, 11/6} → circS = {−√3/2, 0, √3/2, √3/2, 0, −√3/2}
+
+Note: For n ∈ {2, 3}, all circS values are rational. For n ∈ {4, 6}, they involve √2 and √3, but the final lobe areas are still rational due to cancellation with β(n).
+
+---
+
+## Application: The f_n Function
+
+### Trigonometric Form
+
+With $x = \cos(\theta)$:
+$$f_n(\cos\theta) = -\sin(\theta)\sin(n\theta)$$
+
+### Via Circ
+
+Let $u = \theta/\pi$, then:
+$$f_n(\cos(\pi u)) = -\text{Circ}(u - 5/4) \cdot \text{Circ}(nu - 5/4)$$
+
+This expresses $f_n$ as a **product of two Circ terms**.
+
+### Zeros
+
+$f_n = 0$ when either factor vanishes:
+- $\text{Circ}(u - 5/4) = 0$ → $u \in \{0, 1\}$ → $x = \pm 1$ (boundary)
+- $\text{Circ}(nu - 5/4) = 0$ → $u = (5/4 + k/2)/n$ for integer $k$
+
+---
+
+## Paclet Implementation
+
+The `CircFunctions` module in the Orbit paclet provides:
+
+```mathematica
+<< Orbit`
+
+Circ[t]           (* Core function *)
+CircSin[t]        (* Sin via Circ *)
+CircCos[t]        (* Cos via Circ *)
+CircPoint[t]      (* {Circ[t], Circ[-t]} - unit circle *)
+CircToSpread[c]   (* (1-c)/2 *)
+SpreadToCirc[s]   (* 1-2s *)
+CircTaylor[t, n]  (* Taylor expansion *)
+```
+
+---
+
+## Double Angle Formula
+
+The double angle identity $\sin(2\theta) = 2\sin\theta\cos\theta$ becomes:
+
+$$\text{Circ}(2v + 5/4) = 2\,\text{Circ}(v)\,\text{Circ}(-v)$$
+
+Combined with $\text{Circ}(v)\text{Circ}(-v) = \frac{1}{2}\cos(2\pi v)$:
+
+$$\text{Circ}(2v + 5/4) = \cos(2\pi v)$$
+
+Also: $\cos(2\pi s) = -\text{Circ}(2s + 1/4)$
+
+## Chebyshev Recurrence via circS
+
+Using **circS** (the shifted Circ), the Chebyshev recurrence becomes elegant:
+
+$$T_n(\cos(\pi u)) = \cos(n\pi u) = -\text{circS}(nu)$$
+
+The recurrence $T_{n+1}(x) = 2xT_n(x) - T_{n-1}(x)$ becomes:
+
+$$\text{circS}((n+1)u) = -2\,\text{circS}(u)\,\text{circS}(nu) - \text{circS}((n-1)u)$$
+
+This is the **circS Chebyshev recurrence** — directly analogous to the original but in circS coordinates.
+
+### Trig via circS (cleaner than via Circ)
+
+$$\cos(\pi u) = -\text{circS}(u)$$
+$$\sin(\pi u) = -\text{circS}(1/2 - u)$$
+
+Note: Both sin and cos are now **negated circS** with simple argument shifts.
+
+---
+
+## Trig Products via Circ (from notebook)
+
+The key identities that enable expressing products:
+
+$$\text{Circ}(u) + \text{Circ}(-u) = -\sqrt{2}\cos(\pi u)$$
+$$\text{Circ}(u) - \text{Circ}(-u) = -\sqrt{2}\sin(\pi u)$$
+
+### Product Formulas
+
+Using the product-to-sum identities, we get:
+
+$$\sin(x)\cos(y) = \frac{1}{-2\sqrt{2}}\left[\text{Circ}\left(\frac{x+y}{\pi}\right) - \text{Circ}\left(-\frac{x+y}{\pi}\right) - \text{Circ}\left(\frac{x-y}{\pi}\right) + \text{Circ}\left(\frac{y-x}{\pi}\right)\right]$$
+
+$$\cos(x)\cos(y) = \frac{1}{-2\sqrt{2}}\left[\text{Circ}\left(\frac{x+y}{\pi}\right) + \text{Circ}\left(-\frac{x+y}{\pi}\right) + \text{Circ}\left(\frac{x-y}{\pi}\right) + \text{Circ}\left(\frac{y-x}{\pi}\right)\right]$$
+
+### Factor Extraction
+
+The individual factors can also be expressed:
+- $\sin(y) = \text{Circ}(y/\pi - 5/4)$
+- $\cos(x) = \text{Circ}(x/\pi + 5/4)$
+
+So: $\sin(y)\cos(x) = \text{Circ}(y/\pi - 5/4) \cdot \text{Circ}(x/\pi + 5/4)$
+
+### The mull Structure
+
+The notebook's `mull[x,y]` organizes this as:
+```mathematica
+mull[x,y] = {
+  {4 circ-based terms},  (* combine differently for different products *)
+  {Sin[y], Cos[x]}       (* the individual factors *)
+}
+```
+
+- Sum of all 4 terms → $\cos(x)\sin(y)$
+- Alternative sign pattern → $\cos(x)\cos(y)$
+
+---
+
+## Why CircS Eliminates π
+
+A key benefit of CircS: **rational arguments replace π-multiples**.
+
+| Original | Via CircS |
+|----------|-----------|
+| $\cos\left(\frac{(2k-1)\pi}{n}\right)$ | $-\text{CircS}\left(\frac{2k-1}{n}\right)$ |
+| $\cos\left(\frac{k\pi}{n}\right)$ | $-\text{CircS}\left(\frac{k}{n}\right)$ |
+| $\sin\left(\frac{k\pi}{n}\right)$ | $-\text{CircS}\left(\frac{1}{2} - \frac{k}{n}\right)$ |
+
+The π gets "absorbed" into CircS's definition, leaving clean rational fractions.
+
+---
+
+## The Deep Structure: Circ as Complex Exponential
+
+### The Complex Encoding
+
+Define $z[t] = \text{Circ}(t) + i\,\text{Circ}(-t)$. Then:
+
+$$z[t] = e^{i(3\pi/4 + \pi t)}$$
+
+This reveals Circ as the real part of a complex exponential starting at 135°.
+
+### The Multiplication Law
+
+$$z[t] \times z[s] = z[t + s + 3/4]$$
+
+The 3/4 offset encodes the "seed" $e^{3i\pi/4}$.
+
+**Verified:** $z[0]^2 = i = z[3/4]$ ✓
+
+### The Imaginary Unit IS the Fold
+
+$$i \times z[t] = z[t - 1/2]$$
+
+Multiplication by $i$ (90° rotation) corresponds to a **parameter shift by 1/2**.
+
+This means the $t \leftrightarrow -t$ symmetry that separates sin from cos is fundamentally connected to the action of $i$!
+
+### Why 3π/4? The Equal-Weight Condition
+
+The offset $3\pi/4 = 135°$ places $t=0$ on the diagonal where $|cos| = |sin|$.
+
+**The phase addition formulas:**
+$$\cos(\theta + \phi_1) + \cos(\theta + \phi_2) = 2\cos\left(\frac{\phi_1-\phi_2}{2}\right)\cos\left(\theta + \frac{\phi_1+\phi_2}{2}\right)$$
+$$\cos(\theta + \phi_1) - \cos(\theta + \phi_2) = -2\sin\left(\frac{\phi_1-\phi_2}{2}\right)\sin\left(\theta + \frac{\phi_1+\phi_2}{2}\right)$$
+
+**For Circ** with $\phi_1 = 3\pi/4 + \pi t$ and $\phi_2 = 3\pi/4 - \pi t$:
+- Sum amplitude: $2\cos(3\pi/4) = -\sqrt{2}$
+- Diff amplitude: $-2\sin(3\pi/4) = -\sqrt{2}$
+
+**The amplitudes are equal!** This happens because $|\cos(3\pi/4)| = |\sin(3\pi/4)| = 1/\sqrt{2}$.
+
+The four phases where this holds are $\pi/4, 3\pi/4, 5\pi/4, 7\pi/4$ — the 45° diagonals.
+
+**Result:** Sin and cos emerge from the even/odd decomposition with the **same scaling factor**:
+$$\text{Circ}(t) + \text{Circ}(-t) = -\sqrt{2}\cos(\pi t)$$
+$$\text{Circ}(t) - \text{Circ}(-t) = -\sqrt{2}\sin(\pi t)$$
+
+Any other phase would give different amplitudes, breaking the symmetry between sin and cos.
+
+*Note: This may be a trivial observation from standard trigonometry, or it may be the key motivation for the Circ framework if the reformulation proves useful elsewhere.*
+
+### The Grand Unification
+
+```
+ONE function (Circ)
+      ↓
+  FOLD along t ↔ -t
+      ↓
+TWO functions (Sin, Cos) via Even/Odd decomposition
+      ↓
+  COMBINE with i
+      ↓
+COMPLEX exponential e^(iθ)
+```
+
+The entire structure of complex numbers and trigonometry emerges from:
+1. **One function** Circ(t)
+2. **One symmetry** t ↔ -t
+3. **One combination** Circ(t) + i·Circ(-t)
+
+### Caveat: New Clothes for Euler?
+
+To be honest: this is essentially Euler's formula $e^{i\theta} = \cos\theta + i\sin\theta$ in reparametrized form. The "unification" is pedagogical rather than mathematical — it doesn't prove anything new.
+
+**What IS genuinely useful:**
+- CircS gives **rational arguments** for Chebyshev formulas (no π in denominators)
+- The $t \leftrightarrow -t$ symmetry as an **organizing principle** for discovering identities
+- A framework where the fold/reflection structure is **explicit**
+
+**Note on symmetry:** The $t \to -t$ operation swaps Re and Im (reflection across the **diagonal** $y = x$), which is different from complex conjugation (reflection across the x-axis). The operations $\{t \to -t, t \to t+1, t \to t+1/2\}$ generate D4 (dihedral symmetry of the square), giving the Circ framework a different symmetry structure than standard conjugate-symmetric complex analysis.
+
+---
+
+## Complex Extension
+
+### Circ with Complex Arguments
+
+For $t = x + iy$, the Circ function extends analytically:
+
+$$\text{Circ}(x + iy) = \cos\left(\frac{3\pi}{4} + \pi x + i\pi y\right)$$
+
+**Explicit form:**
+- Real part: $-\cosh(\pi y)\sin(\pi(1/4 + x))$
+- Imag part: $-\cos(\pi(1/4 + x))\sinh(\pi y)$
+
+### Two Independent Symmetries
+
+**1. Argument negation:** $t \to -t$
+- Even part: $(\text{Circ}(t) + \text{Circ}(-t))/2 = -\cos(\pi t)/\sqrt{2}$
+- Odd part: $(\text{Circ}(t) - \text{Circ}(-t))/2 = -\sin(\pi t)/\sqrt{2}$
+
+**2. Argument conjugation:** $t \to \bar{t}$
+$$\text{Circ}(\bar{t}) = \overline{\text{Circ}(t)}$$
+
+This is the Schwarz reflection principle — Circ is real-analytic.
+
+### The Four Basis Functions
+
+Combining both symmetries, Circ decomposes into four fundamental components:
+
+| Component | Formula | x-parity | y-parity |
+|-----------|---------|----------|----------|
+| cc | $\cos(\pi x)\cosh(\pi y)$ | even | even |
+| ss | $\sin(\pi x)\sinh(\pi y)$ | odd | odd |
+| sc | $\sin(\pi x)\cosh(\pi y)$ | odd | even |
+| cs | $\cos(\pi x)\sinh(\pi y)$ | even | odd |
+
+### CircS Complex Extension
+
+For CircS (the even function), the structure simplifies:
+
+$$\text{CircS}(x + iy) = -\cos(\pi x)\cosh(\pi y) + i\sin(\pi x)\sinh(\pi y)$$
+
+Key identities:
+- $\text{CircS}(-t) = \text{CircS}(t)$ (even in $t$)
+- $\text{CircS}(\bar{t}) = \overline{\text{CircS}(t)}$ (real-analytic)
+- Negating real part $\equiv$ conjugating result
+
+---
+
+## Open Questions
+
+1. **Circ polynomials:** Are there "Circ polynomials" analogous to Chebyshev polynomials?
+
+2. **The circle[x,y,m] function:** What was the intended use of the Chebyshev-based circle function?
+
+3. **Quaternion extension:** Does the 2×2 decomposition suggest a quaternionic structure?

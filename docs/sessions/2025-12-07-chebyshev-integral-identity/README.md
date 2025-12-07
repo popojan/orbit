@@ -437,35 +437,93 @@ $$A(n,k) = \frac{1}{n} + \beta(n) \cos\left(\frac{(2k-1)\pi}{n}\right)$$
 
 The DC component integrates to 1, and the oscillatory part integrates to 0.
 
-### Expression via Symmetrized circ Function
+### Spread Polynomial Formulation (Wildberger)
 
-Using the symmetrized goniometric function from the beta-functions analysis:
+In rational trigonometry (Wildberger, *Divine Proportions*), **spread** is defined as a ratio of quadrances:
+$$s = \frac{Q(B,C)}{Q(A,B)}$$
 
-$$\text{circ}(t) = 1 - 2\sin^2\left(\frac{\pi}{2}\left(\frac{3}{4} + t\right)\right) = \cos\left(\frac{3\pi}{4} + \pi t\right)$$
+This equals $\sin^2(\theta)$ in the decimal plane, but is defined without transcendental functions.
 
-We can express:
+The **spread polynomials** $S_n(s)$ satisfy:
+$$S_n(s) = \frac{1 - T_n(1-2s)}{2}$$
 
+where $T_n$ is the Chebyshev polynomial. Key property: $S_n$ has **integer coefficients**, so rational inputs give rational outputs.
+
+For a **regular n-gon**, the basic spread $s = \sin^2(\pi/n)$ satisfies $S_n(s) = 0$.
+
+**Theorem (Spread polynomial characterization):**
+$$\text{All lobe areas rational} \iff \sin^2(\pi/n) \text{ is a rational zero of } S_n(s)$$
+
+| n | $S_n(s)$ factored | Zeros | All rational? |
+|---|-------------------|-------|---------------|
+| 2 | $4s(1-s)$ | 0, 1 | ✓ |
+| 3 | $s(4s-3)^2$ | 0, 3/4 | ✓ |
+| 4 | $-16s(s-1)(2s-1)^2$ | 0, 1/2, 1 | ✓ |
+| 5 | $s(16s^2-20s+5)^2$ | 0, $(5\pm\sqrt{5})/8$ | ✗ |
+| 6 | $-4s(s-1)(4s-3)^2(4s-1)^2$ | 0, 1/4, 3/4, 1 | ✓ |
+
+The set $\{2, 3, 4, 6\}$ are exactly those $n$ where $S_n(s) = 0$ has only rational roots.
+
+### Why This Works
+
+In Wildberger's framework:
+- Spread is always rational when coordinates are rational
+- Spread polynomials preserve rationality (integer coefficients)
+- But the **zeros** of $S_n(s) = 0$ are algebraic, generally irrational
+- Only for $n \in \{2, 3, 4, 6\}$ are all zeros rational
+
+### Expression via circ Function
+
+The symmetrized circ function connects directly to spread:
+
+$$\text{circ}(t) = \cos(3\pi/4 + \pi t) = 1 - 2s$$
+
+where $s = \sin^2(3\pi/8 + \pi t/2)$ is the spread at the half-angle.
+
+**Direct circ ↔ spread bijection:**
+
+| circ(t) | spread = (1−circ)/2 | geometric meaning |
+|---------|---------------------|-------------------|
+| 1 | 0 | parallel lines |
+| 1/2 | 1/4 | 30° angle |
+| 0 | 1/2 | 45° angle |
+| −1/2 | 3/4 | 60° angle |
+| −1 | 1 | perpendicular |
+
+**Key observation:** For $n \in \{2, 3, 4, 6\}$, all |circ| values lie in $\{0, 1/2, 1\}$, which maps to spreads in $\{0, 1/4, 1/2, 3/4, 1\}$ — exactly the rational spreads from Wildberger's framework.
+
+**Lobe area formula via circ:**
 $$\cos^2\left(\frac{k\pi}{n}\right) = \frac{1 + \text{circ}\left(\frac{5}{4} - \frac{2k}{n}\right)}{2}$$
 
-**Key insight:** The argument $\frac{5}{4} - \frac{2k}{n}$ is always rational for integer $k, n$.
-
-**Rationality criterion:** $\cos^2(k\pi/n)$ is rational iff $\text{circ}\left(\frac{5}{4} - \frac{2k}{n}\right)$ is rational.
-
-Since $\text{circ}(r) = \cos(3\pi/4 + \pi r)$, rationality occurs when $3\pi/4 + \pi r$ is a multiple of $\pi/3$ or $\pi/2$ (the "good" angles where cosine is rational: $0, \pm 1/2, \pm 1$).
-
-| n | Arguments $\frac{5}{4} - \frac{2k}{n}$ | circ values | All rational? |
-|---|----------------------------------------|-------------|---------------|
+| n | circ arguments | circ values | |circ| ∈ {0,½,1} |
+|---|----------------|-------------|-----------------|
 | 2 | 1/4 | −1 | ✓ |
 | 3 | 7/12, −1/12 | −1/2, −1/2 | ✓ |
 | 4 | 3/4, 1/4, −1/4 | 0, −1, 0 | ✓ |
-| 5 | 17/20, 9/20, ... | $(\sqrt{5}-1)/4$, ... | ✗ |
 | 6 | 11/12, 7/12, 1/4, −1/12, −5/12 | 1/2, −1/2, −1, −1/2, 1/2 | ✓ |
 
-### Signaling Interpretation
+**Symmetric circle definition:** The unit circle admits the elegant parametrization:
+$$\text{circle}(t) = \{\text{circ}(t), \text{circ}(-t)\}$$
 
-The rationality of **all** lobe areas signals special cyclotomic structure. The set $\{2, 3, 4, 6\}$ corresponds to regular polygons constructible with compass and straightedge using only the simplest algebraic extensions (no surds beyond $\sqrt{2}$ and $\sqrt{3}$ in the squared form).
+This satisfies $\text{circ}(t)^2 + \text{circ}(-t)^2 = 1$ identically. Key points:
 
-In the circ language: these are exactly the $n$ for which all arguments $\frac{5}{4} - \frac{2k}{n}$ (for $k = 1, \ldots, n-1$) map to "good" cosine values under the transformation $t \mapsto \cos(3\pi/4 + \pi t)$.
+| t | circ(t) | circ(−t) | circle point |
+|---|---------|----------|--------------|
+| 0 | −1/√2 | −1/√2 | (−1/√2, −1/√2) |
+| 1/4 | −1 | 0 | (−1, 0) |
+| 1/2 | −1/√2 | 1/√2 | (−1/√2, 1/√2) |
+| 3/4 | 0 | 1 | (0, 1) |
+
+For $n \in \{2, 3, 4, 6\}$, the relevant circ values stay in $\{-1, -1/2, 0, 1/2, 1\}$, giving rational spread coordinates throughout.
+
+### Interpretation
+
+The set $\{2, 3, 4, 6\}$ appears in many mathematical contexts:
+- Regular polygons that tile the plane (crystallographic restriction)
+- $n$ where $\cos(2\pi/n) \in \mathbb{Q}$
+- $n$ where $\varphi(n) \leq 2$
+
+The Chebyshev lobe area rationality provides another geometric characterization of this classical set, via Niven's theorem on rational trigonometric values.
 
 ## Open Question: Structure for h ∈ (-1, 1)
 
