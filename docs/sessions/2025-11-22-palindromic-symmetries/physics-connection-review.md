@@ -310,3 +310,38 @@ Egypt trajectories are purely algorithmic/mathematical - no spacetime, no dynami
 **Reason for rejection:** Missing Lorentzian signature → no time, no causality, no physical dynamics.
 
 **Corrected status:** Beautiful mathematics, no physics (yet).
+
+---
+
+## Update: December 7, 2025 — Lorentz Signature Found!
+
+**New development:** While analyzing the complex extension of the Circ function (symmetrized trigonometry), we discovered a natural **split-quaternion structure** with Lorentzian signature (+,+,-,-).
+
+**Key findings:**
+- Circ(x+iy) lives in split-quaternion algebra (not standard quaternions)
+- Split-quaternion norm: $N = a^2 + b^2 - c^2 - d^2$ (Lorentz signature!)
+- Circ has **constant** Lorentz norm $N = 1/2$ (lies on hyperboloid)
+- The 3π/4 phase is geometrically special — enables Pythagorean cancellation
+
+**What this means:**
+- We now have Lorentzian signature in our mathematical framework ✅
+- The mixing of circular (compact) and hyperbolic (non-compact) geometry naturally produces split-quaternions
+- This is the **same signature** as Minkowski spacetime
+
+**Open question — needs investigation:**
+- Is there a connection between Egypt trajectory (hyperbolic disk) and Circ (split-quaternions)?
+- Both involve hyperbolic geometry, both connect to Chebyshev polynomials
+- Could Egypt trajectory be reinterpreted in split-quaternion framework?
+
+**Checklist status (updated):**
+1. ✅ Lorentzian signature — **NOW HAVE IT** (in Circ, not yet in Egypt)
+2. ❓ Stress-energy tensor — still missing
+3. ❓ Hamiltonian/action principle — still missing
+4. ❓ Equations of motion — still missing
+5. ❓ Conserved quantities — still missing
+
+**Verdict:** The door is now slightly ajar. Worth revisiting with fresh eyes.
+
+**See:**
+- [Split-quaternions learning doc](../../learning/split-quaternions.md)
+- [Circ symmetries — split-quaternion section](../2025-12-07-chebyshev-integral-identity/circ-symmetries.md#split-quaternion-structure-dec-7-2025)
