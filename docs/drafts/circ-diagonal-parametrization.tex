@@ -1,0 +1,207 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+
+\title{The Diagonal Parametrization:\\De Moivre Without the Imaginary Unit}
+\author{Jan Popelka}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We present a parametrization of the unit circle that expresses complex multiplication
+as pure real arithmetic. Building on Hartley's cas function (1942), we define
+$\mathrm{Circ}(t) = \cos(3\pi/4 + \pi t)$ and show that the point
+$P[t] = (\mathrm{Circ}[-t], \mathrm{Circ}[t])$ satisfies a multiplication law
+$P[t_1] \otimes P[t_2] = P[t_1 + t_2 + 5/4]$ involving only addition of real parameters.
+The offset $5/4$ is not arbitrary but one of exactly two values forced by the
+requirement that $|\cos\phi| = |\sin\phi|$ (the ``diagonal'' condition).
+The two choices form a duality related by the reflection $t \leftrightarrow 1-t$,
+and together with the shift operator generate a $D_4$ symmetry group.
+\end{abstract}
+
+\section{Introduction}
+
+The unit circle admits many parametrizations. The standard choice
+$(\cos\theta, \sin\theta)$ requires two functions, while the complex exponential
+$e^{i\theta}$ requires the imaginary unit. Hartley \cite{hartley1942} introduced
+the function $\mathrm{cas}(x) = \cos x + \sin x$, motivated by signal processing applications.
+
+We revisit this idea with a specific phase choice that yields a clean algebraic structure.
+The main observation is that complex multiplication on the unit circle becomes
+\emph{addition of real parameters} plus a fixed offset---and this offset is constrained
+to one of exactly two values by geometric requirements.
+
+\section{The Circ Function}
+
+\begin{definition}
+The \emph{Circ function} is defined by
+\[
+\mathrm{Circ}(t) = \cos\left(\frac{3\pi}{4} + \pi t\right).
+\]
+\end{definition}
+
+This is equivalent to Hartley's cas function up to scaling and sign:
+\[
+\mathrm{Circ}(t) = -\frac{1}{\sqrt{2}} \, \mathrm{cas}(\pi t).
+\]
+
+The phase $3\pi/4$ places us on the \emph{diagonal} of the unit circle,
+where $|\cos\phi| = |\sin\phi| = 1/\sqrt{2}$.
+
+Key properties:
+\begin{itemize}
+\item \textbf{Antiperiod:} $\mathrm{Circ}(t+1) = -\mathrm{Circ}(t)$ (period 2)
+\item \textbf{Derivative:} $\mathrm{Circ}'(t) = -\pi\,\mathrm{Circ}(t + 1/2)$ (shift, not function change)
+\item \textbf{Symmetry:} $\cos(\pi t) = -\frac{\mathrm{Circ}(t) + \mathrm{Circ}(-t)}{\sqrt{2}}$, \quad
+      $\sin(\pi t) = -\frac{\mathrm{Circ}(t) - \mathrm{Circ}(-t)}{\sqrt{2}}$
+\end{itemize}
+
+\section{Circle Points and Multiplication}
+
+\begin{definition}
+For $t \in \mathbb{R}$, define the \emph{circle point}
+\[
+P[t] = (\mathrm{Circ}[-t], \mathrm{Circ}[t]).
+\]
+\end{definition}
+
+This is a point on the unit circle: $\mathrm{Circ}[-t]^2 + \mathrm{Circ}[t]^2 = 1$.
+
+\begin{theorem}[Real Multiplication Law]
+Complex multiplication of circle points satisfies
+\[
+P[t_1] \otimes P[t_2] = P[t_1 + t_2 + 5/4]
+\]
+where $\otimes$ denotes component-wise complex multiplication:
+$(a,b) \otimes (c,d) = (ac - bd, ad + bc)$.
+\end{theorem}
+
+\begin{proof}
+Direct computation using the angle-addition property of complex multiplication.
+The offset $5/4$ arises from the phase $3\pi/4$ in the Circ definition.
+\end{proof}
+
+\begin{theorem}[De Moivre, Real Form]
+\[
+P[t]^n = P\left[nt + \frac{5(n-1)}{4}\right]
+\]
+\end{theorem}
+
+\begin{proof}
+By induction on $n$, using the multiplication law.
+\end{proof}
+
+The formulas involve \emph{only real arithmetic}---no $i$, no explicit $\pi$.
+
+\section{The Diagonal Constraint}
+
+Why $5/4$? The phase $3\pi/4$ was chosen so that
+$|\cos(3\pi/4)| = |\sin(3\pi/4)| = 1/\sqrt{2}$---the \emph{diagonal} condition
+ensuring symmetric treatment of sine and cosine.
+
+There are exactly four such phases: $\pi/4$, $3\pi/4$, $5\pi/4$, $7\pi/4$.
+Phases differing by $\pi$ yield the same Circ up to sign, leaving two equivalence classes:
+
+\begin{center}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Phase pair & Start point $P[0]$ & Multiplication offset \\
+\midrule
+$\{\pi/4, 7\pi/4\}$ & $(+1/\sqrt{2}, +1/\sqrt{2})$ & $7/4$ \\
+$\{3\pi/4, 5\pi/4\}$ & $(-1/\sqrt{2}, -1/\sqrt{2})$ & $5/4$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The offset is \emph{not arbitrary}---it is one of exactly two values,
+determined by the diagonal geometry.
+
+\section{The $D_4$ Symmetry}
+
+Let $P_A$ denote the framework with offset $5/4$, and $P_B$ the framework with offset $7/4$.
+
+\begin{proposition}
+$P_B[t] = P_A[1-t]$.
+\end{proposition}
+
+The two frameworks are related by reflection around $t = 1/2$.
+
+Define operators:
+\begin{itemize}
+\item $S$: shift $t \mapsto t + 1/2$ (corresponds to multiplication by $i$)
+\item $T$: reflection $t \mapsto 1 - t$ (swaps the two frameworks)
+\end{itemize}
+
+These satisfy $S^4 = 1$, $T^2 = 1$, and generate the dihedral group $D_4$:
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Element & Action on $t$ & Meaning \\
+\midrule
+$1$ & $t$ & identity \\
+$S$ & $t + 1/2$ & $90^\circ$ rotation \\
+$S^2$ & $t + 1$ & $180^\circ$ rotation \\
+$S^3$ & $t + 3/2$ & $270^\circ$ rotation \\
+$T$ & $1 - t$ & framework reflection \\
+$S^2 T$ & $-t$ & coordinate swap \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A \emph{unified framework} invariant under full $D_4$ symmetry is given by the pair:
+\[
+Q[t] = (P_A[t], P_A[1-t]).
+\]
+
+\section{Taylor Series}
+
+The Taylor expansion of Circ around $t=0$ has a closed form:
+\[
+\mathrm{Circ}(t) = \sum_{k=0}^{\infty} \frac{\varepsilon_k \cdot \pi^k}{\sqrt{2} \cdot k!} \, t^k
+\]
+where the sign pattern $\varepsilon_k = -\mathrm{cas}(\pi k/2)$ cycles as
+$\{-1, -1, +1, +1, -1, -1, \ldots\}$.
+
+Unlike $\sin$ (odd powers) or $\cos$ (even powers), Circ contains \emph{all} powers---the
+price of unification.
+
+\section{Discussion}
+
+What does this parametrization achieve?
+
+\textbf{Operationally:} The multiplication formula $P[t_1 + t_2 + 5/4]$ involves only
+real addition. The imaginary unit $i$ becomes the shift operator $S$, satisfying
+$S^2 = -1$ because Circ has antiperiod 1.
+
+\textbf{Geometrically:} The two-ness of trigonometry (sin vs cos) relocates to a
+discrete gauge choice ($5/4$ vs $7/4$), unified by $D_4$ symmetry.
+
+\textbf{Historically:} This is Hartley (1942) with a specific phase choice that
+reveals the diagonal duality structure.
+
+The framework does not eliminate trigonometry---it is \emph{defined} via cosine.
+But it demonstrates that the operational complexity of complex arithmetic
+can be absorbed into a single real parameter, with the algebraic structure
+encoded in the offset $5/4$.
+
+\begin{thebibliography}{9}
+\bibitem{hartley1942}
+R.~V.~L. Hartley,
+``A More Symmetrical Fourier Analysis Applied to Transmission Problems,''
+\emph{Proceedings of the IRE}, vol.~30, no.~3, pp.~144--150, 1942.
+
+\bibitem{bracewell1986}
+R.~N. Bracewell,
+\emph{The Hartley Transform},
+Oxford University Press, 1986.
+\end{thebibliography}
+
+\end{document}
