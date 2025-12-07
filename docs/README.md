@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-07 15:25:26
+**Generated:** 2025-12-07 15:33:56
 
 ## Theorems (Master References)
 
@@ -20,6 +20,7 @@
 
 ## Recent Sessions (Last 10)
 
+- [Ralph V. L. Hartley: Historical Context](sessions/2025-12-07-circ-hartley-exploration/hartley-historical-note.md) *()*
 - [Circ Function Exploration: Hartley Connection](sessions/2025-12-07-circ-hartley-exploration/README.md) *(2025-12-07)*
 - [Pedagogical Note: Why Two Trig Functions?](sessions/2025-12-07-circ-hartley-exploration/pedagogical-note-circ.md) *(2025-12-07)*
 - [Pedagogical Note: Why Two Trig Functions?](sessions/2025-12-07-chebyshev-integral-identity/pedagogical-note-circ.md) *(2025-12-07)*
@@ -29,7 +30,6 @@
 - [Cunningham Representation and Brahmagupta-Bhaskara Equation](sessions/2025-12-06-cunningham-representation/README.md) *(2025-12-06)*
 - [Mondrian Clock - Complete Subset Sum Representation](sessions/2025-12-06-mondrian-clock/README.md) *(2025-12-06)*
 - [Egyptian Fractions Exploration](sessions/2025-12-05-egyptian-fractions-exploration/README.md) *(2025-12-06)*
-- [Prime DNA Review: Gap Distribution and Chebyshev-like Bias](sessions/2025-12-05-prime-dna-review/README.md) *(2025-12-05)*
 
 ## Navigation
 
