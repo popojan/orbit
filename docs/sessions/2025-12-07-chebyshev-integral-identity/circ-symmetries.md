@@ -174,7 +174,7 @@ The shift $3(n-1)/4 \mod 2$ has **period 8** in $n$:
 |---------|---|---|---|---|---|---|---|---|
 | shift | 0 | 3/4 | 3/2 | 1/4 | 1 | 7/4 | 1/2 | 5/4 |
 
-This suggests a hidden $\mathbb{Z}/8\mathbb{Z}$ symmetry in the Chebyshev-Circ relationship.
+This period 8 is arithmetic (denominator 4 in shift, period 2 in Circ), not a deep symmetry.
 
 ### Chebyshev Recurrence in Circ Coordinates
 
@@ -462,4 +462,4 @@ The 3π/4 phase that defines Circ is geometrically special: it places the functi
 
 5. **Other Lorentz-invariant phases:** Are there other phase choices besides 3π/4 (mod π/2) that give constant norm?
 
-6. **Z/8Z symmetry:** The Chebyshev shift pattern has period 8 in $n$. Is this related to the D4 dihedral symmetry of the Circ framework, or to something deeper?
+6. ~~Z/8Z symmetry:~~ **Debunked.** Period 8 is trivial arithmetic (denominator 4, period 2). Not related to D4.
