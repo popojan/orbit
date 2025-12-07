@@ -134,14 +134,7 @@ nezávisle na $x$ a $y$!
 
 Pythagorova identita $\cos^2 + \sin^2 = 1$ **eliminuje závislost na x**!
 
-### CircS nemá konstantní normu
-
-Pro CircS (fáze $\pi$): $\cos\pi = -1$, $\sin\pi = 0$
-
-Jen diagonální komponenty přežijí ($b = c = 0$):
-$$N(\text{CircS}) = \cos^2(\pi x)\cosh^2(\pi y) - \sin^2(\pi x)\sinh^2(\pi y)$$
-
-Toto **závisí** na $x$ i $y$.
+*Poznámka:* Jiná fáze (např. $\phi = \pi$) by dala jen 2 ze 4 komponent, a Pythagorova eliminace by nefungovala — norma by závisela na $x$ i $y$.
 
 ## Geometrická interpretace
 
@@ -169,6 +162,7 @@ Circ s konstantní normou je jako **masivní částice** (konstantní "klidová 
 | Lorentzova norma | Přirozená metrika pro mix kruh/hyperbola |
 | Konstantní $N = 1/2$ | Fáze $3\pi/4$ je geometricky speciální |
 | Idempotenty $e_\pm$ | Balí $t$ a $\bar{t}$ dohromady |
+| Chebyshev izometrie | $T_n$ zachovává $N = 1/2$ na hyperboloidu |
 
 ## Reference
 

@@ -54,28 +54,6 @@ $$\text{Circ}(t)^2 = \frac{1 + \sin(2\pi t)}{2}$$
 
 **Key relation:** Circ(1 − t) = −Circ(−t)
 
-## Shifted Circ (circS)
-
-Define the **shifted circ**:
-$$\text{circS}(t) = \text{Circ}(t + 1/4) = -\cos(\pi t)$$
-
-### Properties
-
-- **Even function:** circS(t) = circS(−t)
-- **Simple form:** circS(t) = −cos(πt)
-- **Period:** circS(t + 2) = circS(t)
-
-### Special Values
-
-| t | circS(t) |
-|---|----------|
-| 0 | −1 |
-| ±1/4 | −1/√2 |
-| ±1/3 | −1/2 |
-| ±1/2 | 0 |
-| ±2/3 | 1/2 |
-| ±1 | 1 |
-
 ## Reconstructing Standard Trig
 
 Both Sin and Cos derive from Circ with the **same formula structure**:
@@ -112,35 +90,15 @@ $$A(n,k) = \frac{1}{n} + \beta(n) \cos\left(\frac{(2k-1)\pi}{n}\right)$$
 
 where $\beta(n) = \frac{n\cos(\pi/n)}{4 - n^2}$
 
-### Via circS
+### Lobe Symmetry
 
-Since $\cos(\theta) = -\text{circS}(\theta/\pi)$:
+The symmetry $A(n,k) = A(n, n+1-k)$ follows from cosine being even:
 
-$$A(n,k) = \frac{1}{n} - \beta(n) \cdot \text{circS}\left(\frac{2k-1}{n}\right)$$
+- Lobe $k$: argument $u = (2k-1)\pi/n$
+- Lobe $n+1-k$: argument $= (2n+1-2k)\pi/n = 2\pi - u$
 
-### Lobe Symmetry Explained
-
-The symmetry $A(n,k) = A(n, n+1-k)$ follows directly from circS being **even**:
-
-- Lobe $k$: argument $u = (2k-1)/n$
-- Lobe $n+1-k$: argument $= (2n+1-2k)/n = 2 - u$
-
-Since $\text{circS}(2-u) = -\cos(\pi(2-u)) = -\cos(\pi u) = \text{circS}(u)$:
+Since $\cos(2\pi - u) = \cos(u)$:
 $$A(n,k) = A(n, n+1-k) \quad \checkmark$$
-
-### circS Values for Special n
-
-For $n \in \{2, 3, 4, 6\}$ (crystallographic values), the circS arguments are:
-
-**n = 2:** args {1/2, 3/2} → circS = {0, 0}
-
-**n = 3:** args {1/3, 1, 5/3} → circS = {−1/2, 1, −1/2}
-
-**n = 4:** args {1/4, 3/4, 5/4, 7/4} → circS = {−1/√2, 1/√2, 1/√2, −1/√2}
-
-**n = 6:** args {1/6, 1/2, 5/6, 7/6, 3/2, 11/6} → circS = {−√3/2, 0, √3/2, √3/2, 0, −√3/2}
-
-Note: For n ∈ {2, 3}, all circS values are rational. For n ∈ {4, 6}, they involve √2 and √3, but the final lobe areas are still rational due to cancellation with β(n).
 
 ---
 
@@ -196,24 +154,54 @@ $$\text{Circ}(2v + 5/4) = \cos(2\pi v)$$
 
 Also: $\cos(2\pi s) = -\text{Circ}(2s + 1/4)$
 
-## Chebyshev Recurrence via circS
+---
 
-Using **circS** (the shifted Circ), the Chebyshev recurrence becomes elegant:
+## Chebyshev Polynomials in Circ Coordinates
 
-$$T_n(\cos(\pi u)) = \cos(n\pi u) = -\text{circS}(nu)$$
+### The Main Identity
 
-The recurrence $T_{n+1}(x) = 2xT_n(x) - T_{n-1}(x)$ becomes:
+Since $T_n(\cos\theta) = \cos(n\theta)$ and $\text{Circ}(t) = \cos(3\pi/4 + \pi t)$:
 
-$$\text{circS}((n+1)u) = -2\,\text{circS}(u)\,\text{circS}(nu) - \text{circS}((n-1)u)$$
+$$T_n(\text{Circ}(t)) = \text{Circ}\left(nt + \frac{3(n-1)}{4}\right)$$
 
-This is the **circS Chebyshev recurrence** — directly analogous to the original but in circS coordinates.
+**Proof:** $T_n(\text{Circ}(t)) = \cos(n(3\pi/4 + \pi t)) = \cos(3n\pi/4 + n\pi t) = \text{Circ}(nt + 3(n-1)/4)$
 
-### Trig via circS (cleaner than via Circ)
+### The Shift Pattern
 
-$$\cos(\pi u) = -\text{circS}(u)$$
-$$\sin(\pi u) = -\text{circS}(1/2 - u)$$
+The shift $3(n-1)/4 \mod 2$ has **period 8** in $n$:
 
-Note: Both sin and cos are now **negated circS** with simple argument shifts.
+| n mod 8 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|---------|---|---|---|---|---|---|---|---|
+| shift | 0 | 3/4 | 3/2 | 1/4 | 1 | 7/4 | 1/2 | 5/4 |
+
+This suggests a hidden $\mathbb{Z}/8\mathbb{Z}$ symmetry in the Chebyshev-Circ relationship.
+
+### Chebyshev Recurrence in Circ Coordinates
+
+The standard recurrence $T_{n+1}(x) = 2xT_n(x) - T_{n-1}(x)$ becomes:
+
+$$\text{Circ}(s_{n+1}) = 2\,\text{Circ}(t)\,\text{Circ}(s_n) - \text{Circ}(s_{n-1})$$
+
+where $s_n = nt + 3(n-1)/4$.
+
+### Preservation of Structure
+
+**Unit circle identity preserved:**
+$$\text{Circ}(s)^2 + \text{Circ}(-s)^2 = 1$$
+
+holds for $s = nt + 3(n-1)/4$, so Chebyshev polynomials map the unit circle to itself in Circ coordinates.
+
+**Lorentz norm preserved:** For complex $t$, the split-quaternion norm $N = 1/2$ is invariant under Chebyshev application — the polynomials act as "isometries" on the hyperboloid.
+
+### Composition Law
+
+Chebyshev composition $T_m(T_n(x)) = T_{mn}(x)$ becomes:
+
+$$\text{shift}_m \circ \text{shift}_n = \text{shift}_{mn}$$
+
+where $\text{shift}_n(t) = nt + 3(n-1)/4$.
+
+**Verification:** $m(nt + 3(n-1)/4) + 3(m-1)/4 = mnt + 3(mn-1)/4$ ✓
 
 ---
 
@@ -252,20 +240,6 @@ mull[x,y] = {
 
 - Sum of all 4 terms → $\cos(x)\sin(y)$
 - Alternative sign pattern → $\cos(x)\cos(y)$
-
----
-
-## Why CircS Eliminates π
-
-A key benefit of CircS: **rational arguments replace π-multiples**.
-
-| Original | Via CircS |
-|----------|-----------|
-| $\cos\left(\frac{(2k-1)\pi}{n}\right)$ | $-\text{CircS}\left(\frac{2k-1}{n}\right)$ |
-| $\cos\left(\frac{k\pi}{n}\right)$ | $-\text{CircS}\left(\frac{k}{n}\right)$ |
-| $\sin\left(\frac{k\pi}{n}\right)$ | $-\text{CircS}\left(\frac{1}{2} - \frac{k}{n}\right)$ |
-
-The π gets "absorbed" into CircS's definition, leaving clean rational fractions.
 
 ---
 
@@ -343,9 +317,9 @@ The entire structure of complex numbers and trigonometry emerges from:
 To be honest: this is essentially Euler's formula $e^{i\theta} = \cos\theta + i\sin\theta$ in reparametrized form. The "unification" is pedagogical rather than mathematical — it doesn't prove anything new.
 
 **What IS genuinely useful:**
-- CircS gives **rational arguments** for Chebyshev formulas (no π in denominators)
 - The $t \leftrightarrow -t$ symmetry as an **organizing principle** for discovering identities
 - A framework where the fold/reflection structure is **explicit**
+- Unit circle parametrization {Circ(t), Circ(-t)} with constant Lorentz norm in complex extension
 
 **Note on symmetry:** The $t \to -t$ operation swaps Re and Im (reflection across the **diagonal** $y = x$), which is different from complex conjugation (reflection across the x-axis). The operations $\{t \to -t, t \to t+1, t \to t+1/2\}$ generate D4 (dihedral symmetry of the square), giving the Circ framework a different symmetry structure than standard conjugate-symmetric complex analysis.
 
@@ -384,17 +358,6 @@ Combining both symmetries, Circ decomposes into four fundamental components:
 | ss | $\sin(\pi x)\sinh(\pi y)$ | odd | odd |
 | sc | $\sin(\pi x)\cosh(\pi y)$ | odd | even |
 | cs | $\cos(\pi x)\sinh(\pi y)$ | even | odd |
-
-### CircS Complex Extension
-
-For CircS (the even function), the structure simplifies:
-
-$$\text{CircS}(x + iy) = -\cos(\pi x)\cosh(\pi y) + i\sin(\pi x)\sinh(\pi y)$$
-
-Key identities:
-- $\text{CircS}(-t) = \text{CircS}(t)$ (even in $t$)
-- $\text{CircS}(\bar{t}) = \overline{\text{CircS}(t)}$ (real-analytic)
-- Negating real part $\equiv$ conjugating result
 
 ---
 
@@ -447,17 +410,14 @@ The constancy comes from $|\cos(3\pi/4)| = |\sin(3\pi/4)| = 1/\sqrt{2}$:
 4. The Pythagorean identity $c_x^2 + s_x^2 = 1$ **eliminates x-dependence**
 5. Then: $N = C_y^2/2 - S_y^2/2 = (C_y^2 - S_y^2)/2 = 1/2$ ✓
 
-**Contrast with CircS:** For CircS ($\phi = \pi$), only the diagonal components survive ($b = c = 0$), so the Pythagorean cancellation doesn't apply:
-$$N(\text{CircS}) = c_x^2 C_y^2 - s_x^2 S_y^2 = \frac{1 + \cos(2\pi x)\cosh(2\pi y)}{2}$$
-
-This **varies** with $x$ and $y$.
+*Note:* A different phase (e.g., $\phi = \pi$) would give only 2 of the 4 components, and the Pythagorean cancellation would not apply — resulting in a variable norm.
 
 ### Geometric Interpretation
 
 Circ traces a **Lorentz-invariant surface** in the 4D split-quaternion space:
 - Signature (+,+,-,-) — two compact dimensions, two hyperbolic
-- The 3π/4 phase rotates CircS (which lies in a 2D subspace) into all four dimensions
-- This rotation gives constant Lorentz norm
+- The 3π/4 phase spreads the function across all four dimensions
+- This gives the constant Lorentz norm
 
 ### Idempotent Decomposition
 
@@ -466,11 +426,7 @@ Since $j^2 = 1$, we have idempotents $e_{\pm} = (1 \pm j)/2$ satisfying:
 - $e_+ \cdot e_- = 0$
 - $e_+ + e_- = 1$
 
-For CircS (which has only 1 and k components):
-
-$$\text{CircS}(x+iy) = \text{CircS}(t) \cdot e_+ + \text{CircS}(\bar{t}) \cdot e_-$$
-
-The split-quaternion structure **naturally packages $t$ and $\bar{t}$ together**!
+The algebra decomposes: $\mathbb{H}_{split} \cong \mathbb{C} \oplus \mathbb{C}$ along the $e_+$ and $e_-$ eigenspaces.
 
 ### Connection to Lorentz Geometry
 
@@ -486,12 +442,7 @@ Circ with constant norm $1/2$ lies on a **hyperboloid** in this 4D space — the
 
 ### Summary
 
-| Function | Components | Lorentz Norm |
-|----------|------------|--------------|
-| Circ | all four | $1/2$ (constant!) |
-| CircS | only $(1, k)$ | variable |
-
-The 3π/4 phase that defines Circ is geometrically special: it places the function on a **Lorentz-invariant surface** where the norm is independent of the argument.
+The 3π/4 phase that defines Circ is geometrically special: it places the function on a **Lorentz-invariant surface** where the norm $N = 1/2$ is independent of the argument.
 
 *Note: This is the "quaternion connection" mentioned in Open Questions — it turns out to be split-quaternions rather than standard quaternions, which is fitting since we're mixing compact (circular) and non-compact (hyperbolic) structures.*
 
@@ -501,7 +452,7 @@ The 3π/4 phase that defines Circ is geometrically special: it places the functi
 
 ## Open Questions
 
-1. **Circ polynomials:** Are there "Circ polynomials" analogous to Chebyshev polynomials?
+1. ~~Circ polynomials:~~ **Answered!** Chebyshev polynomials in Circ coordinates: $T_n(\text{Circ}(t)) = \text{Circ}(nt + 3(n-1)/4)$. See "Chebyshev Polynomials in Circ Coordinates" section.
 
 2. **The circle[x,y,m] function:** What was the intended use of the Chebyshev-based circle function?
 
@@ -511,8 +462,4 @@ The 3π/4 phase that defines Circ is geometrically special: it places the functi
 
 5. **Other Lorentz-invariant phases:** Are there other phase choices besides 3π/4 (mod π/2) that give constant norm?
 
-6. **Connection to Egypt trajectory:** Egypt = CircS on imaginary axis (via $\cos(iy)=\cosh(y)$)
-   - $\cosh[(1+2k)s] = -\text{CircS}(i(1+2k)s/\pi)$
-   - ⚠️ This is a **reformulation**, not a discovery — uses standard complex analysis identity
-   - May have organizational value for unified notation
-   - See: [Egypt-Circ Bridge](egypt-circ-bridge.md) (with honest caveats)
+6. **Z/8Z symmetry:** The Chebyshev shift pattern has period 8 in $n$. Is this related to the D4 dihedral symmetry of the Circ framework, or to something deeper?

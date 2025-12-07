@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-07 11:11:16
+**Generated:** 2025-12-07 12:13:54
 
 ## Theorems (Master References)
 
@@ -20,8 +20,9 @@
 
 ## Recent Sessions (Last 10)
 
-- [Chebyshev Integral Identity](sessions/2025-12-07-chebyshev-integral-identity/README.md) *(2025-12-07)*
 - [Circ Symmetries and Chebyshev Connections](sessions/2025-12-07-chebyshev-integral-identity/circ-symmetries.md) *(2025-12-07)*
+- [Physics Connection Review: Why Egypt Trajectory Is Not Physics](sessions/2025-11-22-palindromic-symmetries/physics-connection-review.md) *(2025-12-07)*
+- [Chebyshev Integral Identity](sessions/2025-12-07-chebyshev-integral-identity/README.md) *(2025-12-07)*
 - [Cunningham Representation and Brahmagupta-Bhaskara Equation](sessions/2025-12-06-cunningham-representation/README.md) *(2025-12-06)*
 - [Mondrian Clock - Complete Subset Sum Representation](sessions/2025-12-06-mondrian-clock/README.md) *(2025-12-06)*
 - [Egyptian Fractions Exploration](sessions/2025-12-05-egyptian-fractions-exploration/README.md) *(2025-12-06)*
@@ -29,7 +30,6 @@
 - [L-Function ↔ Egypt/CF Bridge: Open Research Direction](sessions/2025-12-05-L-function-egypt-bridge/README.md) *(2025-12-05)*
 - [W(p) and Class Number Connection](sessions/2025-12-05-chebyshev-lobe-balance/class-number-connection.md) *(2025-12-05)*
 - [Session: Chebyshev Polygon Lobe Balance](sessions/2025-12-05-chebyshev-lobe-balance/README.md) *(2025-12-05)*
-- [Session: Two Beta Functions - Analysis and Disambiguation](sessions/2025-12-04-beta-functions-analysis/README.md) *(2025-12-05)*
 
 ## Navigation
 

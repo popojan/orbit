@@ -84,32 +84,6 @@ CircAlt::usage = "CircAlt[t] is an equivalent form: -(Cos[πt] + Sin[πt])/√2
 
 Useful for verifying the Circ definition.";
 
-(* Shifted Circ - cleaner for Chebyshev *)
-CircS::usage = "CircS[t] is the shifted Circ function with cleaner properties:
-  CircS[t] = Circ[t + 1/4] = -Cos[πt]
-
-Key properties:
-  - CircS is EVEN: CircS[t] = CircS[-t]
-  - Simpler trig: Cos[πu] = -CircS[u], Sin[πu] = -CircS[1/2 - u]
-  - Chebyshev: T_n(cos πu) = -CircS[nu]
-
-Chebyshev recurrence via CircS:
-  CircS[(n+1)u] = -2 CircS[u] CircS[nu] - CircS[(n-1)u]
-
-Special values:
-  CircS[0] = -1, CircS[±1/4] = -1/√2, CircS[±1/3] = -1/2
-  CircS[±1/2] = 0, CircS[±2/3] = 1/2, CircS[±1] = 1";
-
-CircSSin::usage = "CircSSin[t] computes Sin[t] via CircS.
-  CircSSin[t] = -CircS[t/π - 1/2]
-
-Cleaner than CircSin since CircS = -Cos[πt].";
-
-CircSCos::usage = "CircSCos[t] computes Cos[t] via CircS.
-  CircSCos[t] = -CircS[t/π]
-
-Cleaner than CircCos since CircS = -Cos[πt].";
-
 Begin["`Private`"];
 
 (* Core definition *)
@@ -131,13 +105,6 @@ SpreadToCirc[s_] := 1 - 2 s
 
 (* Taylor series *)
 CircTaylor[t_, n_Integer] := Normal[Series[Circ[t], {t, 0, n}]]
-
-(* Shifted Circ - cleaner for Chebyshev *)
-CircS[t_] := Circ[t + 1/4]  (* = -Cos[Pi t] *)
-
-(* Standard trig via CircS *)
-CircSSin[t_] := -CircS[t/Pi - 1/2]
-CircSCos[t_] := -CircS[t/Pi]
 
 End[];
 
