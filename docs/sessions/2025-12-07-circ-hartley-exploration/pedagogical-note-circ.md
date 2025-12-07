@@ -16,6 +16,24 @@ with:
 - $\sin(\theta) = \text{Circ}(\theta/\pi - 5/4)$
 - $\cos(\theta) = \text{Circ}(-\theta/\pi + 5/4)$
 
+## The Core Identity: sin/cos as Symmetric/Antisymmetric Parts
+
+The deepest insight from the Circ framework:
+
+$$\cos(\pi t) = -\frac{\text{Circ}[t] + \text{Circ}[-t]}{\sqrt{2}} \quad \text{(symmetric part)}$$
+
+$$\sin(\pi t) = -\frac{\text{Circ}[t] - \text{Circ}[-t]}{\sqrt{2}} \quad \text{(antisymmetric part)}$$
+
+**This answers "why two functions?"** — they're the even and odd components of Circ under reflection t → -t.
+
+Any function f(t) decomposes into:
+- **Even part:** $[f(t) + f(-t)]/2$
+- **Odd part:** $[f(t) - f(-t)]/2$
+
+For Circ, these are exactly cos and sin (up to scaling).
+
+**Pedagogical value:** This isn't computationally simpler than standard trig, but it reveals the *origin* of the sin/cos relationship — they're twins separated by symmetry, not independent functions that happen to be related.
+
 ## Arguments FOR Two Functions (sin/cos)
 
 ### 1. Clean Taylor Series (Parity)
@@ -126,6 +144,29 @@ The "two-ness" doesn't disappear, but its nature changes:
 1. Clean parity structure (Taylor series mix all powers)
 2. Escape from "pairs" in Fourier analysis
 3. Anything mathematically new (it's a change of variables)
+
+## Deep Identities: Common Theme
+
+All major trig identities reduce to **sym/antisym decomposition under t → -t**:
+
+| Identity | Circ Form |
+|----------|-----------|
+| tan(πt) | (Circ[t] - Circ[-t]) / (Circ[t] + Circ[-t]) |
+| e^(iπt) | -e^(iπ/4) · (Circ[t] - i·Circ[-t]) |
+| tan(πt/2) | (Circ[t/2] - Circ[-t/2]) / (Circ[t/2] + Circ[-t/2]) |
+| sin(2πt) | Circ[t]² - Circ[-t]² |
+| cos(2πt)/2 | Circ[t] · Circ[-t] |
+
+The "complex Circ" Z[t] = Circ[t] - i·Circ[-t] satisfies De Moivre:
+$$Z[t]^n = (-1)^{n-1} \cdot e^{i\pi(1-n)/4} \cdot Z[nt]$$
+
+## Eliminating i: The Shift Operator
+
+Even i itself can be demystified:
+- **i = shift operator S** where S·Circ[t] = Circ[t + 1/2]
+- **S² = -1** because Circ[t+1] = -Circ[t] (antiperiod 1)
+
+Everything reduces to **one function** (Circ) and **parameter shifts**.
 
 ## Summary Table
 

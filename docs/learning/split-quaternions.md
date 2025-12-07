@@ -109,50 +109,65 @@ Každý split-kvaternion se rozloží na dvě komplexní čísla v $e_+$ a $e_-$
 
 ## Aplikace: Circ funkce
 
-### Circ v split-kvaternionové bázi
+### Komplexní rozšíření a 4 koeficienty
 
-$$\text{Circ}(x+iy) = a \cdot 1 + b \cdot i + c \cdot j + d \cdot k$$
+Rozložíme $\text{Circ}(x+iy) = \cos(3\pi/4 + \pi x + i\pi y)$ na reálnou a imaginární část:
+
+$$\text{Circ}(x+iy) = \text{Re} + i \cdot \text{Im}$$
 
 kde:
+$$\text{Re} = \cos(3\pi/4 + \pi x)\cosh(\pi y)$$
+$$\text{Im} = -\sin(3\pi/4 + \pi x)\sinh(\pi y)$$
+
+Díky fázi $3\pi/4$ lze tyto vyjádřit pomocí 4 koeficientů:
 - $a = -\cos(\pi x)\cosh(\pi y)/\sqrt{2}$
 - $b = -\sin(\pi x)\cosh(\pi y)/\sqrt{2}$
 - $c = -\cos(\pi x)\sinh(\pi y)/\sqrt{2}$
 - $d = +\sin(\pi x)\sinh(\pi y)/\sqrt{2}$
 
-### Konstantní Lorentzova norma
+### Lorentzova norma koeficientů
 
-**Pozoruhodný fakt:**
-$$N(\text{Circ}) = a^2 + b^2 - c^2 - d^2 = \frac{1}{2}$$
+**Fakt:**
+$$N = a^2 + b^2 - c^2 - d^2 = \frac{1}{2}$$
 
-nezávisle na $x$ a $y$!
+nezávisle na $x$ a $y$.
 
-**Proč?** Fáze $3\pi/4$ splňuje $|\cos(3\pi/4)| = |\sin(3\pi/4)| = 1/\sqrt{2}$:
-
+**Proč?**
 1. $a^2 + b^2 = (\cos^2\pi x + \sin^2\pi x)\cosh^2\pi y / 2 = \cosh^2\pi y / 2$
 2. $c^2 + d^2 = (\cos^2\pi x + \sin^2\pi x)\sinh^2\pi y / 2 = \sinh^2\pi y / 2$
-3. $N = \cosh^2\pi y/2 - \sinh^2\pi y/2 = 1/2$ ✓
+3. $N = (\cosh^2\pi y - \sinh^2\pi y)/2 = 1/2$ ✓
 
-Pythagorova identita $\cos^2 + \sin^2 = 1$ **eliminuje závislost na x**!
+Toto je důsledek **dvou** identit:
+- Pythagorova: $\cos^2 + \sin^2 = 1$ (eliminuje $x$)
+- Hyperbolická: $\cosh^2 - \sinh^2 = 1$ (dává konstantu)
 
-*Poznámka:* Jiná fáze (např. $\phi = \pi$) by dala jen 2 ze 4 komponent, a Pythagorova eliminace by nefungovala — norma by závisela na $x$ i $y$.
+### Upřesnění interpretace
+
+**Důležité:** Circ[x+iy] je stále **komplexní číslo** (2D), ne split-kvaternion (4D).
+
+4 koeficienty $(a,b,c,d)$ nejsou nezávislé — platí:
+$$c = a \cdot \tanh(\pi y), \quad d = -b \cdot \tanh(\pi y)$$
+
+Takže Circ žije v **2D podvarietě** 4D split-kvaternionového prostoru.
+
+N = 1/2 je elegantní algebraický fakt, ale není to důkaz "split-kvaternionové struktury" — je to důsledek kombinace Pythagorovy a hyperbolické identity.
 
 ## Geometrická interpretace
 
-### Circ jako Lorentz-invariantní křivka
+### Kde žijí koeficienty?
 
-V 4D split-kvaternionovém prostoru:
-- Signatura $(+,+,-,-)$
-- Circ leží na **hyperboloidu** $N = 1/2$
-- Analogie: jednotková sféra v kvaternionech → hyperboloid v split-kvaternionech
+V prostoru $(a, b, c, d)$ se signaturou $(+,+,-,-)$:
+- Koeficienty Circ leží na ploše $N = 1/2$
+- Ale jsou omezeny na 2D podvarietu (vazba přes $\tanh$)
 
 ### Souvislost se speciální relativitou
 
-Split-kvaterniony přirozeně popisují:
+Split-kvaterniony obecně popisují:
 - Lorentzovy boosy (hyperbolické rotace)
 - Minkowského prostor-čas
 - Světelné kužely ($N = 0$)
 
-Circ s konstantní normou je jako **masivní částice** (konstantní "klidová hmotnost").
+Circ ale nevyužívá plnou split-kvaternionovou strukturu — je to 2D komplexní funkce, jejíž koeficienty náhodou splňují Lorentzovu podmínku.
 
 ## Shrnutí
 
@@ -160,9 +175,8 @@ Circ s konstantní normou je jako **masivní částice** (konstantní "klidová 
 |---------|-----------------|
 | $j^2 = +1$ | Hyperbolická geometrie v $y$-směru |
 | Lorentzova norma | Přirozená metrika pro mix kruh/hyperbola |
-| Konstantní $N = 1/2$ | Fáze $3\pi/4$ je geometricky speciální |
-| Idempotenty $e_\pm$ | Balí $t$ a $\bar{t}$ dohromady |
-| Chebyshev izometrie | $T_n$ zachovává $N = 1/2$ na hyperboloidu |
+| Konstantní $N = 1/2$ | Důsledek Pythagorovy + hyperbolické identity |
+| 2D podvarieta | Circ nevyužívá plné 4D |
 
 ## Reference
 
@@ -172,5 +186,5 @@ Circ s konstantní normou je jako **masivní částice** (konstantní "klidová 
 
 ## Viz také
 
-- [circ-symmetries.md](../sessions/2025-12-07-chebyshev-integral-identity/circ-symmetries.md) — kde byl split-kvaternionový objev učiněn
+- [Circ-Hartley exploration](../sessions/2025-12-07-circ-hartley-exploration/README.md) — kompletní analýza Circ frameworku
 - [CircFunctions.wl](../../Orbit/Kernel/CircFunctions.wl) — implementace v pacletu
