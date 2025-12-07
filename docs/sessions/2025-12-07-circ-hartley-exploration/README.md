@@ -327,6 +327,32 @@ $$\text{Circ}(t) = -\frac{1}{\sqrt{2}} - \frac{\pi t}{\sqrt{2}} + \frac{(\pi t)^
 
 **Contrast with sin/cos:** Unlike sin (odd powers only) or cos (even powers only), Circ contains **all powers** of t. This is the trade-off: Circ unifies the two functions but loses the clean parity separation that makes sin/cos Taylor series elegant.
 
+#### Polylogarithm Connection
+
+The Taylor coefficients ε_k define a Dirichlet-like series with a closed form via the polylogarithm:
+
+$$F(s) := \sum_{k=1}^{\infty} \frac{\varepsilon_k}{k^s} = -\text{Re}[\text{Li}_s(i)] - \text{Im}[\text{Li}_s(i)]$$
+
+**Key insight:** Since ε_k = −(Re[i^k] + Im[i^k]), the series F(s) is directly related to the polylogarithm evaluated at the imaginary unit i.
+
+**Special values:**
+
+| s | F(s) | Numerical |
+|---|------|-----------|
+| 1 | $\frac{\log 2}{2} - \frac{\pi}{4}$ | −0.4388... |
+| 2 | $\frac{\pi^2}{48} - G$ | −0.7103... |
+
+where G ≈ 0.9159... is Catalan's constant.
+
+**Comparison with Dirichlet eta:**
+
+| Function | Formula | Coefficient pattern |
+|----------|---------|---------------------|
+| η(s) | $-\text{Li}_s(-1)$ | $(-1)^k$, period 2 |
+| F(s) | $-\text{Re}[\text{Li}_s(i)] - \text{Im}[\text{Li}_s(i)]$ | ε_k, period 4 |
+
+The Circ coefficients give a "quarter-period" analog of the Dirichlet eta function — polylogarithm at i instead of at −1.
+
 **Sum of roots of unity:** Σ P[2k/n - 5/4] = (0, 0) for all n ≥ 2 (standard result).
 
 *Note: The Circ parametrization is a change of variables; it cannot reveal structure not already present in standard coordinates.*
