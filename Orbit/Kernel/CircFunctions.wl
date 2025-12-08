@@ -81,15 +81,29 @@ Multiplication in framework B. Returns rational.";
 Circ::usage = "Circ[t] = Cos[3\[Pi]/4 + \[Pi]t]
 The base function. Evaluates to real number.";
 
-\[Kappa]::usage = "\[Kappa][t] = {Circ[-t], Circ[t]}
-Unit circle point as {x, y} pair. Evaluates Circ.
+\[Kappa]::usage = "\[Kappa][t] or \[Kappa][t, p] = point on unit L^p 'circle'
+Default p = 2 (Euclidean). Other geometries:
+  p = 1: Taxicab (diamond), \[Pi] = 4
+  p = 2: Euclidean (circle), \[Pi] \[TildeTilde] 3.14159
+  p = \[Infinity]: Chebyshev (square), \[Pi] = 4
 Named after \[Kappa]\[Upsilon]\[Kappa]\[Lambda]\[Omicron]\[FinalSigma] (kyklos) = circle in Greek.
 Type: Esc k Esc";
 
-\[CurlyPhi]::usage = "\[CurlyPhi][t] = Circ[-t] + I Circ[t]
-Unit circle point as complex number. Evaluates Circ.
+\[CurlyPhi]::usage = "\[CurlyPhi][t] or \[CurlyPhi][t, p] = unit L^p 'circle' point as complex number
+Default p = 2 (Euclidean). Equivalent to \[Kappa][t, p] . {1, I}.
 Named after \[CurlyPhi]\[Alpha]\[Nu]\[Tau]\[Alpha]\[Sigma]\[Iota]\[Alpha] (phantasia) = imagination in Greek.
 Type: Esc j Esc (or Esc cph Esc)";
+
+(* ============================================ *)
+(* SQUARICAL: L^p GEOMETRY                     *)
+(* ============================================ *)
+
+\[Pi]Lp::usage = "\[Pi]Lp[p] = ratio of circumference to diameter in L^p geometry.
+  \[Pi]Lp[1] = 4 (Taxicab)
+  \[Pi]Lp[2] = \[Pi] (Euclidean)
+  \[Pi]Lp[\[Infinity]] = 4 (Chebyshev)
+General formula: \[Pi]Lp[p] = 2^(1+1/p) \[CapitalGamma](1+1/p)^2 / \[CapitalGamma](1+2/p)
+The minimum is at p = 2 (Euclidean geometry).";
 
 Begin["`Private`"];
 
@@ -146,17 +160,66 @@ SuperStar[t_] := 3/2 - t
 
 (* ============================================ *)
 (* BRIDGES - EVALUATE TO COORDINATES            *)
-(* Both thread over lists for convenience       *)
 (* ============================================ *)
 
 Circ[t_] := Cos[3 Pi/4 + Pi t]
 
-(* κ: list case needs Transpose for correct shape {{x1,y1},{x2,y2},...} *)
-\[Kappa][t_List] := Transpose[{Circ[-t], Circ[t]}]
-\[Kappa][t_] := {Circ[-t], Circ[t]}
+(* φ: delegates to κ, no duplicated logic *)
+\[CurlyPhi][t_] := \[Kappa][t] . {1, I}
+\[CurlyPhi][t_, p_] := \[Kappa][t, p] . {1, I}
+\[CurlyPhi][t_, p_List] := \[CurlyPhi][t, #] & /@ p
 
-(* φ: threads automatically via complex arithmetic *)
-\[CurlyPhi][t_] := Circ[-t] + I Circ[t]
+(* ============================================ *)
+(* κ: L^p GEOMETRY BRIDGE                       *)
+(* κ[t] = Euclidean (p=2), κ[t, p] = general    *)
+(* ============================================ *)
+
+(* List threading - MUST come first! *)
+\[Kappa][t_List] := Transpose[{Circ[-t], Circ[t]}]
+\[Kappa][t_List, p_] := \[Kappa][#, p] & /@ t
+\[Kappa][t_, p_List] := \[Kappa][t, #] & /@ p
+
+(* p = 2 (default): Euclidean circle *)
+\[Kappa][t_] := {Circ[-t], Circ[t]}
+\[Kappa][t_, 2] := {Circ[-t], Circ[t]}
+
+(* p = 1: Taxicab diamond *)
+\[Kappa][t_, 1] := With[
+  {x = Circ[-t], y = Circ[t]},
+  {x, y} / (Abs[x] + Abs[y])
+]
+
+(* p = ∞: Chebyshev square *)
+\[Kappa][t_, DirectedInfinity[1]] := \[Kappa][t, Infinity]
+\[Kappa][t_, Infinity] := With[
+  {x = Circ[-t], y = Circ[t]},
+  {x, y} / Max[Abs[x], Abs[y]]
+]
+
+(* General numeric p *)
+\[Kappa][t_, p_?NumericQ] /; p > 0 && p != 1 && p != 2 := With[
+  {x = Circ[-t], y = Circ[t]},
+  {x, y} (Abs[x]^p + Abs[y]^p)^(-1/p)
+]
+
+(* ============================================ *)
+(* πLp: π as function of L^p geometry          *)
+(* ============================================ *)
+
+(* Special cases - exact symbolic *)
+\[Pi]Lp[1] = 4;                      (* Taxicab *)
+\[Pi]Lp[2] = Pi;                     (* Euclidean *)
+\[Pi]Lp[Infinity] = 4;               (* Chebyshev *)
+\[Pi]Lp[DirectedInfinity[1]] = 4;
+
+(* General case: numerical integration of L^p arc length *)
+(* Circumference / Diameter, measuring in L^p metric *)
+\[Pi]Lp[p_?NumericQ] /; p > 0 && p != 1 && p != 2 := Module[
+  {pts, diffs},
+  pts = Table[\[Kappa][t, p], {t, 0, 2, 1/1000}];
+  diffs = Differences[pts];
+  Total[(Abs[#[[1]]]^p + Abs[#[[2]]]^p)^(1/p) & /@ diffs] / 2
+]
 
 End[];
 

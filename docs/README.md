@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-08 02:01:27
+**Generated:** 2025-12-08 04:01:37
 
 ## Theorems (Master References)
 
@@ -20,8 +20,8 @@
 
 ## Recent Sessions (Last 10)
 
+- [Circ Function Exploration: Hartley Connection](sessions/2025-12-07-circ-hartley-exploration/README.md) *(2025-12-08)*
 - [Ralph V. L. Hartley: Historical Context](sessions/2025-12-07-circ-hartley-exploration/hartley-historical-note.md) *(2025-12-07)*
-- [Circ Function Exploration: Hartley Connection](sessions/2025-12-07-circ-hartley-exploration/README.md) *(2025-12-07)*
 - [Pedagogical Note: Why Two Trig Functions?](sessions/2025-12-07-circ-hartley-exploration/pedagogical-note-circ.md) *(2025-12-07)*
 - [Pedagogical Note: Why Two Trig Functions?](sessions/2025-12-07-chebyshev-integral-identity/pedagogical-note-circ.md) *(2025-12-07)*
 - [Circ Symmetries and Chebyshev Connections](sessions/2025-12-07-chebyshev-integral-identity/circ-symmetries.md) *(2025-12-07)*
