@@ -129,9 +129,98 @@ Both the exterior and interior geometry involve √5:
 
 ---
 
+## Queen's Chamber Dimensions
+
+| Dimension | Value (cubits) | Notes |
+|-----------|----------------|-------|
+| Width (N-S) | **10** | |
+| Length (E-W) | **11** | 11/10 ratio! |
+| Wall height | ~9 | |
+| Peak height | **12** | pointed roof |
+| Niche height | 9 | eastern wall |
+| Position above base | **40** | = 280/7 = **1/7 of pyramid height** |
+
+**Petrie measurements:**
+- Width: 205.85" → 9.98 cubits ≈ 10
+- Length: 226.47" → 10.98 cubits ≈ 11
+- Wall height: 184.47" → 8.95 cubits ≈ 9
+- Peak: 245.1" → 11.89 cubits ≈ 12
+
+**The 7 and 11 appear again:**
+- Chamber is 10 × **11** cubits
+- Located at **1/7** of pyramid height (40 cubits = 280/7)
+
+---
+
+## Complete Rational Structure
+
+| Element | Dimensions/Ratio | Key numbers |
+|---------|------------------|-------------|
+| Exterior | 280 × 440 = **7/11** | 7, 11 |
+| King's Chamber | 10 × 20 × 5√5 | 2:1, √5 |
+| Queen's Chamber | 10 × 11 × 12 | 10, 11 |
+| QC position | 40 cubits = **1/7** height | 7 |
+| QC shafts | **9/11** slope | 11 |
+| KC N shaft | **7/11** slope | 7, 11 |
+| KC S shaft | **1/1** slope | |
+| Passages | **1/2** slope | |
+
+The number **11** appears as denominator throughout the structure!
+
+---
+
+## Subterranean Chamber
+
+Located beneath the pyramid, cut into bedrock:
+
+| Dimension | Value | Notes |
+|-----------|-------|-------|
+| Depth below base | **60 cubits** | = 3/14 height = **1.5/7** of 280 |
+| Length (N-S) | ~16 cubits | |
+| Width (E-W) | ~27 cubits | |
+| Height | ~4 m | |
+
+**Descending Passage:** Slope = **1/2** (26°26'46"), same as ascending passages.
+
+The **7** appears again: depth = 280 × 3/14 = 60 cubits.
+
+---
+
+## Giza Plateau Layout
+
+The three pyramids form a planned arrangement (Lehner 1984):
+
+| Measurement | Value | Notes |
+|-------------|-------|-------|
+| Diagonal slope (SE corners) | **16/17** | Khufu → Menkaure |
+| East-West distance | 1,216 cubits | |
+| North-South distance | 1,292 cubits | 1292/1216 = 17/16 |
+| Pyramid separation | 250 cubits | base module |
+
+**Alignment:** The SE corner diagonal points toward the **Temple of Heliopolis** (Sun God temple).
+
+Another rational slope: **16/17** ≈ 0.941
+
+### All Rational Slopes Summary
+
+| Location | Ratio | Decimal |
+|----------|-------|---------|
+| Exterior height/base | 7/11 | 0.636 |
+| KC N shaft | 7/11 | 0.636 |
+| QC shafts | 9/11 | 0.818 |
+| KC S shaft | 1/1 | 1.000 |
+| Passages | 1/2 | 0.500 |
+| Plateau diagonal | 16/17 | 0.941 |
+
+Sources:
+- [Giza Plateau Mapping Project (AERA)](https://aeraweb.org/projects/gpmp/)
+- [The Plan of the Giza Pyramids (Academia)](https://www.academia.edu/41077254/The_Plan_of_the_Giza_Pyramids)
+
+---
+
 ## Future Exploration
 
 - Decipher the red hieroglyphs behind Gantenbrink's Door
-- Analyze Queen's Chamber dimensions for similar patterns
-- Check if other chambers follow rational slope patterns
 - Investigate the "Big Void" discovered by muon tomography (2017)
+- Analyze connection between rational slopes and astronomical alignments
+- Study the 250-cubit module system

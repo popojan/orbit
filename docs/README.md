@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-08 12:17:01
+**Generated:** 2025-12-08 14:03:16
 
 ## Theorems (Master References)
 
@@ -30,7 +30,8 @@
 
 ## Recent Sessions (Last 10)
 
-- [The γ Framework: Rational Circle Algebra for Mathematics and Physics](sessions/2025-12-08-gamma-framework/README.md) *()*
+- [Golden Ratio in the γ Framework: Pyramid Connection](sessions/2025-12-08-gamma-framework/golden-ratio-pyramid.md) *(2025-12-08)*
+- [The γ Framework: Rational Circle Algebra for Mathematics and Physics](sessions/2025-12-08-gamma-framework/README.md) *(2025-12-08)*
 - [Squarical Geometry: When π = 4](sessions/2025-12-08-squarical-geometry/README.md) *(2025-12-08)*
 - [Circ Function Exploration: Hartley Connection](sessions/2025-12-07-circ-hartley-exploration/README.md) *(2025-12-08)*
 - [Ralph V. L. Hartley: Historical Context](sessions/2025-12-07-circ-hartley-exploration/hartley-historical-note.md) *(2025-12-07)*
@@ -39,7 +40,6 @@
 - [Circ Symmetries and Chebyshev Connections](sessions/2025-12-07-chebyshev-integral-identity/circ-symmetries.md) *(2025-12-07)*
 - [Physics Connection Review: Why Egypt Trajectory Is Not Physics](sessions/2025-11-22-palindromic-symmetries/physics-connection-review.md) *(2025-12-07)*
 - [Chebyshev Integral Identity](sessions/2025-12-07-chebyshev-integral-identity/README.md) *(2025-12-07)*
-- [Cunningham Representation and Brahmagupta-Bhaskara Equation](sessions/2025-12-06-cunningham-representation/README.md) *(2025-12-06)*
 
 ## Navigation
 
