@@ -7,7 +7,26 @@
 **Born:** June 22, 1864, Aleksotas, Russian Empire (now Kaunas, Lithuania)
 **Died:** January 12, 1909, Göttingen, Germany (ruptured appendix, age 44)
 
-Hermann Minkowski was a German mathematician who made foundational contributions to number theory, geometry, and physics. His family moved from Russia to Königsberg, Germany when he was eight years old.
+Hermann Minkowski was a German mathematician who made foundational contributions to number theory, geometry, and physics.
+
+#### A Refugee's Journey
+
+In 1872, when Hermann was eight, the Minkowski family **fled Jewish persecution** in the Russian Empire and emigrated to Königsberg, Prussia.
+
+**Background:**
+- The family lived in the *Pale of Settlement* (1791-1917) — the only region where Jews were permitted to reside in Imperial Russia
+- Father Lewin Minkowski was a merchant who had sponsored the choral synagogue in Kovno
+- Anti-Jewish restrictions and periodic pogroms drove many families westward
+
+**Irony of history:**
+- The family escaped Russia for the safety of Germany
+- Hermann's brother **Oskar Minkowski** (1858-1931) had to formally convert from Judaism to hold a professorship in Breslau — Jews were barred from academic positions
+- Oskar discovered the link between the pancreas and diabetes (paving the way for insulin)
+- Hermann died in 1909, spared from witnessing what came next
+- 1933: The Nazis rose to power in the Germany that had sheltered the family
+- 1945: Königsberg became Kaliningrad (Soviet Union) — the city that educated Minkowski ceased to exist as such
+
+The man who unified space and time was himself displaced across space by the currents of history. His mathematics transcended borders; his life was shaped by them.
 
 **Academic positions:**
 - University of Bonn (1885-1894)
