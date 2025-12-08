@@ -1,110 +1,162 @@
 (* ::Package:: *)
 
-(* Symmetrized Trigonometric Functions via circ
-   Key insight: Both Sin and Cos derive from a single function circ[t] = Cos[3π/4 + πt]
-   via the same formula with opposite argument signs.
+(* CircFunctions: Rational Circle Algebra
 
-   Core identity: circ[t]² + circ[-t]² = 1 (unit circle)
-   Spread connection: spread = (1 - circ)/2 (Wildberger's rational trigonometry)
+   The unit circle parametrized so that multiplication is just addition:
+     t1 \[Cross] t2 = t1 + t2 + 5/4
 
-   Reference: docs/sessions/2025-12-04-beta-functions-analysis/README.md
-              docs/sessions/2025-12-07-chebyshev-integral-identity/README.md
+   All operations stay in rationals until explicitly converted to coordinates.
+
+   Two dual frameworks exist (5/4 vs 7/4), related by t \[LeftRightArrow] 1-t.
+
+   Reference: docs/sessions/2025-12-07-circ-hartley-exploration/README.md
 *)
 
 BeginPackage["Orbit`"];
 
-(* Core circ function *)
-Circ::usage = "Circ[t] is the symmetrized trigonometric function satisfying:
-  Circ[t] = Cos[3π/4 + πt] = 1 - 2 Sin[π/2 (3/4 + t)]²
+(* ============================================ *)
+(* CORE: RATIONAL PARAMETER ALGEBRA             *)
+(* All operations return rationals!             *)
+(* ============================================ *)
 
-Key properties:
-  - Circ[t]² + Circ[-t]² = 1 (unit circle identity)
-  - Sin[θ] = Circ[(θ - 5π/4)/π]
-  - Cos[θ] = Circ[-(θ - 5π/4)/π]
-  - spread = (1 - Circ[t])/2 (connection to rational trigonometry)
+CircTimes::usage = "CircTimes[t1, t2] = t1 + t2 + 5/4
+Multiplication of circle parameters. Returns rational.
+Infix: t1 \[CircleTimes] t2 (Esc c* Esc)
+Also available as: t1 ⊗ t2";
 
-Special values:
-  Circ[0] = -1/√2, Circ[1/4] = -1, Circ[1/2] = -1/√2
-  Circ[3/4] = 0, Circ[1] = 1/√2
+CircPower::usage = "CircPower[t, n] = n*t + 5(n-1)/4
+Power of circle parameter. Returns rational.
+Infix: t \[CircleDot] n (Esc c. Esc)
+Also available as: t ⊙ n";
 
-The 5π/4 phase places the 'origin' at a symmetric point where
-both sin and cos have the same formula structure.";
+CircInverse::usage = "CircInverse[t] = -t - 5/2
+Multiplicative inverse. Returns rational.
+Satisfies: CircTimes[t, CircInverse[t]] = CircIdentity";
 
-(* Standard trig via circ *)
-CircSin::usage = "CircSin[t] computes Sin[t] via the Circ function.
-  CircSin[t] = Circ[(t - 5π/4)/π]
+CircShift::usage = "CircShift[t] = t + 1/2
+Multiplication by i (90\[Degree] rotation). Returns rational.";
 
-This demonstrates that Sin is just Circ with a phase shift.";
+CircConjugate::usage = "CircConjugate[t] = 3/2 - t
+Complex conjugate. Returns rational.
+Postfix: SuperStar[t] displays as t* (Ctrl+^ then * in notebook)
+Note: NOT -t (that swaps coordinates).";
 
-CircCos::usage = "CircCos[t] computes Cos[t] via the Circ function.
-  CircCos[t] = Circ[-(t - 5π/4)/π]
+CircDual::usage = "CircDual[t] = 1 - t
+Switch between frameworks A (5/4) and B (7/4). Returns rational.";
 
-This demonstrates that Cos is Circ with negated argument and same phase shift.
-The unification: Sin[t] = Circ[u], Cos[t] = Circ[-u] for appropriate u.";
+CircNormalize::usage = "CircNormalize[t] reduces to canonical range [-1/4, 7/4).
+Returns rational.";
 
-(* Unit circle parametrization *)
-CircPoint::usage = "CircPoint[t] returns {Circ[t], Circ[-t]} - a point on the unit circle.
+CircRoot::usage = "CircRoot[n] or CircRoot[n, k] = 2k/n - 5/4
+The k-th n-th root of unity (k defaults to 1 = primitive root).
+Alias: \[Rho][n] (Esc r Esc)";
 
-This symmetric parametrization satisfies:
-  CircPoint[t][[1]]² + CircPoint[t][[2]]² = 1
+\[Rho]::usage = "\[Rho][n] = primitive n-th root of unity (k=1)
+\[Rho][n, k] = k-th n-th root of unity = 2k/n - 5/4
+Named after \[Rho]\[Iota]\[Zeta]\[Alpha] (rhiza) = root in Greek.
+Type: Esc r Esc
 
-Key points:
-  CircPoint[0] = {-1/√2, -1/√2}  (225°)
-  CircPoint[1/4] = {-1, 0}       (180°)
-  CircPoint[1/2] = {-1/√2, 1/√2} (135°)
-  CircPoint[3/4] = {0, 1}        (90°)
-  CircPoint[1] = {1/√2, 1/√2}    (45°)";
+Example - Gauss's 17-star (Braunschweig monument):
+  Polygon[\[Kappa][\[Rho][17] \[CircleDot] 3#] & /@ Range[17]]";
 
-(* Spread connections (Wildberger's rational trigonometry) *)
-CircToSpread::usage = "CircToSpread[c] converts a Circ value to spread.
-  spread = (1 - c)/2
+(* Constants *)
+CircIdentity::usage = "CircIdentity = -5/4, the multiplicative identity.
+Equivalent to 3/4 (mod 2). Represents {1, 0}.";
 
-The spread is sin²(θ) in traditional notation, but defined algebraically
-as a ratio of quadrances in Wildberger's rational trigonometry.
+CircImaginary::usage = "CircImaginary = -3/4, represents i.
+Equivalent to 5/4 (mod 2). Represents {0, 1}.";
 
-Bijection for rational spreads:
-  Circ = 1   → spread = 0   (parallel)
-  Circ = 1/2 → spread = 1/4 (30°)
-  Circ = 0   → spread = 1/2 (45°)
-  Circ = -1/2 → spread = 3/4 (60°)
-  Circ = -1  → spread = 1   (perpendicular)";
+CircFrameworkA::usage = "CircFrameworkA = 5/4, multiplication offset for framework A.";
+CircFrameworkB::usage = "CircFrameworkB = 7/4, multiplication offset for framework B.";
 
-SpreadToCirc::usage = "SpreadToCirc[s] converts a spread value to Circ value.
-  Circ = 1 - 2s
+(* Framework B multiplication *)
+CircTimesB::usage = "CircTimesB[t1, t2] = t1 + t2 + 7/4
+Multiplication in framework B. Returns rational.";
 
-Inverse of CircToSpread.";
+(* ============================================ *)
+(* BRIDGES TO COORDINATES                       *)
+(* These are the ONLY functions that evaluate   *)
+(* ============================================ *)
 
-(* Taylor series *)
-CircTaylor::usage = "CircTaylor[t, n] returns the degree-n Taylor expansion of Circ[t] around t=0.
+Circ::usage = "Circ[t] = Cos[3\[Pi]/4 + \[Pi]t]
+The base function. Evaluates to real number.";
 
-The series has a nice structure related to Circ[0] = -1/√2.";
+\[Kappa]::usage = "\[Kappa][t] = {Circ[-t], Circ[t]}
+Unit circle point as {x, y} pair. Evaluates Circ.
+Named after \[Kappa]\[Upsilon]\[Kappa]\[Lambda]\[Omicron]\[FinalSigma] (kyklos) = circle in Greek.
+Type: Esc k Esc";
 
-(* Alternative representations *)
-CircAlt::usage = "CircAlt[t] is an equivalent form: -(Cos[πt] + Sin[πt])/√2
-
-Useful for verifying the Circ definition.";
+\[CurlyPhi]::usage = "\[CurlyPhi][t] = Circ[-t] + I Circ[t]
+Unit circle point as complex number. Evaluates Circ.
+Named after \[CurlyPhi]\[Alpha]\[Nu]\[Tau]\[Alpha]\[Sigma]\[Iota]\[Alpha] (phantasia) = imagination in Greek.
+Type: Esc j Esc (or Esc cph Esc)";
 
 Begin["`Private`"];
 
-(* Core definition *)
+(* ============================================ *)
+(* RATIONAL ALGEBRA                             *)
+(* ============================================ *)
+
+(* Constants *)
+CircIdentity = -5/4;
+CircImaginary = -3/4;
+CircFrameworkA = 5/4;
+CircFrameworkB = 7/4;
+
+(* Operations - all return rationals *)
+CircTimes[t1_, t2_] := t1 + t2 + 5/4
+CircTimesB[t1_, t2_] := t1 + t2 + 7/4
+CircPower[t_, n_Integer] := n t + 5 (n - 1)/4
+CircInverse[t_] := -t - 5/2
+CircShift[t_] := t + 1/2
+CircConjugate[t_] := 3/2 - t
+CircDual[t_] := 1 - t
+CircNormalize[t_] := Mod[t + 1/4, 2] - 1/4
+(* Accepts integer or list of integers; formula threads via arithmetic *)
+CircRoot[n_Integer, k:(_Integer|{__Integer}): 1] := 2 k/n - 5/4
+\[Rho][n_Integer, k:(_Integer|{__Integer}): 1] := CircRoot[n, k]
+
+(* ============================================ *)
+(* INFIX OPERATOR \[CircleTimes] = ⊗            *)
+(* Type: Esc c* Esc                             *)
+(* ============================================ *)
+
+(* Binary case *)
+CircleTimes[t1_, t2_] := t1 + t2 + 5/4
+
+(* Variadic case for chaining: a ⊗ b ⊗ c *)
+CircleTimes[t1_, t2_, rest__] := CircleTimes[CircleTimes[t1, t2], rest]
+
+(* ============================================ *)
+(* INFIX OPERATOR \[CircleDot] = ⊙ (power)      *)
+(* Type: Esc c. Esc                             *)
+(* Precedence 520 > CircleTimes 420             *)
+(* Threads over lists via arithmetic            *)
+(* ============================================ *)
+
+CircleDot[t_, n:(_Integer|{__Integer})] := n t + 5 (n - 1)/4
+
+(* ============================================ *)
+(* POSTFIX SuperStar (conjugate)                *)
+(* Type: Ctrl+^ then * in notebook              *)
+(* Or just use: SuperStar[t]                    *)
+(* ============================================ *)
+
+SuperStar[t_] := 3/2 - t
+
+(* ============================================ *)
+(* BRIDGES - EVALUATE TO COORDINATES            *)
+(* Both thread over lists for convenience       *)
+(* ============================================ *)
+
 Circ[t_] := Cos[3 Pi/4 + Pi t]
 
-(* Equivalent form for verification *)
-CircAlt[t_] := -(Cos[Pi t] + Sin[Pi t])/Sqrt[2]
+(* κ: list case needs Transpose for correct shape {{x1,y1},{x2,y2},...} *)
+\[Kappa][t_List] := Transpose[{Circ[-t], Circ[t]}]
+\[Kappa][t_] := {Circ[-t], Circ[t]}
 
-(* Standard trig via circ *)
-CircSin[t_] := Circ[(t - 5 Pi/4)/Pi]
-CircCos[t_] := Circ[-((t - 5 Pi/4)/Pi)]
-
-(* Unit circle parametrization *)
-CircPoint[t_] := {Circ[t], Circ[-t]}
-
-(* Spread conversions *)
-CircToSpread[c_] := (1 - c)/2
-SpreadToCirc[s_] := 1 - 2 s
-
-(* Taylor series *)
-CircTaylor[t_, n_Integer] := Normal[Series[Circ[t], {t, 0, n}]]
+(* φ: threads automatically via complex arithmetic *)
+\[CurlyPhi][t_] := Circ[-t] + I Circ[t]
 
 End[];
 

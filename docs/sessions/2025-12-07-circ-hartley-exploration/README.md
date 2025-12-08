@@ -355,6 +355,46 @@ The Circ coefficients give a "quarter-period" analog of the Dirichlet eta functi
 
 **Sum of roots of unity:** Σ P[2k/n - 5/4] = (0, 0) for all n ≥ 2 (standard result).
 
+#### Generating Function Relationships (Honest Assessment)
+
+The Taylor, OGF, and Dirichlet series share the **same coefficients ε_k** but have **different bases**:
+
+| Series | Formula | Basis | Origin of structure |
+|--------|---------|-------|---------------------|
+| Taylor (Circ) | Σ ε_k π^k t^k / k! | π^k/k! | Definition Circ = cos(3π/4 + πt) |
+| OGF | Σ ε_k x^k | x^k | Algebraic — rational function |
+| Dirichlet | Σ ε_k / k^s | 1/k^s | Analytic continuation |
+
+**What connects them:** Only the coefficient pattern ε_k = {−1,−1,+1,+1,...}.
+
+**What does NOT connect:** The π in Taylor series comes from the *definition* of Circ, not from any deep relationship with Dirichlet series.
+
+**The OGF (Ordinary Generating Function):**
+
+$$G(x) = \sum_{k=0}^{\infty} \varepsilon_k x^k = -\frac{1+x}{1+x^2}$$
+
+This rational function has **poles at ±i**. The partial fractions give coefficients with phases ±3π/4 (the diagonal angle), which propagate to F(s) via:
+
+$$F(s) = c_1 \cdot \text{Li}_s(-i) + c_2 \cdot \text{Li}_s(i) = -\text{Re}[\text{Li}_s(i)] - \text{Im}[\text{Li}_s(i)]$$
+
+**Bridges via integral transforms:**
+
+```
+                    Borel transform
+        EGF (Circ) ←───────────────→ OGF
+                                       ↓
+                                 Mellin transform
+                                       ↓
+                                  Dirichlet F(s)
+```
+
+The Mellin transform directly connects OGF to Dirichlet:
+$$F(s) = \frac{1}{\Gamma(s)} \int_0^{\infty} g(e^{-t}) \, t^{s-1} \, dt$$
+
+where g(x) = x(x−1)/(1+x²) is the OGF for k ≥ 1.
+
+**Summary:** The connection is structural but shallow — it's the standard relationship between different generating functions for the same sequence. The diagonal angle 3π/4 appears in both Circ (by definition) and in F(s) (from OGF poles at ±i), but this is **coincidence of the same ε_k pattern**, not a deep unification.
+
 *Note: The Circ parametrization is a change of variables; it cannot reveal structure not already present in standard coordinates.*
 
 ### 8. Chebyshev in Circ Coordinates
@@ -386,3 +426,132 @@ $$T_n(\text{Circ}[t]) = \text{Circ}\left[nt + \frac{3(n-1)}{4}\right]$$
 
 - **Hartley, R. V. L. (1942).** "A More Symmetrical Fourier Analysis Applied to Transmission Problems". *Proceedings of the IRE.* 30(3): 144–150. [DOI: 10.1109/JRPROC.1942.234333](https://doi.org/10.1109/JRPROC.1942.234333)
 - **Bracewell, R. N. (1986).** *The Hartley Transform.* Oxford University Press.
+
+---
+
+## Implementation: Rational Circle Algebra
+
+**File:** `Orbit/Kernel/CircFunctions.wl`
+
+### Design Philosophy
+
+The implementation prioritizes **staying in rationals** as long as possible:
+
+```
+Rationals (ℚ)  ──────────────────────────────→  Coordinates (ℝ² or ℂ)
+     t          all algebra here                κ[t] or φ[t]
+```
+
+**Key insight:** Circle multiplication is just addition in the parameter space:
+```
+t₁ ⊗ t₂ = t₁ + t₂ + 5/4
+```
+
+No trig functions, no square roots, no π — just rational arithmetic!
+
+### Cheat Sheet
+
+#### Constants (all rational)
+
+| Symbol | Value | Meaning |
+|--------|-------|---------|
+| `CircIdentity` | −5/4 | Multiplicative identity (= 1 on circle) |
+| `CircImaginary` | −3/4 | The imaginary unit i |
+| `CircFrameworkA` | 5/4 | Multiplication offset (default) |
+| `CircFrameworkB` | 7/4 | Alternative framework offset |
+
+#### Operations (all return rationals)
+
+| Operation | Formula | Notes |
+|-----------|---------|-------|
+| `t₁ ⊗ t₂` | `t₁ + t₂ + 5/4` | Multiplication (Esc c* Esc) |
+| `t ⊙ n` | `n·t + 5(n−1)/4` | Power (Esc c. Esc) |
+| `SuperStar[t]` | `3/2 − t` | Conjugate (Ctrl+^ then *) |
+| `CircInverse[t]` | `−t − 5/2` | Multiplicative inverse |
+| `CircShift[t]` | `t + 1/2` | Multiply by i (90° rotation) |
+| `CircDual[t]` | `1 − t` | Switch framework A ↔ B |
+| `CircNormalize[t]` | `Mod[t+1/4, 2] − 1/4` | Canonical range [−1/4, 7/4) |
+| `ρ[n, k]` | `2k/n − 5/4` | k-th n-th root of unity (Esc r Esc) |
+
+#### Bridges to Coordinates (these evaluate!)
+
+| Function | Output | Type (Esc key) |
+|----------|--------|----------------|
+| `Circ[t]` | `Cos[3π/4 + πt]` | Real number |
+| `κ[t]` | `{Circ[−t], Circ[t]}` | {x, y} pair (Esc k Esc) |
+| `φ[t]` | `Circ[−t] + I·Circ[t]` | Complex (Esc j Esc) |
+
+**Greek naming:**
+- **κ** from κύκλος (kyklos) = circle — Esc k Esc
+- **φ** from φαντασία (phantasia) = imagination — Esc j Esc (or Esc cph Esc)
+- **ρ** from ῥίζα (rhiza) = root — Esc r Esc
+
+### Framework Duality (5/4 vs 7/4)
+
+Two equivalent frameworks exist, related by reflection:
+
+| Framework | Offset | Start point P[0] | Diagonal |
+|-----------|--------|------------------|----------|
+| **A** (default) | 5/4 | (−1/√2, −1/√2) | negative |
+| **B** (alternative) | 7/4 | (+1/√2, +1/√2) | positive |
+
+**Switching between frameworks:**
+```mathematica
+(* From A to B: *)
+tB = CircDual[tA]     (* = 1 - tA *)
+
+(* Multiplication in B: *)
+CircTimesB[t1, t2]    (* = t1 + t2 + 7/4 *)
+```
+
+**The duality is exact:** Everything computable in A has a dual in B via `t ↔ 1−t`.
+
+### Usage Examples
+
+```mathematica
+<< Orbit`
+
+(* Pure rational algebra *)
+1/3 ⊗ 1/4                    (* → 23/12 *)
+1/2 ⊙ 3                      (* → 7/2, power *)
+SuperStar[1/3]               (* → 7/6, conjugate *)
+
+(* Roots of unity (all rational!) *)
+ρ[4, 0]                      (* → −5/4 (= 1) *)
+ρ[4, 1]                      (* → −3/4 (= i) *)
+ρ[4, 2]                      (* → −1/4 (= −1) *)
+ρ[4, 3]                      (* → 1/4 (= −i) *)
+
+(* Verify: ω ⊙ n = identity *)
+ρ[17, 1] ⊙ 17 // CircNormalize   (* → −5/4 ✓ *)
+
+(* Only when you need coordinates: *)
+κ[0]                         (* → {−1/√2, −1/√2} *)
+φ[ρ[4, 1]]                   (* → 0 + 1.0 I (= i) *)
+
+(* Gauss's 17-star (Braunschweig monument) *)
+Polygon[κ[ρ[17] ⊙ 3#] & /@ Range[17]]
+```
+
+### Why ⊗ Instead of ×?
+
+**Problem:** `×` (Cross) is a built-in Wolfram operator with incorrect precedence for our use:
+```mathematica
+1/3 × 1/4    (* Parses as 1/Cross[3,1]/4 — WRONG! *)
+```
+
+**Solution:** `⊗` (CircleTimes) has no built-in definition and correct precedence (420):
+```mathematica
+1/3 ⊗ 1/4    (* Parses as CircleTimes[1/3, 1/4] — correct! *)
+```
+
+Precedence hierarchy: Plus (310) < Times (400) < **CircleTimes (420)** < Power (590)
+
+### What's NOT Implemented (Yet)
+
+Operations that require leaving rationals:
+- Trigonometric functions (tan, sec, etc.) — need Circ evaluation
+- Logarithms — would need complex log
+- Arbitrary roots — would need nth root computation
+
+These could be added as "evaluated operations" that return symbolic or numerical results.

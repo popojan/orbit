@@ -4,6 +4,27 @@
 
 This repository contains computational explorations in number theory and related mathematics, implemented as a Wolfram Language paclet. The work is ongoing, unpublished, and has not been peer-reviewed.
 
+## Featured: Rational Circle Algebra
+
+<p align="center">
+<img src="docs/sessions/2025-12-07-circ-hartley-exploration/figures/gauss17-golden.png" width="300" alt="Gauss 17-star">
+</p>
+
+**42 characters.** The golden 17-pointed star from Gauss's monument in Braunschweig:
+
+```mathematica
+Graphics@{Hue@π,Polygon@κ@ρ[17,7Range@17]}
+```
+
+This uses our **Rational Circle Algebra** where multiplication becomes addition:
+- `t₁ ⊗ t₂ = t₁ + t₂ + 5/4` (stays rational!)
+- `ρ[n,k] = 2k/n - 5/4` (n-th root of unity, always rational)
+- `κ[t]` converts to coordinates only when needed
+
+All circle operations stay in ℚ until the final `κ` bridge. See [CircFunctions.wl](Orbit/Kernel/CircFunctions.wl).
+
+---
+
 ## What's Here
 
 The repository includes:
@@ -29,6 +50,8 @@ The repository includes:
 **ModularFactorials**: Efficient computation of factorials modulo p
 
 **SquareRootRationalizations**: High-precision square root approximations using Chebyshev polynomials, Pell equations, and related methods
+
+**CircFunctions**: Rational circle algebra where multiplication is addition. Includes operators `⊗` (multiply), `⊙` (power), and Greek-named bridges `κ` (coordinates), `φ` (complex), `ρ` (roots of unity)
 
 See `CLAUDE.md` for technical details and module documentation.
 
@@ -57,6 +80,7 @@ Run `make preview` to generate HTML previews of all documentation.
 ## Recent Results
 
 **Latest work** (December 2025):
+- ✅ **Rational Circle Algebra**: Circle multiplication as `t₁ + t₂ + 5/4` — stays in ℚ until coordinate conversion. Gauss 17-star in 42 chars!
 - ✅ **Multiplicative Decomposition Theorem**: For composite n = md, lobe areas of n-gon Chebyshev polygon function satisfy Σ A(n, k≡r mod m) = 1/m (proven via roots of unity cancellation)
 - Connection between Chebyshev composition Tₘ(Tₙ(x)) = Tₘₙ(x) and geometric lobe area structure
 - Unified Chebyshev framework σ_m for square root iteration with arbitrary integer convergence order ≥ 3
