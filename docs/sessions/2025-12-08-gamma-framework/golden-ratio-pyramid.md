@@ -42,11 +42,31 @@ The Great Pyramid of Giza has height-to-base ratio approximately **7/11**.
 - Ratio: 146.6/230.4 = 0.6363...
 - 7/11 = 0.6363...
 
-**The Golden Pyramid (ideal):**
+**The Golden Pyramid (Kepler triangle cross-section):**
+
+```
+         /\
+        /  \
+       /    \  slant = φ
+      /      \
+     /   |h   \
+    /    |     \
+   /_____|______\
+      1     1
+      half-base
+```
+
 - Half-base = 1
 - Slant height = φ
-- Height = √(φ² - 1) = √φ
-- Height/base ratio = √φ / 2 = **0.6360...**
+- Height h = √(φ² - 1) = **√φ**
+
+**Why √(φ² - 1) = √φ?**
+
+By definition of golden ratio: φ² = φ + 1
+
+Therefore: φ² - 1 = φ, and √(φ² - 1) = √φ
+
+**Result:** Height/base ratio = √φ / 2 = **0.6360...**
 
 **Approximation:**
 ```
@@ -134,9 +154,12 @@ Or more likely:
 | **Cheops** | **280** | **440** | **7/11** | **6th** | **0.056%** |
 
 **Factorization of dimensions:**
-- Cheops: GCD(280, 440) = 40, module = 40 cubits
-- Chefren: GCD(274, 411) = **137** (prime!), module = 137 cubits
-- Menkaure: GCD(125, 200) = 25, module = 25 cubits
+- Cheops: GCD(280, 440) = 40, module = 40 cubits ≈ 21 m
+- Chefren: GCD(274, 411) = **137** (prime!), module = 137 cubits ≈ 72 m
+- Menkaure: GCD(125, 200) = 25, module = 25 cubits ≈ 13 m
+
+**Note:** 1 khet = 100 cubits was the standard Egyptian surveying unit.
+Menkaure's base = exactly **2 khet** (200 cubits).
 
 The Great Pyramid (Cheops) achieves **30× better accuracy** than Chefren!
 
