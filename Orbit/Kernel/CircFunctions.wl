@@ -78,8 +78,40 @@ Multiplication in framework B. Returns rational.";
 (* These are the ONLY functions that evaluate   *)
 (* ============================================ *)
 
-Circ::usage = "Circ[t] = Cos[3\[Pi]/4 + \[Pi]t]
-The base function. Evaluates to real number.";
+\[Gamma]::usage = "\[Gamma][t] - rational circle function (inert symbolic form).
+The primary representation. Use N[] for numeric, \[Alpha][] for classical trig.
+\[Gamma][t] corresponds to Cos[3\[Pi]/4 + \[Pi]t] but stays symbolic.
+Named after \[Gamma]\[Omega]\[Nu]\[Iota]\[Alpha] (gonia) = angle in Greek.
+Type: Esc g Esc
+Historical alias: Circ (for compatibility with earlier notebooks/docs)";
+
+\[Alpha]::usage = "\[Alpha][expr] - reveal classical (ancient) trig form.
+Converts \[Gamma] to Cos/Sin throughout expr.
+Named after Activate and Ancient (classical) form.
+Type: Esc a Esc";
+
+(* γ: inert symbolic form *)
+SetAttributes[\[Gamma], {NumericFunction}];
+\[Gamma] /: N[\[Gamma][t_], args___] := N[Cos[3 Pi/4 + Pi t], args];
+
+(* Simplification upvalues *)
+\[Gamma] /: \[Gamma][t_ + 1/2] := \[Gamma][-t];              (* Shift = negation *)
+\[Gamma] /: \[Gamma][t_ + n_Integer /; Abs[n] >= 2] := \[Gamma][t + Mod[n, 2]];  (* Period 2: integers *)
+\[Gamma] /: \[Gamma][t_ + r_Rational /; Abs[r] >= 2] := \[Gamma][t + Mod[r, 2]]; (* Period 2: rationals *)
+
+(* Pythagorean identity via Plus upvalue *)
+(* Works for: γ[t]² + γ[-t]², γ[1/4]² + γ[-1/4]² *)
+(* Does NOT work for: γ[x+1]² + γ[-x-1]² (complex expressions) *)
+Unprotect[Plus];
+Plus /: \[Gamma][t_]^2 + \[Gamma][-t_]^2 := 1;
+Plus /: \[Gamma][a_?NumericQ]^2 + \[Gamma][b_?NumericQ]^2 /; a + b == 0 := 1;
+Protect[Plus];
+
+(* α: reveal classical trig form *)
+\[Alpha][expr_] := expr /. \[Gamma][t_] :> Cos[3 Pi/4 + Pi t];
+
+(* Backward compatibility alias *)
+Circ = \[Gamma];
 
 \[Kappa]::usage = "\[Kappa][t] or \[Kappa][t, p] = point on unit L^p 'circle'
 Default p = 2 (Euclidean). Other geometries:
@@ -162,8 +194,6 @@ SuperStar[t_] := 3/2 - t
 (* BRIDGES - EVALUATE TO COORDINATES            *)
 (* ============================================ *)
 
-Circ[t_] := Cos[3 Pi/4 + Pi t]
-
 (* φ: delegates to κ, no duplicated logic *)
 \[CurlyPhi][t_] := \[Kappa][t] . {1, I}
 \[CurlyPhi][t_, p_] := \[Kappa][t, p] . {1, I}
@@ -175,32 +205,24 @@ Circ[t_] := Cos[3 Pi/4 + Pi t]
 (* ============================================ *)
 
 (* List threading - MUST come first! *)
-\[Kappa][t_List] := Transpose[{Circ[-t], Circ[t]}]
+\[Kappa][t_List] := Transpose[{\[Gamma] /@ (-t), \[Gamma] /@ t}]
 \[Kappa][t_List, p_] := \[Kappa][#, p] & /@ t
 \[Kappa][t_, p_List] := \[Kappa][t, #] & /@ p
 
-(* p = 2 (default): Euclidean circle *)
-\[Kappa][t_] := {Circ[-t], Circ[t]}
-\[Kappa][t_, 2] := {Circ[-t], Circ[t]}
+(* p = 2 (default): Euclidean circle - γ stays inert *)
+\[Kappa][t_] := {\[Gamma][-t], \[Gamma][t]}
+\[Kappa][t_, 2] := {\[Gamma][-t], \[Gamma][t]}
 
-(* p = 1: Taxicab diamond *)
-\[Kappa][t_, 1] := With[
-  {x = Circ[-t], y = Circ[t]},
-  {x, y} / (Abs[x] + Abs[y])
-]
+(* p = 1: Taxicab diamond - symbolic with γ *)
+\[Kappa][t_, 1] := {\[Gamma][-t], \[Gamma][t]} / (Abs[\[Gamma][-t]] + Abs[\[Gamma][t]])
 
-(* p = ∞: Chebyshev square *)
+(* p = ∞: Chebyshev square - symbolic with γ *)
 \[Kappa][t_, DirectedInfinity[1]] := \[Kappa][t, Infinity]
-\[Kappa][t_, Infinity] := With[
-  {x = Circ[-t], y = Circ[t]},
-  {x, y} / Max[Abs[x], Abs[y]]
-]
+\[Kappa][t_, Infinity] := {\[Gamma][-t], \[Gamma][t]} / Max[Abs[\[Gamma][-t]], Abs[\[Gamma][t]]]
 
-(* General numeric p *)
-\[Kappa][t_, p_?NumericQ] /; p > 0 && p != 1 && p != 2 := With[
-  {x = Circ[-t], y = Circ[t]},
-  {x, y} (Abs[x]^p + Abs[y]^p)^(-1/p)
-]
+(* General p - symbolic with γ *)
+\[Kappa][t_, p_] /; p > 0 && p != 2 :=
+  {\[Gamma][-t], \[Gamma][t]} (Abs[\[Gamma][-t]]^p + Abs[\[Gamma][t]]^p)^(-1/p)
 
 (* ============================================ *)
 (* πLp: π as function of L^p geometry          *)
@@ -216,7 +238,7 @@ Circ[t_] := Cos[3 Pi/4 + Pi t]
 (* Circumference / Diameter, measuring in L^p metric *)
 \[Pi]Lp[p_?NumericQ] /; p > 0 && p != 1 && p != 2 := Module[
   {pts, diffs},
-  pts = Table[\[Kappa][t, p], {t, 0, 2, 1/1000}];
+  pts = Table[N[\[Kappa][t, p]], {t, 0, 2, 1/1000}];
   diffs = Differences[pts];
   Total[(Abs[#[[1]]]^p + Abs[#[[2]]]^p)^(1/p) & /@ diffs] / 2
 ]
