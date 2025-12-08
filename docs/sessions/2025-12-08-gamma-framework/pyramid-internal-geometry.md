@@ -48,10 +48,16 @@ The King's Chamber is a remarkable Pythagorean cuboid:
 
 ### King's Chamber Shafts
 
-| Shaft | Angle | Slope ratio | Notes |
-|-------|-------|-------------|-------|
-| Southern | 45°13' | **1/1** | Points toward Orion's Belt |
-| Northern | 31-32.6° | **7/11** | Same as exterior! |
+| Shaft | Angle | Slope ratio | Star alignment (disputed) |
+|-------|-------|-------------|---------------------------|
+| Southern | 45°13' | **1/1** | Alnitak (Orion's Belt) ~2480 BC |
+| Northern | 32°36' | **7/11** | α Draconis (Thuban) |
+
+**Orion Correlation Theory (Robert Bauval):**
+- Alnitak reaches exactly 45° altitude around 2480 BC
+- The three Giza pyramids mirror the three stars of Orion's Belt
+
+**Controversy:** Some argue 45° is simply the diagonal of a square (geometric, not astronomical). The debate continues.
 
 **Remarkable:** The northern shaft has slope **7/11** — identical to the pyramid's exterior height/base ratio!
 
@@ -126,6 +132,8 @@ Both the exterior and interior geometry involve √5:
 - [Djedi Project - Wikipedia](https://en.wikipedia.org/wiki/Djedi_Project)
 - [Upuaut Project - Wikipedia](https://en.wikipedia.org/wiki/Upuaut_Project)
 - [Robot finds hidden hieroglyphs - NBC News](https://www.nbcnews.com/id/wbna43183094)
+- [Star shaft - Wikipedia](https://en.wikipedia.org/wiki/Star_shaft)
+- [Orion Correlation Theory](https://www.hallofmaat.com/orioncorrelation/orion-and-the-giza-pyramids/)
 
 ---
 
