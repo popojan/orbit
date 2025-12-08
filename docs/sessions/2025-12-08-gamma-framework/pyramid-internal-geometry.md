@@ -109,6 +109,40 @@ The King's Chamber is a remarkable Pythagorean cuboid:
 
 The prevalence of **11** as denominator is striking.
 
+### 🤔 Speculation: Queen/King Mathematical Relationship
+
+**Mathematical fact:**
+
+$$\frac{9}{11} = \frac{1}{2}\left(\frac{7}{11} + \frac{11}{11}\right)$$
+
+Queen's Chamber shaft ratio (9/11) is the **arithmetic mean** of:
+- Exterior/King's N shaft (7/11)
+- King's S shaft (1/1)
+
+| Chamber | Shaft ratios | Mathematical role |
+|---------|--------------|-------------------|
+| Queen | 9/11 (both) | Mean = balance |
+| King | 7/11 **and** 1/1 | Both extremes = duality |
+
+**Cultural context supporting this interpretation:**
+
+Ancient Egyptian thought was deeply rooted in:
+- **Ma'at** — cosmic balance, harmony (central cultural value)
+- **Duality** — "oppositional pairs" symbolizing completion
+- **Complementarity** — masculine/feminine as equal, different roles
+
+Sources:
+- [Before the Binary: Gender in Ancient Egypt](https://scarabsandsilk.com/before-the-binary-gender-roles-and-relational-ambiguity-in-ancient-egypt/)
+- [Reversal of Gender in Egyptian Mythology](https://digitalcommons.kennesaw.edu/ojur/vol1/iss1/2/)
+
+**Interpretation (speculative but culturally plausible):**
+- Queen's Chamber → Ma'at principle (harmony, balance)
+- King's Chamber → Duality principle (both extremes)
+
+Both necessary for cosmic order. Neither "lesser" — different symbolic functions.
+
+**Status:** No direct evidence that builders intended this. But the mathematical relationship is exact, and the interpretation aligns with documented Egyptian worldview.
+
 ---
 
 ## The √5 Connection
