@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-08 04:01:37
+**Generated:** 2025-12-08 10:59:34
 
 ## Theorems (Master References)
 
@@ -18,8 +18,19 @@
 - [Reading Notes: Prime Gap Theory](reference/prime-gap-theory-reading.md)
 - [Wolfram Pattern Matching vs Prolog Unification](reference/wolfram-vs-prolog-patterns.md)
 
+## Learning Materials
+
+- [Character Sums over Finite Fields](learning/character-sums-introduction.md)
+- [Generating Functions Quick Course](learning/generating-functions-course.md)
+- [Hölder Conjugates](learning/hoelder-conjugates.md)
+- [Ideal Theory Quick Course](learning/ideal-theory-course.md)
+- [L-Functions, Class Numbers, and Chebyshev Geometry](learning/L-function-geometry-bridge.md)
+- [Minkowski Geometries: L^p Norms and the Many Values of Pi](learning/minkowski-geometries.md)
+- [Split-kvaterniony (Coquaterniony)](learning/split-quaternions.md)
+
 ## Recent Sessions (Last 10)
 
+- [Squarical Geometry: When π = 4](sessions/2025-12-08-squarical-geometry/README.md) *(2025-12-08)*
 - [Circ Function Exploration: Hartley Connection](sessions/2025-12-07-circ-hartley-exploration/README.md) *(2025-12-08)*
 - [Ralph V. L. Hartley: Historical Context](sessions/2025-12-07-circ-hartley-exploration/hartley-historical-note.md) *(2025-12-07)*
 - [Pedagogical Note: Why Two Trig Functions?](sessions/2025-12-07-circ-hartley-exploration/pedagogical-note-circ.md) *(2025-12-07)*
@@ -29,12 +40,12 @@
 - [Chebyshev Integral Identity](sessions/2025-12-07-chebyshev-integral-identity/README.md) *(2025-12-07)*
 - [Cunningham Representation and Brahmagupta-Bhaskara Equation](sessions/2025-12-06-cunningham-representation/README.md) *(2025-12-06)*
 - [Mondrian Clock - Complete Subset Sum Representation](sessions/2025-12-06-mondrian-clock/README.md) *(2025-12-06)*
-- [Egyptian Fractions Exploration](sessions/2025-12-05-egyptian-fractions-exploration/README.md) *(2025-12-06)*
 
 ## Navigation
 
 - [STATUS.md](STATUS.md) - Master status tracker
 - [reference/](reference/) - Mathematical foundations and design rationale
+- [learning/](learning/) - Historical context and tutorials
 - [proofs/](proofs/) - Complete standalone proofs
 - [drafts/](drafts/) - LaTeX papers and longer-form documents
 - [sessions/](sessions/) - Discovery narratives by date

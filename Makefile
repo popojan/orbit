@@ -43,6 +43,16 @@ generate-index:
 		fi; \
 	done
 	@echo "" >> docs/README.md
+	@echo "## Learning Materials" >> docs/README.md
+	@echo "" >> docs/README.md
+	@for file in docs/learning/*.md; do \
+		if [ -f "$$file" ]; then \
+			TITLE=$$(grep -m1 '^# ' "$$file" 2>/dev/null | sed 's/^# //' || echo "$$(basename $$file .md)"); \
+			RELPATH=$$(echo "$$file" | sed 's|^docs/||'); \
+			echo "- [$$TITLE]($$RELPATH)" >> docs/README.md; \
+		fi; \
+	done
+	@echo "" >> docs/README.md
 	@echo "## Recent Sessions (Last 10)" >> docs/README.md
 	@echo "" >> docs/README.md
 	@for file in $$(find docs/sessions -name '*.md' -type f | while read f; do \
@@ -63,6 +73,7 @@ generate-index:
 	@echo "" >> docs/README.md
 	@echo "- [STATUS.md](STATUS.md) - Master status tracker" >> docs/README.md
 	@echo "- [reference/](reference/) - Mathematical foundations and design rationale" >> docs/README.md
+	@echo "- [learning/](learning/) - Historical context and tutorials" >> docs/README.md
 	@echo "- [proofs/](proofs/) - Complete standalone proofs" >> docs/README.md
 	@echo "- [drafts/](drafts/) - LaTeX papers and longer-form documents" >> docs/README.md
 	@echo "- [sessions/](sessions/) - Discovery narratives by date" >> docs/README.md
