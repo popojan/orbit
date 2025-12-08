@@ -45,28 +45,34 @@ The Great Pyramid of Giza has height-to-base ratio approximately **7/11**.
 **The Golden Pyramid (Kepler triangle cross-section):**
 
 ```
-         /\
-        /  \
-       /    \  slant = φ
-      /      \
-     /   |h   \
-    /    |     \
-   /_____|______\
-      1     1
-      half-base
+        /\  ← apex
+       /||\
+      / || \  slant = φ
+     /  ||  \
+    /   ||h  \
+   /    ||    \
+  /_____||_____\
+     1     1
+     half-base
 ```
 
 - Half-base = 1
 - Slant height = φ
-- Height h = √(φ² - 1) = **√φ**
+- Height h = ?
 
-**Why √(φ² - 1) = √φ?**
+**Derivation via Pythagorean theorem:**
 
-By definition of golden ratio: φ² = φ + 1
+```
+1² + h² = φ²        (Pythagoras)
+h² = φ² - 1
+h² = φ              (since φ² = φ + 1)
+h = √φ
+```
 
-Therefore: φ² - 1 = φ, and √(φ² - 1) = √φ
-
-**Result:** Height/base ratio = √φ / 2 = **0.6360...**
+**Height/base ratio:**
+```
+h / (2·1) = √φ / 2 ≈ 0.6360...
+```
 
 **Approximation:**
 ```
@@ -175,6 +181,65 @@ Sources:
 
 ---
 
+## Measurement Methodology and Uncertainty
+
+### Source of Cubit Values
+
+The cubit dimensions come from **Flinders Petrie's 1880-1883 survey**, published in *The Pyramids and Temples of Gizeh* (1883). Petrie measured in **British inches**, then converted to cubits.
+
+| Pyramid | Petrie measurement | Cubit (20.62") | Rounded |
+|---------|-------------------|----------------|---------|
+| Cheops base | 9068.8" | 439.8 | **440** |
+| Chefren base | 8474.9" | 410.8 | **411** |
+| Menkaure base | 4153.6" | 201.3 | **200** |
+
+### The Royal Cubit
+
+Petrie determined the cubit length from multiple sources:
+- King's Chamber: 20.620 ± 0.005 inches
+- Isaac Newton's estimate: 20.63 inches
+- Surviving cubit sticks: 523-539 mm
+
+**Adopted:** 20.62 inches = 52.4 cm
+
+### Potential Circularity
+
+The methodology has a subtle circularity:
+
+```
+Assume: Egyptians designed in whole cubits
+    ↓
+Measure structure in inches
+    ↓
+Calculate cubit length to yield round numbers
+    ↓
+Result: Round cubit values (by construction)
+```
+
+**However:** The 0.05% agreement between independent structures validates the cubit estimate. Petrie was meticulous — he disproved the "pyramid inch" theory he originally hoped to confirm.
+
+### Uncertainty in Cubit Values
+
+| Pyramid | Confidence | Notes |
+|---------|------------|-------|
+| Cheops | **High** | 439.8 → 440 (0.05% error) |
+| Chefren | **Medium** | 410.8 vs 411; some sources say 410 |
+| Menkaure | **Lower** | Base may not be square (343' × 335') |
+
+### Implications for Convergent Hypothesis
+
+The **7/11 ratio for Cheops** is robust — the 0.05% measurement precision strongly supports 280/440.
+
+The **2/3 ratio for Chefren** depends on whether base was 410 or 411 cubits.
+
+The **5/8 ratio for Menkaure** has most uncertainty due to irregular base.
+
+**Conclusion:** The convergent pattern is suggestive but not proven beyond doubt for all three pyramids. Cheops alone provides strong evidence.
+
+See: [Flinders Petrie biography](../../learning/flinders-petrie.md)
+
+---
+
 ## Implementation
 
 ```mathematica
@@ -197,12 +262,104 @@ N[pyramidRatio - idealRatio]  (* ≈ 0.00035 *)
 
 ---
 
+## The Seked System
+
+The Egyptians measured slopes using **seked**: horizontal distance (in palms) per 1 cubit of vertical rise.
+
+**Units:** 1 royal cubit = 7 palms = 28 digits
+
+**Seked = cotangent of slope angle**
+
+| Pyramid | Ratio | Seked | Angle |
+|---------|-------|-------|-------|
+| Cheops | 7/11 | 5.5 palms | 51.84° |
+| Chefren | 2/3 | 5.25 palms | 53.13° |
+| Menkaure | 5/8 | 5.6 palms | 51.34° |
+| **Golden** | √φ/2 | 5.5 palms | **51.83°** |
+
+**Cheops seked = 5 palms + 2 digits = 5.5 palms exactly**
+
+This matches the golden pyramid angle to within **0.01°**!
+
+**Historical source:** Rhind Mathematical Papyrus (c. 1650 BC) contains problems 56-60 specifically about calculating seked.
+
+Sources:
+- [Seked - Wikipedia](https://en.wikipedia.org/wiki/Seked)
+- [Sekeds and the Geometry of Egyptian Pyramids](https://www.davidfurlong.co.uk/sekes0.htm)
+
+---
+
+## Different Angles, Same Pattern
+
+The three pyramids have **different slopes** (different convergents):
+
+```
+Chefren:  53.13° ─┐
+                  │ ~2° range
+Cheops:   51.84° ─┤ ← closest to golden (51.83°)
+Menkaure: 51.34° ─┘
+```
+
+Yet ALL THREE use height/base ratios that are convergents of √φ/2.
+
+**Why different slopes?**
+- Chefren (steeper): stands on higher ground, appears equal to Cheops
+- Menkaure (gentler): smallest pyramid, perhaps simpler construction
+- Cheops (optimal): largest, most precise, closest to golden angle
+
+---
+
+## The Golden Capstone
+
+The pyramidion (capstone) was covered in **gold** or **electrum** (gold-silver alloy).
+
+```
+    /\  ← GOLD (electrum)
+   /  \
+  /    \
+ / stone \
+```
+
+The first ray of the rising sun would strike the golden tip — literally a "golden" pyramid.
+
+---
+
+## Historical Context: Square Roots and Irrationals
+
+**Timeline of documented mathematical knowledge:**
+
+| Period | Event | Notes |
+|--------|-------|-------|
+| ~2560 BC | Giza pyramids built | Use ratios 7/11, 2/3, 5/8 |
+| ~1800 BC | Babylonian tablets | YBC 7289: √2 ≈ 1.41421296... (6 decimal places!) |
+| ~1650 BC | Rhind papyrus | Contains seked problems 56-60 |
+| ~530 BC | Pythagoreans | Discovery of √2 irrationality (scandal!) |
+| ~300 BC | Euclid | Elements: formal proofs of irrationality |
+
+**The chronological paradox:**
+
+The pyramids predate documented knowledge of √ by ~800 years.
+
+- Babylonians knew √2 numerically (remarkable precision)
+- No surviving evidence that Egyptians knew √5 or φ explicitly
+- φ = (1+√5)/2 fundamentally requires understanding of √5
+
+**Three possibilities:**
+
+1. **Lost knowledge:** Egyptian mathematical texts didn't survive (papyrus decays)
+2. **Empirical discovery:** Found "pleasing" ratios through trial without theory
+3. **Simplicity suffices:** 7/11, 2/3, 5/8 are simple enough to discover without √ theory
+
+**The remarkable fact:** Whether deliberate or empirical, all three Giza pyramids converged on rational approximations to the same irrational quantity √φ/2.
+
+---
+
 ## Future Exploration
 
 **Open questions for later sessions:**
 - Internal passages and chambers — do their angles follow similar rational patterns?
 - Other Egyptian pyramids beyond Giza — same convergent structure?
 - Did Egyptians know continued fractions, or found these ratios empirically?
-- Connection to seked (slope measurement) system
+- Why seked 5.5 specifically? Connection to π (circumference = 44 palms for r = 1 cubit)?
 
 **The mystery of the internal passages awaits...**
