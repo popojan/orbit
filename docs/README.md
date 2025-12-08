@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-08 14:03:16
+**Generated:** 2025-12-08 14:32:53
 
 ## Theorems (Master References)
 
@@ -21,6 +21,7 @@
 ## Learning Materials
 
 - [Character Sums over Finite Fields](learning/character-sums-introduction.md)
+- [Sir William Matthew Flinders Petrie (1853-1942)](learning/flinders-petrie.md)
 - [Generating Functions Quick Course](learning/generating-functions-course.md)
 - [Hölder Conjugates](learning/hoelder-conjugates.md)
 - [Ideal Theory Quick Course](learning/ideal-theory-course.md)
@@ -30,6 +31,7 @@
 
 ## Recent Sessions (Last 10)
 
+- [Great Pyramid Internal Geometry](sessions/2025-12-08-gamma-framework/pyramid-internal-geometry.md) *(2025-12-08)*
 - [Golden Ratio in the γ Framework: Pyramid Connection](sessions/2025-12-08-gamma-framework/golden-ratio-pyramid.md) *(2025-12-08)*
 - [The γ Framework: Rational Circle Algebra for Mathematics and Physics](sessions/2025-12-08-gamma-framework/README.md) *(2025-12-08)*
 - [Squarical Geometry: When π = 4](sessions/2025-12-08-squarical-geometry/README.md) *(2025-12-08)*
@@ -39,7 +41,6 @@
 - [Pedagogical Note: Why Two Trig Functions?](sessions/2025-12-07-chebyshev-integral-identity/pedagogical-note-circ.md) *(2025-12-07)*
 - [Circ Symmetries and Chebyshev Connections](sessions/2025-12-07-chebyshev-integral-identity/circ-symmetries.md) *(2025-12-07)*
 - [Physics Connection Review: Why Egypt Trajectory Is Not Physics](sessions/2025-11-22-palindromic-symmetries/physics-connection-review.md) *(2025-12-07)*
-- [Chebyshev Integral Identity](sessions/2025-12-07-chebyshev-integral-identity/README.md) *(2025-12-07)*
 
 ## Navigation
 

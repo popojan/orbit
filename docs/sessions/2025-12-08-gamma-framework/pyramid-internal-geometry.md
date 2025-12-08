@@ -175,14 +175,14 @@ Located beneath the pyramid, cut into bedrock:
 
 | Dimension | Value | Notes |
 |-----------|-------|-------|
-| Depth below base | **60 cubits** | = 3/14 height = **1.5/7** of 280 |
+| Depth below base | **60 cubits** | = **3/14** × 280 |
 | Length (N-S) | ~16 cubits | |
 | Width (E-W) | ~27 cubits | |
 | Height | ~4 m | |
 
 **Descending Passage:** Slope = **1/2** (26°26'46"), same as ascending passages.
 
-The **7** appears again: depth = 280 × 3/14 = 60 cubits.
+Note: 3/14 = 1/5 + 1/70 in Egyptian fractions (see below).
 
 ---
 
@@ -194,14 +194,12 @@ The three pyramids form a planned arrangement (Lehner 1984):
 |-------------|-------|-------|
 | Diagonal slope (SE corners) | **16/17** | Khufu → Menkaure |
 | East-West distance | 1,216 cubits | |
-| North-South distance | 1,292 cubits | 1292/1216 = 17/16 |
-| Pyramid separation | 250 cubits | base module |
+| North-South distance | 1,292 cubits | |
+| Pyramid separation | ~250 cubits | base module |
 
 **Alignment:** The SE corner diagonal points toward the **Temple of Heliopolis** (Sun God temple).
 
-Another rational slope: **16/17** ≈ 0.941
-
-### All Rational Slopes Summary
+### All Rational Slopes
 
 | Location | Ratio | Decimal |
 |----------|-------|---------|
@@ -210,11 +208,48 @@ Another rational slope: **16/17** ≈ 0.941
 | QC shafts | 9/11 | 0.818 |
 | KC S shaft | 1/1 | 1.000 |
 | Passages | 1/2 | 0.500 |
-| Plateau diagonal | 16/17 | 0.941 |
+| Plateau diagonal | **16/17** | 0.941 |
 
 Sources:
 - [Giza Plateau Mapping Project (AERA)](https://aeraweb.org/projects/gpmp/)
-- [The Plan of the Giza Pyramids (Academia)](https://www.academia.edu/41077254/The_Plan_of_the_Giza_Pyramids)
+
+---
+
+## Egyptian Fraction Representations
+
+Using Orbit's `EgyptianFractions[r, Method -> "Raw"]`:
+
+| Ratio | Raw tuples | # tuples | Greedy expansion |
+|-------|------------|----------|------------------|
+| **16/17** | `{{1,1,1,16}}` | **1** | 16 terms of 1/(k(k+1)) |
+| 7/11 | `{{1,1,1,1}, {2,3,1,3}}` | 2 | 1/2 + 1/8 + 1/88 |
+| 9/11 | `{{1,1,1,4}, {5,6,1,1}}` | 2 | 1/2 + 1/4 + 1/15 + 1/660 |
+| 3/14 | `{{1,4,1,1}, {5,9,1,1}}` | 2 | **1/5 + 1/70** |
+
+**Key insight:** The plateau diagonal **16/17** has the simplest structural representation — a single telescoping sum:
+
+```
+16/17 = Σ 1/(k(k+1)) for k=1..16
+      = (1-1/2) + (1/2-1/3) + ... + (1/16-1/17)
+      = 1 - 1/17
+```
+
+While **3/14 = 1/5 + 1/70** has the shortest greedy expansion (just 2 unit fractions).
+
+### The √5 Connection
+
+Using Orbit's EgyptSqrt with Pell solution {9, 4}:
+
+```
+√5 ∈ [6460/2889, 2889/1292]  (5 terms)
+   ≈ [2.23606784, 2.23606811]
+   actual = 2.2360679...
+```
+
+The golden ratio φ = (1+√5)/2 connects exterior ratio to √5:
+```
+7/11 ≈ √φ/2    (error: 0.014%)
+```
 
 ---
 
@@ -224,3 +259,4 @@ Sources:
 - Investigate the "Big Void" discovered by muon tomography (2017)
 - Analyze connection between rational slopes and astronomical alignments
 - Study the 250-cubit module system
+- Explore whether Egyptians used iterative √5 approximations
