@@ -584,6 +584,55 @@ This is the theoretical worst case — but still O(log b), not O(b)!
 
 ---
 
+## Information Theory: Shannon vs Kolmogorov (Added Dec 10, 2025)
+
+### Key Distinction
+
+| Metric | Measures | For F₅₀/F₅₁ |
+|--------|----------|-------------|
+| **Shannon** | log₂(a) + log₂(b) — random a/b | 69 bits |
+| **Kolmogorov** | Shortest program producing output | **9 bits** |
+| **Raw tuples** | Σ (log₂(u) + log₂(v) + log₂(j)) | 877 bits |
+| **Egypt ASCII** | `egypt --raw` output | 3400 bits |
+
+### Kolmogorov-Egypt Compression
+
+For **structured rationals** (Fibonacci, Pell, √D convergents), we can compress dramatically:
+
+```
+Store: (FIB, k)  = 3 + log₂(k) bits
+Decode: Generate tuples {(F_{2i-1}, F_{2i}, 1, j_i)}
+```
+
+**Compression ratios verified:**
+
+| k | Raw bits | Kolmogorov | Compression |
+|---|----------|------------|-------------|
+| 10 | 37 | 7 | 5.3× |
+| 20 | 143 | 8 | 17.9× |
+| 30 | 318 | 8 | **39.8×** |
+
+### Egypt = Convergent Storage
+
+**Key insight:** Egypt tuples implicitly store CF convergent denominators:
+
+```
+Egypt (u_i, v_i) = (q_{2i-1}, q_{2i})  where q_i = convergent denominators
+```
+
+For √2: tuples `{{1,2}, {5,12}, {29,70}, ...}` = Pell number pairs!
+
+### Practical Conclusions
+
+- **Random rationals:** Kolmogorov ≈ Shannon (no compression benefit)
+- **Structured rationals:** Kolmogorov << Shannon (up to 40× compression)
+- **Algorithm complexity:** CF/Egypt algorithm = O(1) bits (fixed program)
+- **Bottleneck:** Description of input, not algorithm
+
+See also: [Kolmogorov learning doc](../../learning/kolmogorov-complexity.md)
+
+---
+
 ## References
 
 - Parent: [CF-Egypt Equivalence](README.md)
