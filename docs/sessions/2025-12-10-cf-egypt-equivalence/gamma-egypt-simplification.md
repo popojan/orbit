@@ -148,19 +148,64 @@ $$γ(\tanh(θ)) = \frac{1 - \tanh(θ)}{1 + \tanh(θ)} = \frac{\cosh(θ) - \sinh(
 
 ## Möbius-Egypt Algebra
 
-γ as matrix action on projective coordinates [p:q]:
+### Matrix Definitions
 
-$$\gamma: \begin{pmatrix} p \\ q \end{pmatrix} \mapsto \begin{pmatrix} -1 & 1 \\ 1 & 1 \end{pmatrix} \begin{pmatrix} p \\ q \end{pmatrix} = \begin{pmatrix} q-p \\ q+p \end{pmatrix}$$
+**γ as matrix** acting on projective coordinates $[p:q]$:
 
-CF partial quotient a acts as:
+$$\Gamma = \begin{pmatrix} -1 & 1 \\ 1 & 1 \end{pmatrix}, \quad \gamma(p/q) = \frac{q-p}{q+p}$$
 
-$$\text{CF}(a): \begin{pmatrix} a & 1 \\ 1 & 0 \end{pmatrix}$$
+**CF partial quotient** $a$ acts as:
 
-Product of two CF matrices (Egypt tuple corresponds to paired CF coefficients):
+$$\text{CF}(a) = \begin{pmatrix} a & 1 \\ 1 & 0 \end{pmatrix}$$
 
-$$\text{CF}(a) \cdot \text{CF}(b) = \begin{pmatrix} ab+1 & a \\ b & 1 \end{pmatrix}$$
+### Basic Properties
 
-**Question:** Is there a matrix identity relating γ · (CF products) that explains simplification?
+**Involution:** $\Gamma^2 = 2I$ (so $\gamma \circ \gamma = \text{id}$)
+
+**Determinant:** $\det(\Gamma) = -2$
+
+**CF eigenvalues:** For $\text{CF}(a)$, eigenvalues are $\lambda_{\pm} = \frac{a \pm \sqrt{a^2+4}}{2}$
+
+### The Fixed Point Identity (Theorem, Dec 10 2025)
+
+For purely periodic CF $[0; a, a, a, \ldots]$, the **fixed point** is:
+
+$$x_a = \frac{a + \sqrt{a^2+4}}{2}$$
+
+This satisfies $x_a = a + 1/x_a$, i.e., $[0; a^{\infty}] = 1/x_a$.
+
+**Key Theorem:** γ acts on fixed points via **inversion through 4**:
+
+$$\boxed{\gamma(1/x_a) = 1/x_{4/a}}$$
+
+**Proof (symbolic, verified in Mathematica):**
+
+$$\gamma(1/x_a) = \frac{1 - 1/x_a}{1 + 1/x_a} = \frac{x_a - 1}{x_a + 1} = \frac{\sqrt{a^2+4} - 2}{a} = 1/x_{4/a}$$
+
+The last equality follows from $x_{4/a} = \frac{4/a + \sqrt{16/a^2 + 4}}{2} = \frac{a}{\sqrt{a^2+4} - 2}$.
+
+### Interpretation
+
+| $a$ | $4/a$ | $[0; a^{\infty}]$ | $\gamma$ maps to | Meaning |
+|-----|-------|-------------------|------------------|---------|
+| 1 | 4 | Golden $\phi^{-1}$ | $[0; 4^{\infty}]$ | Golden ↔ 4-periodic |
+| 2 | 2 | Silver $\sqrt{2}-1$ | $[0; 2^{\infty}]$ | **Fixed point!** |
+| 4 | 1 | $\sqrt{5}-2$ | $[0; 1^{\infty}]$ | 4-periodic ↔ Golden |
+
+**Why Silver is Fixed:** $4/2 = 2$, so $\gamma([0;2^{\infty}]) = [0;2^{\infty}]$.
+
+### Connection to Egypt Simplification
+
+This explains **why γ compresses Fibonacci-like rationals**:
+
+1. Fibonacci convergents approach $[0; 1^{\infty}]$ (golden ratio)
+2. γ maps $[0; 1^{\infty}]$ to $[0; 4^{\infty}]$
+3. CF with coefficient 4 has ~4× fewer terms than CF with coefficient 1
+4. Hence: ~4× compression in Egypt tuple count
+
+**NOT simple matrix conjugacy:** $\Gamma \cdot \text{CF}(1) \cdot \Gamma^{-1} \neq \text{CF}(4)$
+
+The relationship is at the level of **fixed points of infinite products**, not finite matrix identities.
 
 ---
 
