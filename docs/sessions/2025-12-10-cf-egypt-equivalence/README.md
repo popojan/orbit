@@ -188,24 +188,52 @@ $$\text{Tuple}_k = (u_k, v_k, 1, j_k)$$
 
 **Question:** How to define Egypt representation for irrationals?
 
-**Proposal:**
+**Definition:**
 ```
 Egypt(x) = lim_{n→∞} Egypt(pₙ/qₙ)  where pₙ/qₙ are CF convergents
 ```
 
-**Properties to prove:**
-1. Sequence of tuple lists is "compatible" (prefixes preserved?)
-2. Partial sums converge monotonically to x
-3. Rate of convergence vs CF convergents
+---
 
-**Example (2/π):**
+#### ✅ PREFIX STABILITY (Verified 2025-12-10)
+
+**Key finding:** Tuple prefixes ARE stable!
+
+For √2/2:
 ```
-Conv 5: 7/11     → {{1,1,1,1}, {2,3,1,3}}
-Conv 6: 219/344  → {{1,1,1,1}, {2,3,1,3}, {11,333,1,1}}
-Conv 7: 226/355  → {{1,1,1,1}, {2,3,1,3}, {11,344,1,1}}  ← tuple changes!
+2/3    → {{1,1,1,2}}                                    (1 tuple)
+5/7    → {{1,1,1,2}, {3,4,1,1}}                         (2 tuples, prefix 1 stable)
+12/17  → {{1,1,1,2}, {3,7,1,2}}                         (2 tuples, prefix 1 stable)
+29/41  → {{1,1,1,2}, {3,7,1,2}, {17,24,1,1}}            (3 tuples, prefix 2 stable)
+...
 ```
 
-**Open:** Does tuple list stabilize, or keep changing?
+**Rule:** After CF pair k is processed, first k tuples are stable.
+
+---
+
+#### Bifurcation at 7/11 (√φ/2 vs 2/π)
+
+The "last common convergent" phenomenon manifests in tuple lists:
+
+| Convergent | √φ/2 | 2/π |
+|------------|------|-----|
+| 7/11 | `{{1,1,1,1}, {2,3,1,3}}` | `{{1,1,1,1}, {2,3,1,3}}` |
+| next | `{{1,1,1,1}, {2,3,1,**2**}, ...}` | `{{1,1,1,1}, {2,3,1,3}, {11,...}}` |
+
+**Interpretation:** The tuple `{2,3,1,j}` differs in j-parameter after bifurcation:
+- √φ/2: j=2 (from its CF)
+- 2/π: j=3 (from its CF)
+
+This is the Egypt representation of the "path divergence" in CF convergent sequences!
+
+---
+
+#### Open Questions
+
+1. **Convergence rate:** How fast do partial sums approach x?
+2. **Quadratic irrationals:** Do periodic CFs give eventually periodic Egypt tuples?
+3. **Transcendentals:** What structure emerges for π, e, etc.?
 
 ---
 

@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-09 09:56:39
+**Generated:** 2025-12-10 15:55:10
 
 ## Theorems (Master References)
 
@@ -27,20 +27,21 @@
 - [Ideal Theory Quick Course](learning/ideal-theory-course.md)
 - [L-Functions, Class Numbers, and Chebyshev Geometry](learning/L-function-geometry-bridge.md)
 - [Minkowski Geometries: L^p Norms and the Many Values of Pi](learning/minkowski-geometries.md)
+- [六十心 (Liù Shí Xīn) — The Sixty Minds](learning/sixty-minds-buddhism.md)
 - [Split-kvaterniony (Coquaterniony)](learning/split-quaternions.md)
 
 ## Recent Sessions (Last 10)
 
-- [Djedi Project: Queen's Chamber Shaft Exploration](sessions/2025-12-08-gamma-framework/djedi-project.md) *()*
-- [Great Pyramid Internal Geometry](sessions/2025-12-08-gamma-framework/pyramid-internal-geometry.md) *(2025-12-08)*
-- [Golden Ratio in the γ Framework: Pyramid Connection](sessions/2025-12-08-gamma-framework/golden-ratio-pyramid.md) *(2025-12-08)*
+- [CF ↔ Egyptian Fractions Equivalence](sessions/2025-12-10-cf-egypt-equivalence/README.md) *(2025-12-10)*
+- [Great Pyramid Internal Geometry](sessions/2025-12-08-gamma-framework/pyramid-internal-geometry.md) *(2025-12-10)*
+- [Golden Ratio in the γ Framework: Pyramid Connection](sessions/2025-12-08-gamma-framework/golden-ratio-pyramid.md) *(2025-12-10)*
+- [Egyptian Knowledge Transmission: Secrecy and Loss](sessions/2025-12-08-gamma-framework/egyptian-knowledge-transmission.md) *(2025-12-10)*
+- [Djedi Project: Queen's Chamber Shaft Exploration](sessions/2025-12-08-gamma-framework/djedi-project.md) *(2025-12-10)*
+- [Ankh Symbol: Sacred Geometry and Mathematical Proportions](sessions/2025-12-08-gamma-framework/ankh-geometry.md) *(2025-12-10)*
 - [The γ Framework: Rational Circle Algebra for Mathematics and Physics](sessions/2025-12-08-gamma-framework/README.md) *(2025-12-08)*
 - [Squarical Geometry: When π = 4](sessions/2025-12-08-squarical-geometry/README.md) *(2025-12-08)*
 - [Circ Function Exploration: Hartley Connection](sessions/2025-12-07-circ-hartley-exploration/README.md) *(2025-12-08)*
 - [Ralph V. L. Hartley: Historical Context](sessions/2025-12-07-circ-hartley-exploration/hartley-historical-note.md) *(2025-12-07)*
-- [Pedagogical Note: Why Two Trig Functions?](sessions/2025-12-07-circ-hartley-exploration/pedagogical-note-circ.md) *(2025-12-07)*
-- [Pedagogical Note: Why Two Trig Functions?](sessions/2025-12-07-chebyshev-integral-identity/pedagogical-note-circ.md) *(2025-12-07)*
-- [Circ Symmetries and Chebyshev Connections](sessions/2025-12-07-chebyshev-integral-identity/circ-symmetries.md) *(2025-12-07)*
 
 ## Navigation
 
