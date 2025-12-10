@@ -159,6 +159,54 @@ testSimplification[q_] := Module[{gq, eq, egq},
 
 ---
 
+## Key Theorem: γ and Metallic Ratios
+
+### The Golden-Silver Dichotomy
+
+**Golden ratio (φ):**
+$$\gamma(1/\varphi) = \frac{\varphi - 1}{\varphi + 1} = \frac{1}{2\varphi + 1} = \sqrt{5} - 2 \approx 0.236$$
+
+Since $2\varphi + 1 \approx 4.236$, the CF of $\gamma(1/\varphi)$ starts with $[0; 4, ...]$.
+
+This explains why Fibonacci-like CFs $[0; 1, 1, ..., 1, k]$ get mapped to CFs starting with 4!
+
+**Silver ratio (σ = √2 - 1):**
+$$\gamma(\sigma) = \sigma \quad \text{(fixed point!)}$$
+
+### Pyramid Implication
+
+| Pyramid | Ratio | Base irrational | γ behavior |
+|---------|-------|-----------------|------------|
+| **Giza** (Cheops, etc.) | √φ/2 ≈ 0.636 | Golden family | γ TRANSFORMS → SIMPLIFIES |
+| **Bent** (Dahshur) | √2/2 ≈ 0.707 | Silver family | γ FIXED → NO CHANGE |
+
+**The Giza pyramids are "γ-compressible" while the Bent pyramid is "γ-invariant"!**
+
+### Why 4 Appears
+
+For any CF approaching $1/\varphi$:
+- $\gamma$ maps it near $1/(2\varphi + 1) \approx 0.236$
+- First CF coefficient = $\lfloor 1/0.236 \rfloor = 4$
+
+This is why $\gamma([0; 1^n, k]) \to [0; 4, ...]$ for $n \geq 3$.
+
+---
+
+## CF Transformation Rules (Discovered)
+
+For $q$ with CF $[0; 1^n, k]$ (n ones followed by k):
+
+| n | k | γ(q) CF | Pattern |
+|---|---|---------|---------|
+| 1 | any | $[0; 2k+1]$ | Single term |
+| 2 | 2 | $[0; 4]$ | Collapsed |
+| ≥3 | 2 | $[0; 4, ...]$ | Starts with 4 |
+| ≥3 | 3 | $[0; 4, ...]$ | Starts with 4 |
+
+**Counter-pattern:** CFs starting with $[0; 2, ...]$ get LONGER under γ!
+
+---
+
 ## References
 
 - Parent: [CF-Egypt Equivalence](README.md)
