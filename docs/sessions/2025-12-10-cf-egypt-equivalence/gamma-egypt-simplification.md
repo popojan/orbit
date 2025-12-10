@@ -209,6 +209,46 @@ The relationship is at the level of **fixed points of infinite products**, not f
 
 ---
 
+## γ-Egypt Compression (New Algorithm)
+
+### Concept
+
+Since γ simplifies Fibonacci-like rationals, we can use it for **compressed representation**:
+
+```
+γ-Egypt(q) = (flag, tuples) where:
+  flag = "γ"  if #Egypt(γ(q)) < #Egypt(q)
+  flag = "id" otherwise
+  tuples = Egypt representation of the simpler form
+```
+
+**To decode:** If flag="γ", apply γ to the tuple sum.
+
+### Compression Results
+
+| q | Standard tuples | γ-compressed | Savings |
+|---|-----------------|--------------|---------|
+| 5/7 | 2 | (γ, 1/6) → 1 | 50% |
+| 7/11 | 2 | (γ, 2/9) → 1 | 50% |
+| 8/13 | 3 | (γ, 5/21) → 1 | **67%** |
+| 13/21 | 3 | (γ, 4/17) → 1 | **67%** |
+| 55/89 | 5 | (γ, 17/72) → 2 | 60% |
+| 89/144 | 5 | (γ, 55/233) → 2 | 60% |
+
+### When It Helps
+
+- **Fibonacci convergents:** 50-67% savings
+- **Golden-ratio-like rationals:** Significant compression
+- **Unit fractions:** No change (γ would expand)
+
+### Implementation Status
+
+- ✅ Mathematica prototype verified
+- ⏸️ Rust `--gamma` flag: TODO
+- ⏸️ Paper writeup: TODO
+
+---
+
 ## Verification Code
 
 ```mathematica
