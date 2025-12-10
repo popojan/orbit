@@ -269,7 +269,7 @@ This is **more efficient** than ModInv iteration (which calls PowerMod = XGCD in
 #### Open Questions
 
 1. **Convergence rate:** How fast do partial sums approach x?
-2. **Quadratic irrationals:** Do periodic CFs give eventually periodic Egypt tuples?
+2. **Quadratic irrationals:** ✅ **ANSWERED (Theorem 5 in γ-simplification)** — Periodic CFs give Egypt tuples with generalized Fibonacci (u,v) pairs. See [γ-Egypt Simplification](gamma-egypt-simplification.md#theorem-5-periodic-cf--generalized-fibonacci-egypt-added-dec-10-2025).
 3. **Transcendentals:** What structure emerges for π, e, etc.?
 
 ---

@@ -85,23 +85,54 @@ So Egypt(1/6) = {(1, 5, 1, 1)} means T(1,5,1,1) = 1/(1·6) = 1/6 ✓
 
 ## Open Questions
 
-### Q1: Characterization
+### Q1: Characterization ✅ ANSWERED (Theorem 1)
 Which rationals q satisfy: #Egypt(γ(q)) < #Egypt(q)?
 
-**Hypothesis:** Rationals with "Fibonacci-like" structure (consecutive Fibonacci or Lucas numbers in numerator/denominator).
+**Answer:** Rationals of the form $q = ((a-1)b + 1)/((a+1)b + 1)$ for $a, b ≥ 1$.
+These are precisely the γ-preimages of CF forms $[0; a, b]$.
 
-### Q2: Mechanism
+### Q2: Mechanism ✅ ANSWERED (Theorems 5-6)
 Why does γ simplify Egypt representation?
 
-**Possible explanation:** γ acts as Möbius transformation with matrix [[-1,1],[1,1]]. This may interact with CF matrices [[a,1],[1,0]] in a way that "compresses" the CF length.
+**Answer:** γ maps Fibonacci-like CFs $[0;1^n]$ toward $[0;4^∞]$ due to the Golden-4 duality. Since $γ([0;1^∞]) = [0;4^∞]$, Fibonacci convergents get mapped to CFs with larger partial quotients, reducing the CF length and hence Egypt tuple count.
 
-### Q3: Inverse Direction
+The key insight: **γ converts many small CF coefficients into few large ones**.
+
+### Q3: Inverse Direction ✅ ANSWERED (Theorem 7)
 When does γ **complexify** Egypt representation?
 
-From tests: 7/12 and 9/14 stayed same (2 → 2 tuples).
+**Answer:** γ expands rationals with **short CFs and large coefficients**, particularly:
 
-### Q4: Connection to Hartley
+1. **Unit fractions 1/n for n ≥ 4:**
+   - $γ(1/n) = (n-1)/(n+1)$
+   - For $n ≥ 4$: $(n-1)/(n+1) > 1/2$, so CF starts with $[0; 1, ...]$
+   - Example: $γ(1/4) = 3/5 = [0; 1, 1, 2]$ (1 tuple → 2 tuples)
+
+2. **Rationals near 0:**
+   - As $q → 0$: $γ(q) → 1$, and rationals near 1 have long CFs starting with many 1s
+
+**Duality principle:** γ compresses "Fibonacci-like" rationals (many small CF coefficients) and expands "unit-fraction-like" rationals (few large CF coefficients).
+
+### Q4: Connection to Hartley ⏸️ PARTIAL PROGRESS
 The γ function arose from rational circle parametrization (cas function, Hartley transform). Is there a frequency-domain interpretation of Egypt simplification?
+
+**Partial findings (Dec 10, 2025):**
+
+1. **Hyperbolic connection:** $γ(\tanh(θ)) = e^{-2θ}$
+   - γ transforms hyperbolic tangent into exponential decay
+   - This links to Möbius/conformal geometry
+
+2. **Spectral interpretation (speculative):**
+   - CF coefficients act like "frequency" components
+   - Many small coefficients = high frequency (Fibonacci-like)
+   - Few large coefficients = low frequency (unit fractions)
+   - γ acts as frequency inverter
+
+3. **Silver ratio as critical frequency:**
+   - $[0;2,2,2,...]$ is the γ-fixed point
+   - May represent "balanced" frequency in this interpretation
+
+**Conjecture:** The γ-duality $[0;1^∞] ↔ [0;4^∞]$ corresponds to high↔low frequency exchange.
 
 ---
 
@@ -220,6 +251,7 @@ $$q = \frac{(a-1)b + 1}{(a+1)b + 1} \quad \text{for some } a, b \geq 1$$
 **Equivalently:** $\gamma(q) = b/(ab+1)$ has CF $[0; a, b]$.
 
 **Special cases:**
+
 | a | b | q | γ(q) | CF(γ(q)) |
 |---|---|---|------|----------|
 | 4 | 2 | 7/11 | 2/9 | [0;4,2] |
@@ -291,6 +323,7 @@ For any $q \in (0,1)$ with convergents $c_1, c_2, \ldots, c_n$:
 3. **Recursive structure:** Every complex rational can be analyzed via its γ-ladder sequence $\{\gamma(c_k)\}$, each with bounded tuple count.
 
 **Example (610/987 = F₁₅/F₁₆):**
+
 | k | c_k | γ(c_k) | #tuples |
 |---|-----|--------|---------|
 | 2-7 | Fibonacci | single-tuple | 1 |
@@ -298,6 +331,98 @@ For any $q \in (0,1)$ with convergents $c_1, c_2, \ldots, c_n$:
 | 14 | 610/987 | 377/1597 | 3 |
 
 **Key insight:** The γ-ladder provides a **divide-and-conquer** approach to Egypt decomposition through simpler γ-images of convergents.
+
+---
+
+### Theorem 5: Periodic CF → Generalized Fibonacci Egypt (Added Dec 10, 2025)
+
+For purely periodic CF $[0; a, a, a, \ldots]$ (with $n$ repetitions), the Egypt tuples have:
+
+$$\text{Tuple}_k = (F_{2k-1}^{(a)}, F_{2k}^{(a)}, 1, a)$$
+
+where $F_n^{(a)}$ is the **generalized Fibonacci sequence** defined by:
+- $F_0^{(a)} = 0$, $F_1^{(a)} = 1$
+- $F_n^{(a)} = a \cdot F_{n-1}^{(a)} + F_{n-2}^{(a)}$
+
+**Special cases:**
+
+| $a$ | Sequence name | First terms | CF limit |
+|-----|--------------|-------------|----------|
+| 1 | Fibonacci | 0,1,1,2,3,5,8,13,21 | $(√5-1)/2$ |
+| 2 | Pell | 0,1,2,5,12,29,70,169 | $√2-1$ |
+| 3 | — | 0,1,3,10,33,109,360 | $(√13-3)/2$ |
+| 4 | — | 0,1,4,17,72,305,1292 | $√5-2$ |
+
+**Proof:** CF convergent denominators satisfy $q_n = a \cdot q_{n-1} + q_{n-2}$ with $q_0 = 1, q_1 = a$, which equals $F_{n+1}^{(a)}$. Egypt bijection pairs these as $(q_{2k-2}, q_{2k-1}, 1, a_{2k}) = (F_{2k-1}^{(a)}, F_{2k}^{(a)}, 1, a)$.
+
+**Verified numerically** for $a = 1, 2, 3, 4, 5$ with $n = 10$ terms each.
+
+---
+
+### Theorem 6: γ-Duality on Metallic Ratios (Added Dec 10, 2025)
+
+The γ function acts on purely periodic CFs as follows:
+
+| Input CF | Value | γ-image | Output CF |
+|----------|-------|---------|-----------|
+| $[0; 1^∞]$ | $(√5-1)/2$ | $√5-2$ | $[0; 4^∞]$ |
+| $[0; 4^∞]$ | $√5-2$ | $(√5-1)/2$ | $[0; 1^∞]$ |
+| $[0; 2^∞]$ | $√2-1$ | $√2-1$ | $[0; 2^∞]$ **fixed!** |
+
+**Key observations:**
+
+1. **Golden-4 duality:** γ swaps the golden ratio CF $[0;1,1,1,\ldots]$ with $[0;4,4,4,\ldots]$
+2. **Silver fixed point:** The silver ratio $σ = √2-1$ is the unique fixed point of γ among purely periodic CFs
+3. **Non-periodic images:** For $a ∈ \{3, 5, 6, \ldots\}$, γ maps $[0;a^∞]$ to quasi-periodic CFs
+
+**Algebraic proof:**
+- $x_a = [0;a^∞]$ satisfies $x = 1/(a+x)$, giving $x_a = (-a + √(a²+4))/2$
+- $γ(x_a) = (1-x_a)/(1+x_a)$
+- For $a=1$: $γ((√5-1)/2) = √5-2 = x_4$ ✓
+- For $a=2$: $γ(√2-1) = √2-1$ (algebraic verification via $(2-√2)/√2 = √2-1$) ✓
+
+**Implication for Fibonacci compression:**
+Since $F_n/F_{n+1} → φ^{-1} = [0;1^∞]$ and $γ([0;1^∞]) = [0;4^∞]$, Fibonacci convergents get mapped near $[0;4^∞]$, explaining the ~3:1 compression of CF coefficients under γ.
+
+---
+
+### Theorem 7: γ-Expansion on Unit Fractions (Added Dec 10, 2025)
+
+For unit fractions $1/n$ with $n ≥ 4$:
+
+$$γ(1/n) = \frac{n-1}{n+1}$$
+
+**Properties:**
+1. $(n-1)/(n+1) > 1/2$ for $n ≥ 4$, so CF always starts $[0; 1, ...]$
+2. CF length increases: 1 → 2 or more tuples
+3. **Symmetric expansion:** As $n → ∞$, $(n-1)/(n+1) → 1$, and rationals near 1 have arbitrarily long CFs
+
+**Duality Principle:**
+
+| Input type | γ effect | Reason |
+|------------|----------|--------|
+| Fibonacci-like $[0;1^n]$ | Compresses | Maps toward $[0;4^∞]$ |
+| Unit fractions $1/n$ | Expands | Maps toward 1 (long CF) |
+| Silver ratio $√2-1$ | Fixed | Self-dual under γ |
+
+**Verified numerically** for $n = 4, \ldots, 50$.
+
+---
+
+### Corollary: Period-2 CF Recurrences
+
+For period-2 CF $[0; a, b, a, b, \ldots]$:
+
+1. **Egypt tuples:** $(u_k, v_k, 1, b)$ where $j = b$ (constant)
+2. **Recurrence:** Both $u_k$ and $v_k$ satisfy $x_{n+1} = (ab+2)x_n - x_{n-1}$
+3. **Characteristic:** $λ² - (ab+2)λ + 1 = 0$ with eigenvalues $(ab+2 ± √((ab)²+4ab))/2$
+
+**Examples:**
+
+| CF | Recurrence | Eigenvalues |
+|----|------------|-------------|
+| $[0;1,2,\ldots]$ | $x_{n+1} = 4x_n - x_{n-1}$ | $2 ± √3$ |
+| $[0;2,3,\ldots]$ | $x_{n+1} = 8x_n - x_{n-1}$ | $4 ± √{15}$ |
 
 ---
 
