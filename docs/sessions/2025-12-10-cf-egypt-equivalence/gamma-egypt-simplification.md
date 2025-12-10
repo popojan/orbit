@@ -113,8 +113,10 @@ When does γ **complexify** Egypt representation?
 
 **Duality principle:** γ compresses "Fibonacci-like" rationals (many small CF coefficients) and expands "unit-fraction-like" rationals (few large CF coefficients).
 
-### Q4: Connection to Hartley ⏸️ PARTIAL PROGRESS
+### Q4: Connection to Hartley ✅ ANSWERED (hyperbolic bridge found)
 The γ function arose from rational circle parametrization (cas function, Hartley transform). Is there a frequency-domain interpretation of Egypt simplification?
+
+**Answer:** Yes — γ is a hyperbolic-to-exponential bridge, not a frequency transform per se.
 
 **Rigorous finding (Dec 10, 2025):**
 
