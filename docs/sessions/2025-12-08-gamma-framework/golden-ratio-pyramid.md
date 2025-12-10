@@ -354,6 +354,212 @@ The pyramids predate documented knowledge of √ by ~800 years.
 
 ---
 
+## The Convergent Bifurcation: √φ/2 vs 2/π
+
+**Discovery date:** 2025-12-10
+**Status:** 🤔 HYPOTHESIS — compelling evidence for both interpretations
+
+### The Remarkable Coincidence
+
+Two fundamental constants are numerically very close:
+
+| Constant | Value | Source |
+|----------|-------|--------|
+| √φ/2 | 0.63600982... | Golden ratio geometry |
+| 2/π | 0.63661977... | Circle geometry |
+| **Difference** | **0.00061** | **< 0.1%** |
+
+Because they differ by less than 0.1%, they **share the same early convergents**:
+
+```
+√φ/2 convergents: 0, 1, 1/2, 2/3, 5/8, 7/11, 159/250, 166/261, ...
+2/π  convergents: 0, 1, 1/2, 2/3,      7/11, 219/344, 226/355, ...
+                              ↑         ↑
+                         ONLY √φ/2   LAST COMMON
+```
+
+**7/11 is the last common convergent** before the sequences diverge!
+
+### The Bifurcation Point
+
+After 7/11, the convergent sequences split:
+
+| Branch | Next convergent | Egyptian fraction (Raw) | Greedy expansion |
+|--------|-----------------|-------------------------|------------------|
+| √φ/2 | 159/250 | `{{1,1,1,1}, {2,3,1,2}, {8,11,1,22}}` | 1/2 + 1/8 + 1/91 + 1/91000 |
+| 2/π | 219/344 | `{{1,1,1,1}, {2,3,1,3}, {11,333,1,1}}` | 1/2 + 1/8 + 1/86 |
+
+**Key observation:** The 2/π branch preserves the Raw tuple `{2,3,1,3}` from 7/11, while √φ/2 changes it to `{2,3,1,2}`.
+
+### Why Use the Raw Representation?
+
+The `EgyptianFractions[q, Method->"Raw"]` from the Orbit paclet provides a **canonical (unique) decomposition** of any rational number. Unlike greedy Egyptian fractions, which have infinitely many solutions for any fraction, Raw representation is deterministic and algebraically fundamental.
+
+**Raw tuple format:** `{u, v, i, j}` represents a telescoping sum:
+
+$$\sum_{k=i}^{j} \frac{1}{(u+vk)(u+v(k-1))}$$
+
+**Why this is better than greedy:**
+
+| Property | Raw | Greedy |
+|----------|-----|--------|
+| Uniqueness | ✓ Canonical | ✗ Many solutions |
+| Structure | Captures algebraic relationships | Obscures structure |
+| Bifurcation | Visible in tuple changes | Hidden in denominators |
+| Connection to CF | Direct via theorem | None |
+
+**The structural insight:**
+
+```
+7/11      = {{1,1,1,1}, {2,3,1,3}}           ← kořen
+                          ↓
+159/250   = {{1,1,1,1}, {2,3,1,2}, ...}      ← √φ/2 větev (změna: 3→2)
+219/344   = {{1,1,1,1}, {2,3,1,3}, ...}      ← π větev (zachovává 3)
+```
+
+The Raw representation reveals that:
+- **7/11 → 219/344:** Tuple `{2,3,1,3}` is preserved, then extended
+- **7/11 → 159/250:** Tuple changes from `{2,3,1,3}` to `{2,3,1,2}`, indicating a branch point
+
+**Theorem (Egypt ↔ CF):** The Raw representation is equivalent to paired differences of continued fraction convergents:
+```mathematica
+EgyptianFractions[q, Method->"Raw"] === RawFractionsFromCF[q]
+```
+
+This theorem proves the Raw representation is not arbitrary — it emerges from the fundamental structure of continued fractions.
+
+### Arguments FOR √φ/2 (Golden Ratio)
+
+| Evidence | Explanation |
+|----------|-------------|
+| **King's Chamber height = 5√5 cubits** | Explicit √5 in construction; √5 is the basis of φ |
+| **γ framework structure** | φ = 2γ[-11/20], 1/φ = 2γ[-7/20]; ratio of numerators = 7/11 |
+| **Chephren uses 5/8** | 5/8 is convergent of √φ/2 but NOT of 2/π |
+| **Kepler triangle** | √φ/2 is the natural height/base ratio of the "golden pyramid" |
+| **All Giza pyramids** | 2/3, 5/8, 7/11 are consecutive √φ/2 convergents |
+
+**The Chephren argument is decisive:** If builders targeted 2/π, they would skip 5/8 (not a 2/π convergent) and go directly to 7/11. But Chephren uses 5/8, suggesting √φ/2 was the target.
+
+### Arguments FOR 2/π
+
+| Evidence | Explanation |
+|----------|-------------|
+| **Perimeter/height = 22/7 ≈ π** | Famous "π pyramid" relationship |
+| **Queen's shaft ≈ 113 cubits** | 113 is denominator of 355/113 ≈ π (best rational approx) |
+| **Algebraic consistency** | If h/b = 2/π, then perimeter/(2h) = π automatically |
+| **Elegant Egyptian fraction** | 219/344 = 1/2 + 1/8 + 1/86 (only 3 terms, clean) |
+| **Raw tuple preservation** | 2/π branch keeps the {2,3,1,3} structure from 7/11 |
+
+**The π consistency argument:** The relationship perimeter/height = 2π follows directly from h/b = 2/π:
+
+```
+perimeter/(2×height) = (4×base)/(2×height)
+                     = 2 × (base/height)
+                     = 2 × (π/2)
+                     = π
+```
+
+### The Queen's Shaft: 113 Cubits
+
+The Queen's Chamber southern shaft measures **59.4 m to the blocking stone**.
+
+```
+59.4 m ÷ 0.524 m/cubit ≈ 113 cubits
+```
+
+This is the **denominator of 355/113 ≈ π** — the best rational approximation to π (accurate to 7 decimal places, discovered by Zǔ Chōngzhī ~480 AD but possibly known earlier).
+
+**Connection to 2/π convergent:**
+- 226/355 is a convergent of 2/π
+- 226 = 2 × 113
+- The shaft length encodes the π-approximation denominator
+
+### Search for Higher Convergents in Egypt
+
+**Discovery date:** 2025-12-10
+
+| Number | Role | Found in Egypt? | How? |
+|--------|------|-----------------|------|
+| **113** | Denominator of 355/113 ≈ π | **YES** | Queen's shaft length |
+| **226** | Numerator of 226/355 (2/π) | **YES** | 2 × Queen's shaft |
+| **250** | Denominator of 159/250 (√φ/2) | **YES** | 2 × Menkaure height (125) |
+| **~159** | Numerator of 159/250 (√φ/2) | **~YES** | Cheops base − height = 160 (±1) |
+| 219 | Numerator of 219/344 (2/π) | No | — |
+| 344 | Denominator of 219/344 (2/π) | No | — |
+| 355 | Denominator of 226/355 (2/π) | No | — |
+
+**Key findings:**
+
+1. **Queen's shaft = 113 cubits** — directly encodes π approximation denominator
+2. **2 × Queen's shaft = 226** — encodes 2/π convergent numerator (226/355)
+3. **2 × Menkaure height = 250** — encodes √φ/2 convergent denominator (159/250)
+4. **Cheops base − height = 160 ≈ 159** — approximately encodes √φ/2 convergent numerator
+
+**Interpretation:** Both convergent branches appear to be encoded:
+- **2/π branch:** 113, 226 (Queen's shaft and its double)
+- **√φ/2 branch:** 250, ~159 (Menkaure height double, Cheops dimensions difference)
+
+### Adversarial Analysis: Random Chance vs Intention
+
+**Statistical context:**
+- ~14 basic dimensions on the plateau
+- ~210 possible combinations (sums, differences, doubles)
+- 7 target values in range ~113-355
+- **Expected random matches: ~1.8**
+- **Actual matches found: 4**
+
+**Quality assessment:**
+
+| Match | Strength | Problem |
+|-------|----------|---------|
+| **113 = Queen shaft** | MEDIUM | Obscure dimension, approximate conversion (59.4m → 113.4 cubits) |
+| 226 = 2×113 | WEAK | Dependent on 113, not independent evidence |
+| 250 = 2×125 | WEAK | Doubling is trivial operation |
+| 160 ≈ 159 | WEAK | Not exact (0.6% error) |
+
+**Multiple testing problem:** We tried direct dimensions, differences, sums, doubles, distances, angles... More tests = more false positives.
+
+**Verdict on higher convergents:**
+
+| Claim | Assessment |
+|-------|------------|
+| Queen shaft = 113 cubits | ⚠️ **INTERESTING** but possibly coincidental |
+| Other matches (226, 250, 159) | ❌ **WEAK** — derived/inexact |
+
+**Conclusion:** The "higher convergents in Egypt" evidence is **weaker than initially presented**. The strong arguments remain:
+1. **7/11 as last common convergent** (mathematically certain)
+2. **Chephren's 5/8** (unique to √φ/2, decisive)
+3. **King's Chamber √5** (explicit in construction)
+
+The Queen's shaft = 113 is intriguing but should not be overweighted.
+
+### Summary Table
+
+| Criterion | √φ/2 | 2/π |
+|-----------|------|-----|
+| King's Chamber √5 | ✓ | — |
+| γ framework | ✓ | — |
+| Chephren 5/8 | ✓ (decisive) | ✗ |
+| Perimeter/height = π | — | ✓ |
+| Queen's shaft = 113 | — | ✓ |
+| Egyptian fraction elegance | ✗ (4 terms) | ✓ (3 terms) |
+| Raw tuple preservation | ✗ | ✓ |
+
+### Conclusion
+
+**Both interpretations are mathematically valid** because 7/11 is the last common convergent of both √φ/2 and 2/π.
+
+**The stronger case is for √φ/2** due to:
+1. Explicit √5 in King's Chamber dimensions
+2. Chephren's 5/8 ratio (unique to √φ/2 convergents)
+3. γ framework producing 7/11 from φ parameters
+
+However, **the pyramid may intentionally encode both** — the builders chose a ratio that simultaneously approximates the golden pyramid (√φ/2) and encodes π through the perimeter relationship. This dual encoding may not be coincidental.
+
+**The Queen's shaft = 113 cubits** is tantalizing evidence for intentional π encoding, as it matches the denominator of the best rational π approximation.
+
+---
+
 ## Future Exploration
 
 **Open questions for later sessions:**

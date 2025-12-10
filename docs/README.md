@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-08 14:33:58
+**Generated:** 2025-12-09 09:56:39
 
 ## Theorems (Master References)
 
@@ -31,6 +31,7 @@
 
 ## Recent Sessions (Last 10)
 
+- [Djedi Project: Queen's Chamber Shaft Exploration](sessions/2025-12-08-gamma-framework/djedi-project.md) *()*
 - [Great Pyramid Internal Geometry](sessions/2025-12-08-gamma-framework/pyramid-internal-geometry.md) *(2025-12-08)*
 - [Golden Ratio in the γ Framework: Pyramid Connection](sessions/2025-12-08-gamma-framework/golden-ratio-pyramid.md) *(2025-12-08)*
 - [The γ Framework: Rational Circle Algebra for Mathematics and Physics](sessions/2025-12-08-gamma-framework/README.md) *(2025-12-08)*
@@ -40,7 +41,6 @@
 - [Pedagogical Note: Why Two Trig Functions?](sessions/2025-12-07-circ-hartley-exploration/pedagogical-note-circ.md) *(2025-12-07)*
 - [Pedagogical Note: Why Two Trig Functions?](sessions/2025-12-07-chebyshev-integral-identity/pedagogical-note-circ.md) *(2025-12-07)*
 - [Circ Symmetries and Chebyshev Connections](sessions/2025-12-07-chebyshev-integral-identity/circ-symmetries.md) *(2025-12-07)*
-- [Physics Connection Review: Why Egypt Trajectory Is Not Physics](sessions/2025-11-22-palindromic-symmetries/physics-connection-review.md) *(2025-12-07)*
 
 ## Navigation
 

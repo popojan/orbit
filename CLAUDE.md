@@ -403,6 +403,33 @@ Load with: `<< Orbit``
 
 **For detailed module documentation, see README.md**
 
+### EgyptianFractions Raw Format
+
+The `EgyptianFractions[q, Method->"Raw"]` returns a unique canonical representation.
+
+**Tuple format:** `{u, v, i, j}` represents a telescoping sum:
+
+$$\sum_{k=i}^{j} \frac{1}{(u+vk)(u+v(k-1))}$$
+
+**Closed form:** `(1 - i + j) / ((u - v + v*i)(u + v*j))`
+
+**Examples:**
+
+| Fraction | Raw tuples | Meaning |
+|----------|-----------|---------|
+| 2/3 | `{1,1,1,2}` | Σₖ₌₁² 1/(k(k+1)) = 1/2 + 1/6 |
+| 5/8 | `{1,1,1,1}, {2,3,1,2}` | 2 telescoping sums |
+| 7/11 | `{1,1,1,1}, {2,3,1,3}` | 2 telescoping sums |
+
+**Key property:** Raw format captures bifurcation in convergent sequences:
+- 7/11 and 219/344 share prefix `{1,1,1,1}, {2,3,1,3}` → π branch
+- 5/8 and 159/250 share prefix `{1,1,1,1}, {2,3,1,2}` → √φ/2 branch
+
+**Connection to continued fractions (THEOREM):**
+```
+Egypt values = Total /@ Partition[Differences @ Convergents[q], 2]
+```
+
 ---
 
 ## 🗣️ Communication Framework
