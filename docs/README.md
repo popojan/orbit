@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-10 17:18:37
+**Generated:** 2025-12-10 22:40:17
 
 ## Theorems (Master References)
 
@@ -32,6 +32,7 @@
 
 ## Recent Sessions (Last 10)
 
+- [γ-Egypt Simplification Phenomenon](sessions/2025-12-10-cf-egypt-equivalence/gamma-egypt-simplification.md) *(2025-12-10)*
 - [CF ↔ Egyptian Fractions Equivalence](sessions/2025-12-10-cf-egypt-equivalence/README.md) *(2025-12-10)*
 - [Egyptian Knowledge Transmission: Secrecy and Loss](sessions/2025-12-08-gamma-framework/egyptian-knowledge-transmission.md) *(2025-12-10)*
 - [Great Pyramid Internal Geometry](sessions/2025-12-08-gamma-framework/pyramid-internal-geometry.md) *(2025-12-10)*
@@ -41,7 +42,6 @@
 - [The γ Framework: Rational Circle Algebra for Mathematics and Physics](sessions/2025-12-08-gamma-framework/README.md) *(2025-12-08)*
 - [Squarical Geometry: When π = 4](sessions/2025-12-08-squarical-geometry/README.md) *(2025-12-08)*
 - [Circ Function Exploration: Hartley Connection](sessions/2025-12-07-circ-hartley-exploration/README.md) *(2025-12-08)*
-- [Ralph V. L. Hartley: Historical Context](sessions/2025-12-07-circ-hartley-exploration/hartley-historical-note.md) *(2025-12-07)*
 
 ## Navigation
 

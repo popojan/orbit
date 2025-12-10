@@ -156,6 +156,24 @@ operation ensures $tv < b$, and the update $b \gets b - tv$ with $t \geq 1$
 guarantees progress). The number of iterations is thus $O(\log b)$.
 \end{proof}
 
+\begin{theorem}[Worst-Case Guarantee]
+The symbolic representation achieves $O(\log b)$ complexity for \emph{all} inputs $a/b$,
+whereas convergent-enumeration methods have worst case $O(a)$ for inputs like $(n-1)/n$.
+\end{theorem}
+
+\begin{proof}
+Consider $\frac{n-1}{n}$ with CF $[0; 1, n-1]$. The expanded Egyptian fraction contains
+$n-1$ unit fractions: $\frac{1}{2} + \frac{1}{6} + \cdots + \frac{1}{n(n-1)}$.
+Methods that enumerate individual fractions (even with post-hoc grouping) require
+$O(n-1) = O(a)$ operations.
+
+The symbolic representation produces a \emph{single} tuple $(1, 1, 1, n-1)$ directly
+from the CF data, requiring only $O(\log n) = O(\log b)$ operations.
+
+This worst-case improvement from $O(a)$ to $O(\log b)$ is the key algorithmic
+contribution: direct tuple computation bypasses enumeration entirely.
+\end{proof}
+
 \begin{corollary}[Dramatic Compression]
 For $\frac{n-1}{n}$, the greedy algorithm produces $O(n)$ unit fractions,
 while the modular inverse algorithm produces a \emph{single} tuple:
@@ -464,9 +482,30 @@ Eppstein~\cite{eppstein} developed three CF-based algorithms:
 Our contribution differs in producing a \emph{symbolic representation} from the start,
 rather than grouping post-hoc. The modular inverse directly yields telescoping structure.
 
-\subsection{Binary/Golomb Methods}
-Binary methods decompose using powers of 2; Golomb's method uses Fibonacci-like
-recurrences. Neither provides the CF connection or symbolic compression we achieve.
+\subsection{Golomb's Method (1962)}
+Golomb~\cite{golomb} presented an algebraic algorithm based on the identity
+$ps - qr = 1$ (Bezout coefficients). Gyimesi and Nyul~\cite{gyimesi} proved that
+Golomb's method and the CF method produce \emph{identical} expansions.
+
+\textbf{Complexity comparison:} While Golomb/CF methods enumerate all CF convergents
+individually (producing $O(n)$ unit fractions for CF length $n$), our symbolic
+representation outputs $O(n/2)$ tuples directly. For extreme cases like $(n-1)/n$
+with CF $[0; 1, n-1]$, traditional methods enumerate $O(n)$ convergents while
+we produce a \emph{single} tuple.
+
+\begin{center}
+\begin{tabular}{l c c}
+\textbf{Rational} & \textbf{Golomb (convergents)} & \textbf{Symbolic (tuples)} \\
+\hline
+$(n-1)/n$ & $O(n)$ & $O(1)$ \\
+$F_k/F_{k+1}$ & $O(k) = O(\log b)$ & $O(k/2) = O(\log b)$ \\
+general $a/b$ & $O(\log b)$ & $O(\log b)$ \\
+\end{tabular}
+\end{center}
+
+\subsection{Binary Methods}
+Binary methods decompose using powers of 2. They do not provide the CF connection
+or symbolic compression we achieve.
 
 \section{Implementation}
 
@@ -517,6 +556,15 @@ G.~Lochs, ``Vergleich der Genauigkeit von Dezimalbruch und Kettenbruch,''
 \bibitem{orbit}
 J.~Popelka, ``Orbit: Mathematical explorations paclet,'' GitHub, 2025.
 \url{https://github.com/popojan/orbit}
+
+\bibitem{golomb}
+S.~W.~Golomb, ``An algebraic algorithm for the representation problems of the
+Ahmes Papyrus,'' \textit{Amer.\ Math.\ Monthly}, vol.~69, pp.~785--786, 1962.
+
+\bibitem{gyimesi}
+M.~Gyimesi and G.~Nyul, ``A note on Golomb's method and the continued fraction
+method for Egyptian fractions,'' \textit{Annales Mathematicae et Informaticae},
+vol.~42, pp.~129--134, 2013.
 \end{thebibliography}
 
 \end{document}
