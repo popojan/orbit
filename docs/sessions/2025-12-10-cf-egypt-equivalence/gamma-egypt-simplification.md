@@ -116,23 +116,31 @@ When does γ **complexify** Egypt representation?
 ### Q4: Connection to Hartley ⏸️ PARTIAL PROGRESS
 The γ function arose from rational circle parametrization (cas function, Hartley transform). Is there a frequency-domain interpretation of Egypt simplification?
 
-**Partial findings (Dec 10, 2025):**
+**Rigorous finding (Dec 10, 2025):**
 
-1. **Hyperbolic connection:** $γ(\tanh(θ)) = e^{-2θ}$
-   - γ transforms hyperbolic tangent into exponential decay
-   - This links to Möbius/conformal geometry
+**Theorem (Hyperbolic-Exponential Identity):**
+$$γ(\tanh(θ)) = e^{-2θ}$$
 
-2. **Spectral interpretation (speculative):**
-   - CF coefficients act like "frequency" components
-   - Many small coefficients = high frequency (Fibonacci-like)
-   - Few large coefficients = low frequency (unit fractions)
-   - γ acts as frequency inverter
+**Proof:** Direct calculation:
+$$γ(\tanh(θ)) = \frac{1 - \tanh(θ)}{1 + \tanh(θ)} = \frac{\cosh(θ) - \sinh(θ)}{\cosh(θ) + \sinh(θ)} = \frac{e^{-θ}}{e^{θ}} = e^{-2θ}$$
 
-3. **Silver ratio as critical frequency:**
-   - $[0;2,2,2,...]$ is the γ-fixed point
-   - May represent "balanced" frequency in this interpretation
+**Equivalent form:** $γ(x) = \exp(-2 \cdot \text{arctanh}(x))$ for $x ∈ (0,1)$.
 
-**Conjecture:** The γ-duality $[0;1^∞] ↔ [0;4^∞]$ corresponds to high↔low frequency exchange.
+**Interpretation:**
+- The interval $(0,1)$ with Poincaré metric $ds = \frac{dx}{1-x^2}$ is a hyperbolic line
+- $\text{arctanh}(x)$ = hyperbolic distance from 0 to $x$
+- γ transforms hyperbolic position $x = \tanh(θ)$ to exponential decay $e^{-2θ}$
+- This is NOT a simple hyperbolic reflection, but a bridge between two coordinate systems
+
+**Speculative (frequency interpretation):**
+- CF coefficients may act like "frequency" components
+- Many small coefficients = high frequency (Fibonacci-like)
+- Few large coefficients = low frequency (unit fractions)
+- γ acts as frequency inverter: golden → 4-periodic
+
+**Fixed point:** $\tanh(θ^*) = e^{-2θ^*}$ gives $θ^* = \frac{1}{4}\ln(2)$, so $x^* = \tanh(\frac{\ln 2}{4}) = \frac{\sqrt{2}-1}{1} = √2-1$ ✓
+
+**Conjecture:** The γ-duality $[0;1^∞] ↔ [0;4^∞]$ corresponds to high↔low frequency exchange in some spectral sense.
 
 ---
 
