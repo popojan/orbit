@@ -1,7 +1,7 @@
 # CF ↔ Egyptian Fractions Equivalence
 
 **Created:** 2025-12-10
-**Status:** ✅ PROVEN — Complete formula derived and verified (9/9 tests)
+**Status:** ✅ PROVEN — Rigorous algebraic proof via leapfrog identity
 **Context:** Relationship between continued fractions and Raw Egyptian fraction representation
 
 ---

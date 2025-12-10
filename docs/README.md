@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-10 15:55:10
+**Generated:** 2025-12-10 17:18:37
 
 ## Theorems (Master References)
 
@@ -33,9 +33,9 @@
 ## Recent Sessions (Last 10)
 
 - [CF ↔ Egyptian Fractions Equivalence](sessions/2025-12-10-cf-egypt-equivalence/README.md) *(2025-12-10)*
+- [Egyptian Knowledge Transmission: Secrecy and Loss](sessions/2025-12-08-gamma-framework/egyptian-knowledge-transmission.md) *(2025-12-10)*
 - [Great Pyramid Internal Geometry](sessions/2025-12-08-gamma-framework/pyramid-internal-geometry.md) *(2025-12-10)*
 - [Golden Ratio in the γ Framework: Pyramid Connection](sessions/2025-12-08-gamma-framework/golden-ratio-pyramid.md) *(2025-12-10)*
-- [Egyptian Knowledge Transmission: Secrecy and Loss](sessions/2025-12-08-gamma-framework/egyptian-knowledge-transmission.md) *(2025-12-10)*
 - [Djedi Project: Queen's Chamber Shaft Exploration](sessions/2025-12-08-gamma-framework/djedi-project.md) *(2025-12-10)*
 - [Ankh Symbol: Sacred Geometry and Mathematical Proportions](sessions/2025-12-08-gamma-framework/ankh-geometry.md) *(2025-12-10)*
 - [The γ Framework: Rational Circle Algebra for Mathematics and Physics](sessions/2025-12-08-gamma-framework/README.md) *(2025-12-08)*

@@ -5,6 +5,45 @@
 
 ---
 
+## December 10, 2025: CF ↔ Egypt Tuple Equivalence
+
+### Discovery
+
+✅ **PROVEN** — Rigorous algebraic proof via leapfrog identity
+
+**Theorem (CF-Egypt Bijection):** For $q = a/b$ with CF $[0; a_1, a_2, \ldots, a_n]$ and convergent denominators $\{q_0=1, q_1, \ldots, q_n=b\}$:
+
+| Case | $u_k$ | $v_k$ | $j_k$ |
+|------|-------|-------|-------|
+| Regular ($k < ⌈n/2⌉$ or $n$ even) | $q_{2k-2}$ | $q_{2k-1}$ | $a_{2k}$ |
+| Last tuple, odd CF | $q_{n-1}$ | $q_n - q_{n-1}$ | 1 |
+
+**Key Results:**
+
+1. **Bezout-Convergent Theorem:** The Extended GCD coefficient |s| = q_{n-1} (penultimate convergent denominator)
+2. **Full bijection:** CF ↔ Egypt is bidirectional; can recover CF from tuples
+3. **Prefix stability:** For irrationals, first k tuples depend only on first 2k CF coefficients
+4. **Lochs' Theorem (1964):** K decimal digits → ~0.97K reliable CF terms → ~K/2 stable tuples
+5. **XGCD = CF:** Extended GCD quotients ARE continued fraction coefficients
+
+**Verification:** Tested on 7/19, 219/344, 5/13, 11/29, 3/8, 3/7, 17/41, 1/3, 2/5
+
+### Algorithmic Insight
+
+Single XGCD call suffices for Egyptian fraction decomposition:
+1. XGCD(a, b) → all CF coefficients (quotients)
+2. Apply bijection formula → tuples directly
+
+This is more efficient than naïve ModInv iteration (which calls PowerMod = XGCD internally at each step).
+
+### Documentation
+
+- Session: `docs/sessions/2025-12-10-cf-egypt-equivalence/README.md`
+- Paper: `docs/papers/egyptian-fractions-telescoping.tex` (extended with §6-8)
+- Reference: Lochs, G. (1964). *Abh. Math. Sem. Univ. Hamburg* 27:142-144
+
+---
+
 ## December 10, 2025: Convergent Bifurcation — √φ/2 vs 2/π
 
 ### Discovery

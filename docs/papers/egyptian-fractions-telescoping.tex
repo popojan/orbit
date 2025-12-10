@@ -16,6 +16,7 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{example}[theorem]{Example}
+\newtheorem{conjecture}[theorem]{Conjecture}
 
 \title{Egyptian Fractions via Modular Inverse:\\Symbolic Telescoping Representation}
 \author{Jan Popelka\thanks{Email: popojan@protonmail.com}}
@@ -34,6 +35,14 @@ complexity from $O(a)$ expanded fractions to $O(\log b)$ symbolic tuples for inp
 We prove that the algorithm produces strictly monotone partial sums that never exceed
 the target value, and establish a precise connection to continued fraction convergents:
 the Egypt values equal paired differences of convergents.
+
+We derive an \emph{explicit bijection} between CF coefficients and Egyptian tuples,
+showing that tuple parameters are determined by convergent denominators and CF partial
+quotients. This bijection extends naturally to irrational numbers via prefix stability:
+the first $k$ tuples depend only on the first $2k$ CF coefficients. Using Lochs' theorem,
+we establish that $K$ decimal digits yield approximately $K/2$ stable Egyptian tuples.
+Finally, we show that a single extended GCD computation suffices for Egyptian fraction
+decomposition, as XGCD quotients are precisely CF coefficients.
 \end{abstract}
 
 \section{Introduction}
@@ -221,6 +230,220 @@ The strict monotonicity of Egypt partial sums follows from the CF correspondence
 paired differences of alternating-sign CF increments are always positive.
 \end{corollary}
 
+\section{Complete CF--Egypt Tuple Formula}
+
+The correspondence in Theorem~\ref{thm:cf} can be made precise at the level of
+symbolic tuples. We establish an explicit bijection between continued fraction
+data and Egyptian fraction tuples.
+
+\begin{theorem}[CF--Egypt Bijection]\label{thm:bijection}
+Let $q = a/b$ with $\gcd(a,b) = 1$ and continued fraction
+$q = [0; a_1, a_2, \ldots, a_n]$ with convergent denominators
+$\{q_0 = 1, q_1, q_2, \ldots, q_n = b\}$.
+
+The $k$-th Egyptian tuple $(u_k, v_k, 1, j_k)$ for $k = 1, \ldots, \lceil n/2 \rceil$
+is given by:
+\begin{equation}
+(u_k, v_k, j_k) = \begin{cases}
+(q_{2k-2}, q_{2k-1}, a_{2k}) & \text{if } k < \lceil n/2 \rceil \text{ or } n \text{ even}, \\
+(q_{n-1}, q_n - q_{n-1}, 1) & \text{if } k = \lceil n/2 \rceil \text{ and } n \text{ odd}.
+\end{cases}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+We prove that the tuple formula produces values summing to $a/b$ by showing each
+tuple value equals a paired convergent difference.
+
+\textbf{Step 1: Leapfrog Identity.} For CF convergents $p_k/q_k$, the following
+identity holds (standard result, proof by induction on the recurrence):
+\begin{equation}\label{eq:leapfrog}
+p_n q_{n-2} - p_{n-2} q_n = (-1)^n a_n.
+\end{equation}
+
+\textbf{Step 2: Tuple Value Formula.} The tuple $(u, v, 1, j)$ has value:
+\[
+T(u, v, 1, j) = \frac{j}{u(u + vj)}.
+\]
+
+\textbf{Step 3: Regular Case.} For tuple $k$ with $(u_k, v_k, j_k) = (q_{2k-2}, q_{2k-1}, a_{2k})$:
+\begin{align*}
+T(q_{2k-2}, q_{2k-1}, 1, a_{2k}) &= \frac{a_{2k}}{q_{2k-2}(q_{2k-2} + q_{2k-1} \cdot a_{2k})} \\
+&= \frac{a_{2k}}{q_{2k-2} \cdot q_{2k}} \quad \text{(by recurrence $q_{2k} = a_{2k} q_{2k-1} + q_{2k-2}$)}.
+\end{align*}
+Applying the leapfrog identity~\eqref{eq:leapfrog} with $n = 2k$:
+\[
+p_{2k} q_{2k-2} - p_{2k-2} q_{2k} = (-1)^{2k} a_{2k} = a_{2k}.
+\]
+Therefore:
+\[
+T(q_{2k-2}, q_{2k-1}, 1, a_{2k}) = \frac{p_{2k} q_{2k-2} - p_{2k-2} q_{2k}}{q_{2k-2} q_{2k}}
+= \frac{p_{2k}}{q_{2k}} - \frac{p_{2k-2}}{q_{2k-2}} = c_{2k} - c_{2k-2}.
+\]
+
+\textbf{Step 4: Odd CF Case.} When $n$ is odd, the last tuple has
+$(u, v, j) = (q_{n-1}, q_n - q_{n-1}, 1)$:
+\begin{align*}
+T(q_{n-1}, q_n - q_{n-1}, 1, 1) &= \frac{1}{q_{n-1}(q_{n-1} + (q_n - q_{n-1}))} = \frac{1}{q_{n-1} q_n}.
+\end{align*}
+The basic CF identity $p_n q_{n-1} - p_{n-1} q_n = (-1)^{n+1}$ gives, for odd $n$:
+\[
+p_n q_{n-1} - p_{n-1} q_n = 1,
+\]
+so:
+\[
+\frac{1}{q_{n-1} q_n} = \frac{p_n q_{n-1} - p_{n-1} q_n}{q_{n-1} q_n} = \frac{p_n}{q_n} - \frac{p_{n-1}}{q_{n-1}} = c_n - c_{n-1}.
+\]
+
+\textbf{Step 5: Telescoping Sum.} The tuple values telescope:
+\[
+\sum_k T_k = (c_2 - c_0) + (c_4 - c_2) + \cdots = c_n - c_0 = \frac{a}{b} - 0 = \frac{a}{b}. \qedhere
+\]
+\end{proof}
+
+\begin{corollary}[Bijection Inverse]
+The CF coefficients can be recovered from Egyptian tuples:
+\begin{align}
+a_1 &= v_1 / u_1, \\
+a_{2k} &= j_k \quad \text{for } k \geq 1, \\
+a_{2k+1} &= (v_{k+1} - v_k) / u_{k+1} \quad \text{for } k \geq 1.
+\end{align}
+\end{corollary}
+
+\begin{example}
+For $q = 7/19$ with CF $[0; 2, 1, 2, 2]$ and denominators $\{1, 2, 3, 8, 19\}$:
+\begin{itemize}
+\item $k=1$: $(u_1, v_1, j_1) = (q_0, q_1, a_2) = (1, 2, 1)$ \checkmark
+\item $k=2$: $(u_2, v_2, j_2) = (q_2, q_3, a_4) = (3, 8, 2)$ \checkmark
+\end{itemize}
+\end{example}
+
+\section{Extension to Irrationals}
+
+\subsection{Prefix Stability}
+
+For irrational numbers, we define the Egyptian representation via the limit
+of convergent representations.
+
+\begin{definition}[Irrational Egypt Representation]
+For irrational $x \in (0, 1)$ with CF convergents $p_n/q_n$, define:
+\[
+\text{Egypt}(x) := \lim_{n \to \infty} \text{Egypt}(p_n/q_n).
+\]
+\end{definition}
+
+This limit is well-defined in the following sense:
+
+\begin{theorem}[Prefix Stability]\label{thm:prefix}
+After CF pair $k$ is fully determined, the first $k$ Egyptian tuples are stable.
+That is, if $x$ and $y$ share the first $2k$ CF coefficients, then their
+Egyptian representations share the first $k$ tuples.
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:bijection}, tuple $k$ depends only on $q_{2k-2}, q_{2k-1}, a_{2k}$,
+which are determined by CF coefficients $a_1, \ldots, a_{2k}$. Additional CF
+coefficients affect only later tuples.
+\end{proof}
+
+\begin{example}[Convergents of $\sqrt{2}/2$]
+\begin{center}
+\begin{tabular}{l l}
+$2/3$ & $\{(1, 1, 1, 2)\}$ \\
+$5/7$ & $\{(1, 1, 1, 2), (3, 4, 1, 1)\}$ \\
+$12/17$ & $\{(1, 1, 1, 2), (3, 7, 1, 2)\}$ \\
+$29/41$ & $\{(1, 1, 1, 2), (3, 7, 1, 2), (17, 24, 1, 1)\}$
+\end{tabular}
+\end{center}
+The first tuple $(1, 1, 1, 2)$ stabilizes after the first convergent.
+\end{example}
+
+\subsection{Precision Bounds: Lochs' Theorem}
+
+The stability theorem leads to a practical question: how many decimal digits
+suffice to determine $k$ stable tuples?
+
+\begin{theorem}[Lochs~\cite{lochs}, 1964]\label{thm:lochs}
+For almost all real numbers $x$, the number of correct CF coefficients
+obtainable from $K$ correct decimal digits satisfies:
+\[
+\lim_{K \to \infty} \frac{\text{CF terms}}{K} = \frac{6 \ln 2 \ln 10}{\pi^2} \approx 0.9702.
+\]
+\end{theorem}
+
+\begin{corollary}[Egypt Precision Bound]
+From $K$ correct decimal digits of $x$:
+\begin{itemize}
+\item Approximately $0.97 K$ CF coefficients are reliable
+\item Approximately $0.485 K$ Egyptian tuples are stable
+\item All terms after position $\approx K/2$ may change arbitrarily
+\end{itemize}
+\end{corollary}
+
+This provides a rigorous foundation for arbitrary-precision Egyptian fraction
+computation: given $K$ decimal digits of a target value, we can guarantee
+stability of approximately $K/2$ tuples.
+
+\subsection{Quadratic Irrationals}
+
+For quadratic irrationals like $\sqrt{2}/2$ or $(\sqrt{5}-1)/2$ (the golden ratio),
+the CF is eventually periodic. This raises:
+
+\begin{conjecture}[Periodic Egypt]
+Quadratic irrationals have eventually periodic Egyptian tuple sequences
+(in an appropriate sense).
+\end{conjecture}
+
+However, the situation is subtle: the tuple parameters grow without bound
+even for periodic CFs. The ``periodicity'' would manifest in the \emph{structure}
+of tuple generation, not in literal repetition.
+
+\section{Computational Considerations}
+
+\subsection{XGCD Optimization}
+
+A key algorithmic insight connects the extended Euclidean algorithm directly
+to CF computation.
+
+\begin{proposition}[XGCD = CF]\label{prop:xgcd}
+The quotients in the extended Euclidean algorithm for $\gcd(a, b)$ are exactly
+the continued fraction coefficients of $a/b$:
+\begin{align}
+q_1 &= \lfloor a/b \rfloor, & r_1 &= a \bmod b, \\
+q_2 &= \lfloor b/r_1 \rfloor, & r_2 &= b \bmod r_1, \\
+&\vdots
+\end{align}
+Then $\text{CF}(a/b) = [q_1; q_2, q_3, \ldots]$.
+\end{proposition}
+
+\begin{corollary}[Single-Call Egypt]
+Egyptian fraction decomposition requires only \emph{one} XGCD computation:
+\begin{enumerate}
+\item Compute XGCD$(a, b)$, recording all quotients
+\item Quotients $= $ CF coefficients
+\item Apply Theorem~\ref{thm:bijection} to obtain tuples directly
+\end{enumerate}
+This is more efficient than the na\"ive modular inverse iteration, which
+calls PowerMod (internally using XGCD) at each step.
+\end{corollary}
+
+\subsection{Float-to-Egypt Pipeline}
+
+For numerical inputs with bounded precision:
+
+\begin{algorithm}[H]
+\caption{Arbitrary-Precision Float to Egyptian Fractions}
+\begin{algorithmic}[1]
+\Require Float $x \pm \epsilon$ with $K = -\log_{10}(\epsilon)$ significant digits
+\Ensure Stable Egyptian tuples for $x$
+\State Rationalize: $p/q \gets$ best rational approximation to $x$
+\State $\text{cf} \gets \text{XGCD}(p, q).\text{quotients}$
+\State $\text{reliable} \gets \lfloor 0.97 K \rfloor$ \Comment{Lochs bound}
+\State $\text{cf} \gets \text{cf}[1..\text{reliable}]$ \Comment{Truncate unreliable terms}
+\State \Return \Call{CFtoEgypt}{cf} \Comment{Theorem~\ref{thm:bijection}}
+\end{algorithmic}
+\end{algorithm}
+
 \section{Related Work}
 
 \subsection{Greedy Algorithm (Fibonacci)}
@@ -286,6 +509,10 @@ D.~Eppstein, ``Egyptian Fractions,'' 1994--2014.
 \bibitem{egypt-repo}
 popojan, ``egypt: Egyptian fraction decomposition via modular inverse,'' GitHub, 2023.
 \url{https://github.com/popojan/egypt}
+
+\bibitem{lochs}
+G.~Lochs, ``Vergleich der Genauigkeit von Dezimalbruch und Kettenbruch,''
+\textit{Abh.\ Math.\ Sem.\ Univ.\ Hamburg}, vol.~27, pp.~142--144, 1964.
 
 \bibitem{orbit}
 J.~Popelka, ``Orbit: Mathematical explorations paclet,'' GitHub, 2025.
