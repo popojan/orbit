@@ -184,4 +184,4 @@ The commentary notes these represent "mental tendencies that sometimes are predo
 ---
 
 *Document created: 2025-12-10*
-*Context: Friend from Canton mentioned "Dancing Mind" (舞心)*
+*Context: 李玲琼 (Lǐ Línqióng), friend from Canton, mentioned "Dancing Mind" (舞心)*

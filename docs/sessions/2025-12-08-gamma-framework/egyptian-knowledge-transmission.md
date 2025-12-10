@@ -208,6 +208,14 @@ Both date from **New Kingdom** — none from Old Kingdom pyramid era have been f
 - Lehner, M. (1997). *The Complete Pyramids*
 - Rossi, C. (2004). *Architecture and Mathematics in Ancient Egypt*
 
+### Philosophy of Geometry and Knowledge Transmission
+
+- **Vopěnka, Petr (2000). *Úhelný kámen evropské vzdělanosti a moci*** (Souborné vydání Rozprav s geometrií). Praha.
+  - Czech mathematician's philosophical exploration of geometry as foundation of European thought
+  - Discusses: golden ratio (zlatý řez), incommensurability (nesouměřitelnost), Pythagorean discoveries
+  - Relevant context: how geometric knowledge is transmitted and lost across cultures
+  - "Geometrie není ani speciální vědou, ani nástrojem poznání. Geometrie — toť název pro duchovní řád."
+
 ---
 
 ## Egyptian Theology: Beyond Simple Polytheism
