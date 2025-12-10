@@ -229,6 +229,43 @@ This is the Egypt representation of the "path divergence" in CF convergent seque
 
 ---
 
+#### Precision Bounds (Lochs' Theorem)
+
+**Lochs' Theorem (1964):** On average, each decimal digit gives ~0.97 CF coefficients.
+
+For K correct decimal digits:
+- ~K CF terms are reliable
+- ~K/2 Egypt tuples are stable
+- All terms after position K may change arbitrarily
+
+**Reference:** Lochs, G. (1964). "Vergleich der Genauigkeit von Dezimalbruch und Kettenbruch". *Abh. Math. Sem. Univ. Hamburg* 27: 142-144.
+
+---
+
+#### Algorithmic Optimization: XGCD → CF → Egypt
+
+**Key insight:** ExtendedGCD quotients ARE CF coefficients!
+
+```
+XGCD(a, b):
+  q₁ = a ÷ b,  r₁ = a mod b
+  q₂ = b ÷ r₁, r₂ = b mod r₁
+  ...
+Quotients {q₁, q₂, ...} = CF(a/b)
+```
+
+**Optimal algorithm for float → Egypt:**
+```
+1. float ± ε → Rationalize(p/q)
+2. ONE XGCD(p, q) → all CF coefficients
+3. Take first ~log₁₀(1/ε) CF terms
+4. Build Egypt tuples via formula
+```
+
+This is **more efficient** than ModInv iteration (which calls PowerMod = XGCD internally multiple times).
+
+---
+
 #### Open Questions
 
 1. **Convergence rate:** How fast do partial sums approach x?
