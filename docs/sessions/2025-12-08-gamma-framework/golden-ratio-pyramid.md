@@ -153,11 +153,16 @@ Or more likely:
 
 **Stunning discovery:** All three pyramids at Giza use convergents of √φ/2:
 
-| Pyramid | Height (cubits) | Base (cubits) | Ratio | Convergent # | Error |
-|---------|-----------------|---------------|-------|--------------|-------|
-| Menkaure | 125 | 200 | 5/8 | 5th | 1.7% |
-| Chefren | 274 | 411 | 2/3 | 4th | 4.8% |
-| **Cheops** | **280** | **440** | **7/11** | **6th** | **0.056%** |
+| Pyramid | Builder | Order | Height (m) | Ratio | Convergent # | Error |
+|---------|---------|-------|------------|-------|--------------|-------|
+| **Cheops** | Khufu | **1st** | **147** | **7/11** | **6th** | **0.056%** |
+| Chephren | Khafre | 2nd | 143 | 2/3 | 4th | 4.8% |
+| Menkaure | Menkaure | 3rd | 66 | 5/8 | 5th | 1.7% |
+
+**Chronology:** Khufu (Cheops) → Khafre (Chephren) → Menkaure, spanning ~2580-2510 BC.
+
+**Note:** The FIRST and LARGEST pyramid (Cheops) has the BEST approximation!
+This suggests the builders achieved optimal precision from the start, not through gradual improvement.
 
 **Factorization of dimensions:**
 - Cheops: GCD(280, 440) = 40, module = 40 cubits ≈ 21 m
@@ -560,6 +565,36 @@ However, **the pyramid may intentionally encode both** — the builders chose a 
 
 ---
 
+## γ-Simplification of Pyramid Ratios (Added Dec 11, 2025)
+
+The Cayley transform γ(x) = (1-x)/(1+x) dramatically simplifies pyramid ratios:
+
+| Pyramid | Ratio | γ(ratio) | CF of γ-image | Egypt tuples |
+|---------|-------|----------|---------------|--------------|
+| Chephren | 2/3 | **1/5** | [0; 5] | 2 → **1** (unit fraction!) |
+| Menkaure | 5/8 | 3/13 | [0; 4, 3] | 3 → 2 |
+| Cheops | 7/11 | 2/9 | [0; 4, 2] | 3 → 2 |
+
+**Key observations:**
+
+1. **Chephren's γ-image is a unit fraction!** γ(2/3) = 1/5 — the simplest possible Egypt representation.
+
+2. **The [0; 4, k] pattern:** After 2/3, all γ-images have CF starting with 4. This is the 4-inversion law at work: γ maps golden-family rationals toward [0; 4, ...] structure.
+
+3. **γ-images converge to γ(√φ/2) ≈ 0.2225**, which has CF [0; 4, 2, 46, ...].
+
+**Connection to γ-Egypt compression:**
+
+The γ transformation provides an alternative "compressed" representation of pyramid ratios:
+- Store γ(7/11) = 2/9 instead of 7/11
+- To recover: apply γ again (it's an involution)
+
+This may not be historically relevant, but reveals deep structure in the ratios the builders chose.
+
+**See also:** [γ-Egypt Simplification](../2025-12-10-cf-egypt-equivalence/gamma-egypt-simplification.md) for the mathematical framework.
+
+---
+
 ## Future Exploration
 
 **Open questions for later sessions:**
@@ -567,5 +602,6 @@ However, **the pyramid may intentionally encode both** — the builders chose a 
 - Other Egyptian pyramids beyond Giza — same convergent structure?
 - Did Egyptians know continued fractions, or found these ratios empirically?
 - Why seked 5.5 specifically? Connection to π (circumference = 44 palms for r = 1 cubit)?
+- **NEW:** Do Dahshur pyramids (Bent, Red) fit into a "silver ratio" family?
 
 **The mystery of the internal passages awaits...**
