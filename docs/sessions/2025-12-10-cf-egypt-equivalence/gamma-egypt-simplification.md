@@ -882,6 +882,153 @@ This is elegant but follows from basic matrix algebra. The novelty is recognizin
 
 ---
 
+## Key Identity: γ Maps "Almost-Ones" to Unit Fractions (Added Dec 11, 2025)
+
+### Theorem 8: Unit Fraction Identity
+
+$$\boxed{\gamma\left(1 - \frac{1}{k}\right) = \frac{1}{2k-1}}$$
+
+**Proof:**
+$$\gamma\left(\frac{k-1}{k}\right) = \frac{1 - \frac{k-1}{k}}{1 + \frac{k-1}{k}} = \frac{\frac{1}{k}}{\frac{2k-1}{k}} = \frac{1}{2k-1}$$
+
+**Equivalent formulations:**
+- $\gamma((k-1)/(k)) = 1/(2k-1)$
+- $\gamma((n-1)/(n+1)) = 1/n$ for odd $n = 2k-1$
+
+### Table of Values
+
+| k | Input $(k-1)/k$ | γ-image $1/(2k-1)$ | Egypt interpretation |
+|---|-----------------|-------------------|---------------------|
+| 2 | 1/2 | 1/3 | Unit fraction |
+| 3 | **2/3** | **1/5** | **Chephren pyramid!** |
+| 4 | 3/4 | 1/7 | Unit fraction |
+| 5 | 4/5 | 1/9 | Unit fraction |
+| 6 | 5/6 | 1/11 | Unit fraction |
+
+### Egypt Interpretation
+
+**Key insight:** γ transforms fractions of the form "1 minus simple fraction" directly into **unit fractions** — the atoms of Egyptian arithmetic!
+
+This explains why **Chephren's pyramid ratio 2/3** has the simplest γ-image:
+- 2/3 = 1 - 1/3 is in the "almost-one" family
+- γ(2/3) = 1/5 is a pure unit fraction
+- Egypt decomposition: trivial (already a unit fraction!)
+
+In contrast, Cheops (7/11) and Menkaure (5/8) are NOT in the $(k-1)/k$ family:
+- 7/11 ≠ (k-1)/k for any integer k
+- Hence γ(7/11) = 2/9 has numerator > 1
+
+### Corollary: γ-Preimage of 1/n
+
+For odd $n$: $\gamma^{-1}(1/n) = (n-1)/(n+1)$
+
+Since γ is an involution, this means:
+$$\gamma\left(\frac{n-1}{n+1}\right) = \frac{1}{n} \quad \text{for all } n$$
+
+**Verification:**
+- γ(0/2) = γ(0) = 1 ✗ (boundary case)
+- γ(1/3) = 1/2 ✓
+- γ(2/4) = γ(1/2) = 1/3 ✓
+- γ(3/5) = 1/4 ✓
+- γ(4/6) = γ(2/3) = 1/5 ✓
+
+---
+
+## Unified Metallic Involution Formula (Added Dec 11, 2025)
+
+### Definition
+
+The **metallic involution** $M_n$ for parameter $n \geq 0$ is:
+
+$$M_n(x) = \frac{2 - nx}{n + 2x}$$
+
+**Properties:**
+- $M_n \circ M_n = \text{id}$ (involution)
+- Fixed point: $x_n^* = \frac{-n + \sqrt{n^2+4}}{2}$ (positive root)
+
+### Special Cases
+
+| n | $M_n(x)$ | Fixed point | Name |
+|---|----------|-------------|------|
+| 0 | $1/x$ | 1 | Inversion |
+| 1 | $(2-x)/(1+2x)$ | $\varphi^{-1} = (\sqrt{5}-1)/2$ | Golden involution |
+| 2 | $(1-x)/(1+x)$ | $\sqrt{2}-1$ | **Silver = γ = Cayley** |
+| 3 | $(2-3x)/(3+2x)$ | $(\sqrt{13}-3)/2$ | Bronze involution |
+| 4 | $(1-2x)/(2+x)$ | $\sqrt{5}-2$ | 4-involution |
+
+### Conjugation Theorem
+
+$M_2$ (silver/γ) acts as **conjugator** between $M_1$ (golden) and $M_4$:
+
+$$M_2 \circ M_1 \circ M_2 = M_4$$
+$$M_2 \circ M_4 \circ M_2 = M_1$$
+
+This is the algebraic basis for the **4-Inversion Law**: γ exchanges $[0;1^{\infty}] \leftrightarrow [0;4^{\infty}]$.
+
+### Geometric Mean Structure
+
+The indices $\{1, 2, 4\}$ satisfy:
+$$2 = \sqrt{1 \cdot 4}$$
+
+So $M_2$ is the "geometric middle" between $M_1$ and $M_4$, explaining why it conjugates them.
+
+---
+
+## Connection to divrf Formula (Historical Note, Dec 11, 2025)
+
+User's notebook from **July 30, 2025** contains:
+
+```mathematica
+divrf[i_, j_] := (3 + 4 I)^(2 j) (24 - 7 I)^i 25^(-i - j)
+```
+
+**Connection discovered Dec 11, 2025:**
+
+The complex numbers $(3+4i)$ and $(24-7i)$ encode **Pythagorean triples**:
+- $|3+4i|^2 = 25 = 5^2$ → triple (3,4,5)
+- $|24-7i|^2 = 625 = 25^2$ → triple (7,24,25)
+
+**Key identity:**
+$$(3+4i)^2 = 9 + 24i - 16 = -7 + 24i$$
+
+This is the **double-angle formula**: the angle of $(3+4i)$ doubled gives angle of $(7+24i)$.
+
+**Connection to Möbius triad:**
+
+The commutator $[\gamma_{\text{golden}}, \gamma_4]$ is a rotation by the $(7,24,25)$ angle — the same structure as $(3+4i)^2$!
+
+The divrf formula parametrizes **rational rotations** without trigonometric functions — Wildberger's rational trigonometry extended to preserve winding number.
+
+---
+
+## Pyramid γ-Simplification Summary (Added Dec 11, 2025)
+
+### Complete Table
+
+| Pyramid | Ratio | Form | γ(ratio) | CF of γ | Egypt |
+|---------|-------|------|----------|---------|-------|
+| **Chephren** | 2/3 | $(k-1)/k$, k=3 | **1/5** | [0;5] | **1 tuple** |
+| Menkaure | 5/8 | convergent | 3/13 | [0;4,3] | 2 tuples |
+| Cheops | 7/11 | mediant(2/3,5/8) | 2/9 | [0;4,2] | 2 tuples |
+
+### Why Chephren is Special
+
+1. **2/3 = 1 - 1/3** is in the "almost-one" family
+2. By Theorem 8: γ(2/3) = 1/5 (unit fraction)
+3. Unit fractions have trivial Egypt decomposition
+4. Hence Chephren has **minimal γ-complexity**
+
+### Why All γ-Images Start with 4
+
+The γ-images converge to:
+$$\gamma(\sqrt{\varphi}/2) \approx 0.2225 = [0; 4, 2, 46, ...]$$
+
+Since $\lfloor 1/0.2225 \rfloor = 4$, all γ-images of √φ/2 convergents have CF starting $[0; 4, ...]$ (except 2/3 which gives [0;5]).
+
+This is the **4-Inversion Law** at work: pyramid ratios are near $\varphi^{-1}$-like values, and γ maps these toward $[0;4^{\infty}]$.
+
+---
+
 ## References
 
 - Parent: [CF-Egypt Equivalence](README.md)
