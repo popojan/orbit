@@ -9,12 +9,15 @@ EgyptianFractions::usage = "EgyptianFractions[q] decomposes rational q into sum 
 
 Options:
   Method -> \"List\" (default) | \"Raw\" | \"Expression\" | \"Partials\"
+  MaxRecursion -> Automatic | n | Infinity  (bisection depth; 0 = no split, 3 = max 8 terms/tuple, Infinity = full expansion; Automatic = 0 for Raw/Expression/Partials, 3 for List)
+  MergeOrder -> None | \"Forward\" | \"Backward\"  (O(k²) postprocessing, default None)
+  MaxItems -> n  (for irrational inputs: number of CF terms, default 10)
 
 Output modes:
   \"List\"       - List of unit fractions {1/a, 1/b, 1/c, ...}
   \"Raw\"        - Symbolic form {{u, v, i, j}, ...} where each term = Σₖ₌ᵢʲ 1/((u+vk)(u+v(k-1)))
   \"Expression\" - HoldForm symbolic sums for display
-  \"Partials\"   - {partial sums} showing monotone convergence
+  \"Partials\"   - {partial sums} showing monotone convergence (ignores MaxRecursion, MergeOrder)
 
 MONOTONICITY THEOREM:
   The partial sums form a STRICTLY INCREASING sequence that NEVER exceeds q.
@@ -39,10 +42,27 @@ Connection to continued fractions (THEOREM):
                     ReleaseHold @ EgyptianFractions[q, Method -> \"Expression\"]}
 
 Examples:
-  EgyptianFractions[7/19]                     (* {1/3, 1/33, 1/209} *)
-  EgyptianFractions[2023/2024, Method->\"Raw\"]  (* Symbolic telescoping form *)
-  EgyptianFractions[3/7, Method->\"Partials\"]   (* Monotone convergence sequence *)
+  EgyptianFractions[7/19]                       (* {1/3, 1/33, 1/209} *)
+  EgyptianFractions[2023/2024, Method->\"Raw\"]    (* {{1,1,1,2023}} - single tuple *)
+  EgyptianFractions[3/7, Method->\"Partials\"]     (* Monotone convergence sequence *)
+
+Bisection control (MaxRecursion):
+  EgyptianFractions[2023/2024, MaxRecursion->0]        (* 2023 fractions - no split, O(n) *)
+  EgyptianFractions[2023/2024, MaxRecursion->3]        (* ~18 fractions - max 8 terms/tuple *)
+  EgyptianFractions[2023/2024, MaxRecursion->Infinity] (* ~12 fractions - full split *)
+
+Merge postprocessing (O(k²)):
+  EgyptianFractions[2023/2024, MergeOrder->\"Forward\"]  (* Merge from smallest *)
+  EgyptianFractions[2023/2024, MergeOrder->\"Backward\"] (* Merge from largest *)
+
+Irrational numbers (CF approximation):
+  EgyptianFractions[Pi, MaxItems->2] // Total   (* 22/7 - Archimedes approx *)
+  EgyptianFractions[Sqrt[2], MaxItems->5]       (* CF truncation at 5 terms *)
+  EgyptianFractions[GoldenRatio]                (* Default 10 CF terms *)
 ";
+
+MergeOrder::usage = "MergeOrder is an option for EgyptianFractions specifying merge direction.
+Values: None (default), \"Forward\", \"Backward\". O(k²) postprocessing.";
 
 RawFractionsSymbolic::usage = "RawFractionsSymbolic[q] returns symbolic form {{u, v, i, j}, ...}.
 
@@ -235,11 +255,131 @@ RawFractionsFromCF[q_Rational /; 0 < q < 1] := Module[
   eg
 ]
 
+(* Construct raw fractions from explicit CF list *)
+(* Used for irrational numbers where we have a truncated CF *)
+RawFractionsFromCFList[cfList_List] := Module[
+  {cfTail, pairs, eg},
+
+  (* cfList should be {a₀, a₁, a₂, ...} *)
+  (* For proper fractions (0 < x < 1), a₀ = 0 *)
+  cfTail = If[First[cfList] == 0, Drop[cfList, 1], cfList];
+
+  If[Length[cfTail] == 0, Return[{}]];
+
+  (* Edge case: CF tail has only one element *)
+  If[Length[cfTail] == 1,
+    Return[{{1, First[cfTail] - 1, 1, 1}}]
+  ];
+
+  (* Fold pairs of CF coefficients *)
+  pairs = Partition[cfTail, 2];
+  eg = Drop[FoldList[RawStep, {1, 0, 1, 0}, pairs], 1];
+
+  (* Handle odd-length CF tail: last coefficient has no pair *)
+  If[OddQ[Length[cfTail]] && Length[eg] > 0,
+    AppendTo[eg, RawStep[Last[eg], {Last[cfTail] - 1, 1}]]
+  ];
+
+  eg
+]
+
 (* Expand single raw tuple to list of unit fractions *)
 ExpandRawFraction[{u_, v_, i_, j_}] := Which[
   v == 0 && i == 0 && j == 0, {1/u},    (* Pure unit fraction *)
   v == 0, {1/u},                         (* Degenerate case *)
   True, Table[1/((u + v*k)*(u + v*(k - 1))), {k, i, j}]
+]
+
+(* ===================================================================
+   BISECTION - O(log n) unit fractions via recursive halving
+   =================================================================== *)
+
+(* Halve a single raw tuple once if it exceeds maxTerms *)
+(* Returns list of raw tuples (either original or two halves) *)
+HalveRawFractionOnce[{u_, v_, i_, j_}, maxTerms_] :=
+  If[j - i + 1 <= maxTerms || v == 0,
+    (* Small enough or degenerate - keep as is *)
+    {{u, v, i, j}},
+    (* Split: compute value, halve it, convert halves back to raw *)
+    Module[{value, a, b, half1, half2},
+      value = CalculateRawSum[{u, v, i, j}];
+      {a, b} = NumeratorDenominator[value];
+      (* Split into two parts that sum to a/b *)
+      If[OddQ[a],
+        half1 = Floor[a/2]/b;
+        half2 = Ceiling[a/2]/b;
+        ,
+        half1 = (a/2 - 1)/b;
+        half2 = (a/2 + 1)/b;
+      ];
+      (* Convert halves to raw tuples and flatten *)
+      Join[
+        If[half1 > 0, RawFractionsSymbolic[half1], {}],
+        If[half2 > 0, RawFractionsSymbolic[half2], {}]
+      ]
+    ]
+  ]
+
+(* Recursively halve all tuples until all are within maxTerms *)
+HalveAllRaw[tuples_List, maxTerms_] :=
+  FixedPoint[
+    Flatten[HalveRawFractionOnce[#, maxTerms] & /@ #, 1] &,
+    tuples
+  ]
+
+(* Bisect raw tuples based on recursion depth *)
+(* maxRecursion = bisection depth: 0 = no split, n = max 2^n terms/tuple, Infinity = full expansion *)
+BisectRaw[tuples_List, maxRecursion_] := Which[
+  maxRecursion === 0, tuples,           (* No bisection *)
+  maxRecursion === Infinity, HalveAllRaw[tuples, 1],  (* Full expansion: split until 1 term per tuple *)
+  True, HalveAllRaw[tuples, 2^maxRecursion]  (* Max 2^n terms per tuple *)
+]
+
+(* ===================================================================
+   MERGE - Combine consecutive unit fractions into larger ones
+   =================================================================== *)
+
+(* Merge consecutive unit fractions where possible *)
+(* Finds sequences that sum to a unit fraction and combines them *)
+MergeFractions[fracs_List] := Module[
+  {sorted, i, j, result = {}, accum, pos},
+
+  sorted = ReverseSort[fracs];
+  i = 1;
+
+  While[i <= Length[sorted],
+    If[Denominator[sorted[[i]]] > 1,
+      (* Look for consecutive fractions that sum to unit fraction *)
+      accum = Accumulate[sorted[[i ;;]]];
+      pos = Flatten[Position[Numerator /@ accum, 1]];
+      j = If[pos =!= {}, i + Last[pos] - 1, i];
+      AppendTo[result, Total[sorted[[i ;; j]]]];
+      i = j + 1;
+      ,
+      AppendTo[result, sorted[[i]]];
+      i += 1;
+    ]
+  ];
+
+  ReverseSort[result]
+]
+
+(* Fix duplicate fractions by re-decomposing their sum *)
+FixDuplicates[fracs_List] := FixedPoint[
+  Module[{groups, dupPos},
+    groups = Split[ReverseSort[#]];
+    dupPos = FirstPosition[groups, _List?(Length[#] > 1 &)];
+    If[MissingQ[dupPos] || dupPos === {},
+      Flatten[groups],
+      (* Found duplicates - re-decompose their sum *)
+      ReverseSort[Flatten[Join[
+        groups[[;; First[dupPos] - 1]],
+        {ExpandRawFraction /@ RawFractionsSymbolic[Total[groups[[First[dupPos]]]]]},
+        groups[[First[dupPos] + 1 ;;]]
+      ]]]
+    ]
+  ] &,
+  fracs
 ]
 
 (* Closed form for raw sum value *)
@@ -532,20 +672,33 @@ FindCanonicalInteger[n_Integer, maxSplits_Integer: 3, maxDenom_Integer: 100, ret
    =================================================================== *)
 
 EgyptianFractions[q_Rational, OptionsPattern[]] := Module[
-  {raw, expanded, partials},
+  {raw, maxRec, mergeOrd, bisected, expanded, partials, method},
 
   raw = RawFractionsSymbolic[q];
+  method = OptionValue[Method];
+  mergeOrd = OptionValue[MergeOrder];
 
-  Switch[OptionValue[Method],
+  (* Resolve MaxRecursion: Automatic depends on Method *)
+  (* 0 = no split, 3 = max 8 terms/tuple, Infinity = full expansion *)
+  maxRec = OptionValue[MaxRecursion];
+  maxRec = If[maxRec === Automatic,
+    If[MemberQ[{"Raw", "Expression", "Partials"}, method], 0, 3],  (* Raw/Expression/Partials: no split *)
+    maxRec
+  ];
+
+  (* Apply bisection if needed *)
+  bisected = BisectRaw[raw, maxRec];
+
+  Switch[method,
     "Raw",
-      raw,
+      bisected,
 
     "Expression",
-      FormatRawFraction /@ raw,
+      FormatRawFraction /@ bisected,
 
     "Partials",
-      (* Use symbolic computation for single-tuple case (O(1) per partial) *)
-      (* Multi-tuple case: compute symbolically by accumulating complete tuples *)
+      (* Use original raw tuples (ignores MaxRecursion, MergeOrder) *)
+      (* Symbolic computation: O(1) per partial sum *)
       If[Length[raw] == 1,
         RawPartialSumsAll[First[raw]],
         (* Multiple tuples: partial sums within each tuple, accumulate across *)
@@ -560,12 +713,76 @@ EgyptianFractions[q_Rational, OptionsPattern[]] := Module[
       ],
 
     "List" | _,
-      (* Default: expand and sort by decreasing denominator *)
-      Sort[Flatten[ExpandRawFraction /@ raw], Greater]
+      (* Expand, fix duplicates, optionally merge *)
+      expanded = Sort[Flatten[ExpandRawFraction /@ bisected], Greater];
+      expanded = FixDuplicates[expanded];
+      Switch[mergeOrd,
+        "Forward",
+          FixDuplicates[MergeFractions[Reverse[expanded]]],
+        "Backward",
+          FixDuplicates[MergeFractions[expanded]],
+        _,
+          expanded
+      ]
   ]
 ]
 
-Options[EgyptianFractions] = {Method -> "List"}
+Options[EgyptianFractions] = {Method -> "List", MaxRecursion -> Automatic, MergeOrder -> None, MaxItems -> 10}
+
+(* ===================================================================
+   IRRATIONAL INPUT HANDLING
+   =================================================================== *)
+
+(* Handle irrational/real numbers via CF approximation *)
+(* Matches any numeric that's not Rational or Integer *)
+EgyptianFractions[x_?NumericQ, opts:OptionsPattern[]] /; !IntegerQ[x] && !Head[x] === Rational := Module[
+  {maxItems, cf, intPart, fracCF, raw, partials},
+
+  maxItems = OptionValue[MaxItems];
+
+  (* Get CF expansion with specified number of terms *)
+  cf = ContinuedFraction[x, maxItems];
+
+  (* Split into integer part and fractional CF *)
+  intPart = First[cf];
+  fracCF = Prepend[Drop[cf, 1], 0];  (* {0, a₁, a₂, ...} for fractional part *)
+
+  (* Get raw tuples from fractional CF *)
+  raw = RawFractionsFromCFList[fracCF];
+
+  Switch[OptionValue[Method],
+    "Raw",
+      If[intPart == 0, raw, Prepend[raw, {intPart, 0, 0, 0}]],
+
+    "Expression",
+      If[intPart == 0,
+        FormatRawFraction /@ raw,
+        Prepend[FormatRawFraction /@ raw, intPart]
+      ],
+
+    "Partials",
+      If[Length[raw] == 1,
+        If[intPart == 0,
+          RawPartialSumsAll[First[raw]],
+          intPart + # & /@ RawPartialSumsAll[First[raw]]
+        ],
+        Module[{accum = intPart, result = If[intPart == 0, {}, {intPart}]},
+          Do[
+            partials = RawPartialSumsAll[tuple];
+            AppendTo[result, accum + # & /@ partials];
+            accum += CalculateRawSum[tuple];
+          , {tuple, raw}];
+          Flatten[result]
+        ]
+      ],
+
+    "List" | _,
+      If[intPart == 0,
+        Sort[Flatten[ExpandRawFraction /@ raw], Greater],
+        Prepend[Sort[Flatten[ExpandRawFraction /@ raw], Greater], intPart]
+      ]
+  ]
+]
 
 (* ===================================================================
    INTEGER INPUT HANDLING
