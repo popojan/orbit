@@ -1029,6 +1029,41 @@ This is the **4-Inversion Law** at work: pyramid ratios are near $\varphi^{-1}$-
 
 ---
 
+## Adversarial Summary: What's New vs What's Known (Dec 11, 2025)
+
+### Known Classical Structures (NOT our invention)
+
+1. **γ = Cayley Transform** — $(1-x)/(1+x)$ is textbook
+2. **Tangent subtraction** — γ(x) = tan(45° - arctan(x)), classical trigonometry
+3. **Metallic means** — Vera de Spinadel's terminology for generalized golden ratios
+4. **Pell equations** — Chebyshev polynomials encode solutions, well-known
+5. **Pythagorean rotations** — Gaussian integers $(a+bi)^n$, classical number theory
+6. **Rational circle group** — stereographic parametrization gives Pythagorean triples
+
+### Potentially Novel Connections
+
+1. **γ as Egypt simplifier** — that Cayley transform reduces Egypt tuple count for Fibonacci-like rationals
+2. **4-Inversion Law** — $\gamma([0;a^{\infty}]) = [0;(4/a)^{\infty}]$ on CF coefficients
+3. **Theorem 8** — γ(1-1/k) = 1/(2k-1) mapping "almost-ones" to unit fractions
+4. **Pyramid ratios** — Giza pyramids use √φ/2 convergents, Chephren 2/3 is special (k-1)/k form
+5. **Möbius triad {M₁,M₂,M₄}** — specific involution triple with conjugation structure
+
+### The Egypt Irony
+
+These classical structures — Cayley transform, Pell equations, Chebyshev polynomials, Pythagorean triples — all converge naturally when analyzing **Egyptian fractions**, historically the oldest known fractional system (~1800 BC).
+
+Either:
+- **Coincidence:** Egyptians stumbled onto ratios with deep algebraic structure
+- **Not coincidence:** They understood something we're rediscovering
+
+The fact that γ = tan(45° - arctan(x)) simplifies pyramid ratios, and that Chephren's 2/3 = 1-1/3 maps to the unit fraction 1/5, suggests the builders may have had geometric intuition equivalent to what we now formalize algebraically.
+
+The pyramid dimensions are not random. Whether the Egyptians had "theory" or just exceptional empirical sense for harmonious ratios, they chose numbers that sit at special points in the γ-Egypt landscape.
+
+**Open question:** Did Egyptian mathematicians know something like the 4-Inversion Law empirically? The Rhind papyrus shows sophisticated fraction manipulation...
+
+---
+
 ## References
 
 - Parent: [CF-Egypt Equivalence](README.md)
