@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-11 05:10:43
+**Generated:** 2025-12-11 22:45:30
 
 ## Theorems (Master References)
 
@@ -20,7 +20,9 @@
 
 ## Learning Materials
 
+- [Archimedes of Syracuse (c. 287 – 212 BC)](learning/archimedes-life.md)
 - [Character Sums over Finite Fields](learning/character-sums-introduction.md)
+- [Eratosthenes of Cyrene (c. 276 – c. 194 BC)](learning/eratosthenes-life.md)
 - [Sir William Matthew Flinders Petrie (1853-1942)](learning/flinders-petrie.md)
 - [Generating Functions Quick Course](learning/generating-functions-course.md)
 - [Hölder Conjugates](learning/hoelder-conjugates.md)
@@ -34,16 +36,16 @@
 
 ## Recent Sessions (Last 10)
 
-- [γ-Egypt Simplification Phenomenon](sessions/2025-12-10-cf-egypt-equivalence/gamma-egypt-simplification.md) *(2025-12-10)*
+- [γ-Egypt Simplification Phenomenon](sessions/2025-12-10-cf-egypt-equivalence/gamma-egypt-simplification.md) *(2025-12-11)*
+- [Gauss, FFT, and the Hartley Connection](sessions/2025-12-11-gauss-fft-hartley/README.md) *()*
+- [Archimedův palimpsest a Metoda](sessions/2025-12-11-archimedes-palimpsest/README.md) *()*
+- [Golden Ratio in the γ Framework: Pyramid Connection](sessions/2025-12-08-gamma-framework/golden-ratio-pyramid.md) *(2025-12-11)*
 - [CF ↔ Egyptian Fractions Equivalence](sessions/2025-12-10-cf-egypt-equivalence/README.md) *(2025-12-10)*
 - [Egyptian Knowledge Transmission: Secrecy and Loss](sessions/2025-12-08-gamma-framework/egyptian-knowledge-transmission.md) *(2025-12-10)*
 - [Great Pyramid Internal Geometry](sessions/2025-12-08-gamma-framework/pyramid-internal-geometry.md) *(2025-12-10)*
-- [Golden Ratio in the γ Framework: Pyramid Connection](sessions/2025-12-08-gamma-framework/golden-ratio-pyramid.md) *(2025-12-10)*
 - [Djedi Project: Queen's Chamber Shaft Exploration](sessions/2025-12-08-gamma-framework/djedi-project.md) *(2025-12-10)*
 - [Ankh Symbol: Sacred Geometry and Mathematical Proportions](sessions/2025-12-08-gamma-framework/ankh-geometry.md) *(2025-12-10)*
 - [The γ Framework: Rational Circle Algebra for Mathematics and Physics](sessions/2025-12-08-gamma-framework/README.md) *(2025-12-08)*
-- [Squarical Geometry: When π = 4](sessions/2025-12-08-squarical-geometry/README.md) *(2025-12-08)*
-- [Circ Function Exploration: Hartley Connection](sessions/2025-12-07-circ-hartley-exploration/README.md) *(2025-12-08)*
 
 ## Navigation
 
