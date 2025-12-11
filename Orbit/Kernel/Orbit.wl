@@ -17,6 +17,7 @@ Get["Orbit`LegacyPolynomials`"];
 Get["Orbit`EgyptianFractions`"];
 Get["Orbit`CunninghamRepresentation`"];
 Get["Orbit`CircFunctions`"];
+Get["Orbit`CyclotomicFFT`"];
 
 (* The package context is now populated with symbols from submodules *)
 (* All usage messages and definitions are in the respective submodule files *)
