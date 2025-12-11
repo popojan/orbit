@@ -28,6 +28,9 @@ CyclotomicCoeffs::usage = "CyclotomicCoeffs[elem] returns the rational coefficie
 CyclotomicToComplex::usage = "CyclotomicToComplex[elem] evaluates to complex number.
 This is the ONLY function that leaves rationals.";
 
+CyclotomicToRational::usage = "CyclotomicToRational[elem] extracts rational value if result is real.
+Otherwise returns the complex result from CyclotomicToComplex.";
+
 CyclotomicFromReal::usage = "CyclotomicFromReal[x, n] creates cyclotomic element from real rational x.";
 
 CyclotomicFromComplex::usage = "CyclotomicFromComplex[z, n] creates cyclotomic element from z ∈ ℚ(i).
@@ -100,22 +103,30 @@ Begin["`Private`"];
 
 (* ============================================ *)
 (* INTERNAL: MINIMAL POLYNOMIAL REDUCTION       *)
-(* For n=2^k, we use ζ^(n/2) = -1                *)
+(* Reduce to basis of dimension φ(n) using      *)
+(* cyclotomic polynomial Φₙ(ζ) = 0              *)
 (* ============================================ *)
 
-(* Reduce coefficients using ζ^(n/2) = -1 for power-of-2 *)
-reduceCoeffs[coeffs_List, n_Integer] := Module[{m = Length[coeffs], half = n/2, reduced},
-  If[m <= half, Return[PadRight[coeffs, half]]];
-  (* Fold high coefficients using ζ^half = -1 *)
-  reduced = Take[coeffs, half];
-  Do[
-    reduced[[Mod[k - 1, half] + 1]] -= coeffs[[k]];
-    , {k, half + 1, m}
-  ];
-  reduced
+(* Reduce polynomial coefficients modulo cyclotomic polynomial Φₙ *)
+(* This gives canonical representation in minimal basis {1, ζ, ..., ζ^(φ(n)-1)} *)
+reduceCoeffsCyclotomic[coeffs_List, n_Integer] := Module[
+  {phi = EulerPhi[n], cyclo, poly, reduced},
+
+  (* Build polynomial from coefficients *)
+  poly = Sum[coeffs[[k]] Global`x^(k-1), {k, 1, Length[coeffs]}];
+
+  (* Get cyclotomic polynomial *)
+  cyclo = Cyclotomic[n, Global`x];
+
+  (* Reduce modulo cyclotomic polynomial *)
+  (* PolynomialRemainder gives remainder of poly/cyclo *)
+  reduced = PolynomialRemainder[poly, cyclo, Global`x];
+
+  (* Extract coefficients, pad to φ(n) *)
+  PadRight[CoefficientList[reduced, Global`x], phi]
 ]
 
-(* Full reduction for general n - use ζⁿ = 1 *)
+(* Legacy: Full reduction using only ζⁿ = 1 (keeps n coefficients) *)
 reduceCoeffsFull[coeffs_List, n_Integer] := Module[{result},
   If[Length[coeffs] <= n,
     Return[PadRight[coeffs, n]]
@@ -129,31 +140,19 @@ reduceCoeffsFull[coeffs_List, n_Integer] := Module[{result},
   result
 ]
 
-(* Canonical reduction for power-of-2: use ζ^(n/2) = -1 *)
-reduceCanonical[coeffs_List, n_Integer] := Module[{half, result},
-  If[!IntegerQ[Log2[n]], Return[coeffs]];  (* Only for power-of-2 *)
-  half = n / 2;
-  If[Length[coeffs] <= half, Return[PadRight[coeffs, half]]];
-  (* ζ^half = -1, so ζ^(half+k) = -ζ^k *)
-  result = Take[PadRight[coeffs, n], half];
-  Do[
-    result[[k]] -= coeffs[[half + k]];
-    , {k, 1, Min[half, Length[coeffs] - half]}
-  ];
-  result
-]
-
 (* ============================================ *)
 (* CYCLOTOMIC ELEMENT STRUCTURE                 *)
 (* ============================================ *)
 
-(* Constructor - normalize coefficients *)
+(* Constructor - normalize coefficients using cyclotomic polynomial *)
+(* Result has φ(n) coefficients in minimal basis *)
 CyclotomicElement[n_Integer, coeffs_List] /; IntegerQ[n] && n > 0 :=
-  CyclotomicElement[n, reduceCoeffsFull[coeffs, n]] /; Length[coeffs] != n
+  CyclotomicElement[n, reduceCoeffsCyclotomic[coeffs, n]] /; Length[coeffs] != EulerPhi[n]
 
 (* Accessors *)
 CyclotomicOrder[CyclotomicElement[n_, _]] := n
 CyclotomicCoeffs[CyclotomicElement[_, coeffs_]] := coeffs
+CyclotomicDimension[CyclotomicElement[n_, _]] := EulerPhi[n]
 
 (* Display form *)
 Format[CyclotomicElement[n_, coeffs_]] := Module[{terms, ζ},
@@ -234,15 +233,19 @@ promoteTo[elem_CyclotomicElement, n_] /; CyclotomicOrder[elem] == n := elem
 (* CONVERSION TO COMPLEX                        *)
 (* ============================================ *)
 
-CyclotomicToComplex[CyclotomicElement[n_, coeffs_]] := Module[{ζ = Exp[2 Pi I / n]},
-  Sum[coeffs[[k + 1]] ζ^k, {k, 0, n - 1}]
+(* Convert from minimal basis (φ(n) coefficients) to complex number *)
+CyclotomicToComplex[CyclotomicElement[n_, coeffs_]] := Module[
+  {phi = EulerPhi[n], ζ = Exp[2 Pi I / n]},
+  (* coeffs has length φ(n), basis is {1, ζ, ζ², ..., ζ^(φ(n)-1)} *)
+  Sum[coeffs[[k + 1]] ζ^k, {k, 0, phi - 1}] // Simplify
 ]
+
 
 (* ============================================ *)
 (* CONSTRUCTORS                                 *)
 (* ============================================ *)
 
-CyclotomicFromReal[x_, n_Integer] := CyclotomicElement[n, PadRight[{x}, n]]
+CyclotomicFromReal[x_, n_Integer] := CyclotomicElement[n, PadRight[{x}, EulerPhi[n]]]
 
 (* ============================================ *)
 (* REAL/IMAG EXTRACTION                         *)
@@ -264,8 +267,14 @@ CyclotomicImagPart[CyclotomicElement[n_, coeffs_]] := Module[{quarter = n/4},
   coeffs[[quarter + 1]] - coeffs[[3 quarter + 1]]
 ]
 
-(* Extract as {Re, Im} pair - both rational! *)
-CyclotomicToRational[elem_CyclotomicElement] := {
+(* Extract as rational value if result is real, otherwise return complex *)
+CyclotomicToRational[elem_CyclotomicElement] := Module[{z},
+  z = CyclotomicToComplex[elem];
+  If[Im[z] === 0 || PossibleZeroQ[Im[z]], Re[z] // Simplify, z]
+]
+
+(* Extract as {Re, Im} pair - only works for n divisible by 4, uses full basis *)
+CyclotomicToRationalPair[elem_CyclotomicElement] := {
   CyclotomicRealPart[elem],
   CyclotomicImagPart[elem]
 }
