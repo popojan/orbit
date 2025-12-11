@@ -633,6 +633,255 @@ See also: [Kolmogorov learning doc](../../learning/kolmogorov-complexity.md)
 
 ---
 
+## Möbius Involution Triad (Added Dec 11, 2025)
+
+### Discovery: Three Natural Involutions
+
+Exploring Möbius transformations with metallic ratio fixed points reveals a **triad of involutions**:
+
+| Involution | Formula | Fixed Point | CF Value |
+|------------|---------|-------------|----------|
+| **γ_silver** | $(1-x)/(1+x)$ | $\sqrt{2}-1$ | $[0; 2^{\infty}]$ |
+| **γ_golden** | $(2-x)/(2x+1)$ | $\varphi^{-1}$ | $[0; 1^{\infty}]$ |
+| **γ_4** | $(1-2x)/(2+x)$ | $\sqrt{5}-2$ | $[0; 4^{\infty}]$ |
+
+### Derivation
+
+For Möbius $M(x) = (ax+b)/(cx+d)$ with fixed point $x^*$ satisfying $x^2 + px - 1 = 0$:
+
+**General φ-fixed family** (fixed point $\varphi^{-1}$, where $x^2 + x - 1 = 0$):
+$$M_a(x) = \frac{ax + 1}{x + (a+1)}$$
+
+Involution condition $M_a \circ M_a = \text{id}$ gives **$a = -1/2$**, yielding:
+$$\gamma_{\text{golden}}(x) = \frac{2-x}{2x+1}$$
+
+**General 4-fixed family** (fixed point $\sqrt{5}-2$, where $x^2 + 4x - 1 = 0$):
+$$N_a(x) = \frac{ax + 1}{x + (a+4)}$$
+
+Involution condition gives **$a = -2$**, yielding:
+$$\gamma_4(x) = \frac{1-2x}{2+x}$$
+
+### Roles of the Three Involutions
+
+| Involution | Role | Effect on Fibonacci | Effect on 4-periodic |
+|------------|------|---------------------|---------------------|
+| **γ_silver** | Exchanger | Compresses (1→4) | Expands (4→1) |
+| **γ_golden** | Golden stabilizer | Expands (+1 term) | Out of domain |
+| **γ_4** | 4-periodic stabilizer | Out of domain | Stabilizes |
+
+**Key insight:** γ_silver is the **unique exchanger** between the golden and 4-periodic worlds.
+
+### The 4-Inversion Law
+
+γ_silver acts on purely periodic CFs as **coefficient inversion through 4**:
+
+$$\boxed{\gamma_{\text{silver}}([0; a^{\infty}]) = [0; (4/a)^{\infty}]}$$
+
+**Verification:**
+
+| $a$ | $x_a = [0;a^{\infty}]$ | $\gamma(x_a)$ | Corresponds to |
+|-----|------------------------|---------------|----------------|
+| 1 | $\varphi^{-1} \approx 0.618$ | $0.236$ | $[0; 4^{\infty}]$ |
+| 2 | $\sqrt{2}-1 \approx 0.414$ | $0.414$ | $[0; 2^{\infty}]$ **fixed!** |
+| 3 | $0.303$ | $0.535$ | $[0; (4/3)^{\infty}]$ |
+| 4 | $\sqrt{5}-2 \approx 0.236$ | $0.618$ | $[0; 1^{\infty}]$ |
+
+This generalizes the Fixed Point Identity theorem: $\gamma(1/x_a) = 1/x_{4/a}$.
+
+### Domain Constraints
+
+| Involution | Maps $(0,1)$ to $(0,1)$ when |
+|------------|------------------------------|
+| γ_silver | Always (full domain) |
+| γ_golden | $x \in (1/3, 1)$ |
+| γ_4 | $x \in (1/3, 1/2)$ |
+
+γ_silver has the **largest domain**, explaining why it's the natural compression transform.
+
+### Geometric Interpretation
+
+The three fixed points correspond to **pyramid geometries**:
+
+| Fixed Point | Value | Pyramid Connection |
+|-------------|-------|-------------------|
+| $\sqrt{2}-1$ | Silver ratio | Bent Pyramid (Dahshur) |
+| $\varphi^{-1}$ | Golden ratio inverse | Giza pyramids |
+| $\sqrt{5}-2$ | $\gamma(\varphi^{-1})$ | γ-image of Giza |
+
+**Duality principle:** Compression and expansion are **dual operations**. γ_golden expands Fibonacci CFs, which is equally beautiful — it's the **opposite direction** of the same structure.
+
+### Group Structure (Proven Dec 11, 2025)
+
+The group $\Gamma = \langle \gamma_{\text{silver}}, \gamma_{\text{golden}}, \gamma_4 \rangle$ has rich structure:
+
+**Matrix representations** (acting on $[p:q]$ projectively):
+$$\Gamma_s = \begin{pmatrix} -1 & 1 \\ 1 & 1 \end{pmatrix}, \quad
+\Gamma_g = \begin{pmatrix} -1 & 2 \\ 2 & 1 \end{pmatrix}, \quad
+\Gamma_4 = \begin{pmatrix} -2 & 1 \\ 1 & 2 \end{pmatrix}$$
+
+**Key properties:**
+
+1. **Infinite group:** $(\gamma_s \cdot \gamma_g)^n$ grows unboundedly (eigenvalues $3 \pm i$, $|λ| = \sqrt{10} \neq 1$).
+
+2. **Conjugation symmetry:** γ_silver is the central element:
+   $$\gamma_s \cdot \gamma_g \cdot \gamma_s = \gamma_4 \quad \text{(projectively)}$$
+   $$\gamma_s \cdot \gamma_4 \cdot \gamma_s = \gamma_g \quad \text{(projectively)}$$
+
+3. **Pythagorean Commutator Theorem:**
+   $$[\gamma_g, \gamma_4] = \gamma_g \gamma_4 \gamma_g^{-1} \gamma_4^{-1} = R(2\theta)$$
+   where $\theta = \arctan(3/4)$ is the **(3,4,5) Pythagorean angle**.
+
+   The double angle gives the **(7,24,25) Pythagorean triple**:
+   - $\cos(2\theta) = 7/25$
+   - $\sin(2\theta) = 24/25$
+
+**Interpretation:**
+
+This connects **three classical structures**:
+1. **Metallic ratios** (Golden $\varphi$, Silver $\sqrt{2}-1$)
+2. **Möbius transformations** (projective linear group)
+3. **Pythagorean triples** (integer solutions to $a^2 + b^2 = c^2$)
+
+The (3,4,5) triple arises from $\gamma_g \cdot \gamma_4 = 5 \cdot R(\theta)$ where $\tan\theta = 3/4$.
+
+**Open questions:**
+- Does this group have a name in the literature?
+- What are the orbits of specific rationals (e.g., 1/2)?
+- Connection to modular group $\text{PSL}(2, \mathbb{Z})$?
+
+### Connection to Rational Circle Group (Dec 11, 2025)
+
+The involutions act on the **stereographic parameter** $t$ of the unit circle:
+$$P(t) = \left(\frac{1-t^2}{1+t^2}, \frac{2t}{1+t^2}\right)$$
+
+This parametrization maps rationals to **Pythagorean triples**: $t = m/n$ gives triple $(n^2-m^2, 2mn, n^2+m^2)$.
+
+**Geometric meaning of involutions:**
+
+| Involution | Parameter action | Circle action |
+|------------|------------------|---------------|
+| γ_silver | $(1-t)/(1+t)$ | $(x,y) \to (y,x)$ — **reflection across y=x** |
+| γ_golden | $(2-t)/(2t+1)$ | Complex transformation |
+| γ_4 | $(1-2x)/(2+x)$ | Complex transformation |
+
+**Key example — Pythagorean triple generation:**
+
+| Parameter | Point | Triple |
+|-----------|-------|--------|
+| $t = 1/2$ | $(3/5, 4/5)$ | **(3, 4, 5)** |
+| $\gamma_s(1/2) = 1/3$ | $(4/5, 3/5)$ | (4, 3, 5) — swapped |
+| $\gamma_g(1/2) = 3/4$ | $(7/25, 24/25)$ | **(7, 24, 25)** — doubled angle! |
+
+**The (3,4,5) → (7,24,25) connection:**
+
+This is the **double-angle formula** in disguise:
+- $\cos(2\theta) = \cos^2\theta - \sin^2\theta = (4/5)^2 - (3/5)^2 = 7/25$
+- $\sin(2\theta) = 2\sin\theta\cos\theta = 2 \cdot (3/5) \cdot (4/5) = 24/25$
+
+**Circle group structure:**
+
+The rational points on the unit circle form a group under complex multiplication:
+$$(x_1 + iy_1)(x_2 + iy_2) = (x_1x_2 - y_1y_2) + i(x_1y_2 + x_2y_1)$$
+
+In parameter space, this becomes **tangent addition**: $t_1 \oplus t_2 = (t_1 + t_2)/(1 - t_1 t_2)$.
+
+**Note:** γ_silver is **NOT** a group homomorphism on this structure — it's a reflection, not a rotation.
+
+### Literature Review and Adversarial Analysis (Dec 11, 2025)
+
+#### Known Structures
+
+1. **γ_silver = [Cayley Transform](https://en.wikipedia.org/wiki/Cayley_transform)**
+   - The function $(1-x)/(1+x)$ is the classical Cayley transform
+   - Fundamental in hyperbolic geometry: maps upper half-plane to unit disk
+   - Fixed point $\sqrt{2}-1$ is well-known (solving $x^2 + 2x - 1 = 0$)
+
+2. **[Metallic Means](https://en.wikipedia.org/wiki/Metallic_mean)** — NOT our term!
+   - Golden ratio $\varphi$ = metallic mean with $n=1$, CF $[1;1,1,\ldots]$
+   - Silver ratio $\sigma = 1+\sqrt{2}$ = metallic mean with $n=2$, CF $[2;2,2,\ldots]$
+   - General: $n$-th metallic mean has CF $[n;n,n,\ldots]$
+   - Source: Vera de Spinadel introduced the term
+
+3. **[Rational Circle Group](https://en.wikipedia.org/wiki/Group_of_rational_points_on_the_unit_circle)**
+   - Well-studied: rational points on unit circle form abelian group
+   - Isomorphic to direct sum of cyclic groups
+   - Stereographic parametrization gives Pythagorean triples
+
+4. **[Modular Group PSL(2,ℤ)](https://en.wikipedia.org/wiki/Modular_group)**
+   - Möbius transformations with integer coefficients, det = 1
+   - Generated by $S: z \mapsto -1/z$ and $T: z \mapsto z+1$
+   - Our matrices have det ∈ {-2, -5}, so NOT in PSL(2,ℤ)
+
+5. **[Coxeter Groups](https://en.wikipedia.org/wiki/Coxeter_group)**
+   - Groups generated by involutions (reflections)
+   - Classification by Coxeter diagrams
+   - Our group is a Möbius subgroup, not a Euclidean reflection group
+
+#### Potentially Novel Aspects
+
+1. **The specific triad {γ_silver, γ_golden, γ_4}**
+   - Three involutions with fixed points at consecutive metallic means
+   - γ_silver: fixed at $\sqrt{2}-1$ (silver)
+   - γ_golden: fixed at $\varphi^{-1}$ (golden)
+   - γ_4: fixed at $\sqrt{5}-2$ (related to golden)
+   - No direct literature found on this specific combination
+
+2. **4-Inversion Law on CF coefficients**
+   - $\gamma_{\text{silver}}([0;a^{\infty}]) = [0;(4/a)^{\infty}]$
+   - Connects Cayley transform to continued fraction structure
+   - Not found in standard CF or Möbius literature
+
+3. **Conjugation structure**
+   - γ_silver conjugates γ_golden ↔ γ_4
+   - Makes γ_silver the "exchange element" of the triad
+   - Specific to our choice of involutions
+
+#### Adversarial Questions
+
+**Q1: Is the (3,4,5) → (7,24,25) connection just standard double-angle?**
+
+**Answer:** Yes, this IS the standard double-angle formula for Pythagorean triples. The observation that γ_golden(1/2) = 3/4 connects these is a repackaging of known structure. However, the interpretation via Möbius involutions may offer a cleaner algebraic framework.
+
+**Q2: Are the determinants {-2, -5} significant?**
+
+Our matrices:
+- $\det(\Gamma_s) = -2$ (related to silver ratio: $(\sqrt{2})^2 = 2$)
+- $\det(\Gamma_g) = \det(\Gamma_4) = -5$ (related to golden ratio: $\varphi^2 + \varphi^{-2} = 3$, but $5 = \varphi^2 \cdot \varphi^{-2} \cdot 5$... unclear)
+
+The appearance of 2 and 5 (the discriminants of $x^2-2$ and $x^2-x-1$) may not be coincidental.
+
+**Q3: Does this group have a name?**
+
+Unknown. It's a subgroup of PGL(2,ℝ) generated by three specific involutions. Similar structures appear in:
+- Hecke groups (generalizations of modular group)
+- Triangle groups
+- Fuchsian groups
+
+But the specific triple with metallic ratio fixed points is not standard.
+
+**Q4: Is the Pythagorean commutator $(7,24,25)$ deep or superficial?**
+
+The commutator $[\gamma_g, \gamma_4]$ being a rotation by the $(7,24,25)$ angle is a consequence of:
+- $\gamma_g \cdot \gamma_4 = 5 \cdot R(\theta)$ where $\tan\theta = 3/4$
+- Commutator = $R(2\theta)$ by standard group theory
+- Double angle gives $(7,24,25)$
+
+This is elegant but follows from basic matrix algebra. The novelty is recognizing this structure in the Egypt/CF context.
+
+#### Research Directions
+
+1. **Is the 4-inversion law known?** Search for connections between Cayley transform and continued fractions in number theory literature.
+
+2. **Group classification:** Determine if $\langle \gamma_s, \gamma_g, \gamma_4 \rangle$ is isomorphic to a known group (triangle group, Hecke group variant).
+
+3. **Higher metallic means:** Do involutions with fixed points at bronze ratio ($[0;3^{\infty}]$) etc. form similar structures?
+
+4. **Hyperbolic geometry interpretation:** The Cayley transform maps the interval $(0,1)$ to hyperbolic space. What is the geometric meaning of γ_golden and γ_4 in this model?
+
+5. **Relationship to Galois's theorem:** Galois proved that for reduced surd ζ with conjugate η, the CFs for ζ and -1/η have mirror-image periods. For purely periodic $[0;a^{\infty}]$, we have $-1/\text{conjugate}(x_a) = x_a$ (self-partner). Our γ_silver is a DIFFERENT operation — it maps $x_a \to x_{4/a}$, not to Galois conjugate. This may be a novel transformation on periodic CFs.
+
+---
+
 ## References
 
 - Parent: [CF-Egypt Equivalence](README.md)

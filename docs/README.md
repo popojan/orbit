@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-10 22:47:10
+**Generated:** 2025-12-11 05:10:43
 
 ## Theorems (Master References)
 
@@ -25,8 +25,10 @@
 - [Generating Functions Quick Course](learning/generating-functions-course.md)
 - [Hölder Conjugates](learning/hoelder-conjugates.md)
 - [Ideal Theory Quick Course](learning/ideal-theory-course.md)
+- [Andrey Nikolayevich Kolmogorov (1903-1987)](learning/kolmogorov-complexity.md)
 - [L-Functions, Class Numbers, and Chebyshev Geometry](learning/L-function-geometry-bridge.md)
 - [Minkowski Geometries: L^p Norms and the Many Values of Pi](learning/minkowski-geometries.md)
+- [Claude Shannon and Information Theory](learning/shannon-information-theory.md)
 - [六十心 (Liù Shí Xīn) — The Sixty Minds](learning/sixty-minds-buddhism.md)
 - [Split-kvaterniony (Coquaterniony)](learning/split-quaternions.md)
 
