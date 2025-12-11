@@ -77,6 +77,22 @@ CyclotomicInverseDFT::usage = "CyclotomicInverseDFT[list] computes inverse DFT."
 CyclotomicFromCirc::usage = "CyclotomicFromCirc[t, n] converts Circ parameter to cyclotomic.
 The phase φ[t] becomes a cyclotomic element with rational coefficients.";
 
+(* ============================================ *)
+(* SHORT ALIASES (Greek letters)               *)
+(* ============================================ *)
+
+\[CapitalPhi]::usage = "\[CapitalPhi][list] is a short alias for CyclotomicDFT.
+Type: Esc+P+h+i+Esc or Esc+F+Esc
+
+Convolution via FFT:  \[CapitalPsi][\[CapitalPhi][a] \[CapitalPhi][b]]
+(displays as: Ψ[Φ[a] Φ[b]])";
+
+\[CapitalPsi]::usage = "\[CapitalPsi][list] is a short alias for CyclotomicInverseDFT.
+Type: Esc+P+s+i+Esc or Esc+Y+Esc
+
+Convolution via FFT:  \[CapitalPsi][\[CapitalPhi][a] \[CapitalPhi][b]]
+(displays as: Ψ[Φ[a] Φ[b]])";
+
 CyclotomicToCircPhases::usage = "CyclotomicToCircPhases[elem] attempts to express as sum of Circ phases.
 Returns {coeffs, phases} where elem = Σ coeffs[[k]] φ[phases[[k]]].";
 
@@ -352,6 +368,24 @@ CyclotomicFromCirc[t_?NumericQ, n_Integer] := Module[
     $Failed
   ]
 ]
+
+(* ============================================ *)
+(* GREEK LETTER ALIASES                        *)
+(* ============================================ *)
+
+(* Φ = Forward DFT (Esc+F+Esc or Esc+Phi+Esc) *)
+\[CapitalPhi][x_List] := CyclotomicDFT[x]
+
+(* Ψ = Inverse DFT (Esc+Y+Esc or Esc+Psi+Esc) *)
+\[CapitalPsi][x_List] := CyclotomicInverseDFT[x]
+
+(* Element-wise multiplication of cyclotomic lists: use CircleTimes ⊗ *)
+(* Type: Esc + c + * + Esc *)
+CircleTimes[a_List, b_List] /; AllTrue[a, Head[#] === CyclotomicElement &] &&
+                               AllTrue[b, Head[#] === CyclotomicElement &] :=
+  MapThread[CyclotomicMultiply, {a, b}]
+
+(* Full convolution shorthand: Ψ[Φ[a] ⊗ Φ[b]] *)
 
 End[];
 
