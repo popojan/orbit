@@ -425,10 +425,18 @@ $$\sum_{k=i}^{j} \frac{1}{(u+vk)(u+v(k-1))}$$
 - 7/11 and 219/344 share prefix `{1,1,1,1}, {2,3,1,3}` → π branch
 - 5/8 and 159/250 share prefix `{1,1,1,1}, {2,3,1,2}` → √φ/2 branch
 
-**Connection to continued fractions (THEOREM):**
+**CF ↔ Egypt Equivalence Theorem (MAIN RESULT):**
 ```
 Egypt values = Total /@ Partition[Differences @ Convergents[q], 2]
 ```
+- CF differences alternate: +d₁, -d₂, +d₃, -d₄, ...
+- Pairing cancels alternation: (d₁ - d₂), (d₃ - d₄), ... all positive
+- This explains WHY Egypt is monotone: paired differences yield positive increments
+- Two algorithms (ModInv and CF-based) produce **IDENTICAL tuples**: `RawFractionsSymbolic[q] === RawFractionsFromCF[q]`
+
+**γ-Simplification via Möbius involution triad:**
+- γ_silver = `(1-x)/(1+x)` compresses CF representations, reducing tuple count
+- See: `docs/sessions/2025-12-10-cf-egypt-equivalence/gamma-egypt-simplification.md`
 
 ---
 
