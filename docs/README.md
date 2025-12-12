@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-12 22:01:40
+**Generated:** 2025-12-12 22:38:39
 
 ## Theorems (Master References)
 
@@ -41,7 +41,8 @@
 
 ## Recent Sessions (Last 10)
 
-- [Petrie Error Bar Analysis: Pyramid φ Hypotheses](sessions/2025-12-12-phi-pi-equation/petrie-error-analysis.md) *()*
+- [Paper Arguments: Giza Convergent Hypothesis](sessions/2025-12-12-phi-pi-equation/paper-arguments.md) *()*
+- [Petrie Error Bar Analysis: Pyramid φ Hypotheses](sessions/2025-12-12-phi-pi-equation/petrie-error-analysis.md) *(2025-12-12)*
 - [Egyptian Mathematics & Pyramids: Document Index](sessions/egypt-pyramid-index.md) *(2025-12-12)*
 - [Pyramid Ratios and Möbius Orbits](sessions/2025-12-12-phi-pi-equation/README.md) *(2025-12-12)*
 - [Golden Ratio in the γ Framework: Pyramid Connection](sessions/2025-12-08-gamma-framework/golden-ratio-pyramid.md) *(2025-12-12)*
@@ -50,7 +51,6 @@
 - [290-Theorem: Factorization Structure Analysis](sessions/2025-12-12-290-factorization/README.md) *(2025-12-12)*
 - [L^p FFT Exploration: Roots of Unity in Non-Euclidean Geometries](sessions/2025-12-12-lp-fft-exploration/README.md) *(2025-12-12)*
 - [Small Numbers Conjecture](sessions/2025-12-12-vymazalova-reflections/small-numbers-conjecture.md) *(2025-12-12)*
-- [Vymazalová Reading: Reflections and Orbit Connections](sessions/2025-12-12-vymazalova-reflections/README.md) *(2025-12-12)*
 
 ## Navigation
 
