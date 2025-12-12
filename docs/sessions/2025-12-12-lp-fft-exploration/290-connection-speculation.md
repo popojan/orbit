@@ -198,6 +198,47 @@ Table[
 
 ---
 
+## Factorization Patterns (discovered 2025-12-12)
+
+### All Critical Integers are Squarefree
+
+**Fact:** Every critical integer has no repeated prime factors.
+
+**Why:** If a quadratic form represents n, it represents n×k² (by scaling solution vector). Therefore a "truant" (first non-represented integer) must be squarefree.
+
+### No Multiples of 4
+
+**Fact:** No critical integer is divisible by 4.
+
+| mod 4 | Count | Numbers |
+|-------|-------|---------|
+| ≡ 0 | **0** | (none!) |
+| ≡ 1 | 9 | 1, 5, 13, 17, 21, 29, 37, 93, 145 |
+| ≡ 2 | 12 | 2, 6, 10, 14, 22, 26, 30, 34, 42, 58, 110, 290 |
+| ≡ 3 | 8 | 3, 7, 15, 19, 23, 31, 35, 203 |
+
+**Why:** If a form represents n, it represents 4n (by doubling all variables). Therefore a truant cannot be ≡ 0 (mod 4).
+
+### Prime Factor Distribution
+
+Unique primes used: {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37} — exactly **12 primes**.
+
+| Prime p | Divisible by p |
+|---------|----------------|
+| 2 | 12 numbers |
+| 3 | 7 numbers |
+| 5 | 8 numbers |
+| 7 | 6 numbers |
+| 29 | 5 numbers (29, 58, 145, 203, 290) |
+
+**The prime 29 is special:** It appears in 5 critical integers including 290 itself.
+
+### Fibonacci Numbers in Critical Set
+
+Seven Fibonacci numbers appear: {1, 2, 3, 5, 13, 21, 34}
+
+---
+
 ## Related
 
 - [290-Theorem](../../learning/290-theorem.md) - main theorem details
