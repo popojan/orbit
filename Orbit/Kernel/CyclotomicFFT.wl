@@ -31,6 +31,10 @@ This is the ONLY function that leaves rationals.";
 CyclotomicToRational::usage = "CyclotomicToRational[elem] extracts rational value if result is real.
 Otherwise returns the complex result from CyclotomicToComplex.";
 
+CyclotomicToGamma::usage = "CyclotomicToGamma[elem] converts to γ framework expression.
+Returns {x, y} where x and y are sums of γ[t] terms.
+Use // α to convert to classical cos/sin form.";
+
 CyclotomicFromReal::usage = "CyclotomicFromReal[x, n] creates cyclotomic element from real rational x.";
 
 CyclotomicFromComplex::usage = "CyclotomicFromComplex[z, n] creates cyclotomic element from z ∈ ℚ(i).
@@ -154,14 +158,17 @@ CyclotomicOrder[CyclotomicElement[n_, _]] := n
 CyclotomicCoeffs[CyclotomicElement[_, coeffs_]] := coeffs
 CyclotomicDimension[CyclotomicElement[n_, _]] := EulerPhi[n]
 
-(* Display form *)
-Format[CyclotomicElement[n_, coeffs_]] := Module[{terms, ζ},
+(* Display form: clean ζ notation *)
+(* ζₙᵏ corresponds to κ[ρ[n,k]] in γ framework, but we display as ζᵏ for readability *)
+(* Use Expand[elem] to convert to γ framework *)
+
+Format[CyclotomicElement[n_, coeffs_]] := Module[{terms},
   terms = Table[
     If[coeffs[[k+1]] == 0, Nothing,
       If[k == 0, coeffs[[1]],
-        If[coeffs[[k+1]] == 1, Superscript["ζ", k],
-          If[coeffs[[k+1]] == -1, -Superscript["ζ", k],
-            coeffs[[k+1]] Superscript["ζ", k]
+        If[coeffs[[k+1]] == 1, Superscript["\[Zeta]", k],
+          If[coeffs[[k+1]] == -1, -Superscript["\[Zeta]", k],
+            coeffs[[k+1]] Superscript["\[Zeta]", k]
           ]
         ]
       ]
@@ -169,9 +176,13 @@ Format[CyclotomicElement[n_, coeffs_]] := Module[{terms, ζ},
     {k, 0, Length[coeffs] - 1}
   ];
   If[terms === {}, 0,
-    Row[{Subscript["ℚ", n], "[", Plus @@ terms, "]"}]
+    Row[{Subscript["\[DoubleStruckCapitalQ]", n], "[", Plus @@ terms, "]"}]
   ]
 ]
+
+(* Expand: convert ζ to γ framework via κ[ρ[n,k]] *)
+CyclotomicElement /: Expand[CyclotomicElement[n_, coeffs_]] :=
+  CyclotomicToGamma[CyclotomicElement[n, coeffs]]
 
 (* ============================================ *)
 (* CYCLOTOMIC ARITHMETIC                        *)
@@ -239,6 +250,20 @@ CyclotomicToComplex[CyclotomicElement[n_, coeffs_]] := Module[
   (* coeffs has length φ(n), basis is {1, ζ, ζ², ..., ζ^(φ(n)-1)} *)
   Sum[coeffs[[k + 1]] ζ^k, {k, 0, phi - 1}] // Simplify
 ]
+
+(* Convert to γ framework expression: sum of κ[ρ[n,k]] terms *)
+(* Returns {x-component, y-component} where each is sum of γ[t] terms *)
+CyclotomicToGamma[CyclotomicElement[n_, coeffs_]] := Module[{phi = EulerPhi[n]},
+  Sum[
+    If[coeffs[[k + 1]] == 0, {0, 0},
+      coeffs[[k + 1]] * If[k == 0, {1, 0}, \[Kappa][\[Rho][n, k]]]
+    ],
+    {k, 0, phi - 1}
+  ]
+]
+
+(* α support: reveal classical form via γ → cos conversion *)
+\[Alpha][elem_CyclotomicElement] := \[Alpha][CyclotomicToGamma[elem]]
 
 
 (* ============================================ *)
