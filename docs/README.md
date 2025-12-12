@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-12 16:41:05
+**Generated:** 2025-12-12 21:21:13
 
 ## Theorems (Master References)
 
@@ -41,6 +41,8 @@
 
 ## Recent Sessions (Last 10)
 
+- [Egyptian Mathematics & Pyramids: Document Index](sessions/egypt-pyramid-index.md) *()*
+- [Pyramid Ratios and Möbius Orbits](sessions/2025-12-12-phi-pi-equation/README.md) *()*
 - [290-Theorem Connection Speculation](sessions/2025-12-12-lp-fft-exploration/290-connection-speculation.md) *(2025-12-12)*
 - [290-Theorem: Factorization Structure Analysis](sessions/2025-12-12-290-factorization/README.md) *(2025-12-12)*
 - [L^p FFT Exploration: Roots of Unity in Non-Euclidean Geometries](sessions/2025-12-12-lp-fft-exploration/README.md) *(2025-12-12)*
@@ -49,8 +51,6 @@
 - [Gauss, FFT, and the Hartley Connection](sessions/2025-12-11-gauss-fft-hartley/README.md) *(2025-12-11)*
 - [Archimedův palimpsest a Metoda](sessions/2025-12-11-archimedes-palimpsest/README.md) *(2025-12-11)*
 - [γ-Egypt Simplification Phenomenon](sessions/2025-12-10-cf-egypt-equivalence/gamma-egypt-simplification.md) *(2025-12-11)*
-- [Golden Ratio in the γ Framework: Pyramid Connection](sessions/2025-12-08-gamma-framework/golden-ratio-pyramid.md) *(2025-12-11)*
-- [CF ↔ Egyptian Fractions Equivalence](sessions/2025-12-10-cf-egypt-equivalence/README.md) *(2025-12-10)*
 
 ## Navigation
 

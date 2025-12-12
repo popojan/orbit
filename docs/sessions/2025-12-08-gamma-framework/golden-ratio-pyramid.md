@@ -595,6 +595,71 @@ This may not be historically relevant, but reveals deep structure in the ratios 
 
 ---
 
+## Fourth Dynasty Pyramids Beyond Giza (Added Dec 12, 2025)
+
+### Abu Rawash: Djedefra's Pyramid
+
+**Djedefra** (also Radjedef) was Khufu's immediate successor. His pyramid at Abu Rawash is now mostly ruined but reveals fascinating construction details.
+
+**Key feature:** The pyramid has **TWO different slopes** on different sides!
+
+| Aspect | Slope A | Slope B |
+|--------|---------|---------|
+| Angle | **60°** | **52°** |
+| Seked | 4 palms | 5p + 2d |
+| Geometry | Equilateral | Khufu-like |
+
+**Source:** Rossi, *Architecture and Mathematics in Ancient Egypt* (2004), Fig. 101, citing Valloggia excavations.
+
+**Interpretation possibilities:**
+1. **Unfinished:** Builders changed plans mid-construction
+2. **Intentional:** Asymmetric design for unknown purpose
+3. **Experimental:** Testing different slopes before committing
+
+**The equilateral angle (60°)** corresponds to seked = 4 palms exactly, which matches:
+- First stage of **Bent Pyramid** at Dahshur
+- The steepest sustainable angle for pyramid construction
+
+**The 52° angle** matches Khufu's slope, suggesting Djedefra may have intended to replicate his father's pyramid.
+
+### Dahshur: Sneferu's Experiments
+
+**Sneferu** (Khufu's father) built THREE pyramids, showing evolution of technique:
+
+| Pyramid | Location | Seked | Angle | Notes |
+|---------|----------|-------|-------|-------|
+| Meidum | Meidum | 5p + 2d | 51.8° | Collapsed; rebuilt |
+| **Bent (lower)** | Dahshur | 4 palms | **54.5°** | Too steep → cracked |
+| **Bent (upper)** | Dahshur | 7.5 palms | **43.4°** | Reduced slope |
+| **Red** | Dahshur | 7 palms | **43.4°** | Completed successfully |
+
+**The Bent Pyramid** is unique: it changed slope mid-construction due to structural problems.
+
+**SC orbit connection (Dec 12, 2025 discovery):**
+```
+SC(7/11) = 7/15  →  seked = 7.5 palms  →  Bent upper section!
+```
+The Bent Pyramid upper slope is **one Möbius transformation** from Cheops!
+
+### Complete Fourth Dynasty Seked Table
+
+| Pyramid | Builder | Seked | Angle | h/b ratio | √φ/2 conv? |
+|---------|---------|-------|-------|-----------|------------|
+| Meidum | Sneferu | 5p+2d | 51.8° | 7/11 | Yes (#6) |
+| Bent (lower) | Sneferu | 4p | 54.5° | — | No |
+| Bent (upper) | Sneferu | 7p+2d | 43.4° | 7/15 | SC(7/11) |
+| Red | Sneferu | 7p | 43.4° | 1/2 | Yes (#3) |
+| **Djedefra** | Djedefra | 4p OR 5p+2d | 60° OR 52° | — | Mixed |
+| **Cheops** | Khufu | 5p+2d | 51.8° | 7/11 | Yes (#6) |
+| Chephren | Khafre | 5p+1d | 53.1° | 2/3 | Yes (#4) |
+| Menkaure | Menkaure | 5p+3d | 51.3° | 5/8 | Yes (#5) |
+
+**Pattern:** The canonical slope (seked 5p+2d = 51.8°) appears in Meidum, Cheops, and one face of Djedefra.
+
+**Note:** p = palm, d = digit (1 cubit = 7 palms = 28 digits)
+
+---
+
 ## Future Exploration
 
 **Open questions for later sessions:**
@@ -602,6 +667,7 @@ This may not be historically relevant, but reveals deep structure in the ratios 
 - Other Egyptian pyramids beyond Giza — same convergent structure?
 - Did Egyptians know continued fractions, or found these ratios empirically?
 - Why seked 5.5 specifically? Connection to π (circumference = 44 palms for r = 1 cubit)?
-- **NEW:** Do Dahshur pyramids (Bent, Red) fit into a "silver ratio" family?
+- **NEW:** Do Dahshur pyramids (Bent, Red) fit into a "silver ratio" family? → Partially answered above!
+- **NEW:** Why does Djedefra have asymmetric slopes? Construction accident or intent?
 
 **The mystery of the internal passages awaits...**

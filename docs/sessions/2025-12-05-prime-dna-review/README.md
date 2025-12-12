@@ -100,4 +100,4 @@ Print["0s: ", Count[dnaBits, 0], " (", N[100*Count[dnaBits, 0]/Length[dnaBits]],
 ## Related
 
 - Prime DNA Tool: `../prime/REVIEW.md` (separate repo)
-- [Self-Adversarial Discipline](../../CLAUDE.md#self-adversarial-discipline) - Protocol used for this analysis
+- [Self-Adversarial Discipline](../../../CLAUDE.md#self-adversarial-discipline) - Protocol used for this analysis
