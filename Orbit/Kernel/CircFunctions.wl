@@ -209,20 +209,36 @@ SuperStar[t_] := 3/2 - t
 \[Kappa][t_List, p_] := \[Kappa][#, p] & /@ t
 \[Kappa][t_, p_List] := \[Kappa][t, #] & /@ p
 
+(* Symbolic absolute value of γ *)
+(* Sign[Cos[x]] = (-1)^Floor[x/π + 1/2] *)
+(* For γ[t] = Cos[3π/4 + πt]: Sign[γ[t]] = (-1)^Floor[t + 5/4] *)
+(* |γ[t]| = Sign[γ[t]] × γ[t] *)
+absGamma[t_?NumericQ] := With[{sign = (-1)^Floor[t + 5/4]}, sign * \[Gamma][t]]
+absGamma[t_] := (-1)^Floor[t + 5/4] * \[Gamma][t]  (* symbolic fallback *)
+
 (* p = 2 (default): Euclidean circle - γ stays inert *)
 \[Kappa][t_] := {\[Gamma][-t], \[Gamma][t]}
 \[Kappa][t_, 2] := {\[Gamma][-t], \[Gamma][t]}
 
-(* p = 1: Taxicab diamond - symbolic with γ *)
-\[Kappa][t_, 1] := {\[Gamma][-t], \[Gamma][t]} / (Abs[\[Gamma][-t]] + Abs[\[Gamma][t]])
+(* p = 1: Taxicab diamond *)
+\[Kappa][t_, 1] := {\[Gamma][-t], \[Gamma][t]} / (absGamma[-t] + absGamma[t])
 
-(* p = ∞: Chebyshev square - symbolic with γ *)
+(* p = ∞: Chebyshev square *)
 \[Kappa][t_, DirectedInfinity[1]] := \[Kappa][t, Infinity]
-\[Kappa][t_, Infinity] := {\[Gamma][-t], \[Gamma][t]} / Max[Abs[\[Gamma][-t]], Abs[\[Gamma][t]]]
+\[Kappa][t_, Infinity] := Module[{ag1 = absGamma[-t], ag2 = absGamma[t]},
+  {\[Gamma][-t], \[Gamma][t]} / If[ag1 >= ag2, ag1, ag2]
+]
 
-(* General p - symbolic with γ *)
-\[Kappa][t_, p_] /; p > 0 && p != 2 :=
-  {\[Gamma][-t], \[Gamma][t]} (Abs[\[Gamma][-t]]^p + Abs[\[Gamma][t]]^p)^(-1/p)
+(* General p - integer: compute norm via Cos (avoids γ precision issues) *)
+\[Kappa][t_?NumericQ, p_Integer] /; p >= 3 := Module[
+  {c1 = Cos[3 Pi/4 - Pi t], c2 = Cos[3 Pi/4 + Pi t], norm},
+  norm = (Abs[c1]^p + Abs[c2]^p)^(1/p);
+  {\[Gamma][-t], \[Gamma][t]} / norm
+]
+
+(* General p - non-integer *)
+\[Kappa][t_, p_] /; p > 0 && p != 2 && !IntegerQ[p] :=
+  {\[Gamma][-t], \[Gamma][t]} / (absGamma[-t]^p + absGamma[t]^p)^(1/p)
 
 (* ============================================ *)
 (* πLp: π as function of L^p geometry          *)

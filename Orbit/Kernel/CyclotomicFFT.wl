@@ -77,6 +77,16 @@ Returns list of CyclotomicElement. All coefficients stay rational.";
 
 CyclotomicInverseDFT::usage = "CyclotomicInverseDFT[list] computes inverse DFT.";
 
+LpDFT::usage = "LpDFT[signal, p] computes DFT using L^p geometry roots of unity.
+Default p=2 gives standard circular DFT.
+p=1 uses diamond (taxicab) geometry, p=∞ uses square (Chebyshev) geometry.
+Returns list of {x, y} pairs (symbolic, via α[κ[ρ[n,k], p]]).
+Use // N for numeric evaluation.
+Note: p≠2 causes spectral leakage; p=1 gives slightly more sparse representations.";
+
+LpDFTInverse::usage = "LpDFTInverse[spectrum, p] computes inverse L^p DFT.
+Input spectrum should be list of {x, y} pairs. Use same p as forward transform.";
+
 (* ============================================ *)
 (* CONVERSION WITH CIRC FRAMEWORK               *)
 (* ============================================ *)
@@ -420,6 +430,48 @@ CircleTimes[a_List, b_List] /; AllTrue[a, Head[#] === CyclotomicElement &] &&
   MapThread[CyclotomicMultiply, {a, b}]
 
 (* Full convolution shorthand: Ψ[Φ[a] ⊗ Φ[b]] *)
+
+(* ============================================ *)
+(* L^p DFT (EXPERIMENTAL)                       *)
+(* Uses κ[ρ[n,k], p] from CircFunctions.wl      *)
+(* p=2: circle (standard DFT)                   *)
+(* p=1: diamond (taxicab geometry)              *)
+(* p=∞: square (Chebyshev geometry)             *)
+(* ============================================ *)
+
+(* Get k-th n-th root of unity in L^p geometry *)
+(* Returns κ[t, p] where t = ρ[n,k] (γ-parameter) *)
+(* Use α[...] to evaluate to {Cos, Sin} form *)
+lpRootSymbolic[n_, k_, p_] := \[Kappa][\[Rho][n, k], p]
+
+(* Convert {x,y} to complex number *)
+toComplex[{x_, y_}] := x + I y
+
+(* Forward L^p DFT - symbolic version *)
+(* Returns list of {x,y} pairs in α form *)
+LpDFT[signal_List, p_: 2] := Module[{n = Length[signal]},
+  Table[
+    Total @ Table[
+      signal[[j]] * lpRootSymbolic[n, Mod[(j-1)*(k-1), n] + 1, p],
+      {j, 1, n}
+    ],
+    {k, 1, n}
+  ]
+]
+
+(* Numeric convenience: LpDFT // N or N[LpDFT[...]] *)
+LpDFT /: N[LpDFT[signal_List, p_: 2]] := N /@ LpDFT[signal, p]
+
+(* Inverse L^p DFT *)
+LpDFTInverse[spectrum_List, p_: 2] := Module[{n = Length[spectrum]},
+  Table[
+    (1/n) Total @ Table[
+      spectrum[[k]] * MapAt[-# &, lpRootSymbolic[n, Mod[(j-1)*(k-1), n] + 1, p], 2],
+      {k, 1, n}
+    ],
+    {j, 1, n}
+  ]
+]
 
 End[];
 

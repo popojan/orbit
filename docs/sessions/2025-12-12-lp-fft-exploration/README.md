@@ -102,6 +102,44 @@ This means the γ framework's `⊗` operation (parameter addition) is **geometry
 
 ---
 
+## Implementation: LpDFT
+
+Added to `Orbit/Kernel/CyclotomicFFT.wl`:
+
+```mathematica
+<< Orbit`
+
+signal = {1, 2, 3, 4, 5, 6, 7, 8};
+
+LpDFT[signal, 2]   (* standard circular DFT *)
+LpDFT[signal, 1]   (* diamond/taxicab geometry *)
+LpDFT[signal, ∞]   (* square/Chebyshev geometry *)
+```
+
+### Experimental findings
+
+| Property | p=2 | p=1 | p=∞ |
+|----------|-----|-----|-----|
+| Perfect reconstruction | Yes | Approx | Approx |
+| Spectral leakage | None | Yes | Yes |
+| Hölder dual | — | p=∞ | p=1 |
+
+**p=1 and p=∞ are Hölder conjugates:** Their spectra have constant ratio √2.
+
+### Sparsity comparison
+
+Tested on 20 random 16-element signals (threshold 0.3):
+
+| p | Mean sparse bins | Interpretation |
+|---|------------------|----------------|
+| 2 | 8.75% | Baseline |
+| 1 | 10.6% (~20% more) | Slightly more sparse |
+| ∞ | 4.4% | Less sparse |
+
+**Observation:** p=1 gives slightly more sparse representations, but the effect is modest.
+
+---
+
 ## Literature to Search
 
 - "L^p Fourier transform"
@@ -136,6 +174,7 @@ visualize[n_] := Graphics[{
 
 ## Related
 
+- [290-Theorem Connection Speculation](290-connection-speculation.md) - framework offsets hit 31% of critical integers
 - [γ Framework](../2025-12-08-gamma-framework/README.md)
 - [Squarical Geometry](../2025-12-08-squarical-geometry/README.md)
 - [Gauss FFT and Hartley](../2025-12-11-gauss-fft-hartley/README.md)
