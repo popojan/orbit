@@ -175,4 +175,5 @@ Compare with other "small determines large" results:
 ## Related in Orbit
 
 - [Manjul Bhargava](manjul-bhargava.md) — biography and Sanskrit mathematics connection
+- [Jonathan Hanke](jonathan-hanke.md) — co-author, computational expertise
 - [Small Numbers Conjecture](../sessions/2025-12-12-vymazalova-reflections/small-numbers-conjecture.md) — philosophical framework
