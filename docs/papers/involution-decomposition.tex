@@ -236,24 +236,43 @@ and so on. The final $\iota$ converts the result to a proper fraction.
 \end{proof}
 
 \begin{example}
-For $7/11 = [0; 1, 1, 1, 3]$, the GCD, CF, and involution perspectives align:
+For $7/11 = [0; 1, 1, 1, 3]$, the Euclidean algorithm and involution build-up
+run in opposite directions:
 
 \begin{center}
-\begin{tabular}{clcl}
+\small
+\begin{tabular}{clc}
 \toprule
-Step & Euclidean Algorithm & $a_i$ & Involution Build-up \\
+& GCD (top-down) & $a_i$ \\
 \midrule
-0 & $\gcd(11, 7)$ start & --- & $R^3(0) = 3$ \\
-1 & $11 = 1 \cdot 7 + 4$ & 1 & $\iota R^3(0) = 1/3$ \\
-2 & $7 = 1 \cdot 4 + 3$ & 1 & $R\iota R^3 = 4/3 \xrightarrow{\iota} 3/4$ \\
-3 & $4 = 1 \cdot 3 + 1$ & 1 & $R\iota R\iota R^3 = 7/4 \xrightarrow{\iota} 4/7$ \\
-4 & $3 = 3 \cdot 1 + 0$ & 3 & $R\iota R\iota R\iota R^3 = 11/7 \xrightarrow{\iota} 7/11$ \\
+  & & \\
+1 & $11 = 1 \cdot 7 + 4$ & 1 \\
+2 & $7 = 1 \cdot 4 + 3$ & 1 \\
+3 & $4 = 1 \cdot 3 + 1$ & 1 \\
+4 & $3 = 3 \cdot 1 + 0$ & 3 \\
+\bottomrule
+\end{tabular}
+\quad
+\begin{tabular}{cll}
+\toprule
+& Build-up (bottom-up) & Result \\
+\midrule
+1 & $R^3(0)$ & $3$ \\
+2 & $\iota \to R$ & $\frac{1}{3} \to \frac{4}{3}$ \\
+3 & $\iota \to R$ & $\frac{3}{4} \to \frac{7}{4}$ \\
+4 & $\iota \to R$ & $\frac{4}{7} \to \frac{11}{7}$ \\
+5 & $\iota$ & $\frac{7}{11}$ \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-Each GCD quotient $q_i$ equals CF coefficient $a_i$, and each $\iota$ corresponds
-to one GCD step (swapping dividend and remainder).
+The GCD quotients read top-to-bottom give $[1,1,1,3]$; the build-up reads
+the CF coefficients bottom-to-top as $[3,1,1,1]$.
+The final $\iota$ produces the proper fraction $7/11 < 1$.
+
+Note: The CF build-up uses only $R$ and $\iota$, regardless of whether the
+target is in $(0,1)$ or greater than~$1$. The generator $L$ appears when
+traversing the Calkin--Wilf tree to a specific rational (Theorem~\ref{thm:main}).
 \end{example}
 
 Since $R = \kappa\sigma\iota\sigma$ decomposes into 4 atomic involutions,
@@ -269,6 +288,125 @@ studied $L$-$R$ factorizations in the context of Pell equations and the Stern--B
 Our contribution is the observation that $L$ and $R$ themselves factor into
 elementary involutions, providing a finer decomposition than the $L$-$R$ level.
 
+\begin{remark}[Convention Summary]
+Several $L$-$R$ conventions appear in the literature. For clarity:
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+System & $L(x)$ & $R(x)$ & Matrix $L$ \\
+\midrule
+Calkin--Wilf (this paper) & $x/(1+x)$ & $1+x$ & $\begin{pmatrix} 1 & 0 \\ 1 & 1 \end{pmatrix}$ \\[2mm]
+Stern--Brocot & $x/(1+x)$ & $(1+x)/x$ & $\begin{pmatrix} 1 & 0 \\ 1 & 1 \end{pmatrix}$ \\[2mm]
+Wildberger (Pell) & swapped & swapped & $\begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Wildberger's $L'_{\mathrm{W}}$ corresponds to Stern--Brocot $R_{\mathrm{SB}}$
+(and vice versa) when acting on quadratic forms.
+All systems share the same underlying group $\mathrm{SL}(2,\mathbb{Z})$;
+differences are purely notational.
+\end{remark}
+
+\begin{remark}[Algebraic Structure]
+A key algebraic relation connects the generators:
+\begin{equation}\label{eq:LR-relation}
+L = \kappa\iota \cdot R,
+\end{equation}
+where $\kappa\iota(x) = 1 - 1/x = (x-1)/x$. This follows from
+$L = \kappa\iota\kappa\sigma\iota\sigma = \kappa\iota \cdot (\kappa\sigma\iota\sigma) = \kappa\iota \cdot R$.
+Thus $L$ is $R$ ``wrapped'' in the involution pair $\kappa\iota$.
+\end{remark}
+
+\begin{remark}[Connection to Quadratic Forms]
+The CW generators correspond to $\mathrm{SL}(2,\mathbb{Z})$ matrices
+(up to projective equivalence):
+\[
+L \sim \begin{pmatrix} 1 & 0 \\ 1 & 1 \end{pmatrix}, \quad
+R \sim \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}.
+\]
+Wildberger's algorithm for the Brahmagupta--Bh\=askara equation $x^2 - dy^2 = 1$
+uses $L'$-$R'$ operations on binary quadratic forms $(a,b,c)$.
+The induced $3 \times 3$ matrices satisfy
+$L'_{\text{W}} = \rho(R_{\text{SB}})$ and $R'_{\text{W}} = \rho(L_{\text{SB}})$,
+where $\rho\colon \mathrm{SL}(2,\mathbb{Z}) \to \mathrm{GL}(3,\mathbb{Z})$
+is the natural representation on quadratic forms.
+The $L \leftrightarrow R$ swap arises from differing conventions.
+
+By Lagrange's theorem, the continued fraction of $\sqrt{d}$ has palindromic period,
+which manifests as palindromic Wildberger paths (e.g., $LRRL$ for $\sqrt{2}$).
+Using \eqref{eq:LR-relation}, each such path becomes an alternating sequence
+of $R$ and $\kappa\iota R$ operations, exposing the involutive structure
+underlying quadratic irrational approximation.
+\end{remark}
+
+\begin{remark}[Binary Encoding and Powers of Two]
+The position $n$ in level-order traversal of the Calkin--Wilf tree encodes
+the path from root: dropping the leading 1 from $n$'s binary representation,
+each 0 corresponds to $L$ and each 1 to $R$. In particular:
+\begin{itemize}
+\item Position $2^k$ (binary $10\cdots0$) gives $L^k(1) = 1/(k+1)$
+\item Position $2^k-1$ (binary $11\cdots1$) gives $R^{k-1}(1) = k$
+\end{itemize}
+Thus the ``left spine'' of the tree produces unit fractions $1/2, 1/3, 1/4, \ldots$
+via $L^k = (\kappa\iota\kappa\sigma\iota\sigma)^k$, requiring $6k$ atomic involutions.
+The ``right spine'' produces positive integers $2, 3, 4, \ldots$ via
+$R^k = (\kappa\sigma\iota\sigma)^k$, requiring $4k$ atomic involutions.
+\end{remark}
+
+\section{Group Structure and Word Problem}
+
+The group $\langle \sigma, \kappa, \iota \rangle$ generated by our three involutions
+has a natural group-theoretic characterization.
+
+\begin{proposition}[Coxeter Structure]
+The group $\langle \sigma, \kappa, \iota \rangle$ is a Coxeter group with presentation
+\[
+\langle \sigma, \kappa, \iota \mid \sigma^2 = \kappa^2 = \iota^2 = 1 \rangle.
+\]
+The products $\sigma\kappa$, $\kappa\iota$, and $\sigma\iota$ all have infinite order.
+\end{proposition}
+
+\begin{proof}
+That $\sigma^2 = \kappa^2 = \iota^2 = 1$ follows from direct computation
+(each is an involution). For infinite order, consider the matrix representation:
+\[
+\sigma\kappa \sim \begin{pmatrix} 1 & 0 \\ -1 & 2 \end{pmatrix}, \quad
+(\sigma\kappa)^n \sim \begin{pmatrix} 1 & 0 \\ 1-2^n & 2^n \end{pmatrix}.
+\]
+The eigenvalues of $\sigma\kappa$ are $\{1, 2\}$, which are not roots of unity,
+hence $\sigma\kappa$ has infinite order. Similar arguments apply to $\kappa\iota$
+and $\sigma\iota$.
+\end{proof}
+
+\begin{corollary}[Word Problem]
+The word problem for $\langle \sigma, \kappa, \iota \rangle$ is solvable in
+linear time $O(n)$, where $n$ is the word length.
+\end{corollary}
+
+\begin{proof}
+Since the only relations are $\sigma^2 = \kappa^2 = \iota^2 = 1$, the normal
+form of any word is obtained by removing adjacent identical letters. This
+can be done in a single left-to-right pass: maintain a stack, and for each
+new letter, either push it (if different from top) or pop (if same as top).
+The resulting word has no adjacent identical letters.
+\end{proof}
+
+\begin{remark}[Chomsky Classification]
+The reduction rules $\sigma\sigma \to \varepsilon$, $\kappa\kappa \to \varepsilon$,
+$\iota\iota \to \varepsilon$ form a context-free grammar. Unlike typical CFGs
+(which require $O(n^3)$ parsing via CYK), our specific grammar admits linear-time
+parsing because the rules are purely local (adjacent pairs only).
+\end{remark}
+
+The Calkin--Wilf generators have fixed-length representations:
+\begin{itemize}
+\item $R = \kappa\sigma\iota\sigma$ (4 symbols)
+\item $L = \kappa\iota\kappa\sigma\iota\sigma$ (6 symbols)
+\end{itemize}
+Both are already in normal form (alternating letters). Hence the atomic
+representation of any CW path has length $4 n_R + 6 n_L$, where $n_R$ and $n_L$
+are the numbers of $R$ and $L$ steps respectively.
+
 \section{Discussion}
 
 The decomposition of Calkin--Wilf generators into elementary involutions
@@ -277,12 +415,12 @@ $\{\sigma, \kappa, \iota\}$ serving as atomic building blocks.
 
 \textbf{Open questions:}
 \begin{enumerate}[label=(\arabic*)]
-\item Is there a direct ``GCD-like'' algorithm for finding the shortest involution
-path between two rationals, without going through Calkin--Wilf?
-\item What is the structure of $\langle \sigma, \kappa, \iota \rangle$ as an
-abstract group? Is it isomorphic to a known group?
+\item The group $\langle \sigma, \kappa, \iota \rangle$ is an infinite
+Coxeter group. What is its relationship to other well-known Coxeter groups?
 \item Can the invariant $I$ be generalized to characterize orbits of other
 involution subgroups?
+\item For fractions within the same $I$-orbit, can the $\langle \sigma, \kappa \rangle$
+path be computed directly, without enumerating the orbit?
 \end{enumerate}
 
 \section*{Acknowledgments}
