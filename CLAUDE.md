@@ -172,13 +172,16 @@ This requires:
    - **RULE:** Always test where claims break, don't assume scope
 
 8. **"Is each dimension load-bearing or cosmetic?"** (Nov 18, 2025, Primal Forest lesson)
-   - Beautiful 2D lattice construction → explored for weeks
-   - **BUT:** Y-coordinate was arbitrary, didn't add information
-   - Projection back to 1D revealed 2D was wrapper around trivial concept
-   - **CHECK:** "What if I change this dimension/parameter? Does core property change?"
+   - Beautiful 2D lattice construction (Prvoles) → explored for weeks
+   - **Context-dependent assessment:**
+     - For **visualization**: Y-coordinate IS essential (creates 45° diagonals, makes primes visible as clearings)
+     - For **computation/factorization**: Y doesn't help (no algorithmic speedup)
+     - For **connecting to other theory** (e.g., orbit invariants): Superficial connection only (different structures)
+   - **CHECK:** "What if I change this dimension/parameter? Does core property change?" AND "Which property am I testing?"
    - **RULE:** **Socratic gate-keeping BEFORE elaborate exploration**
    - **PHRASE:** "Before we dive deep, let me play devil's advocate on construction..."
    - Better to kill bad idea in 10 minutes than discover triviality after 10 hours
+   - **Lesson refined:** Ask "load-bearing FOR WHAT PURPOSE?" - a dimension can be essential for one goal but useless for another
 
 9. **"Do I understand the theoretical context?"** (Nov 20, 2025, sqrt convergence analysis)
    - Can derive algebraically ✓, but does it have deeper meaning?
@@ -366,6 +369,15 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - Start with `v0.1.0` for initial drafts/preprints
 - Increment to `v1.0.0` after peer review/publication
 
+**Release protocol (Added Dec 13, 2025):**
+- NEVER combine pending edits with release actions in the same step
+- Before `gh release create`:
+  1. Finish ALL edits first
+  2. Compile and verify the PDF/artifact
+  3. **Explicitly ask user**: "Ready to create release vX.Y.Z with this PDF?"
+  4. Only proceed after confirmation
+- Reason: User rejected an edit AFTER release was created, causing mismatch between released artifact and local source
+
 ---
 
 ## Technical Notes
@@ -382,6 +394,14 @@ Always run pdflatex TWICE to resolve cross-references:
 pdflatex -interaction=nonstopmode document.tex  # First pass
 pdflatex -interaction=nonstopmode document.tex  # Second pass
 ```
+
+**PDF Literature Review:**
+For large PDFs, convert to persistent text file first:
+```bash
+pdftotext papers/document.pdf papers/document.txt
+```
+Then: read intro (first ~150 lines) + grep for relevant terms.
+Keep .txt files in `papers/` for future reference.
 
 **Index regeneration:**
 Always run `make generate-index` before committing documentation changes.

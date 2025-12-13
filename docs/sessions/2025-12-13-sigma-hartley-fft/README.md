@@ -9,38 +9,20 @@ This session explores the connection between the silver Mobius involution
 sigma(x) = (1-x)/(1+x) and Fourier/Hartley transforms. The key discovery is that
 sigma acts as a **real Cayley transform** with deep connections to spectral analysis.
 
-## Key Identities Discovered
+## Standard Identities (WELL KNOWN)
 
 ### Fundamental Transformations
 
-1. **Hyperbolic to Exponential:**
-   ```
-   sigma(tanh(t)) = e^(-2t)
-   ```
+These are standard Cayley transform identities, not discoveries:
 
-2. **Trigonometric to Unit Circle:**
-   ```
-   sigma(i * tan(theta)) = e^(-2i*theta)
-   ```
-
-3. **Angle Reflection:**
-   ```
-   sigma(tan(theta)) = tan(pi/4 - theta)
-   ```
-   This is a **reflection** around theta = pi/8.
+1. **Hyperbolic to Exponential:** `sigma(tanh(t)) = e^(-2t)`
+2. **Trigonometric:** `sigma(i * tan(theta)) = e^(-2i*theta)`
+3. **Angle Reflection:** `sigma(tan(theta)) = tan(pi/4 - theta)` (tangent subtraction formula)
 
 ### Fixed Point
 
-The fixed point of sigma is:
-```
-sigma(sqrt(2) - 1) = sqrt(2) - 1
-```
-where sqrt(2) - 1 = tan(pi/8) is the **silver ratio conjugate**.
-
-This corresponds to:
-- Angle pi/8 (octant)
-- Periodic CF [0; 2, 2, 2, ...]
-- Natural symmetry point in Hartley basis
+The fixed point `sigma(sqrt(2) - 1) = sqrt(2) - 1 = tan(pi/8)` follows from
+solving sigma(x) = x, a simple quadratic equation.
 
 ## Geometric Interpretation
 
@@ -252,14 +234,11 @@ Every positive integer n is representable as p(q-p) with p=1, q=n+1:
 The orbit invariant I = odd(p(q-p)) partitions rationals into equivalence
 classes by their 2-adic-reduced quadratic values.
 
-## Fast Chebyshev Evaluation via Sigma (NEW - Dec 13 session 3)
+## Chebyshev via Sigma (MISLEADING - RETRACTED)
 
 ### Sigma-Doubling Algorithm
 
-The key identity sigma(x) = cos(2*arctan(sqrt(x))) enables **exponential speedup**
-for evaluating Chebyshev polynomials at power-of-2 indices.
-
-**Angle doubling formula:**
+The identity sigma(x) = cos(2*arctan(sqrt(x))) gives angle doubling:
 ```
 tan^2(2*theta) = 4t/(1-t)^2  where t = tan^2(theta)
 ```
@@ -268,26 +247,18 @@ tan^2(2*theta) = 4t/(1-t)^2  where t = tan^2(theta)
 
 To compute T_{2^k}(sigma(x)):
 1. Start with t = x
-2. Repeat k times: t <- 4t/(1-t)^2  (rational operations only!)
+2. Repeat k times: t <- 4t/(1-t)^2
 3. Return sigma(t)
 
-### Complexity Analysis
+### ⚠️ MISLEADING CLAIM RETRACTED
 
-| n = 2^k | Standard recursion | Sigma-doubling | Speedup |
-|---------|-------------------|----------------|---------|
-| 2       | 1 operation       | 1 operation    | 1x      |
-| 4       | 3 operations      | 2 operations   | 1.5x    |
-| 8       | 7 operations      | 3 operations   | 2.3x    |
-| 32      | 31 operations     | 5 operations   | 6.2x    |
-| 1024    | 1023 operations   | 10 operations  | **102x**|
+The "102x speedup" comparison was against **naive recursion** T_n = 2xT_{n-1} - T_{n-2}.
+However, **classical Chebyshev doubling** T_{2n}(x) = 2T_n(x)² - 1 already achieves
+O(log n) complexity for power-of-2 indices!
 
-**Result:** Exponential speedup O(log n) vs O(n) for power-of-2 indices!
-
-### Verified Examples
-```
-T_32(sigma(1/5)) = -387476267657599/1853020188851841
-```
-Both methods produce identical rational results.
+Our sigma-doubling is NOT faster than the standard method - it's just an equivalent
+formulation using different coordinates. The claimed "speedup" was a comparison
+against the wrong baseline.
 
 ## Remaining Open Questions
 

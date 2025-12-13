@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-13 10:33:05
+**Generated:** 2025-12-13 12:23:05
 
 ## Theorems (Master References)
 
@@ -41,16 +41,16 @@
 
 ## Recent Sessions (Last 10)
 
-- [Silver Involution and Hartley/FFT Connection](sessions/2025-12-13-sigma-hartley-fft/README.md) *()*
-- [Möbius Involution Theory](sessions/2025-12-13-involution-theory/README.md) *()*
-- [Transitivity Theorem for Möbius Involutions](sessions/2025-12-13-involution-theory/transitivity-theorem.md) *()*
-- [Stern-Brocot, Calkin-Wilf a Brahmagupta-Bhaskara rovnice](sessions/2025-12-13-involution-theory/stern-brocot-pell.md) *()*
-- [Paper Arguments: Giza Convergent Hypothesis](sessions/2025-12-12-phi-pi-equation/paper-arguments.md) *(2025-12-12)*
+- [Hartley Transform and Involution Structure](sessions/2025-12-13-hartley-involution/README.md) *()*
+- [Silver Involution and Hartley/FFT Connection](sessions/2025-12-13-sigma-hartley-fft/README.md) *(2025-12-13)*
+- [Transitivity Theorem for Möbius Involutions](sessions/2025-12-13-involution-theory/transitivity-theorem.md) *(2025-12-13)*
+- [Stern-Brocot, Calkin-Wilf a Brahmagupta-Bhaskara rovnice](sessions/2025-12-13-involution-theory/stern-brocot-pell.md) *(2025-12-13)*
+- [Möbius Involution Theory](sessions/2025-12-13-involution-theory/README.md) *(2025-12-13)*
+- [Paper Arguments: Giza Convergent Hypothesis](sessions/2025-12-12-phi-pi-equation/paper-arguments.md) *(2025-12-13)*
 - [Petrie Error Bar Analysis: Pyramid φ Hypotheses](sessions/2025-12-12-phi-pi-equation/petrie-error-analysis.md) *(2025-12-12)*
 - [Egyptian Mathematics & Pyramids: Document Index](sessions/egypt-pyramid-index.md) *(2025-12-12)*
 - [Pyramid Ratios and Möbius Orbits](sessions/2025-12-12-phi-pi-equation/README.md) *(2025-12-12)*
 - [Golden Ratio in the γ Framework: Pyramid Connection](sessions/2025-12-08-gamma-framework/golden-ratio-pyramid.md) *(2025-12-12)*
-- [Prime DNA Review: Gap Distribution and Chebyshev-like Bias](sessions/2025-12-05-prime-dna-review/README.md) *(2025-12-12)*
 
 ## Navigation
 
