@@ -135,77 +135,57 @@ $\frac{1}{2}, \frac{1}{6}, \frac{1}{12}, \ldots$
 
 \section{Complexity Analysis}
 
-\begin{theorem}[Tuple Bound]
+We distinguish between \emph{output complexity} (number of tuples) and
+\emph{computational complexity} (arithmetic operations).
+
+\begin{theorem}[Output Bound]
 For input $\frac{a}{b}$ with $\gcd(a,b) = 1$, Algorithm~\ref{alg:egypt} produces
 at most $O(\log b)$ symbolic tuples.
 \end{theorem}
 
 \begin{proof}
-Each iteration reduces $b$ by at least a constant factor (the modular inverse
-operation ensures $tv < b$, and the update $b \gets b - tv$ with $t \geq 1$
-guarantees progress). The number of iterations is thus $O(\log b)$.
+The number of tuples equals $\lceil n/2 \rceil$ where $n$ is the CF length.
+By standard results on continued fractions, $n = O(\log b)$ for any rational $a/b$.
 \end{proof}
 
-\begin{theorem}[Worst-Case Guarantee]
-The symbolic representation achieves $O(\log b)$ complexity for \emph{all} inputs $a/b$,
-whereas convergent-enumeration methods have worst case $O(a)$ for inputs like $(n-1)/n$.
+\begin{theorem}[Computational Complexity]
+The modular inverse algorithm (Algorithm~\ref{alg:egypt}) computes the symbolic
+representation in $O(\log b)$ iterations, each requiring one modular inverse.
+The optimized single-call XGCD variant (Corollary~\ref{cor:xgcd}) achieves
+$O(\log b \cdot M(\log b))$ total bit operations, where $M(k)$ is the complexity
+of $k$-bit multiplication.
 \end{theorem}
 
-\begin{proof}
-Consider $\frac{n-1}{n}$ with CF $[0; 1, n-1]$. The expanded Egyptian fraction contains
-$n-1$ unit fractions: $\frac{1}{2} + \frac{1}{6} + \cdots + \frac{1}{n(n-1)}$.
-Methods that enumerate individual fractions (even with post-hoc grouping) require
-$O(n-1) = O(a)$ operations.
+\begin{remark}[Comparison with Eppstein's CF Method]
+Eppstein's basic continued fraction method~\cite{eppstein} produces unit fractions
+by interleaving primary and secondary convergents. The output size is bounded by
+``the sum of the odd terms after the first in the continued fraction list, which
+is at most $a$'' (the numerator). For $\frac{n-1}{n}$ with CF $[0; 1, n-1]$,
+this yields $n-1$ explicit unit fractions.
 
-The symbolic representation produces a \emph{single} tuple $(1, 1, 1, n-1)$ directly
-from the CF data, requiring only $O(\log n) = O(\log b)$ operations.
+Our symbolic representation captures the \emph{same} decomposition in a single
+tuple $(1, 1, 1, n-1)$, encoding the entire telescoping sum implicitly.
+The tuple never needs to be expanded unless individual fractions are required.
+\end{remark}
 
-This worst-case improvement from $O(a)$ to $O(\log b)$ is the key algorithmic
-contribution: direct tuple computation bypasses enumeration entirely.
-\end{proof}
-
-\begin{corollary}[Dramatic Compression]
-For $\frac{n-1}{n}$, the greedy algorithm produces $O(n)$ unit fractions,
-while the modular inverse algorithm produces a \emph{single} tuple:
+\begin{corollary}[Symbolic Compression]
+For $\frac{n-1}{n}$, Eppstein's basic CF method enumerates $n-1$ unit fractions:
+$\frac{1}{1\cdot 2}, \frac{1}{2\cdot 3}, \ldots, \frac{1}{(n-1)\cdot n}$.
+Our algorithm produces a \emph{single} tuple:
 \[
 \frac{n-1}{n} \longleftrightarrow (1, 1, 1, n-1).
 \]
 Verification: $T(1, 1, 1, n-1) = \frac{(n-1)-1+1}{(1-1+1)(1+n-1)} = \frac{n-1}{1 \cdot n} = \frac{n-1}{n}$. \checkmark
 \end{corollary}
 
-This compression is the key advantage: while Eppstein's CF method must enumerate
-individual fractions (even if grouped post-hoc), the symbolic representation
-maintains algebraic structure throughout.
-
-\section{Monotonicity Theorem}
-
-\begin{theorem}[Strict Monotonicity]\label{thm:mono}
-The partial sums of the Egyptian fraction decomposition form a strictly increasing
-sequence that never exceeds the target value $q = a/b$:
-\[
-0 < S_1 < S_2 < \cdots < S_n = q.
-\]
-\end{theorem}
-
-\begin{proof}
-Each unit fraction $\frac{1}{d_k}$ is positive, so partial sums are strictly
-increasing. The key is showing $S_k < q$ for all $k < n$.
-
-The algorithm constructs fractions such that each $\frac{1}{d_k}$ is the largest
-unit fraction fitting in the remaining gap. By construction, the sum of the first
-$k$ fractions equals exactly the portion of $q$ ``consumed'' by the algorithm,
-which is always less than $q$ until termination.
-\end{proof}
-
-\begin{remark}[Contrast with Continued Fractions]
-CF convergents \emph{alternate} around the target: odd convergents undershoot,
-even convergents overshoot. The Egyptian decomposition achieves monotone convergence
-from below by effectively ``pairing'' CF differences to cancel the alternation.
-\end{remark}
+This symbolic compression is the key advantage: the tuple $(u, v, i, j)$ implicitly
+represents $j - i + 1$ unit fractions without explicit enumeration. For applications
+requiring only the sum value, closed-form evaluation (Lemma~\ref{lem:closed})
+avoids expanding the tuple entirely.
 
 \section{Connection to Continued Fractions}
 
-The following theorem reveals a deep connection between Egyptian fractions and
+The following theorem reveals an exact connection between Egyptian fractions and
 continued fraction convergents.
 
 \begin{theorem}[Egypt--CF Correspondence]\label{thm:cf}
@@ -219,24 +199,56 @@ differences. Then the Egyptian fraction values (after expansion) satisfy:
 That is, each Egypt value equals the sum of a consecutive \emph{pair} of CF differences.
 \end{theorem}
 
-\begin{proof}[Proof sketch]
+\begin{proof}
 CF differences alternate in sign: $\Delta_0 > 0$, $\Delta_1 < 0$, $\Delta_2 > 0$, etc.
-Pairing consecutive differences $(+, -)$ or $(-, +)$ yields a positive sum.
-The modular inverse algorithm implicitly performs this pairing, producing the
-same rational values as paired CF differences.
+(since even-indexed convergents approach from below and odd-indexed from above).
+Pairing consecutive differences $(+, -)$ yields a positive sum equal to the
+``leapfrog'' distance between even-indexed convergents.
 
-Verification in Mathematica:
-\begin{verbatim}
-compare[q_] := {Total /@ Partition[Differences @ Convergents[q], 2],
-                ReleaseHold @ EgyptianFractions[q, Method -> "Expression"]}
-\end{verbatim}
-returns identical lists for all tested rationals.
+More precisely, for convergents $c_{2k-2} < c_{2k} < q$, we have:
+\[
+\Delta_{2k-1} + \Delta_{2k} = (c_{2k-1} - c_{2k-2}) + (c_{2k} - c_{2k-1}) = c_{2k} - c_{2k-2}.
+\]
+By the leapfrog identity \eqref{eq:leapfrog} (proved in Theorem~\ref{thm:bijection}),
+this difference equals $a_{2k}/(q_{2k-1} q_{2k-2})$, which matches the value of the
+$k$-th Egyptian tuple $(q_{2k-2}, q_{2k-1}, 1, a_{2k})$.
 \end{proof}
 
 \begin{corollary}[Monotonicity Explanation]
 The strict monotonicity of Egypt partial sums follows from the CF correspondence:
 paired differences of alternating-sign CF increments are always positive.
 \end{corollary}
+
+\section{Monotonicity Theorem}
+
+\begin{theorem}[Strict Monotonicity]\label{thm:mono}
+The partial sums of the Egyptian fraction decomposition form a strictly increasing
+sequence that never exceeds the target value $q = a/b$:
+\[
+0 < S_1 < S_2 < \cdots < S_n = q.
+\]
+\end{theorem}
+
+\begin{proof}
+Each unit fraction $\frac{1}{d_k}$ is positive, so partial sums are strictly
+increasing. We show $S_k < q$ for all $k < n$ using the CF correspondence.
+
+By Theorem~\ref{thm:cf}, each Egyptian tuple value equals a \emph{paired difference}
+of CF convergents: $c_{2k} - c_{2k-2}$. Since CF convergents alternate around $q$
+(odd convergents undershoot, even convergents overshoot), and since even-indexed
+convergents form a \emph{decreasing} sequence approaching $q$ from above, we have:
+\[
+c_0 < c_2 < c_4 < \cdots < q < \cdots < c_5 < c_3 < c_1.
+\]
+The partial sum $S_k = c_{2k} - c_0$ thus satisfies $S_k < q - c_0 = q$ for all $k$
+before the final term.
+\end{proof}
+
+\begin{remark}[Contrast with Continued Fractions]
+CF convergents \emph{alternate} around the target: odd convergents undershoot,
+even convergents overshoot. The Egyptian decomposition achieves monotone convergence
+from below by effectively ``pairing'' CF differences to cancel the alternation.
+\end{remark}
 
 \section{Complete CF--Egypt Tuple Formula}
 
@@ -413,7 +425,7 @@ of tuple generation, not in literal repetition.
 A key algorithmic insight connects the extended Euclidean algorithm directly
 to CF computation.
 
-\begin{proposition}[XGCD = CF]\label{prop:xgcd}
+\begin{proposition}[XGCD = CF, {\cite[Thm.~164]{hardy-wright}}]\label{prop:xgcd}
 The quotients in the extended Euclidean algorithm for $\gcd(a, b)$ are exactly
 the continued fraction coefficients of $a/b$:
 \begin{align}
@@ -424,7 +436,7 @@ q_2 &= \lfloor b/r_1 \rfloor, & r_2 &= b \bmod r_1, \\
 Then $\text{CF}(a/b) = [q_1; q_2, q_3, \ldots]$.
 \end{proposition}
 
-\begin{corollary}[Single-Call Egypt]
+\begin{corollary}[Single-Call Egypt]\label{cor:xgcd}
 Egyptian fraction decomposition requires only \emph{one} XGCD computation:
 \begin{enumerate}
 \item Compute XGCD$(a, b)$, recording all quotients
@@ -443,14 +455,18 @@ For numerical inputs with bounded precision:
 \caption{Arbitrary-Precision Float to Egyptian Fractions}
 \begin{algorithmic}[1]
 \Require Float $x \pm \epsilon$ with $K = -\log_{10}(\epsilon)$ significant digits
-\Ensure Stable Egyptian tuples for $x$
+\Ensure Egyptian tuples for $x$
 \State Rationalize: $p/q \gets$ best rational approximation to $x$
 \State $\text{cf} \gets \text{XGCD}(p, q).\text{quotients}$
-\State $\text{reliable} \gets \lfloor 0.97 K \rfloor$ \Comment{Lochs bound}
-\State $\text{cf} \gets \text{cf}[1..\text{reliable}]$ \Comment{Truncate unreliable terms}
 \State \Return \Call{CFtoEgypt}{cf} \Comment{Theorem~\ref{thm:bijection}}
 \end{algorithmic}
 \end{algorithm}
+
+\begin{remark}
+Lochs' theorem states that $\approx 0.97K$ CF terms are reliable from $K$ decimal
+digits on average, but this constant varies: the golden ratio needs $\approx 2.39$
+terms per digit. Since the exact bound is input-dependent, we omit truncation.
+\end{remark}
 
 \section{Related Work}
 
@@ -477,21 +493,24 @@ Golomb~\cite{golomb} presented an algebraic algorithm based on the identity
 $ps - qr = 1$ (Bezout coefficients). Gyimesi and Nyul~\cite{gyimesi} proved that
 Golomb's method and the CF method produce \emph{identical} expansions.
 
-\textbf{Complexity comparison:} While Golomb/CF methods enumerate all CF convergents
-individually (producing $O(n)$ unit fractions for CF length $n$), our symbolic
-representation outputs $O(n/2)$ tuples directly. For extreme cases like $(n-1)/n$
-with CF $[0; 1, n-1]$, traditional methods enumerate $O(n)$ convergents while
-we produce a \emph{single} tuple.
+\textbf{Complexity comparison:} Eppstein's basic CF method produces
+$O(\sum_i a_i)$ unit fractions, where $a_i$ are the CF coefficients. This can be
+as large as $O(a)$ (the numerator) when a single large coefficient dominates.
+Our symbolic representation produces $O(n/2)$ tuples where $n$ is the CF length,
+regardless of coefficient magnitudes.
 
 \begin{center}
-\begin{tabular}{l c c}
-\textbf{Rational} & \textbf{Golomb (convergents)} & \textbf{Symbolic (tuples)} \\
+\begin{tabular}{l c c c}
+\textbf{Rational} & \textbf{CF} & \textbf{Eppstein basic} & \textbf{Symbolic tuples} \\
 \hline
-$(n-1)/n$ & $O(n)$ & $O(1)$ \\
-$F_k/F_{k+1}$ & $O(k) = O(\log b)$ & $O(k/2) = O(\log b)$ \\
-general $a/b$ & $O(\log b)$ & $O(\log b)$ \\
+$(n-1)/n$ & $[0; 1, n-1]$ & $n-1$ fractions & 1 tuple \\
+$F_k/F_{k+1}$ & $[0; \bar{1}]$ (all 1s) & $k$ fractions & $\lceil k/2 \rceil$ tuples \\
+general $a/b$ & length $n$ & $O(\sum a_i) \leq O(a)$ & $O(n/2) = O(\log b)$ \\
 \end{tabular}
 \end{center}
+
+The key insight: tuples implicitly represent ranges of unit fractions via parameters
+$(u, v, i, j)$, avoiding explicit enumeration of $j - i + 1$ individual terms.
 
 \subsection{Binary Methods}
 Binary methods decompose using powers of 2. They do not provide the CF connection
@@ -520,16 +539,24 @@ The \texttt{Method} option controls output:
 
 \section{Conclusion}
 
-The modular inverse algorithm for Egyptian fractions provides a symbolic telescoping
-representation that dramatically reduces complexity for certain inputs (e.g., single
-tuple for $(n-1)/n$) while revealing algebraic structure hidden in naive expansions.
-The connection to continued fractions---Egypt values equal paired CF differences---explains
-the monotonicity property and suggests deeper relationships between modular arithmetic
-and rational approximation theory.
+We have established an explicit bijection between continued fraction expansions
+and Egyptian fraction decompositions via symbolic telescoping tuples. The main
+contributions are:
+\begin{enumerate}
+\item A symbolic representation $(u, v, i, j)$ that compresses $O(a)$ unit fractions
+      into $O(\log b)$ tuples
+\item An explicit formula (Theorem~\ref{thm:bijection}) connecting tuple parameters
+      to CF convergent denominators
+\item The monotonicity theorem explained by paired CF differences
+\item Extension to irrationals via prefix stability (Lochs bound)
+\end{enumerate}
+Golomb's algebraic method and Eppstein's CF method produce identical unit fraction
+\emph{sequences}; the symbolic tuple representation that captures these sequences
+without enumeration is our contribution.
 
 \subsection*{Acknowledgments}
-The modular inverse algorithm is based on work by popojan~\cite{egypt-repo}.
 Thanks to David Eppstein for comprehensive documentation of CF methods.
+The implementation is available at~\cite{egypt-repo}.
 
 \begin{thebibliography}{9}
 \bibitem{eppstein}
@@ -537,7 +564,7 @@ D.~Eppstein, ``Egyptian Fractions,'' 1994--2014.
 \url{https://ics.uci.edu/~eppstein/numth/egypt/}
 
 \bibitem{egypt-repo}
-popojan, ``egypt: Egyptian fraction decomposition via modular inverse,'' GitHub, 2023.
+J.~Popelka, ``egypt: Egyptian fraction decomposition via modular inverse,'' GitHub, 2023.
 \url{https://github.com/popojan/egypt}
 
 \bibitem{lochs}
@@ -556,6 +583,10 @@ Ahmes Papyrus,'' \textit{Amer.\ Math.\ Monthly}, vol.~69, pp.~785--786, 1962.
 M.~Gyimesi and G.~Nyul, ``A note on Golomb's method and the continued fraction
 method for Egyptian fractions,'' \textit{Annales Mathematicae et Informaticae},
 vol.~42, pp.~129--134, 2013.
+
+\bibitem{hardy-wright}
+G.~H.~Hardy and E.~M.~Wright, \textit{An Introduction to the Theory of Numbers},
+6th ed., Oxford University Press, 2008.
 \end{thebibliography}
 
 \end{document}
