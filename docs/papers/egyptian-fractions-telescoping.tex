@@ -18,7 +18,7 @@
 \newtheorem{example}[theorem]{Example}
 \newtheorem{conjecture}[theorem]{Conjecture}
 
-\title{Egyptian Fractions via Modular Inverse:\\Symbolic Telescoping Representation}
+\title{The Continued Fractions--Egyptian Fractions Bijection:\\Symbolic Telescoping Representation}
 \author{Jan Popelka\thanks{Email: popojan@protonmail.com}}
 \date{}
 
@@ -26,23 +26,13 @@
 \maketitle
 
 \begin{abstract}
-We present an algorithm for decomposing rational numbers into sums of distinct
-unit fractions (Egyptian fractions) using modular inverses. The key contribution
-is a \emph{symbolic telescoping representation} that compresses consecutive unit
-fractions into tuples $(u, v, i, j)$ representing telescoping sums
-$\sum_{k=i}^{j} \frac{1}{(u+vk)(u+v(k-1))}$. This representation reduces computational
-complexity from $O(a)$ expanded fractions to $O(\log b)$ symbolic tuples for input $a/b$.
-We prove that the algorithm produces strictly monotone partial sums that never exceed
-the target value, and establish a precise connection to continued fraction convergents:
-the Egypt values equal paired differences of convergents.
-
-We derive an \emph{explicit bijection} between CF coefficients and Egyptian tuples,
-showing that tuple parameters are determined by convergent denominators and CF partial
-quotients. This bijection extends naturally to irrational numbers via prefix stability:
-the first $k$ tuples depend only on the first $2k$ CF coefficients. Using Lochs' theorem,
-we establish that $K$ decimal digits yield approximately $K/2$ stable Egyptian tuples.
-Finally, we show that a single extended GCD computation suffices for Egyptian fraction
-decomposition, as XGCD quotients are precisely CF coefficients.
+We establish a bijection between continued fraction expansions and
+Egyptian fraction decompositions. For a rational $a/b$, each pair of
+consecutive CF coefficients determines one \emph{symbolic tuple}---a
+compact encoding of a telescoping sum of unit fractions. This yields
+$O(\log b)$ tuples for all inputs, ranging from a single tuple for
+$(n-1)/n$ to $\lceil k/2 \rceil$ tuples for Fibonacci ratios $F_k/F_{k+1}$.
+The bijection extends to irrationals via prefix stability.
 \end{abstract}
 
 \section{Introduction}
@@ -521,7 +511,8 @@ EgyptianFractions[999/1000, Method -> "Raw"]  (* Single tuple! *)
 
 The \texttt{Method} option controls output:
 \begin{itemize}
-\item \texttt{"List"}: Expanded unit fractions (default)
+\item \texttt{"List"}: Distinct unit fractions (default). Uses recursive halving
+      and duplicate merging to maintain $O(\log b)$ terms even after expansion.
 \item \texttt{"Raw"}: Symbolic tuples $(u, v, i, j)$
 \item \texttt{"Expression"}: HoldForm sums for display
 \item \texttt{"Partials"}: Monotone partial sum sequence

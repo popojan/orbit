@@ -1,7 +1,9 @@
-\documentclass[11pt,a4paper]{article}
-
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb,amsthm}
-\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage[hidelinks]{hyperref}
 \usepackage{booktabs}
 \usepackage{enumitem}
 
@@ -241,34 +243,23 @@ run in opposite directions:
 
 \begin{center}
 \small
-\begin{tabular}{clc}
+\begin{tabular}{clclc}
 \toprule
-& GCD (top-down) & $a_i$ \\
+& GCD (top-down) & $a_i$ & Build-up (bottom-up) & Result \\
 \midrule
-  & & \\
-1 & $11 = 1 \cdot 7 + 4$ & 1 \\
-2 & $7 = 1 \cdot 4 + 3$ & 1 \\
-3 & $4 = 1 \cdot 3 + 1$ & 1 \\
-4 & $3 = 3 \cdot 1 + 0$ & 3 \\
-\bottomrule
-\end{tabular}
-\quad
-\begin{tabular}{cll}
-\toprule
-& Build-up (bottom-up) & Result \\
+& & & $\iota R \iota R \iota R \iota R^3(0)$ & $7/11$ \\
 \midrule
-1 & $R^3(0)$ & $3$ \\
-2 & $\iota \to R$ & $\frac{1}{3} \to \frac{4}{3}$ \\
-3 & $\iota \to R$ & $\frac{3}{4} \to \frac{7}{4}$ \\
-4 & $\iota \to R$ & $\frac{4}{7} \to \frac{11}{7}$ \\
-5 & $\iota$ & $\frac{7}{11}$ \\
+1 & $11 = 1 \cdot 7 + 4$ & 1 & $R \iota R \iota R \iota R^3(0)$ & $11/7$ \\
+2 & $7 = 1 \cdot 4 + 3$ & 1 & $R \iota R \iota R^3(0)$ & $7/4$ \\
+3 & $4 = 1 \cdot 3 + 1$ & 1 & $R \iota R^3(0)$ & $4/3$ \\
+4 & $3 = 3 \cdot 1 + 0$ & 3 & $R^3(0)$ & $3$ \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 The GCD quotients read top-to-bottom give $[1,1,1,3]$; the build-up reads
-the CF coefficients bottom-to-top as $[3,1,1,1]$.
-The final $\iota$ produces the proper fraction $7/11 < 1$.
+them bottom-to-top as $[3,1,1,1]$, with each row's result being the ratio
+from the corresponding GCD step. The final $\iota$ inverts row~1 to produce $7/11 < 1$.
 
 Note: The CF build-up uses only $R$ and $\iota$, regardless of whether the
 target is in $(0,1)$ or greater than~$1$. The generator $L$ appears when
@@ -422,8 +413,30 @@ involution subgroups?
 \item For fractions within the same $I$-orbit, can the $\langle \sigma, \kappa \rangle$
 path be computed directly, without enumerating the orbit?
 \item The involution $\sigma$ appears to simplify continued fraction representations.
-Is there a connection between $\langle \sigma, \kappa \rangle$ orbits and the
-complexity of Egyptian fraction decompositions?
+In a companion paper~\cite{PopelkaEgypt2025}, we establish a bijection between
+CF coefficients and Egyptian fraction decompositions. Does the action of
+$\langle \sigma, \kappa \rangle$ on rationals have a natural interpretation
+in terms of this CF--Egypt correspondence?
+\item The involution $\sigma$ extends naturally to irrational numbers.
+Preliminary computations suggest remarkable behavior on transcendental constants:
+\begin{itemize}
+\item $\sigma$ fixes $\sqrt{2}-1$ (whose CF is $[0; \overline{2}]$).
+\item $\sigma$ maps $1/\varphi = (\sqrt{5}-1)/2$ (CF $[0; \overline{1}]$)
+      to a number with CF $[0; \overline{4}]$.
+\item $\sigma(e-2) = (3-e)/(e-1) = \coth(1/2) - 2$ has CF $[0; 6, 10, 14, \ldots]$.
+\end{itemize}
+The last identity follows from $\coth(1/2) = (e+1)/(e-1) = [2; 6, 10, 14, \ldots]$
+\cite{OEIS-A016825}. Since $e$ is transcendental \cite{Hermite1873},
+so is $\sigma(e-2)$. The arithmetic CF arises because
+$\sigma$ transforms the irregular CF of $e-2$ into the fractional part of $\coth(1/2)$.
+This provides a natural interpretation: $\sigma$ ``regularizes'' the Euler pattern
+$[0; 1, 2, 1, 1, 4, \ldots]$ via M\"obius conjugation to hyperbolic functions.
+\item The identities $\sigma(\tanh t) = e^{-2t}$ and $\sigma(i\tan\theta) = e^{-2i\theta}$
+suggest a deep connection to Fourier/Hartley analysis. Since $\sigma(\tan\theta) = \tan(\pi/4 - \theta)$,
+the involution acts as \emph{angle reflection} around $\pi/8$, where its fixed point
+$\sqrt{2}-1 = \tan(\pi/8)$ lies. The Hartley transform uses the kernel
+$\mathrm{cas}(\theta) = \cos\theta + \sin\theta = \sqrt{2}\cos(\theta - \pi/4)$,
+for which $\sigma$-reflection is natural. Can this connection be exploited algorithmically?
 \end{enumerate}
 
 \section*{Acknowledgments}
@@ -452,6 +465,22 @@ University of Chicago Press, 1964.
 N.~J.~Wildberger,
 ``Solving the Pell Equation,''
 \emph{Journal of Integer Sequences}, vol.~13, Article 10.4.3, 2010.
+
+\bibitem{PopelkaEgypt2025}
+J.~Popelka,
+``The Continued Fractions--Egyptian Fractions Bijection: Symbolic Telescoping Representation,''
+preprint, 2025.
+
+\bibitem{Hermite1873}
+C.~Hermite,
+``Sur la fonction exponentielle,''
+\emph{Comptes Rendus de l'Acad\'emie des Sciences}, vol.~77, pp.~18--24, 74--79, 226--233, 285--293, 1873.
+
+\bibitem{OEIS-A016825}
+OEIS Foundation Inc.,
+``Sequence A016825: Positive integers congruent to 2 mod 4,''
+\emph{The On-Line Encyclopedia of Integer Sequences}, 2024.
+\url{https://oeis.org/A016825}
 
 \end{thebibliography}
 
