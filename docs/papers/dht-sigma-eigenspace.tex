@@ -1,0 +1,284 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage[hidelinks]{hyperref}
+\usepackage{booktabs}
+\usepackage{enumitem}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{The $\sigma$-Eigenspace Decomposition of the Discrete Hartley Transform}
+\author{Jan Popelka}
+\date{December 2025 \\ \small Draft v0.1}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We introduce a novel symmetry of the Discrete Hartley Transform (DHT) induced by the
+M\"obius involution $\sigma(x) = (1-x)/(1+x)$. On $N$-point DHT frequency indices (where $4 \mid N$),
+$\sigma$ acts as the permutation $k \mapsto (N/4 - k) \mod N$. We prove that this permutation
+has eigenspaces of dimension $\dim(\pm 1) = N/2 \pm \delta$, where $\delta = 1$ if $8 \mid N$
+and $\delta = 0$ otherwise. The fixed frequencies $f = 1/8$ and $f = 5/8$ (when $8 \mid N$)
+correspond exactly to the extrema $\pm\sqrt{2}$ of the Hartley kernel $\mathrm{cas}(\theta)$.
+This connects the continuous fixed point $\sigma(\sqrt{2}-1) = \sqrt{2}-1 = \tan(\pi/8)$
+to discrete spectral structure. We also show that while $\langle \sigma, \kappa \rangle$
+(where $\kappa(x) = 1-x$) generates the infinite dihedral group $D_\infty$ on $\mathbb{Q}$,
+it collapses to the finite dihedral group $D_4$ on DHT indices, with $\sigma\kappa$
+acting as a quarter-period frequency shift.
+\end{abstract}
+
+\section{Introduction}
+
+The Discrete Hartley Transform (DHT) is a real-valued analogue of the Discrete Fourier
+Transform, defined by the kernel $\mathrm{cas}(\theta) = \cos\theta + \sin\theta$.
+Its self-inverse property ($H^2 = NI$) and real-to-real mapping make it attractive
+for signal processing applications \cite{Bracewell1986}.
+
+The M\"obius involution $\sigma(x) = (1-x)/(1+x)$, known as the real Cayley transform,
+satisfies $\sigma(\tan\theta) = \tan(\pi/4 - \theta)$---an angle reflection around $\pi/8$.
+In a companion paper \cite{PopelkaInvolution2025}, we showed that $\sigma$ generates
+(with $\kappa(x) = 1-x$ and $\iota(x) = 1/x$) the Calkin--Wilf tree structure on
+$\mathbb{Q}^+$.
+
+This paper establishes a new connection: the continuous involution $\sigma$ induces
+a discrete symmetry on DHT frequency indices, with a precise eigenspace structure
+governed by divisibility by~8.
+
+\section{The $\sigma$-Permutation on DHT Indices}
+
+\begin{definition}[$\sigma$-permutation]
+For $N$-point DHT with $4 \mid N$, define the permutation $\sigma_N$ on frequency
+indices $\{0, 1, \ldots, N-1\}$ by:
+\[
+\sigma_N(k) = \left(\frac{N}{4} - k\right) \mod N.
+\]
+\end{definition}
+
+\begin{proposition}[Involution property]
+$\sigma_N$ is an involution: $\sigma_N^2 = \mathrm{id}$.
+\end{proposition}
+
+\begin{proof}
+$\sigma_N(\sigma_N(k)) = (N/4 - (N/4 - k)) \mod N = k \mod N = k$.
+\end{proof}
+
+\begin{example}
+For $N = 8$: $\sigma_8(k) = (2 - k) \mod 8$ gives the permutation
+\[
+\{0,1,2,3,4,5,6,7\} \mapsto \{2,1,0,7,6,5,4,3\}.
+\]
+The cycle structure is: $(0 \; 2)$, $(3 \; 7)$, $(4 \; 6)$, with fixed points $k = 1$ and $k = 5$.
+\end{example}
+
+\section{Main Result: Eigenspace Dimensions}
+
+\begin{theorem}[Eigenspace Dimension Formula]\label{thm:main}
+Let $P_{\sigma_N}$ be the permutation matrix of $\sigma_N$ on $N$ points, where $4 \mid N$.
+Then:
+\begin{align}
+\dim(\text{$+1$ eigenspace}) &= \frac{N + 2\delta}{2} = \frac{N}{2} + \delta, \\
+\dim(\text{$-1$ eigenspace}) &= \frac{N - 2\delta}{2} = \frac{N}{2} - \delta,
+\end{align}
+where
+\[
+\delta = \begin{cases} 1 & \text{if } 8 \mid N, \\ 0 & \text{if } 4 \mid N \text{ but } 8 \nmid N. \end{cases}
+\]
+\end{theorem}
+
+\begin{proof}
+For an involution permutation, the eigenvalues are $\pm 1$. The dimension formula
+depends on the number of fixed points $f$:
+\begin{itemize}
+\item Each fixed point contributes to the $+1$ eigenspace.
+\item Each 2-cycle contributes one dimension to each eigenspace.
+\end{itemize}
+Thus $\dim(+1) = f + (N-f)/2 = (N+f)/2$ and $\dim(-1) = (N-f)/2$.
+
+\textbf{Fixed point analysis.} A fixed point satisfies $k = (N/4 - k) \mod N$,
+i.e., $2k \equiv N/4 \pmod{N}$.
+
+\textbf{Case $8 \mid N$:} Write $N = 8m$. Then $N/4 = 2m$, and the equation becomes
+$2k \equiv 2m \pmod{8m}$, giving $k \equiv m \pmod{4m}$.
+Solutions in $\{0, \ldots, N-1\}$: $k = m$ and $k = 5m$.
+Thus $f = 2$.
+
+\textbf{Case $4 \mid N$, $8 \nmid N$:} Write $N = 4m$ with $m$ odd. Then $N/4 = m$ (odd),
+and $2k \equiv m \pmod{4m}$. Since the left side is even and the right side is odd,
+there are no solutions. Thus $f = 0$.
+
+Substituting: $\dim(\pm 1) = (N \pm f)/2 = N/2 \pm \delta$ where $\delta = f/2$.
+\end{proof}
+
+\begin{corollary}[Explicit formulas]
+\begin{center}
+\begin{tabular}{ccccc}
+\toprule
+$N$ & Fixed points & $\dim(+1)$ & $\dim(-1)$ & Difference \\
+\midrule
+$4$ & $\emptyset$ & $2$ & $2$ & $0$ \\
+$8$ & $\{1, 5\}$ & $5$ & $3$ & $2$ \\
+$12$ & $\emptyset$ & $6$ & $6$ & $0$ \\
+$16$ & $\{2, 10\}$ & $9$ & $7$ & $2$ \\
+$24$ & $\{3, 15\}$ & $13$ & $11$ & $2$ \\
+$32$ & $\{4, 20\}$ & $17$ & $15$ & $2$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{corollary}
+
+\section{Connection to Hartley Kernel}
+
+\begin{proposition}[Fixed frequencies and Hartley extrema]
+When $8 \mid N$, the fixed points $k = N/8$ and $k = 5N/8$ correspond to
+normalized frequencies $f = k/N = 1/8$ and $f = 5/8$, at which the Hartley
+kernel attains its extreme values:
+\[
+\mathrm{cas}\left(\frac{\pi}{4}\right) = \sqrt{2}, \qquad
+\mathrm{cas}\left(\frac{5\pi}{4}\right) = -\sqrt{2}.
+\]
+\end{proposition}
+
+\begin{proof}
+For frequency $f = 1/8$, the angle is $\theta = 2\pi f = \pi/4$, and
+$\mathrm{cas}(\pi/4) = \cos(\pi/4) + \sin(\pi/4) = \sqrt{2}/2 + \sqrt{2}/2 = \sqrt{2}$.
+Similarly for $f = 5/8$: $\theta = 5\pi/4$, and $\mathrm{cas}(5\pi/4) = -\sqrt{2}$.
+\end{proof}
+
+\begin{remark}[Connection to continuous fixed point]
+The M\"obius involution $\sigma(x) = (1-x)/(1+x)$ has fixed point $\sqrt{2} - 1 = \tan(\pi/8)$.
+The angle $\pi/8$ is exactly half of $\pi/4$, where the Hartley kernel is extremal.
+This reveals a deep connection: the continuous fixed point $\tan(\pi/8)$ and the
+discrete fixed frequencies $f = 1/8, 5/8$ are manifestations of the same underlying
+$\sigma$-symmetry.
+\end{remark}
+
+\section{Dihedral Group Structure}
+
+\begin{definition}[$\kappa$-permutation]
+The conjugation symmetry $\kappa(x) = 1 - x$ induces the standard spectral reflection
+$\kappa_N(k) = (-k) \mod N = (N - k) \mod N$ on DHT indices.
+\end{definition}
+
+\begin{theorem}[Dihedral collapse]\label{thm:dihedral}
+On $\mathbb{Q} \cap (0,1)$, the group $\langle \sigma, \kappa \rangle \cong D_\infty$
+(infinite dihedral group). On $N$-point DHT indices with $4 \mid N$:
+\[
+\langle \sigma_N, \kappa_N \rangle \cong D_4,
+\]
+independent of $N$.
+\end{theorem}
+
+\begin{proof}
+\textbf{Composition $\sigma_N \kappa_N$:}
+\[
+\sigma_N(\kappa_N(k)) = \sigma_N(-k \mod N) = \left(\frac{N}{4} - (-k)\right) \mod N
+= \left(k + \frac{N}{4}\right) \mod N.
+\]
+Thus $\sigma_N \kappa_N$ is a shift by $N/4$ (quarter-period).
+
+\textbf{Order:} $(\sigma_N \kappa_N)^4(k) = (k + N) \mod N = k$, so $|\sigma_N \kappa_N| = 4$.
+
+\textbf{Group structure:} With $\sigma_N^2 = \kappa_N^2 = \mathrm{id}$ and $|\sigma_N \kappa_N| = 4$,
+the group has presentation $\langle \sigma, \kappa \mid \sigma^2 = \kappa^2 = (\sigma\kappa)^4 = 1 \rangle = D_4$.
+\end{proof}
+
+\begin{corollary}[Quarter-period shift]
+The composition $\sigma_N \kappa_N$ acts as a frequency shift by $N/4$:
+\[
+\sigma_N \kappa_N: k \mapsto k + \frac{N}{4} \pmod{N}.
+\]
+This is the discrete analogue of the continuous action $\sigma\kappa: y \mapsto y/2$
+in logit coordinates $y = x/(1-x)$.
+\end{corollary}
+
+\section{Signal Processing Interpretation}
+
+\begin{proposition}[$\sigma$-decomposition of DHT spectrum]
+For any $N$-point real signal $x[n]$ with DHT $X[k]$, define:
+\begin{align}
+X_{\mathrm{sym}}[k] &= \frac{1}{2}\left(X[k] + X[\sigma_N(k)]\right), \\
+X_{\mathrm{anti}}[k] &= \frac{1}{2}\left(X[k] - X[\sigma_N(k)]\right).
+\end{align}
+Then $X = X_{\mathrm{sym}} + X_{\mathrm{anti}}$, where $X_{\mathrm{sym}}$ lies in the
+$+1$ eigenspace (dimension $N/2 + \delta$) and $X_{\mathrm{anti}}$ lies in the
+$-1$ eigenspace (dimension $N/2 - \delta$).
+\end{proposition}
+
+\begin{remark}[Interpretation]
+The $\sigma$-symmetric component $X_{\mathrm{sym}}$ contains frequencies that are
+``balanced'' around the quarter-period point $N/4$. When $8 \mid N$, the frequencies
+$k = N/8$ and $k = 5N/8$ (where $\mathrm{cas} = \pm\sqrt{2}$) belong purely to
+$X_{\mathrm{sym}}$ as fixed points.
+\end{remark}
+
+\section{Discussion}
+
+We have established a new symmetry structure for the DHT:
+
+\begin{enumerate}
+\item The M\"obius involution $\sigma(x) = (1-x)/(1+x)$ induces a permutation
+      $\sigma_N: k \mapsto (N/4 - k) \mod N$ on DHT frequency indices.
+
+\item The eigenspace dimensions follow the formula $N/2 \pm \delta$ with
+      $\delta = 1$ iff $8 \mid N$, arising from the parity constraint on fixed points.
+
+\item The fixed frequencies $f = 1/8, 5/8$ coincide with the extrema of the
+      Hartley kernel $\mathrm{cas}(\theta) = \pm\sqrt{2}$.
+
+\item The infinite dihedral group $D_\infty$ on rationals collapses to $D_4$
+      on discrete DHT indices, with $\sigma\kappa$ becoming a quarter-period shift.
+\end{enumerate}
+
+This connects the algebraic structure of M\"obius involutions (studied in
+\cite{PopelkaInvolution2025}) to concrete spectral properties of the DHT.
+
+\subsection*{Open Questions}
+
+\begin{enumerate}
+\item Can the $\sigma$-decomposition be exploited for fast DHT algorithms?
+
+\item Is there a generalization to higher-dimensional DHT?
+
+\item What is the relationship between $\sigma$-eigenspaces and specific
+      signal classes (e.g., chirps, wavelets)?
+\end{enumerate}
+
+\section*{Acknowledgments}
+
+This work was developed in collaboration with Claude (Anthropic).
+
+\begin{thebibliography}{9}
+
+\bibitem{Bracewell1986}
+R.~N.~Bracewell,
+\emph{The Hartley Transform}.
+Oxford University Press, 1986.
+
+\bibitem{PopelkaInvolution2025}
+J.~Popelka,
+``Atomic Involution Decomposition of Calkin--Wilf Generators,''
+preprint, 2025.
+
+\bibitem{Peyre2020}
+G.~Peyr\'e,
+\emph{The Discrete Algebra of the Fourier Transform}.
+ENS Paris, 2020.
+
+\end{thebibliography}
+
+\end{document}
