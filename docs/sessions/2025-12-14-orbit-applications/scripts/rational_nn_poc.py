@@ -32,31 +32,142 @@ def farey(n: int) -> List[Fraction]:
 # Cache Farey(7) for initialization - 29 elements in [0,1]
 FAREY_7 = farey(7)
 
-# Orbit I=19 sigmoid values (exact rationals)
-ORBIT_19 = [
-    Fraction(1, 609), Fraction(1, 305), Fraction(1, 153), Fraction(1, 77),
-    Fraction(1, 39), Fraction(19, 531), Fraction(1, 20), Fraction(19, 275),
-    Fraction(2, 21), Fraction(19, 147), Fraction(4, 23), Fraction(19, 83),
-    Fraction(8, 27), Fraction(19, 51), Fraction(16, 35), Fraction(19, 35),
-    Fraction(32, 51), Fraction(19, 27), Fraction(64, 83), Fraction(19, 23),
-    Fraction(128, 147), Fraction(19, 21), Fraction(256, 275), Fraction(19, 20),
-    Fraction(512, 531), Fraction(38, 39), Fraction(76, 77), Fraction(152, 153),
-    Fraction(304, 305), Fraction(608, 609)
-]
+# =============================================================================
+# ORBIT SIGMOID - Configurable by invariant I
+# =============================================================================
 
-# Precompute logit values (x-coordinates) for the LUT
-ORBIT_19_LOGITS = [math.log(float(y) / (1 - float(y))) for y in ORBIT_19]
+def odd(n: int) -> int:
+    """Remove all factors of 2 from n."""
+    while n % 2 == 0:
+        n //= 2
+    return n
 
-# Precompute slopes (rational!) for each segment
-# slope[i] = (y[i+1] - y[i]) / (x[i+1] - x[i])
-# We approximate these as rationals with limited denominator
-ORBIT_19_SLOPES = []
-for i in range(len(ORBIT_19) - 1):
-    dy = ORBIT_19[i+1] - ORBIT_19[i]
-    dx = ORBIT_19_LOGITS[i+1] - ORBIT_19_LOGITS[i]
-    slope_float = float(dy) / dx
-    ORBIT_19_SLOPES.append(Fraction(slope_float).limit_denominator(1000))
-ORBIT_19_SLOPES.append(Fraction(0))  # Beyond last point
+
+def orbit_signature(p: int, q: int) -> Tuple[int, int]:
+    """Compute orbit signature {A, B} for p/q in (0,1)."""
+    A = odd(p)
+    B = odd(q - p)
+    if A > B:
+        A, B = B, A
+    return (A, B)
+
+
+def orbit_enumerate(invariant: int, max_denom: int = 10000) -> List[Fraction]:
+    """
+    Enumerate all fractions in orbit with given invariant I = A*B.
+    Returns sorted list of fractions in (0, 1).
+    """
+    results = set()
+    # Find all coprime pairs (A, B) with A*B = invariant, A <= B, both odd
+    for A in range(1, int(invariant**0.5) + 1):
+        if invariant % A == 0:
+            B = invariant // A
+            if A <= B and A % 2 == 1 and B % 2 == 1 and math.gcd(A, B) == 1:
+                # Generate orbit from canonical form A/(A+B)
+                canonical = Fraction(A, A + B)
+                orbit = generate_orbit(canonical, max_denom)
+                results.update(orbit)
+    return sorted(results)
+
+
+def generate_orbit(start: Fraction, max_denom: int) -> set:
+    """Generate full orbit under σ and κ up to max denominator."""
+    def sigma(x):
+        return (1 - x) / (1 + x)
+
+    def kappa(x):
+        return 1 - x
+
+    orbit = set()
+    queue = [start]
+
+    while queue:
+        x = queue.pop()
+        if x in orbit:
+            continue
+        if x.denominator > max_denom:
+            continue
+        if not (0 < x < 1):
+            continue
+
+        orbit.add(x)
+
+        # Apply involutions
+        sx = sigma(x)
+        kx = kappa(x)
+
+        if sx not in orbit and 0 < sx < 1:
+            queue.append(sx)
+        if kx not in orbit:
+            queue.append(kx)
+
+    return orbit
+
+
+class OrbitSigmoid:
+    """
+    Orbit-based piecewise linear sigmoid.
+
+    Hyperparameter: invariant I determines the LUT points.
+    """
+
+    def __init__(self, invariant: int = 19, max_denom: int = 10000):
+        self.invariant = invariant
+        self.values = orbit_enumerate(invariant, max_denom)
+
+        if len(self.values) < 2:
+            raise ValueError(f"Invariant {invariant} produces too few orbit points")
+
+        # Compute logit values (x-coordinates)
+        self.logits = [math.log(float(y) / (1 - float(y))) for y in self.values]
+
+        # Compute slopes
+        self.slopes = []
+        for i in range(len(self.values) - 1):
+            dy = self.values[i+1] - self.values[i]
+            dx = self.logits[i+1] - self.logits[i]
+            slope_float = float(dy) / dx
+            self.slopes.append(Fraction(slope_float).limit_denominator(1000))
+        self.slopes.append(Fraction(0))
+
+    def __call__(self, x: Fraction) -> Tuple[Fraction, Fraction]:
+        """Returns (sigmoid_value, derivative)."""
+        x_float = float(x)
+
+        if x_float <= self.logits[0]:
+            return self.values[0], Fraction(0)
+        if x_float >= self.logits[-1]:
+            return self.values[-1], Fraction(0)
+
+        for i in range(len(self.logits)):
+            if self.logits[i] >= x_float:
+                if i == 0:
+                    return self.values[0], Fraction(0)
+
+                prev_x = self.logits[i-1]
+                curr_x = self.logits[i]
+                prev_y = self.values[i-1]
+                curr_y = self.values[i]
+
+                t_float = (x_float - prev_x) / (curr_x - prev_x)
+                t = Fraction(t_float).limit_denominator(100)
+
+                y = prev_y + t * (curr_y - prev_y)
+                return y, self.slopes[i-1]
+
+        return self.values[-1], Fraction(0)
+
+    def info(self):
+        return f"OrbitSigmoid(I={self.invariant}, n={len(self.values)} points)"
+
+
+# Default sigmoid (I=19 for backward compatibility)
+DEFAULT_SIGMOID = OrbitSigmoid(19)
+
+# Legacy compatibility
+ORBIT_19 = DEFAULT_SIGMOID.values
+ORBIT_19_LOGITS = DEFAULT_SIGMOID.logits
+ORBIT_19_SLOPES = DEFAULT_SIGMOID.slopes
 
 def rational_sigmoid_with_derivative(x: Fraction) -> Tuple[Fraction, Fraction]:
     """
