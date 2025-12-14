@@ -372,6 +372,169 @@ Even within this family, **b=2 is the sweet spot**.
 
 ---
 
+## 16. Fibonacci-Orbit Connection (√n Convergent Analysis)
+
+**Discovery:** Convergent differences of √n produce orbit invariants with Fibonacci structure.
+
+### Convergent Difference Invariants
+
+For √n, consecutive convergents differ by unit fractions:
+```
+c_k - c_{k-1} = ±1/(q_{k-1} × q_k)
+```
+
+The orbit invariant of 1/m is `odd(m-1)`, so:
+```
+Invariant(c_k - c_{k-1}) = odd(q_{k-1} × q_k - 1)
+```
+
+### Fibonacci Invariant Sequence
+
+When √n has CF period starting with consecutive 1s, the convergent denominators follow Fibonacci:
+```
+q_1, q_2, q_3, ... = 1, 1, 2, 3, 5, 8, 13, ...
+```
+
+Products F_k × F_{k+1} give:
+```
+1, 2, 6, 15, 40, 104, 273, 714, ...
+```
+
+Invariants odd(F_k × F_{k+1} - 1):
+```
+0, 1, 5, 7, 39, 103, 17, 713, 1869, 2447, ...
+```
+
+### Pure Fibonacci Surds
+
+Surds with CF = [a₀; 1,1,...,1, 2a₀] (k ones before 2a₀):
+
+| n | a₀ | k (ones) | Invariant prefix |
+|---|-----|---------|------------------|
+| 7 | 2 | 3 | {0, 1, 5} |
+| 13 | 3 | 4 | {0, 1, 5, 7} |
+| 58 | 7 | 6 | {0, 1, 5, 7, 39, 103} |
+| 135 | 11 | 7 | {0, 1, 5, 7, 39, 103, 17} |
+| **819** | 28 | **9** | {0, 1, 5, 7, 39, 103, 17, 713, 1869} |
+
+**√819 is special:** Has 9 leading 1s in its CF period, matching all 9 Fibonacci invariants!
+
+### Pattern
+
+For CF = [a₀; 1^k, 2a₀], we have n = a₀² + r where:
+- k=1: r/a₀ = 2
+- k=3: r/a₀ → 4/3
+- k≥6: r/a₀ → 5/4
+
+### Why √819 is Exceptional: Golden Ratio Connection
+
+**Key discovery:** The number of leading 1s in CF(√(9n)) correlates with how close `frac(3√n)` is to **1/φ = 0.6180339...**
+
+| n | frac(3√n) | dist to 1/φ | leading 1s |
+|---|-----------|-------------|------------|
+| **91** | **0.6182** | **0.00014** | **9** |
+| 15 | 0.6189 | 0.00092 | 7 |
+| 149 | 0.6196 | 0.00163 | 5 |
+| 62 | 0.6220 | 0.00399 | 5 |
+
+**Why?** The continued fraction of 1/φ is [0; 1,1,1,1,...] — **all ones**! When 3√n ≈ k + 1/φ, the CF of √(9n) "inherits" this Fibonacci structure.
+
+**Additional structure:**
+- 91 = 7 × 13 = L₄ × F₇ (Lucas prime × Fibonacci prime!)
+- This Lucas-Fibonacci factorization may explain the extremal proximity to 1/φ
+
+**Status**: Strong empirical correlation. The precise mechanism connecting L₄×F₇ to 1/φ proximity remains open.
+
+---
+
+## 17. Lucas Primality Indicator Investigation
+
+**Motivation:** Since n = F_k × L_m produces optimal 1/φ approximations, can we use this structure to detect primality of Lucas numbers?
+
+### Method
+
+For each Lucas number L_m (m = 2 to 60):
+1. Find optimal k ∈ [1, 80] that minimizes dist = |frac(3√(F_k × L_m)) - 1/φ|
+2. Compute various normalized metrics
+3. Compare distributions for prime vs composite L_m
+
+### Key Formula
+
+```
+n = F_k × L_m
+dist = min(|frac(3√n) - 1/φ|, |1 - frac(3√n) - 1/φ|)
+```
+
+### Metrics Tested
+
+| Metric | Prime Mean | Comp Mean | Ratio |
+|--------|------------|-----------|-------|
+| dist × log(n) | 0.051 | 0.084 | 1.66 |
+| dist × √log(n) | 0.0097 | 0.014 | 1.44 |
+| dist × n^0.1 | 0.037 | 0.26 | **7.09** |
+| dist × log(log(n)) | 0.0061 | 0.0083 | 1.36 |
+| dist × m | 0.045 | 0.081 | 1.79 |
+| Combined: (dist×n^0.1)/(1+\|k/m-φ\|) | 0.018 | 0.19 | **10.58** |
+
+### Additional Patterns
+
+**Optimal k − m:**
+- PRIME mean: 14.6
+- COMPOSITE mean: 3.6
+
+Primes tend to have optimal k much larger than m; composites have k ≈ m.
+
+**Leading 1s in CF(√n):**
+- PRIME mean: 0.67
+- COMPOSITE mean: 0.15
+- All values with 2+ leading 1s are prime
+
+**CF period of √n:**
+- PRIME mean: ~20,000
+- COMPOSITE mean: ~58,000
+- Composites have longer CF periods
+
+### Classification Results
+
+Best threshold classification (using combined metric):
+- **Best F1 score:** 0.52 (threshold = 0.01)
+- **Best accuracy:** 78% (threshold = 0.005)
+
+Confusion matrix at threshold 0.01:
+```
+              Predicted
+            Prime  Comp
+Actual Prime:  11     4
+Actual Comp:   16    28
+```
+
+### Top-Ranked Lucas Numbers
+
+By combined metric (lower = more "prime-like"):
+
+| Rank | L_m | Prime? | Score |
+|------|-----|--------|-------|
+| 1 | L₂ = 3 | PRIME | 0.00012 |
+| 2 | L₄ = 7 | PRIME | 0.00020 |
+| 3 | L₁₅ = 1364 | comp | 0.00047 |
+| 4 | L₂₇ = 439204 | comp | 0.00068 |
+| 5 | L₅ = 11 | PRIME | 0.00098 |
+| 6 | L₁₉ = 9349 | PRIME | 0.00109 |
+
+### Conclusion
+
+**Statistical separation exists** (up to 10× ratio in means) but is **not sufficient for reliable primality testing**:
+
+1. High ratios are driven by outliers in the composite class
+2. Prime and composite distributions overlap significantly
+3. Best classifier achieves only 52% F1 score
+
+**Interpretation:** The Fibonacci-Lucas-golden ratio structure captures *some* information about primality, but the relationship is indirect. Primes cluster toward better φ-approximations, but many composites achieve similarly good approximations.
+
+**Open question:** Is there a theoretical explanation for why prime L_m values tend to produce smaller normalized distances?
+
+---
+
 ## References
 
 - Paper: `docs/papers/involution-decomposition.tex` — Main theoretical results
