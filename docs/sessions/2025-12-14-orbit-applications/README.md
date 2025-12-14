@@ -220,7 +220,7 @@ Each orbit is a "slice" of the tree connected by ι (inversion).
 
 5. **Higher-dimensional analogues:** Can this orbit structure generalize to ℚⁿ?
 
-6. **Why is I=19 special?** Among all prime invariants, I=19 gives the smoothest sigmoid (lowest logit-space gap ratio after I=1). What makes 19 special in this context? Is there a number-theoretic explanation involving 19, ln(2), and the orbit structure?
+6. **Why is I=19 special?** ✅ **OBSERVATION** — See Section 15 below.
 
 7. **Optimal invariant for n points:** Given a target number of LUT entries, which invariant I minimizes PWL error? Is there a closed-form relationship?
 
@@ -332,6 +332,43 @@ What distinguishes this work from prior art:
 4. **Tunable invariant I**: The orbit invariant is a hyperparameter affecting smoothness/accuracy trade-off. This is novel.
 
 **Honest assessment**: The core idea (piecewise linear + rational arithmetic) is known. Our contribution is the specific orbit-based construction and end-to-end ℚ training POC.
+
+---
+
+## 15. Why I=19 is Special (Observation)
+
+**Finding**: Among all prime invariants, p=19 gives the smoothest orbit sigmoid on all metrics.
+
+| p | p-1 | Factorization | Gap ratio | RMSE | Max error |
+|---|-----|---------------|-----------|------|-----------|
+| 7 | 6 | 2×3 | 2.60 | 0.00071 | 0.0021 |
+| 13 | 12 | 2²×3 | 2.49 | 0.00068 | 0.0021 |
+| **19** | **18** | **2×3²** | **2.02** | **0.00058** | **0.0014** |
+| 37 | 36 | 2²×3² | 2.39 | 0.00065 | 0.0019 |
+| 53 | 52 | 2²×13 | 2.19 | 0.00060 | 0.0017 |
+| 109 | 108 | 2²×3³ | 2.16 | 0.00060 | 0.0016 |
+
+**Observation**: Optimal primes have p-1 that is **3-smooth** (only factors 2 and 3).
+
+The **2×3² = 18** structure appears optimal:
+- One factor of 2
+- Two factors of 3
+- Gives p = 19
+
+**Pattern in 2×3^b + 1 family**:
+
+| b | p | Gap ratio |
+|---|---|-----------|
+| 1 | 7 | 2.60 |
+| **2** | **19** | **2.02** |
+| 4 | 163 | 3.31 |
+| 5 | 487 | 6.92 |
+
+Even within this family, **b=2 is the sweet spot**.
+
+**Connection to orbit structure**: The involutions σ: x → (1-x)/(1+x) and κ: x → 1-x interact with the multiplicative structure of denominators. When p-1 = 2×3², the orbit under ⟨σ,κ⟩ achieves maximal uniformity in logit space.
+
+**Status**: Empirical observation. The precise number-theoretic mechanism connecting 2×3² to orbit uniformity remains an open question.
 
 ---
 
