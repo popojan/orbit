@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-14 01:24:22
+**Generated:** 2025-12-14 02:28:43
 
 ## Theorems (Master References)
 
@@ -41,6 +41,7 @@
 
 ## Recent Sessions (Last 10)
 
+- [Orbit Applications - Research Directions](sessions/2025-12-14-orbit-applications/README.md) *()*
 - [Transitivity Theorem for Möbius Involutions](sessions/2025-12-13-involution-theory/transitivity-theorem.md) *(2025-12-13)*
 - [Stern-Brocot, Calkin-Wilf a Brahmagupta-Bhaskara rovnice](sessions/2025-12-13-involution-theory/stern-brocot-pell.md) *(2025-12-13)*
 - [Möbius Involution Theory](sessions/2025-12-13-involution-theory/README.md) *(2025-12-13)*
@@ -50,7 +51,6 @@
 - [Pyramid Ratios and Möbius Orbits](sessions/2025-12-12-phi-pi-equation/README.md) *(2025-12-12)*
 - [Golden Ratio in the γ Framework: Pyramid Connection](sessions/2025-12-08-gamma-framework/golden-ratio-pyramid.md) *(2025-12-12)*
 - [Prime DNA Review: Gap Distribution and Chebyshev-like Bias](sessions/2025-12-05-prime-dna-review/README.md) *(2025-12-12)*
-- [290-Theorem Connection Speculation](sessions/2025-12-12-lp-fft-exploration/290-connection-speculation.md) *(2025-12-12)*
 
 ## Navigation
 

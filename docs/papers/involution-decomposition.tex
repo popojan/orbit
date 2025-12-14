@@ -171,7 +171,8 @@ For $p/q$ in lowest terms, write $y = p/(q-p)$ and decompose:
 y = \frac{2^\alpha \cdot A}{2^\beta \cdot B}
 \]
 where $A = \mathrm{odd}(p)$, $B = \mathrm{odd}(q-p)$, and $\alpha, \beta \geq 0$.
-Note that $I(p/q) = \mathrm{odd}(p(q-p)) = A \cdot B$.
+Note that $\gcd(A, B) = 1$ (since $\gcd(p, q-p) = \gcd(p, q) = 1$),
+and $I(p/q) = \mathrm{odd}(p(q-p)) = A \cdot B$.
 
 In logit coordinates, the involutions act as:
 \[
@@ -194,8 +195,9 @@ i.e., $y = A/B$, corresponding to fraction $A/(A+B)$.
 \begin{corollary}[Number of Orbits]
 For invariant $I = p_1^{a_1} \cdots p_k^{a_k}$, the number of distinct
 $\langle \sigma, \kappa \rangle$-orbits with this invariant equals $2^{k-1}$,
-corresponding to the $2^k$ ordered factorizations $I = A \cdot B$ modulo the
-equivalence $(A, B) \sim (B, A)$.
+corresponding to unordered coprime factorizations $I = A \cdot B$ with $\gcd(A,B) = 1$.
+(Each prime power $p_i^{a_i}$ goes entirely to $A$ or $B$, giving $2^k$ choices
+modulo the swap $(A, B) \sim (B, A)$.)
 \end{corollary}
 
 \begin{example}
