@@ -282,6 +282,59 @@ Length[grouped]  (* number of orbits in Farey(20) *)
 
 ---
 
+## 13. Hyperparameters
+
+The orbit sigmoid has two key hyperparameters:
+
+| Parameter | Description | Default | Effect |
+|-----------|-------------|---------|--------|
+| **I** (invariant) | Orbit signature product A×B | 19 | Determines LUT points, smoothness |
+| **max_denom** | Maximum denominator in orbit | 10000 | Controls orbit size, approximation quality |
+
+**Smoothness analysis** (Section 10) used max_denom=10000. Results for different I:
+
+| I | n points | Logit gap ratio | Notes |
+|---|----------|-----------------|-------|
+| 1 | 27 | 1.0 (perfect) | Sparse but uniform |
+| 3 | 50 | ~2.5 | |
+| 7 | 48 | ~3.0 | |
+| **19** | 46 | **2.0** | Sweet spot |
+| 21 | 88 | 5.9 | More points but less uniform |
+
+Increasing max_denom adds more orbit points (finer approximation) at cost of larger LUT.
+
+---
+
+## 14. Related Work & References
+
+### Prior Art
+
+**Formal verification of NNs with rational weights:**
+- Ehlers, R. (2017). [Formal Verification of Piece-Wise Linear Feed-Forward Neural Networks](https://arxiv.org/abs/1705.01320). *ATVA 2017*. — Requires rational weights for decidability.
+- Bunel et al. (2018). [A Unified View of Piecewise Linear Neural Network Verification](https://www.robots.ox.ac.uk/~tvg/publications/2018/nn_verif.pdf). *NeurIPS 2018*.
+
+**Rational activation functions:**
+- Boullé, N., Nakatsukasa, Y., Townsend, A. (2020). [Rational Neural Networks](https://www.maths.ox.ac.uk/node/39104). *NeurIPS 2020*. — Uses P(x)/Q(x) activations, not exact arithmetic.
+
+**Neural arithmetic:**
+- Madsen, A., Johansen, A. (2020). [Neural Arithmetic Units](https://arxiv.org/abs/2001.05016). *ICLR 2020*. — NNs that learn arithmetic operations.
+
+### Our Specific Contribution
+
+What distinguishes this work from prior art:
+
+1. **Orbit-based LUT construction**: Sigmoid breakpoints come from Möbius involution orbits, not arbitrary piecewise linear approximation. This gives mathematical structure (ln(2) gaps).
+
+2. **Training from scratch in ℚ**: Prior work typically trains in floats, then converts to rationals for verification. We train entirely in ℚ.
+
+3. **Farey initialization**: Weight initialization using Farey sequence elements (native to ℚ).
+
+4. **Tunable invariant I**: The orbit invariant is a hyperparameter affecting smoothness/accuracy trade-off. This is novel.
+
+**Honest assessment**: The core idea (piecewise linear + rational arithmetic) is known. Our contribution is the specific orbit-based construction and end-to-end ℚ training POC.
+
+---
+
 ## References
 
 - Paper: `docs/papers/involution-decomposition.tex` — Main theoretical results
