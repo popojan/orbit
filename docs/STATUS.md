@@ -1,7 +1,78 @@
 # Mathematical Explorations - Status Tracker
 
 **Repository:** popojan/orbit
-**Last Updated:** December 10, 2025
+**Last Updated:** December 14, 2025
+
+---
+
+## December 14, 2025: Prvoles — Geometric Sieve Visualization
+
+### Status
+
+📖 **PEDAGOGICAL** — Original visualization, educational contribution
+
+### Summary
+
+**Prvoles** (Primal Forest) transforms the Eratosthenes sieve from 1D to 2D:
+
+```
+n = p(p+k)  →  tree at (kp + p², kp + 1)
+```
+
+**Key insight:** Each divisor p generates a 45° diagonal with spacing p:
+- p=2: diagonal (4,1), (6,3), (8,5), ... spacing (2,2)
+- p=3: diagonal (9,1), (12,4), (15,7), ... spacing (3,3)
+- p=5: diagonal (25,1), (30,6), (35,11), ... spacing (5,5)
+
+**Primes = clearings** — positions with no trees blocking the view north.
+
+### Why the y-coordinate matters
+
+The y-coordinate is **load-bearing for visualization** (not computation):
+
+| Purpose | Essential? | Reason |
+|---------|------------|--------|
+| Visual | ✅ YES | Creates 45° diagonals, forest metaphor |
+| Algorithmic | ❌ NO | Still O(√n) trial division |
+| Insight | ✅ YES | "Paradox of regularity" — regular inputs → irregular outputs |
+
+**ML analogy:** Adding dimension enables *visual* linearity (diagonals instead of irregular intervals), similar to kernel trick enabling linear separability.
+
+### Novelty
+
+Despite extensive search, no prior publication of this specific visualization found:
+- Different from Ulam spiral (spiral arrangement, diagonal clusters)
+- Different from Sacks spiral (Archimedean spiral)
+- Original forest/clearing metaphor
+
+### Documentation
+
+- Paper: `docs/papers/prvoles.tex` (Czech, pedagogical)
+- PDF: `docs/papers/prvoles.pdf` (7 pages)
+- Visualization: `docs/papers/visualizations/primal-forest-100-parabola.pdf`
+
+---
+
+## December 14, 2025: MoebiusInvolutions Module + Orbit Structure
+
+### Status
+
+✅ **PROVEN** — Complete orbit characterization with signature invariant
+
+### Summary
+
+Added `MoebiusInvolutions.wl` module with three involutions σ, κ, ι and orbit structure analysis.
+
+**Key theorem (corrected):** Orbit signature {A, B} is the complete invariant:
+- A = odd(p), B = odd(q-p), with gcd(A,B) = 1
+- For composite I with k prime factors: 2^(k-1) distinct orbits
+- Canonical form: A/(A+B) where A ≤ B
+
+### Documentation
+
+- Paper: `docs/papers/involution-decomposition.tex` (corrected theorem)
+- Module: `Orbit/Kernel/MoebiusInvolutions.wl`
+- Session: `docs/sessions/2025-12-14-orbit-applications/README.md`
 
 ---
 
