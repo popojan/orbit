@@ -158,50 +158,57 @@ For $\sigma$: $\sigma(p/q) = (q-p)/(q+p)$, so
 $I(\sigma(p/q)) = \mathrm{odd}((q-p) \cdot 2p) = \mathrm{odd}(2p(q-p)) = \mathrm{odd}(p(q-p)) = I(p/q)$.
 \end{proof}
 
-\begin{theorem}[Orbit Completeness]\label{thm:completeness}
-$I$ completely characterizes orbits: two fractions in $(0,1)$ are in the same
-$\langle \sigma, \kappa \rangle$-orbit if and only if they have the same $I$ value.
+\begin{theorem}[Orbit Structure]\label{thm:completeness}
+Two fractions in $(0,1)$ are in the same $\langle \sigma, \kappa \rangle$-orbit
+if and only if they have the same \emph{orbit signature} $\{A, B\}$, where
+$A$ and $B$ are defined below.
 \end{theorem}
 
 \begin{proof}
-We have already shown (Proposition~\ref{prop:invariant}) that $I$ is preserved
-by $\sigma$ and $\kappa$. It remains to show that fractions with the same $I$
-value are connected.
-
 Consider the \emph{logit coordinate} $y = x/(1-x)$ for $x \in (0,1)$.
-In these coordinates:
+For $p/q$ in lowest terms, write $y = p/(q-p)$ and decompose:
+\[
+y = \frac{2^\alpha \cdot A}{2^\beta \cdot B}
+\]
+where $A = \mathrm{odd}(p)$, $B = \mathrm{odd}(q-p)$, and $\alpha, \beta \geq 0$.
+Note that $I(p/q) = \mathrm{odd}(p(q-p)) = A \cdot B$.
+
+In logit coordinates, the involutions act as:
 \[
 \sigma\kappa\colon y \mapsto y/2, \qquad
 \kappa\sigma\colon y \mapsto 2y, \qquad
 \kappa\colon y \mapsto 1/y.
 \]
-For $p/q$ in lowest terms, we have $y = p/(q-p)$, and $I(p/q) = \mathrm{odd}(p(q-p))$.
 
-\textbf{Key observation:} For any $p/q$ with $I = k$ (odd), there exists a unique
-\emph{canonical representative} of the form $m/(k+m)$ where $\gcd(m, k+m) = 1$
-and $m$ is a power of~$2$. Specifically, apply $\sigma\kappa$ (which halves $y$)
-or $\kappa\sigma$ (which doubles $y$) until the numerator of $y = p/(q-p)$
-becomes a power of~$2$.
+\textbf{Key observation:} The operations $\sigma\kappa$ and $\kappa\sigma$ only change
+$(\alpha, \beta)$ by scaling, while $\kappa$ swaps $(A, B) \leftrightarrow (B, A)$.
+No operation changes the \emph{unordered pair} $\{A, B\}$.
 
-\textbf{Algorithm to connect $p_1/q_1$ and $p_2/q_2$ with $I(p_1/q_1) = I(p_2/q_2) = k$:}
-\begin{enumerate}
-\item Reduce $p_1/q_1$ to canonical form $2^{a_1}/(k + 2^{a_1})$ via
-      $(\sigma\kappa)^{a_1}$ or $(\kappa\sigma)^{a_1}$.
-\item Reduce $p_2/q_2$ to canonical form $2^{a_2}/(k + 2^{a_2})$ via
-      $(\sigma\kappa)^{a_2}$ or $(\kappa\sigma)^{a_2}$.
-\item Connect the canonical forms: if $a_1 < a_2$, apply $(\kappa\sigma)^{a_2 - a_1}$.
-\end{enumerate}
+Therefore, the orbit signature $\{A, B\}$ is a complete invariant: two fractions
+are in the same orbit iff they have the same $\{A, B\}$.
 
-Since every fraction with invariant $k$ reduces to a canonical form, and all
-canonical forms for the same $k$ are connected by powers of $\sigma\kappa$,
-the orbit is exactly the set of fractions with invariant~$k$.
+\textbf{Canonical form:} Each orbit has a unique representative with $\alpha = \beta = 0$,
+i.e., $y = A/B$, corresponding to fraction $A/(A+B)$.
 \end{proof}
 
-\begin{example}
-Fractions with $I = 1$: $\{1/2, 1/3, 2/3, 1/5, 2/5, 3/5, 4/5, 1/9, \ldots\}$.
-These form a single orbit under $\langle \sigma, \kappa \rangle$.
+\begin{corollary}[Number of Orbits]
+For invariant $I = p_1^{a_1} \cdots p_k^{a_k}$, the number of distinct
+$\langle \sigma, \kappa \rangle$-orbits with this invariant equals $2^{k-1}$,
+corresponding to the $2^k$ ordered factorizations $I = A \cdot B$ modulo the
+equivalence $(A, B) \sim (B, A)$.
+\end{corollary}
 
-The canonical representative for orbit $I = k$ is $1/(k+1)$ when $k+1$ is a valid denominator.
+\begin{example}
+For prime $I = 3$: only one factorization $\{1, 3\}$, hence one orbit.
+Canonical: $1/4$ (or $\kappa$-related $3/4$).
+
+For composite $I = 15 = 3 \times 5$: two factorizations $\{1, 15\}$ and $\{3, 5\}$,
+hence \textbf{two distinct orbits}:
+\begin{itemize}
+\item Orbit $\{1, 15\}$: contains $1/16, 15/16, 2/17, \ldots$ (canonical: $1/16$)
+\item Orbit $\{3, 5\}$: contains $3/8, 5/8, 3/13, 5/11, \ldots$ (canonical: $3/8$)
+\end{itemize}
+These orbits have the same $I = 15$ but are \textbf{not connected} by $\sigma, \kappa$.
 \end{example}
 
 \section{Path Length Analysis}
