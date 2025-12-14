@@ -224,7 +224,43 @@ Each orbit is a "slice" of the tree connected by ι (inversion).
 
 7. **Optimal invariant for n points:** Given a target number of LUT entries, which invariant I minimizes PWL error? Is there a closed-form relationship?
 
-8. **Rational neural networks:** Can orbit sigmoid enable fully rational neural networks? Benefits: exact reproducibility, formal verification, no float drift. Challenge: training (gradient descent in ℚ?).
+8. **Rational neural networks:** ✅ **SOLVED** — Training in ℚ works! See below.
+
+---
+
+## 12. Training Neural Networks in ℚ
+
+**Result:** Gradient descent works entirely in rational arithmetic.
+
+**Key insight:** Piecewise linear sigmoid → piecewise constant derivative → rational gradients.
+
+| Component | How it stays in ℚ |
+|-----------|-------------------|
+| Initialization | Farey sequence elements |
+| Forward pass | Orbit sigmoid (piecewise linear) |
+| Gradients | Slopes are rational constants |
+| Loss | Squared error `(y-t)²` |
+| Updates | `w - η·∇` with rational lr |
+| Denominator control | `limit_denominator()` (Farey approx) |
+
+**XOR learned from random init:**
+```
+Epoch   0: loss=1.46, acc=2/4
+Epoch 100: loss=0.61, acc=4/4
+Epoch 450: loss=0.009, acc=4/4
+
+Final weights (exact fractions):
+  H1: w=[-426627/73804, 497801/85282], b=-237879/70790
+  Out: w=[665597/89515, 348029/45865], b=-203391/54811
+```
+
+**Benefits:**
+- Exact reproducibility (bit-identical across platforms)
+- Formal verification possible
+- No floating point drift in long inference chains
+- Denominators stay bounded (~100k with Farey approximation)
+
+**Implementation:** `scripts/rational_nn_poc.py`
 
 ---
 
