@@ -178,7 +178,37 @@ Each orbit is a "slice" of the tree connected by ι (inversion).
 
 ---
 
-## 10. Open Problems
+## 10. Sigmoid Quantization (Potential ML Application)
+
+**Discovery:** Sorted orbit values naturally form sigmoid curves. Some invariants give remarkably smooth sigmoids suitable for piecewise-linear approximation.
+
+**Key finding:** In logit space, orbit gaps are multiples of **ln(2)** (fundamental!).
+
+| I | n points | Logit gap ratio | PWL max error |
+|---|----------|-----------------|---------------|
+| 1 | 19 | **1.0** (perfect) | 0.55% |
+| **19** | 30 | **2.0** | **0.14%** |
+| 27 | 28 | 2.0 | 0.14% |
+| 21 | 60 | 5.9 | 0.11% |
+
+**I=19 is the sweet spot:** 30 points (5 bits), nearly uniform logit spacing, 0.14% max error.
+
+**Why ln(2)?** The operations σκ: y → y/2 and κσ: y → 2y scale logit by ±ln(2).
+
+**Potential applications:**
+- Edge inference without FPU
+- LSTM/GRU gate quantization
+- Deterministic sigmoid (no float drift)
+- Binary classification output layer
+
+**Implementations:**
+- `scripts/orbit_sigmoid.py` — Python orbit sigmoid class
+- `scripts/orbit_sigmoid_test.cpp` — C++ benchmark (vs std::exp)
+- `scripts/rational_nn_poc.py` — Rational neural network POC (XOR)
+
+---
+
+## 11. Open Problems
 
 1. **Asymptotic orbit count:** Exact formula for #{orbits with I ≤ n}?
 
@@ -189,6 +219,12 @@ Each orbit is a "slice" of the tree connected by ι (inversion).
 4. **Irrational extensions:** The involutions extend to ℝ. What are the "orbits" of irrational numbers under ⟨σ,κ⟩? (Dense in (0,1)?)
 
 5. **Higher-dimensional analogues:** Can this orbit structure generalize to ℚⁿ?
+
+6. **Why is I=19 special?** Among all prime invariants, I=19 gives the smoothest sigmoid (lowest logit-space gap ratio after I=1). What makes 19 special in this context? Is there a number-theoretic explanation involving 19, ln(2), and the orbit structure?
+
+7. **Optimal invariant for n points:** Given a target number of LUT entries, which invariant I minimizes PWL error? Is there a closed-form relationship?
+
+8. **Rational neural networks:** Can orbit sigmoid enable fully rational neural networks? Benefits: exact reproducibility, formal verification, no float drift. Challenge: training (gradient descent in ℚ?).
 
 ---
 
