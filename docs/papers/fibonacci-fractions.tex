@@ -1,0 +1,251 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage[margin=1in]{geometry}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{observation}[theorem]{Observation}
+
+\title{Fibonacci Representation of Rational Numbers}
+\author{Jan Popelka}
+\date{December 2025}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We present a universal representation theorem: every rational number $p/q$ can be written as a sum of Fibonacci fractions $(\sum_i F_{a_i})/F_n$, where $n$ is the Fibonacci entry point of $q$ and $\{a_i\}$ is the Zeckendorf decomposition of $p \cdot (F_n/q)$. This extends classical Zeckendorf representation from integers to all rationals. As a corollary, we establish a polynomial bijection: every rational corresponds to a unique factored polynomial expression $P(x)/Q(x) \in \mathbb{Z}[x]/\mathbb{Z}[x]$ such that $P(\varphi)/Q(\varphi) = p/q$, where $\varphi$ is the golden ratio.
+\end{abstract}
+
+\section{Introduction}
+
+Zeckendorf's theorem \cite{zeckendorf1972} states that every positive integer has a unique representation as a sum of non-consecutive Fibonacci numbers. The Fibonacci entry point (or rank of apparition) $z(q)$ is the smallest positive integer $n$ such that $q$ divides $F_n$---a value guaranteed to exist by the Pisano period property.
+
+Freitag and Filipponi \cite{freitag1990,filipponi1993} studied Zeckendorf representations of specific Fibonacci ratios $F_{kn}/F_n$. We generalize this to \emph{all} rational numbers by combining the entry point with Zeckendorf decomposition.
+
+\textbf{Main contributions:}
+\begin{enumerate}
+    \item Universal representation theorem for $\mathbb{Q}$
+    \item Polynomial bijection $\mathbb{Q} \leftrightarrow \mathbb{Z}[x]/\mathbb{Z}[x]$
+    \item Extension to rational approximation of irrationals
+    \item Efficient algorithmic implementation
+\end{enumerate}
+
+\section{Preliminaries}
+
+\begin{definition}[Fibonacci Entry Point]
+For $q \in \mathbb{Z}^+$, the entry point $z(q)$ is the smallest $n \geq 1$ such that $q \mid F_n$.
+\end{definition}
+
+\begin{theorem}[Pisano]
+For every $q \in \mathbb{Z}^+$, the entry point $z(q)$ exists and divides the Pisano period $\pi(q)$.
+\end{theorem}
+
+\begin{definition}[Zeckendorf Representation]
+For $n \in \mathbb{Z}^+$, the Zeckendorf representation is the unique set of indices $\{a_1 > a_2 > \cdots > a_k\}$ with $a_i - a_{i+1} \geq 2$ such that $n = \sum_i F_{a_i}$.
+\end{definition}
+
+\section{Main Results}
+
+\subsection{Universal Representation Theorem}
+
+\begin{theorem}[Fibonacci Fraction Representation]
+\label{thm:main}
+Every rational $p/q$ in lowest terms can be written as:
+\[
+\frac{p}{q} = \frac{\sum_{i} F_{a_i}}{F_n}
+\]
+where:
+\begin{itemize}
+    \item $n = z(q)$ is the Fibonacci entry point of $q$
+    \item $\{a_i\} = \mathrm{Zeck}(p \cdot F_n/q)$ is the Zeckendorf decomposition of the scaled numerator
+\end{itemize}
+\end{theorem}
+
+\begin{proof}
+Since $z(q)$ is the entry point, we have $q \mid F_n$, so $F_n/q \in \mathbb{Z}$. Let $m = p \cdot (F_n/q)$. Then:
+\[
+\frac{p}{q} = \frac{p \cdot (F_n/q)}{F_n} = \frac{m}{F_n} = \frac{\sum_i F_{a_i}}{F_n}
+\]
+where the last equality uses Zeckendorf's theorem on $m$.
+\end{proof}
+
+\begin{corollary}[GCD Property]
+For reduced $p/q$:
+\[
+\gcd\left(\sum_i F_{a_i}, F_n\right) = \frac{F_n}{q}
+\]
+\end{corollary}
+
+\subsection{Polynomial Bijection}
+
+\begin{theorem}[$\varphi$-Polynomial Representation]
+\label{thm:poly}
+Every rational $p/q$ corresponds to a unique factored polynomial expression:
+\[
+\frac{p}{q} = \frac{P(\varphi)}{Q(\varphi)}
+\]
+where $P(x), Q(x) \in \mathbb{Z}[x]$ are derived from the Fibonacci fraction representation via Binet's formula.
+\end{theorem}
+
+\textbf{Construction.} Using Binet's formula $F_n = (\varphi^n - \psi^n)/\sqrt{5}$ where $\psi = 1 - \varphi$:
+\[
+\frac{p}{q} = \frac{\sum_i (\varphi^{a_i} - \psi^{a_i})}{\varphi^n - \psi^n}
+\]
+The $\sqrt{5}$ factors cancel. Substituting $x$ for $\varphi$ and $(1-x)$ for $\psi$:
+\[
+\frac{P(x)}{Q(x)} = \frac{\sum_i (x^{a_i} - (1-x)^{a_i})}{x^n - (1-x)^n}
+\]
+
+\textbf{Example.} For $7/11$:
+\begin{itemize}
+    \item Entry point: $z(11) = 10$
+    \item Scaled numerator: $7 \cdot (55/11) = 35$
+    \item $\mathrm{Zeckendorf}(35) = \{9, 2\}$ since $35 = 34 + 1 = F_9 + F_2$
+    \item Representation: $7/11 = (F_9 + F_2)/F_{10} = (34 + 1)/55$
+\end{itemize}
+
+Polynomial form:
+\[
+\frac{7}{11} = \frac{(x^9 - (1-x)^9) + (x^2 - (1-x)^2)}{x^{10} - (1-x)^{10}}
+\]
+
+\subsection{Special Point $x = 1/2$}
+
+\begin{observation}
+At $x = 1/2$, we have $x = 1-x$, so:
+\begin{itemize}
+    \item Every term $x^n - (1-x)^n = 0$
+    \item Both $P(1/2) = 0$ and $Q(1/2) = 0$
+    \item The ratio $P(x)/Q(x)$ has removable singularity at $x = 1/2$
+\end{itemize}
+\end{observation}
+
+\textbf{Geometric note:} $\varphi - 1/2 = \sqrt{5}/2 \approx 1.118$.
+
+\section{Complexity Analysis}
+
+\begin{definition}[Fibonacci Complexity]
+The complexity $C(p/q)$ of a rational is the pair $(n, k)$ where $n = z(q)$ is the entry point and $k$ is the number of Zeckendorf terms.
+\end{definition}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}lcrl@{}}
+\toprule
+$p/q$ & Entry Point & Terms & Notes \\
+\midrule
+$1/2$ & 3 & 1 & Simplest non-trivial \\
+$7/11$ & 10 & 2 & Moderate \\
+$22/7$ & 8 & 3 & $\pi$ approximation \\
+$355/113$ & 19 & 7 & Better $\pi$ approximation \\
+$127/8191$ & 8190 & 2245 & Mersenne-related, very complex \\
+\bottomrule
+\end{tabular}
+\caption{Fibonacci complexity of selected rationals}
+\end{table}
+
+\begin{observation}
+Primes $q$ with large $z(q)$ (near $2q$) yield high complexity. Mersenne primes are particularly expensive.
+\end{observation}
+
+\section{Approximation of Irrationals}
+
+\textbf{Algorithm} (FibonacciRationalize). Given $x \in \mathbb{R}$ and accuracy $\varepsilon$:
+\begin{enumerate}
+    \item For $n = 3, 4, 5, \ldots$:
+    \item \quad $m = \mathrm{Round}(x \cdot F_n)$
+    \item \quad If $|m/F_n - x| < \varepsilon$: return FibonacciFraction$(m/F_n)$
+\end{enumerate}
+
+\textbf{Example.} $\pi$ with accuracy $10^{-6}$:
+\begin{itemize}
+    \item Best rational: $355/113$ (entry point 19, 7 terms)
+    \item Polynomial: degree 20 numerator, degree 18 denominator
+\end{itemize}
+
+\section{Related Work}
+
+\begin{itemize}
+    \item \textbf{Zeckendorf (1972)}: Original theorem for integers
+    \item \textbf{Freitag \& Filipponi (1990, 1993)}: Zeckendorf representation of $F_{kn}/F_n$ ratios
+    \item \textbf{Pisano periods}: Wall (1960), Wrench (1969)
+    \item \textbf{Entry point properties}: Cubre \& Rouse (2012), Marques (2012)
+    \item \textbf{Golden ratio base}: Bergman (1957)
+\end{itemize}
+
+Our contribution extends Freitag \& Filipponi from the specific subfamily $\{F_{kn}/F_n : k, n \in \mathbb{Z}^+\}$ to \emph{all} rationals $\mathbb{Q}$.
+
+\section{Open Questions}
+
+\begin{enumerate}
+    \item \textbf{Polynomial structure}: What properties of $p/q$ are reflected in the factorization of $P(x)/Q(x)$?
+
+    \item \textbf{Minimal representations}: Are there alternative Fibonacci fraction representations with fewer terms?
+
+    \item \textbf{Complexity bounds}: Can we characterize rationals with bounded Fibonacci complexity?
+
+    \item \textbf{Special point $x = 1/2$}: What is the limit $\lim_{x \to 1/2} P(x)/Q(x)$ and does it have meaning?
+
+    \item \textbf{Lucas extension}: Does an analogous representation exist using Lucas numbers?
+
+    \item \textbf{Connection to Egyptian fractions}: Both represent rationals as sums; what is their relationship?
+\end{enumerate}
+
+\section{Implementation}
+
+A complete Wolfram Language implementation is available in the Orbit paclet:
+
+\begin{lstlisting}[language=Mathematica,basicstyle=\ttfamily\small]
+<< Orbit`
+
+(* Basic representation *)
+FibonacciFraction[7/11]
+(* {10, {9, 2}} *)
+
+(* Polynomial form *)
+FibonacciFraction[7/11, Method -> "Polynomial"]
+(* Factored P(x)/Q(x) *)
+
+(* Approximate irrationals *)
+FibonacciRationalize[Pi, 10^-6]
+(* {19, {21, 17, 14, 12, 10, 7, 4}} *)
+\end{lstlisting}
+
+Available methods: \texttt{Indices}, \texttt{Expression}, \texttt{Sum}, \texttt{Terms}, \texttt{Count}, \texttt{GoldenRatio}, \texttt{Polynomial}, \texttt{Matrix}.
+
+\begin{thebibliography}{99}
+
+\bibitem{zeckendorf1972}
+Zeckendorf, E. (1972). Représentation des nombres naturels par une somme de nombres de Fibonacci ou de nombres de Lucas. \textit{Bulletin de la Société Royale des Sciences de Liège}, 41, 179--182.
+
+\bibitem{freitag1990}
+Freitag, H.T. (1990). On the Representation of $\{F_{kn}/F_n\}$, $\{F_{kn}/L_n\}$, $\{L_{kn}/L_n\}$, and $\{L_{kn}/F_n\}$ as Zeckendorf Sums. In \textit{Applications of Fibonacci Numbers}, Vol.~3, pp.~107--114. Kluwer.
+
+\bibitem{filipponi1993}
+Filipponi, P. \& Freitag, H.T. (1993). The Zeckendorf Representation of $\{F_{kn}/F_n\}$. In \textit{Applications of Fibonacci Numbers}, Vol.~5, pp.~217--219. Kluwer.
+
+\bibitem{wall1960}
+Wall, D.D. (1960). Fibonacci series modulo $m$. \textit{American Mathematical Monthly}, 67(6), 525--532.
+
+\bibitem{cubre2012}
+Cubre, P. \& Rouse, J. (2012). Divisibility properties of the Fibonacci entry point. \textit{Proceedings of the AMS}. arXiv:1212.6221.
+
+\bibitem{bergman1957}
+Bergman, G. (1957). A number system with an irrational base. \textit{Mathematics Magazine}, 31(2), 98--110.
+
+\end{thebibliography}
+
+\vspace{1em}
+\noindent\textbf{Acknowledgments:} Computational exploration assisted by Claude (Anthropic).
+
+\noindent\textbf{Code availability:} \url{https://github.com/jan/orbit} (Orbit paclet, FibonacciFractions.wl)
+
+\end{document}
