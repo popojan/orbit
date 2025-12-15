@@ -3,7 +3,6 @@
 \usepackage{amsmath,amsthm,amssymb}
 \usepackage{hyperref}
 \usepackage{booktabs}
-\usepackage{listings}
 \usepackage[margin=1in]{geometry}
 
 \newtheorem{theorem}{Theorem}
@@ -139,19 +138,6 @@ Every rational $p/q$ can be expressed as $P(\varphi)/Q(\varphi)$ where $P(x), Q(
 The $\sqrt{5}$ factors cancel. Substituting $x$ for $\varphi$ and $(1-x)$ for $\psi$:
 \[
 \frac{P(x)}{Q(x)} = \frac{\sum_i (x^{a_i} - (1-x)^{a_i})}{x^n - (1-x)^n}
-\]
-
-\textbf{Example.} For $7/11$:
-\begin{itemize}
-    \item Entry point: $z(11) = 10$
-    \item Scaled numerator: $7 \cdot (55/11) = 35$
-    \item $\mathrm{Zeckendorf}(35) = \{9, 2\}$ since $35 = 34 + 1 = F_9 + F_2$
-    \item Representation: $7/11 = (F_9 + F_2)/F_{10} = (34 + 1)/55$
-\end{itemize}
-
-Polynomial form:
-\[
-\frac{7}{11} = \frac{(x^9 - (1-x)^9) + (x^2 - (1-x)^2)}{x^{10} - (1-x)^{10}}
 \]
 
 \subsection{Special Point $x = 1/2$}
@@ -295,24 +281,6 @@ Fibonacci complexity is inherently \emph{statistical} due to Zeckendorf combinat
 In contrast, Egyptian fraction complexity is \emph{exact}: $|\mathrm{Egypt}(p/q)| = \lceil |\mathrm{CF}(p/q)|/2 \rceil$ by the CF--Egypt Bijection theorem \cite{egypt2025}, which shows each pair of CF coefficients determines one Egyptian tuple.
 \end{remark}
 
-\subsection{Complexity Examples}
-
-\begin{table}[h]
-\centering
-\begin{tabular}{@{}lcrrl@{}}
-\toprule
-$p/q$ & Entry Point $n$ & Terms $k$ & Predicted $k$ & Notes \\
-\midrule
-$1/2$ & 3 & 1 & 0.8 & Below average \\
-$7/11$ & 10 & 2 & 2.8 & Typical \\
-$22/7$ & 8 & 3 & 2.2 & $\pi$ approximation \\
-$355/113$ & 19 & 7 & 5.3 & Above average \\
-$127/8191$ & 8190 & 2245 & 2263 & Mersenne-related \\
-\bottomrule
-\end{tabular}
-\caption{Fibonacci complexity of selected rationals. Predicted $k \approx 0.2764 \cdot n$.}
-\end{table}
-
 \subsection{Comparison with Other Representations}
 
 \begin{center}
@@ -344,18 +312,7 @@ Zeckendorf representations yield \emph{self-synchronizing codes}: the non-consec
 
 \section{Approximation of Irrationals}
 
-\textbf{Algorithm} (FibonacciRationalize). Given $x \in \mathbb{R}$ and accuracy $\varepsilon$:
-\begin{enumerate}
-    \item For $n = 3, 4, 5, \ldots$:
-    \item \quad $m = \mathrm{Round}(x \cdot F_n)$
-    \item \quad If $|m/F_n - x| < \varepsilon$: return FibonacciFraction$(m/F_n)$
-\end{enumerate}
-
-\textbf{Example.} $\pi$ with accuracy $10^{-6}$:
-\begin{itemize}
-    \item Best rational: $355/113$ (entry point 19, 7 terms)
-    \item Polynomial: degree 20 numerator, degree 18 denominator
-\end{itemize}
+\textbf{Algorithm} (FibonacciRationalize). Given $x \in \mathbb{R}$ and accuracy $\varepsilon$: iterate $n = 3, 4, \ldots$, compute $m = \mathrm{Round}(x \cdot F_n)$, return when $|m/F_n - x| < \varepsilon$.
 
 \section{Related Work}
 
@@ -386,28 +343,6 @@ Our contribution extends Freitag \& Filipponi from the specific subfamily $\{F_{
 
     \item \textbf{Polynomial factorization}: What number-theoretic properties of $p/q$ are reflected in the factorization structure of $P(x)/Q(x)$?
 \end{enumerate}
-
-\section{Implementation}
-
-A complete Wolfram Language implementation is available in the Orbit paclet:\footnote{Source code: \url{https://github.com/popojan/orbit} (FibonacciFractions.wl)}
-
-\begin{lstlisting}[language=Mathematica,basicstyle=\ttfamily\small]
-<< Orbit`
-
-(* Basic representation *)
-FibonacciFraction[7/11]
-(* {10, {9, 2}} *)
-
-(* Polynomial form *)
-FibonacciFraction[7/11, Method -> "Polynomial"]
-(* Factored P(x)/Q(x) *)
-
-(* Approximate irrationals *)
-FibonacciRationalize[Pi, 10^-6]
-(* {19, {21, 17, 14, 12, 10, 7, 4}} *)
-\end{lstlisting}
-
-Available methods: \texttt{Indices}, \texttt{Expression}, \texttt{Sum}, \texttt{Terms}, \texttt{Count}, \texttt{GoldenRatio}, \texttt{Polynomial}, \texttt{Matrix}.
 
 \begin{thebibliography}{99}
 
@@ -447,6 +382,6 @@ Popelka, J. (2025). Atomic involution decomposition of Calkin--Wilf generators. 
 \end{thebibliography}
 
 \vspace{1em}
-\noindent\textbf{Acknowledgments:} Computational exploration assisted by Claude (Anthropic).
+\noindent\textbf{Acknowledgments:} Computational exploration assisted by Claude (Anthropic). A Wolfram Language implementation is available at \url{https://github.com/popojan/orbit}.
 
 \end{document}
