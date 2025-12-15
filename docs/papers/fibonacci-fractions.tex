@@ -21,7 +21,7 @@
 \maketitle
 
 \begin{abstract}
-We present a universal representation theorem: every rational number $p/q$ can be written as a sum of Fibonacci fractions $(\sum_i F_{a_i})/F_n$, where $n$ is the Fibonacci entry point of $q$ and $\{a_i\}$ is the Zeckendorf decomposition of $p \cdot (F_n/q)$. This extends classical Zeckendorf representation from integers to all rationals. As a corollary, we establish a polynomial bijection: every rational corresponds to a unique factored polynomial expression $P(x)/Q(x) \in \mathbb{Z}[x]/\mathbb{Z}[x]$ such that $P(\varphi)/Q(\varphi) = p/q$, where $\varphi$ is the golden ratio.
+We present a universal representation theorem: every rational number $p/q$ can be written as a sum of Fibonacci fractions $(\sum_i F_{a_i})/F_n$, where $n$ is the Fibonacci entry point of $q$ and $\{a_i\}$ is the Zeckendorf decomposition of $p \cdot (F_n/q)$. This extends classical Zeckendorf representation from integers to all rationals. As a corollary, we establish a polynomial bijection: every rational corresponds to a unique factored polynomial expression $P(x)/Q(x) \in \mathbb{Z}[x]/\mathbb{Z}[x]$ such that $P(\varphi)/Q(\varphi) = p/q$, where $\varphi$ is the golden ratio. We explain why this construction works using Galois theory of $\mathbb{Q}(\sqrt{5})$: the anti-symmetric form $\varphi^k - \psi^k$ produces $\sqrt{5}$ factors that cancel in the ratio.
 \end{abstract}
 
 \section{Introduction}
@@ -130,6 +130,85 @@ At $x = 1/2$, we have $x = 1-x$, so:
 
 \textbf{Geometric note:} $\varphi - 1/2 = \sqrt{5}/2 \approx 1.118$.
 
+\section{Algebraic Structure}
+
+The representation theorem has a natural interpretation in terms of the algebraic number field $\mathbb{Q}(\sqrt{5})$.
+
+\subsection{The Ring $\mathbb{Z}[\varphi]$}
+
+The golden ratio $\varphi = (1+\sqrt{5})/2$ is an algebraic integer satisfying $\varphi^2 = \varphi + 1$. The ring of integers in $\mathbb{Q}(\sqrt{5})$ is:
+\[
+\mathbb{Z}[\varphi] = \{a + b\varphi : a, b \in \mathbb{Z}\}
+\]
+
+Every power of $\varphi$ reduces to this form via the recurrence $\varphi^n = F_n \cdot \varphi + F_{n-1}$, where $F_n$ is the $n$-th Fibonacci number.
+
+\subsection{Galois Conjugation}
+
+The field $\mathbb{Q}(\sqrt{5})$ has Galois group $\mathrm{Gal}(\mathbb{Q}(\sqrt{5})/\mathbb{Q}) = \{1, \sigma\}$ where the conjugation $\sigma$ acts by:
+\[
+\sigma(\varphi) = \psi = 1 - \varphi = \frac{1-\sqrt{5}}{2}
+\]
+
+The key Galois-theoretic operations are:
+\begin{itemize}
+    \item \textbf{Trace:} $\mathrm{Tr}(\varphi^n) = \varphi^n + \psi^n = L_n$ (Lucas numbers)
+    \item \textbf{Norm:} $\mathrm{N}(\varphi^n) = \varphi^n \cdot \psi^n = (\varphi\psi)^n = (-1)^n$
+\end{itemize}
+
+\subsection{Why $\sqrt{5}$ Cancels}
+
+The polynomial $f(x, k) = x^k - (1-x)^k$ satisfies the \emph{anti-symmetry property}:
+\[
+f(1-x, k) = -f(x, k)
+\]
+
+Under Galois conjugation $\sigma: \varphi \mapsto \psi = 1-\varphi$:
+\[
+f(\varphi, k) = \varphi^k - \psi^k = F_k \cdot \sqrt{5}
+\]
+
+This is precisely the Binet formula. In our rational representation:
+\[
+\frac{P(\varphi)}{Q(\varphi)} = \frac{\sum_i (\varphi^{a_i} - \psi^{a_i})}{\varphi^n - \psi^n} = \frac{\sum_i F_{a_i} \cdot \sqrt{5}}{F_n \cdot \sqrt{5}} = \frac{\sum_i F_{a_i}}{F_n} \in \mathbb{Q}
+\]
+
+The $\sqrt{5}$ factors cancel because both numerator and denominator use the \emph{anti-symmetric} combination $\varphi^k - \psi^k$, which always produces $F_k \cdot \sqrt{5}$.
+
+\begin{theorem}[Galois Invariance]
+For any $p/q \in \mathbb{Q}$, the polynomial representation satisfies:
+\[
+\frac{P(\varphi)}{Q(\varphi)} = \frac{P(\psi)}{Q(\psi)} = \frac{p}{q}
+\]
+That is, the value is fixed by Galois conjugation, confirming it lies in $\mathbb{Q}$.
+\end{theorem}
+
+\subsection{Fibonacci vs Lucas}
+
+The Fibonacci and Lucas sequences arise from complementary Galois operations:
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Sequence & Formula & Galois Property \\
+\midrule
+$F_n$ & $(\varphi^n - \psi^n)/\sqrt{5}$ & Anti-symmetric (involves $\sqrt{5}$) \\
+$L_n$ & $\varphi^n + \psi^n$ & Symmetric (trace, no $\sqrt{5}$) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A ``Lucas fraction'' representation would use $g(x,k) = x^k + (1-x)^k$, which is symmetric: $g(1-x,k) = g(x,k)$. However, Lucas numbers lack a universal entry point property: not every integer divides some Lucas number.
+
+\begin{observation}
+The Fibonacci representation works precisely because:
+\begin{enumerate}
+    \item Every $q$ divides some $F_n$ (Pisano period property)
+    \item The anti-symmetric form $\varphi^k - \psi^k$ produces $\sqrt{5}$, which cancels
+    \item The result is Galois-invariant, hence rational
+\end{enumerate}
+\end{observation}
+
 \section{Complexity Analysis}
 
 \begin{definition}[Fibonacci Complexity]
@@ -197,11 +276,13 @@ Our contribution extends Freitag \& Filipponi from the specific subfamily $\{F_{
     \item \textbf{Lucas extension}: Does an analogous representation exist using Lucas numbers?
 
     \item \textbf{Connection to Egyptian fractions}: Both represent rationals as sums; what is their relationship?
+
+    \item \textbf{Cyclotomic factors}: The sixth cyclotomic polynomial $(1-x+x^2)$ appears as a factor in $P(x)$ for certain rationals (e.g., $2/3$, $2/5$, $8/3$, $16/5$). At $x = \varphi$, this factor evaluates to $2$. What determines when cyclotomic factors appear, and how do they relate to Pisano periods?
 \end{enumerate}
 
 \section{Implementation}
 
-A complete Wolfram Language implementation is available in the Orbit paclet:
+A complete Wolfram Language implementation is available in the Orbit paclet:\footnote{Source code: \url{https://github.com/jan/orbit} (FibonacciFractions.wl)}
 
 \begin{lstlisting}[language=Mathematica,basicstyle=\ttfamily\small]
 << Orbit`
@@ -245,7 +326,5 @@ Bergman, G. (1957). A number system with an irrational base. \textit{Mathematics
 
 \vspace{1em}
 \noindent\textbf{Acknowledgments:} Computational exploration assisted by Claude (Anthropic).
-
-\noindent\textbf{Code availability:} \url{https://github.com/jan/orbit} (Orbit paclet, FibonacciFractions.wl)
 
 \end{document}

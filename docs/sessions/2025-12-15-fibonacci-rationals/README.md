@@ -709,6 +709,79 @@ This provides a **canonical Fibonacci-based approximation** for any real number:
 
 ---
 
+## Algebraic Structure: Why It Works
+
+**Status:** ✅ PROVEN (Galois theory argument)
+
+### The Ring ℤ[φ]
+
+The golden ratio φ = (1+√5)/2 is an algebraic integer satisfying φ² = φ + 1. The ring of integers in ℚ(√5) is:
+
+$$\mathbb{Z}[\varphi] = \{a + b\varphi : a, b \in \mathbb{Z}\}$$
+
+Every power of φ reduces to this form via: **φⁿ = Fₙ·φ + F_{n-1}**
+
+### Galois Conjugation
+
+The field ℚ(√5) has Galois group Gal(ℚ(√5)/ℚ) = {1, σ} where:
+
+$$\sigma(\varphi) = \psi = 1 - \varphi = \frac{1-\sqrt{5}}{2}$$
+
+Key operations:
+- **Trace:** Tr(φⁿ) = φⁿ + ψⁿ = Lₙ (Lucas numbers!)
+- **Norm:** N(φⁿ) = φⁿ · ψⁿ = (φψ)ⁿ = (-1)ⁿ
+
+### Why √5 Cancels
+
+The polynomial f(x, k) = xᵏ - (1-x)ᵏ satisfies **anti-symmetry**:
+
+$$f(1-x, k) = -f(x, k)$$
+
+Under Galois conjugation σ: φ ↦ ψ = 1-φ:
+
+$$f(\varphi, k) = \varphi^k - \psi^k = F_k \cdot \sqrt{5}$$
+
+This is the Binet formula! In the ratio:
+
+$$\frac{P(\varphi)}{Q(\varphi)} = \frac{\sum_i F_{a_i} \cdot \sqrt{5}}{F_n \cdot \sqrt{5}} = \frac{\sum_i F_{a_i}}{F_n} \in \mathbb{Q}$$
+
+The √5 cancels because both numerator and denominator use the anti-symmetric combination.
+
+### Galois Invariance Theorem
+
+For any p/q ∈ ℚ:
+
+$$\frac{P(\varphi)}{Q(\varphi)} = \frac{P(\psi)}{Q(\psi)} = \frac{p}{q}$$
+
+The value is fixed by Galois conjugation, confirming it lies in ℚ.
+
+### Fibonacci vs Lucas: Why Only Fibonacci Works
+
+| Sequence | Formula | Galois Property |
+|----------|---------|-----------------|
+| Fₙ | (φⁿ - ψⁿ)/√5 | Anti-symmetric (involves √5) |
+| Lₙ | φⁿ + ψⁿ | Symmetric (trace, no √5) |
+
+A "Lucas fraction" representation would use g(x,k) = xᵏ + (1-x)ᵏ, which is symmetric.
+
+**Problem:** Lucas numbers lack universal entry points — not every integer divides some Lucas number!
+
+### The Three Reasons It Works
+
+1. **Every q divides some Fₙ** (Pisano period property)
+2. **Anti-symmetric form φᵏ - ψᵏ produces √5**, which cancels
+3. **Result is Galois-invariant**, hence rational
+
+### Cyclotomic Factor Observation
+
+The 6th cyclotomic polynomial (1-x+x²) appears in some polynomial representations (e.g., 2/3, 2/5, 8/3, 16/5).
+
+At x = φ: 1 - φ + φ² = 1 - φ + (φ+1) = **2**
+
+**Open question:** What determines when cyclotomic factors appear?
+
+---
+
 ## Status
 
 **🔬 NUMERICALLY VERIFIED** — Literature review completed, implementation in paclet.
