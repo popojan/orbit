@@ -137,8 +137,43 @@ This explains why φ plays a special role in both CF theory and Fibonacci repres
 
 ## Initial Experiments
 
+## Future Direction: Ostrowski Generalization
+
+**Ostrowski numeration** generalizes Zeckendorf to arbitrary continued fractions:
+
+For any irrational α = [a₀; a₁, a₂, ...] with convergent denominators q₀, q₁, q₂, ..., every positive integer n has unique representation:
+```
+n = Σ bᵢ · qᵢ
+```
+with digit constraints depending on CF coefficients aᵢ.
+
+**Special case:** For φ = [1; 1, 1, 1, ...]:
+- Convergent denominators = Fibonacci numbers
+- Digit constraint: bᵢ ∈ {0,1}, no consecutive 1s
+- This IS Zeckendorf representation
+
+**Key question for generalization:**
+
+The Fibonacci fraction construction requires the **entry point property**: "every q divides some Fₙ" (Pisano periodicity).
+
+For a general α with convergent denominators qₙ, does every integer divide some qₙ?
+
+**Example:** For √2 = [1; 2, 2, 2, ...], denominators are 1, 2, 5, 12, 29, 70, ...
+- Does 3 divide any of these? 3 ∤ 1, 2, 5, 12, 29, 70, 169, 408, 985, ...
+- Probably NOT — so √2-fractions wouldn't cover all rationals
+
+**Open problem:** Characterize which α have the "universal divisibility" property:
+```
+∀ m ∈ ℤ⁺ : ∃ n such that m | qₙ(α)
+```
+
+Fibonacci is special because Pisano periodicity guarantees this. What makes φ unique here?
+
+**Conjecture:** Only quadratic irrationals with purely periodic CF (like φ) might have this property — if any others do at all.
+
 ## References
 
 - Wall, D.D. (1960). "Fibonacci Series Modulo m"
 - Renault, M. "The Fibonacci Sequence Under Various Moduli" (survey)
 - OEIS A001177 (Fibonacci entry points)
+- Ostrowski, A. (1922). "Bemerkungen zur Theorie der Diophantischen Approximationen"

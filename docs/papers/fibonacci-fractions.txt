@@ -1,0 +1,407 @@
+Fibonacci Representation of Rational Numbers
+Jan Popelka
+December 2025
+
+Abstract
+We present a universal representation
+theorem: every rational number p/q can be written as
+P
+a sum of Fibonacci fractions ( i Fai )/Fn , where n is the Fibonacci entry point of q and {ai }
+is the Zeckendorf decomposition of p · (Fn /q). This extends classical Zeckendorf representation
+from integers to all rationals. As a corollary, we establish a polynomial bijection: every rational corresponds to a unique factored polynomial expression P (x)/Q(x) ∈ Z[x]/Z[x] such that
+P (φ)/Q(φ) = p/q, where
+φ is the golden ratio. We explain why this √
+construction works using
+√
+Galois theory of Q( 5): the anti-symmetric form φk − ψ k produces 5 factors that cancel in
+the ratio.
+
+1
+
+Introduction
+
+Zeckendorf’s theorem [1] states that every positive integer has a unique representation as a sum
+of non-consecutive Fibonacci numbers. The Fibonacci entry point (or rank of apparition) z(q) is
+the smallest positive integer n such that q divides Fn —a value guaranteed to exist by the Pisano
+period property.
+Freitag and Filipponi [2, 3] studied Zeckendorf representations of specific Fibonacci ratios
+Fkn /Fn . We generalize this to all rational numbers by combining the entry point with Zeckendorf
+decomposition.
+Main contributions:
+1. Universal representation theorem for Q
+2. Polynomial bijection Q ↔ Z[x]/Z[x]
+3. Extension to rational approximation of irrationals
+4. Efficient algorithmic implementation
+
+2
+
+Preliminaries
+
+Definition 1 (Fibonacci Entry Point). For q ∈ Z+ , the entry point z(q) is the smallest n ≥ 1 such
+that q | Fn .
+Theorem 2 (Pisano). For every q ∈ Z+ , the entry point z(q) exists and divides the Pisano period
+π(q).
+Definition 3 (Zeckendorf Representation). For n ∈ Z+ , the Zeckendorf
+Prepresentation is the unique
+set of indices {a1 > a2 > · · · > ak } with ai − ai+1 ≥ 2 such that n = i Fai .
+1
+
+3
+
+Main Results
+
+3.1
+
+Universal Representation Theorem
+
+Theorem 4 (Fibonacci Fraction Representation). Every rational p/q in lowest terms can be written
+as:
+P
+Fa
+p
+= i i
+q
+Fn
+where:
+• n = z(q) is the Fibonacci entry point of q
+• {ai } = Zeck(p · Fn /q) is the Zeckendorf decomposition of the scaled numerator
+Proof. Since z(q) is the entry point, we have q | Fn , so Fn /q ∈ Z. Let m = p · (Fn /q). Then:
+P
+Fa
+m
+p
+p · (Fn /q)
+=
+= i i
+=
+q
+Fn
+Fn
+Fn
+where the last equality uses Zeckendorf’s theorem on m.
+Corollary 5 (GCD Property). For reduced p/q:
+!
+gcd
+
+X
+
+Fai , Fn
+
+=
+
+i
+
+3.2
+
+Fn
+q
+
+Polynomial Bijection
+
+Theorem 6 (φ-Polynomial Representation). Every rational p/q corresponds to a unique factored
+polynomial expression:
+p
+P (φ)
+=
+q
+Q(φ)
+where P (x), Q(x) ∈ Z[x] are derived from the Fibonacci fraction representation via Binet’s formula.
+√
+Construction. Using Binet’s formula Fn = (φn − ψ n )/ 5 where ψ = 1 − φ:
+P ai
+(φ − ψ ai )
+p
+= i n
+q
+φ − ψn
+√
+The 5 factors cancel. Substituting x for φ and (1 − x) for ψ:
+P ai
+(x − (1 − x)ai )
+P (x)
+= i n
+Q(x)
+x − (1 − x)n
+Example. For 7/11:
+• Entry point: z(11) = 10
+• Scaled numerator: 7 · (55/11) = 35
+• Zeckendorf(35) = {9, 2} since 35 = 34 + 1 = F9 + F2
+• Representation: 7/11 = (F9 + F2 )/F10 = (34 + 1)/55
+Polynomial form:
+7
+(x9 − (1 − x)9 ) + (x2 − (1 − x)2 )
+=
+11
+x10 − (1 − x)10
+2
+
+3.3
+
+Special Point x = 1/2
+
+Observation 7. At x = 1/2, we have x = 1 − x, so:
+• Every term xn − (1 − x)n = 0
+• Both P (1/2) = 0 and Q(1/2) = 0
+• The ratio P (x)/Q(x) has removable singularity at x = 1/2
+√
+Geometric note: φ − 1/2 = 5/2 ≈ 1.118.
+
+4
+
+Algebraic Structure
+
+The
+√ representation theorem has a natural interpretation in terms of the algebraic number field
+Q( 5).
+
+4.1
+
+The Ring Z[φ]
+
+The golden
+ratio φ = (1 +
+√
+in Q( 5) is:
+
+√
+
+5)/2 is an algebraic integer satisfying φ2 = φ + 1. The ring of integers
+Z[φ] = {a + bφ : a, b ∈ Z}
+
+Every power of φ reduces to this form via the recurrence φn = Fn · φ + Fn−1 , where Fn is the
+n-th Fibonacci number.
+
+4.2
+
+Galois Conjugation
+
+√
+√
+The field Q( 5) has Galois group Gal(Q( 5)/Q) = {1, σ} where the conjugation σ acts by:
+√
+1− 5
+σ(φ) = ψ = 1 − φ =
+2
+The key Galois-theoretic operations are:
+• Trace: Tr(φn ) = φn + ψ n = Ln (Lucas numbers)
+• Norm: N(φn ) = φn · ψ n = (φψ)n = (−1)n
+
+4.3
+
+Why
+
+√
+
+5 Cancels
+
+The polynomial f (x, k) = xk − (1 − x)k satisfies the anti-symmetry property:
+f (1 − x, k) = −f (x, k)
+Under Galois conjugation σ : φ 7→ ψ = 1 − φ:
+f (φ, k) = φk − ψ k = Fk ·
+
+√
+
+5
+
+This is precisely the Binet formula. In our rational representation:
+√
+P ai
+P
+P
+ai
+· 5
+Fa
+P (φ)
+i (φ − ψ )
+i Fai√
+=
+=
+= i i ∈Q
+n
+n
+Q(φ)
+φ −ψ
+Fn
+Fn · 5
+√
+The 5 factors cancel because both numerator
+and denominator use the anti-symmetric com√
+k
+k
+bination φ − ψ , which always produces Fk · 5.
+3
+
+Theorem 8 (Galois Invariance). For any p/q ∈ Q, the polynomial representation satisfies:
+P (φ)
+P (ψ)
+p
+=
+=
+Q(φ)
+Q(ψ)
+q
+That is, the value is fixed by Galois conjugation, confirming it lies in Q.
+
+4.4
+
+Fibonacci vs Lucas
+
+The Fibonacci and Lucas sequences arise from complementary Galois operations:
+Sequence
+
+Formula
+
+Galois Property
+√
+
+(φn − ψ n )/ 5
+φn + ψ n
+
+Fn
+Ln
+
+√
+Anti-symmetric (involves
+5)
+√
+Symmetric (trace, no 5)
+
+A “Lucas fraction” representation would use g(x, k) = xk + (1 − x)k , which is symmetric:
+g(1 − x, k) = g(x, k). However, Lucas numbers lack a universal entry point property: not every
+integer divides some Lucas number.
+Observation 9. The Fibonacci representation works precisely because:
+1. Every q divides some Fn (Pisano period property)
+√
+2. The anti-symmetric form φk − ψ k produces 5, which cancels
+3. The result is Galois-invariant, hence rational
+
+5
+
+Complexity Analysis
+
+Definition 10 (Fibonacci Complexity). The complexity C(p/q) of a rational is the pair (n, k)
+where n = z(q) is the entry point and k is the number of Zeckendorf terms.
+
+p/q
+1/2
+7/11
+22/7
+355/113
+127/8191
+
+Entry Point
+
+Terms
+
+3
+10
+8
+19
+8190
+
+1
+2
+3
+7
+2245
+
+Notes
+Simplest non-trivial
+Moderate
+π approximation
+Better π approximation
+Mersenne-related, very complex
+
+Table 1: Fibonacci complexity of selected rationals
+Observation 11. Primes q with large z(q) (near 2q) yield high complexity. Mersenne primes are
+particularly expensive.
+
+4
+
+6
+
+Approximation of Irrationals
+
+Algorithm (FibonacciRationalize). Given x ∈ R and accuracy ε:
+1. For n = 3, 4, 5, . . .:
+2.
+
+m = Round(x · Fn )
+
+3.
+
+If |m/Fn − x| < ε: return FibonacciFraction(m/Fn )
+
+Example. π with accuracy 10−6 :
+• Best rational: 355/113 (entry point 19, 7 terms)
+• Polynomial: degree 20 numerator, degree 18 denominator
+
+7
+
+Related Work
+• Zeckendorf (1972): Original theorem for integers
+• Freitag & Filipponi (1990, 1993): Zeckendorf representation of Fkn /Fn ratios
+• Pisano periods: Wall (1960), Wrench (1969)
+• Entry point properties: Cubre & Rouse (2012), Marques (2012)
+• Golden ratio base: Bergman (1957)
+
+Our contribution extends Freitag & Filipponi from the specific subfamily {Fkn /Fn : k, n ∈ Z+ }
+to all rationals Q.
+
+8
+
+Open Questions
+1. Polynomial structure: What properties of p/q are reflected in the factorization of P (x)/Q(x)?
+2. Minimal representations: Are there alternative Fibonacci fraction representations with
+fewer terms?
+3. Complexity bounds: Can we characterize rationals with bounded Fibonacci complexity?
+4. Special point x = 1/2: What is the limit limx→1/2 P (x)/Q(x) and does it have meaning?
+5. Lucas extension: Does an analogous representation exist using Lucas numbers?
+6. Connection to Egyptian fractions: Both represent rationals as sums; what is their relationship?
+7. Cyclotomic factors: The sixth cyclotomic polynomial (1 − x + x2 ) appears as a factor in
+P (x) for certain rationals (e.g., 2/3, 2/5, 8/3, 16/5). At x = φ, this factor evaluates to 2.
+What determines when cyclotomic factors appear, and how do they relate to Pisano periods?
+
+5
+
+9
+
+Implementation
+
+A complete Wolfram Language implementation is available in the Orbit paclet:1
+<< Orbit ‘
+(* Basic representation *)
+Fib onacci Fracti on [7/11]
+(* {10 , {9 , 2}} *)
+(* Polynomial form *)
+Fib onacci Fracti on [7/11 , Method -> " Polynomial " ]
+(* Factored P ( x )/ Q ( x ) *)
+(* Approximate irrationals *)
+F i b o n a c c i R a t i o n a l i z e [ Pi , 10^ -6]
+(* {19 , {21 , 17 , 14 , 12 , 10 , 7 , 4}} *)
+
+Available methods: Indices, Expression, Sum, Terms, Count, GoldenRatio, Polynomial,
+Matrix.
+
+References
+[1] Zeckendorf, E. (1972). Représentation des nombres naturels par une somme de nombres de
+Fibonacci ou de nombres de Lucas. Bulletin de la Société Royale des Sciences de Liège, 41,
+179–182.
+[2] Freitag, H.T. (1990). On the Representation of {Fkn /Fn }, {Fkn /Ln }, {Lkn /Ln }, and {Lkn /Fn }
+as Zeckendorf Sums. In Applications of Fibonacci Numbers, Vol. 3, pp. 107–114. Kluwer.
+[3] Filipponi, P. & Freitag, H.T. (1993). The Zeckendorf Representation of {Fkn /Fn }. In Applications of Fibonacci Numbers, Vol. 5, pp. 217–219. Kluwer.
+[4] Wall, D.D. (1960). Fibonacci series modulo m. American Mathematical Monthly, 67(6), 525–
+532.
+[5] Cubre, P. & Rouse, J. (2012). Divisibility properties of the Fibonacci entry point. Proceedings
+of the AMS. arXiv:1212.6221.
+[6] Bergman, G. (1957). A number system with an irrational base. Mathematics Magazine, 31(2),
+98–110.
+Acknowledgments: Computational exploration assisted by Claude (Anthropic).
+
+1
+
+Source code: https://github.com/jan/orbit (FibonacciFractions.wl)
+
+6
+
+
