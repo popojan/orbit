@@ -135,28 +135,19 @@ Every rational $p/q$ can be expressed as $P(\varphi)/Q(\varphi)$ where $P(x), Q(
 \[
 \frac{p}{q} = \frac{\sum_i (\varphi^{a_i} - \psi^{a_i})}{\varphi^n - \psi^n}
 \]
-The $\sqrt{5}$ factors cancel. Substituting $x$ for $\varphi$ and $(1-x)$ for $\psi$:
+The $\sqrt{5}$ factors cancel. Define the polynomial form by the formal substitution $x \mapsto \varphi$, $(1-x) \mapsto \psi$ in $\mathbb{Z}[x]$:
 \[
 \frac{P(x)}{Q(x)} = \frac{\sum_i (x^{a_i} - (1-x)^{a_i})}{x^n - (1-x)^n}
 \]
+Note: this is a formal substitution; in $\mathbb{R}$ we have $\psi = (1-\sqrt{5})/2 \neq 1 - \varphi$, but the algebraic identity $\varphi + \psi = 1$ justifies the correspondence.
 
 \subsection{Special Point $x = 1/2$}
 
 \begin{observation}
-At $x = 1/2$, we have $x = 1-x$, so every term $x^n - (1-x)^n = 0$. Both $P(1/2) = 0$ and $Q(1/2) = 0$, giving a removable singularity.
+At $x = 1/2$, we have $x = 1-x$, so every term $x^n - (1-x)^n = 0$. Both $P(1/2) = 0$ and $Q(1/2) = 0$, giving a removable singularity. Since each factor $x^k - (1-x)^k$ has a simple zero at $x = 1/2$, both $P$ and $Q$ factor as $(x - 1/2) \cdot \tilde{P}(x)$ and $(x - 1/2) \cdot \tilde{Q}(x)$ respectively, so $\lim_{x \to 1/2} P(x)/Q(x) = \tilde{P}(1/2)/\tilde{Q}(1/2)$ exists.
 \end{observation}
 
-\begin{proposition}
-The limit $\lim_{x \to 1/2} P(x)/Q(x) = p/q$.
-\end{proposition}
-
-\begin{proof}
-The rational function $R(x) = P(x)/Q(x)$ satisfies $R(\varphi) = p/q$ and $R(\psi) = p/q$ (by Galois invariance). Consider the polynomial $S(x) = q \cdot P(x) - p \cdot Q(x)$. We have $S(\varphi) = S(\psi) = 0$, so $(x - \varphi)(x - \psi) = x^2 - x - 1$ divides $S(x)$ in $\mathbb{Q}[x]$.
-
-Write $S(x) = (x^2 - x - 1) \cdot T(x)$ for some $T(x) \in \mathbb{Q}[x]$. At $x = 1/2$: since $x^2 - x - 1|_{x=1/2} = -5/4 \neq 0$, and $S(1/2) = q \cdot P(1/2) - p \cdot Q(1/2) = 0$ (both $P, Q$ vanish), we need $T(1/2) = 0$.
-
-Thus $S(x) = (x^2 - x - 1)(x - 1/2) \cdot U(x)$. The singularity at $x = 1/2$ is removable: $\lim_{x \to 1/2} R(x) = p/q$ by continuity of $P/Q$ after canceling the common factor $(x - 1/2)$.
-\end{proof}
+Note that $P(\varphi)/Q(\varphi) = p/q$ and $P(\psi)/Q(\psi) = p/q$ (by Galois invariance), but the limit at $x = 1/2$ is generally \emph{not} equal to $p/q$.
 
 \section{Algebraic Structure}
 
@@ -258,14 +249,14 @@ where the constant $1/(1+\varphi^2) = (5-\sqrt{5})/10 \approx 0.2764$ is called 
 
 \begin{corollary}[Fibonacci Fraction Complexity]
 \label{cor:complexity}
-Fix $q$ with entry point $n = z(q)$. For $p$ chosen uniformly at random from $\{1, 2, \ldots, F_n/q - 1\}$ (i.e., $p/q$ uniform in $(0,1) \cap \{k \cdot q/F_n\}$), the expected number of Zeckendorf terms is:
+Fix $q$ with entry point $n = z(q)$, and let $d = F_n/q$. For reduced fractions $p/q$ with $p \in \{1, \ldots, q-1\}$, the scaled numerator $m = pd$ ranges over $\{d, 2d, \ldots, (q-1)d\}$. The average number of Zeckendorf terms over this family is:
 \[
-\mathbb{E}_p[k] = \frac{n}{1 + \varphi^2} + O(1) \approx 0.2764 \cdot n
+\bar{k} = \frac{n}{1 + \varphi^2} + O(1) \approx 0.2764 \cdot n
 \]
 \end{corollary}
 
 \begin{proof}
-The scaled numerator $m = p \cdot (F_n/q)$ ranges over $\{F_n/q, 2F_n/q, \ldots, F_n - F_n/q\}$ as $p$ varies. For large $F_n/q$, these are approximately uniformly distributed in $[1, F_n)$, so Lekkerkerker's theorem applies with $j \approx n$.
+The values $\{d, 2d, \ldots, (q-1)d\}$ are evenly spaced in $(0, F_n)$ with spacing $d$. Since Lekkerkerker's theorem gives the average over \emph{all} integers in $[F_{n-1}, F_n)$, and our sample is a regular sublattice, the same asymptotic density applies.
 \end{proof}
 
 \textbf{Numerical verification.} Using Farey sequences $\mathcal{F}_N$ for systematic sampling:
@@ -278,7 +269,7 @@ The scaled numerator $m = p \cdot (F_n/q)$ ranges over $\{F_n/q, 2F_n/q, \ldots,
 \begin{remark}[Statistical vs Exact]
 Fibonacci complexity is inherently \emph{statistical} due to Zeckendorf combinatorics: the number of summands has variance $\approx 0.95$ and converges to a Gaussian distribution \cite{kologlu2010}.
 
-In contrast, Egyptian fraction complexity is \emph{exact}: $|\mathrm{Egypt}(p/q)| = \lceil |\mathrm{CF}(p/q)|/2 \rceil$ by the CF--Egypt Bijection theorem \cite{egypt2025}, which shows each pair of CF coefficients determines one Egyptian tuple.
+In contrast, Egyptian fraction complexity is \emph{exact}: the author shows in \cite{egypt2025} that $|\mathrm{Egypt}(p/q)| = \lceil |\mathrm{CF}(p/q)|/2 \rceil$, where each pair of CF coefficients determines one Egyptian tuple via a telescoping sum.
 \end{remark}
 
 \subsection{Comparison with Other Representations}
@@ -310,6 +301,31 @@ Primes $q$ with large $z(q)$ yield high Fibonacci complexity. For Mersenne prime
 Zeckendorf representations yield \emph{self-synchronizing codes}: the non-consecutive constraint ensures no codeword is a prefix of another, enabling error recovery without delimiters \cite{apostolico1987}. The Fibonacci fraction representation inherits this property---the Zeckendorf indices $\{a_i\}$ form a prefix-free encoding of the numerator. This may be useful for transmitting rationals in noisy channels.
 \end{remark}
 
+\subsection{Cyclotomic Divisibility}
+
+The sixth cyclotomic polynomial $\Phi_6(x) = 1 - x + x^2$ plays a special role because $\Phi_6(\varphi) = 1 - \varphi + \varphi^2 = 2$.
+
+\begin{theorem}[Cyclotomic Divisibility]
+For the polynomial form $P(x)/Q(x)$ of $p/q$:
+\begin{enumerate}
+\item $\Phi_6(x) \mid Q(x) \iff z(q) \equiv 0 \pmod{3}$
+\item $\Phi_6(x) \mid P(x) \iff \#\{a_i \equiv 1,2 \pmod{6}\} = \#\{a_i \equiv 4,5 \pmod{6}\}$
+\end{enumerate}
+where $\{a_i\}$ are the Zeckendorf indices of the scaled numerator.
+\end{theorem}
+
+\begin{proof}
+Let $\omega = e^{i\pi/3}$ be a primitive 6th root of unity, so $\omega^2 - \omega + 1 = 0$ and $1 - \omega = \bar{\omega}$.
+
+For $Q(x) = x^n - (1-x)^n$: we have $Q(\omega) = \omega^n - \bar{\omega}^n = 2i\sin(n\pi/3)$, which vanishes iff $n \equiv 0 \pmod{3}$.
+
+For $P(x) = \sum_i (x^{a_i} - (1-x)^{a_i})$: we have $P(\omega) = 2i\sum_i \sin(a_i\pi/3)$. Since $\sin(n\pi/3)$ equals $\sqrt{3}/2$ for $n \equiv 1,2 \pmod{6}$, equals $-\sqrt{3}/2$ for $n \equiv 4,5 \pmod{6}$, and vanishes for $n \equiv 0,3 \pmod{6}$, the sum $P(\omega) = 0$ iff the ``positive'' and ``negative'' index counts balance.
+\end{proof}
+
+\begin{remark}
+When $\Phi_6$ divides exactly one of $P$ or $Q$, it contributes a factor of $2$ to the numerator or denominator at $x = \varphi$. The frequency of $\Phi_6 \mid Q$ (condition: $3 \mid z(q)$) depends on the distribution of Fibonacci entry points. The frequency of $\Phi_6 \mid P$ (the balance condition) decreases as $q$ grows, since longer Zeckendorf sequences are less likely to achieve exact mod-6 balance.
+\end{remark}
+
 \section{Approximation of Irrationals}
 
 \textbf{Algorithm} (FibonacciRationalize). Given $x \in \mathbb{R}$ and accuracy $\varepsilon$: iterate $n = 3, 4, \ldots$, compute $m = \mathrm{Round}(x \cdot F_n)$, return when $|m/F_n - x| < \varepsilon$.
@@ -327,15 +343,15 @@ The divisibility properties underlying our construction---Pisano periods and ent
 
     \item \textbf{Minimal representations}: Are there alternative Fibonacci fraction representations with fewer terms than the canonical form?
 
-    \item \textbf{Complexity bounds}: Can we characterize rationals with bounded Fibonacci complexity? Which $p/q$ achieve $k = 1$ (single Fibonacci numerator)?
+    \item \textbf{Complexity bounds}: Can we characterize rationals with bounded Fibonacci complexity? (Note: $k = 1$ is achieved exactly when $p/q = F_i/F_j$ for some Fibonacci numbers---a corollary of the construction.)
 
     \item \textbf{Lucas extension}: Lucas numbers lack a universal entry point property (not every integer divides some $L_n$). Is there a partial Lucas representation for rationals whose denominators do divide some Lucas number?
 
-    \item \textbf{Egyptian-Fibonacci relationship}: Egyptian and Fibonacci representations both express rationals as sums. Egyptian complexity is $\lceil |\mathrm{CF}|/2 \rceil$ (exact, \cite{egypt2025}), while Fibonacci is $z(q)/(1+\varphi^2)$ (statistical). Is there a deeper connection via the M\"obius involution orbits of \cite{involution2025}?
+    \item \textbf{Egyptian-Fibonacci relationship}: Egyptian and Fibonacci representations both express rationals as sums. Egyptian complexity is $\lceil |\mathrm{CF}|/2 \rceil$ (exact), while Fibonacci is $z(q)/(1+\varphi^2)$ (statistical). Is there a deeper structural connection between these representations?
 
-    \item \textbf{Cyclotomic factors}: The sixth cyclotomic polynomial $(1-x+x^2)$ appears as a factor in $P(x)$ for certain rationals (e.g., $2/3$, $2/5$). At $x = \varphi$, this evaluates to $2$. What determines when cyclotomic factors appear, and how do they relate to Pisano periods?
+    \item \textbf{Higher cyclotomic factors}: The Cyclotomic Divisibility Theorem characterizes when $\Phi_6(x)$ divides $P(x)$ or $Q(x)$. Do similar characterizations exist for other cyclotomic polynomials?
 
-    \item \textbf{Polynomial factorization}: What number-theoretic properties of $p/q$ are reflected in the factorization structure of $P(x)/Q(x)$?
+    \item \textbf{Polynomial factorization}: What number-theoretic properties of $p/q$ are reflected in the factorization structure of $P(x)/Q(x)$ beyond the cyclotomic divisibility conditions?
 \end{enumerate}
 
 \begin{thebibliography}{99}
@@ -368,14 +384,11 @@ Lekkerkerker, C.G. (1951--52). Voorstelling van natuurlijke getallen door een so
 Kologlu, M., Kopp, G.S., Miller, S.J., \& Wang, Y. (2010). On the number of summands in Zeckendorf decompositions. \textit{Fibonacci Quarterly}, 49(2), 116--130. arXiv:1008.3204.
 
 \bibitem{egypt2025}
-Popelka, J. (2025). The continued fractions--Egyptian fractions bijection: Symbolic telescoping representation. \textit{Preprint}.
-
-\bibitem{involution2025}
-Popelka, J. (2025). Atomic involution decomposition of Calkin--Wilf generators. \textit{In preparation}.
+Popelka, J. (2025). The continued fractions--Egyptian fractions bijection: Symbolic telescoping representation. Zenodo. \url{https://github.com/popojan/orbit}
 
 \end{thebibliography}
 
 \vspace{1em}
-\noindent\textbf{Acknowledgments:} Computational exploration assisted by Claude (Anthropic). A Wolfram Language implementation is available at \url{https://github.com/popojan/orbit}.
+\noindent\textbf{Acknowledgments:} Computational exploration assisted by Claude (Anthropic). A Wolfram Language implementation is available in the \texttt{Orbit} paclet \cite{egypt2025}.
 
 \end{document}

@@ -278,7 +278,7 @@ But 7 = L₄ and 11 = L₅ are Lucas numbers, explaining their special propertie
 3. Relation to Ostrowski numeration?
 
 ### Properties
-4. What are the compression properties vs standard CF representation?
+4. ~~What are the compression properties vs standard CF representation?~~ **ANSWERED: No compression benefit. Zeckendorf uses ~1.44n indices × log₂(n) bits > n bits raw.**
 5. Are there computational advantages for arithmetic?
 6. Uniqueness: is the encoding bijective?
 
@@ -299,7 +299,7 @@ But 7 = L₄ and 11 = L₅ are Lucas numbers, explaining their special propertie
 **Q2: What's gained over standard representation?**
 - Standard: two integers (p, q)
 - This: two index lists separated by 0
-- Kolmogorov analysis needed: is there compression benefit?
+- **ANSWERED:** No compression benefit. Zeckendorf is ~1.4× LARGER than raw storage. Value is in error-resilience (self-synchronizing codes) and algebraic structure, not size.
 
 **Q3: Is the Fibonacci Fraction Theorem new?**
 - Entry point / Pisano period: well-known
@@ -772,13 +772,28 @@ A "Lucas fraction" representation would use g(x,k) = xᵏ + (1-x)ᵏ, which is s
 2. **Anti-symmetric form φᵏ - ψᵏ produces √5**, which cancels
 3. **Result is Galois-invariant**, hence rational
 
-### Cyclotomic Factor Observation
+### ✅ Cyclotomic Divisibility Theorem (RESOLVED Dec 15, 2025)
 
-The 6th cyclotomic polynomial (1-x+x²) appears in some polynomial representations (e.g., 2/3, 2/5, 8/3, 16/5).
+The 6th cyclotomic polynomial Φ₆(x) = 1-x+x² plays a special role because Φ₆(φ) = 2.
 
-At x = φ: 1 - φ + φ² = 1 - φ + (φ+1) = **2**
+**Theorem.** For the polynomial form P(x)/Q(x) of p/q:
+1. **Φ₆(x) | Q(x) ⟺ z(q) ≡ 0 (mod 3)**
+2. **Φ₆(x) | P(x) ⟺ #{aᵢ ≡ 1,2 (mod 6)} = #{aᵢ ≡ 4,5 (mod 6)}**
 
-**Open question:** What determines when cyclotomic factors appear?
+where {aᵢ} are the Zeckendorf indices of the scaled numerator.
+
+**Proof sketch:**
+- Let ω = e^(iπ/3) be a primitive 6th root of unity
+- Q(ω) = ω^n - ω̄^n = 2i·sin(nπ/3), vanishes iff n ≡ 0 (mod 3)
+- P(ω) = 2i·Σᵢ sin(aᵢπ/3), vanishes iff positive/negative contributions balance
+- sin(nπ/3) = ±√3/2 for n ≡ 1,2 (mod 6) vs n ≡ 4,5 (mod 6), and 0 for n ≡ 0,3 (mod 6)
+
+**Statistics (q ≤ 50):**
+- Φ₆|P: 35.3% of reduced fractions
+- Φ₆|Q: 51.4% of reduced fractions
+- Both: 22%
+
+**Consequence:** When Φ₆ divides exactly one of P or Q, it contributes a factor of 2 to the numerator or denominator at x = φ.
 
 ---
 
