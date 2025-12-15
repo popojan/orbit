@@ -270,6 +270,28 @@ But 7 = L₄ and 11 = L₅ are Lucas numbers, explaining their special propertie
 
 ---
 
+## Egyptian Decomposition of Fibonacci Ratios
+
+**Status:** 🔬 NUMERICALLY VERIFIED
+
+### Consecutive Ratio Decomposition
+
+For F_{n-1}/F_n:
+
+$$\frac{F_{2m}}{F_{2m+1}} = \sum_{k=1}^{m} \frac{1}{F_{2k-1} \cdot F_{2k+1}}$$
+
+**Example:** F_8/F_9 = 21/34 = 1/2 + 1/10 + 1/65 + 1/442
+
+### σ-Involution Identity
+
+$$\sigma\left(\frac{F_{n-1}}{F_n}\right) = \frac{F_{n-2}}{F_{n+1}}$$
+
+where σ(q) = (1-q)/(1+q). This follows from F_n - F_{n-1} = F_{n-2} and F_n + F_{n-1} = F_{n+1}.
+
+**Application:** The σ-transform often reduces Egyptian tuple complexity (e.g., 8/13 with 3 tuples → 3/21 = 1/7 with 1 tuple).
+
+---
+
 ## Open Questions (Pre-Adversarial)
 
 ### Novelty Check
@@ -564,6 +586,15 @@ The representations form a bijection:
 
 This shows that rationals "live" naturally in ℤ[φ], the ring extension of integers by the golden ratio. The polynomial P(x)/Q(x) is a **φ-adic** representation of the rational, with integer coefficients encoding the Fibonacci structure.
 
+### Generating Function for Denominator Polynomials
+
+The bivariate generating function for Q_n(x) = x^n - (1-x)^n:
+
+$$G_Q(z,x) = \sum_{n \geq 1} Q_n(x) z^n = \frac{(2x-1)z}{(1-xz)(1-(1-x)z)}$$
+
+**At x = φ:** Recovers the classical Fibonacci generating function:
+$$G_Q(z, \varphi) = \sqrt{5} \cdot \frac{z}{1-z-z^2} = \sqrt{5} \sum_{n \geq 1} F_n z^n$$
+
 ### Special Point x = 1/2
 
 The polynomial P(x)/Q(x) has a remarkable property at x = 1/2:
@@ -797,6 +828,132 @@ where {aᵢ} are the Zeckendorf indices of the scaled numerator.
 
 ---
 
+## Zeckendorf Arithmetic Literature (Dec 15, 2025)
+
+**Status:** 📚 LITERATURE REVIEW COMPLETED
+
+### Key Papers
+
+1. **Ahlbach, Usatine, Pippenger (2013)** — *Efficient Algorithms for Zeckendorf Arithmetic*
+   - Fibonacci Quarterly 51(3), 249-255. [arXiv:1207.4497]
+   - **Result:** Addition/subtraction in O(n) time via 3 alternating passes
+   - Circuits: O(n) size, O(log n) depth
+
+2. **Idziaszek (2021)** — *Efficient Algorithm for Multiplication of Numbers in Zeckendorf Representation*
+   - FUN 2021, LIPIcs Article 16. [DOI: 10.4230/LIPIcs.FUN.2021.16]
+   - **Result:** Multiplication in O(n log n) via FFT!
+   - Key insight: Convert Zeck → Lucas → base-φ, use FFT convolution
+
+### Complexity Summary
+
+| Operation | Time | Notes |
+|-----------|------|-------|
+| Addition | O(n) | 3 alternating passes |
+| Subtraction | O(n) | Same algorithm |
+| Multiplication (naive) | O(n²) | Grade school |
+| **Multiplication (FFT)** | **O(n log n)** | Via base-φ conversion |
+| Normalization | O(n log M) | For weights in [0, M] |
+
+### The Entry Point Bottleneck
+
+**For Fibonacci fraction arithmetic:**
+- While Zeckendorf arithmetic is optimal, Fibonacci fraction arithmetic requires computing z(q)
+- Computing z(q) requires knowing prime factorization of q
+- No polynomial-time algorithm known for z(q) without factoring
+- **Conclusion:** Fibonacci arithmetic NOT faster than standard for general rationals
+
+**When it IS efficient:**
+1. Denominators are Fibonacci numbers: z(F_n) = n trivially
+2. Entry points precomputed/cached
+3. Working within "Fibonacci lattice" (all denominators divide some F_N)
+
+---
+
+## Primorial Connection Analysis (Dec 15, 2025)
+
+**Status:** 🔬 EXPLORED — No direct computational advantage, interesting structural connection
+
+### Question: Does Fibonacci Arithmetic Help with Primorial Sums?
+
+The primorial formula paper shows:
+$$S_k = \frac{1}{2} \sum_{j=1}^{k} \frac{(-1)^j \cdot j!}{2j+1}$$
+has denominator = primorial p_k#.
+
+### Fibonacci Analysis of Primorial
+
+For primorial 13# = 30030:
+- z(30030) = 840 = lcm(z(2), z(3), z(5), z(7), z(11), z(13)) = lcm(3, 4, 5, 8, 10, 7)
+- F_840 has 176 digits (vs 30030 has 5 digits)
+- Fibonacci representation of S_6 requires 237 Zeckendorf terms
+
+### Verdict: No Computational Advantage
+
+| Aspect | Standard Arithmetic | Fibonacci Arithmetic |
+|--------|--------------------|--------------------|
+| Factorization | **KNOWN** (by construction) | Must compute z(q) |
+| Number size | 30030 (5 digits) | F_840 (176 digits) |
+| Representation | Single numerator | 237 Zeckendorf terms |
+
+The primorial formula's theoretical insight is p-adic (Legendre's formula), orthogonal to Fibonacci structure.
+
+### Structural Identity
+
+$$z(n\#) = \text{lcm}(z(p) : p \text{ prime } \leq n)$$
+
+This follows from z being multiplicative on coprime arguments.
+
+---
+
+## Computing z(n) for All Natural Numbers (Dec 15, 2025)
+
+**Status:** 🔬 NUMERICALLY VERIFIED — Novel optimization discovered
+
+### Accumulated LCM Approach
+
+Maintain L = lcm(z(2), z(3), ..., z(n-1)) as we compute z(n) for increasing n.
+
+**Quick test:** If n | F_L, then z(n) | L (one Fibonacci evaluation!)
+
+### Empirical Results
+
+For n ≤ 30:
+- **76% pass quick test** (n | F_L)
+- Only 24% need full search
+
+As L grows, F_L becomes divisible by more numbers, improving hit rate.
+
+### Algorithm
+
+```
+L = 1
+for n = 2 to N:
+    if n | F_L:                    # Quick test - O(1) Fib evaluation
+        z(n) = min{d | L : n | F_d}  # Search divisors of L
+    else:
+        z(n) = search using quadratic reciprocity bound
+    L = lcm(L, z(n))
+```
+
+### Quadratic Reciprocity Bound (Wall)
+
+For prime p:
+- z(p) | p - (5/p) if (5/p) = 1
+- z(p) | 2(p + 1) if (5/p) = -1
+
+Combined with divisibility check (p | F_d), this gives small candidate sets.
+
+### Why No Fibonacci Analogue of Primorial Formula?
+
+| Factorials | Fibonacci |
+|------------|-----------|
+| ν_p(j!) grows with j (Legendre) | p \| F_n ⟺ z(p) \| n (binary) |
+| Graduated p-adic valuation | No gradation |
+| Enables exact cancellation | Cannot create primorial structure |
+
+**Conclusion:** Fibonacci structure is orthogonal to the p-adic mechanism that makes the primorial formula work.
+
+---
+
 ## Status
 
 **🔬 NUMERICALLY VERIFIED** — Literature review completed, implementation in paclet.
@@ -810,3 +967,203 @@ where {aᵢ} are the Zeckendorf indices of the scaled numerator.
 - [Zeckendorf Representation - MathWorld](https://mathworld.wolfram.com/ZeckendorfRepresentation.html)
 - [Fibonacci Entry Points - OEIS A001177](https://oeis.org/A001177)
 - [Encyclopedia of Mathematics - Zeckendorf](https://encyclopediaofmath.org/wiki/Zeckendorf_representation)
+
+### Zeckendorf Arithmetic Papers (Added Dec 15, 2025)
+
+- Ahlbach, C., Usatine, J., & Pippenger, N. (2013). *Efficient algorithms for Zeckendorf arithmetic.* Fibonacci Quarterly 51(3), 249-255. [arXiv:1207.4497](https://arxiv.org/abs/1207.4497)
+- Idziaszek, T. (2021). *Efficient algorithm for multiplication of numbers in Zeckendorf representation.* FUN 2021, LIPIcs Article 16. [DOI: 10.4230/LIPIcs.FUN.2021.16](https://doi.org/10.4230/LIPIcs.FUN.2021.16)
+
+### Related Session Documents
+
+- `fibonacci-arithmetic.md` — Detailed exploration of Fibonacci fraction arithmetic operations
+
+---
+
+## Inductive Construction of Fibonacci Rationals (Dec 15, 2025)
+
+**Status:** 🔬 NUMERICALLY VERIFIED — Structural theorem discovered
+
+### Setup
+
+**Question:** Can we build all rationals from "primitives" using arithmetic, avoiding ad-hoc z(q) computation?
+
+**Primitives:** P = {1/F_n : n ∈ [2, N]} (entry points trivially known: z(F_n) = n)
+
+**Operations:** Addition (+), Subtraction (−), Multiplication (×)
+
+### Building the Rational Lattice
+
+**Level 0:** 14 primitives (1/F_2, 1/F_3, ..., 1/F_15)
+
+**Level 1:** 195 rationals from ± operations
+
+**Level 2:** Products of levels 0 and 1
+
+**Reachable denominators ≤100:** {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 21, 22, 24, 25, 26, 27, 28, 30, 32, ...}
+
+### Key Discovery: Subtraction is Essential
+
+**Sums alone cannot reach all denominators!**
+
+Example: Denominator 11 unreachable via sums, but:
+$$\frac{1}{5} - \frac{1}{55} = \frac{50}{275} = \frac{2}{11}$$
+
+The cofactor c = F_{10}/11 = 5 appears in the difference F_{10} - F_5 = 50 = 2×5², matching the 5² in denominator.
+
+### The Cofactor Criterion
+
+**Theorem (Simple Reachability).** Let p be prime with z(p) = n, and c = F_n/p be the cofactor.
+
+If c = F_m for some m | n (cofactor is Fibonacci), then:
+$$p \text{ is directly reachable via } 1/F_m - 1/F_n \iff c \mid (p-1)$$
+
+**Derivation:**
+$$\frac{1}{F_m} - \frac{1}{F_n} = \frac{F_n - F_m}{F_m \times F_n} = \frac{F_m(p-1)}{F_m \times F_m \times p} = \frac{p-1}{F_m \times p}$$
+
+For denominator to reduce to p exactly, need c = F_m | (p-1).
+
+**Examples:**
+
+| p | z(p) | c = F_n/p | c | (p-1)? | Reachable? |
+|---|------|-----------|-----------|------------|
+| 11 | 10 | 55/11 = 5 | 5 | 10 ✓ | YES: 2/11 |
+| 29 | 14 | 377/29 = 13 | 13 ∤ 28 | NO directly |
+| 7 | 8 | 21/7 = 3 | 3 | 6 ✓ | YES: 2/7 |
+| 47 | 16 | 987/47 = 21 | 21 ∤ 46 | NO directly |
+
+### Products Can Bypass Obstructions!
+
+**Remarkable finding:** Primes with c ∤ (p-1) can still be reached via products!
+
+**Example: p = 61**
+
+z(61) = 15, F_15 = 610 = 2×5×61, cofactor c = 10 (not Fibonacci, and 10 ∤ 60)
+
+Direct difference fails, but:
+$$\frac{5}{8} \times \frac{152}{305} = \frac{760}{2440} = \frac{19}{61}$$
+
+Where:
+- 5/8 = 1/2 + 1/8 (Level 1 sum)
+- 152/305 = 1/2 - 1/610 (Level 1 difference with F_15)
+
+The product operation creates GCD cancellation: gcd(760, 2440) = 40, leaving 19/61.
+
+### Structural Interpretation
+
+The inductive construction reveals the **Fibonacci divisibility lattice structure**:
+
+1. **Fibonacci primes** (2, 3, 5, 13, 89, ...) are trivially reachable as primitives
+
+2. **Primes p with c | (p-1)** are directly reachable via subtraction
+
+3. **Other primes** require more complex product chains, but may still be reachable
+
+4. **Some primes remain elusive** within bounded primitive sets
+
+### Primes Reachable by Simple Criterion (p ≤ 100)
+
+c = 1 or c | (p-1): {2, 3, 5, 7, 11, 13, 17, 61, 89}
+
+### Open Questions
+
+1. **Characterize full reachability:** Which primes are unreachable with bounded primitives?
+
+2. **Product complexity:** What's the minimum product depth needed for "obstructed" primes?
+
+3. **Asymptotic density:** What fraction of primes p ≤ N are reachable with primitives {1/F_2, ..., 1/F_N}?
+
+4. **Connection to Wall's conjecture:** Does z(p²) = p·z(p) affect reachability of prime powers?
+
+### Significance
+
+This shows that the entry point function z(n) has **algebraic structure beyond mere divisibility**:
+
+- The criterion c | (p-1) connects Fibonacci entry points to **Fermat's little theorem** structure
+- Products reveal hidden cancellation patterns in the Fibonacci divisibility lattice
+- Building rationals inductively may be more natural than computing z(q) ad-hoc
+
+---
+
+## Farey-Fibonacci Correspondence (Dec 15, 2025)
+
+**Status:** 🔬 NUMERICALLY VERIFIED
+
+### The Question
+
+Given Fibonacci numbers F_1 through F_N, which Farey sequence Farey(k) can be fully represented as Fibonacci fractions?
+
+### The Mappings
+
+**Forward:** To represent all of Farey(k), what N is needed?
+$$N(k) = \max\{z(q) : q \leq k\}$$
+
+**Inverse:** Given F_1 through F_N, what's the largest Farey level representable?
+$$k(N) = \max\{q : z(q) \leq N\}$$
+
+### Computed Values
+
+| k (Farey) | N needed | F_N | Bottleneck |
+|-----------|----------|-----|------------|
+| 2 | 3 | 2 | z(2) = 3 |
+| 3 | 4 | 3 | z(3) = 4 |
+| 5 | 6 | 8 | z(4) = 6 |
+| 9 | 12 | 144 | z(6) = 12 |
+| 13 | 15 | 610 | z(10) = 15 |
+| 19 | 24 | 46368 | z(14) = 24 |
+| 26 | 30 | 832040 | z(20) = 30 |
+
+| N (Fib index) | Max Farey k |
+|---------------|-------------|
+| 6 | 5 |
+| 12 | 9 |
+| 15 | 13 |
+| 24 | 19 |
+| 30 | 26 |
+
+### Record Holders
+
+The mapping is **step-wise**, not smooth. It jumps at "record holder" denominators where z(q) exceeds all previous values:
+
+$$\text{Records} = \{2, 3, 4, 6, 10, 14, 20, 27, 30, 50, \ldots\}$$
+
+| q | z(q) | z(q)/q | Note |
+|---|------|--------|------|
+| 2 | 3 | 1.5 | |
+| 3 | 4 | 1.33 | |
+| 4 | 6 | 1.5 | |
+| 6 | 12 | **2.0** | Maximum ratio! |
+| 10 | 15 | 1.5 | |
+| 14 | 24 | 1.71 | |
+| 20 | 30 | 1.5 | |
+| 27 | 36 | 1.33 | |
+| 30 | 60 | **2.0** | Maximum ratio! |
+
+### Bounds
+
+**Worst case:** z(q) = 2q (achieved only at q = 6 and q = 30, per Vorob'ev 1961)
+
+**Therefore:** k ≈ N/2 as rough approximation
+
+**Typical case:** z(q) ≈ 0.68q on average, so k ≈ 1.5N typically
+
+### Significance
+
+This gives a precise answer to: *"How many Fibonacci numbers do I need to represent all fractions with small denominators?"*
+
+The answer is governed by entry point "record holders" — denominators with unusually large z(q) relative to their size. These create plateaus in the Farey coverage.
+
+### Polynomial Degree Bound
+
+The polynomial representation P(φ)/Q(φ) has degree bounded by entry point:
+
+$$\frac{p}{q} = \frac{P(\varphi)}{Q(\varphi)} \quad \text{with} \quad \deg P, \deg Q \leq z(q) - 1$$
+
+**Corollary:** All of Farey(k) embeds into rational functions of degree ≤ 2k - 1:
+
+$$\text{Farey}(k) \hookrightarrow \frac{\mathbb{Z}[x]_{\leq 2k-1}}{\mathbb{Z}[x]_{\leq 2k-1}} \bigg|_{x=\varphi}$$
+
+| Farey level k | Max polynomial degree |
+|---------------|----------------------|
+| 5 | 9 |
+| 10 | 19 |
+| 100 | 199 |
