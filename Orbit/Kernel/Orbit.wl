@@ -19,6 +19,7 @@ Get["Orbit`CunninghamRepresentation`"];
 Get["Orbit`CircFunctions`"];
 Get["Orbit`CyclotomicFFT`"];
 Get["Orbit`MoebiusInvolutions`"];
+Get["Orbit`FibonacciFractions`"];
 
 (* The package context is now populated with symbols from submodules *)
 (* All usage messages and definitions are in the respective submodule files *)
