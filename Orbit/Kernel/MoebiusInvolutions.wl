@@ -255,8 +255,9 @@ MinimalEgyptianRep[q_Rational, OptionsPattern[]] := Module[
   If[valid === {}, Return[{EgyptianFractions[startQ, Method -> method], Identity, Identity}]];  (* {egypt, toMin, toOrig} *)
 
   (* Compute Egyptian for each orbit element, find minimum *)
+  (* Sort by: 1) tuple count, 2) denominator (prefer simpler fractions on tie) *)
   data = {#, EgyptianFractions[#, Method -> method], orbitPaths[#]} & /@ valid;
-  best = First[SortBy[data, Length[#[[2]]] &]];
+  best = First[SortBy[data, {Length[#[[2]]], Denominator[#[[1]]]} &]];
 
   bestQ = best[[1]];
   bestEgypt = best[[2]];
