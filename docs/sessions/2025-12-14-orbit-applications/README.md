@@ -72,7 +72,9 @@ The path length |path| always meets or exceeds α + β because:
 
 ## 2. Fast Orbit Membership Test
 
-**Idea:** Test if two fractions are σκ-related in O(log q) time
+### ✅ IMPLEMENTED
+
+**Function:** `SameOrbit[q1, q2]` in `MoebiusInvolutions.wl`
 
 ```mathematica
 SameOrbit[3/8, 5/11] → True   (* both have signature {3,5} *)
@@ -81,27 +83,30 @@ SameOrbit[3/8, 1/16] → False  (* {3,5} vs {1,15}, same I=15! *)
 
 **Key insight:** Same invariant I is necessary but NOT sufficient. Must check full signature {A, B}.
 
+**Related functions (all implemented):**
+- `OrbitSignature[q]` — returns {A, B}
+- `CanonicalRep[q]` — returns canonical form A/(A+B)
+- `ToCanonicalPath[q]` — returns {path, canonical}
+
 **Applications:**
 - Equivalence classes for pattern matching
 - Deduplication in fraction databases
 
 ---
 
-## 3. Factorization Detector
+## 3. Orbit-Factorization Correspondence
 
-**Idea:** Number of orbits for invariant I reveals prime factorization structure
+**Observation:** Orbits with invariant I correspond to coprime factorizations of I.
 
 ```
-I = p₁·p₂·...·pₖ  →  2^(k-1) distinct orbits
+I = p₁·p₂·...·pₖ  →  2^(k-1) orbits (each prime goes to A or B)
 ```
 
-| I | Factorization | # Orbits | Signatures |
-|---|---------------|----------|------------|
-| 3 | prime | 1 | {1,3} |
-| 15 | 3×5 | 2 | {1,15}, {3,5} |
-| 105 | 3×5×7 | 4 | {1,105}, {3,35}, {5,21}, {7,15} |
-
-**Implication:** Counting orbits gives ω(I) = number of distinct prime factors.
+| I | ω(I) | # Orbits | Signatures |
+|---|------|----------|------------|
+| 3 | 1 | 1 | {1,3} |
+| 15 | 2 | 2 | {1,15}, {3,5} |
+| 105 | 3 | 4 | {1,105}, {3,35}, {5,21}, {7,15} |
 
 ---
 
@@ -174,17 +179,15 @@ Orbits under ⟨σ,κ⟩  ↔  {(A, B) : A ≤ B, A,B odd, gcd(A,B) = 1}
 
 **Canonical representative:** A/(A+B)
 
-**Counting:**
+**Counting orbits with invariant I = A×B ≤ n:**
 
-| max I | # Orbits |
-|-------|----------|
-| 10 | 5 |
-| 50 | 31 |
-| 100 | 70 |
-| 500 | 429 |
-| 1000 | 923 |
+| n | # Orbits | Orbits/n |
+|---|----------|----------|
+| 100 | 70 | 0.70 |
+| 1000 | 923 | 0.92 |
+| 10000 | 11580 | 1.16 |
 
-Growth is approximately linear in n (coprimality gives factor 6/π²).
+**Asymptotic:** Growth is approximately linear in n. The coprimality constraint gcd(A,B) = 1 introduces the factor **6/π² = 1/ζ(2) ≈ 0.608** — the probability that two random integers are coprime (see [coprimality-zeta](../../learning/coprimality-zeta.md)).
 
 ---
 
