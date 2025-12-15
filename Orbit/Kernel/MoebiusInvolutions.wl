@@ -21,14 +21,27 @@ BeginPackage["Orbit`"];
 
 MoebiusSigma::usage = "MoebiusSigma[x] = (1-x)/(1+x)
 The silver involution. Fixed point: √2-1 = tan(π/8).
-In logit coordinates y=x/(1-x): σ(y) = 1/(2y).";
+In logit coordinates y=x/(1-x): σ(y) = 1/(2y).
+Short form: σ";
 
 MoebiusKappa::usage = "MoebiusKappa[x] = 1-x
 The complement involution. Reflection about 1/2.
-In logit coordinates: κ(y) = 1/y.";
+In logit coordinates: κ(y) = 1/y.
+Short form: κ";
 
 MoebiusIota::usage = "MoebiusIota[x] = 1/x
-The reciprocal involution. Swaps (0,1) with (1,∞).";
+The reciprocal involution. Swaps (0,1) with (1,∞).
+Short form: ι";
+
+(* Short forms - exported for user convenience *)
+σ::usage = "σ[x] = (1-x)/(1+x). Short form of MoebiusSigma.";
+κ::usage = "κ[x] = 1-x. Short form of MoebiusKappa.";
+ι::usage = "ι[x] = 1/x. Short form of MoebiusIota.";
+
+(* Define short forms here so they're in Orbit` context *)
+σ[z_] := (1 - z)/(1 + z);
+κ[z_] := 1 - z;
+ι[z_] := 1/z;
 
 (* ============================================ *)
 (* ORBIT INVARIANT                              *)
@@ -53,6 +66,23 @@ SameOrbit::usage = "SameOrbit[q1, q2] returns True if q1 and q2 are in the same
 
 CanonicalRep::usage = "CanonicalRep[q] returns the canonical representative of q's orbit.
 Form: A/(A+B) where {A,B} is the orbit signature (A,B odd, A·B = I).";
+
+MinimalEgyptianRep::usage = "MinimalEgyptianRep[q] finds orbit representative with minimal
+Egyptian complexity and returns its decomposition. Returns {egyptian, toMinimal, toOriginal}.
+
+  - egyptian: EgyptianFractions result for the minimal representative
+  - toMinimal: composition q → q* (the simplification path found)
+  - toOriginal: composition q* → q (transform back; Last[] to get it)
+
+Options:
+  Method -> \"Raw\" (default) | \"Denominators\" | \"List\" — passed to EgyptianFractions
+  MaxDenominator -> 10000 — bounds orbit exploration
+
+Example:
+  {egypt, toMin, toOrig} = MinimalEgyptianRep[7/11]
+  (* {{{1,14,1,1}}, σ∘κ∘σ∘κ∘σ, σ∘κ∘σ∘κ∘σ} *)
+  toMin[7/11]   (* 1/15 — the minimal representative *)
+  Last[%][1/15] (* 7/11 — back to original *)";
 
 OrbitEnumerate::usage = "OrbitEnumerate[inv, qMax] returns all fractions p/q in (0,1)
 with denominator ≤ qMax and orbit invariant equal to inv.";
@@ -80,17 +110,14 @@ LogitInverse::usage = "LogitInverse[y] = y/(1+y), inverse of Logit.";
 Begin["`Private`"];
 
 (* ============================================ *)
-(* INVOLUTIONS                                  *)
+(* INVOLUTIONS (long names as aliases)          *)
 (* ============================================ *)
 
-MoebiusSigma[x_] := (1 - x)/(1 + x)
-MoebiusKappa[x_] := 1 - x
-MoebiusIota[x_] := 1/x
-
-(* Shortcuts for internal use *)
-σ = MoebiusSigma;
-κ = MoebiusKappa;
-ι = MoebiusIota;
+(* Short forms σ, κ, ι are defined in public section *)
+(* Long names just delegate to short forms *)
+MoebiusSigma[x_] := σ[x]
+MoebiusKappa[x_] := κ[x]
+MoebiusIota[x_] := ι[x]
 
 (* ============================================ *)
 (* ODD PART                                     *)
@@ -157,6 +184,92 @@ OrbitSignature[q_Rational] := Module[{can, y, A, B},
   B = Denominator[y];
   Sort[{A, B}]
 ]
+
+(* ============================================ *)
+(* MINIMAL EGYPTIAN REPRESENTATIVE              *)
+(* ============================================ *)
+
+(* Generate bounded orbit under {σ, κ, ι} with denominator limit *)
+(* Stops exploring branches where denominators exceed maxDen *)
+boundedOrbit[q_, maxDen_:1000] := Module[{result, frontier, seen, next},
+  seen = <|q -> {}|>;  (* value -> path *)
+  frontier = {q};
+
+  Do[
+    If[frontier === {}, Break[]];
+    Module[{newFrontier = {}},
+      Do[
+        Do[
+          {op, name} = opPair;
+          next = op[current];
+          If[NumberQ[next] && 0 < next < maxDen &&
+             Denominator[next] <= maxDen &&
+             !KeyExistsQ[seen, next],
+            seen[next] = Append[seen[current], name];
+            AppendTo[newFrontier, next]
+          ],
+          {opPair, {{σ, "σ"}, {κ, "κ"}, {ι, "ι"}}}
+        ],
+        {current, frontier}
+      ];
+      frontier = newFrontier
+    ],
+    {6}  (* max 6 BFS levels *)
+  ];
+  seen  (* Association: value -> path *)
+]
+
+(* Convert path list to composition function *)
+pathToComposition[pathList_List] := Module[{ops},
+  If[pathList === {}, Return[Identity]];
+  ops = pathList /. {"σ" -> σ, "κ" -> κ, "ι" -> ι};
+  RightComposition @@ ops  (* Apply left-to-right *)
+]
+
+(* Invert a path: reverse (all ops are self-inverse) *)
+invertPath[path_List] := Reverse[path]
+
+(* Find orbit element with minimum Egyptian tuple count *)
+Options[MinimalEgyptianRep] = {Method -> "Raw", MaxDenominator -> 10000};
+
+MinimalEgyptianRep[q_Rational, OptionsPattern[]] := Module[
+  {startQ, needsIota, orbitPaths, valid, method, maxDen, data, best, bestQ, bestEgypt, bestPath, toMinimal, toOriginal},
+
+  (* Normalize to (0,1) *)
+  needsIota = (q > 1);
+  startQ = If[needsIota, 1/q, q];
+
+  method = OptionValue[Method];
+  maxDen = OptionValue[MaxDenominator];
+
+  (* Generate bounded orbit with paths *)
+  orbitPaths = boundedOrbit[startQ, maxDen];
+
+  (* Filter to (0,1) *)
+  valid = Select[Keys[orbitPaths], 0 < # < 1 &];
+
+  If[valid === {}, Return[{EgyptianFractions[startQ, Method -> method], Identity, Identity}]];  (* {egypt, toMin, toOrig} *)
+
+  (* Compute Egyptian for each orbit element, find minimum *)
+  data = {#, EgyptianFractions[#, Method -> method], orbitPaths[#]} & /@ valid;
+  best = First[SortBy[data, Length[#[[2]]] &]];
+
+  bestQ = best[[1]];
+  bestEgypt = best[[2]];
+  bestPath = best[[3]];
+
+  (* If original was > 1, prepend ι to path *)
+  If[needsIota, bestPath = Prepend[bestPath, "ι"]];
+
+  (* Convert to compositions *)
+  toMinimal = pathToComposition[bestPath];
+  toOriginal = pathToComposition[invertPath[bestPath]];
+
+  (* Return {egyptian, toMinimal, toOriginal} *)
+  {bestEgypt, toMinimal, toOriginal}
+]
+
+MinimalEgyptianRep[q_Integer, opts:OptionsPattern[]] := MinimalEgyptianRep[q/1, opts]
 
 (* ============================================ *)
 (* ORBIT ENUMERATION                            *)
