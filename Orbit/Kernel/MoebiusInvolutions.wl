@@ -78,11 +78,15 @@ Options:
   Method -> \"Raw\" (default) | \"Denominators\" | \"List\" — passed to EgyptianFractions
   MaxDenominator -> 10000 — bounds orbit exploration
 
-Example:
+Examples:
   {egypt, toMin, toOrig} = MinimalEgyptianRep[7/11]
   (* {{{1,14,1,1}}, σ∘κ∘σ∘κ∘σ, σ∘κ∘σ∘κ∘σ} *)
   toMin[7/11]   (* 1/15 — the minimal representative *)
-  Last[%][1/15] (* 7/11 — back to original *)";
+  Last[%][1/15] (* 7/11 — back to original *)
+
+  (* π approximation: 355/113 decomposes via ι to reveal 22/7 *)
+  MinimalEgyptianRep[355/113, Method -> \"Expression\"][[1]] // ReleaseHold
+  (* {7/22, 1/7810} — so 355/113 = 1/(7/22 + 1/7810) *)";
 
 OrbitEnumerate::usage = "OrbitEnumerate[inv, qMax] returns all fractions p/q in (0,1)
 with denominator ≤ qMax and orbit invariant equal to inv.";

@@ -229,21 +229,23 @@ FibonacciProductDenominators[max_Integer] := Module[{pairs},
 Options[FibonacciRationalize] = {Method -> "Indices"};
 
 FibonacciRationalize[x_?NumericQ, accuracy_?Positive, OptionsPattern[]] := Module[
-  {n = 3, fn, m, err, maxN = 100, method = OptionValue[Method]},
+  {n = 3, fn, m, err, method = OptionValue[Method], prec},
 
-  (* Find smallest n with |Round[x*F_n]/F_n - x| < accuracy *)
-  While[n <= maxN,
-    fn = Fibonacci[n];
-    m = Round[x * fn];
-    err = Abs[m/fn - x];
-    If[err < accuracy,
-      Return[FibonacciFraction[m/fn, Method -> method]]
-    ];
-    n++;
-  ];
+  (* Set precision based on requested accuracy *)
+  prec = Ceiling[-Log10[accuracy]] + 50;
 
-  (* If not achieved, return best found at maxN *)
-  FibonacciFraction[Round[x * Fibonacci[maxN]] / Fibonacci[maxN], Method -> method]
+  Block[{$MaxExtraPrecision = prec},
+    (* Find smallest n with |Round[x*F_n]/F_n - x| < accuracy *)
+    While[True,
+      fn = Fibonacci[n];
+      m = Round[N[x, prec] * fn];
+      err = Abs[m/fn - N[x, prec]];
+      If[err < accuracy,
+        Return[FibonacciFraction[m/fn, Method -> method]]
+      ];
+      n++;
+    ]
+  ]
 ]
 
 End[];
