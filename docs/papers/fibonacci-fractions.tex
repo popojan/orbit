@@ -23,7 +23,7 @@
 \maketitle
 
 \begin{abstract}
-We construct a canonical Fibonacci representation for rational numbers: every $p/q$ can be written as $(\sum_i F_{a_i})/F_n$, where $n = z(q)$ is the Fibonacci entry point and $\{a_i\}$ is the Zeckendorf decomposition of $p \cdot (F_n/q)$. This extends classical Zeckendorf representation from integers to all rationals. The construction yields a polynomial form $P(\varphi)/Q(\varphi) = p/q$ via Binet's formula, where $\sqrt{5}$ factors cancel due to the anti-symmetric structure $\varphi^k - \psi^k$. We analyze the complexity of this representation: the expected number of Zeckendorf terms satisfies $\mathbb{E}[k] = z(q)/(1+\varphi^2) + O(1)$, where the constant $1/(1+\varphi^2) = (5-\sqrt{5})/10$ is Lekkerkerker's density from Zeckendorf theory.
+We construct a canonical Fibonacci representation for rational numbers: every $p/q$ can be written as $(\sum_i F_{a_i})/F_n$, where $n = z(q)$ is the Fibonacci entry point and $\{a_i\}$ is the Zeckendorf decomposition of $p \cdot (F_n/q)$. This extends classical Zeckendorf representation from integers to all rationals. The construction yields a polynomial form $P(\varphi)/Q(\varphi) = p/q$ via Binet's formula, where $\sqrt{5}$ factors cancel due to the anti-symmetric structure $\varphi^k - \psi^k$. We analyze the complexity of this representation: the expected number of Zeckendorf terms satisfies $\mathbb{E}[k] = z(q)/(1+\varphi^2) + O(1)$, where the constant $1/(1+\varphi^2) = (5-\sqrt{5})/10$ is Lekkerkerker's density. We also develop arithmetic operations: the sum of two Fibonacci fractions has denominator $F_N$ where $N = \mathrm{lcm}(z(q_1), z(q_2))$. While Zeckendorf arithmetic achieves optimal complexity---$O(n)$ for addition, $O(n \log n)$ for multiplication---the practical utility for general rationals is limited by the computational cost of finding entry points.
 \end{abstract}
 
 \section{Introduction}
@@ -37,6 +37,7 @@ Freitag and Filipponi \cite{freitag1990,filipponi1993} studied Zeckendorf repres
     \item Canonical Fibonacci form for all rationals $\mathbb{Q}$
     \item Polynomial representation via Binet substitution
     \item Complexity analysis via Lekkerkerker's theorem
+    \item Arithmetic operations with complexity analysis
     \item Comparison with Egyptian fraction and continued fraction representations
 \end{enumerate}
 
@@ -67,7 +68,7 @@ For any rational $p/q > 0$, define the \emph{Fibonacci form} as:
 where:
 \begin{itemize}
     \item $n = z(q)$ is the Fibonacci entry point of $q$
-    \item $\{a_i\} = \mathrm{Zeck}(p \cdot F_n/q)$ is the Zeckendorf decomposition of the scaled numerator
+    \item $\{a_i\} = \mathrm{Zeck}(m)$ where $m = p \cdot F_n/q$ is the \emph{scaled numerator}
 \end{itemize}
 \end{construction}
 
@@ -326,6 +327,80 @@ For $P(x) = \sum_i (x^{a_i} - (1-x)^{a_i})$: we have $P(\omega) = 2i\sum_i \sin(
 When $\Phi_6$ divides exactly one of $P$ or $Q$, it contributes a factor of $2$ to the numerator or denominator at $x = \varphi$. The frequency of $\Phi_6 \mid Q$ (condition: $3 \mid z(q)$) depends on the distribution of Fibonacci entry points. The frequency of $\Phi_6 \mid P$ (the balance condition) decreases as $q$ grows, since longer Zeckendorf sequences are less likely to achieve exact mod-6 balance.
 \end{remark}
 
+\section{Arithmetic Operations}
+
+A natural question is how to perform arithmetic directly on Fibonacci fraction representations. We show that addition has clean structure, while the practical utility is limited by computational bottlenecks.
+
+\subsection{Addition Theorem}
+
+\begin{theorem}[Fibonacci Fraction Addition]
+\label{thm:addition}
+For rationals $r_1 = p_1/q_1$ and $r_2 = p_2/q_2$ with Fibonacci entry points $n_1 = z(q_1)$ and $n_2 = z(q_2)$, the sum $r_1 + r_2$ has Fibonacci denominator $F_N$ where:
+\[
+N = \mathrm{lcm}(n_1, n_2)
+\]
+\end{theorem}
+
+\begin{proof}
+Since $q_1 \mid F_{n_1}$ and $q_2 \mid F_{n_2}$, we need a common Fibonacci divisor. By the divisibility property $F_n \mid F_m \iff n \mid m$, the smallest $F_N$ divisible by both $F_{n_1}$ and $F_{n_2}$ has $N = \mathrm{lcm}(n_1, n_2)$.
+
+The common denominator $\mathrm{lcm}(q_1, q_2)$ divides $F_N$, so we can scale both fractions:
+\[
+r_1 + r_2 = \frac{m_1 \cdot (F_N/F_{n_1}) + m_2 \cdot (F_N/F_{n_2})}{F_N}
+\]
+where $m_i$ are the scaled numerators. The result follows by applying Zeckendorf to the sum.
+\end{proof}
+
+\subsection{Index Scaling via Lucas Numbers}
+
+The scaling factor $F_N/F_n$ when $N = kn$ can be computed using Lucas numbers:
+
+\begin{lemma}[Fibonacci-Lucas Product Identity]
+\[
+F_a \cdot L_n = F_{a+n} + (-1)^{n+1} F_{a-n}
+\]
+In particular, $F_{2n}/F_n = L_n$.
+\end{lemma}
+
+This identity transforms Zeckendorf indices: when scaling by $L_n$, each index $a$ maps to $\{a+n, a-n\}$ with appropriate sign, producing a signed intermediate sum that must be normalized.
+
+\subsection{Complexity of Zeckendorf Arithmetic}
+
+The algorithmic complexity of arithmetic in Zeckendorf representation has been studied extensively:
+
+\begin{theorem}[Ahlbach, Usatine, Pippenger 2012 \cite{ahlbach2012}]
+Addition and subtraction of $n$-digit Zeckendorf numbers can be performed in $O(n)$ time using three alternating passes. These operations can also be implemented by combinational circuits of size $O(n)$ and depth $O(\log n)$.
+\end{theorem}
+
+\begin{theorem}[Idziaszek 2021 \cite{idziaszek2021}]
+Multiplication of $n$-digit Zeckendorf numbers can be performed in $O(n \log n)$ time via conversion to the golden ratio base $\varphi$, FFT convolution, and normalization.
+\end{theorem}
+
+The key insight of Idziaszek is that the Zeckendorf system converts in $O(n)$ time to/from the base-$\varphi$ positional system, where FFT-based multiplication applies directly.
+
+\subsection{The Entry Point Bottleneck}
+
+\begin{observation}[Practical Limitation]
+While Zeckendorf arithmetic achieves optimal complexity---$O(n)$ for addition, $O(n \log n)$ for multiplication, matching binary arithmetic---the \emph{Fibonacci fraction} arithmetic faces a bottleneck: computing the entry point $z(q)$.
+
+For general $q$, computing $z(q)$ requires knowing the prime factorization of $q$, since:
+\begin{itemize}
+    \item $z(p)$ for prime $p$ divides $p^2 - 1$ (or $2(p^2-1)$ if $p \equiv \pm 1 \pmod{5}$)
+    \item $z(\prod p_i^{e_i}) = \mathrm{lcm}(z(p_i^{e_i}))$
+\end{itemize}
+No polynomial-time algorithm is known for computing $z(q)$ without factoring.
+\end{observation}
+
+\begin{remark}[When Fibonacci Arithmetic is Efficient]
+Fibonacci fraction arithmetic becomes competitive when:
+\begin{enumerate}
+    \item Denominators are Fibonacci numbers: $z(F_n) = n$ trivially
+    \item Entry points are precomputed or cached
+    \item Working within a ``Fibonacci lattice'' where all denominators divide some fixed $F_N$
+\end{enumerate}
+In the special case of Fibonacci-denominator fractions, all operations achieve $O(n \log n)$ complexity, competitive with the best rational arithmetic algorithms, with the structural advantage that no large-integer GCD computation is needed.
+\end{remark}
+
 \section{Approximation of Irrationals}
 
 \textbf{Algorithm} (FibonacciRationalize). Given $x \in \mathbb{R}$ and accuracy $\varepsilon$: iterate $n = 3, 4, \ldots$, compute $m = \mathrm{Round}(x \cdot F_n)$, return when $|m/F_n - x| < \varepsilon$.
@@ -385,6 +460,12 @@ Kologlu, M., Kopp, G.S., Miller, S.J., \& Wang, Y. (2010). On the number of summ
 
 \bibitem{egypt2025}
 Popelka, J. (2025). The continued fractions--Egyptian fractions bijection: Symbolic telescoping representation. Zenodo. \url{https://github.com/popojan/orbit}
+
+\bibitem{ahlbach2012}
+Ahlbach, C., Usatine, J., \& Pippenger, N. (2013). Efficient algorithms for Zeckendorf arithmetic. \textit{Fibonacci Quarterly}, 51(3), 249--255. arXiv:1207.4497.
+
+\bibitem{idziaszek2021}
+Idziaszek, T. (2021). Efficient algorithm for multiplication of numbers in Zeckendorf representation. In \textit{10th International Conference on Fun with Algorithms (FUN 2021)}, LIPIcs, Article~16, pp.~16:1--16:9. DOI: 10.4230/LIPIcs.FUN.2021.16.
 
 \end{thebibliography}
 

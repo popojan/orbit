@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-14 11:22:02
+**Generated:** 2025-12-15 20:13:03
 
 ## Theorems (Master References)
 
@@ -38,9 +38,12 @@
 - [六十心 (Liù Shí Xīn) — The Sixty Minds](learning/sixty-minds-buddhism.md)
 - [Split-kvaterniony (Coquaterniony)](learning/split-quaternions.md)
 - [Hana Vymazalová: Staroegyptská matematika — Čtenářské poznámky](learning/vymazalova-hieratic-notes.md)
+- [Édouard Zeckendorf (1901-1983): The Amateur Who Named a Theorem](learning/zeckendorf-biography.md)
 
 ## Recent Sessions (Last 10)
 
+- [Fibonacci-Based Rational Number System](sessions/2025-12-15-fibonacci-rationals/README.md) *(2025-12-15)*
+- [Fibonacci Representation: Deeper Mathematical Questions](sessions/2025-12-15-fibonacci-depth/README.md) *(2025-12-15)*
 - [Orbit Applications - Research Directions](sessions/2025-12-14-orbit-applications/README.md) *(2025-12-14)*
 - [Transitivity Theorem for Möbius Involutions](sessions/2025-12-13-involution-theory/transitivity-theorem.md) *(2025-12-13)*
 - [Stern-Brocot, Calkin-Wilf a Brahmagupta-Bhaskara rovnice](sessions/2025-12-13-involution-theory/stern-brocot-pell.md) *(2025-12-13)*
@@ -49,8 +52,6 @@
 - [Petrie Error Bar Analysis: Pyramid φ Hypotheses](sessions/2025-12-12-phi-pi-equation/petrie-error-analysis.md) *(2025-12-12)*
 - [Egyptian Mathematics & Pyramids: Document Index](sessions/egypt-pyramid-index.md) *(2025-12-12)*
 - [Pyramid Ratios and Möbius Orbits](sessions/2025-12-12-phi-pi-equation/README.md) *(2025-12-12)*
-- [Golden Ratio in the γ Framework: Pyramid Connection](sessions/2025-12-08-gamma-framework/golden-ratio-pyramid.md) *(2025-12-12)*
-- [Prime DNA Review: Gap Distribution and Chebyshev-like Bias](sessions/2025-12-05-prime-dna-review/README.md) *(2025-12-12)*
 
 ## Navigation
 

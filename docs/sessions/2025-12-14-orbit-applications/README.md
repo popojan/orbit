@@ -34,9 +34,39 @@ ToCanonicalPath[q] → {{"σ", "κ", "σ", "κ"}, 1/2}
 
 **Potential benefit:** For fractions with large numerator/denominator but simple orbit structure, the path representation could be more compact.
 
-**Questions:**
-- When is path encoding shorter than direct p/q?
-- Connection to continued fraction length?
+### ✅ ANSWERED: Kolmogorov Analysis — No General Improvement
+
+**Question:** Can orbit encoding (signature + path) beat direct (p, q) encoding?
+
+**Analysis framework:**
+- Direct encoding: ~log₂(p) + log₂(q) bits
+- Orbit encoding: ~log₂(A) + log₂(B) + |path| bits
+- Since A = p/2^α and B = (q-p)/2^β:
+  - Savings ≈ α + β - |path|
+  - Orbit wins when |path| < α + β
+
+**Empirical test (Farey(30), 229 non-canonical fractions):**
+
+| Metric | Value |
+|--------|-------|
+| Orbit wins | **0 (0%)** |
+| Ties | 32 (14%) |
+| Direct wins | 197 (86%) |
+| Mean diff | **+1.4 bits** (orbit worse) |
+| Max penalty | 4 bits |
+
+**Worst cases (orbit costly):**
+- 16/29, 16/27, 16/25, etc.: path=8, α+β=4 → costs 4 extra bits
+
+**Conclusion:** ❌ **Orbit encoding offers NO Kolmogorov advantage.**
+
+The path length |path| always meets or exceeds α + β because:
+- σκ = x/(2-x) grows denominators, doesn't "halve" distances
+- 2-adic valuation doesn't correlate with orbit graph distance
+
+**Earlier claim (RETRACTED):** Initial estimates of 1.3 bits savings were WRONG — based on faulty log-based path estimation instead of actual BFS distances.
+
+**Implementation:** `scripts/kolmogorov_analysis.wl`
 
 ---
 
@@ -88,10 +118,49 @@ Examples:
 - 1/4 → {{1, 3, 1, 1}} and 3/4 → {{1, 1, 1, 3}}
 - 1/5 → {{1, 4, 1, 1}} and 4/5 → {{1, 1, 1, 4}}
 
-**Questions:**
-- What transformation does σ induce on Egypt tuples?
-- Is there a group action on the tuple space?
-- Do orbit-related fractions have similar Egypt complexity?
+### ✅ ANSWERED: Group Action on Egypt Tuples
+
+**κ rule (complement/swap):**
+```
+κ: {1, v, 1, j} ↔ {1, j, 1, v}
+```
+Swaps second and fourth parameters.
+
+**σ rule (complex):**
+- σ({1, 1, 1, 1}) = {1, 2, 1, 1}
+- σ({1, 2, 1, 1}) = {1, 1, 1, 1}
+- σ({1, 2k, 1, 1}) = {1, 1, 1, k} for k ≥ 2
+
+**κσ rule (halving!):**
+```
+κσ: {1, 2k, 1, 1} → {1, k, 1, 1}
+```
+Halves the v parameter when v is even.
+
+**Orbit structure from halving:**
+
+The orbit of 1/5 = {1, 4, 1, 1} under ⟨σ, κ⟩:
+```
+{1,4,1,1} --κσ--> {1,2,1,1} --κσ--> {1,1,1,1} (fixed)
+    ↕κ                ↕κ                ↕κ
+{1,1,1,4}         {1,1,1,2}         {1,1,1,1}
+```
+This gives all 1/(2^k+1) and 2^k/(2^k+1) fractions.
+
+### ✅ ANSWERED: Egypt Complexity in Orbits
+
+**Finding:** Orbit-related fractions do NOT necessarily have same tuple count.
+
+| Orbit | Size | Tuple counts |
+|-------|------|--------------|
+| 1/2 | 11 | all 1 |
+| 1/3 | 12 | all 1 |
+| 1/5 | 14 | all 1 |
+| 1/4 | 21 | mixed (1-2) |
+| 1/6 | 21 | mixed (1-3) |
+| 3/8 | 21 | mostly 2 |
+
+**Pattern:** Simple signatures {1, 2^k-1} tend to have single-tuple orbits.
 
 ---
 
@@ -168,13 +237,31 @@ No obvious pattern yet. Worth investigating for:
 
 ---
 
-## 9. Connection to Calkin-Wilf Tree
+## 9. Connection to Calkin-Wilf / Stern-Brocot Trees
 
 The full group ⟨σ, κ, ι⟩ generates the Calkin-Wilf tree (transitive on ℚ⁺).
 
-**Question:** How do ⟨σ,κ⟩ orbits relate to CW tree structure?
+### ✅ ANSWERED (Trivial)
 
-Each orbit is a "slice" of the tree connected by ι (inversion).
+**Key observation:** σκ = x/(2-x) is a simple Möbius map.
+
+**Recurrence:** For signature {1, n} with canonical 1/(n+1):
+```
+(σκ)^k (1/(n+1)) = 1/(2^k · n + 1)
+```
+
+**Examples:**
+- {1,1}: denominators 2, 3, 5, 9, 17, 33, ... = 2^k + 1
+- {1,3}: denominators 4, 7, 13, 25, 49, ... = 2^k·3 + 1
+
+**Stern-Brocot connection:** σκ doubles the L-run length in SB tree.
+
+**Structure:**
+- ⟨σ,κ⟩ orbits = vertical fibers (fixed signature)
+- CW/SB trees = horizontal structure (by denominator sum)
+- Orbits cut diagonally with exponentially increasing depth
+
+**Note:** This connection is algebraically trivial (one Möbius formula). The non-trivial content of the decomposition lies in the **signature invariance** — how σ, κ interact with 2-adic valuations to preserve {odd(p), odd(q-p)}.
 
 ---
 
@@ -225,6 +312,8 @@ Each orbit is a "slice" of the tree connected by ι (inversion).
 7. **Optimal invariant for n points:** Given a target number of LUT entries, which invariant I minimizes PWL error? Is there a closed-form relationship?
 
 8. **Rational neural networks:** ✅ **SOLVED** — Training in ℚ works! See below.
+
+9. **Kolmogorov complexity:** ❌ **DISPROVED** — Orbit encoding does NOT beat direct (p,q) encoding. See Section 1.
 
 ---
 
@@ -532,6 +621,132 @@ By combined metric (lower = more "prime-like"):
 **Interpretation:** The Fibonacci-Lucas-golden ratio structure captures *some* information about primality, but the relationship is indirect. Primes cluster toward better φ-approximations, but many composites achieve similarly good approximations.
 
 **Open question:** Is there a theoretical explanation for why prime L_m values tend to produce smaller normalized distances?
+
+---
+
+## 18. XGCD via Continuant Polynomials
+
+**Discovery:** The involution chain structure leads to closed-form XGCD.
+
+### The Chain Pattern
+
+Every rational p/q with CF = [0; a₁, a₂, ..., aₙ] corresponds to:
+
+$$\frac{p}{q} = \iota R^{a_1} \iota R^{a_2} \cdots \iota R^{a_n}(0)$$
+
+where R(x) = x + 1 and ι(x) = 1/x.
+
+### Continuant Polynomials
+
+The **continuant** K(a₁, ..., aₙ) satisfies:
+- K() = 1
+- K(a) = a
+- K(a, b) = ab + 1
+- K(a, b, c) = abc + a + c
+- K(a₁, ..., aₙ) = aₙ · K(a₁, ..., aₙ₋₁) + K(a₁, ..., aₙ₋₂)
+
+### Closed-Form XGCD
+
+For gcd(p, q) with CF quotients [a₁, ..., aₙ]:
+
+| Component | Formula |
+|-----------|---------|
+| p | K(a₁, ..., aₙ) |
+| q | K(a₂, ..., aₙ) |
+| Bézout x | (-1)ⁿ K(a₂, ..., aₙ₋₁) |
+| Bézout y | (-1)ⁿ⁺¹ K(a₁, ..., aₙ₋₁) |
+
+### Computational Aspects
+
+**Circularity issue:** To know quotients, must run Euclidean algorithm.
+
+**But useful when:**
+1. **Quotients known a priori** (structured numbers like Fibonacci)
+2. **Verification** — check XGCD via multiplications (faster than divisions)
+3. **Parallel computation** — continuants allow O(log n) depth via divide-and-conquer
+4. **Algebraic families** — one formula covers infinitely many XGCDs
+
+### Divide-and-Conquer Continuants
+
+$$K(a_1, \ldots, a_n) = K(a_1, \ldots, a_m) \cdot K(a_{m+1}, \ldots, a_n) + K(a_1, \ldots, a_{m-1}) \cdot K(a_{m+2}, \ldots, a_n)$$
+
+This enables **O(log n) parallel depth** vs O(n) sequential Euclidean.
+
+---
+
+## 19. Parametric XGCD Families
+
+**Key finding:** When CF quotients follow a pattern, one formula gives infinitely many XGCDs.
+
+### Last Quotient Varies: [0; a, k]
+
+For CF = [0; a, k] where only k varies:
+
+- p(k) = ak + 1
+- q(k) = k
+- **XGCD: (1, -a) — constant, independent of k!**
+
+$$1 \cdot (ak + 1) - a \cdot k = 1 \quad \text{for ALL } k$$
+
+### Example: a = 3
+
+| k | p | q | XGCD |
+|---|---|---|------|
+| 1 | 4 | 1 | 1·4 - 3·1 = 1 |
+| 2 | 7 | 2 | 1·7 - 3·2 = 1 |
+| 3 | 10 | 3 | 1·10 - 3·3 = 1 |
+| ... | ... | ... | Same formula! |
+
+### General [0; a₁, ..., aₙ₋₁, k]
+
+When only the last quotient varies, Bézout coefficients depend only on a₁, ..., aₙ₋₁, **not on k**.
+
+---
+
+## 20. Fibonacci XGCD Closed Forms
+
+**Discovery:** XGCD of Fibonacci numbers has beautiful closed forms.
+
+### Fundamental Identity
+
+$$\gcd(F_i, F_j) = F_{\gcd(i,j)}$$
+
+### Consecutive Fibonacci: XGCD(F_{n+1}, F_n)
+
+$$\text{XGCD}(F_{n+1}, F_n) = \big((-1)^n F_{n-1}, \; (-1)^{n+1} F_n\big)$$
+
+**The Bézout coefficients ARE Fibonacci numbers!**
+
+| n | XGCD(F_{n+1}, F_n) | Coefficients |
+|---|-------------------|--------------|
+| 3 | XGCD(3, 2) | (1, -1) = (F₂, -F₃) |
+| 4 | XGCD(5, 3) | (-1, 2) = (-F₂, F₃) |
+| 5 | XGCD(8, 5) | (2, -3) = (F₃, -F₄) |
+| 6 | XGCD(13, 8) | (-3, 5) = (-F₄, F₅) |
+
+### Skip-One: XGCD(F_{n+2}, F_n)
+
+$$\text{XGCD}(F_{n+2}, F_n) = \big((-1)^{n+1} F_{n-2}, \; (-1)^n F_n\big)$$
+
+CF pattern: [0; 2, 1, 1, ..., 1, 2] with (n-3) ones in middle.
+
+### Skip-Two: XGCD(F_{n+3}, F_n) when gcd(n,3)=1
+
+Coefficients form sequence **1, 4, 17, 72, ...** = F_{3m}/2
+
+This follows recurrence: aₙ = 4aₙ₋₁ + aₙ₋₂
+
+### Implication
+
+**No Euclidean needed for Fibonacci pairs!** Just look up in Fibonacci table + sign.
+
+---
+
+## 21. Fibonacci-Based Rational Number System
+
+**→ Moved to separate session:** [2025-12-15-fibonacci-rationals](../2025-12-15-fibonacci-rationals/README.md)
+
+This exploration grew from the XGCD findings above and warrants its own investigation with proper adversarial checking and literature review.
 
 ---
 
