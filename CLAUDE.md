@@ -413,7 +413,6 @@ Always run `make generate-index` before committing documentation changes.
 ### Orbit Paclet
 
 Modular subpackages for mathematical explorations:
-- PrimeOrbits.wl - Prime structure analysis
 - Primorials.wl - Primorial computation via rational sums
 - SemiprimeFactorization.wl - Closed-form factorization
 - ModularFactorials.wl - Efficient factorial mod p

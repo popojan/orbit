@@ -41,8 +41,6 @@ The repository includes:
 
 ## Modules
 
-**PrimeOrbits**: Geometric visualization approaches to prime number structure
-
 **Primorials**: Methods for computing primorials using rational sums
 
 **SemiprimeFactorization**: Explorations in factorization formulas

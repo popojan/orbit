@@ -1,13 +1,17 @@
 # Makefile for papers
 
-PAPERS = chebyshev-integral-identity primorial-formula chebyshev-sqrt-iteration
+PAPERS = chebyshev-integral-identity primorial-formula chebyshev-sqrt-iteration \
+         egyptian-fractions-telescoping fibonacci-fractions involution-decomposition \
+         sign-cosine-identity
 PDFS = $(addsuffix .pdf,$(PAPERS))
 
 .PHONY: all clean
 
 all: $(PDFS)
 
-%.pdf: %.tex
+%.pdf: %.tex references.bib
+	pdflatex -interaction=nonstopmode $<
+	bibtex $(basename $<)
 	pdflatex -interaction=nonstopmode $<
 	pdflatex -interaction=nonstopmode $<
 

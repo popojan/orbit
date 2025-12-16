@@ -6,13 +6,11 @@
 BeginPackage["Orbit`"];
 
 (* Load submodules *)
-Get["Orbit`PrimeOrbits`"];
 Get["Orbit`Primorials`"];
 Get["Orbit`SemiprimeFactorization`"];
 Get["Orbit`ModularFactorials`"];
 Get["Orbit`SquareRootRationalizations`"];
 Get["Orbit`ChebyshevIntegralTheorem`"];
-Get["Orbit`ChebyshevZeta`"];
 Get["Orbit`LegacyPolynomials`"];
 Get["Orbit`EgyptianFractions`"];
 Get["Orbit`CunninghamRepresentation`"];

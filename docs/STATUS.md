@@ -364,7 +364,6 @@ Going forward, strict adherence to:
 
 ### Code (Verified)
 - `Orbit/Kernel/` - Paclet implementations
-  - `PrimeOrbits.wl`
   - `Primorials.wl`
   - `SemiprimeFactorization.wl`
   - `ModularFactorials.wl`
@@ -389,13 +388,20 @@ Going forward, strict adherence to:
 
 ---
 
-## Orbit Paclet Modules (Status: Working)
+## Orbit Paclet Modules (12 modules)
 
-1. **Prime Orbits** - Greedy prime decomposition DAG
-2. **Primorials** - Rational sum formula
-3. **Semiprime Factorization** - Closed-form via Pochhammer
-4. **Modular Factorials** - Efficient n! mod p
-5. **Square Root Rationalizations** - Egypt + Chebyshev methods
+1. **Primorials** - Rational sum formula for primorials
+2. **SemiprimeFactorization** - Closed-form via Pochhammer
+3. **ModularFactorials** - Efficient n! mod p
+4. **SquareRootRationalizations** - Egypt + Chebyshev sqrt methods
+5. **EgyptianFractions** - CF-Egypt bijection, telescoping tuples
+6. **ChebyshevIntegralTheorem** - 1/π invariant identity
+7. **CircFunctions** - Circular/Hartley transform functions
+8. **CunninghamRepresentation** - Cunningham number tools
+9. **CyclotomicFFT** - Cyclotomic FFT implementations
+10. **MoebiusInvolutions** - Calkin-Wilf involution decomposition
+11. **FibonacciFractions** - Fibonacci rational representation
+12. **LegacyPolynomials** - Legacy polynomial utilities
 
 ---
 
