@@ -186,20 +186,19 @@ Zarážející vzorec se objevuje při srovnání ruské a západní literatury 
 | Wang & Fang 2023 (Wiley) | ❌ Ne | Carlitz 1956 |
 | Diskuze na MathOverflow | ❌ Ne | Davenport 1939 |
 
-Tato divergence ilustruje, jak se **matematické znalosti fragmentují podél jazykových a institucionálních linií**. Ruská tradice si uchovala povědomí o Aladovovi; anglofonní tradice na něj "zapomněla" až do Conradovy expozitorní práce.
+**Důležité upřesnění:** Matematika sama byla v anglofonním světě vždy známá — Davenportovy práce z 30. let a Carlitzovy z 50. let jsou standardními referencemi. Co se ztratilo, byla **historická atribuce**: anglofonní literatura začínala u Davenporta (1930s) nebo Carlitze (1956), jako by před nimi nic neexistovalo.
+
+Tato divergence ilustruje, jak se **historické povědomí fragmentuje podél jazykových linií**. Ruská tradice si uchovala vědomí o Aladovovi jako původním autorovi; anglofonní tradice "zapomněla" na počátek a citovala až následovníky.
 
 ---
 
 ## Role Keitha Conrada
 
-Tento dokument existuje z velké části proto, že **Keith Conrad** (University of Connecticut) si dal práci vysledovat historické počátky počítání vzorů kvadratických zbytků zpět k Aladovovu článku z roku 1896. Bez jeho *expozitorní práce* — psaní, které vysvětluje a kontextualizuje existující matematiku místo prezentace nových výsledků — by Aladov pravděpodobně zůstal zcela neznámý moderním matematikům.
+**Keith Conrad** (University of Connecticut) si dal práci vysledovat historické počátky počítání vzorů kvadratických zbytků zpět k Aladovovu článku z roku 1896. Jeho expozitorní poznámky vrátily Aladovovi zaslouženou prioritu v anglofonní literatuře.
 
-Expozitorní práce je často v akademii podceňována: neprodukuje "nové věty", přitahuje méně citací a je zřídka financována granty. Přesto je **nezbytná pro přenos matematických znalostí napříč generacemi**.
+Conradova role není v tom, že by "zachránil" matematiku — ta byla známá přes Davenporta a Carlitze. Jeho přínos je **historický**: dohledal, že příběh začíná v roce 1896 v Moskvě, ne ve 30. letech v Cambridge.
 
-V případě Aladova:
-- **Původní matematika** patří Aladovovi (1896)
-- **Znovuobjevení a kontextualizace** patří Conradovi (2020s)
-- Bez druhého by první bylo prakticky neviditelné
+Expozitorní práce je často v akademii podceňována: neprodukuje "nové věty", přitahuje méně citací a je zřídka financována granty. Přesto je důležitá pro **zachování historické paměti** matematiky.
 
 ---
 
