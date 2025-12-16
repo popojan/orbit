@@ -406,7 +406,7 @@ Going forward, strict adherence to:
 
 ---
 
-## Orbit Paclet Modules (12 modules)
+## Orbit Paclet Modules (13 modules)
 
 1. **Primorials** - Rational sum formula for primorials
 2. **SemiprimeFactorization** - Closed-form via Pochhammer
@@ -420,6 +420,7 @@ Going forward, strict adherence to:
 10. **MoebiusInvolutions** - Calkin-Wilf involution decomposition
 11. **FibonacciFractions** - Fibonacci rational representation
 12. **LegacyPolynomials** - Legacy polynomial utilities
+13. **SignCosineIdentities** - Sign-cosine sums A(p), W(p) and class number connection
 
 ---
 

@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-15 20:43:30
+**Generated:** 2025-12-16 03:01:15
 
 ## Theorems (Master References)
 
@@ -43,6 +43,7 @@
 
 ## Recent Sessions (Last 10)
 
+- [Publication Consolidation](sessions/2025-12-16-publication-consolidation/README.md) *(2025-12-16)*
 - [Orbit Applications - Research Directions](sessions/2025-12-14-orbit-applications/README.md) *(2025-12-15)*
 - [Fibonacci-Based Rational Number System](sessions/2025-12-15-fibonacci-rationals/README.md) *(2025-12-15)*
 - [Fibonacci Fraction Arithmetic](sessions/2025-12-15-fibonacci-rationals/fibonacci-arithmetic.md) *(2025-12-15)*
@@ -52,7 +53,6 @@
 - [Möbius Involution Theory](sessions/2025-12-13-involution-theory/README.md) *(2025-12-13)*
 - [Paper Arguments: Giza Convergent Hypothesis](sessions/2025-12-12-phi-pi-equation/paper-arguments.md) *(2025-12-13)*
 - [Petrie Error Bar Analysis: Pyramid φ Hypotheses](sessions/2025-12-12-phi-pi-equation/petrie-error-analysis.md) *(2025-12-12)*
-- [Egyptian Mathematics & Pyramids: Document Index](sessions/egypt-pyramid-index.md) *(2025-12-12)*
 
 ## Navigation
 
