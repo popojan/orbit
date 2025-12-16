@@ -1,7 +1,25 @@
 # Mathematical Explorations - Status Tracker
 
 **Repository:** popojan/orbit
-**Last Updated:** December 14, 2025
+**Last Updated:** December 16, 2025
+
+---
+
+## Papers for Submission
+
+Based on external review (Dec 16, 2025):
+
+| Paper | Source | Release | Venue | Status |
+|-------|--------|---------|-------|--------|
+| Primorial Formula | [tex](papers/primorial-formula.tex) | [v0.1.0](https://github.com/popojan/orbit/releases/tag/v0.1.0-primorial)* | Monthly, Integers | Ready |
+| Chebyshev Integral Identity | [tex](papers/chebyshev-integral-identity.tex) | [v0.1.0](https://github.com/popojan/orbit/releases/tag/v0.1.0-chebyshev-integral)* | Math Magazine | Ready |
+| Egyptian Fractions Telescoping | [tex](papers/egyptian-fractions-telescoping.tex) | [v0.1.0](https://github.com/popojan/orbit/releases/tag/v0.1.0-egyptian-fractions)* | Fibonacci Q. | Ready |
+| Sign-Cosine Identity | [tex](papers/sign-cosine-identity.tex) | — | Monthly (if reframed) | Needs work |
+| Fibonacci Fractions | [tex](papers/fibonacci-fractions.tex) | — | Fibonacci Q. | Good |
+| Chebyshev Sqrt Iteration | [tex](papers/chebyshev-sqrt-iteration.tex) | — | SIAM Review | Expository |
+| Involution Decomposition | [tex](papers/involution-decomposition.tex) | — | arXiv, CMJ | Expository |
+
+*Release PDF outdated — source has newer changes since tag.
 
 ---
 
