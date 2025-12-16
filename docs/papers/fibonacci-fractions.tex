@@ -129,7 +129,14 @@ Let $m = \sum_i F_{a_i} = p \cdot (F_n/q)$ and $d = F_n/q$. Then $\gcd(m, F_n) =
 
 \begin{proposition}[$\varphi$-Polynomial Representation]
 \label{prop:poly}
-Every rational $p/q$ can be expressed as $P(\varphi)/Q(\varphi)$ where $P(x), Q(x) \in \mathbb{Z}[x]$ are derived from the Fibonacci form via Binet's formula. The polynomials are determined by the Zeckendorf indices.
+Every rational $p/q$ can be expressed as $P(\varphi)/Q(\varphi)$ where $P(x), Q(x) \in \mathbb{Z}[x]$
+belong to the class of \emph{anti-symmetric polynomials}:
+\[
+\mathcal{A} := \{f \in \mathbb{Z}[x] : f(1-x) = -f(x)\}.
+\]
+Specifically, $P(x) = \sum_i (x^{a_i} - (1-x)^{a_i})$ and $Q(x) = x^n - (1-x)^n$,
+where $\{a_i\}$ is the Zeckendorf set and $n = z(q)$ is the entry point.
+Every $f \in \mathcal{A}$ factors as $(2x-1) \cdot g(x)$ for some $g \in \mathbb{Z}[x]$.
 \end{proposition}
 
 \textbf{Construction.} Using Binet's formula $F_n = (\varphi^n - \psi^n)/\sqrt{5}$ where $\psi = 1 - \varphi$:
