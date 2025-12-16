@@ -26,13 +26,17 @@
 \maketitle
 
 \begin{abstract}
-We establish a bijection between continued fraction expansions and
-Egyptian fraction decompositions. For a rational $a/b$, each pair of
-consecutive CF coefficients determines one \emph{symbolic tuple}---a
-compact encoding of a telescoping sum of unit fractions. This yields
-$O(\log b)$ tuples for all inputs, ranging from a single tuple for
-$(n-1)/n$ to $\lceil k/2 \rceil$ tuples for Fibonacci ratios $F_k/F_{k+1}$.
-The bijection extends to irrationals via prefix stability.
+Gyimesi and Nyul (2013) proved that Golomb's algebraic method and
+Eppstein's continued fraction method produce identical Egyptian fraction
+sequences. We introduce a \emph{symbolic telescoping representation}
+that compresses these sequences: each \emph{tuple} $(u,v,i,j)$ encodes
+a range of $j-i+1$ consecutive unit fractions via closed-form evaluation.
+This yields $O(\log b)$ tuples for any $a/b$---a compression from $O(a)$
+explicit fractions to $O(\log b)$ symbols. For $(n-1)/n$, this is a single
+tuple versus $n-1$ fractions.
+When explicit unit fractions are required, recursive bisection expands
+each tuple to $O(\log j)$ distinct fractions, giving $O(\log^2 b)$ total
+output---an exponential improvement over the $O(a)$ worst case.
 \end{abstract}
 
 \section{Introduction}
@@ -52,18 +56,24 @@ denominators and offers no algebraic structure.
 Eppstein~\cite{eppstein} developed continued fraction-based methods that exploit
 the fact that consecutive CF convergents differ by a unit fraction. His ``grouped''
 method recognizes when consecutive unit fractions combine, but still operates on
-individual fractions.
+individual fractions. Gyimesi and Nyul~\cite{gyimesi} proved that Golomb's
+algebraic method and the CF-based method produce \emph{identical} unit fraction
+sequences---establishing equivalence but not providing compression.
 
-We present an algorithm based on modular inverses that produces a \emph{symbolic
-telescoping representation}---a compact encoding where each symbol represents
-a consecutive range of unit fractions via a closed-form sum. This provides:
+We present an algorithm that produces a \emph{symbolic telescoping representation}---a
+compact encoding where each tuple $(u,v,i,j)$ represents a consecutive range of
+unit fractions via a closed-form sum. This is a \textbf{computational refinement}
+of the known bijection, providing:
 
 \begin{enumerate}
-\item \textbf{Complexity reduction}: $O(\log b)$ symbolic tuples instead of $O(a)$ fractions
-\item \textbf{Algebraic structure}: Each tuple has a closed-form evaluation
+\item \textbf{Symbolic compression}: $O(\log b)$ tuples encode $O(a)$ unit fractions
+\item \textbf{Efficient expansion}: Recursive bisection yields $O(\log^2 b)$ distinct fractions
+\item \textbf{Closed-form evaluation}: Each tuple evaluates in $O(1)$ without enumeration
 \item \textbf{Monotonicity guarantee}: Partial sums are strictly increasing and never overshoot
-\item \textbf{Connection to CF}: Precise relationship with continued fraction convergents
 \end{enumerate}
+
+For the extreme case $(n-1)/n$, basic CF methods enumerate $n-1$ unit fractions;
+our representation uses a single tuple, expandable to $O(\log n)$ fractions via bisection.
 
 \section{The Modular Inverse Algorithm}
 
@@ -500,59 +510,40 @@ Our symbolic representation produces $O(n/2)$ tuples where $n$ is the CF length,
 regardless of coefficient magnitudes.
 
 \begin{center}
-\begin{tabular}{l c c c}
-\textbf{Rational} & \textbf{CF} & \textbf{Eppstein basic} & \textbf{Symbolic tuples} \\
+\begin{tabular}{l c c c c}
+\textbf{Rational} & \textbf{CF} & \textbf{Eppstein basic} & \textbf{Symbolic} & \textbf{Bisected} \\
 \hline
-$(n-1)/n$ & $[0; 1, n-1]$ & $n-1$ fractions & 1 tuple \\
-$F_k/F_{k+1}$ & $[0; \bar{1}]$ (all 1s) & $k$ fractions & $\lceil k/2 \rceil$ tuples \\
-general $a/b$ & length $n$ & $O(\sum a_i) \leq O(a)$ & $O(n/2) = O(\log b)$ \\
+$(n-1)/n$ & $[0; 1, n-1]$ & $n-1$ fractions & 1 tuple & $O(\log n)$ fracs \\
+$F_k/F_{k+1}$ & $[0; \bar{1}]$ & $k$ fractions & $\lceil k/2 \rceil$ tuples & $O(k)$ fracs \\
+general $a/b$ & length $n$ & $O(a)$ & $O(\log b)$ tuples & $O(\log^2 b)$ fracs \\
 \end{tabular}
 \end{center}
 
 The key insight: tuples implicitly represent ranges of unit fractions via parameters
 $(u, v, i, j)$, avoiding explicit enumeration of $j - i + 1$ individual terms.
+When explicit fractions are required, recursive bisection halves each tuple's value,
+producing $O(\log j)$ fractions per tuple with guaranteed distinctness.
 
 \subsection{Binary Methods}
 Binary methods decompose using powers of 2. They do not provide the CF connection
 or symbolic compression we achieve.
 
-\section{Implementation}
-
-A reference implementation in Wolfram Language is available in the \texttt{Orbit}
-paclet~\cite{orbit}:
-
-\begin{verbatim}
-<< Orbit`
-EgyptianFractions[7/19]                    (* {1/3, 1/33, 1/209} *)
-EgyptianFractions[7/19, Method -> "Raw"]   (* Symbolic tuples *)
-EgyptianFractions[999/1000, Method -> "Raw"]  (* Single tuple! *)
-\end{verbatim}
-
-The \texttt{Method} option controls output:
-\begin{itemize}
-\item \texttt{"List"}: Distinct unit fractions (default). Uses recursive halving
-      and duplicate merging to maintain $O(\log b)$ terms even after expansion.
-\item \texttt{"Raw"}: Symbolic tuples $(u, v, i, j)$
-\item \texttt{"Expression"}: HoldForm sums for display
-\item \texttt{"Partials"}: Monotone partial sum sequence
-\end{itemize}
-
 \section{Conclusion}
 
-We have established an explicit bijection between continued fraction expansions
-and Egyptian fraction decompositions via symbolic telescoping tuples. The main
-contributions are:
+Gyimesi and Nyul established that Golomb's algebraic method and Eppstein's CF
+method produce identical unit fraction sequences. We provide a \textbf{computational
+refinement}: a symbolic telescoping representation that compresses these sequences
+and enables efficient expansion. The main contributions are:
 \begin{enumerate}
-\item A symbolic representation $(u, v, i, j)$ that compresses $O(a)$ unit fractions
-      into $O(\log b)$ tuples
-\item An explicit formula (Theorem~\ref{thm:bijection}) connecting tuple parameters
-      to CF convergent denominators
-\item The monotonicity theorem explained by paired CF differences
-\item Extension to irrationals via prefix stability (Lochs bound)
+\item \textbf{Symbolic compression}: $O(\log b)$ tuples encode $O(a)$ unit fractions
+\item \textbf{Efficient expansion}: Recursive bisection yields $O(\log^2 b)$ distinct
+      fractions when explicit enumeration is required
+\item \textbf{Explicit CF correspondence}: Theorem~\ref{thm:bijection} connects tuple
+      parameters to CF convergent denominators
+\item \textbf{Extension to irrationals}: Prefix stability with Lochs bound
 \end{enumerate}
-Golomb's algebraic method and Eppstein's CF method produce identical unit fraction
-\emph{sequences}; the symbolic tuple representation that captures these sequences
-without enumeration is our contribution.
+For the worst case $(n-1)/n$, this is a single tuple versus $n-1$ fractions---or
+$O(\log n)$ fractions after bisection, an exponential improvement.
 
 \subsection*{Acknowledgments}
 Thanks to David Eppstein for comprehensive documentation of CF methods.
