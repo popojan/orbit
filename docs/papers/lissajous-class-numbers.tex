@@ -1,6 +1,7 @@
 \documentclass[11pt,a4paper]{article}
 
 \usepackage{amsmath,amsthm,amssymb}
+\usepackage{xcolor}
 \usepackage{graphicx}
 \usepackage{placeins}
 \usepackage{hyperref}
@@ -247,7 +248,7 @@ There are actually \emph{two} crossings at minimal distance $\sin(\pi/p)$ from t
 k'(x) &= x^{-1} \bmod p \quad \text{(where } xk' \equiv +1 \pmod p\text{)}, \\
 k^*(x) &= p - x^{-1} \bmod p \quad \text{(where } xk^* \equiv -1 \pmod p\text{)}.
 \end{align*}
-These form \emph{reflection pairs}: $k'(x) + k^*(x) = p$. See Figures~\ref{fig:lissajous-7-11} and~\ref{fig:lissajous-2-3} in the Appendix.
+These form \emph{reflection pairs}: $k'(x) + k^*(x) = p$. Both crossings have the same distance $|\sin(\pi/p)|$ from the origin, but may lie on the same side or opposite sides depending on the parity of~$x$: odd~$x$ yields same side, even~$x$ yields opposite sides (see Figures~\ref{fig:lissajous-7-11} and~\ref{fig:lissajous-2-3}).
 
 \begin{definition}
 Define the two Lissajous sums:
@@ -320,14 +321,6 @@ For $p \equiv 1 \pmod 4$, the character is symmetric ($\chi(p-k) = \chi(k)$), so
 
 \begin{enumerate}
 \item \textbf{Relation to classical formulas.} The Lissajous formula reduces to Dirichlet's quarter-interval character sum $S(1, p/4)$. The novelty is the geometric perspective: the modular inverse and Legendre symbol weighting emerge naturally from Lissajous curve geometry rather than being imposed algebraically.
-
-\item \textbf{The role of the modular inverse.} The modular inverse $x^{-1} \bmod p$ appears in three related contexts:
-\begin{itemize}
-\item Lissajous curves: determines the crossing closest to the origin;
-\item Egyptian fractions: constructs telescoping sum decompositions \cite{Popelka2025egypt};
-\item Continued fractions: appears as the Extended GCD coefficient.
-\end{itemize}
-These connections deserve further investigation.
 
 \item \textbf{Chebyshev origins.} The sign function originates from Chebyshev lobe geometry. The identity $\int_{-1}^{1} |T_{n+1}(x) - x T_n(x)| \, dx = 1$ \cite{Popelka2025integral} establishes that total lobe area is invariant, while individual lobe sizes vary according to the cosine pattern~\eqref{eq:lobe-fourier}.
 

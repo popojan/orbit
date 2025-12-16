@@ -22,6 +22,43 @@ See `docs/STATUS.md` for current paper status.
 
 ---
 
+## Research Timeline (recalled Dec 16, 2025)
+
+Original path to discoveries (pre-AI collaboration):
+
+```
+Lissajous visualization experiments
+    ↓
+"which crossing is closest to origin?" → idx[] function
+    ↓
+answer: k = x⁻¹ mod p (or p - x⁻¹)
+    ↓
+observation: approximation error is always ±1/(pk) — unit fraction!
+    ↓
+idea: custom Egyptian fractions algorithm
+    ↓
+problem: O(n) terms worst case
+    ↓
+observation: repeated steps return "same" results up to some point
+    ↓
+idea: execute all identical steps at once → range [i,j]
+    ↓
+telescoping format {u, v, i, j} → O(log n) tuples
+```
+
+Later (with AI collaboration):
+```
+what's original vs. rediscovered?
+    ↓
+connections to class numbers via sign function
+    ↓
+QR clustering, reflection duality L'/L*
+```
+
+Key insight: The unit fraction error property follows directly from xk ≡ ±1 (mod p).
+
+---
+
 ## Sign-Cosine Paper: Deep Analysis
 
 **Status:** Needs substantial rework. Original framing rejected by reviewer.

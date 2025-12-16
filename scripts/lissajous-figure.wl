@@ -20,11 +20,11 @@ ppstEnhanced[Rational[x1_, y1_], opts___] := Module[
   (* For 2/3: one third distance from origin *)
   Which[
     {x1, y1} === {7, 11},
-      kstarLabelX = Abs[kstarX]/2;
+      kstarLabelX = kstarX-1/10;
       kprimeLabelX = -Abs[kprimeX]/2,
     {x1, y1} === {2, 3},
-      kprimeLabelX = Abs[kprimeX]/3;
-      kstarLabelX = -Abs[kstarX]/3,
+      kprimeLabelX = -2*Abs[kprimeX]/3;
+      kstarLabelX = 2*Abs[kstarX]/3,
     True,
       kprimeLabelX = kprimeX;
       kstarLabelX = kstarX
@@ -39,10 +39,11 @@ ppstEnhanced[Rational[x1_, y1_], opts___] := Module[
   ParametricPlot[{Sin[Pi x1/y1 b], Sin[Pi b]}, {b, 0, 2 y1},
     Frame -> True,
     FrameLabel -> {
-      Style[Row[{"sin(\[Pi]t \[CenterDot] ", x1, "/", y1, ")"}], 12],
+      Style[Row[{"sin(\[Pi]t \[CenterDot] ", DisplayForm[FractionBox[x1, y1]], ")"}], 12],
       Style["sin(\[Pi]t)", 12]
     },
-    PlotLabel -> Style[Row[{"\[Omega] = ", x1, "/", y1}], Bold, 14],
+    PlotLabel -> Style[Row[{"\[Omega] = ", DisplayForm[FractionBox[x1, y1]]}], Bold, 14],
+    ImagePadding -> {{50, 15}, {55, 20}},
     AspectRatio -> 1,
     PlotStyle -> {Blue, Thickness[0.004]},
     Epilog -> {

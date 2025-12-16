@@ -2,7 +2,7 @@
 
 PAPERS = chebyshev-integral-identity primorial-formula chebyshev-sqrt-iteration \
          egyptian-fractions-telescoping fibonacci-fractions involution-decomposition \
-         sign-cosine-identity
+         sign-cosine-identity lissajous-class-numbers
 PDFS = $(addsuffix .pdf,$(PAPERS))
 
 .PHONY: all clean
