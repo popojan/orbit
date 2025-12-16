@@ -197,3 +197,133 @@ Three domains connected by the modular inverse:
 | **Class numbers** | Bijection preserving character sum structure |
 
 The modular inverse / XGCD algorithm is the common computational thread.
+
+---
+
+## Lissajous Paper Development (Continued)
+
+### Reflection Duality Discovery
+
+Key insight: There are **two** crossings closest to the origin, forming a symmetric pair:
+
+- **k' = x⁻¹ mod p** — the "left" crossing (equivalently: first crossing with x·k ≡ 1)
+- **k* = p - x⁻¹ mod p** — the "right" crossing (equivalently: first crossing with x·k ≡ -1)
+
+These satisfy the reflection relation: **k' + k* = p**
+
+### Duality Formulas
+
+Define weighted sums over all x ∈ {1, ..., p-1}:
+
+```
+L' = Σ χ(x) · sign(sin(πx·k'/p))   where k' = x⁻¹
+L* = Σ χ(x) · sign(sin(πx·k*/p))   where k* = p - x⁻¹
+```
+
+**Results:**
+- L' = W(p)
+- L* = χ(-1) · W(p)
+- L' + L* = (1 + χ(-1)) · W(p)
+- L' - L* = (1 - χ(-1)) · W(p)
+- **L' · L* = χ(-1) · W²** ← sign detects p mod 4!
+
+### Case Analysis
+
+| Condition | L' | L* | L' + L* | L' · L* |
+|-----------|----|----|---------|---------|
+| p ≡ 1 (mod 4) | W | W | 2W | +W² |
+| p ≡ 3 (mod 4) | 2 | -2 | 0 | -4 |
+
+### Symmetric Class Number Formula
+
+For p ≡ 1 (mod 4):
+```
+h(-p) = 1 + (L' + L*)/4
+```
+
+This uses **both** closest crossings symmetrically.
+
+### Paper Updates Made
+
+1. **Added Reflection Duality section** (Theorem 6, Definition, Corollaries 7-8)
+2. **Expanded Proposition 6** to include NQR identity: (A-W)/2 = NQR+ - NQR-
+3. **Restructured introduction** — moved Chebyshev formula from intro to Section 3.2
+4. **Fixed bibliography** — unified with references.bib, proper citation keys
+5. **Removed Computational Verification section** (redundant if no proof gaps)
+6. **Created Lissajous figure script** — scripts/lissajous-figure.wl
+
+### Computational Complexity Analysis
+
+**Question:** Do our identities speed up class number computation?
+
+**Answer:** No algorithmic speedup.
+- Computing L' or L* requires modular inverse for each x: O(p · log p) operations
+- Direct computation of h(-p) via Dirichlet also O(p · log p)
+- Jacobi symbol evaluation: O(log² p) bit operations per evaluation
+- Modular inverse via XGCD: O(log p) divisions, O(log² p) bit operations
+
+**Conclusion:** Same asymptotic complexity. Value is conceptual, not computational.
+
+### Research Directions Identified
+
+The "conceptual insight" from the Lissajous perspective enables:
+
+1. **New questions:**
+   - Other curves with frequency ratio x/p?
+   - 3D Lissajous analogs with analogous arithmetic structure?
+   - What happens for composite moduli?
+
+2. **Cross-domain connections:**
+   - Physics applications (harmonic oscillators)?
+   - Signal processing (frequency analysis)?
+
+3. **Generalizations:**
+   - Higher-order characters beyond Legendre?
+   - Non-prime moduli?
+
+4. **Modular inverse meta-pattern:**
+   - Same structure appears in Egyptian fractions, XGCD, and now Lissajous
+   - Is there a unifying framework?
+
+5. **Reflection duality analogs:**
+   - Do similar dualities exist in other character sum contexts?
+   - Connection to functional equations?
+
+6. **QR clustering applications:**
+   - Visual tools for number theory education?
+   - New perspectives on classical problems?
+
+### Files Created/Modified
+
+- `docs/papers/lissajous-class-numbers.tex` — main paper, extensively updated
+- `scripts/lissajous-figure.wl` — figure generation script
+- `docs/learning/lissajous-history.md` — historical background
+- `docs/papers/references.bib` — added Popelka2025sign, Popelka2025egypt entries
+
+### Literature Check
+
+Confirmed: The Lissajous → class numbers perspective appears novel. The underlying mathematics (Dirichlet quarter-sum) is classical, but the geometric framing via Lissajous curves and the reflection duality formulation are new.
+
+Recommended venues from external review:
+- American Mathematical Monthly (appreciates "new perspectives on classics")
+- Journal of Number Theory
+
+### Future Directions Added to Paper
+
+Three concrete open questions formulated:
+
+1. **Geometric interpretation for composite discriminants:** ⚠️ REFRAMED after literature check.
+   - The algebraic formula h(d) ~ √|d| · L(1, χ_d) / π with Kronecker symbol is CLASSICAL
+   - What's OPEN: Does our *geometric* interpretation (Lissajous crossings) extend?
+   - Complications: modular inverses only exist when gcd(x,n)=1; bijection structure changes
+   - New framing: "Does 'closest crossing' perspective yield insight for discriminants beyond -p?"
+
+2. **Higher-order characters:** ✅ Confirmed open after literature check.
+   - Cubic reciprocity, Gauss sums for higher characters are known
+   - BUT: Our specific identity χ(x) = χ(k*(x)) for higher characters is NOT in literature
+   - Requires χ(-1) = 1 in character group — severely constrains which work
+
+3. **Modular inverse as unifying structure:** ✅ Confirmed open after literature check.
+   - No categorical framework found linking the three contexts
+   - x⁻¹ mod n appears in: Lissajous crossings, Egyptian fractions, XGCD
+   - Genuinely unexplored meta-question

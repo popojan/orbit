@@ -1,6 +1,8 @@
 \documentclass[11pt,a4paper]{article}
 
 \usepackage{amsmath,amsthm,amssymb}
+\usepackage{graphicx}
+\usepackage{placeins}
 \usepackage{hyperref}
 \usepackage{geometry}
 \geometry{margin=2.5cm}
@@ -9,6 +11,7 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
 \newtheorem{remark}{Remark}
 
 \title{Lissajous Curves and Class Numbers of Imaginary Quadratic Fields}
@@ -37,17 +40,9 @@ which satisfies $S(1, p/4) = h(-p)/2$ for $p \equiv 1 \pmod 4$.
 
 In this paper, we present a geometric perspective on this classical formula using Lissajous curves. Our main result shows that the class number emerges naturally from the geometry of curve crossings and modular inverses, with no \emph{a priori} arithmetic input beyond the prime~$p$.
 
-The geometric origin of our approach lies in Chebyshev polynomial lobe areas. The function
-\[
-f_n(x) = T_{n+1}(x) - x \cdot T_n(x) = -(1-x^2)U_{n-1}(x)
-\]
-oscillates within $[-1, 1]$, creating $n$ lobes whose areas follow a precise pattern \cite{Popelka2025integral}:
-\begin{equation}\label{eq:lobe-fourier}
-B(n,k) = 1 + \beta(n) \cos\frac{(2k-1)\pi}{n}, \quad \beta(n) = \frac{n^2 \cos(\pi/n)}{4 - n^2}.
-\end{equation}
-Since $\beta(n) < 0$ for $n > 2$, the sign of $\cos\frac{(2k-1)\pi}{n}$ determines whether lobe~$k$ is smaller ($+1$) or larger ($-1$) than average.
+The key geometric question is: for the Lissajous curve with frequency ratio $x/p$, which crossing of the $x$-axis is closest to the origin? The answer is arithmetic: it occurs at $k^*(x) = p - x^{-1} \bmod p$, where the modular inverse emerges from the geometry.
 
-The sign function $\operatorname{sign}(\cos\frac{(2k-1)\pi}{p})$ thus partitions the indices $\{1, \ldots, p-1\}$ into two sets based on Chebyshev lobe geometry. Our contribution is to show how Lissajous curves provide a natural indexing of these partitions via modular inverses, leading directly to class number formulas.
+We show that weighting these crossing positions by the Legendre symbol and a sign function yields the class number. The character weighting is not imposed but emerges from the identity $\chi(x) = \chi(k^*(x))$ for $p \equiv 1 \pmod 4$. The sign function $\sigma(k) = \operatorname{sign}(\cos\frac{(2k-1)\pi}{p})$ partitions indices into ``edge'' and ``middle'' regions; its geometric origins in Chebyshev polynomial lobe areas are discussed in Section~\ref{sec:sign}.
 
 \section{Lissajous Curves and Crossing Positions}
 
@@ -93,7 +88,7 @@ We seek $k$ minimizing $|x_k| = |\sin(\pi \cdot (xk \bmod p) / p)|$. The minimum
 The modular inverse emerges naturally from the geometry---we did not impose any number-theoretic structure. The question ``which crossing is closest to the origin?'' has an arithmetic answer involving $x^{-1} \bmod p$.
 \end{remark}
 
-\section{The Sign Function and Lobe Classification}
+\section{The Sign Function and Lobe Classification}\label{sec:sign}
 
 \subsection{Partition by Sign}
 
@@ -109,11 +104,11 @@ This function partitions $\{1, \ldots, p-1\}$ into:
 
 \subsection{Connection to Chebyshev Lobes}
 
-The partition $\mathcal{E} \cup \mathcal{M}$ has a geometric origin in Chebyshev polynomial lobe areas. From equation~\eqref{eq:lobe-fourier}, lobe~$k$ of the Chebyshev $p$-gon has normalized area
-\[
-B(p, k) = 1 + \beta(p) \cos\frac{(2k-1)\pi}{p}.
-\]
-Since $\beta(p) < 0$:
+The partition $\mathcal{E} \cup \mathcal{M}$ has an independent geometric origin in Chebyshev polynomial lobe areas \cite{Popelka2025integral}. The function $f_n(x) = T_{n+1}(x) - x T_n(x)$ oscillates within $[-1, 1]$, creating $n$ lobes. The normalized area of lobe~$k$ follows a precise pattern:
+\begin{equation}\label{eq:lobe-fourier}
+B(n, k) = 1 + \beta(n) \cos\frac{(2k-1)\pi}{n}, \quad \beta(n) = \frac{n^2 \cos(\pi/n)}{4 - n^2}.
+\end{equation}
+Since $\beta(n) < 0$ for $n > 2$:
 \begin{itemize}
 \item $\sigma(k) = +1$ implies $\cos > 0$, so $B(p,k) < 1$ (small lobe);
 \item $\sigma(k) = -1$ implies $\cos < 0$, so $B(p,k) > 1$ (large lobe).
@@ -218,34 +213,107 @@ where $W(p) = 2h(-p) - 2$ for $p \equiv 1 \pmod 4$ and $W(p) = 2$ for $p \equiv 
 
 The class number formula reflects a deeper phenomenon: quadratic residues cluster at the edges of $\{1, \ldots, p-1\}$ for $p \equiv 1 \pmod 4$.
 
-\begin{proposition}[QR Clustering]\label{prop:clustering}
-For $p \equiv 1 \pmod 4$, let $\operatorname{QR}_+$ and $\operatorname{QR}_-$ denote the counts of quadratic residues in the edge and middle regions respectively. Then
-\[
-\operatorname{QR}_+ - \operatorname{QR}_- = \frac{A(p) + W(p)}{2},
-\]
+\begin{proposition}[QR/NQR Clustering]\label{prop:clustering}
+For $p \equiv 1 \pmod 4$, let $\operatorname{QR}_\pm$ and $\operatorname{NQR}_\pm$ denote the counts of quadratic residues and non-residues in the edge ($\sigma = +1$) and middle ($\sigma = -1$) regions respectively. Then
+\begin{align}
+\operatorname{QR}_+ - \operatorname{QR}_- &= \frac{A(p) + W(p)}{2}, \label{eq:qr-cluster}\\
+\operatorname{NQR}_+ - \operatorname{NQR}_- &= \frac{A(p) - W(p)}{2}, \label{eq:nqr-cluster}
+\end{align}
 where $A(p) = \sum_{k=1}^{p-1} \sigma(k) = -2$ is the unweighted sign sum.
 \end{proposition}
 
-Since $W(p) = 2h(-p) - 2$ and $A(p) = -2$, we get $\operatorname{QR}_+ - \operatorname{QR}_- = h(-p) - 2$. For $h(-p) > 2$, there are strictly more quadratic residues at the edges than in the middle.
+\begin{proof}
+By definition:
+\begin{align*}
+A &= (\operatorname{QR}_+ + \operatorname{NQR}_+) - (\operatorname{QR}_- + \operatorname{NQR}_-), \\
+W &= (\operatorname{QR}_+ - \operatorname{QR}_-) - (\operatorname{NQR}_+ - \operatorname{NQR}_-).
+\end{align*}
+Adding and subtracting yields~\eqref{eq:qr-cluster}--\eqref{eq:nqr-cluster}.
+\end{proof}
 
-This clustering is detected by the sign function: $\sigma(k) = +1$ indicates edge positions (small Chebyshev lobes), where quadratic residues preferentially concentrate.
+Since $W(p) = 2h(-p) - 2$ and $A(p) = -2$:
+\begin{itemize}
+\item $\operatorname{QR}_+ - \operatorname{QR}_- = h(-p) - 2 > 0$ for $h(-p) > 2$: \textbf{QR cluster at edges};
+\item $\operatorname{NQR}_+ - \operatorname{NQR}_- = -h(-p) < 0$: \textbf{NQR cluster in middle}.
+\end{itemize}
 
-\section{Computational Verification}
+The two identities are complementary: the sign function $\sigma(k) = +1$ marks edge positions (small Chebyshev lobes), where quadratic residues concentrate, while non-residues preferentially occupy the middle region.
 
-We verify the formula for small primes $p \equiv 1 \pmod 4$:
+\section{Reflection Duality}
+
+There are actually \emph{two} crossings at minimal distance $\sin(\pi/p)$ from the origin:
+\begin{align*}
+k'(x) &= x^{-1} \bmod p \quad \text{(where } xk' \equiv +1 \pmod p\text{)}, \\
+k^*(x) &= p - x^{-1} \bmod p \quad \text{(where } xk^* \equiv -1 \pmod p\text{)}.
+\end{align*}
+These form \emph{reflection pairs}: $k'(x) + k^*(x) = p$. See Figures~\ref{fig:lissajous-7-11} and~\ref{fig:lissajous-2-3} in the Appendix.
+
+\begin{definition}
+Define the two Lissajous sums:
+\begin{align*}
+L' &= \sum_{x=1}^{p-1} \chi(x) \cdot \sigma(k'(x)) = \sum_{x=1}^{p-1} \chi(x) \cdot \sigma(x^{-1}), \\
+L^* &= \sum_{x=1}^{p-1} \chi(x) \cdot \sigma(k^*(x)) = \sum_{x=1}^{p-1} \chi(x) \cdot \sigma(p - x^{-1}).
+\end{align*}
+\end{definition}
+
+\begin{theorem}[Reflection Duality]\label{thm:duality}
+For any odd prime $p$:
+\begin{align}
+L' &= W(p), \label{eq:Lprime}\\
+L^* &= \chi(-1) \cdot W(p), \label{eq:Lstar}
+\end{align}
+and consequently:
+\begin{align}
+L' + L^* &= (1 + \chi(-1)) \cdot W(p), \label{eq:sum}\\
+L' - L^* &= (1 - \chi(-1)) \cdot W(p), \label{eq:diff}\\
+L' \cdot L^* &= \chi(-1) \cdot W(p)^2. \label{eq:prod}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Since $x \mapsto x^{-1}$ is a bijection on $\{1, \ldots, p-1\}$ with $\chi(x^{-1}) = \chi(x)$:
+\[
+L' = \sum_x \chi(x) \sigma(x^{-1}) = \sum_k \chi(k) \sigma(k) = W(p).
+\]
+For $L^*$, substitute $k = p - x^{-1}$, giving $x = (-k)^{-1}$ and $\chi(x) = \chi(-1)\chi(k)$:
+\[
+L^* = \sum_k \chi(-1)\chi(k) \sigma(k) = \chi(-1) W(p). \qedhere
+\]
+\end{proof}
+
+The duality yields strikingly different behavior depending on $p \bmod 4$:
 
 \begin{center}
-\begin{tabular}{c|cccc}
-$p$ & $W(p)$ & $h(-p)$ & Formula & Match \\
+\begin{tabular}{c|cc|ccc}
+$p \bmod 4$ & $L'$ & $L^*$ & $L' + L^*$ & $L' - L^*$ & $L' \cdot L^*$ \\
 \hline
-5 & 2 & 2 & $(2+2)/2 = 2$ & \checkmark \\
-13 & 2 & 2 & $(2+2)/2 = 2$ & \checkmark \\
-17 & 6 & 4 & $(6+2)/2 = 4$ & \checkmark \\
-29 & 10 & 6 & $(10+2)/2 = 6$ & \checkmark \\
-37 & 2 & 2 & $(2+2)/2 = 2$ & \checkmark \\
-41 & 14 & 8 & $(14+2)/2 = 8$ & \checkmark \\
+$1$ & $W$ & $W$ & $2W = 4h(-p) - 4$ & $0$ & $W^2 > 0$ \\
+$3$ & $2$ & $-2$ & $0$ & $4$ & $-4 < 0$
 \end{tabular}
 \end{center}
+
+\begin{corollary}[Duality Detector]\label{cor:detector}
+The sign of $L' \cdot L^*$ determines $p \bmod 4$:
+\[
+\operatorname{sign}(L' \cdot L^*) = \chi(-1) = \begin{cases} +1 & \text{if } p \equiv 1 \pmod 4, \\ -1 & \text{if } p \equiv 3 \pmod 4. \end{cases}
+\]
+\end{corollary}
+
+\begin{corollary}[Symmetric Class Number Formula]\label{cor:symmetric}
+For $p \equiv 1 \pmod 4$:
+\[
+h(-p) = 1 + \frac{L' + L^*}{4}.
+\]
+This formula uses \emph{both} closest crossings symmetrically.
+\end{corollary}
+
+\begin{remark}
+The duality arises from the (anti)symmetry of the Legendre symbol under reflection $k \mapsto p - k$:
+\[
+\chi(p - k) = \chi(-k) = \chi(-1) \chi(k).
+\]
+For $p \equiv 1 \pmod 4$, the character is symmetric ($\chi(p-k) = \chi(k)$), so both crossings contribute equally. For $p \equiv 3 \pmod 4$, the character is antisymmetric ($\chi(p-k) = -\chi(k)$), causing the two sums to cancel: $L' + L^* = 0$.
+\end{remark}
 
 \section{Remarks}
 
@@ -265,10 +333,42 @@ These connections deserve further investigation.
 \item \textbf{Pedagogical value.} The Lissajous formulation provides visual intuition for class numbers: draw curves, find closest crossings, classify by region, weight by quadratic character, sum.
 \end{enumerate}
 
+\section{Future Directions}
+
+Several directions emerge from the geometric perspective developed here.
+
+\begin{enumerate}
+\item \textbf{Geometric interpretation for composite discriminants.} The Kronecker symbol extends the Legendre symbol to composite discriminants, and the class number formula $h(d) \sim \sqrt{|d|} \cdot L(1, \chi_d) / \pi$ is classical \cite{IrelandRosen}. However, our \emph{geometric} interpretation via Lissajous crossings may not extend trivially: modular inverses exist only when $\gcd(x, n) = 1$, and the bijection $x \mapsto k^*(x)$ has a more complex structure. Does the ``closest crossing'' perspective yield new insight for fundamental discriminants beyond $-p$?
+
+\item \textbf{Higher-order characters.} The Legendre symbol is the unique quadratic character modulo $p$. For cubic or higher-order characters $\chi: (\mathbb{Z}/p\mathbb{Z})^* \to \mu_n$, does the identity $\chi(x) = \chi(k^*(x))$ have an analog? This would require $\chi(-1) = 1$ in the character group, constraining which primes and orders admit such formulas.
+
+\item \textbf{Modular inverse as unifying structure.} The modular inverse $x^{-1} \bmod n$ appears as a key structure in three ostensibly unrelated contexts: Lissajous curve crossings (this paper), Egyptian fraction decompositions \cite{Popelka2025egypt}, and the Extended Euclidean Algorithm. Is there a categorical or geometric framework that explains this coincidence?
+\end{enumerate}
+
 \section*{Acknowledgments}
 
 Computational verification was performed using the Orbit paclet for Wolfram Language, which implements the functions \texttt{SignCosineW}, \texttt{LissajousClassSum}, and \texttt{ChebyshevLobeArea}.
 
+\appendix
+\section{Lissajous Curve Examples}
+
+\begin{figure}[h]
+\begin{minipage}[t]{0.48\textwidth}
+\flushleft
+\includegraphics[width=\textwidth]{figures/lissajous_7_11.pdf}
+\caption{$\omega = 7/11$. Both closest crossings $k' = 8$ and $k^* = 3$ lie on the same side of the origin.}
+\label{fig:lissajous-7-11}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\flushleft
+\includegraphics[width=\textwidth]{figures/lissajous_2_3.pdf}
+\caption{$\omega = 2/3$. The crossings $k' = 2$ and $k^* = 1$ lie on opposite sides of the origin.}
+\label{fig:lissajous-2-3}
+\end{minipage}
+\end{figure}
+
+\FloatBarrier
 \bibliographystyle{plain}
 \bibliography{references}
 
