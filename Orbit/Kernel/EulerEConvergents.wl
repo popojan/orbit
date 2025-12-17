@@ -113,84 +113,106 @@ The full approximation is: base + 4 * Total[terms]
 
 DEPRECATED: Use EulerEMonotone[k, Method -> \"Terms\"] instead.";
 
-EulerETerm::usage = "EulerETerm[j] returns the j-th term of the monotonic e series (j ≥ 1):
+EulerEMonotoneTerm::usage = "EulerEMonotoneTerm[j] returns the j-th term of the monotonic e series (j ≥ 1):
 
   term_j = 4 * (4j+3) / (s[2j-1] * s[2j+1])
 
 where s[n] is the Bessel E-sequence.
 
-e = 19/7 + Sum[EulerETerm[j], {j, 1, Infinity}]
+e = 19/7 + Sum[EulerEMonotoneTerm[j], {j, 1, Infinity}]
 
 First terms: 4/1001, 4/36305269, 60/124526932635391, ...
 
 Options:
   Method -> \"Rational\" (default) | \"Symbolic\"";
 
-EulerETermAnalytic::usage = "EulerETermAnalytic[t] returns the analytic continuation of EulerETerm
-to complex t ∈ ℂ using Bessel K functions.
+EulerEMonotoneTermAnalytic::usage = "EulerEMonotoneTermAnalytic[t] returns the analytic continuation
+of EulerEMonotoneTerm to complex t ∈ ℂ using Bessel K functions.
 
 The continuation uses:
   y_n(x) = Sqrt[2/(π x)] Exp[1/x] BesselK[n + 1/2, 1/x]
   s(t) = (-1)^(t+1) y_{t+1}(-2)
-  EulerETermAnalytic[t] = 4(4t+3) / (s(2t-1) s(2t+1))
+  EulerEMonotoneTermAnalytic[t] = 4(4t+3) / (s(2t-1) s(2t+1))
 
 Properties:
-  - Agrees with EulerETerm[j] at positive integers
+  - Agrees with EulerEMonotoneTerm[j] at positive integers
   - Works in complex domain (use Re[] for real plots)
   - Reveals rapid exponential decay of terms
 
 Examples:
-  Plot[Re[EulerETermAnalytic[t]], {t, 0.5, 5}]
-  EulerETermAnalytic[1 + I]";
+  EulerEMonotoneTermAnalytic[t]  (* symbolic *)
+  N[EulerEMonotoneTermAnalytic[1.5]]  (* numeric *)";
 
 EulerEMonotoneAnalytic::usage = "EulerEMonotoneAnalytic[t] returns the analytic continuation
-of the monotonic e approximation to non-integer t.
+of the monotonic e approximation.
 
-For integer k: matches EulerEMonotone[k]
-For non-integer t: smooth interpolation via partial sums + fractional term
-
-Formula: 19/7 + Sum[EulerETermAnalytic[j], {j, 1, Floor[t]}]
-         + (t - Floor[t]) * EulerETermAnalytic[Floor[t] + 1]
+Formula: 19/7 + Sum[EulerEMonotoneTermAnalytic[j], {j, 1, t}]
 
 Examples:
-  EulerEMonotoneAnalytic[3] - EulerEMonotone[3]  (* ≈ 0 *)
-  Plot[E - EulerEMonotoneAnalytic[t], {t, 1, 5}]  (* error decay *)";
+  EulerEMonotoneAnalytic[n]  (* symbolic *)
+  N[EulerEMonotoneAnalytic[3]]  (* numeric *)";
 
-(* Define EulerETerm in public context *)
-(* Integer input: evaluate to rational *)
-EulerETerm[jj_Integer /; jj >= 1] := 4 (4 jj + 3) / (Activate[s[2 jj - 1]] Activate[s[2 jj + 1]]);
-EulerETerm[jj_Integer /; jj >= 1, Method -> "Symbolic"] :=
+EulerEAlternatingTerm::usage = "EulerEAlternatingTerm[k] returns the k-th term (k ≥ 0)
+of the alternating e series:
+
+  term_k = (-1)^(k+1) * 2 / (s[k] * s[k+1])
+
+e = 3 + Sum[EulerEAlternatingTerm[k], {k, 0, Infinity}]
+  = 3 - 2/7 + 2/497 - 2/71071 + ...
+
+First terms: -2/7, 2/497, -2/71071, 2/18107089, ...";
+
+EulerEAlternatingTermAnalytic::usage = "EulerEAlternatingTermAnalytic[k] returns the k-th term
+of the alternating e series with analytic continuation via BesselK.
+
+Formula: (-1)^(k+1) * 2 / (s(k) * s(k+1))
+
+where s(n) = (-1)^(n+1) * y_{n+1}(-2) analytically continued.";
+
+EulerEAlternatingAnalytic::usage = "EulerEAlternatingAnalytic[n] returns the analytic continuation
+of the alternating e series.
+
+Formula: 3 + Sum[EulerEAlternatingTermAnalytic[k], {k, 0, n-1}]
+
+Examples:
+  EulerEAlternatingAnalytic[n]  (* symbolic *)
+  N[EulerEAlternatingAnalytic[4]]  (* numeric *)";
+
+(* Define EulerEMonotoneTerm in public context *)
+EulerEMonotoneTerm[jj_Integer /; jj >= 1] := 4 (4 jj + 3) / (Activate[s[2 jj - 1]] Activate[s[2 jj + 1]]);
+EulerEMonotoneTerm[jj_Integer /; jj >= 1, Method -> "Symbolic"] :=
   With[{coef = 4 jj + 3, lo = 2 jj - 1, hi = 2 jj + 1},
     HoldForm[4 coef / (s[lo] s[hi])]];
-(* Symbolic input: return symbolic expression *)
-EulerETerm[jj_Symbol] := 4 (4 jj + 3) / (s[2 jj - 1] s[2 jj + 1]);
+EulerEMonotoneTerm[jj_Symbol] := 4 (4 jj + 3) / (s[2 jj - 1] s[2 jj + 1]);
 
-(* Analytic continuation of EulerETerm via BesselK - works in complex domain *)
-EulerETermAnalytic[t_?NumericQ] := Module[{yA, sA},
-  (* Bessel polynomial y_n(x) analytically continued *)
-  yA[nn_, xx_] := Sqrt[2/(Pi xx)] Exp[1/xx] BesselK[nn + 1/2, 1/xx];
-  (* Bessel E-sequence s_n analytically continued *)
-  sA[nn_] := (-1)^(nn + 1) yA[nn + 1, -2];
-  (* Force numeric evaluation *)
-  N[4 (4 t + 3) / (sA[2 t - 1] sA[2 t + 1])]
-];
+(* Define EulerEAlternatingTerm in public context *)
+EulerEAlternatingTerm[kk_Integer /; kk >= 0] := (-1)^(kk + 1) * 2 / (Activate[s[kk]] Activate[s[kk + 1]]);
+EulerEAlternatingTerm[kk_Integer /; kk >= 0, Method -> "Symbolic"] :=
+  With[{lo = kk, hi = kk + 1},
+    HoldForm[(-1)^(lo + 1) * 2 / (s[lo] s[hi])]];
+EulerEAlternatingTerm[kk_Symbol] := (-1)^(kk + 1) * 2 / (s[kk] s[kk + 1]);
+
+(* Analytic continuation helpers for BesselK representation *)
+besselYContinued[n_, z_] := Sqrt[2/(Pi z)] Exp[1/z] BesselK[n + 1/2, 1/z];
+besselSContinued[n_] := (-1)^(n + 1) besselYContinued[n + 1, -2];
+
+(* Analytic continuation of EulerEMonotoneTerm via BesselK *)
+(* Numeric t → number, symbolic t → symbolic expression with BesselK *)
+EulerEMonotoneTermAnalytic[t_] :=
+  4 (4 t + 3) / (besselSContinued[2 t - 1] besselSContinued[2 t + 1]);
 
 (* Analytic continuation of the full e approximation *)
-(* For integer k: matches EulerEMonotone[k] *)
-(* For non-integer t: smooth interpolation using partial sum + fractional term *)
-EulerEMonotoneAnalytic[t_?NumericQ] := Module[{floorT, partialSum},
-  floorT = Floor[t];
-  (* Sum of complete terms *)
-  partialSum = If[floorT >= 1,
-    Total[Table[EulerETermAnalytic[jj], {jj, 1, floorT}]],
-    0
-  ];
-  (* Base + partial sum + fractional interpolation *)
-  N[19/7] + partialSum + If[t > floorT,
-    (t - floorT) * EulerETermAnalytic[floorT + 1],
-    0
-  ]
-];
+(* Numeric: evaluate sum; Symbolic: use Inactive[Sum] to prevent slow simplification *)
+EulerEMonotoneAnalytic[t_Integer] := 19/7 + Sum[EulerEMonotoneTermAnalytic[jj], {jj, 1, t}];
+EulerEMonotoneAnalytic[t_] := 19/7 + Inactive[Sum][EulerEMonotoneTermAnalytic[jj], {jj, 1, t}];
+
+(* Alternating series term - analytic continuation *)
+EulerEAlternatingTermAnalytic[k_] :=
+  (-1)^(k + 1) * 2 / (besselSContinued[k] besselSContinued[k + 1]);
+
+(* Alternating series - analytic continuation *)
+EulerEAlternatingAnalytic[n_Integer] := 3 + Sum[EulerEAlternatingTermAnalytic[kk], {kk, 0, n - 1}];
+EulerEAlternatingAnalytic[n_] := 3 + Inactive[Sum][EulerEAlternatingTermAnalytic[kk], {kk, 0, n - 1}];
 
 (* ============================================ *)
 (* ALTERNATIVE FORMULATION                     *)

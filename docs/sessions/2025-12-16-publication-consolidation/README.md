@@ -364,3 +364,336 @@ Three concrete open questions formulated:
    - No categorical framework found linking the three contexts
    - x⁻¹ mod n appears in: Lissajous crossings, Egyptian fractions, XGCD
    - Genuinely unexplored meta-question
+
+---
+
+## Partial Unification: p ≡ 1 vs p ≡ 3 (mod 4)
+
+**Date:** December 17, 2025 (morning session)
+
+### Discovery
+
+The Lissajous k* map works for **both** congruence classes, but with different weight functions:
+
+| p mod 4 | Formula | Weight | Status |
+|---------|---------|--------|--------|
+| **1** | h(-p) = (1/2) Σ χ(x)·σ(k*(x)) | sign (binary ±1) | ✅ in paper |
+| **3** | h(-p) = (1/p) Σ χ(x)·k*(x) | position (linear) | 🆕 NEW |
+
+where k*(x) = p − x⁻¹ mod p is the Lissajous closest-crossing map.
+
+### Verification
+
+```
+p ≡ 3 (mod 4):
+p=7:  Σχ(x)k*(x) = 7  = 7·1  = p·h(-p) ✓
+p=23: Σχ(x)k*(x) = 69 = 23·3 = p·h(-p) ✓
+p=47: Σχ(x)k*(x) = 235 = 47·5 = p·h(-p) ✓
+p=71: Σχ(x)k*(x) = 497 = 71·7 = p·h(-p) ✓
+```
+
+For p ≡ 1 (mod 4): Σχ(x)k*(x) = 0 always (position contributions cancel).
+
+### Interpretation
+
+- **k* map** (Lissajous geometry) is **universal** — same for both classes
+- **Weight function** differs:
+  - p ≡ 1: σ(k) = sign of lobe (which half of period)
+  - p ≡ 3: k itself = position along curve
+
+This reflects the fundamental even/odd character dichotomy:
+- χ(-1) = +1 (even): sign information suffices
+- χ(-1) = −1 (odd): need full positional information
+
+### Open Question
+
+Is there a **fully unified** formula with a single natural weight function that works for both cases? Attempts so far:
+- Combined weight k·σ: doesn't give h(-p)
+- Signed position (k − p/2): reduces to existing formulas
+- Complex exponential (Gauss sum): |G| = √p always, no h(-p) info
+
+The dichotomy appears fundamental, not an artifact of our approach.
+
+### Geometric Intuition
+
+For p ≡ 3 (mod 4), the sign contributions cancel:
+- χ(k*(x)) = −χ(x), so pairs contribute χ(x)·(σ(x) − σ(k*)) = 0 when aligned
+
+But position-weighted sum doesn't cancel:
+- Σ χ(x)·k*(x) accumulates because k* values don't have symmetric cancellation
+
+The **position** encodes information that **sign** loses for odd characters.
+
+### Update: Unified Formula Found
+
+**Discovery:** Součet obou členů dává jednotný vzorec pro všechna p ≥ 5:
+
+$$h(-p) = 1 + \frac{1}{2}\sum_{x=1}^{p-1} \chi(x)\cdot\sigma(k^*(x)) + \frac{1}{p}\sum_{x=1}^{p-1} \chi(x)\cdot k^*(x)$$
+
+**Ověření:**
+- Pro p ≡ 1 (mod 4): k-sum = 0, σ-sum = 2h−2 → h = 1 + (h−1) + 0 = h ✓
+- Pro p ≡ 3 (mod 4): σ-sum = −2, k-sum = p·h → h = 1 + (−1) + h = h ✓
+
+**Ale:** Toto NENÍ čistě korelační vzorec. Ověřeno:
+```
+Σχσ = Pearson(χ,σ) · std(χ) · std(σ) · (p-2)
+```
+Takže unified formula kombinuje dva různě scalované členy, ne dvě korelace.
+
+**Stav:** Algebraická unifikace existuje, ale geometrická interpretace zůstává otevřená.
+
+### Open: Hledání geometričtější formulace
+
+Zkoušené přístupy (neúspěšné):
+- x-souřadnice sin(πxk*/p): vždy ±sin(π/p), žádná informace
+- Signed distance σ·|k−p/2|: nedává h
+- Kombinace k'·k*, |k'−k*|, min(k',k*): pro p ≡ 3 dává 0
+- Fourierova váha cos(2πk/p): pro p ≡ 3 dává 0
+
+**Problém:** Pro p ≡ 3 (mod 4) se všechny "symetrické" funkce k* vynulují kvůli χ(k*) = −χ(x).
+
+**Otevřená otázka:** Existuje jediná geometrická veličina (ne součet dvou členů), která dává h(-p) pro obě třídy?
+
+### Deeper Insight: k* jako reflexe ∘ inverze
+
+**Rozklad mapy k*:**
+
+$$k^*(x) = p - x^{-1} = (\text{reflexe}) \circ (\text{inverze})$$
+
+| Operace | Definice | Efekt na Σχ·(pozice) |
+|---------|----------|---------------------|
+| Inverze | x → x⁻¹ mod p | **zachovává** (Σχ·x⁻¹ = Σχ·x) |
+| Reflexe | x → p−x | **neguje** pro p ≡ 3 (mod 4) |
+
+**Klíčové vztahy pro p ≡ 3 (mod 4):**
+
+```
+Σχ(x)·x     = −p·h   (klasický Dirichlet)
+Σχ(x)·x⁻¹  = −p·h   (inverze zachovává)
+Σχ(x)·(p−x) = +p·h   (reflexe neguje)
+Σχ(x)·k*(x) = +p·h   (k* = reflexe ∘ inverze)
+```
+
+**Proč reflexe neguje (pro p ≡ 3 mod 4):**
+
+χ(p−x) = χ(−x) = χ(−1)·χ(x) = −χ(x)
+
+Substituce y = p−x:
+```
+Σ χ(x)·(p−x) = Σ χ(p−y)·y = Σ [−χ(y)]·y = −Σ χ(y)·y
+```
+
+**Pro p ≡ 1 (mod 4):**
+- χ(−1) = +1, takže reflexe NEZACHOVÁVÁ znaménko χ ve stejném smyslu
+- Ale oba součty Σχ·x = Σχ·k* = 0 (symetrie)
+- Proto potřebujeme σ-váhu místo poziční váhy
+
+**Geometrická interpretace:**
+
+Mapa k* kombinuje:
+1. **Inverzi** — multiplikativní operace v (Z/pZ)*, zachovává strukturu
+2. **Reflexi** — geometrické zrcadlení kolem p/2
+
+Pro liché charaktery (p ≡ 3 mod 4) reflexe "obrací" aritmetický součet.
+Pro sudé charaktery (p ≡ 1 mod 4) reflexe nemá tento efekt (součty jsou 0).
+
+**POZNÁMKA:** Toto NENÍ o "směru parametrizace" Lissajous křivky. Negace pochází z algebraické vlastnosti reflexe v kombinaci s paritou charakteru.
+
+### Unified Formula (Final Form)
+
+Pro všechna prvočísla p ≥ 5:
+
+$$h(-p) = 1 + \frac{1}{2}\sum_{x=1}^{p-1} \chi(x)\cdot\sigma(k^*(x)) + \frac{1}{p}\sum_{x=1}^{p-1} \chi(x)\cdot k^*(x)$$
+
+Ekvivalentní formulace:
+
+$$h(-p) = \frac{\sum\chi\sigma + 2}{2} + \frac{\sum\chi(k^* - x)}{2p}$$
+
+kde Σχ(k* − x) = 2·Σχk* pro p ≡ 3 (mod 4) a = 0 pro p ≡ 1 (mod 4).
+
+**Shrnutí:**
+- Algebraická unifikace: ANO (jeden vzorec pro obě třídy)
+- Geometrická unifikace: ČÁSTEČNÁ (k* je geometrická, ale váhy σ vs k jsou diktovány paritou charakteru)
+- Hlubší insight: k* = reflexe ∘ inverze, a reflexe neguje pro liché charaktery
+
+### Symmetric Formulas (All Four Sums)
+
+**Motivation:** The unified formula uses k* only. For greater symmetry, we explored formulas using both k' = x⁻¹ and k* = p − x⁻¹ (the two closest crossings).
+
+**Four fundamental sums:**
+
+| Sum | Definition | Meaning |
+|-----|------------|---------|
+| **sp** | Σ χ(x)·σ(k'(x)) | sign-weighted sum for k' |
+| **ss** | Σ χ(x)·σ(k*(x)) | sign-weighted sum for k* |
+| **kp** | Σ χ(x)·k'(x) | position-weighted sum for k' |
+| **ks** | Σ χ(x)·k*(x) | position-weighted sum for k* |
+
+where σ(k) = sign(cos((2k−1)π/p)) is the lobe sign function.
+
+**Key relationships:**
+
+| Congruence | sp vs ss | kp vs ks |
+|------------|----------|----------|
+| p ≡ 1 (mod 4) | sp = ss = 2h−2 | kp = ks = 0 |
+| p ≡ 3 (mod 4) | sp = −ss = 2 | kp = −ks, \|kp\| = \|ks\| = ph |
+
+**Symmetric Formula 1:** (simpler)
+
+$$h(-p) = 1 + \frac{ss}{2} + \frac{ks - kp}{2p}$$
+
+Uses (k* − k') symmetrically in position term.
+
+**Symmetric Formula 2:** (fully symmetric with absolute values)
+
+$$h(-p) = 1 + \frac{sp + ss}{4} + \frac{|ks - kp|}{2p} - \frac{|sp - ss|}{4}$$
+
+**Verification:**
+
+Both formulas verified for all primes p ∈ {5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47}:
+
+For **Formula 1** (h = 1 + ss/2 + (ks−kp)/(2p)):
+- p ≡ 1 (mod 4): ss = 2h−2, ks−kp = 0 → h = 1 + (h−1) + 0 = h ✓
+- p ≡ 3 (mod 4): ss = −2, ks−kp = 2ph → h = 1 + (−1) + h = h ✓
+
+For **Formula 2** (h = 1 + (sp+ss)/4 + |ks−kp|/(2p) − |sp−ss|/4):
+- p ≡ 1 (mod 4): sp+ss = 4h−4, |sp−ss| = 0 → h = 1 + (h−1) + 0 − 0 = h ✓
+- p ≡ 3 (mod 4): sp+ss = 0, |sp−ss| = 4, |ks−kp| = 2ph → h = 1 + 0 + h − 1 = h ✓
+
+**Insight:**
+
+The term (ks − kp)/(2p) captures the "positional difference" between the two closest crossings:
+- For p ≡ 1 (mod 4): ks = kp = 0, so contribution is 0
+- For p ≡ 3 (mod 4): ks − kp = 2·ks = 2ph, giving contribution h
+
+The symmetry reflects the geometric duality of k' and k* as paired closest crossings on opposite sides of the origin.
+
+---
+
+## Smooth Loop Unification (Dec 17, 2025)
+
+### Key Discovery: Cusp vs Smooth Loop Dichotomy
+
+Lissajous curves with frequency ratio x/p have two types of motion:
+
+| x parity | Curve type | Motion |
+|----------|------------|--------|
+| **x odd** | Cusp | Stops and reverses direction |
+| **x even** | Smooth loop | Continuous circulation |
+
+**Why?** Cusps occur when dx/dt = dy/dt = 0 simultaneously. This requires x and p to have the same parity. Since p is always odd (prime > 2), cusps occur iff x is odd.
+
+### Main Result: Smooth Loops Encode Class Number
+
+**Theorem:** The class number h(-p) can be computed using ONLY smooth loop Lissajous curves (even x):
+
+$$h(-p) = \frac{(1+\chi_{-1}) \cdot S_\sigma + (1-\chi_{-1}) \cdot \chi_2 \cdot S_k / p}{2}$$
+
+where:
+- $S_\sigma = \sum_{\text{x even}} \chi(x) \cdot \sigma(k^*(x))$ — sign-weighted sum
+- $S_k = \sum_{\text{x even}} \chi(x) \cdot k^*(x)$ — position-weighted sum
+- $\chi_{-1} = \chi(-1) = $ Legendre symbol of -1
+- $\chi_2 = \chi(2) = $ Legendre symbol of 2
+- $\sigma(k) = \text{sign}(\cos((2k-1)\pi/p))$ — lobe sign function
+
+### Explicit Formulas by Congruence Class
+
+| p mod 8 | χ(-1) | χ(2) | Formula for h |
+|---------|-------|------|---------------|
+| **1** | +1 | +1 | $h = S_\sigma$ |
+| **5** | +1 | −1 | $h = S_\sigma$ |
+| **3** | −1 | −1 | $h = -S_k/p$ |
+| **7** | −1 | +1 | $h = +S_k/p$ |
+
+Equivalently:
+- **p ≡ 1 (mod 4):** $h = \sum_{\text{x even}} \chi(x) \cdot \sigma(k^*)$
+- **p ≡ 3 (mod 4):** $h = \frac{\chi(2)}{p} \sum_{\text{x even}} \chi(x) \cdot k^*$
+
+### Verification
+
+Verified for all primes p ∈ {5, 7, 11, 13, ..., 97}:
+
+```
+p=5  (mod8=5): h=2, S_σ=2 ✓
+p=7  (mod8=7): h=1, χ(2)·S_k/p = 1·7/7 = 1 ✓
+p=11 (mod8=3): h=1, χ(2)·S_k/p = (-1)·(-11)/11 = 1 ✓
+p=17 (mod8=1): h=4, S_σ=4 ✓
+p=23 (mod8=7): h=3, χ(2)·S_k/p = 1·69/23 = 3 ✓
+...
+```
+
+### Geometric Interpretation
+
+1. **Smooth loop curves** (even x) carry ALL information about class number
+2. **Cusp curves** (odd x) contribute "correction terms" but are not needed independently
+3. The **type of weighting** (sign σ vs position k) is determined by:
+   - χ(-1): whether -1 is a quadratic residue (p mod 4)
+   - χ(2): sign correction when using position weighting (p mod 8)
+
+### Why This Matters
+
+Previous unified formula required BOTH σ and k terms with one "turning off":
+$$h = 1 + \frac{\sum\chi\sigma(k^*)}{2} + \frac{\sum\chi \cdot k^*}{p}$$
+
+New formula uses ONLY smooth loops, with arithmetic (χ(-1), χ(2)) selecting the interpretation:
+$$h = \frac{(1+\chi_{-1}) \cdot S_\sigma + (1-\chi_{-1}) \cdot \chi_2 \cdot S_k / p}{2}$$
+
+**Key insight:** The geometric distinction (cusp vs smooth) aligns with arithmetic needs:
+- Smooth loops have even x, so x = 2m for some m
+- The factor χ(2) appears naturally in the formula
+- This connects curve dynamics to quadratic reciprocity
+
+---
+
+## Trig-Free Symmetric Formula (Dec 17, 2025)
+
+### Eliminating Trigonometric Functions
+
+The lobe sign function σ(k) = sign(cos((2k-1)π/p)) can be expressed **purely arithmetically**:
+
+$$\sigma(k, p) = \text{sign}\left(|2k - (p+1)| - \frac{p}{2}\right)$$
+
+**Verification:** This formula matches the trig definition for all primes p ∈ [3, 101].
+
+**Geometric meaning:** σ = +1 when k is in the "outer quarters" (k < (p+2)/4 or k > (3p+2)/4),
+σ = -1 when k is in the "middle half" ((p+2)/4 < k < (3p+2)/4).
+
+### Fully Symmetric Unified Formula
+
+Using the arithmetic σ, we obtain a formula where **p appears in both terms**:
+
+$$h(-p) = \sum_{\text{x even}} \chi(x) \cdot \omega(k^*, p)$$
+
+where the unified weight function is:
+
+$$\omega(k, p) = \alpha \cdot \text{sign}\left(|2k - (p+1)| - \frac{p}{2}\right) + \beta \cdot \frac{k}{p}$$
+
+with switches:
+- $\alpha = \frac{1 + \chi(-1)}{2}$ — equals 1 if p ≡ 1 (mod 4), 0 otherwise
+- $\beta = \chi(2) \cdot \frac{1 - \chi(-1)}{2}$ — equals χ(2) if p ≡ 3 (mod 4), 0 otherwise
+
+### Symmetry Properties
+
+| Property | First term (σ-like) | Second term (position) |
+|----------|--------------------|-----------------------|
+| **p in numerator** | |2k - (p+1)| | — |
+| **p in denominator** | p/2 | k/p |
+| **Coefficient** | α = (1+χ(-1))/2 | β = χ(2)·(1-χ(-1))/2 |
+
+Both terms:
+1. Use the same input k* = p - x⁻¹ mod p
+2. Involve p explicitly (no hidden trig)
+3. Have symmetric "switch" coefficients (α and 1-α base)
+
+### Verification
+
+Formula verified for all primes p ∈ {5, 7, 11, 13, ..., 97}.
+
+### What We Achieved
+
+| Old formula | New formula |
+|-------------|-------------|
+| Uses sign(cos(...)) | Uses sign(\|...\|) only |
+| σ and k/p seem unrelated | Both expressed via k and p |
+| p only in position term | p in BOTH terms |
+| Trig required | Pure arithmetic |

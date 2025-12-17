@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-16 03:01:15
+**Generated:** 2025-12-17 16:07:00
 
 ## Theorems (Master References)
 
@@ -21,6 +21,7 @@
 ## Learning Materials
 
 - [The 290-Theorem](learning/290-theorem.md)
+- [Záhada N. S. Aladova: Zapomenutý průkopník teorie kvadratických zbytků](learning/aladov-historie-cz.md)
 - [Archimedes of Syracuse (c. 287 – 212 BC)](learning/archimedes-life.md)
 - [Character Sums over Finite Fields](learning/character-sums-introduction.md)
 - [Coprimality Probability and ζ(2)](learning/coprimality-zeta.md)
@@ -32,6 +33,8 @@
 - [Jonathan Hanke](learning/jonathan-hanke.md)
 - [Andrey Nikolayevich Kolmogorov (1903-1987)](learning/kolmogorov-complexity.md)
 - [L-Functions, Class Numbers, and Chebyshev Geometry](learning/L-function-geometry-bridge.md)
+- [Lissajousovy křivky: Historie objevu](learning/lissajous-historie-cz.md)
+- [Lissajous Curves: Historical Origins](learning/lissajous-history.md)
 - [Lychrel Numbers and the 196 Problem](learning/lychrel-196.md)
 - [Manjul Bhargava](learning/manjul-bhargava.md)
 - [Minkowski Geometries: L^p Norms and the Many Values of Pi](learning/minkowski-geometries.md)
@@ -43,7 +46,9 @@
 
 ## Recent Sessions (Last 10)
 
-- [Publication Consolidation](sessions/2025-12-16-publication-consolidation/README.md) *(2025-12-16)*
+- [Fast Computation of e via σ-Conjugation](sessions/2025-12-17-sigma-conjugation-e/README.md) *()*
+- [Arithmetic Continued Fractions (Euler's e and beyond)](sessions/2025-12-17-sigma-conjugation-e/codegolf-challenge.md) *()*
+- [Publication Consolidation](sessions/2025-12-16-publication-consolidation/README.md) *(2025-12-17)*
 - [Orbit Applications - Research Directions](sessions/2025-12-14-orbit-applications/README.md) *(2025-12-15)*
 - [Fibonacci-Based Rational Number System](sessions/2025-12-15-fibonacci-rationals/README.md) *(2025-12-15)*
 - [Fibonacci Fraction Arithmetic](sessions/2025-12-15-fibonacci-rationals/fibonacci-arithmetic.md) *(2025-12-15)*
@@ -51,8 +56,6 @@
 - [Transitivity Theorem for Möbius Involutions](sessions/2025-12-13-involution-theory/transitivity-theorem.md) *(2025-12-13)*
 - [Stern-Brocot, Calkin-Wilf a Brahmagupta-Bhaskara rovnice](sessions/2025-12-13-involution-theory/stern-brocot-pell.md) *(2025-12-13)*
 - [Möbius Involution Theory](sessions/2025-12-13-involution-theory/README.md) *(2025-12-13)*
-- [Paper Arguments: Giza Convergent Hypothesis](sessions/2025-12-12-phi-pi-equation/paper-arguments.md) *(2025-12-13)*
-- [Petrie Error Bar Analysis: Pyramid φ Hypotheses](sessions/2025-12-12-phi-pi-equation/petrie-error-analysis.md) *(2025-12-12)*
 
 ## Navigation
 
