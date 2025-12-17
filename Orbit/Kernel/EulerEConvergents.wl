@@ -2,10 +2,10 @@
 
 (* EulerEConvergents: Monotonic rational approximations to Euler's e
 
-   Main result: e = 19/7 + 4 * Sum[(4k+3)/(s[2k-1]*s[2k+1]), {k,1,Infinity}]
+   Main result: e = 1 + 4 * Sum[(4j+3)/(s[2j-1]*s[2j+1]), {j,0,Infinity}]
 
    where s_n are Bessel polynomial values satisfying:
-     s_0 = 1, s_1 = 7
+     s_{-1} = 1, s_0 = 1, s_1 = 7
      s_n = (4n+2) * s_{n-1} + s_{n-2}
 
    Connection: s_n = (-1)^{n+1} * y_{n+1}(-2) where y_n is Bessel polynomial.
@@ -54,6 +54,8 @@ s::usage = "s[n] = BesselESequence[n] = (-1)^{n+1} * y[n+1, -2]. Short form for 
 (* ReleaseHold shows HPFQ form with (-1)^(n+1), Activate evaluates to positive s_n *)
 (* Note: raw HPFQ alternates sign (-1,7,-71,...), factor (-1)^(n+1) corrects to (1,7,71,...) *)
 
+(* Special case: s[-1] = 1 (from recurrence or y_0(-2) = 1) *)
+s[-1] = 1;
 (* For "always odd" expressions like 2j±1, sign factor (-1)^(odd+1) = (-1)^even = 1, so omit it *)
 s[n : (2*_ + 1 | 2*_ - 1)] := Inactive[HypergeometricPFQ][{-n - 1, n + 2}, {}, 1];
 (* General case: include sign correction *)
@@ -86,11 +88,11 @@ increasing sequence converging to e from below.
 
 M_k = T_{2k-1} (odd transformed convergents)
 
-Formula: M_k = 19/7 + 4 * Sum[(4j+3)/(s_{2j-1} * s_{2j+1}), {j, 1, k-1}]
+Formula: M_k = 1 + Sum[EulerEMonotoneTerm[j], {j, 0, k-1}]
 
 Properties:
 - Strictly increasing: M_1 < M_2 < M_3 < ... < e
-- Uses only odd-indexed Bessel values
+- Uses only odd-indexed Bessel values (s_{-1}, s_1, s_3, ...)
 - Converges at ~6 digits per term
 
 Options:
@@ -100,28 +102,23 @@ Methods:
   \"Rational\" - Exact rational approximation (default)
   \"Symbolic\" - Held symbolic sum formula
   \"Numeric\"  - Numerical value (use WorkingPrecision option)
-  \"Terms\"    - {base, summands} for inspection
+  \"Terms\"    - List {1, term_0, term_1, ...} where Total gives approximation
 
 First terms: 19/7, 2721/1001, 1084483/398959, ...";
 
-EulerEMonotoneSum::usage = "EulerEMonotoneSum[k] returns the k-th partial sum representation
-{base, terms} where:
-  base = 19/7
-  terms = list of k-1 summands (4j+3)/(s_{2j-1} * s_{2j+1})
+EulerEMonotoneSum::usage = "DEPRECATED: Use EulerEMonotone[k, Method -> \"Terms\"] instead.
 
-The full approximation is: base + 4 * Total[terms]
+Returns {1, term_0, ..., term_{k-1}} where Total gives approximation.";
 
-DEPRECATED: Use EulerEMonotone[k, Method -> \"Terms\"] instead.";
-
-EulerEMonotoneTerm::usage = "EulerEMonotoneTerm[j] returns the j-th term of the monotonic e series (j ≥ 1):
+EulerEMonotoneTerm::usage = "EulerEMonotoneTerm[j] returns the j-th term of the monotonic e series (j ≥ 0):
 
   term_j = 4 * (4j+3) / (s[2j-1] * s[2j+1])
 
 where s[n] is the Bessel E-sequence.
 
-e = 19/7 + Sum[EulerEMonotoneTerm[j], {j, 1, Infinity}]
+e = 1 + Sum[EulerEMonotoneTerm[j], {j, 0, Infinity}]
 
-First terms: 4/1001, 4/36305269, 60/124526932635391, ...
+First terms: 12/7, 4/1001, 4/36305269, ...
 
 Options:
   Method -> \"Rational\" (default) | \"Symbolic\"";
@@ -132,10 +129,10 @@ of EulerEMonotoneTerm to complex t ∈ ℂ using Bessel K functions.
 The continuation uses:
   y_n(x) = Sqrt[2/(π x)] Exp[1/x] BesselK[n + 1/2, 1/x]
   s(t) = (-1)^(t+1) y_{t+1}(-2)
-  EulerEMonotoneTermAnalytic[t] = 4(4t+3) / (s(2t-1) s(2t+1))
+  term[t] = 4(4t+3) / (s(2t-1) s(2t+1))
 
 Properties:
-  - Agrees with EulerEMonotoneTerm[j] at positive integers
+  - Agrees with EulerEMonotoneTerm[j] at non-negative integers
   - Works in complex domain (use Re[] for real plots)
   - Reveals rapid exponential decay of terms
 
@@ -146,7 +143,7 @@ Examples:
 EulerEMonotoneAnalytic::usage = "EulerEMonotoneAnalytic[t] returns the analytic continuation
 of the monotonic e approximation.
 
-Formula: 19/7 + Sum[EulerEMonotoneTermAnalytic[j], {j, 1, t}]
+Formula: 1 + Sum[EulerEMonotoneTermAnalytic[j], {j, 0, t}]
 
 Examples:
   EulerEMonotoneAnalytic[n]  (* symbolic *)
@@ -178,9 +175,10 @@ Examples:
   EulerEAlternatingAnalytic[n]  (* symbolic *)
   N[EulerEAlternatingAnalytic[4]]  (* numeric *)";
 
-(* Define EulerEMonotoneTerm in public context *)
-EulerEMonotoneTerm[jj_Integer /; jj >= 1] := 4 (4 jj + 3) / (Activate[s[2 jj - 1]] Activate[s[2 jj + 1]]);
-EulerEMonotoneTerm[jj_Integer /; jj >= 1, Method -> "Symbolic"] :=
+(* Define EulerEMonotoneTerm in public context - j >= 0 *)
+(* Pure function: term[j] = 4*(4j+3)/(s[2j-1]*s[2j+1]) *)
+EulerEMonotoneTerm[jj_Integer /; jj >= 0] := 4 (4 jj + 3) / (Activate[s[2 jj - 1]] Activate[s[2 jj + 1]]);
+EulerEMonotoneTerm[jj_Integer /; jj >= 0, Method -> "Symbolic"] :=
   With[{coef = 4 jj + 3, lo = 2 jj - 1, hi = 2 jj + 1},
     HoldForm[4 coef / (s[lo] s[hi])]];
 EulerEMonotoneTerm[jj_Symbol] := 4 (4 jj + 3) / (s[2 jj - 1] s[2 jj + 1]);
@@ -197,14 +195,14 @@ besselYContinued[n_, z_] := Sqrt[2/(Pi z)] Exp[1/z] BesselK[n + 1/2, 1/z];
 besselSContinued[n_] := (-1)^(n + 1) besselYContinued[n + 1, -2];
 
 (* Analytic continuation of EulerEMonotoneTerm via BesselK *)
-(* Numeric t → number, symbolic t → symbolic expression with BesselK *)
+(* Pure function: term[t] = 4*(4t+3)/(s[2t-1]*s[2t+1]) *)
 EulerEMonotoneTermAnalytic[t_] :=
   4 (4 t + 3) / (besselSContinued[2 t - 1] besselSContinued[2 t + 1]);
 
 (* Analytic continuation of the full e approximation *)
-(* Numeric: evaluate sum; Symbolic: use Inactive[Sum] to prevent slow simplification *)
-EulerEMonotoneAnalytic[t_Integer] := 19/7 + Sum[EulerEMonotoneTermAnalytic[jj], {jj, 1, t}];
-EulerEMonotoneAnalytic[t_] := 19/7 + Inactive[Sum][EulerEMonotoneTermAnalytic[jj], {jj, 1, t}];
+(* e = 1 + Sum[term, {j, 0, ∞}] *)
+EulerEMonotoneAnalytic[t_Integer] := 1 + Sum[EulerEMonotoneTermAnalytic[jj], {jj, 0, t}];
+EulerEMonotoneAnalytic[t_] := 1 + Inactive[Sum][EulerEMonotoneTermAnalytic[jj], {jj, 0, t}];
 
 (* Alternating series term - analytic continuation *)
 EulerEAlternatingTermAnalytic[k_] :=
@@ -247,6 +245,7 @@ BesselPolynomial[n_, x_] := HypergeometricPFQ[{-n, n + 1}, {}, -x/2];
 (* BESSEL SEQUENCE (memoized)                  *)
 (* ============================================ *)
 
+besselE[-1] = 1;  (* For extended recurrence: s[-1] = 1 *)
 besselE[0] = 1;
 besselE[1] = 7;
 besselE[n_Integer] := besselE[n] = (4 n + 2) besselE[n - 1] + besselE[n - 2]
@@ -302,9 +301,9 @@ EulerEConvergent::posint = "Index `1` must be a positive integer.";
 
 Options[EulerEMonotone] = {Method -> "Rational", WorkingPrecision -> MachinePrecision};
 
-(* Helper for shared logic *)
+(* Helper for shared logic - formulation: e = 1 + Sum[term[j], {j, 0, ∞}] *)
 eulerEMonotoneImpl[k_, isInf_, opts___] := Module[
-  {method, prec, base, terms, limit},
+  {method, prec, terms, limit},
   method = OptionValue[EulerEMonotone, {opts}, Method];
   prec = OptionValue[EulerEMonotone, {opts}, WorkingPrecision];
   limit = If[isInf, Infinity, k - 1];
@@ -312,7 +311,7 @@ eulerEMonotoneImpl[k_, isInf_, opts___] := Module[
   Switch[method,
     "Symbolic",
       With[{kVal = limit, jj = Global`j},
-        HoldForm[19/7 + 4 Inactive[Sum][(4 jj + 3)/(s[2 jj - 1] s[2 jj + 1]), {jj, 1, kVal}]]
+        HoldForm[1 + 4 Inactive[Sum][(4 jj + 3)/(s[2 jj - 1] s[2 jj + 1]), {jj, 0, kVal}]]
       ],
 
     "Rational",
@@ -324,9 +323,9 @@ eulerEMonotoneImpl[k_, isInf_, opts___] := Module[
     "Terms",
       If[isInf,
         Message[EulerEMonotone::infrat]; $Failed,
-        base = 19/7;
-        terms = Table[(4 j + 3)/(besselE[2 j - 1] besselE[2 j + 1]), {j, 1, k - 1}];
-        {base, terms}
+        (* e = 1 + Sum[term[j], {j,0,k-1}], return {1, term[0], ..., term[k-1]} *)
+        terms = Table[4 (4 j + 3)/(besselE[2 j - 1] besselE[2 j + 1]), {j, 0, k - 1}];
+        Prepend[terms, 1]
       ],
 
     _,
@@ -365,8 +364,8 @@ eulerEAlternatingImpl[n_, isInf_, opts___] := Module[
 
   Switch[method,
     "Symbolic",
-      With[{nVal = limit, kk = Global`k},
-        HoldForm[3 + Inactive[Sum][(-1)^(kk + 1) 2/(s[kk] s[kk + 1]), {kk, 0, nVal}]]
+      With[{nVal = limit, mm = Global`m},
+        HoldForm[3 + Inactive[Sum][(-1)^(mm + 1) 2/(s[mm] s[mm + 1]), {mm, 0, nVal}]]
       ],
 
     "Rational",
@@ -380,9 +379,8 @@ eulerEAlternatingImpl[n_, isInf_, opts___] := Module[
     "Terms",
       If[isInf,
         Message[EulerEAlternating::infrat]; $Failed,
-        base = 3;
         terms = Table[(-1)^(k + 1) 2/(besselE[k] besselE[k + 1]), {k, 0, n - 1}];
-        {base, terms}
+        Prepend[terms, 3]  (* {3, term_0, term_1, ...} so Total gives approximation *)
       ],
 
     _,
