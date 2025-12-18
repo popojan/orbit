@@ -80,7 +80,7 @@ the origin and closes smoothly as $t \to \pm\infty$.}
 
 \subsection{The arithmetic continued fraction}
 
-Euler discovered that
+Euler discovered that~\cite{Euler1737,OEIS-A016825}
 \begin{equation}\label{eq:coth-cf}
 \coth\!\left(\tfrac{1}{2}\right) = \frac{\ee + 1}{\ee - 1} = [2; 6, 10, 14, 18, \ldots],
 \end{equation}
@@ -193,7 +193,7 @@ y_n(x) = \sum_{k=0}^{n} \frac{(n+k)!}{(n-k)!\, k!} \left(\frac{x}{2}\right)^k
 $s_n = (-1)^{n+1} y_{n+1}(-2)$.
 \end{proposition}
 
-The values $y_n(-2)$ form OEIS sequence A002119:
+The values $y_n(-2)$ form OEIS sequence A002119~\cite{OEIS-A002119}:
 \[
 1, -1, 7, -71, 1001, -18089, 398959, \ldots
 \]
@@ -267,40 +267,43 @@ The map $t \mapsto g(t) \in \C$ traces a double spiral (Figure~\ref{fig:spiral})
 \begin{proposition}[Properties of the spiral]
 \leavevmode
 \begin{enumerate}
-\item \textbf{Odd symmetry:} $g(-t) = -g(t)$ (180° rotation about origin).
+\item \textbf{Odd symmetry:} $g(-t) = -g(t)$ ($180^\circ$ rotation about origin).
 \item \textbf{Zero at origin:} $g(0) = 0$.
 \item \textbf{Decay:} $\lim_{t \to \pm\infty} g(t) = 0$.
 \end{enumerate}
 \end{proposition}
 
-\subsection{Topology: a smooth closed curve}
+\subsection{Topology: a smooth closed curve with self-intersection}
 
-\begin{theorem}
-The curve $\gamma: \R \cup \{\infty\} \to \C$ defined by $g$ is homeomorphic
-to~$S^1$.
-\end{theorem}
+The curve $\gamma: \R \cup \{\infty\} \to \C$ defined by $g$ has the following
+topological structure:
 
-\begin{proof}
-We verify smooth closure at both the origin and infinity.
+\textbf{At infinity:} As $t \to +\infty$, the curve approaches the origin
+along the negative real axis (angle~$\pi$). Similarly, $t \to -\infty$
+approaches from the positive real axis (angle~$0$). Both branches have
+tangent direction converging to~$\pi$, so they connect smoothly at infinity.
 
-\textbf{At infinity:} As $t \to +\infty$, using~\eqref{eq:K-half},
-$g(t) \sim c \cdot t \cdot \ee^{-2|t|}$ for some constant~$c$.
-The curve approaches the origin along the negative real axis (angle~$\pi$).
-Similarly, $t \to -\infty$ approaches from the positive real axis (angle~$0$).
-These directions are antipodal, so the curve closes smoothly at infinity.
-
-\textbf{At the origin:} We have $g(0) = 0$ and
+\textbf{At the origin:} We have $g(0) = 0$ with
 \[
-g'(0) = \lim_{t \to 0} \frac{g(t)}{t} = \frac{-16\pi\ee}{K_{-1}(-\frac{1}{2}) \cdot K_1(-\frac{1}{2})},
+g'(0) = \frac{-16\pi\ee}{K_{-1}(-\tfrac{1}{2}) \cdot K_1(-\tfrac{1}{2})}
+\approx -24.67 + 31.72i,
 \]
-which is the same finite nonzero value from both sides.
-\end{proof}
+giving tangent angle $\approx 128^\circ$.
 
-The spiral is thus a smooth embedding of the circle into the plane, with:
+\textbf{Self-intersection:} The origin is visited twice:
 \begin{itemize}
-\item The point at infinity mapping to the origin (from opposite directions)
-\item The origin $t = 0$ mapping to $g(0) = 0$ with well-defined tangent
+\item At $t = 0$: tangent angle $\approx 128^\circ$
+\item At $t = \pm\infty$: tangent angle $\to 180^\circ$
 \end{itemize}
+These are distinct tangent directions, creating a \emph{transverse
+self-intersection} at the origin.
+
+\textbf{Infinite winding:} The curve winds infinitely around the origin as
+$t \to \pm\infty$. The winding rate is approximately 2 turns per unit~$t$,
+with accumulated phase $\Phi(t) \approx 4\pi t$.
+
+The image of $g$ is thus homeomorphic to a figure-eight: a smooth closed
+curve with one self-intersection point.
 
 \subsection{Recovery of $\ee$}
 
@@ -332,7 +335,8 @@ $t = \ldots, -\frac{5}{4}, -\frac{3}{4}, -\frac{1}{4}, 0, \frac{1}{4}, \frac{3}{
 
 The connection between $\ee$ and Bessel polynomials dates to the 1950s;
 see OEIS A002119~\cite{OEIS-A002119} and references therein. The continued
-fraction~\eqref{eq:coth-cf} was discovered by Euler in~1737~\cite{Euler1737}.
+fraction~\eqref{eq:coth-cf} was discovered by Euler in 1737~\cite{Euler1737};
+see also OEIS A016825~\cite{OEIS-A016825}.
 
 The convergence rate of CF-based methods for computing~$\ee$ is well documented;
 see~\cite{GourdonSebah} for a comprehensive treatment.
