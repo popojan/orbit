@@ -1,21 +1,20 @@
-\documentclass[11pt]{amsart}
-
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
 \usepackage{graphicx}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 \usepackage{booktabs}
-\usepackage{microtype}  % microtypography
+\usepackage{microtype}
 
-\theoremstyle{plain}
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
-
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
-
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
@@ -27,10 +26,11 @@
 \newcommand{\Kfrac}{\mathop{\mathrm{K}}}
 
 \title{A Spiral for Euler's Number}
-\author{J. Popelka}
-\date{\today}
+\author{Jan Popelka\thanks{Email: popojan@protonmail.com}}
+\date{}
 
 \begin{document}
+\maketitle
 
 \begin{abstract}
 We present a monotonically convergent rational series for Euler's number~$\ee$
@@ -40,8 +40,6 @@ elegant symmetry and traces a remarkable closed spiral in the complex plane.
 While the connection between~$\ee$ and Bessel polynomials is classical, the
 symmetric Bessel formula and its geometric visualization appear to be new.
 \end{abstract}
-
-\maketitle
 
 %% ============================================================
 \section{Introduction}
@@ -103,20 +101,23 @@ with initial values $p_0 = 0$, $p_1 = 1$, $q_0 = 1$, $q_1 = 6$.
 
 \subsection{The transformed convergents}
 
-Define the \emph{transformed convergent}
+Since $p_n/q_n \to (3-\ee)/(\ee-1)$, we seek a M\"obius transformation that
+recovers~$\ee$. A short calculation shows
+\[
+1 + \frac{2}{1 + \frac{3-\ee}{\ee-1}}
+= 1 + \frac{2}{\frac{2}{\ee-1}}
+= 1 + (\ee - 1) = \ee.
+\]
+
+This motivates the \emph{transformed convergent}
 \begin{equation}\label{eq:T-def}
-T_n = \frac{3q_n + p_n}{q_n + p_n}.
+T_n = 1 + \frac{2}{1 + p_n/q_n}.
 \end{equation}
 
 \begin{proposition}
 $T_n$ equals the $(3n+2)$-th convergent of the standard continued fraction
 for~$\ee$.
 \end{proposition}
-
-\begin{proof}
-This follows from the M\"obius transformation
-$\sigma(x) = (1-x)/(1+x)$ applied to $(3-\ee)/(\ee-1)$, which yields $\ee - 2$.
-\end{proof}
 
 The sequence $(T_n)$ alternates around~$\ee$: odd-indexed terms undershoot,
 even-indexed terms overshoot. The first few values are:
@@ -212,11 +213,16 @@ K_{n+\frac{1}{2}}\!\left(-\tfrac{1}{2}\right) = \ii\sqrt{\pi\ee} \cdot y_n(-2).
 \end{equation}
 
 This is pure imaginary! Consequently, the \emph{product} of two such values
-is real:
-\begin{equation}
+is real (but transcendental):
+\begin{equation}\label{eq:K-product}
 K_\mu\!\left(-\tfrac{1}{2}\right) \cdot K_\nu\!\left(-\tfrac{1}{2}\right)
 = -\pi\ee \cdot y_{\mu-1/2}(-2) \cdot y_{\nu-1/2}(-2).
 \end{equation}
+
+Since $y_n(-2)$ are integers, the product equals $-\pi\ee$ times an integer.
+Crucially, the factor~$\pi\ee$ cancels with the numerator in~\eqref{eq:g-canonical},
+yielding \emph{rational} values when both orders $2t \pm 1$ are half-integers,
+i.e., for $t \in \{\frac{2k+1}{4} : k \in \Z\}$.
 
 %% ============================================================
 \section{The Symmetric Formula}
@@ -246,28 +252,9 @@ which is odd about the origin: $g(-t) = -g(t)$.
 
 \begin{remark}
 The Bessel orders $2t \pm 1$ are symmetric about~$2t$, giving the formula
-its elegant structure. The original term function is recovered via
-$f(j) = g(j + \frac{3}{4})$.
+its elegant structure. The series terms are recovered via $g(\frac{3}{4} + n)$
+for $n = 0, 1, 2, \ldots$
 \end{remark}
-
-\subsection{Equivalent forms}
-
-Different symmetry centers yield equivalent formulas:
-
-\begin{center}
-\begin{tabular}{ccc}
-\toprule
-Center & Variable & Functional equation \\
-\midrule
-$j = -\frac{3}{4}$ & $f(j)$ & $f(-\frac{3}{4} + t) = -f(-\frac{3}{4} - t)$ \\[4pt]
-$t = 0$ & $g(t)$ & $g(-t) = -g(t)$ \\[4pt]
-$s = \frac{1}{2}$ & $h(s) = g(s - \frac{1}{2})$ & $h(1-s) = -h(s)$ \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-The last form, with symmetry about $s = \frac{1}{2}$, is reminiscent of
-functional equations in analytic number theory.
 
 %% ============================================================
 \section{The Spiral}

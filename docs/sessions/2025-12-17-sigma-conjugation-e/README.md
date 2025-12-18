@@ -569,6 +569,49 @@ i.e., $t = \ldots, -\frac{5}{4}, -\frac{3}{4}, -\frac{1}{4}, 0, \frac{1}{4}, \fr
 The $e$-series samples at $t = \frac{3}{4} + n$ — a subset of these real-axis crossings:
 $$e = 1 + \sum_{n=0}^{\infty} g\left(\frac{3}{4} + n\right)$$
 
+### Complex Analysis of g(z)
+
+The function $g(z) = \frac{-16\pi e \cdot z}{K_{2z-1}(-1/2) \cdot K_{2z+1}(-1/2)}$ extends to a **meromorphic function** on $\mathbb{C}$:
+
+**Key properties:**
+
+1. **Odd function:** $g(-z) = -g(z)$ for all $z \in \mathbb{C}$
+
+2. **Taylor series at origin:** Only odd powers
+   $$g(z) = c_1 z + c_3 z^3 + c_5 z^5 + \cdots$$
+   where $c_1 = g'(0) = -24.67 + 31.72i$, $\text{Arg}(c_1) = 127.87°$
+
+3. **Pole structure:** Poles occur at zeros of $K_{2z\pm 1}(-1/2)$
+   - First poles at $|z| \approx 0.188$ (complex conjugate pair)
+   - All poles are **off the real axis**
+   - $g(z)$ is **analytic on entire $\mathbb{R}$**
+
+4. **Contour integral:**
+   $$\oint_{|z|=R} g(z)\, dz = 0 \quad \text{for } R < 0.188$$
+
+**Pole locations (first few):**
+
+| $|z|$ | Pole |
+|-------|------|
+| 0.188 | $\pm 0.075 \mp 0.173i$ |
+| 0.747 | $\pm 0.484 \mp 0.569i$ |
+| 1.089 | $\pm 1.075 \mp 0.173i$ |
+| 1.236 | $\pm 0.811 \mp 0.933i$ |
+
+**Winding analysis:**
+
+The parametric curve $g(t)$ for $t \in \mathbb{R}$:
+- Winding rate around origin: $\approx 2$ windings per unit $t$
+- Accumulated phase: $\Phi(t) \approx 4\pi t$
+- Infinite winding as $t \to \pm\infty$
+
+**Topology:**
+- Curve passes through origin at $t = 0$ with tangent angle $128°$
+- Curve approaches origin as $t \to +\infty$ (from negative real direction, angle $180°$)
+- Curve approaches origin as $t \to -\infty$ (from positive real direction, angle $0°$)
+- The $\pm\infty$ branches connect smoothly (same tangent direction)
+- Self-intersection at origin (two different tangent directions: $128°$ vs $180°$)
+
 ### Connection to Arithmetic CF
 
 The CF `[0; 6, 10, 14, 18, ...]` with arithmetic progression converges to:
