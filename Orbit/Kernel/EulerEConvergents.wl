@@ -254,6 +254,33 @@ EulerEAlternatingAnalytic[n_] := 3 + Inactive[Sum][EulerEAlternatingTermAnalytic
 (* ALTERNATIVE FORMULATION                     *)
 (* ============================================ *)
 
+(* ============================================ *)
+(* INTERVAL BOUNDS                             *)
+(* ============================================ *)
+
+EulerEInterval::usage = "EulerEInterval[k] returns an Interval[{lower, upper}] bracketing Euler's e.
+
+Parameters:
+  k - positive integer (refinement level)
+
+Returns: Interval[{T_{2k-1}, T_{2k}}] where T_{2k-1} < e < T_{2k}
+
+Properties:
+- lower = EulerEConvergent[2k-1] (odd T_n, undershoots e)
+- upper = EulerEConvergent[2k] (even T_n, overshoots e)
+- Width shrinks by ~6 decimal digits per increment of k
+- Both bounds are optimal rationals (from CF structure)
+
+First intervals:
+  k=1: {19/7, 193/71} ≈ {2.714..., 2.718...}, width ~4×10⁻³
+  k=2: {2721/1001, 49171/18089} ≈ {2.71828..., 2.71828...}, width ~1×10⁻⁷
+  k=3: width ~5×10⁻¹³
+  k=4: width ~6×10⁻¹⁹
+
+Use Normal[result] to extract {lower, upper} list for numeric operations.
+
+See also: EulerEConvergent, EulerEMonotone";
+
 EulerEAlternating::usage = "EulerEAlternating[n] returns the n-th partial sum of the
 alternating series starting from 3:
 
@@ -302,22 +329,8 @@ BesselESequence::nonneg = "Index `1` must be a non-negative integer.";
 (* ============================================ *)
 
 (* Convergent p_n/q_n of [0; 6, 10, 14, ..., 4n+2] *)
-arithmeticCFConvergent[n_Integer /; n >= 1] := Module[{p, q, pPrev, qPrev, pNew, qNew, a},
-  (* Initialize: p_{-1}=1, p_0=0; q_{-1}=0, q_0=1 *)
-  pPrev = 1; p = 0;
-  qPrev = 0; q = 1;
-
-  Do[
-    a = 4 k + 2;
-    pNew = a p + pPrev;
-    qNew = a q + qPrev;
-    pPrev = p; p = pNew;
-    qPrev = q; q = qNew,
-    {k, 1, n}
-  ];
-
-  p/q
-]
+arithmeticCFConvergent[n_Integer /; n >= 1] :=
+  FromContinuedFraction[Prepend[Table[4 k + 2, {k, n}], 0]]
 
 EulerEConvergent[n_Integer /; n >= 1] := Module[{pq, p, q},
   pq = arithmeticCFConvergent[n];
@@ -438,6 +451,23 @@ EulerEAlternating[n_Integer /; n < 0, OptionsPattern[]] := (
 EulerEAlternating::nonneg = "Index `1` must be a non-negative integer.";
 EulerEAlternating::badmethod = "Unknown method `1`. Use \"Rational\", \"Symbolic\", \"Numeric\", or \"Terms\".";
 EulerEAlternating::infrat = "Infinity is only supported with Method -> \"Symbolic\".";
+
+(* ============================================ *)
+(* INTERVAL BOUNDS                             *)
+(* ============================================ *)
+
+EulerEInterval[k_Integer /; k >= 1] := Module[{lower, upper},
+  lower = EulerEConvergent[2 k - 1];  (* odd T_n, below e *)
+  upper = EulerEConvergent[2 k];      (* even T_n, above e *)
+  Interval[{lower, upper}]
+]
+
+EulerEInterval[k_Integer /; k < 1] := (
+  Message[EulerEInterval::posint, k];
+  $Failed
+)
+
+EulerEInterval::posint = "Index `1` must be a positive integer.";
 
 End[];
 
