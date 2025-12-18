@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-18 11:24:43
+**Generated:** 2025-12-18 19:13:10
 
 ## Theorems (Master References)
 
@@ -23,9 +23,11 @@
 - [The 290-Theorem](learning/290-theorem.md)
 - [Záhada N. S. Aladova: Zapomenutý průkopník teorie kvadratických zbytků](learning/aladov-historie-cz.md)
 - [Archimedes of Syracuse (c. 287 – 212 BC)](learning/archimedes-life.md)
+- [Friedrich Wilhelm Bessel (1784–1846)](learning/bessel-biography.md)
 - [Character Sums over Finite Fields](learning/character-sums-introduction.md)
 - [Coprimality Probability and ζ(2)](learning/coprimality-zeta.md)
 - [Eratosthenes of Cyrene (c. 276 – c. 194 BC)](learning/eratosthenes-life.md)
+- [Leonhard Euler (1707–1783)](learning/euler-biography.md)
 - [Sir William Matthew Flinders Petrie (1853-1942)](learning/flinders-petrie.md)
 - [Generating Functions Quick Course](learning/generating-functions-course.md)
 - [Hölder Conjugates](learning/hoelder-conjugates.md)
@@ -46,9 +48,9 @@
 
 ## Recent Sessions (Last 10)
 
+- [Fast Computation of e via σ-Conjugation](sessions/2025-12-17-sigma-conjugation-e/README.md) *(2025-12-18)*
 - [Complex Analysis of Euler E Analytic Terms](sessions/2025-12-17-sigma-conjugation-e/complex-analysis.md) *(2025-12-17)*
 - [Publication Consolidation](sessions/2025-12-16-publication-consolidation/README.md) *(2025-12-17)*
-- [Fast Computation of e via σ-Conjugation](sessions/2025-12-17-sigma-conjugation-e/README.md) *(2025-12-17)*
 - [Arithmetic Continued Fractions (Euler's e and beyond)](sessions/2025-12-17-sigma-conjugation-e/codegolf-challenge.md) *(2025-12-17)*
 - [Orbit Applications - Research Directions](sessions/2025-12-14-orbit-applications/README.md) *(2025-12-15)*
 - [Fibonacci-Based Rational Number System](sessions/2025-12-15-fibonacci-rationals/README.md) *(2025-12-15)*
