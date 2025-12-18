@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-17 16:07:00
+**Generated:** 2025-12-18 11:24:43
 
 ## Theorems (Master References)
 
@@ -46,16 +46,16 @@
 
 ## Recent Sessions (Last 10)
 
-- [Fast Computation of e via σ-Conjugation](sessions/2025-12-17-sigma-conjugation-e/README.md) *()*
-- [Arithmetic Continued Fractions (Euler's e and beyond)](sessions/2025-12-17-sigma-conjugation-e/codegolf-challenge.md) *()*
+- [Complex Analysis of Euler E Analytic Terms](sessions/2025-12-17-sigma-conjugation-e/complex-analysis.md) *(2025-12-17)*
 - [Publication Consolidation](sessions/2025-12-16-publication-consolidation/README.md) *(2025-12-17)*
+- [Fast Computation of e via σ-Conjugation](sessions/2025-12-17-sigma-conjugation-e/README.md) *(2025-12-17)*
+- [Arithmetic Continued Fractions (Euler's e and beyond)](sessions/2025-12-17-sigma-conjugation-e/codegolf-challenge.md) *(2025-12-17)*
 - [Orbit Applications - Research Directions](sessions/2025-12-14-orbit-applications/README.md) *(2025-12-15)*
 - [Fibonacci-Based Rational Number System](sessions/2025-12-15-fibonacci-rationals/README.md) *(2025-12-15)*
 - [Fibonacci Fraction Arithmetic](sessions/2025-12-15-fibonacci-rationals/fibonacci-arithmetic.md) *(2025-12-15)*
 - [Fibonacci Representation: Deeper Mathematical Questions](sessions/2025-12-15-fibonacci-depth/README.md) *(2025-12-15)*
 - [Transitivity Theorem for Möbius Involutions](sessions/2025-12-13-involution-theory/transitivity-theorem.md) *(2025-12-13)*
 - [Stern-Brocot, Calkin-Wilf a Brahmagupta-Bhaskara rovnice](sessions/2025-12-13-involution-theory/stern-brocot-pell.md) *(2025-12-13)*
-- [Möbius Involution Theory](sessions/2025-12-13-involution-theory/README.md) *(2025-12-13)*
 
 ## Navigation
 

@@ -123,22 +123,40 @@ First terms: 12/7, 4/1001, 4/36305269, ...
 Options:
   Method -> \"Rational\" (default) | \"Symbolic\"";
 
-EulerEMonotoneTermAnalytic::usage = "EulerEMonotoneTermAnalytic[t] returns the analytic continuation
-of EulerEMonotoneTerm to complex t ∈ ℂ using Bessel K functions.
+EulerETermCanonical::usage = "EulerETermCanonical[t] is the canonical form of the
+e-convergent term function, odd around t = 0.
 
-The continuation uses:
-  y_n(x) = Sqrt[2/(π x)] Exp[1/x] BesselK[n + 1/2, 1/x]
-  s(t) = (-1)^(t+1) y_{t+1}(-2)
-  term[t] = 4(4t+3) / (s(2t-1) s(2t+1))
+Formula:
+  g(t) = -16t π e / [K_{2t-1}(-1/2) K_{2t+1}(-1/2)]
 
 Properties:
-  - Agrees with EulerEMonotoneTerm[j] at non-negative integers
-  - Works in complex domain (use Re[] for real plots)
-  - Reveals rapid exponential decay of terms
+  - ODD around t = 0: g(-t) = -g(t)
+  - BesselK orders 2t±1 symmetric around 2t
+  - Real when both orders 2t±1 are half-integers: t ∈ {(2k+1)/4 : k ∈ ℤ} ∪ {0}
+  - Series terms at t = 3/4, 7/4, 11/4, ... where orders are 1/2, 5/2, 9/2, ...
+
+Note: Half-integer BesselK orders correspond to spherical Bessel functions.
+The e ↔ Bessel polynomial connection is known (OEIS A002119); this symmetric
+formula g(t) with K_{2t±1} structure provides an elegant closed form.
 
 Examples:
-  EulerEMonotoneTermAnalytic[t]  (* symbolic *)
-  N[EulerEMonotoneTermAnalytic[1.5]]  (* numeric *)";
+  EulerETermCanonical[3/4]  (* 12/7, orders K_{1/2} and K_{5/2} *)
+  EulerETermCanonical[7/4]  (* 4/1001, orders K_{5/2} and K_{9/2} *)";
+
+EulerEMonotoneTermAnalytic::usage = "EulerEMonotoneTermAnalytic[j] returns the analytic continuation
+of EulerEMonotoneTerm to complex j ∈ ℂ.
+
+Delegates to canonical form: term[j] = EulerETermCanonical[j + 3/4]
+
+Properties:
+  - Agrees with EulerEMonotoneTerm[j] at non-negative integers j = 0, 1, 2, ...
+  - At j = n (integer), BesselK orders are half-integers: 2n+1/2 and 2n+5/2
+  - Result is REAL at these points (product of two pure imaginaries)
+  - Odd around j = -3/4
+
+Examples:
+  N[EulerEMonotoneTermAnalytic[0]]  (* 12/7, uses K_{1/2} and K_{5/2} *)
+  N[EulerEMonotoneTermAnalytic[1]]  (* 4/1001, uses K_{5/2} and K_{9/2} *)";
 
 EulerEMonotoneAnalytic::usage = "EulerEMonotoneAnalytic[t] returns the analytic continuation
 of the monotonic e approximation.
@@ -162,9 +180,12 @@ First terms: -2/7, 2/497, -2/71071, 2/18107089, ...";
 EulerEAlternatingTermAnalytic::usage = "EulerEAlternatingTermAnalytic[k] returns the k-th term
 of the alternating e series with analytic continuation via BesselK.
 
-Formula: (-1)^(k+1) * 2 / (s(k) * s(k+1))
+Simplified formula:
+  term[k] = 2 (-1)^(k+1) π e / [K_{k+3/2}(-1/2) K_{k+5/2}(-1/2)]
 
-where s(n) = (-1)^(n+1) * y_{n+1}(-2) analytically continued.";
+Note: For consecutive indices, BesselK products are POSITIVE.
+The (-1)^(k+1) factor provides alternation but makes the result
+COMPLEX for non-integer k. For integer k, result is real.";
 
 EulerEAlternatingAnalytic::usage = "EulerEAlternatingAnalytic[n] returns the analytic continuation
 of the alternating e series.
@@ -190,23 +211,40 @@ EulerEAlternatingTerm[kk_Integer /; kk >= 0, Method -> "Symbolic"] :=
     HoldForm[(-1)^(lo + 1) * 2 / (s[lo] s[hi])]];
 EulerEAlternatingTerm[kk_Symbol] := (-1)^(kk + 1) * 2 / (s[kk] s[kk + 1]);
 
-(* Analytic continuation helpers for BesselK representation *)
-besselYContinued[n_, z_] := Sqrt[2/(Pi z)] Exp[1/z] BesselK[n + 1/2, 1/z];
-besselSContinued[n_] := (-1)^(n + 1) besselYContinued[n + 1, -2];
+(* ============================================ *)
+(* ANALYTIC CONTINUATION via BesselK           *)
+(* ============================================ *)
 
-(* Analytic continuation of EulerEMonotoneTerm via BesselK *)
-(* Pure function: term[t] = 4*(4t+3)/(s[2t-1]*s[2t+1]) *)
-EulerEMonotoneTermAnalytic[t_] :=
-  4 (4 t + 3) / (besselSContinued[2 t - 1] besselSContinued[2 t + 1]);
+(* Canonical odd function centered at t = 0
+   Formula: g(t) = -16t π e / [K_{2t-1}(-1/2) K_{2t+1}(-1/2)]
+
+   Properties:
+   - ODD around t = 0: g(-t) = -g(t)
+   - BesselK orders 2t±1 symmetric around 2t (elegant!)
+   - Real when both orders are half-integers: t ∈ {(2k+1)/4} ∪ {0}
+   - Series terms at t = 3/4, 7/4, 11/4, ... where orders are 1/2, 5/2, 9/2, ...
+   - Half-integer orders = spherical Bessel functions (known connection to A002119)
+*)
+EulerETermCanonical[t_] :=
+  -16 t Pi E / (BesselK[2 t - 1, -1/2] BesselK[2 t + 1, -1/2]);
+
+(* EulerEMonotoneTermAnalytic delegates to canonical form with shift
+   term[j] = g(j + 3/4) where g is EulerETermCanonical
+*)
+EulerEMonotoneTermAnalytic[j_] := EulerETermCanonical[j + 3/4];
 
 (* Analytic continuation of the full e approximation *)
 (* e = 1 + Sum[term, {j, 0, ∞}] *)
 EulerEMonotoneAnalytic[t_Integer] := 1 + Sum[EulerEMonotoneTermAnalytic[jj], {jj, 0, t}];
 EulerEMonotoneAnalytic[t_] := 1 + Inactive[Sum][EulerEMonotoneTermAnalytic[jj], {jj, 0, t}];
 
-(* Alternating series term - analytic continuation *)
+(* Alternating series term - analytic continuation
+   Note: For consecutive indices (k, k+1), BesselK products are POSITIVE.
+   The (-1)^(k+1) factor is needed for alternation but makes the result
+   complex for non-integer k. For integer k, result is real.
+*)
 EulerEAlternatingTermAnalytic[k_] :=
-  (-1)^(k + 1) * 2 / (besselSContinued[k] besselSContinued[k + 1]);
+  2 (-1)^(k + 1) Pi E / (BesselK[k + 3/2, -1/2] BesselK[k + 5/2, -1/2]);
 
 (* Alternating series - analytic continuation *)
 EulerEAlternatingAnalytic[n_Integer] := 3 + Sum[EulerEAlternatingTermAnalytic[kk], {kk, 0, n - 1}];

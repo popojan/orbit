@@ -350,6 +350,257 @@ The existence of a BBP formula implies the constant is a **"polylogarithmic peri
 
 These remain unsolved as of 2025.
 
+## Bessel Function Formula for e-Convergents
+
+### Discovery
+
+A direct formula using Bessel functions gives every 3rd convergent of e:
+
+$$\text{BesselK}\left(n + \frac{3}{2}, \frac{1}{2}\right) = \sqrt{\frac{\pi}{e}} \cdot p_{3n+2}$$
+
+where $p_k/q_k$ is the $k$-th convergent of $e$.
+
+### Explicit Values
+
+| n | 3n+2 | BesselK[n+3/2, 1/2] | p_{3n+2} |
+|---|------|---------------------|----------|
+| 0 | 2 | 3√(π/e) | 3 |
+| 1 | 5 | 19√(π/e) | 19 |
+| 2 | 8 | 193√(π/e) | 193 |
+| 3 | 11 | 2721√(π/e) | 2721 |
+| 4 | 14 | 49171√(π/e) | 49171 |
+
+### Formula for Ratio (3-e)/(e-1)
+
+The ratio $p_n/q_n$ converging to $(3-e)/(e-1)$ is given by:
+
+```mathematica
+e[n_] := {-BesselI[3/2 + n, -1/2] BesselK[3/2, 1/2] +
+          BesselI[3/2, -1/2] BesselK[3/2 + n, 1/2],
+         BesselI[3/2 + n, -1/2] BesselK[1/2, 1/2] -
+          BesselI[1/2, -1/2] BesselK[3/2 + n, 1/2]};
+```
+
+This yields rational convergents of the arithmetic CF `[0; 6, 10, 14, 18, ...]`.
+
+### Transform to e-Convergents
+
+Given $(p, q)$ as convergent of $(3-e)/(e-1)$:
+
+$$\frac{3q + p}{q + p} = \text{(3n+2)-th convergent of } e$$
+
+### Elementary Form
+
+For integer n, the Bessel functions reduce to elementary expressions:
+
+```
+BesselK[n + 3/2, 1/2] = √(π/e) · p_{3n+2}
+BesselI[n + 3/2, -1/2] = (i/√(πe)) · (q_{3n+2}·e - p_{3n+2})
+```
+
+### Branch Cut Analysis
+
+**⚠️ For complex n, this formula has branch cuts:**
+
+| Function | Issue |
+|----------|-------|
+| BesselK[n+3/2, 1/2] | OK (argument > 0) |
+| BesselI[n+3/2, -1/2] | **Branch cut** (argument < 0) |
+
+Consequences:
+- Not Schwarz symmetric: $f(\bar{z}) \neq \overline{f(z)}$
+- Not real on real axis for non-integer n
+- Same limitation as our σ-conjugation BesselK formula
+
+### Simplified Term Function (Analytic Continuation)
+
+For the monotone series term function, there is a simpler form:
+
+$$\text{term}(j) = \frac{-4(4j+3)\pi e}{K_{2j+\frac{1}{2}}\left(-\frac{1}{2}\right) \cdot K_{2j+\frac{5}{2}}\left(-\frac{1}{2}\right)}$$
+
+**Key insight:** While individual $K_\nu(-1/2)$ values are pure imaginary (due to branch cut), their **product** is always **real** (negative).
+
+This follows from:
+$$K_{n+\frac{1}{2}}\left(-\frac{1}{2}\right) = i\sqrt{\pi e} \cdot y_n(-2)$$
+
+where $y_n(-2)$ is the Bessel polynomial (OEIS A002119): $1, -1, 7, -71, 1001, -18089, \ldots$
+
+The product of two pure imaginary numbers is real, so:
+$$K_\mu(-1/2) \cdot K_\nu(-1/2) = -\pi e \cdot y_{\mu-1/2}(-2) \cdot y_{\nu-1/2}(-2)$$
+
+**Advantages over current implementation:**
+- Single expression (no helper functions needed)
+- Result is **real** when both BesselK orders are half-integers (see "Half-Integer Orders" section below)
+- For other real $j$, result may be complex due to BesselK branch cut
+- Numerically stable
+
+**Verification:**
+```mathematica
+termNew[j_] := -4 (4 j + 3) Pi E / (BesselK[2 j + 1/2, -1/2] BesselK[2 j + 5/2, -1/2])
+
+(* Test: *)
+N[termNew[0], 15]   (* 1.71428571428571... = 12/7 *)
+N[termNew[1], 15]   (* 0.00399600399600... = 4/1001 *)
+N[termNew[0.5], 15] (* 0.28169014084507... (works for non-integers!) *)
+```
+
+### Odd Symmetry Around j = -3/4
+
+The term function is **odd around $j = -\frac{3}{4}$**:
+
+$$\text{term}\left(-\frac{3}{4} + t\right) = -\text{term}\left(-\frac{3}{4} - t\right) \quad \forall t$$
+
+**Why:**
+
+1. **Numerator** $-4(4j+3) = -16\left(j + \frac{3}{4}\right)$ is linear → odd around $j = -\frac{3}{4}$
+
+2. **Denominator** $K_{2j+\frac{1}{2}}(-\frac{1}{2}) \cdot K_{2j+\frac{5}{2}}(-\frac{1}{2})$ is **even** around $j = -\frac{3}{4}$
+
+The denominator symmetry follows from the BesselK orders at $j = -\frac{3}{4}$:
+- Orders are $2(-\frac{3}{4}) + \frac{1}{2} = -1$ and $2(-\frac{3}{4}) + \frac{5}{2} = +1$
+- These are symmetric around 0!
+
+For $j = -\frac{3}{4} \pm t$:
+- $(+t)$: orders $-1+2t$ and $1+2t$
+- $(-t)$: orders $-1-2t$ and $1-2t$
+
+The product $K_{-1+2t} \cdot K_{1+2t}$ is symmetric in $t$ → denominator even → whole function odd.
+
+**Equivalent forms with different symmetry centers:**
+
+| Center | Formula |
+|--------|---------|
+| $j = -\frac{3}{4}$ | $\displaystyle\frac{-16\left(j+\frac{3}{4}\right)\pi e}{K_{2j+\frac{1}{2}}\left(-\frac{1}{2}\right) \cdot K_{2j+\frac{5}{2}}\left(-\frac{1}{2}\right)}$ |
+| $t = 0$ | $\displaystyle\frac{-16t \, \pi e}{K_{2t-1}\left(-\frac{1}{2}\right) \cdot K_{2t+1}\left(-\frac{1}{2}\right)}$ |
+| $s = \frac{1}{2}$ | $\displaystyle\frac{-8(2s-1) \pi e}{K_{2s-2}\left(-\frac{1}{2}\right) \cdot K_{2s}\left(-\frac{1}{2}\right)}$ |
+
+The last form satisfies the functional equation $h(1-s) = -h(s)$.
+
+### Parametric Curve: Smooth Closed Spiral
+
+The parametric curve $t \mapsto g(t) \in \mathbb{C}$ traces a remarkable double spiral:
+
+![Euler spiral](figures/Euler.apng)
+
+**Properties:**
+
+1. **Odd symmetry:** $g(-t) = -g(t)$ — 180° rotational symmetry about origin
+2. **Passes through origin:** $g(0) = 0$
+3. **Spirals to origin:** $\lim_{t \to \pm\infty} g(t) = 0$
+
+**Topology — Smooth closed curve:**
+
+The curve is **homeomorphic to $S^1$** (a circle):
+
+| Limit | Direction | Tangent at 0 |
+|-------|-----------|--------------|
+| $t \to +\infty$ | approaches 0 from $-\text{Re}$ (angle $\pi$) | along Re axis |
+| $t \to -\infty$ | approaches 0 from $+\text{Re}$ (angle $0$) | along Re axis |
+| $t \to 0^\pm$ | passes through 0 | $-24.67 + 31.72i$ (same both sides!) |
+
+Since:
+- Both $t = \pm\infty$ map to $0$
+- Tangents at $t \to 0^\pm$ are **identical** (smooth passage through origin)
+- Tangents at $t \to \pm\infty$ are **collinear** (meet smoothly "at infinity")
+
+The curve is a **smooth embedding** $g: S^1 \to \mathbb{C}$ where $\mathbb{R} \cup \{\infty\} \cong S^1$.
+
+**Schematic:**
+```
+t = -∞ ←─────────────────────── t = +∞
+       ↘                       ↙
+         ↘                   ↙
+           → → → 0 → → → →
+             (smooth passage)
+```
+
+The double spiral is actually **one smooth cycle** that:
+1. Emerges from origin (at $t = 0$)
+2. Spirals outward in both directions
+3. Returns to origin "at infinity" (where $\pm\infty$ meet)
+
+### Half-Integer Orders and Spherical Bessel Functions
+
+The series for $e$ samples at $t = \frac{3}{4}, \frac{7}{4}, \frac{11}{4}, \ldots$
+
+At these points, the BesselK orders are **half-integers**, not integers:
+
+| $t$ | Order $2t-1$ | Order $2t+1$ |
+|-----|--------------|--------------|
+| 3/4 | **1/2** | **5/2** |
+| 7/4 | **5/2** | **9/2** |
+| 11/4 | **9/2** | **13/2** |
+
+**The symmetric formula:**
+
+$$g(t) = \frac{-16\pi e \cdot t}{K_{2t-1}\left(-\frac{1}{2}\right) \cdot K_{2t+1}\left(-\frac{1}{2}\right)}$$
+
+Note the elegant symmetry: orders $2t \pm 1$ are symmetric around $2t$.
+
+**Why half-integer orders are special:**
+
+For $\nu = n + \frac{1}{2}$, BesselK has an elementary closed form:
+$$K_{n+\frac{1}{2}}(z) = \sqrt{\frac{\pi}{2z}} \, e^{-z} \cdot P_n(1/z)$$
+
+where $P_n$ is a polynomial. At $z = -\frac{1}{2}$:
+$$K_{n+\frac{1}{2}}\left(-\frac{1}{2}\right) = i\sqrt{\pi e} \cdot y_n(-2)$$
+
+where $y_n(-2)$ is the real Bessel polynomial value.
+
+**Connection to spherical Bessel functions:**
+
+Half-integer BesselK are related to **spherical Bessel functions**:
+$$k_n(z) = \sqrt{\frac{\pi}{2z}} K_{n+\frac{1}{2}}(z)$$
+
+| Order type | Bessel type | Physical context |
+|------------|-------------|------------------|
+| Integer $\nu = n$ | Cylindrical | 2D: pipes, waveguides |
+| Half-integer $\nu = n+\frac{1}{2}$ | Spherical | 3D: multipoles, scattering |
+
+**Pedagogical note:** The connection between $e$ and Bessel polynomials is known (OEIS A002119, ~1950s). The "spherical" framing — viewing $e$ as emerging from 3D rather than 2D Bessel structure — is our interpretive lens, not a standard result. But the symmetric formula $g(t)$ with its $K_{2t\pm 1}$ structure makes this interpretation natural and pedagogically useful.
+
+**When is $g(t)$ real?**
+
+For $g(t) \in \mathbb{R}$, both orders $2t \pm 1$ must be half-integers. This requires:
+$$t \in \left\{\frac{2k+1}{4} : k \in \mathbb{Z}\right\} \cup \{0\}$$
+
+i.e., $t = \ldots, -\frac{5}{4}, -\frac{3}{4}, -\frac{1}{4}, 0, \frac{1}{4}, \frac{3}{4}, \frac{5}{4}, \frac{7}{4}, \ldots$
+
+The $e$-series samples at $t = \frac{3}{4} + n$ — a subset of these real-axis crossings:
+$$e = 1 + \sum_{n=0}^{\infty} g\left(\frac{3}{4} + n\right)$$
+
+### Connection to Arithmetic CF
+
+The CF `[0; 6, 10, 14, 18, ...]` with arithmetic progression converges to:
+
+$$[0; 6, 10, 14, 18, \ldots] = \frac{3-e}{e-1} = \frac{I_{3/2}(1/2)}{I_{1/2}(1/2)}$$
+
+This gives the elegant identity:
+
+$$e = 1 + \frac{2}{1 + [0; 6, 10, 14, 18, \ldots]}$$
+
+### Verification Code
+
+```mathematica
+(* Direct computation *)
+BesselK[n + 3/2, 1/2] / Sqrt[Pi/E] // FunctionExpand // FullSimplify
+(* Returns: p_{3n+2} *)
+
+(* Full convergent formula *)
+e[n_] := Module[{p, q},
+  p = -BesselI[3/2 + n, -1/2] BesselK[3/2, 1/2] +
+       BesselI[3/2, -1/2] BesselK[3/2 + n, 1/2];
+  q = BesselI[3/2 + n, -1/2] BesselK[1/2, 1/2] -
+       BesselI[1/2, -1/2] BesselK[3/2 + n, 1/2];
+  {p, q} // FunctionExpand // TrigExpand
+];
+
+(* Transform to e convergent *)
+{p, q} = e[3];
+eConv = (3 q + p)/(q + p) // FullSimplify
+(* Returns: 2721/1001, the 11th convergent of e *)
+```
+
 ## References
 
 - [MathWorld: e Continued Fraction](https://mathworld.wolfram.com/eContinuedFraction.html)
