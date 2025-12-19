@@ -242,9 +242,108 @@ Confirms the result:
 
 ---
 
+---
+
+## E-Spiral Intersection Analysis
+
+### Main Results
+
+**X-Axis Crossings (Im(g) = 0):**
+
+All x-axis crossings occur at $t = \frac{2k+1}{4}$ for $k \in \mathbb{Z}$.
+
+At these points, the Bessel orders are half-integers, and the function yields **exact rational values**.
+
+**Key Theorem:** For $n \geq 0$:
+$$g\left(\frac{3}{4} + n\right) = \frac{4(4n+3)}{s_{2n-1} \cdot s_{2n+1}}$$
+
+These are **exactly** the terms of our monotone e-series:
+$$e = 1 + \sum_{n=0}^{\infty} g\left(\frac{3}{4} + n\right)$$
+
+| $t$ | $g(t)$ | Notes |
+|-----|--------|-------|
+| $\frac{1}{4}$ | $-4$ | Intermediate |
+| $\frac{3}{4}$ | $\frac{12}{7}$ | Series term $a_0$ |
+| $\frac{5}{4}$ | $\frac{20}{71}$ | Intermediate |
+| $\frac{7}{4}$ | $\frac{4}{1001}$ | Series term $a_1$ |
+| $\frac{11}{4}$ | $\frac{4}{36305269}$ | Series term $a_2$ |
+
+### Interval Width Formula
+
+The half-width of `EulerEInterval[k]` is a **unit fraction**:
+
+$$\frac{T_{2k} - T_{2k-1}}{2} = \frac{1}{s_{2k-1} \cdot s_{2k}}$$
+
+| $k$ | Half-width | Denominator |
+|-----|------------|-------------|
+| 1 | $\frac{1}{497}$ | $7 \times 71$ |
+| 2 | $\frac{1}{18107089}$ | $1001 \times 18089$ |
+| 3 | $\frac{1}{4145592145057}$ | $398959 \times 10391023$ |
+
+### Divisibility Theorem
+
+Let $D_k = s_{2k-1} \cdot s_{2k}$ be the denominator of the half-width. Then:
+
+$$7 \mid D_k \iff k \equiv 1, 2, 4, 5 \pmod 7$$
+$$11 \mid D_k \iff k \equiv 2, 3, 7, 8 \pmod{11}$$
+
+**Proof:** The recurrence $s_n = (4n+2)s_{n-1} + s_{n-2}$ yields:
+- $s_n \equiv 0 \pmod 7 \iff n \equiv 1, 3 \pmod 7$
+- $s_n \equiv 0 \pmod{11} \iff n \equiv 3, 5 \pmod{11}$
+
+Since $D_k = s_{2k-1} \cdot s_{2k}$, we have $p \mid D_k$ iff $p \mid s_{2k-1}$ or $p \mid s_{2k}$. Solving $2k-1 \equiv r \pmod p$ and $2k \equiv r \pmod p$ for the zero residues $r$ gives the stated conditions. $\square$
+
+**Corollary:** The denominators $D_k$ exhibit periodic divisibility patterns with period 7 for the prime 7, and period 11 for the prime 11. Their interplay has period $\text{lcm}(7,11) = 77$.
+
+### The 77-Structure of Euler's e
+
+The number $77 = 7 \times 11$ is **intrinsically connected** to the continued fraction of $e$:
+
+$$77 \mid s_n \iff n \equiv 3, 36, 38, 71 \pmod{77}$$
+
+**Origin of 7 and 11:**
+- $s_1 = 7$ (initial condition of the recurrence)
+- $s_3 = 1001 = 7 \times 11 \times 13$ (first term divisible by 77)
+
+The recurrence $s_n = (4n+2)s_{n-1} + s_{n-2}$ propagates these divisibilities with period 77, creating a deep arithmetic structure connecting Euler's constant to the primes 7 and 11.
+
+**CRT decomposition:** The four residue classes follow from:
+
+| $n \bmod 7$ | $n \bmod 11$ | $n \bmod 77$ |
+|-------------|--------------|--------------|
+| 1 | 3 | 36 |
+| 1 | 5 | 71 |
+| 3 | 3 | 3 |
+| 3 | 5 | 38 |
+
+**Y-Axis Crossings (Re(g) = 0):** Transcendental, but solutions exist:
+- Largest at $t \approx \pm 0.5405$ (near $\pm 6/11$) with $\text{Im}(g) \approx \mp 2.428$
+- Additional crossings at $t \approx \pm 0.91, \pm 1.14, \pm 1.37, \pm 1.62, ...$
+
+**Self-Intersections:** Two found (transcendental):
+- Outer: $t_1 \approx 0.645$, $t_2 \approx -0.053$ at $g \approx 1.35 - 1.50i$
+- Inner: $t_1 \approx -1.184$, $t_2 \approx 0.012$ at $g \approx -0.29 + 0.37i$
+
+### Symbolic Formulas
+
+For the denominator product:
+$$K_{2t-1}(-\tfrac{1}{2}) \cdot K_{2t+1}(-\tfrac{1}{2})$$
+
+we have:
+$$\text{Re}(\text{denom}) = K_1 K_2 \cos(4\pi t) + \pi \sin(2\pi t)(K_1 I_2 + K_2 I_1) - \pi^2 I_1 I_2$$
+$$\text{Im}(\text{denom}) = -K_1 K_2 \sin(4\pi t) + \pi \cos(2\pi t)(K_1 I_2 + K_2 I_1)$$
+
+where $K_i = K_{2t \pm 1}(\frac{1}{2})$ and $I_i = I_{2t \pm 1}(\frac{1}{2})$.
+
+Setting $\text{Im}(\text{denom}) = 0$ yields $\cos(2\pi t) = 0$, i.e., $t = \frac{1}{4} + \frac{n}{2}$.
+
+See `symbolic-summary.md` for complete derivation.
+
+---
+
 ## Open Questions
 
 1. **Direct proof:** Can we derive the asymptotic formula directly from the ODE without generating functions?
-2. **Connection to e-spiral:** How does this relate to our spiral interpolation $g(z)$ specifically?
+2. ~~**Connection to e-spiral:** How does this relate to our spiral interpolation $g(z)$ specifically?~~ ✅ ANSWERED: Series terms are exactly x-axis crossings at $t = 3/4 + n$.
 3. **Modular connection:** Are there modular properties connecting Bessel polynomials to $e$?
 4. **Complex extension:** What is the domain of validity for complex $x$ in the asymptotic formula?

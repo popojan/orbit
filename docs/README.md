@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-18 19:13:10
+**Generated:** 2025-12-19 22:55:24
 
 ## Theorems (Master References)
 
@@ -28,6 +28,7 @@
 - [Coprimality Probability and ζ(2)](learning/coprimality-zeta.md)
 - [Eratosthenes of Cyrene (c. 276 – c. 194 BC)](learning/eratosthenes-life.md)
 - [Leonhard Euler (1707–1783)](learning/euler-biography.md)
+- [Finite Abelian Groups Quick Course](learning/finite-abelian-groups-course.md)
 - [Sir William Matthew Flinders Petrie (1853-1942)](learning/flinders-petrie.md)
 - [Generating Functions Quick Course](learning/generating-functions-course.md)
 - [Hölder Conjugates](learning/hoelder-conjugates.md)
@@ -48,6 +49,9 @@
 
 ## Recent Sessions (Last 10)
 
+- [E-Prime Connections: The s_n Sequence and Prime Distribution](sessions/2025-12-19-e-prime-connections/README.md) *()*
+- [Symbolic Formulas for E-Spiral Intersections](sessions/2025-12-18-bessel-ode-exploration/symbolic-summary.md) *()*
+- [Session: Bessel ODE and Exponential Connection](sessions/2025-12-18-bessel-ode-exploration/README.md) *(2025-12-18)*
 - [Fast Computation of e via σ-Conjugation](sessions/2025-12-17-sigma-conjugation-e/README.md) *(2025-12-18)*
 - [Complex Analysis of Euler E Analytic Terms](sessions/2025-12-17-sigma-conjugation-e/complex-analysis.md) *(2025-12-17)*
 - [Publication Consolidation](sessions/2025-12-16-publication-consolidation/README.md) *(2025-12-17)*
@@ -55,9 +59,6 @@
 - [Orbit Applications - Research Directions](sessions/2025-12-14-orbit-applications/README.md) *(2025-12-15)*
 - [Fibonacci-Based Rational Number System](sessions/2025-12-15-fibonacci-rationals/README.md) *(2025-12-15)*
 - [Fibonacci Fraction Arithmetic](sessions/2025-12-15-fibonacci-rationals/fibonacci-arithmetic.md) *(2025-12-15)*
-- [Fibonacci Representation: Deeper Mathematical Questions](sessions/2025-12-15-fibonacci-depth/README.md) *(2025-12-15)*
-- [Transitivity Theorem for Möbius Involutions](sessions/2025-12-13-involution-theory/transitivity-theorem.md) *(2025-12-13)*
-- [Stern-Brocot, Calkin-Wilf a Brahmagupta-Bhaskara rovnice](sessions/2025-12-13-involution-theory/stern-brocot-pell.md) *(2025-12-13)*
 
 ## Navigation
 
