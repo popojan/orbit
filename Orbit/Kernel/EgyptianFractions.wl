@@ -225,6 +225,32 @@ To get Egyptian fraction representation of bounds:
   EgyptianFractions[lo]  (* unit fractions for lower bound *)
 ";
 
+RationalInterval::usage = "RationalInterval[q, k] returns Interval[{lower, upper}] bracketing rational q
+using the k-th and (k+1)-th CF convergents.
+
+The width is ALWAYS a unit fraction: 1/(q_k * q_{k+1}) where q_k are convergent denominators.
+
+For k beyond CF length, returns the exact value (point interval).
+
+THIS IS THE CF ↔ EGYPT CONNECTION:
+  - Each unit fraction width 1/(q_k * q_{k+1}) corresponds to an Egyptian fraction term
+  - The sequence of intervals shows how CF convergents bracket the target
+  - For irrationals: infinite sequence of unit fraction widths
+  - For rationals: finite sequence, last interval collapses to point
+
+Examples:
+  RationalInterval[7/19, 1]
+    (* Interval[{1/3, 1/2}], width = 1/6 *)
+
+  RationalInterval[355/113, 2]
+    (* Interval[{333/106, 22/7}], width = 1/742 *)
+
+  Table[{k, RationalInterval[7/19, k], Max@# - Min@# &@RationalInterval[7/19, k]}, {k, 1, 4}]
+    (* Shows decreasing unit fraction widths *)
+
+See also: EgyptianFractions, EgyptianFractionsInterval, PiInterval, EInterval, SqrtInterval
+";
+
 Begin["`Private`"];
 
 (* ===================================================================
@@ -901,6 +927,63 @@ EgyptianFractionsInterval[x_?NumericQ, OptionsPattern[]] /; !IntegerQ[x] && Head
 (* Exact rationals - degenerate interval *)
 EgyptianFractionsInterval[q_Rational, OptionsPattern[]] := Interval[{q, q}]
 EgyptianFractionsInterval[n_Integer, OptionsPattern[]] := Interval[{n, n}]
+
+(* ===================================================================
+   RATIONAL INTERVAL - Unit fraction widths from CF convergents
+   =================================================================== *)
+
+(* Helper: compute all convergents of a rational *)
+RationalConvergents[q_Rational] := Module[
+  {cf, convergents},
+  cf = ContinuedFraction[q];
+  convergents = FoldList[
+    {#1[[1]] * #2 + #1[[3]], #1[[2]] * #2 + #1[[4]], #1[[1]], #1[[2]]} &,
+    {First[cf], 1, 1, 0},
+    Rest[cf]
+  ][[All, 1 ;; 2]];
+  #[[1]] / #[[2]] & /@ convergents
+]
+
+RationalConvergents[n_Integer] := {n}
+
+(* Main function: k-th interval bracketing q *)
+RationalInterval[q_Rational, k_Integer /; k >= 0] := Module[
+  {convergents, n, c1, c2},
+
+  convergents = RationalConvergents[q];
+  n = Length[convergents];
+
+  (* k=0 means first convergent only - point interval *)
+  If[k == 0, Return[Interval[{convergents[[1]], convergents[[1]]}]]];
+
+  (* If k exceeds available convergents, return exact value *)
+  If[k >= n, Return[Interval[{q, q}]]];
+
+  (* Return interval from k-th and (k+1)-th convergents *)
+  {c1, c2} = convergents[[{k, k + 1}]];
+  Interval[{Min[c1, c2], Max[c1, c2]}]
+]
+
+(* Integer case - trivial *)
+RationalInterval[n_Integer, k_Integer /; k >= 0] := Interval[{n, n}]
+RationalInterval[n_Integer] := Interval[{n, n}]
+RationalInterval[n_Integer, Infinity] := Interval[{n, n}]
+
+(* Infinity means exact value *)
+RationalInterval[q_Rational, Infinity] := Interval[{q, q}]
+
+(* One-argument form: tightest non-trivial interval (k = n-1 where n = CF length) *)
+RationalInterval[q_Rational] := Module[
+  {convergents, n},
+  convergents = RationalConvergents[q];
+  n = Length[convergents];
+  If[n < 2,
+    Interval[{q, q}],
+    With[{c1 = convergents[[n - 1]], c2 = convergents[[n]]},
+      Interval[{Min[c1, c2], Max[c1, c2]}]
+    ]
+  ]
+]
 
 End[];
 

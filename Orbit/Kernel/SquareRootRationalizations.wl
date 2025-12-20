@@ -336,6 +336,48 @@ Uses factorial-based series expansion: ((x-1)/y) * (1 + Sum[FactorialTerm[x-1, j
 Then constructs bounds as {r, n/r} where r is the approximation.
 Use Normal[result] to extract {lower, upper} list for numeric operations.";
 
+SqrtInterval::usage = "SqrtInterval[n, k] returns an Interval[{lower, upper}] bracketing Sqrt[n].
+
+Automatically uses the fundamental solution to x² - n·y² = 1 (Brahmagupta-Bhaskara equation).
+
+Parameters:
+  n - non-square positive integer
+  k - number of terms (controls precision)
+
+Returns: Interval[{lower, upper}] with UNIT FRACTION width when fundamental x is odd.
+
+Width property:
+  - When x is ODD: width has numerator 1 (unit fraction)
+  - When x is even: width numerators alternate 1, 2, 1, 2, ...
+
+This parallels PiIntervalBBP (unit fraction widths) and EulerEInterval (constant numerator 2).
+
+Examples:
+  SqrtInterval[2, 5]   (* √2, x=3 odd → unit fraction width *)
+  SqrtInterval[3, 5]   (* √3, x=2 even → alternating 1,2 *)
+  SqrtInterval[13, 3]  (* √13, x=649 odd → unit fraction width *)
+
+See also: EgyptSqrt, PhiInterval, PiIntervalBBP, EulerEInterval";
+
+PhiInterval::usage = "PhiInterval[k] returns an Interval[{lower, upper}] bracketing the golden ratio φ.
+
+The golden ratio φ = (1 + √5)/2 ≈ 1.618...
+
+Derived from SqrtInterval[5, k]: PhiInterval[k] = (1 + SqrtInterval[5, k])/2
+
+Returns: Interval with UNIT FRACTION width.
+
+Width property: Always unit fraction (numerator = 1) because √5 has odd fundamental x = 9.
+
+Examples:
+  PhiInterval[1]  (* {29/18, 13/8}, width = 1/72 *)
+  PhiInterval[2]  (* {55/34, 123/76}, width = 1/1292 *)
+  PhiInterval[3]  (* {521/322, 233/144}, width = 1/23184 *)
+
+Note: Bounds are ratios of Fibonacci numbers!
+
+See also: SqrtInterval, PiInterval, EInterval";
+
 BinetError::usage = "BinetError[n, k, x] computes the error in Binet approximation using direct formula.
 
 Parameters:
@@ -1171,6 +1213,52 @@ BrahmaguptaBhaskaraFundamental[d_Integer] := Module[{sol, x, y, fx, fy},
     "verified" -> (fx^2 - d*fy^2 == 1),
     "extracted" -> (fx != x || fy != y)|>
 ];
+
+(* ===================================================================
+   SQRT INTERVAL - Wrapper with automatic fundamental solution
+   =================================================================== *)
+
+(* SqrtInterval[n, k] - main API for sqrt interval bounds *)
+SqrtInterval[n_Integer /; n >= 2 && !IntegerQ[Sqrt[n]], k_Integer /; k >= 1] :=
+  Module[{sol, xVal, yVal},
+    sol = PellSolution[n];
+    xVal = Global`x /. sol;
+    yVal = Global`y /. sol;
+    EgyptSqrt[n, {xVal, yVal}, k]
+  ]
+
+(* Symbolic form - uses formal symbols \[FormalX], \[FormalY] for fundamental solution *)
+SqrtInterval[n_Symbol, k_] :=
+  With[{x = \[FormalX], y = \[FormalY], jj = \[FormalJ]},
+    With[{r = (x - 1)/y * (1 + Inactive[Sum][ChebyshevTerm[x - 1, jj], {jj, 1, k}])},
+      Interval[{r, n/r}]
+    ]
+  ]
+
+SqrtInterval[n_Integer, k_Integer /; k < 1] := (
+  Message[SqrtInterval::posk, k];
+  $Failed
+)
+
+SqrtInterval[n_Integer /; IntegerQ[Sqrt[n]], k_Integer] := (
+  Message[SqrtInterval::perfect, n];
+  $Failed
+)
+
+SqrtInterval::posk = "Number of terms `1` must be a positive integer.";
+SqrtInterval::perfect = "`1` is a perfect square; SqrtInterval requires non-square input.";
+
+(* PhiInterval[k] - golden ratio interval from sqrt(5) *)
+PhiInterval[k_Integer /; k >= 1] := (1 + SqrtInterval[5, k])/2
+
+PhiInterval[k_Symbol] := (1 + SqrtInterval[5, k])/2
+
+PhiInterval[k_Integer /; k < 1] := (
+  Message[PhiInterval::posk, k];
+  $Failed
+)
+
+PhiInterval::posk = "Number of terms `1` must be a positive integer.";
 
 End[];
 

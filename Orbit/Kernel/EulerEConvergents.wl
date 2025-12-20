@@ -139,6 +139,8 @@ Note: Half-integer BesselK orders correspond to spherical Bessel functions.
 The e ↔ Bessel polynomial connection is known (OEIS A002119); this symmetric
 formula g(t) with K_{2t±1} structure provides an elegant closed form.
 
+Compare with EulerESquareCanonical (EVEN, real-valued for all real s).
+
 Examples:
   EulerETermCanonical[3/4]  (* 12/7, orders K_{1/2} and K_{5/2} *)
   EulerETermCanonical[7/4]  (* 4/1001, orders K_{5/2} and K_{9/2} *)";
@@ -310,6 +312,7 @@ The lower bound is the mediant (Farey sum) of consecutive convergents:
 
 Properties:
 - Both bounds are RATIONAL (exact arithmetic)
+- Width is ALWAYS a UNIT FRACTION (numerator = 1)
 - Improvement factor grows with k: ~11× at k=1, ~43× at k=5
 - Mediant is always below e for these convergent pairs
 
@@ -318,7 +321,20 @@ Comparison at same k:
   k=2: Standard ~1×10⁻⁷,  Mediant ~6×10⁻⁹  (19× better)
   k=3: Standard ~5×10⁻¹³, Mediant ~2×10⁻¹⁴ (27× better)
 
-See also: EulerEInterval, EulerEIntervalHarmonic, EulerEIntervalGeometric";
+See also: EInterval (alias), PiInterval, SqrtInterval";
+
+EInterval::usage = "EInterval[k] is an alias for EulerEIntervalMediant[k].
+
+Returns Interval[{lower, upper}] bracketing e with UNIT FRACTION width.
+
+This parallels:
+  - PiInterval (unit fraction width)
+  - SqrtInterval (unit fraction when fundamental x is odd)
+
+The three functions PiInterval, EInterval, SqrtInterval form a unified API
+for interval bounds on fundamental constants with clean unit fraction widths.
+
+See also: EulerEIntervalMediant, PiInterval, SqrtInterval";
 
 EulerEIntervalHarmonic::usage = "EulerEIntervalHarmonic[k] returns an Interval[{lower, upper}] bracketing e,
 with RATIONAL bounds exactly 2× tighter than EulerEInterval[k].
@@ -366,7 +382,54 @@ Derivation: The original e² formula y_n(2)y_{n+2}(2)/(y_n(-2)y_{n+2}(-2)) alter
 because y_n(-2) = (-1)^n |y_n(-2)|. Using consecutive indices (n, n+1) with mixed
 parity transforms alternating convergence into monotone interval bounds.
 
-See also: EulerEInterval, BesselPolynomial";
+See also: EulerESquareIntervalAnalytic, EulerEIntervalGeometric";
+
+EulerESquareIntervalAnalytic::usage = "EulerESquareIntervalAnalytic[t] returns the e² bound at continuous index t.
+
+Uses BesselK-based analytic extension of Bessel polynomials:
+  y_n(x) = Sqrt[2/(π x)] Exp[1/x] BesselK[n + 1/2, 1/x]
+
+Indexing (shifted to match discrete version):
+- t = k (integer): lower bound of EulerESquareInterval[k]
+- t = k + 0.5: upper bound of EulerESquareInterval[k]
+- t = k + 0.25: crosses e² (between lower and upper)
+- Smooth interpolation between bounds
+
+Examples:
+  EulerESquareIntervalAnalytic[1]     (* lower bound of k=1 discrete *)
+  EulerESquareIntervalAnalytic[1.25]  (* approximately e² *)
+  EulerESquareIntervalAnalytic[1.5]   (* upper bound of k=1 discrete *)
+
+See also: EulerESquareCanonical, EulerEMonotoneAnalytic";
+
+EulerESquareCanonical::usage = "EulerESquareCanonical[s] is the canonical EVEN meromorphic form for e².
+
+Formula:
+  E² × K_{s-½}(½) K_{s+½}(½) / (K_{s-½}(-½) K_{s+½}(-½))
+
+Properties:
+- EVEN function: f(s) = f(-s)
+- Meromorphic (analytic except at poles)
+- Real at INTEGER s; complex at non-integers
+- Sign: f(0) = -1, f(n) > 0 for n ≠ 0
+- f(±∞) → e²
+- Poles where K_{s±½}(-½) = 0 (off real axis)
+- Zeros where K_{s±½}(½) = 0 (on imaginary axis)
+
+Compare with EulerETermCanonical (ODD function for e).
+
+See also: EulerETermCanonical, EulerESquareInterval";
+
+EulerEIntervalAnalytic::usage = "EulerEIntervalAnalytic[t] returns the e bound at continuous index t.
+
+Computed as Sqrt[EulerESquareIntervalAnalytic[t]].
+
+Indexing:
+- t = k (integer): lower bound (sqrt of e² lower bound)
+- t = k + 0.5: upper bound
+- t = k + 0.25: crosses e
+
+See also: EulerESquareIntervalAnalytic, EulerEMonotoneAnalytic";
 
 EulerEInterval::usage = "EulerEInterval[k] returns an Interval[{lower, upper}] bracketing Euler's e.
 
@@ -605,6 +668,40 @@ EulerESquareInterval[k_Integer /; k < 1] := (
 
 EulerESquareInterval::posint = "Index `1` must be a positive integer.";
 
+(* Analytic extension of Bessel polynomial via BesselK *)
+besselPolyAnalytic[n_, x_] := Sqrt[2/(Pi x)] * Exp[1/x] * BesselK[n + 1/2, 1/x]
+
+(* Analytic e² bound - extends to non-integer t *)
+eSquareBoundAnalytic[t_] := Abs[
+  besselPolyAnalytic[t, 2] * besselPolyAnalytic[t + 1, 2] /
+  (besselPolyAnalytic[t, -2] * besselPolyAnalytic[t + 1, -2])
+]
+
+(* EulerESquareCanonical - canonical EVEN meromorphic function
+   BesselK indices (s - 1/2, s + 1/2) symmetric around s
+   No Abs - true analytic continuation
+*)
+EulerESquareCanonical[s_] := E^2 *
+  (BesselK[s - 1/2, 1/2] * BesselK[s + 1/2, 1/2]) /
+  (BesselK[s - 1/2, -1/2] * BesselK[s + 1/2, -1/2])
+
+(* Legacy alias *)
+EulerESquareMeromorphic[s_] := EulerESquareCanonical[s]
+
+(* EulerESquareIntervalAnalytic - analytic extension
+   Shifted so t=k matches discrete EulerESquareInterval[k] lower bound
+   internal index = 2t, so:
+   - t=1 → lower bound of k=1 discrete
+   - t=1.5 → upper bound of k=1 discrete
+   - crossings at t = 1.25, 2.25, 3.25, ...
+*)
+EulerESquareIntervalAnalytic[t_?NumericQ] := eSquareBoundAnalytic[2 t]
+EulerESquareIntervalAnalytic[t_Symbol] := eSquareBoundAnalytic[2 t]
+
+(* EulerEIntervalAnalytic - analytic extension via sqrt of e² *)
+EulerEIntervalAnalytic[t_?NumericQ] := Sqrt[eSquareBoundAnalytic[2 t]]
+EulerEIntervalAnalytic[t_Symbol] := Sqrt[eSquareBoundAnalytic[2 t]]
+
 (* Mediant interval: rational, 10-40× tighter *)
 EulerEIntervalMediant[k_Integer /; k >= 1] := Module[{lo, hi, med},
   lo = EulerEConvergent[2 k - 1];  (* below e *)
@@ -619,6 +716,11 @@ EulerEIntervalMediant[k_Integer /; k < 1] := (
 )
 
 EulerEIntervalMediant::posint = "Index `1` must be a positive integer.";
+
+(* EInterval - alias for EulerEIntervalMediant (unit fraction widths) *)
+EInterval[k_Integer /; k >= 1] := EulerEIntervalMediant[k]
+EInterval[k_Symbol] := EulerEIntervalMediant[k]
+EInterval[k_Integer /; k < 1] := (Message[EulerEIntervalMediant::posint, k]; $Failed)
 
 (* Harmonic mean interval: rational, exactly 2× tighter *)
 EulerEIntervalHarmonic[k_Integer /; k >= 1] := Module[{lo, hi, hm},
