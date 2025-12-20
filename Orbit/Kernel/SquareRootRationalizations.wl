@@ -341,21 +341,25 @@ SqrtInterval::usage = "SqrtInterval[n, k] returns an Interval[{lower, upper}] br
 Automatically uses the fundamental solution to x² - n·y² = 1 (Brahmagupta-Bhaskara equation).
 
 Parameters:
-  n - non-square positive integer
+  n - non-square positive integer OR positive rational p/q
   k - number of terms (controls precision)
+
+For rationals: Uses √(p/q) = √(pq) / q to reduce to integer case.
 
 Returns: Interval[{lower, upper}] with UNIT FRACTION width when fundamental x is odd.
 
-Width property:
+Width property (integers):
   - When x is ODD: width has numerator 1 (unit fraction)
   - When x is even: width numerators alternate 1, 2, 1, 2, ...
 
 This parallels PiIntervalBBP (unit fraction widths) and EulerEInterval (constant numerator 2).
 
 Examples:
-  SqrtInterval[2, 5]   (* √2, x=3 odd → unit fraction width *)
-  SqrtInterval[3, 5]   (* √3, x=2 even → alternating 1,2 *)
-  SqrtInterval[13, 3]  (* √13, x=649 odd → unit fraction width *)
+  SqrtInterval[2, 5]    (* √2, x=3 odd → unit fraction width *)
+  SqrtInterval[3, 5]    (* √3, x=2 even → alternating 1,2 *)
+  SqrtInterval[13, 3]   (* √13, x=649 odd → unit fraction width *)
+  SqrtInterval[5/4, 3]  (* √(5/4) = √20/4, rational extension *)
+  SqrtInterval[2/3, 3]  (* √(2/3) = √6/3 *)
 
 See also: EgyptSqrt, PhiInterval, PiIntervalBBP, EulerEInterval";
 
@@ -1247,6 +1251,31 @@ SqrtInterval[n_Integer /; IntegerQ[Sqrt[n]], k_Integer] := (
 
 SqrtInterval::posk = "Number of terms `1` must be a positive integer.";
 SqrtInterval::perfect = "`1` is a perfect square; SqrtInterval requires non-square input.";
+
+(* Rational extension: √(p/q) = √(pq) / q *)
+SqrtInterval[r_Rational, k_Integer /; k >= 1] := Module[
+  {p, q, pq, sqfree, perfectPart, result},
+  p = Numerator[r];
+  q = Denominator[r];
+
+  (* Check positivity *)
+  If[r <= 0, Message[SqrtInterval::pos, r]; Return[$Failed]];
+
+  (* Product pq *)
+  pq = p * q;
+
+  (* Check if pq is a perfect square *)
+  If[IntegerQ[Sqrt[pq]],
+    (* Return exact rational result *)
+    Return[Interval[{Sqrt[pq]/q, Sqrt[pq]/q}]]
+  ];
+
+  (* Use √(p/q) = √(pq) / q *)
+  result = SqrtInterval[pq, k] / q;
+  result
+]
+
+SqrtInterval::pos = "Argument `1` must be positive.";
 
 (* PhiInterval[k] - golden ratio interval from sqrt(5) *)
 PhiInterval[k_Integer /; k >= 1] := (1 + SqrtInterval[5, k])/2
