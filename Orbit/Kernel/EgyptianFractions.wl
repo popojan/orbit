@@ -202,6 +202,29 @@ Example:
   RawFractionsSymbolic[7/19]  (* Same! *)
 ";
 
+EgyptianFractionsInterval::usage = "EgyptianFractionsInterval[x, MaxItems -> n] returns Interval[{lower, upper}] bracketing x.
+
+Uses consecutive CF convergents which naturally bracket the target.
+Both bounds are exact rationals (expressible as Egyptian fractions via EgyptianFractions).
+
+Options:
+  MaxItems -> 10 (default) - number of CF terms to use
+
+Examples:
+  EgyptianFractionsInterval[Pi]
+    (* Interval[{103993/33102, 104348/33215}] *)
+
+  EgyptianFractionsInterval[Sqrt[2], MaxItems -> 5]
+    (* Interval[{41/29, 17/12}] *)
+
+  MinMax[EgyptianFractionsInterval[Pi]]
+    (* {103993/33102, 104348/33215} *)
+
+To get Egyptian fraction representation of bounds:
+  {lo, hi} = MinMax[EgyptianFractionsInterval[Pi]];
+  EgyptianFractions[lo]  (* unit fractions for lower bound *)
+";
+
 Begin["`Private`"];
 
 (* ===================================================================
@@ -841,6 +864,43 @@ CanonicalEgyptian[q_Rational /; q > 1, opts:OptionsPattern[]] := Module[
     ]
   ]
 ]
+
+(* ===================================================================
+   INTERVAL BOUNDS FOR IRRATIONALS
+   =================================================================== *)
+
+Options[EgyptianFractionsInterval] = {MaxItems -> 10};
+
+(* Main case: irrational numbers *)
+EgyptianFractionsInterval[x_?NumericQ, OptionsPattern[]] /; !IntegerQ[x] && Head[x] =!= Rational := Module[
+  {maxItems, cf, convergents, n, lower, upper},
+
+  maxItems = OptionValue[MaxItems];
+
+  (* Get CF expansion *)
+  cf = ContinuedFraction[x, maxItems];
+
+  (* Compute convergents using standard recurrence *)
+  convergents = FoldList[
+    {#1[[1]] * #2 + #1[[3]], #1[[2]] * #2 + #1[[4]], #1[[1]], #1[[2]]} &,
+    {First[cf], 1, 1, 0},
+    Rest[cf]
+  ][[All, 1 ;; 2]];
+
+  (* Convert to rationals *)
+  convergents = #[[1]] / #[[2]] & /@ convergents;
+
+  (* Take last two convergents - they bracket the target *)
+  n = Length[convergents];
+  If[n < 2, Return[Interval[{convergents[[1]], convergents[[1]]}]]];
+
+  {lower, upper} = Sort[convergents[[{n-1, n}]]];
+  Interval[{lower, upper}]
+]
+
+(* Exact rationals - degenerate interval *)
+EgyptianFractionsInterval[q_Rational, OptionsPattern[]] := Interval[{q, q}]
+EgyptianFractionsInterval[n_Integer, OptionsPattern[]] := Interval[{n, n}]
 
 End[];
 

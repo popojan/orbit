@@ -689,17 +689,19 @@ PellSolution[d_] := Module[
 
 (* Main rationalization function *)
 SqrtRationalization[n_, OptionsPattern[]] :=
-    Module[{sol, acc = OptionValue[Accuracy]},
+    Module[{sol, acc = OptionValue[Accuracy], xVal, yVal},
         sol = PellSolution[n];
+        xVal = Global`x /. sol;
+        yVal = Global`y /. sol;
         Switch[OptionValue[Method],
             "List",
-                {(x - 1) / y, sqrtTermsList[x - 1, acc]} /. sol
+                {(xVal - 1) / yVal, sqrtTermsList[xVal - 1, acc]}
             ,
             "Rational",
-                (x - 1) / y sqrtTerms[x - 1, acc] /. sol
+                (xVal - 1) / yVal * sqrtTerms[xVal - 1, acc]
             ,
             "Expression",
-                (x - 1) / y sqrtTermsHeld[x - 1, acc] /. sol
+                (xVal - 1) / yVal * sqrtTermsHeld[xVal - 1, acc]
         ]
     ]
 
