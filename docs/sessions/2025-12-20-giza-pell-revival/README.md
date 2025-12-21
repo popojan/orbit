@@ -48,6 +48,38 @@ For any other k:
 - But the dimensions would NOT appear in √(7/11) convergent bounds
 - The connection to √(7/11) would be "hidden"
 
+## Why Only Certain Convergents Work
+
+For dimensions 7k × 11k to appear in convergent bounds, we need:
+- Numerator of lower bound divisible by **7**
+- Denominator of upper bound divisible by **11**
+
+Checking all convergents of √(7/11):
+
+| Convergent # | Value | Numerator/7 | Valid k? |
+|--------------|-------|-------------|----------|
+| 3 | 3/4 | 3/7 | ✗ |
+| 4 | 4/5 | 4/7 | ✗ |
+| 5 | 67/84 | 67/7 | ✗ |
+| 6 | 71/89 | 71/7 | ✗ |
+| **7** | **280/351** | **40** | **✓ k=40** |
+| 8 | 631/791 | 631/7 | ✗ |
+| ... | | | |
+| **13** | 196560/246401 | 28080 | ✓ k=28080 |
+| **19** | 137984840/... | 19712120 | ✓ k=19712120 |
+
+Pattern: every **6th** convergent (7, 13, 19, 25, ...) has numerator divisible by 7.
+
+### Physical Implications
+
+| Convergent # | k | Pyramid size | Realistic? |
+|--------------|---|--------------|------------|
+| 7 | 40 | 280 × 440 cubits ≈ 147 × 230 m | **✓ Khufu** |
+| 13 | 28 080 | 196 560 × 308 880 cubits ≈ **103 × 162 km** | ✗ |
+| 19 | 19 712 120 | ~10 000 × 16 000 km | ✗ (larger than Earth) |
+
+**k=40 is the unique physically realizable solution.**
+
 ## Connection to x² − 77y² = 1
 
 The 7th convergent 280/351 relates to the Brahmagupta-Bhaskara equation:
