@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-20 13:02:48
+**Generated:** 2025-12-21 23:57:01
 
 ## Theorems (Master References)
 
@@ -49,16 +49,16 @@
 
 ## Recent Sessions (Last 10)
 
+- [Great Pyramid of Giza and Continued Fractions](sessions/2025-12-20-giza-pell-revival/README.md) *(2025-12-21)*
+- [Interval Width Determinants](sessions/2025-12-20-interval-determinants/README.md) *(2025-12-20)*
 - [Pi Exploration: Interval Bounds and Iteration Methods](sessions/2025-12-20-pi-exploration/README.md) *(2025-12-20)*
+- [Rationals as Pythagorean Differences](sessions/2025-12-20-pi-exploration/rationals-pythagorean-triples.md) *(2025-12-20)*
+- [Rational Interval Bounds with Unit Fraction Widths](sessions/2025-12-20-pi-exploration/rational-interval-bounds.md) *(2025-12-20)*
 - [E-Prime Connections: The s_n Sequence and Prime Distribution](sessions/2025-12-19-e-prime-connections/README.md) *(2025-12-20)*
 - [Symbolic Formulas for E-Spiral Intersections](sessions/2025-12-18-bessel-ode-exploration/symbolic-summary.md) *(2025-12-19)*
 - [Session: Bessel ODE and Exponential Connection](sessions/2025-12-18-bessel-ode-exploration/README.md) *(2025-12-19)*
 - [Fast Computation of e via σ-Conjugation](sessions/2025-12-17-sigma-conjugation-e/README.md) *(2025-12-18)*
 - [Complex Analysis of Euler E Analytic Terms](sessions/2025-12-17-sigma-conjugation-e/complex-analysis.md) *(2025-12-17)*
-- [Publication Consolidation](sessions/2025-12-16-publication-consolidation/README.md) *(2025-12-17)*
-- [Arithmetic Continued Fractions (Euler's e and beyond)](sessions/2025-12-17-sigma-conjugation-e/codegolf-challenge.md) *(2025-12-17)*
-- [Orbit Applications - Research Directions](sessions/2025-12-14-orbit-applications/README.md) *(2025-12-15)*
-- [Fibonacci-Based Rational Number System](sessions/2025-12-15-fibonacci-rationals/README.md) *(2025-12-15)*
 
 ## Navigation
 

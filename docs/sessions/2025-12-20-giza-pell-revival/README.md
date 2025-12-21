@@ -181,11 +181,32 @@ Table[{k, 7k, 11k,
 (* Only k=40 gives True *)
 ```
 
+## Connection to Bessel Sequence (s₃ = 1001)
+
+The Pythagorean triple from 7/11 is (36, 77, 85), giving ratio a/b = 36/77.
+
+```mathematica
+SqrtInterval[36/77, 1]
+(* Interval[{168480/246401, 246401/360360}] *)
+```
+
+The upper bound denominator **360360 = 360 × 1001 = 360 × s₃**.
+
+Where s₃ = 7 × 11 × 13 = 1001 is the 3rd term of the Bessel sequence for Euler's e approximation.
+
+This connects:
+- **77 = 7 × 11** from ratio 7/11
+- **351 = 27 × 13** from Pell x-solution (contains factor 13)
+- **1001 = 7 × 11 × 13 = s₃** appears naturally
+
+The 13 in the Pell solution "completes" the triple 7 × 11 × 13 = s₃.
+
 ## Open Questions
 
 1. Did the number 7 have special significance in Egyptian mathematics?
 2. Is the k=40 choice coincidence, practical (round number), or intentional?
 3. Why does only Khufu (not Khafre/Menkaure) use Brahmagupta scaling?
+4. Is the s₃ = 1001 connection meaningful or coincidental?
 
 ## References
 

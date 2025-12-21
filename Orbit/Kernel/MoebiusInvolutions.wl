@@ -21,27 +21,15 @@ BeginPackage["Orbit`"];
 
 MoebiusSigma::usage = "MoebiusSigma[x] = (1-x)/(1+x)
 The silver involution. Fixed point: √2-1 = tan(π/8).
-In logit coordinates y=x/(1-x): σ(y) = 1/(2y).
-Short form: σ";
+In logit coordinates y=x/(1-x): σ(y) = 1/(2y).";
 
 MoebiusKappa::usage = "MoebiusKappa[x] = 1-x
-The complement involution. Reflection about 1/2.
-In logit coordinates: κ(y) = 1/y.
-Short form: κ";
+The copper/complement involution. Reflection about 1/2.
+In logit coordinates: κ(y) = 1/y.";
 
 MoebiusIota::usage = "MoebiusIota[x] = 1/x
-The reciprocal involution. Swaps (0,1) with (1,∞).
-Short form: ι";
+The reciprocal involution. Swaps (0,1) with (1,∞).";
 
-(* Short forms - exported for user convenience *)
-σ::usage = "σ[x] = (1-x)/(1+x). Short form of MoebiusSigma.";
-κ::usage = "κ[x] = 1-x. Short form of MoebiusKappa.";
-ι::usage = "ι[x] = 1/x. Short form of MoebiusIota.";
-
-(* Define short forms here so they're in Orbit` context *)
-σ[z_] := (1 - z)/(1 + z);
-κ[z_] := 1 - z;
-ι[z_] := 1/z;
 
 (* ============================================ *)
 (* ORBIT INVARIANT                              *)
@@ -114,14 +102,12 @@ LogitInverse::usage = "LogitInverse[y] = y/(1+y), inverse of Logit.";
 Begin["`Private`"];
 
 (* ============================================ *)
-(* INVOLUTIONS (long names as aliases)          *)
+(* INVOLUTIONS                                  *)
 (* ============================================ *)
 
-(* Short forms σ, κ, ι are defined in public section *)
-(* Long names just delegate to short forms *)
-MoebiusSigma[x_] := σ[x]
-MoebiusKappa[x_] := κ[x]
-MoebiusIota[x_] := ι[x]
+MoebiusSigma[x_] := (1 - x)/(1 + x)
+MoebiusKappa[x_] := 1 - x
+MoebiusIota[x_] := 1/x
 
 (* ============================================ *)
 (* ODD PART                                     *)
@@ -212,7 +198,7 @@ boundedOrbit[q_, maxDen_:1000] := Module[{result, frontier, seen, next},
             seen[next] = Append[seen[current], name];
             AppendTo[newFrontier, next]
           ],
-          {opPair, {{σ, "σ"}, {κ, "κ"}, {ι, "ι"}}}
+          {opPair, {{MoebiusSigma, "σ"}, {MoebiusKappa, "κ"}, {MoebiusIota, "ι"}}}
         ],
         {current, frontier}
       ];
@@ -226,7 +212,7 @@ boundedOrbit[q_, maxDen_:1000] := Module[{result, frontier, seen, next},
 (* Convert path list to composition function *)
 pathToComposition[pathList_List] := Module[{ops},
   If[pathList === {}, Return[Identity]];
-  ops = pathList /. {"σ" -> σ, "κ" -> κ, "ι" -> ι};
+  ops = pathList /. {"σ" -> MoebiusSigma, "κ" -> MoebiusKappa, "ι" -> MoebiusIota};
   RightComposition @@ ops  (* Apply left-to-right *)
 ]
 
@@ -333,22 +319,22 @@ ToCanonicalPath[q_Rational] := Module[{inv, y, α, β, A, B, path, current},
   While[α > 0 || β > 0,
     If[α == 0,
       (* (0, β) with β > 0: apply σ → (β-1, 0) *)
-      current = σ[current];
+      current = MoebiusSigma[current];
       AppendTo[path, "σ"];
     ,
       If[β == 0,
         (* (α, 0) with α > 0: apply κ then σ → (α-1, 0) *)
-        current = κ[current];
+        current = MoebiusKappa[current];
         AppendTo[path, "κ"];
-        current = σ[current];
+        current = MoebiusSigma[current];
         AppendTo[path, "σ"];
       ,
         (* Both α, β > 0: apply σ (or κ first if β < α) *)
         If[β < α,
-          current = κ[current];
+          current = MoebiusKappa[current];
           AppendTo[path, "κ"];
         ];
-        current = σ[current];
+        current = MoebiusSigma[current];
         AppendTo[path, "σ"];
       ]
     ];
@@ -359,7 +345,7 @@ ToCanonicalPath[q_Rational] := Module[{inv, y, α, β, A, B, path, current},
   (* Normalize: ensure A ≤ B (smaller numerator) *)
   y = Logit[current];
   If[Numerator[y] > Denominator[y],
-    current = κ[current];
+    current = MoebiusKappa[current];
     AppendTo[path, "κ"];
   ];
 

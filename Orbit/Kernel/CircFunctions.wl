@@ -158,9 +158,9 @@ CircShift[t_] := t + 1/2
 CircConjugate[t_] := 3/2 - t
 CircDual[t_] := 1 - t
 CircNormalize[t_] := Mod[t + 1/4, 2] - 1/4
-(* Accepts integer or list of integers; formula threads via arithmetic *)
-CircRoot[n_Integer, k:(_Integer|{__Integer}): 1] := 2 k/n - 5/4
-\[Rho][n_Integer, k:(_Integer|{__Integer}): 1] := CircRoot[n, k]
+(* Fully symbolic; formula threads via arithmetic *)
+CircRoot[n_, k_: 1] := 2 k/n - 5/4
+\[Rho][n_, k_: 1] := 2 k/n - 5/4
 
 (* ============================================ *)
 (* INFIX OPERATOR \[CircleTimes] = ⊗            *)
