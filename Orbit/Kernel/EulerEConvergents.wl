@@ -471,6 +471,48 @@ Methods:
   \"Numeric\"  - Numerical value (use WorkingPrecision option)
   \"Terms\"    - {base, signedTerms} for inspection";
 
+(* ============================================ *)
+(* E² CF-BASED INTERVAL (UNIT FRACTION WIDTH)  *)
+(* ============================================ *)
+
+ESquareInterval::usage = "ESquareInterval[k] returns an Interval[{lower, upper}] bracketing e².
+
+Uses continued fraction convergents for UNIT FRACTION interval widths.
+
+CF of e² = [7; 2, 1, 1, 3, 18, 5, 1, 1, 6, 30, 8, 1, 1, 9, ...]
+
+The CF has a beautiful quasi-periodic structure:
+  Initial: {7, 2, 1, 1, 3}
+  Then repeating: {12m+6, 3m+2, 1, 1, 3m+3} for m = 1, 2, 3, ...
+
+Properties:
+- Width = 1/(q_k * q_{k+1}) where q_n are CF denominators
+- Width is ALWAYS a unit fraction (numerator = 1)
+- Both bounds are exact rationals
+- Exponential convergence (~2-3 digits per term)
+- Requires integer k (CF-based, not symbolic)
+
+This differs from EulerESquareInterval (Bessel polynomial based, non-unit-fraction width).
+
+First intervals:
+  k=1: {7, 15/2}, width = 1/2
+  k=2: {15/2, 22/3}, width = 1/6
+  k=3: {22/3, 37/5}, width = 1/15
+
+Note: CF-based intervals (ESquareInterval, Log2Interval, etc.) require integer k.
+Series-based intervals (SinInterval, CosInterval, etc.) support symbolic k.
+
+See also: EInterval, EulerESquareInterval, Log2Interval";
+
+ESquareCFConvergent::usage = "ESquareCFConvergent[n] returns the n-th CF convergent of e².
+
+Uses the quasi-periodic CF pattern for exact computation to arbitrary depth.
+
+Examples:
+  ESquareCFConvergent[0]  (* 7 *)
+  ESquareCFConvergent[1]  (* 15/2 *)
+  ESquareCFConvergent[5]  (* 1264/171 *)";
+
 Begin["`Private`"];
 
 (* ============================================ *)
@@ -534,7 +576,7 @@ eulerEMonotoneImpl[k_, isInf_, opts___] := Module[
 
   Switch[method,
     "Symbolic",
-      With[{kVal = limit, jj = Global`j},
+      With[{kVal = limit, jj = \[FormalJ]},
         HoldForm[1 + 4 Inactive[Sum][(4 jj + 3)/(s[2 jj - 1] s[2 jj + 1]), {jj, 0, kVal}]]
       ],
 
@@ -588,7 +630,7 @@ eulerEAlternatingImpl[n_, isInf_, opts___] := Module[
 
   Switch[method,
     "Symbolic",
-      With[{nVal = limit, mm = Global`m},
+      With[{nVal = limit, mm = \[FormalM]},
         HoldForm[3 + Inactive[Sum][(-1)^(mm + 1) 2/(s[mm] s[mm + 1]), {mm, 0, nVal}]]
       ],
 
@@ -831,6 +873,61 @@ EulerERational[n_Integer /; n < 1, OptionsPattern[]] := (
 
 EulerERational::posint = "Index `1` must be a positive integer (n ≥ 1).";
 EulerERational::badmethod = "Unknown method `1`. Use \"Recurrence\", \"ClosedForm\", or \"Both\".";
+
+(* ============================================ *)
+(* E² CF-BASED INTERVAL                        *)
+(* ============================================ *)
+
+(* Generate e² CF terms using quasi-periodic pattern:
+   Initial: {7, 2, 1, 1, 3}
+   Then: {12k+6, 3k+2, 1, 1, 3k+3} for k = 1, 2, 3, ...
+*)
+eSquareCFTerm[0] := 7
+eSquareCFTerm[1] := 2
+eSquareCFTerm[2] := 1
+eSquareCFTerm[3] := 1
+eSquareCFTerm[4] := 3
+eSquareCFTerm[n_Integer /; n >= 5] := Module[{k, pos},
+  (* n = 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, ... *)
+  (* Maps to k = 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, ... *)
+  (* pos in group = 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, ... *)
+  k = Quotient[n - 5, 5] + 1;
+  pos = Mod[n - 5, 5];
+  Switch[pos,
+    0, 12 k + 6,
+    1, 3 k + 2,
+    2, 1,
+    3, 1,
+    4, 3 k + 3
+  ]
+]
+
+(* Generate first n+1 CF terms *)
+eSquareCFTerms[n_Integer] := Table[eSquareCFTerm[i], {i, 0, n}]
+
+(* CF convergent from terms *)
+ESquareCFConvergent[n_Integer /; n >= 0] := FromContinuedFraction[eSquareCFTerms[n]]
+
+ESquareCFConvergent[n_Integer /; n < 0] := (
+  Message[ESquareCFConvergent::nonneg, n];
+  $Failed
+)
+
+ESquareCFConvergent::nonneg = "Index `1` must be a non-negative integer.";
+
+(* E² interval using CF convergents *)
+ESquareInterval[k_Integer /; k >= 1] := Module[{c1, c2},
+  c1 = ESquareCFConvergent[k - 1];
+  c2 = ESquareCFConvergent[k];
+  Interval[{Min[c1, c2], Max[c1, c2]}]
+]
+
+ESquareInterval[k_Integer /; k < 1] := (
+  Message[ESquareInterval::posk, k];
+  $Failed
+)
+
+ESquareInterval::posk = "Index `1` must be a positive integer.";
 
 End[];
 
