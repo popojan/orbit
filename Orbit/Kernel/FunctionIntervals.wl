@@ -22,18 +22,20 @@ BeginPackage["Orbit`"];
 
 SinInterval::usage = "SinInterval[x, k] returns an Interval[{lower, upper}] bracketing sin(x).
 
-Uses Taylor series: sin(x) = x - x^3/3! + x^5/5! - ...
+Uses Taylor series with PAIRED terms for monotonic convergence.
+k pairs = 2k individual terms, giving clean symbolic forms (no Min/Max).
 
 Properties:
-- Alternating series: consecutive partial sums bracket sin(x)
-- Width = |x|^(2k+1) / (2k+1)!
+- Lower bound: sum of k pairs (2k terms)
+- Upper bound: lower + next term
+- Width = |x|^(4k+1) / (4k+1)!
 - UNIT FRACTION width when Numerator[x] = 1 (i.e., x = 1/m)
-- Rational width for any rational x
+- No Min/Max needed — works cleanly with symbolic x
 
 First intervals for sin(1):
-  k=1: {1, 5/6}, width = 1/6
-  k=2: {5/6, 101/120}, width = 1/120
-  k=3: {101/120, 4241/5040}, width = 1/5040
+  k=1: 2 terms + next, width = 1/5040
+  k=2: 4 terms + next, width = 1/362880
+  k=3: 6 terms + next, width = 1/6227020800
 
 See also: CosInterval, ArcTanInterval, SinSeriesTerm";
 
@@ -49,18 +51,15 @@ First terms for sin(1): 1, -1/6, 1/120, -1/5040, ...";
 
 CosInterval::usage = "CosInterval[x, k] returns an Interval[{lower, upper}] bracketing cos(x).
 
-Uses Taylor series: cos(x) = 1 - x^2/2! + x^4/4! - ...
+Uses Taylor series with PAIRED terms for monotonic convergence.
+k pairs = 2k individual terms, giving clean symbolic forms (no Min/Max).
 
 Properties:
-- Alternating series: consecutive partial sums bracket cos(x)
-- Width = |x|^(2k) / (2k)!
+- Lower bound: sum of k pairs (2k terms)
+- Upper bound: lower + next term
+- Width = |x|^(4k) / (4k)!
 - UNIT FRACTION width when Numerator[x] = 1 (i.e., x = 1/m)
-- Rational width for any rational x
-
-First intervals for cos(1):
-  k=1: {1, 1/2}, width = 1/2
-  k=2: {1/2, 13/24}, width = 1/24
-  k=3: {13/24, 389/720}, width = 1/720
+- No Min/Max needed — works cleanly with symbolic x
 
 See also: SinInterval, ArcTanInterval, CosSeriesTerm";
 
@@ -76,20 +75,18 @@ First terms for cos(1): 1, -1/2, 1/24, -1/720, ...";
 
 ArcTanInterval::usage = "ArcTanInterval[x, k] returns an Interval[{lower, upper}] bracketing arctan(x).
 
-Uses Taylor series: arctan(x) = x - x^3/3 + x^5/5 - x^7/7 + ...
+Uses Taylor series with PAIRED terms for monotonic convergence.
+k pairs = 2k individual terms, giving clean symbolic forms (no Min/Max).
 
 Properties:
-- Alternating series: consecutive partial sums bracket arctan(x)
-- Width = |x|^(2k+1) / (2k+1)
+- Lower bound: sum of k pairs (2k terms)
+- Upper bound: lower + next term
+- Width = |x|^(4k+1) / (4k+1)
 - UNIT FRACTION width when Numerator[x] = 1 (i.e., x = 1/m)
 - Converges for |x| <= 1
+- No Min/Max needed — works cleanly with symbolic x
 
 Special case: ArcTanInterval[1, k] gives bounds for Pi/4.
-
-First intervals for arctan(1) = Pi/4:
-  k=1: {1, 2/3}, width = 1/3
-  k=2: {2/3, 13/15}, width = 1/15
-  k=3: {13/15, 76/105}, width = 1/35
 
 See also: SinInterval, CosInterval, ArcTanSeriesTerm";
 
@@ -105,20 +102,19 @@ First terms for arctan(1): 1, -1/3, 1/5, -1/7, ...";
 
 Log1PlusInterval::usage = "Log1PlusInterval[x, k] returns an Interval[{lower, upper}] bracketing log(1+x).
 
-Uses Taylor series: log(1+x) = x - x^2/2 + x^3/3 - x^4/4 + ...
+Uses Taylor series with PAIRED terms for monotonic convergence.
+k pairs = 2k individual terms, giving clean symbolic forms (no Min/Max).
 
 Properties:
-- Alternating series for x > 0: consecutive partial sums bracket log(1+x)
-- Width = |x|^(k+1) / (k+1)
+- Lower bound: sum of k pairs (2k terms)
+- Upper bound: lower + next term
+- Width = |x|^(2k+1) / (2k+1)
 - UNIT FRACTION width when Numerator[x] = 1 (i.e., x = 1/m)
 - Converges for |x| < 1 (and x = 1)
+- No Min/Max needed — works cleanly with symbolic x
 
 Special case: Log1PlusInterval[1, k] gives bounds for log(2).
-
-First intervals for log(1+1) = log(2):
-  k=1: {1, 1/2}, width = 1/2
-  k=2: {1/2, 5/6}, width = 1/3
-  k=3: {5/6, 7/12}, width = 1/4
+For log(2), width = 1/(2k+1) — the harmonic unit fractions!
 
 See also: Log2Interval (CF-based, faster convergence), SinInterval";
 
@@ -134,25 +130,30 @@ Begin["`Private`"];
 (* GENERIC ALTERNATING SERIES INTERVAL         *)
 (* ============================================ *)
 
-(* Helper: create interval from alternating series partial sums
+(* Helper: create interval from alternating series using PAIRED terms
    termExpr: the general term as a function of summation variable
    var: summation variable (formal symbol)
-   k: number of terms
+   k: number of PAIRS (= 2k individual terms)
    start: starting index (0 for sin/cos/arctan, 1 for log)
 
-   For integer k: evaluates sums and orders bounds
-   For symbolic k: returns Inactive[Sum] expressions
+   Pairs of consecutive terms sum to positive values (for |x| < convergence radius).
+   This gives MONOTONIC partial sums — no Min/Max needed!
+
+   Lower bound: T_k = S_{2k} (sum of k pairs = 2k terms)
+   Upper bound: T_k + term_{2k+1} (next unpaired term)
+   Width: |term_{2k+1}| — unit fraction when Numerator[x] = 1
 *)
-alternatingSeriesInterval[termExpr_, var_, k_Integer, start_: 0] := Module[{s1, s2},
-  s1 = Sum[termExpr, {var, start, k - 1}];
-  s2 = Sum[termExpr, {var, start, k}];
-  Interval[{Min[s1, s2], Max[s1, s2]}]
+alternatingSeriesInterval[termExpr_, var_, k_Integer, start_: 0] := Module[{lower, nextTerm},
+  lower = Sum[termExpr, {var, start, start + 2 k - 1}];
+  nextTerm = termExpr /. var -> start + 2 k;
+  Interval[{lower, lower + nextTerm}]
 ]
 
-alternatingSeriesInterval[termExpr_, var_, k_, start_: 0] := Interval[{
-  Inactive[Sum][termExpr, {var, start, k - 1}],
-  Inactive[Sum][termExpr, {var, start, k}]
-}]
+alternatingSeriesInterval[termExpr_, var_, k_, start_: 0] := Module[{lower, nextTerm},
+  lower = Inactive[Sum][termExpr, {var, start, start + 2 k - 1}];
+  nextTerm = termExpr /. var -> start + 2 k;
+  Interval[{lower, lower + nextTerm}]
+]
 
 (* ============================================ *)
 (* SIN IMPLEMENTATION                          *)
