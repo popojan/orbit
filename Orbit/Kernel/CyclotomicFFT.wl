@@ -124,20 +124,21 @@ Begin["`Private`"];
 (* Reduce polynomial coefficients modulo cyclotomic polynomial Φₙ *)
 (* This gives canonical representation in minimal basis {1, ζ, ..., ζ^(φ(n)-1)} *)
 reduceCoeffsCyclotomic[coeffs_List, n_Integer] := Module[
-  {phi = EulerPhi[n], cyclo, poly, reduced},
+  {phi = EulerPhi[n], cyclo, poly, reduced, z},
 
   (* Build polynomial from coefficients *)
-  poly = Sum[coeffs[[k]] Global`x^(k-1), {k, 1, Length[coeffs]}];
+  (* Use Module-local z to avoid namespace conflicts *)
+  poly = Sum[coeffs[[k]] z^(k-1), {k, 1, Length[coeffs]}];
 
   (* Get cyclotomic polynomial *)
-  cyclo = Cyclotomic[n, Global`x];
+  cyclo = Cyclotomic[n, z];
 
   (* Reduce modulo cyclotomic polynomial *)
   (* PolynomialRemainder gives remainder of poly/cyclo *)
-  reduced = PolynomialRemainder[poly, cyclo, Global`x];
+  reduced = PolynomialRemainder[poly, cyclo, z];
 
   (* Extract coefficients, pad to φ(n) *)
-  PadRight[CoefficientList[reduced, Global`x], phi]
+  PadRight[CoefficientList[reduced, z], phi]
 ]
 
 (* Legacy: Full reduction using only ζⁿ = 1 (keeps n coefficients) *)
@@ -355,35 +356,65 @@ cyclotomicSum[elems_List] := Module[{n, coeffs},
   CyclotomicElement[n, coeffs]
 ]
 
-CyclotomicDFT[input_List] := Module[{n = Length[input], x},
+CyclotomicDFT[input_List] := Module[{n = Length[input], x, result},
   (* Convert inputs to cyclotomic *)
   x = CyclotomicFromReal[#, n] & /@ input;
 
   (* Direct DFT computation: X[k] = Σ_j x[j] ω^(jk) *)
-  Table[
+  result = Table[
     cyclotomicSum @ Table[
       CyclotomicMultiply[x[[j + 1]], CyclotomicTwiddle[n, j * k]],
       {j, 0, n - 1}
     ],
     {k, 0, n - 1}
-  ]
+  ];
+  (* Auto-extract rationals for user convenience *)
+  maybeExtractRational /@ result
 ]
 
-CyclotomicInverseDFT[input_List] := Module[{n = Length[input], ord},
+(* Check if CyclotomicElement is rational (only ζ⁰ coefficient nonzero) *)
+cyclotomicIsRational[CyclotomicElement[_, coeffs_]] :=
+  AllTrue[Rest[coeffs], # === 0 &]
+
+(* Extract rational if possible, otherwise return CyclotomicElement *)
+maybeExtractRational[elem_CyclotomicElement] :=
+  If[cyclotomicIsRational[elem],
+    First[CyclotomicCoeffs[elem]],
+    elem
+  ]
+
+(* Convert to CyclotomicElement if needed *)
+toCyclotomic[x_?NumericQ, n_] := CyclotomicFromReal[x, n]
+toCyclotomic[x_CyclotomicElement, n_] /; CyclotomicOrder[x] == n := x
+toCyclotomic[x_CyclotomicElement, n_] /; Divisible[n, CyclotomicOrder[x]] :=
+  (* Order divides target: embed in larger field *)
+  Module[{m = CyclotomicOrder[x], factor = n / CyclotomicOrder[x], coeffs},
+    coeffs = CyclotomicCoeffs[x];
+    (* ζₘ^k = ζₙ^(k·factor), but we use minimal basis so just re-reduce *)
+    CyclotomicElement[n, PadRight[coeffs, n]]
+  ]
+toCyclotomic[x_CyclotomicElement, n_] :=
+  (* Incompatible orders - shouldn't happen in normal DFT usage *)
+  (Message[CyclotomicInverseDFT::order, CyclotomicOrder[x], n]; x)
+
+CyclotomicInverseDFT[input_List] := Module[{n = Length[input], x, result},
   (* IDFT: x[j] = (1/n) Σ_k X[k] ζ^(jk) *)
   (* Note: ζ = e^(2πi/n), while ω = e^(-2πi/n) = ζ^(-1) *)
   (* So ω^(-jk) = ζ^(jk) *)
-  ord = CyclotomicOrder[First[input]];
-  Table[
+  (* Order = list length (DFT of length n uses n-th roots) *)
+  x = toCyclotomic[#, n] & /@ input;
+  result = Table[
     CyclotomicScale[
       cyclotomicSum @ Table[
-        CyclotomicMultiply[input[[k + 1]], zetaPower[ord, j * k]],
+        CyclotomicMultiply[x[[k + 1]], zetaPower[n, j * k]],
         {k, 0, n - 1}
       ],
       1/n
     ],
     {j, 0, n - 1}
-  ]
+  ];
+  (* Auto-extract rationals for user convenience *)
+  maybeExtractRational /@ result
 ]
 
 (* ζ^k (forward rotation, not twiddle) *)
