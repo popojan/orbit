@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-21 23:57:22
+**Generated:** 2025-12-28 12:30:38
 
 ## Theorems (Master References)
 
@@ -49,6 +49,8 @@
 
 ## Recent Sessions (Last 10)
 
+- [Circ Function Exploration: Hartley Connection](sessions/2025-12-07-circ-hartley-exploration/README.md) *(2025-12-28)*
+- [ArcTan Interval Denominators and Twin Prime Structure](sessions/2025-12-22-arctan-twin-primes/README.md) *()*
 - [Great Pyramid of Giza and Continued Fractions](sessions/2025-12-20-giza-pell-revival/README.md) *(2025-12-21)*
 - [Interval Width Determinants](sessions/2025-12-20-interval-determinants/README.md) *(2025-12-20)*
 - [Pi Exploration: Interval Bounds and Iteration Methods](sessions/2025-12-20-pi-exploration/README.md) *(2025-12-20)*
@@ -57,8 +59,6 @@
 - [E-Prime Connections: The s_n Sequence and Prime Distribution](sessions/2025-12-19-e-prime-connections/README.md) *(2025-12-20)*
 - [Symbolic Formulas for E-Spiral Intersections](sessions/2025-12-18-bessel-ode-exploration/symbolic-summary.md) *(2025-12-19)*
 - [Session: Bessel ODE and Exponential Connection](sessions/2025-12-18-bessel-ode-exploration/README.md) *(2025-12-19)*
-- [Fast Computation of e via σ-Conjugation](sessions/2025-12-17-sigma-conjugation-e/README.md) *(2025-12-18)*
-- [Complex Analysis of Euler E Analytic Terms](sessions/2025-12-17-sigma-conjugation-e/complex-analysis.md) *(2025-12-17)*
 
 ## Navigation
 
