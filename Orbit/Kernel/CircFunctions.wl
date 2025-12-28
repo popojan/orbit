@@ -1,13 +1,23 @@
 (* ::Package:: *)
 
-(* CircFunctions: Rational Circle Algebra
+(* CircFunctions: Rational Circle Algebra (v2 - 7-centered parametrization)
 
    The unit circle parametrized so that multiplication is just addition:
-     t1 \[Cross] t2 = t1 + t2 + 5/4
+     t1 \[Cross] t2 = t1 + t2 + 7/4
 
    All operations stay in rationals until explicitly converted to coordinates.
 
-   Two dual frameworks exist (5/4 vs 7/4), related by t \[LeftRightArrow] 1-t.
+   Key design choice: self-dual point at t = 0, duality is simple negation.
+   The number 7 has prominent role: offset = 7/4, identity = -7/4.
+
+   Dual frameworks (±7/4) are symmetric around 0, related by t \[LeftRightArrow] -t.
+
+   v2 changes (Dec 2025):
+     - γ: Cos[3π/4 + πt] → Cos[5π/4 + πt]
+     - κ: {γ[-t], γ[t]} → {-γ[-t], γ[t]}
+     - Self-dual point: t = 1/2 → t = 0
+     - CircDual: (1-t) → (-t)
+     - All offsets: 5/4 → 7/4
 
    Reference: docs/sessions/2025-12-07-circ-hartley-exploration/README.md
 *)
@@ -19,40 +29,41 @@ BeginPackage["Orbit`"];
 (* All operations return rationals!             *)
 (* ============================================ *)
 
-CircTimes::usage = "CircTimes[t1, t2] = t1 + t2 + 5/4
+CircTimes::usage = "CircTimes[t1, t2] = t1 + t2 + 7/4
 Multiplication of circle parameters. Returns rational.
 Infix: t1 \[CircleTimes] t2 (Esc c* Esc)
 Also available as: t1 ⊗ t2";
 
-CircPower::usage = "CircPower[t, n] = n*t + 5(n-1)/4
+CircPower::usage = "CircPower[t, n] = n*t + 7(n-1)/4
 Power of circle parameter. Returns rational.
 Infix: t \[CircleDot] n (Esc c. Esc)
 Also available as: t ⊙ n";
 
-CircInverse::usage = "CircInverse[t] = -t - 5/2
+CircInverse::usage = "CircInverse[t] = -t - 7/2
 Multiplicative inverse. Returns rational.
 Satisfies: CircTimes[t, CircInverse[t]] = CircIdentity";
 
 CircShift::usage = "CircShift[t] = t + 1/2
 Multiplication by i (90\[Degree] rotation). Returns rational.";
 
-CircConjugate::usage = "CircConjugate[t] = 3/2 - t
+CircConjugate::usage = "CircConjugate[t] = 1/2 - t
 Complex conjugate. Returns rational.
 Postfix: SuperStar[t] displays as t* (Ctrl+^ then * in notebook)
-Note: NOT -t (that swaps coordinates).";
+Note: NOT -t (that's duality, not conjugation).";
 
-CircDual::usage = "CircDual[t] = 1 - t
-Switch between frameworks A (5/4) and B (7/4). Returns rational.";
+CircDual::usage = "CircDual[t] = -t
+Switch between frameworks A (+7/4) and B (-7/4). Returns rational.
+In v2, duality is simple negation—maximally symmetric.";
 
-CircNormalize::usage = "CircNormalize[t] reduces to canonical range [-1/4, 7/4).
-Returns rational.";
+CircNormalize::usage = "CircNormalize[t] reduces to canonical range [-1, 1).
+Returns rational. Centered around self-dual point t = 0.";
 
-CircRoot::usage = "CircRoot[n] or CircRoot[n, k] = 2k/n - 5/4
+CircRoot::usage = "CircRoot[n] or CircRoot[n, k] = 2k/n - 7/4
 The k-th n-th root of unity (k defaults to 1 = primitive root).
 Alias: \[Rho][n] (Esc r Esc)";
 
 \[Rho]::usage = "\[Rho][n] = primitive n-th root of unity (k=1)
-\[Rho][n, k] = k-th n-th root of unity = 2k/n - 5/4
+\[Rho][n, k] = k-th n-th root of unity = 2k/n - 7/4
 Named after \[Rho]\[Iota]\[Zeta]\[Alpha] (rhiza) = root in Greek.
 Type: Esc r Esc
 
@@ -60,18 +71,20 @@ Example - Gauss's 17-star (Braunschweig monument):
   Polygon[\[Kappa][\[Rho][17] \[CircleDot] 3#] & /@ Range[17]]";
 
 (* Constants *)
-CircIdentity::usage = "CircIdentity = -5/4, the multiplicative identity.
-Equivalent to 3/4 (mod 2). Represents {1, 0}.";
+CircIdentity::usage = "CircIdentity = -7/4, the multiplicative identity.
+Equivalent to 1/4 (mod 2). Represents {1, 0}.";
 
-CircImaginary::usage = "CircImaginary = -3/4, represents i.
-Equivalent to 5/4 (mod 2). Represents {0, 1}.";
+CircImaginary::usage = "CircImaginary = 3/4, represents i.
+Represents {0, 1} at angle π/2.";
 
-CircFrameworkA::usage = "CircFrameworkA = 5/4, multiplication offset for framework A.";
-CircFrameworkB::usage = "CircFrameworkB = 7/4, multiplication offset for framework B.";
+CircFrameworkA::usage = "CircFrameworkA = 7/4, multiplication offset for framework A (main).";
+CircFrameworkB::usage = "CircFrameworkB = -7/4, multiplication offset for framework B (dual).
+Note: A and B are negatives—symmetric around the self-dual point t = 0.";
 
 (* Framework B multiplication *)
-CircTimesB::usage = "CircTimesB[t1, t2] = t1 + t2 + 7/4
-Multiplication in framework B. Returns rational.";
+CircTimesB::usage = "CircTimesB[t1, t2] = t1 + t2 - 7/4
+Multiplication in framework B (dual). Returns rational.
+Related to CircTimes via: CircTimesB[t1, t2] = -CircTimes[-t1, -t2]";
 
 (* ============================================ *)
 (* BRIDGES TO COORDINATES                       *)
@@ -80,10 +93,11 @@ Multiplication in framework B. Returns rational.";
 
 \[Gamma]::usage = "\[Gamma][t] - rational circle function (inert symbolic form).
 The primary representation. Use N[] for numeric, \[Alpha][] for classical trig.
-\[Gamma][t] corresponds to Cos[3\[Pi]/4 + \[Pi]t] but stays symbolic.
+\[Gamma][t] corresponds to Cos[5\[Pi]/4 + \[Pi]t] but stays symbolic.
 Named after \[Gamma]\[Omega]\[Nu]\[Iota]\[Alpha] (gonia) = angle in Greek.
 Type: Esc g Esc
-Historical alias: Circ (for compatibility with earlier notebooks/docs)";
+Historical alias: Circ (for compatibility with earlier notebooks/docs)
+v2: angle shifted from 3π/4 to 5π/4 for 7-centered parametrization.";
 
 \[Alpha]::usage = "\[Alpha][expr] - reveal classical (ancient) trig form.
 Converts \[Gamma] to Cos/Sin throughout expr.
@@ -92,10 +106,10 @@ Type: Esc a Esc";
 
 (* γ: inert symbolic form *)
 SetAttributes[\[Gamma], {NumericFunction}];
-\[Gamma] /: N[\[Gamma][t_], args___] := N[Cos[3 Pi/4 + Pi t], args];
+\[Gamma] /: N[\[Gamma][t_], args___] := N[Cos[5 Pi/4 + Pi t], args];
 
-(* Simplification upvalues *)
-\[Gamma] /: \[Gamma][t_ + 1/2] := \[Gamma][-t];              (* Shift = negation *)
+(* Simplification upvalues - v2 *)
+\[Gamma] /: \[Gamma][t_ - 1/2] := \[Gamma][-t];              (* Half-shift symmetry *)
 \[Gamma] /: \[Gamma][t_ + n_Integer /; Abs[n] >= 2] := \[Gamma][t + Mod[n, 2]];  (* Period 2: integers *)
 \[Gamma] /: \[Gamma][t_ + r_Rational /; Abs[r] >= 2] := \[Gamma][t + Mod[r, 2]]; (* Period 2: rationals *)
 
@@ -108,7 +122,7 @@ Plus /: \[Gamma][a_?NumericQ]^2 + \[Gamma][b_?NumericQ]^2 /; a + b == 0 := 1;
 Protect[Plus];
 
 (* α: reveal classical trig form *)
-\[Alpha][expr_] := expr /. \[Gamma][t_] :> Cos[3 Pi/4 + Pi t];
+\[Alpha][expr_] := expr /. \[Gamma][t_] :> Cos[5 Pi/4 + Pi t];
 
 (* Backward compatibility alias *)
 Circ = \[Gamma];
@@ -143,32 +157,32 @@ Begin["`Private`"];
 (* RATIONAL ALGEBRA                             *)
 (* ============================================ *)
 
-(* Constants *)
-CircIdentity = -5/4;
-CircImaginary = -3/4;
-CircFrameworkA = 5/4;
-CircFrameworkB = 7/4;
+(* Constants - v2: 7-centered *)
+CircIdentity = -7/4;
+CircImaginary = 3/4;
+CircFrameworkA = 7/4;
+CircFrameworkB = -7/4;
 
-(* Operations - all return rationals *)
-CircTimes[t1_, t2_] := t1 + t2 + 5/4
-CircTimesB[t1_, t2_] := t1 + t2 + 7/4
-CircPower[t_, n_Integer] := n t + 5 (n - 1)/4
-CircInverse[t_] := -t - 5/2
-CircShift[t_] := t + 1/2
-CircConjugate[t_] := 3/2 - t
-CircDual[t_] := 1 - t
-CircNormalize[t_] := Mod[t + 1/4, 2] - 1/4
+(* Operations - all return rationals - v2: 7-centered *)
+CircTimes[t1_, t2_] := t1 + t2 + 7/4
+CircTimesB[t1_, t2_] := t1 + t2 - 7/4
+CircPower[t_, n_Integer] := n t + 7 (n - 1)/4
+CircInverse[t_] := -t - 7/2
+CircShift[t_] := t + 1/2  (* unchanged! *)
+CircConjugate[t_] := 1/2 - t
+CircDual[t_] := -t  (* v2: simple negation *)
+CircNormalize[t_] := Mod[t + 1, 2] - 1  (* centered at 0 *)
 (* Fully symbolic; formula threads via arithmetic *)
-CircRoot[n_, k_: 1] := 2 k/n - 5/4
-\[Rho][n_, k_: 1] := 2 k/n - 5/4
+CircRoot[n_, k_: 1] := 2 k/n - 7/4
+\[Rho][n_, k_: 1] := 2 k/n - 7/4
 
 (* ============================================ *)
 (* INFIX OPERATOR \[CircleTimes] = ⊗            *)
 (* Type: Esc c* Esc                             *)
 (* ============================================ *)
 
-(* Binary case *)
-CircleTimes[t1_, t2_] := t1 + t2 + 5/4
+(* Binary case - v2 *)
+CircleTimes[t1_, t2_] := t1 + t2 + 7/4
 
 (* Variadic case for chaining: a ⊗ b ⊗ c *)
 CircleTimes[t1_, t2_, rest__] := CircleTimes[CircleTimes[t1, t2], rest]
@@ -180,7 +194,7 @@ CircleTimes[t1_, t2_, rest__] := CircleTimes[CircleTimes[t1, t2], rest]
 (* Threads over lists via arithmetic            *)
 (* ============================================ *)
 
-CircleDot[t_, n:(_Integer|{__Integer})] := n t + 5 (n - 1)/4
+CircleDot[t_, n:(_Integer|{__Integer})] := n t + 7 (n - 1)/4
 
 (* ============================================ *)
 (* POSTFIX SuperStar (conjugate)                *)
@@ -188,7 +202,7 @@ CircleDot[t_, n:(_Integer|{__Integer})] := n t + 5 (n - 1)/4
 (* Or just use: SuperStar[t]                    *)
 (* ============================================ *)
 
-SuperStar[t_] := 3/2 - t
+SuperStar[t_] := 1/2 - t  (* v2: conjugate formula *)
 
 (* ============================================ *)
 (* BRIDGES - EVALUATE TO COORDINATES            *)
@@ -204,41 +218,72 @@ SuperStar[t_] := 3/2 - t
 (* κ[t] = Euclidean (p=2), κ[t, p] = general    *)
 (* ============================================ *)
 
-(* List threading - MUST come first! *)
-\[Kappa][t_List] := Transpose[{\[Gamma] /@ (-t), \[Gamma] /@ t}]
+(* List threading - MUST come first! - v2: note minus on x-component *)
+\[Kappa][t_List] := Transpose[{-\[Gamma] /@ (-t), \[Gamma] /@ t}]
 \[Kappa][t_List, p_] := \[Kappa][#, p] & /@ t
 \[Kappa][t_, p_List] := \[Kappa][t, #] & /@ p
 
-(* Symbolic absolute value of γ *)
+(* Symbolic absolute value of γ - v2 *)
 (* Sign[Cos[x]] = (-1)^Floor[x/π + 1/2] *)
-(* For γ[t] = Cos[3π/4 + πt]: Sign[γ[t]] = (-1)^Floor[t + 5/4] *)
+(* For γ[t] = Cos[5π/4 + πt]: Sign[γ[t]] = (-1)^Floor[t + 7/4] *)
 (* |γ[t]| = Sign[γ[t]] × γ[t] *)
-absGamma[t_?NumericQ] := With[{sign = (-1)^Floor[t + 5/4]}, sign * \[Gamma][t]]
-absGamma[t_] := (-1)^Floor[t + 5/4] * \[Gamma][t]  (* symbolic fallback *)
+absGamma[t_?NumericQ] := With[{sign = (-1)^Floor[t + 7/4]}, sign * \[Gamma][t]]
+absGamma[t_] := (-1)^Floor[t + 7/4] * \[Gamma][t]  (* symbolic fallback *)
 
-(* p = 2 (default): Euclidean circle - γ stays inert *)
-\[Kappa][t_] := {\[Gamma][-t], \[Gamma][t]}
-\[Kappa][t_, 2] := {\[Gamma][-t], \[Gamma][t]}
+(* p = 2 (default): Euclidean circle - v2: minus on x-component *)
+\[Kappa][t_] := {-\[Gamma][-t], \[Gamma][t]}
+\[Kappa][t_, 2] := {-\[Gamma][-t], \[Gamma][t]}
 
-(* p = 1: Taxicab diamond *)
-\[Kappa][t_, 1] := {\[Gamma][-t], \[Gamma][t]} / (absGamma[-t] + absGamma[t])
+(* p = 1: Taxicab diamond - v2 *)
+\[Kappa][t_, 1] := {-\[Gamma][-t], \[Gamma][t]} / (absGamma[-t] + absGamma[t])
 
-(* p = ∞: Chebyshev square *)
+(* p = ∞: Chebyshev square - v2 *)
 \[Kappa][t_, DirectedInfinity[1]] := \[Kappa][t, Infinity]
 \[Kappa][t_, Infinity] := Module[{ag1 = absGamma[-t], ag2 = absGamma[t]},
-  {\[Gamma][-t], \[Gamma][t]} / If[ag1 >= ag2, ag1, ag2]
+  {-\[Gamma][-t], \[Gamma][t]} / If[ag1 >= ag2, ag1, ag2]
 ]
 
-(* General p - integer: compute norm via Cos (avoids γ precision issues) *)
+(* General p - integer: compute norm via Cos (avoids γ precision issues) - v2 *)
 \[Kappa][t_?NumericQ, p_Integer] /; p >= 3 := Module[
-  {c1 = Cos[3 Pi/4 - Pi t], c2 = Cos[3 Pi/4 + Pi t], norm},
+  {c1 = Cos[5 Pi/4 - Pi t], c2 = Cos[5 Pi/4 + Pi t], norm},
   norm = (Abs[c1]^p + Abs[c2]^p)^(1/p);
-  {\[Gamma][-t], \[Gamma][t]} / norm
+  {-\[Gamma][-t], \[Gamma][t]} / norm
 ]
 
-(* General p - non-integer *)
+(* General p - non-integer - v2 *)
 \[Kappa][t_, p_] /; p > 0 && p != 2 && !IntegerQ[p] :=
-  {\[Gamma][-t], \[Gamma][t]} / (absGamma[-t]^p + absGamma[t]^p)^(1/p)
+  {-\[Gamma][-t], \[Gamma][t]} / (absGamma[-t]^p + absGamma[t]^p)^(1/p)
+
+(* ============================================ *)
+(* NOTE: POLAR EXTENSION (not implemented)     *)
+(* ============================================ *)
+(*
+   Considered extending to arbitrary complex numbers via (angle, magnitude)
+   pairs where both components stay rational. Analysis (Dec 2025):
+
+   WHAT WORKS (multiplicative operations):
+     (t₁, m₁) × (t₂, m₂) = (t₁ ⊗ t₂, m₁ · m₂)
+     (t₁, m₁) / (t₂, m₂) = (t₁ - t₂ - 7/4, m₁ / m₂)   (* v2: 7/4 offset *)
+     (t, m)^n = (t ⊙ n, m^n)
+     (t, m)* = (1/2 - t, m)   (* v2: conjugate formula *)
+
+   WHAT BREAKS:
+     Addition: z₁ + z₂ requires converting to Cartesian, producing
+     irrational magnitude (√...) and angle (arctan). The "stays rational"
+     property is lost.
+
+   DECISION: Not worth the complexity. For roots of unity (main use case),
+   magnitude is always 1. For general complex arithmetic, addition is
+   fundamental and breaks the framework anyway.
+
+   MANUAL WORKAROUND: User can track {t, m} pairs and apply operations:
+     {t1 ⊗ t2, m1 * m2}           (* multiply *)
+     {t1 - t2 - 7/4, m1 / m2}     (* divide - v2 *)
+     {t ⊙ n, m^n}                 (* power *)
+     m * κ[t] or m * φ[t]         (* convert to coordinates *)
+
+   Note: κ[t, p] already uses second parameter for L^p geometry.
+*)
 
 (* ============================================ *)
 (* πLp: π as function of L^p geometry          *)

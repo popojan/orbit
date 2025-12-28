@@ -399,14 +399,13 @@ zetaPower[n_Integer, k_Integer] := Module[{coeffs, idx},
 (* ============================================ *)
 
 (* Convert Circ phase to cyclotomic element *)
-(* φ[t] = e^(i(3π/4 + πt)) = e^(3πi/4) · e^(πit) *)
-(* For t = 2k/n - 5/4, this is a root of unity *)
+(* v2: φ[t] = e^(i(5π/4 + πt)) for γ[t] = Cos[5π/4 + πt] *)
+(* For t = 2k/n - 7/4, this is a root of unity *)
 CyclotomicFromCirc[t_?NumericQ, n_Integer] := Module[
   {k, coeffs},
-  (* φ[t] corresponds to e^(i(3π/4 + πt)) *)
-  (* = ζ_8^3 · ζ_n^(nt/2 + ...) — complicated! *)
+  (* φ[t] corresponds to e^(i(5π/4 + πt)) in v2 *)
   (* For now, just verify t gives n-th root *)
-  k = (t + 5/4) * n / 2;
+  k = (t + 7/4) * n / 2;  (* v2: 7/4 offset *)
   If[IntegerQ[k],
     CyclotomicTwiddle[n, -k],  (* ω = e^(-2πi/n), so φ relates inversely *)
     $Failed

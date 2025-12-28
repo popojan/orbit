@@ -451,83 +451,89 @@ No trig functions, no square roots, no π — just rational arithmetic!
 
 ### Cheat Sheet
 
-#### Constants (all rational)
+#### Constants (all rational) — v2
 
 | Symbol | Value | Meaning |
 |--------|-------|---------|
-| `CircIdentity` | −5/4 | Multiplicative identity (= 1 on circle) |
-| `CircImaginary` | −3/4 | The imaginary unit i |
-| `CircFrameworkA` | 5/4 | Multiplication offset (default) |
-| `CircFrameworkB` | 7/4 | Alternative framework offset |
+| `CircIdentity` | −7/4 | Multiplicative identity (= 1 on circle) |
+| `CircImaginary` | 3/4 | The imaginary unit i |
+| `CircFrameworkA` | 7/4 | Multiplication offset (default) |
+| `CircFrameworkB` | −7/4 | Dual framework offset |
 
-#### Operations (all return rationals)
+#### Operations (all return rationals) — v2
 
 | Operation | Formula | Notes |
 |-----------|---------|-------|
-| `t₁ ⊗ t₂` | `t₁ + t₂ + 5/4` | Multiplication (Esc c* Esc) |
-| `t ⊙ n` | `n·t + 5(n−1)/4` | Power (Esc c. Esc) |
-| `SuperStar[t]` | `3/2 − t` | Conjugate (Ctrl+^ then *) |
-| `CircInverse[t]` | `−t − 5/2` | Multiplicative inverse |
+| `t₁ ⊗ t₂` | `t₁ + t₂ + 7/4` | Multiplication (Esc c* Esc) |
+| `t ⊙ n` | `n·t + 7(n−1)/4` | Power (Esc c. Esc) |
+| `SuperStar[t]` | `1/2 − t` | Conjugate (Ctrl+^ then *) |
+| `CircInverse[t]` | `−t − 7/2` | Multiplicative inverse |
 | `CircShift[t]` | `t + 1/2` | Multiply by i (90° rotation) |
-| `CircDual[t]` | `1 − t` | Switch framework A ↔ B |
-| `CircNormalize[t]` | `Mod[t+1/4, 2] − 1/4` | Canonical range [−1/4, 7/4) |
-| `ρ[n, k]` | `2k/n − 5/4` | k-th n-th root of unity (Esc r Esc) |
+| `CircDual[t]` | `−t` | Switch framework A ↔ B (negation!) |
+| `CircNormalize[t]` | `Mod[t+1, 2] − 1` | Canonical range [−1, 1) |
+| `ρ[n, k]` | `2k/n − 7/4` | k-th n-th root of unity (Esc r Esc) |
 
-#### Bridges to Coordinates (these evaluate!)
+#### Bridges to Coordinates (these evaluate!) — v2
 
 | Function | Output | Type (Esc key) |
 |----------|--------|----------------|
-| `Circ[t]` | `Cos[3π/4 + πt]` | Real number |
-| `κ[t]` | `{Circ[−t], Circ[t]}` | {x, y} pair (Esc k Esc) |
-| `φ[t]` | `Circ[−t] + I·Circ[t]` | Complex (Esc j Esc) |
+| `γ[t]` | `Cos[5π/4 + πt]` | Real number (Esc g Esc) |
+| `κ[t]` | `{−γ[−t], γ[t]}` | {x, y} pair (Esc k Esc) |
+| `φ[t]` | `κ[t] · {1, I}` | Complex (Esc j Esc) |
+
+**Note:** v2 uses 5π/4 (was 3π/4) and κ has minus on x-component.
 
 **Greek naming:**
 - **κ** from κύκλος (kyklos) = circle — Esc k Esc
 - **φ** from φαντασία (phantasia) = imagination — Esc j Esc (or Esc cph Esc)
 - **ρ** from ῥίζα (rhiza) = root — Esc r Esc
 
-### Framework Duality (5/4 vs 7/4)
+### Framework Duality (±7/4) — v2
 
-Two equivalent frameworks exist, related by reflection:
+Two equivalent frameworks exist, symmetric around t = 0:
 
-| Framework | Offset | Start point P[0] | Diagonal |
-|-----------|--------|------------------|----------|
-| **A** (default) | 5/4 | (−1/√2, −1/√2) | negative |
-| **B** (alternative) | 7/4 | (+1/√2, +1/√2) | positive |
+| Framework | Offset | Identity | Self-dual |
+|-----------|--------|----------|-----------|
+| **A** (default) | +7/4 | −7/4 | t = 0 |
+| **B** (dual) | −7/4 | +7/4 | t = 0 |
 
 **Switching between frameworks:**
 ```mathematica
-(* From A to B: *)
-tB = CircDual[tA]     (* = 1 - tA *)
+(* From A to B (v2: simple negation!): *)
+tB = CircDual[tA]     (* = -tA *)
 
 (* Multiplication in B: *)
-CircTimesB[t1, t2]    (* = t1 + t2 + 7/4 *)
+CircTimesB[t1, t2]    (* = t1 + t2 - 7/4 *)
 ```
 
-**The duality is exact:** Everything computable in A has a dual in B via `t ↔ 1−t`.
+**The duality is maximally symmetric:** `CircDual[t] = -t` means A and B are mirror images around the origin.
 
-### Usage Examples
+### Usage Examples — v2
 
 ```mathematica
 << Orbit`
 
 (* Pure rational algebra *)
-1/3 ⊗ 1/4                    (* → 23/12 *)
-1/2 ⊙ 3                      (* → 7/2, power *)
-SuperStar[1/3]               (* → 7/6, conjugate *)
+1/3 ⊗ 1/4                    (* → 31/12, multiplication *)
+1/2 ⊙ 3                      (* → 5, power *)
+SuperStar[1/3]               (* → 1/6, conjugate *)
 
-(* Roots of unity (all rational!) *)
-ρ[4, 0]                      (* → −5/4 (= 1) *)
-ρ[4, 1]                      (* → −3/4 (= i) *)
-ρ[4, 2]                      (* → −1/4 (= −1) *)
-ρ[4, 3]                      (* → 1/4 (= −i) *)
+(* Roots of unity (all rational!) — v2 *)
+ρ[4, 0]                      (* → −7/4 (= 1) *)
+ρ[4, 1]                      (* → −5/4 (= i) *)
+ρ[4, 2]                      (* → −3/4 (= −1) *)
+ρ[4, 3]                      (* → −1/4 (= −i) *)
+
+(* Special: self-dual 8th root at t = 0 *)
+ρ[8, 7]                      (* → 0 (self-dual point!) *)
 
 (* Verify: ω ⊙ n = identity *)
-ρ[17, 1] ⊙ 17 // CircNormalize   (* → −5/4 ✓ *)
+ρ[17, 1] ⊙ 17 // CircNormalize   (* → −7/4 ✓ *)
 
 (* Only when you need coordinates: *)
-κ[0]                         (* → {−1/√2, −1/√2} *)
-φ[ρ[4, 1]]                   (* → 0 + 1.0 I (= i) *)
+κ[0]                         (* → {√2/2, −√2/2} — self-dual point *)
+κ[-7/4]                      (* → {1, 0} — identity *)
+φ[ρ[8, 2]]                   (* → 0 + 1.0 I (= i) *)
 
 (* Gauss's 17-star (Braunschweig monument) *)
 Polygon[κ[ρ[17] ⊙ 3#] & /@ Range[17]]
@@ -555,3 +561,84 @@ Operations that require leaving rationals:
 - Arbitrary roots — would need nth root computation
 
 These could be added as "evaluated operations" that return symbolic or numerical results.
+
+---
+
+## Potential Applications (v2, Dec 2025)
+
+Areas where the rational circle algebra could simplify calculations:
+
+### 1. AC Circuit Analysis (Phasors)
+
+**Standard approach:** V = V₀ e^{iωt}, impedance Z = R + iX
+**Circ approach:** V(t) corresponds to parameter t, phase shifts are just additions
+
+| Operation | Standard | Circ (v2) |
+|-----------|----------|-----------|
+| Phase shift by φ | multiply by e^{iφ} | t → t + φ/π |
+| 90° lag (inductor) | multiply by i | t → t + 1/2 |
+| 90° lead (capacitor) | multiply by -i | t → t - 1/2 |
+| Combine phases | complex multiplication | t₁ ⊗ t₂ = t₁ + t₂ + 7/4 |
+
+**Benefit:** Phase calculations stay in ℚ until final conversion to voltages/currents.
+
+### 2. Digital Signal Processing
+
+- **DFT/FFT:** Twiddle factors are roots of unity → ρ[n, k] = 2k/n - 7/4
+- **Filter design:** Phase response as rational function of t
+- **Hartley transform:** Direct connection (Circ = scaled cas)
+
+### 3. Robotics / Kinematics
+
+- **Joint angles:** Rational representation avoids floating-point drift
+- **Rotation composition:** Addition instead of matrix multiplication
+- **Inverse kinematics:** Symbolic manipulation before numerical evaluation
+
+### 4. Computer Graphics
+
+- **Rotation interpolation:** SLERP in rational coordinates
+- **Texture mapping:** Periodic coordinates without modular arithmetic issues
+- **Procedural generation:** Exact rational phases for reproducibility
+
+### 5. Music / Audio
+
+- **Pitch relationships:** Just intonation ratios map to rational t values
+- **Phase vocoder:** Phase unwrapping in rational domain
+- **Synthesis:** Additive synthesis with exact harmonic phases
+
+### 6. Quantum Computing (Theoretical)
+
+- **Phase gates:** Rational multiples of π are common (T-gate = π/4, S-gate = π/2)
+- **Gate decomposition:** Clifford+T uses phases that are rational in t-units
+- **Error analysis:** Exact symbolic phase tracking
+
+### 7. Navigation / GPS
+
+- **Bearing calculations:** Compass directions as t ∈ [-1, 1)
+- **Great circle:** Spherical trig in Circ coordinates
+- **Phase-based positioning:** Carrier phase ambiguity in rational framework
+
+---
+
+### Why v2 (7-centered) Helps
+
+The v2 parametrization with `CircDual[t] = -t` makes these applications cleaner:
+
+1. **Symmetry:** Positive/negative phases are literal negations
+2. **Self-dual point at 0:** Natural reference for "no phase shift"
+3. **Identity at -7/4:** Algebraically clean (identity = -offset)
+
+**Example (AC circuit):**
+```mathematica
+(* Voltage source at reference phase *)
+Vsource = -7/4;  (* identity = 0° *)
+
+(* Inductor adds 90° lag *)
+Vinductor = Vsource + 1/2;  (* = -5/4 *)
+
+(* Capacitor adds 90° lead *)
+Vcapacitor = Vsource - 1/2;  (* = -9/4 ≡ -1/4 *)
+
+(* Verify: inductor and capacitor are 180° apart *)
+CircDual[Vinductor] == Vcapacitor  (* True! *)
+```
