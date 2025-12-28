@@ -126,6 +126,61 @@ This suggests the number 7 is structurally linked:
 
 Only Khufu uses the mathematically special scaling.
 
+### Pell Equations for Other Pyramids (Added Dec 24, 2025)
+
+If we treat each pyramid's k value as the fundamental y-solution of *some* Pell equation x² − Dy² = ±1, what D values result?
+
+| Pyramid | Ratio | k | D | Equation | Notes |
+|---------|-------|-----|------|----------|-------|
+| Khufu | 7/11 | 40 | 77 | 351² − 77·40² = 1 | D = 7×11 |
+| Khafre | 2/3 | 137 | 2330 | 6613² − 2330·137² = −1 | D = 2×5×233 |
+| Menkaure | 5/8 | 25 | 53 | 182² − 53·25² = −1 | D prime |
+
+Each k is indeed a fundamental y-solution, but only for Khufu does D equal the product of ratio components. The values 53 and 2330 are simply the smallest D for which 25 and 137 appear as fundamental solutions — no obvious connection to 5×8=40 or 2×3=6.
+
+**Numerical curiosities** (likely coincidental):
+- 2330 = 10 × 233 = 10 × F₁₃ (Fibonacci)
+- 25 = 5² (square of ratio numerator)
+- 137 is the 33rd prime
+
+### Mediant Structure (Added Dec 24, 2025)
+
+The three ratios satisfy a Farey/Stern-Brocot relationship:
+
+```
+mediant(2/3, 5/8) = (2+5)/(3+8) = 7/11
+```
+
+Verification that 2/3 and 5/8 are Farey neighbors: |2×8 − 3×5| = |16 − 15| = 1 ✓
+
+This means 7/11 is the child of 2/3 and 5/8 in the Stern-Brocot tree.
+
+### Fibonacci and Lucas Structure (Added Dec 24, 2025)
+
+The ratios correspond to consecutive terms in Fibonacci and Lucas sequences:
+
+| Pyramid | Ratio | Sequence |
+|---------|-------|----------|
+| Khafre | 2/3 | F₃/F₄ |
+| Menkaure | 5/8 | F₅/F₆ |
+| Khufu | 7/11 | L₄/L₅ |
+
+Where Fₙ = {1,1,2,3,5,8,13,...} and Lₙ = {2,1,3,4,7,11,18,...}.
+
+The mediant of two consecutive Fibonacci ratios yields a Lucas ratio:
+```
+mediant(F₃/F₄, F₅/F₆) = L₄/L₅
+```
+
+This pattern **does generalize**:
+```
+mediant(Fₙ/Fₙ₊₁, Fₙ₊₂/Fₙ₊₃) = Lₙ₊₁/Lₙ₊₂
+```
+
+Verified for n = 1..8. This is likely a known identity following from Fₙ + Fₙ₊₂ = Lₙ₊₁.
+
+**Interpretive caution:** These observations are numerical facts about the ratios. They do not imply the Egyptians knew Fibonacci/Lucas sequences or deliberately chose these relationships. The ratios are also √φ/2 convergents (positions 4, 5, 6), which may be the more fundamental explanation.
+
 ## Adversarial Analysis
 
 ### What IS special:
@@ -207,6 +262,8 @@ The 13 in the Pell solution "completes" the triple 7 × 11 × 13 = s₃.
 2. Is the k=40 choice coincidence, practical (round number), or intentional?
 3. Why does only Khufu (not Khafre/Menkaure) use Brahmagupta scaling?
 4. Is the s₃ = 1001 connection meaningful or coincidental?
+5. Is the mediant relationship (7/11 = mediant of 2/3 and 5/8) coincidence or design?
+6. ~~Does the Fibonacci→Lucas mediant pattern generalize?~~ **Yes** — see above.
 
 ## References
 
