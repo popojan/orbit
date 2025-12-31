@@ -70,16 +70,16 @@ Based on Flinders Petrie's 1883 survey using the royal cubit (20.62 inches = 52.
 
 \begin{table}[h]
 \centering
-\begin{tabular}{@{}lcccc@{}}
+\begin{tabular}{@{}lccccc@{}}
 \toprule
-Pyramid & Pharaoh & Height (cubits) & Base (cubits) & Ratio \\
+Pyramid & Pharaoh & Dates (BCE) & Height & Base & Ratio \\
 \midrule
-Khufu (Cheops) & Khufu & 280 & 440 & 7/11 \\
-Khafre (Chephren) & Khafre & 274 & 411 & 2/3 \\
-Menkaure & Menkaure & 125 & 200 & 5/8 \\
+Khufu & Khufu & c. 2580--2560 & 280 & 440 & 7/11 \\
+Khafre & Khafre & c. 2520--2494 & 274 & 411 & 2/3 \\
+Menkaure & Menkaure & c. 2490--2472 & 125 & 200 & 5/8 \\
 \bottomrule
 \end{tabular}
-\caption{Dimensional data for the three Giza pyramids}
+\caption{The three Giza pyramids (heights and bases in cubits)}
 \label{tab:dimensions}
 \end{table}
 
@@ -148,14 +148,14 @@ Convergent & Value & Error from $\sqrt{\varphi}/2$ & Pyramid \\
 \end{table}
 
 \begin{remark}
-The first pyramid constructed (Khufu) uses the most accurate approximation (7/11), while the subsequent pyramids use earlier, cruder convergents. This suggests the builders possessed sophisticated knowledge from the outset rather than developing it gradually.
+Khufu's pyramid was constructed \emph{first} (c. 2580--2560 BCE) and uses the \emph{best} approximation (7/11, error 0.056\%). The later pyramids—Khafre (c. 2520--2494 BCE) and Menkaure (c. 2490--2472 BCE)—use cruder convergents (2/3 and 5/8, errors 4.8\% and 1.7\% respectively). This chronological pattern suggests the first pyramid achieved optimal precision, and later constructions represent simplified or scaled-down implementations rather than progressive refinement.
 \end{remark}
 
-\section{The Pell Equation Connection}
+\section{The Brahmagupta--Bhaskara Equation Connection}
 
 The dimensions of Khufu's pyramid reveal an even deeper number-theoretic structure.
 
-\subsection{Fundamental Solution to Pell's Equation}
+\subsection{Fundamental Solution to the Varga Prakriti}
 
 Consider the scaling of Khufu's dimensions from the reduced ratio 7/11:
 \begin{align*}
@@ -170,11 +170,12 @@ The modulus is 40 cubits $\approx$ 21 meters. Now scale the ratio $7/11$ to have
 
 This gives the pair $(x, y) = (351, 440)$ where $y = 11 \times 40$.
 
-\begin{theorem}[Khufu dimensions solve Pell equation]
-The pair $(x, y) = (351, 11 \times 40) = (351, 440)$ is the fundamental solution to the Pell equation:
+\begin{theorem}[Khufu dimensions solve the Brahmagupta--Bhaskara equation]
+The pair $(x, y) = (351, 11 \times 40) = (351, 440)$ is the fundamental integer solution to the Diophantine equation of type studied by Brahmagupta (628 CE) and Bhaskara II (1150 CE), called \emph{varga prakriti} (square-nature) in Sanskrit:
 \[
 x^2 - \frac{7}{11} y^2 = 1
 \]
+This equation type is sometimes called ``Pell's equation'' due to Euler's misattribution to John Pell (17th century), though Pell made no significant contributions to its solution.
 \end{theorem}
 
 \begin{proof}
@@ -186,7 +187,7 @@ Direct computation:
 &= 1
 \end{align*}
 
-To verify this is fundamental, note that $\gcd(351, 440) = 1$ and any smaller solution would have $x < 351$. The continued fraction algorithm for $\sqrt{7/11}$ produces this as the first non-trivial solution.
+To verify this is fundamental, note that $\gcd(351, 440) = 1$ and any smaller solution would have $x < 351$. The continued fraction algorithm for $\sqrt{7/11}$ produces this as the first non-trivial solution. Bhaskara's \emph{chakravala} (cyclic) method, developed in the 12th century, provides an efficient algorithm for finding such solutions.
 \end{proof}
 
 \subsection{The Dedekind Cut Property}
@@ -227,7 +228,7 @@ The dimensions of the Great Pyramid simultaneously encode:
 
 \begin{enumerate}
 \item \textbf{Convergent approximation:} $7/11$ is the 6th convergent of $\sqrt{\varphi}/2$, giving 0.056\% error
-\item \textbf{Pell equation:} $(351, 440)$ is the fundamental solution to $x^2 - \frac{7}{11}y^2 = 1$
+\item \textbf{Diophantine solution:} $(351, 440)$ is the fundamental integer solution to $x^2 - \frac{7}{11}y^2 = 1$
 \item \textbf{Dedekind cut:} $\frac{280}{351} < \sqrt{\frac{7}{11}} < \frac{351}{440}$ brackets the algebraic number with $0.0004\%$ precision
 \item \textbf{Simple modulus:} Both dimensions are multiples of 40 cubits ($\approx$21 m)
 \end{enumerate}
@@ -347,7 +348,7 @@ The surviving cubit rods date from the 18th--22nd Dynasties (circa 1350--850 BCE
 
 \subsection{Probability of Coincidence}
 
-The probability that three independently chosen ratios would all be consecutive convergents of a specific algebraic number is vanishingly small. The additional property that the largest pyramid's dimensions encode a Pell equation solution adds another layer of improbability.
+The probability that three independently chosen ratios would all be consecutive convergents of a specific algebraic number is vanishingly small. The additional property that the largest pyramid's dimensions encode the fundamental solution to a Brahmagupta--Bhaskara equation adds another layer of improbability.
 
 \subsection{Historical Context}
 
@@ -355,14 +356,18 @@ The pyramids were constructed circa 2580--2510 BCE, predating documented knowled
 \begin{itemize}
 \item The golden ratio $\varphi$ (first rigorously studied by Euclid c. 300 BCE)
 \item Continued fractions (developed by Bombelli, 1572)
-\item Pell equations (studied by Fermat, 1657; Euler, 1732)
+\item Diophantine equations of type $x^2 - Dy^2 = 1$ seeking integer solutions (Diophantus c. 250 CE; systematically solved by Brahmagupta, 628 CE; Bhaskara II's \emph{chakravala} method, 1150 CE; Fermat, 1657; Euler, 1732)
 \end{itemize}
 
-This suggests either:
+These massive construction projects—each requiring decades and involving thousands of workers—represent deliberate architectural design rather than experimentation. The pyramids are generally accepted as royal tombs, though mainstream Egyptology acknowledges that Khufu's burial chamber contains no inscriptions and his mummy was never recovered, likely due to ancient grave robbery.
+
+The convergent structure admits several interpretations:
 \begin{enumerate}
-\item Lost mathematical knowledge in ancient Egypt
-\item Empirical discovery through geometric experimentation
-\item Universal aesthetic principles that naturally lead to these ratios
+\item \textbf{Lost mathematical knowledge:} Egyptian mathematical texts were written on perishable papyrus. The sophistication evidenced by the King's Chamber dimensions ($5\sqrt{5}$ cubits height) suggests knowledge of $\sqrt{5}$ geometry that may not have survived in written form.
+
+\item \textbf{Practical seked constraints:} The seked system naturally produces simple fractions. Structurally optimal slopes fall in the range 5--5.6 palms, where the simplest rational approximations are precisely 2/3, 5/8, and 7/11. If builders sought simple, constructible ratios near an ideal slope, convergents emerge inevitably—they are by definition the best rational approximations with small denominators.
+
+\item \textbf{Intentional variation:} Later pharaohs may have deliberately chosen different ratios to distinguish their monuments while maintaining proportional harmony with the original.
 \end{enumerate}
 
 \subsection{The Seked System}
@@ -384,7 +389,7 @@ Whether these properties resulted from sophisticated number-theoretic knowledge,
 
 \section*{Acknowledgments}
 
-This work was inspired by explorations in the $\gamma$-framework for the Orbit mathematical paclet.
+This work was inspired by explorations in the $\gamma$-framework developed as part of the Orbit mathematical paclet \cite{orbit-paclet}.
 
 \begin{thebibliography}{99}
 
@@ -402,6 +407,15 @@ C. Rossi, \emph{Architecture and Mathematics in Ancient Egypt}, Cambridge Univer
 
 \bibitem{rhind}
 A.~B. Chase, \emph{The Rhind Mathematical Papyrus}, Mathematical Association of America, 1927.
+
+\bibitem{britannica-giza}
+``Pyramids of Giza,'' \emph{Encyclopaedia Britannica}, \url{https://www.britannica.com/topic/Pyramids-of-Giza}.
+
+\bibitem{mactutor-pell}
+``Pell's Equation,'' \emph{MacTutor History of Mathematics}, University of St Andrews, \url{https://mathshistory.st-andrews.ac.uk/HistTopics/Pell/}.
+
+\bibitem{orbit-paclet}
+J. Popelka, \emph{Orbit: Computational Tools for Mathematical Explorations}, Zenodo, 2025. \url{https://doi.org/10.5281/zenodo.17802021}.
 
 \end{thebibliography}
 
