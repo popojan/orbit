@@ -388,6 +388,21 @@ Always run with `-file` flag:
 wolframscript -file script.wl  # Correct
 ```
 
+**Testing:**
+- Test infrastructure: `Tests/*.wlt` files auto-discovered by `Tests/RunAllTests.wl`
+- Run tests: `make test` (or `wolframscript -file Tests/RunAllTests.wl`)
+- **After every change to an existing module**, run `make test` to verify nothing broke
+- **New modules must be test-driven:**
+  1. Design the API first — idiomatic Wolfram style (pattern-based dispatch, options via `OptionsPattern[]`, consistent naming)
+  2. Write `.wlt` tests for the public API before or alongside implementation
+  3. Anchor tests against Wolfram built-ins where possible (e.g., `Mod[n!, p]`, `Fibonacci[n]`, `ChebyshevT`)
+  4. Test mathematical identities (roundtrips, sum invariants, involution properties) not just specific values
+- Test conventions:
+  - Use `FullSimplify` for symbolic comparisons (not `Simplify` — learned the hard way)
+  - Use `SameTest -> (FullSimplify[#1 - #2] === 0 &)` when normal forms may differ
+  - Prefer exact arithmetic over numerical comparison; use `Abs[... ] < tol` only when unavoidable
+  - Each test gets a descriptive `TestID`
+
 **LaTeX Compilation:**
 Always run pdflatex TWICE to resolve cross-references:
 ```bash

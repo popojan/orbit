@@ -1,4 +1,4 @@
-.PHONY: preview clean generate-index check-links
+.PHONY: preview clean generate-index check-links test
 
 DOCS := $(shell find . -name '*.md' -not -path './preview/*')
 HTML := $(patsubst %.md,preview/%.html,$(DOCS))
@@ -104,6 +104,9 @@ copy-assets:
 check-links:
 	@echo "🔗 Checking documentation links..."
 	@python3 scripts/check_doc_links.py
+
+test:
+	wolframscript -file Tests/RunAllTests.wl
 
 clean:
 	rm -rf preview/

@@ -17,8 +17,9 @@ BeginPackage["Orbit`"];
 (* ============================================ *)
 
 CyclotomicElement::usage = "CyclotomicElement[n, coeffs] represents Σ aₖ ζₙᵏ
-where coeffs = {a₀, a₁, ..., a_{m-1}} and ζₙ = e^(2πi/n).
-The number of coefficients m = EulerPhi[n] or n (full form).
+where ζₙ = e^(2πi/n). Accepts any number of coefficients; internally
+reduces modulo Φₙ(ζ) = 0 to canonical form with EulerPhi[n] coefficients
+in basis {1, ζ, ..., ζ^(φ(n)-1)}. Extra coefficients wrap via ζⁿ = 1.
 All operations preserve rational coefficients.";
 
 CyclotomicOrder::usage = "CyclotomicOrder[elem] returns the cyclotomic order n of the element.";
@@ -41,10 +42,10 @@ CyclotomicFromComplex::usage = "CyclotomicFromComplex[z, n] creates cyclotomic e
 Only works if n divisible by 4.";
 
 CyclotomicRealPart::usage = "CyclotomicRealPart[elem] extracts the real part of a cyclotomic element.
-For power-of-2 order n, returns (a₀ - a_{n/2}) where ζ^(n/2) = -1.";
+Works for any order n. For rational inputs, result simplifies to rational.";
 
-CyclotomicImagPart::usage = "CyclotomicImagPart[elem] extracts the imaginary part.
-For n divisible by 4, returns (a_{n/4} - a_{3n/4}) where ζ^(n/4) = i.";
+CyclotomicImagPart::usage = "CyclotomicImagPart[elem] extracts the imaginary part of a cyclotomic element.
+Works for any order n. For rational inputs, result simplifies to rational.";
 
 (* ============================================ *)
 (* CYCLOTOMIC ARITHMETIC                        *)
@@ -141,20 +142,6 @@ reduceCoeffsCyclotomic[coeffs_List, n_Integer] := Module[
   PadRight[CoefficientList[reduced, z], phi]
 ]
 
-(* Legacy: Full reduction using only ζⁿ = 1 (keeps n coefficients) *)
-reduceCoeffsFull[coeffs_List, n_Integer] := Module[{result},
-  If[Length[coeffs] <= n,
-    Return[PadRight[coeffs, n]]
-  ];
-  (* Fold coefficients using ζⁿ = 1 *)
-  result = Table[0, n];
-  Do[
-    result[[Mod[k - 1, n] + 1]] += coeffs[[k]];
-    , {k, 1, Length[coeffs]}
-  ];
-  result
-]
-
 (* ============================================ *)
 (* CYCLOTOMIC ELEMENT STRUCTURE                 *)
 (* ============================================ *)
@@ -239,14 +226,16 @@ CyclotomicMultiply[a_CyclotomicElement, b_CyclotomicElement] := Module[{n},
 ]
 
 (* Promote to higher order cyclotomic field *)
+(* Minimal basis: coeffs[[k]] is weight of ζₙ^(k-1) for k = 1..φ(n) *)
+(* Embedding: ζₙ^j = ζₘ^(j·factor), so position k maps to position k·factor *)
 promoteTo[CyclotomicElement[n_, coeffs_], m_] /; Divisible[m, n] := Module[
   {factor = m/n, newCoeffs},
   newCoeffs = Table[0, m];
   Do[
     newCoeffs[[factor (k - 1) + 1]] = coeffs[[k]];
-    , {k, 1, n}
+    , {k, 1, Length[coeffs]}  (* φ(n) coefficients, not n *)
   ];
-  CyclotomicElement[m, newCoeffs]
+  CyclotomicElement[m, newCoeffs]  (* constructor reduces mod Φₘ *)
 ]
 
 promoteTo[elem_CyclotomicElement, n_] /; CyclotomicOrder[elem] == n := elem
@@ -287,21 +276,14 @@ CyclotomicFromReal[x_, n_Integer] := CyclotomicElement[n, PadRight[{x}, EulerPhi
 (* REAL/IMAG EXTRACTION                         *)
 (* ============================================ *)
 
-(* For ζ = e^(2πi/n):
-   ζ^(n/2) = e^(πi) = -1
-   ζ^(n/4) = e^(πi/2) = i
-   So: Re[z] comes from coefficients of 1 and ζ^(n/2) = -1
-       Im[z] comes from coefficients of ζ^(n/4) = i and ζ^(3n/4) = -i *)
+(* Extract via CyclotomicToComplex — correct for all n and all elements. *)
+(* For rational inputs (e.g. FFT of rationals), result simplifies to rational. *)
 
-CyclotomicRealPart[CyclotomicElement[n_, coeffs_]] := Module[{half = n/2},
-  If[!IntegerQ[half], Return[$Failed]];
-  coeffs[[1]] - coeffs[[half + 1]]
-]
+CyclotomicRealPart[elem_CyclotomicElement] :=
+  Re[CyclotomicToComplex[elem]] // Simplify
 
-CyclotomicImagPart[CyclotomicElement[n_, coeffs_]] := Module[{quarter = n/4},
-  If[!IntegerQ[quarter], Return[$Failed]];
-  coeffs[[quarter + 1]] - coeffs[[3 quarter + 1]]
-]
+CyclotomicImagPart[elem_CyclotomicElement] :=
+  Im[CyclotomicToComplex[elem]] // Simplify
 
 (* Extract as rational value if result is real, otherwise return complex *)
 CyclotomicToRational[elem_CyclotomicElement] := Module[{z},
@@ -309,7 +291,7 @@ CyclotomicToRational[elem_CyclotomicElement] := Module[{z},
   If[Im[z] === 0 || PossibleZeroQ[Im[z]], Re[z] // Simplify, z]
 ]
 
-(* Extract as {Re, Im} pair - only works for n divisible by 4, uses full basis *)
+(* Extract as {Re, Im} pair — works for any order n *)
 CyclotomicToRationalPair[elem_CyclotomicElement] := {
   CyclotomicRealPart[elem],
   CyclotomicImagPart[elem]
@@ -368,8 +350,7 @@ CyclotomicDFT[input_List] := Module[{n = Length[input], x, result},
     ],
     {k, 0, n - 1}
   ];
-  (* Auto-extract rationals for user convenience *)
-  maybeExtractRational /@ result
+  result
 ]
 
 (* Check if CyclotomicElement is rational (only ζ⁰ coefficient nonzero) *)
@@ -387,12 +368,8 @@ maybeExtractRational[elem_CyclotomicElement] :=
 toCyclotomic[x_?NumericQ, n_] := CyclotomicFromReal[x, n]
 toCyclotomic[x_CyclotomicElement, n_] /; CyclotomicOrder[x] == n := x
 toCyclotomic[x_CyclotomicElement, n_] /; Divisible[n, CyclotomicOrder[x]] :=
-  (* Order divides target: embed in larger field *)
-  Module[{m = CyclotomicOrder[x], factor = n / CyclotomicOrder[x], coeffs},
-    coeffs = CyclotomicCoeffs[x];
-    (* ζₘ^k = ζₙ^(k·factor), but we use minimal basis so just re-reduce *)
-    CyclotomicElement[n, PadRight[coeffs, n]]
-  ]
+  (* Order divides target: embed via ζₘ^k → ζₙ^(k·factor) *)
+  promoteTo[x, n]
 toCyclotomic[x_CyclotomicElement, n_] :=
   (* Incompatible orders - shouldn't happen in normal DFT usage *)
   (Message[CyclotomicInverseDFT::order, CyclotomicOrder[x], n]; x)
@@ -413,8 +390,7 @@ CyclotomicInverseDFT[input_List] := Module[{n = Length[input], x, result},
     ],
     {j, 0, n - 1}
   ];
-  (* Auto-extract rationals for user convenience *)
-  maybeExtractRational /@ result
+  result
 ]
 
 (* ζ^k (forward rotation, not twiddle) *)
@@ -455,9 +431,20 @@ CyclotomicFromCirc[t_?NumericQ, n_Integer] := Module[
 
 (* Element-wise multiplication of cyclotomic lists: use CircleTimes ⊗ *)
 (* Type: Esc + c + * + Esc *)
-CircleTimes[a_List, b_List] /; AllTrue[a, Head[#] === CyclotomicElement &] &&
-                               AllTrue[b, Head[#] === CyclotomicElement &] :=
-  MapThread[CyclotomicMultiply, {a, b}]
+(* Handles mixed types: auto-extracted rationals from CyclotomicDFT + CyclotomicElements *)
+CircleTimes[a_List, b_List] := Module[{n, elem},
+  (* Infer cyclotomic order from first CyclotomicElement found *)
+  elem = FirstCase[Join[a, b], _CyclotomicElement, None];
+  If[elem === None,
+    (* Both lists are all-rational: plain element-wise multiplication *)
+    a * b,
+    n = CyclotomicOrder[elem];
+    MapThread[
+      CyclotomicMultiply[toCyclotomic[#1, n], toCyclotomic[#2, n]] &,
+      {a, b}
+    ]
+  ]
+]
 
 (* Full convolution shorthand: Ψ[Φ[a] ⊗ Φ[b]] *)
 
