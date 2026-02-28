@@ -472,4 +472,64 @@ VerificationTest[
   TestID -> "ToRational-complex-returns-complex"
 ]
 
+(* ============================================ *)
+(* INVERSE & DIVISION                          *)
+(* ============================================ *)
+
+(* e * e^{-1} = 1 in Q(ζ₄) *)
+VerificationTest[
+  Module[{e = CyclotomicElement[4, {3, -2}]},
+    CyclotomicCoeffs[CyclotomicMultiply[e, CyclotomicInverse[e]]]
+  ],
+  {1, 0},
+  TestID -> "Inverse-n4-mul-identity"
+]
+
+(* Inverse of ζ₄ = i is -i = -ζ₄ → coeffs {0, -1} *)
+VerificationTest[
+  CyclotomicCoeffs[CyclotomicInverse[CyclotomicElement[4, {0, 1}]]],
+  {0, -1},
+  TestID -> "Inverse-n4-i-known"
+]
+
+(* (1+ζ₃) * (1+ζ₃)^{-1} = 1 in Q(ζ₃) *)
+VerificationTest[
+  Module[{e = CyclotomicElement[3, {1, 1}]},
+    CyclotomicCoeffs[CyclotomicMultiply[e, CyclotomicInverse[e]]]
+  ],
+  {1, 0},
+  TestID -> "Inverse-n3-identity"
+]
+
+(* a / a = 1 *)
+VerificationTest[
+  Module[{a = CyclotomicElement[4, {3, -2}]},
+    CyclotomicCoeffs[CyclotomicDivide[a, a]]
+  ],
+  {1, 0},
+  TestID -> "Divide-self-is-one"
+]
+
+(* Deconvolution roundtrip: IDFT(DFT(a·b) / DFT(b)) = a *)
+(* b = {1,2,3,4} has no zeros in DFT: {10, -2+2i, -2, -2-2i} *)
+VerificationTest[
+  Module[{a = {5, 6, 7, 8}, b = {1, 2, 3, 4}, fa, fb, product, divided},
+    fa = CyclotomicDFT[a];
+    fb = CyclotomicDFT[b];
+    product = MapThread[CyclotomicMultiply, {fa, fb}];
+    divided = MapThread[CyclotomicDivide, {product, fb}];
+    CyclotomicToRational /@ CyclotomicInverseDFT[divided]
+  ],
+  {5, 6, 7, 8},
+  TestID -> "Divide-deconvolution-roundtrip"
+]
+
+(* Inverse of zero element fails *)
+VerificationTest[
+  CyclotomicInverse[CyclotomicElement[4, {0, 0}]],
+  $Failed,
+  {CyclotomicInverse::zero},
+  TestID -> "Inverse-zero-fails"
+]
+
 EndTestSection[]

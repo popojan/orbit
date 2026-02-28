@@ -63,6 +63,11 @@ CyclotomicNegate::usage = "CyclotomicNegate[a] negates a cyclotomic element.";
 
 CyclotomicScale::usage = "CyclotomicScale[a, r] scales by rational r.";
 
+CyclotomicInverse::usage = "CyclotomicInverse[elem] returns the multiplicative inverse in Q(zn). Fails on zero.";
+CyclotomicDivide::usage = "CyclotomicDivide[a, b] computes a/b in Q(zn).";
+
+CyclotomicInverse::zero = "Cannot invert the zero element.";
+
 (* ============================================ *)
 (* FFT-SPECIFIC OPERATIONS                      *)
 (* ============================================ *)
@@ -224,6 +229,22 @@ CyclotomicMultiply[a_CyclotomicElement, b_CyclotomicElement] := Module[{n},
   n = LCM[CyclotomicOrder[a], CyclotomicOrder[b]];
   CyclotomicMultiply[promoteTo[a, n], promoteTo[b, n]]
 ]
+
+(* Multiplicative inverse via extended GCD mod Φₙ *)
+(* Since Φₙ is irreducible over ℚ, any nonzero element has an inverse *)
+CyclotomicInverse[CyclotomicElement[n_, coeffs_]] := Module[
+  {z, poly, cyclo, gcdResult, g, s},
+  poly = Sum[coeffs[[k]] z^(k - 1), {k, 1, Length[coeffs]}];
+  If[poly === 0, Message[CyclotomicInverse::zero]; Return[$Failed]];
+  cyclo = Cyclotomic[n, z];
+  gcdResult = PolynomialExtendedGCD[poly, cyclo, z];
+  g = gcdResult[[1]];
+  s = gcdResult[[2, 1]];
+  CyclotomicElement[n, PadRight[CoefficientList[s/g, z], EulerPhi[n]]]
+]
+
+CyclotomicDivide[a_CyclotomicElement, b_CyclotomicElement] :=
+  CyclotomicMultiply[a, CyclotomicInverse[b]]
 
 (* Promote to higher order cyclotomic field *)
 (* Minimal basis: coeffs[[k]] is weight of ζₙ^(k-1) for k = 1..φ(n) *)
