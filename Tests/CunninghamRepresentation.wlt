@@ -28,11 +28,40 @@ VerificationTest[
 (* CONVERGENTS                                  *)
 (* ============================================ *)
 
-(* Convergents of a terminating rational equal the FromSequence result *)
+(* Last convergent of a rational equals the rational itself *)
 VerificationTest[
   Last[CunninghamConvergents[7/19, 50]],
+  7/19,
+  TestID -> "Convergents-last-equals-input"
+]
+
+(* FromSequence also reconstructs correctly *)
+VerificationTest[
   CunninghamFromSequence @@ CunninghamRepresentation[7/19, 50],
-  TestID -> "Convergents-last-equals-FromSequence"
+  7/19,
+  TestID -> "FromSequence-roundtrip-7-19"
+]
+
+(* FromSequence roundtrip for number > 1 *)
+VerificationTest[
+  CunninghamFromSequence @@ CunninghamRepresentation[355/113, 50],
+  355/113,
+  TestID -> "FromSequence-roundtrip-355-113"
+]
+
+(* Every intermediate convergent equals backward-fold of truncated sequence *)
+VerificationTest[
+  Module[{seq = CunninghamSequence[7/19, 50],
+          convs, expected},
+    convs = CunninghamConvergents[seq];
+    expected = Table[
+      Fold[(#2 + #1)/(1 + #2 + #1) &, 0, Reverse[seq[[1 ;; k]]]],
+      {k, 1, Length[seq]}
+    ];
+    convs === expected
+  ],
+  True,
+  TestID -> "Convergents-intermediate-match-fold"
 ]
 
 (* Odd-indexed convergents of Sqrt[2] approach from below *)

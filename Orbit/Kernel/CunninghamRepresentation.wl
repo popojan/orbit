@@ -64,12 +64,21 @@ CunninghamRepresentation[r_?NumericQ, n_Integer] /; r >= 0 := Module[
 ]
 
 (* Low-level: convergents from raw sequence (fractional part only) *)
+(* Each digit d corresponds to Möbius matrix M_d = {{1,d},{1,d+1}}.
+   The value from first k digits is (M_1 · M_2 · ... · M_k) applied to 0,
+   i.e. right-multiplication: P_k = P_{k-1} · M_d.
+   We track the full 2×2 matrix P = {{pPrev, p}, {qPrev, q}}. *)
 cunninghamConvergentsFromSeq[seq_List] := Module[
-  {p = 0, q = 1, result = {}},
+  {pPrev = 1, p = 0, qPrev = 0, q = 1, result = {},
+   newPPrev, newP, newQPrev, newQ},
   Do[
-    {p, q} = {p + a*q, p + (a + 1)*q};
+    newPPrev = pPrev + p;
+    newP = d * newPPrev + p;
+    newQPrev = qPrev + q;
+    newQ = d * newQPrev + q;
+    {pPrev, p, qPrev, q} = {newPPrev, newP, newQPrev, newQ};
     AppendTo[result, p/q];
-  , {a, seq}];
+  , {d, seq}];
   result
 ]
 
@@ -90,11 +99,16 @@ CunninghamConvergents[seq_List] := cunninghamConvergentsFromSeq[seq]
 
 (* Convergents as {p, q} pairs *)
 CunninghamConvergentPairs[seq_List] := Module[
-  {p = 0, q = 1, result = {}},
+  {pPrev = 1, p = 0, qPrev = 0, q = 1, result = {},
+   newPPrev, newP, newQPrev, newQ},
   Do[
-    {p, q} = {p + a*q, p + (a + 1)*q};
+    newPPrev = pPrev + p;
+    newP = d * newPPrev + p;
+    newQPrev = qPrev + q;
+    newQ = d * newQPrev + q;
+    {pPrev, p, qPrev, q} = {newPPrev, newP, newQPrev, newQ};
     AppendTo[result, {p, q}];
-  , {a, seq}];
+  , {d, seq}];
   result
 ]
 
