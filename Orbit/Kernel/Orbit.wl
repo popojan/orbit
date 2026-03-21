@@ -23,8 +23,9 @@ Get["Orbit`EulerEConvergents`"];
 Get["Orbit`PiConvergents`"];
 Get["Orbit`LogarithmIntervals`"];
 Get["Orbit`FunctionIntervals`"];
-
-(* The package context is now populated with symbols from submodules *)
-(* All usage messages and definitions are in the respective submodule files *)
+Get["Orbit`GoldilocksEncoding`"];
+Get["Orbit`FareyBits`"];
+Get["Orbit`ChebyshevDisk`"];
+Get["Orbit`PellCompact`"];
 
 EndPackage[];
