@@ -362,12 +362,42 @@ Infinitely many distinct towers. Not every prime appears as a tower field.
 5. ~~Why only p=2?~~ **ANSWERED**: T_m leading coefficient 2^{m-1} is unique.
 6. **Fundamentality proof.** Conjecture verified (220 cases, 0 failures).
    Monotonicity argument for c=1 is strong but not rigorous for c>1.
-7. **Discrete log reduction.** For c>1 non-fundamental solutions: what is the
-   computational cost of reducing to the fundamental solution?
+7. ~~Discrete log reduction.~~ **PARTIALLY ANSWERED**: k/m analysis below.
 8. **Density lower bound.** Is the c≤√N density exactly Θ(1/log N)?
-   Or does it decay faster/slower?
-9. **Can Chebyshev be replaced?** For δ ≥ 3: is there ANY polynomial
-   identity mechanism (not just Chebyshev/Dickson) that works?
+9. **Can Chebyshev be replaced?** For δ ≥ 3: any other polynomial identity?
+
+## Power Analysis: k vs m (NEW)
+
+**Critical correction**: y = c·Y (not Y/c). No divisibility issue — every c works!
+
+For c>1: our formula gives ε^k for the field Q(√n), where k = R'/R.
+The Chebyshev index m is known. The question: what is k/m?
+
+### Comprehensive data (n ≤ 200, c ≤ 30, 1034 pairs)
+
+- **k = m: 748 cases (72.3%)** — the formula gives exactly ε^m, m known
+- **k/m integer: 880 cases (85.1%)** — even when k≠m, the ratio is often integer
+- **k/m = integer > 1: 132 cases** — higher power than expected
+- **k < m: 154 cases** — formula gives LOWER power than m! (k/m = 1/3, 1/2, 2/3, ...)
+
+### Key pattern: k < m happens when c²n has SIMPLER field
+
+When k/m = 1/3: the R-D seed for c²n happens to give the field's fundamental
+unit directly (m=3 from Chebyshev, but the actual power k=1).
+Example: n=13, c=1, m=3 but k=1 (the T₃ formula IS the fundamental solution).
+
+When k/m = 1/2: similar — norm(-1) unit exists, halving the regulator.
+Example: n=44, c=1: formula gives m=2 but fund unit has norm -1, so k=1.
+
+### Algorithmic implications
+
+When k = m (72.3%): extract ε from ε^m by O(log m) NUDUPL operations.
+When k/m is a known small rational: similarly extract.
+When k/m is unknown: need R or class number information — still hard.
+
+### Scripts
+- `power-analysis.wl` — corrected y=cY computation
+- `k-vs-m-comprehensive.wl` — full k vs m scan
 
 ## Files
 
