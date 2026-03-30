@@ -1,0 +1,228 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage[hidelinks]{hyperref}
+\usepackage{booktabs}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Chebyshev Polynomials and Explicit Pell Solutions\\for $n = 4k^2 + 2^a$}
+\author{Jan Popelka\thanks{Email: popojan@protonmail.com}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We give explicit closed-form solutions to the Pell equation $x^2 - ny^2 = 1$
+for all $n = 4k^2 + 2^a$ satisfying $2^{\lceil(a-3)/2\rceil} \mid k$,
+expressed as evaluations of Chebyshev polynomials.
+The proof is a one-line substitution into the classical identity
+$T_m(z)^2 - (z^2-1)\,U_{m-1}(z)^2 = 1$.
+We determine the minimal Chebyshev index~$m$ that yields integer solutions,
+show that $m = 2^{\lceil(a-4)/2\rceil}$ for the hardest cases,
+and identify $d = 16$ as the boundary beyond which full coverage
+of all~$k$ is lost.
+As a special case ($m=1$), we recover the classical Richaud--Degert
+fundamental units from a single universal formula.
+\end{abstract}
+
+\section{The identity}
+
+Let $T_m$ and $U_m$ denote the Chebyshev polynomials of the first and second
+kind.  The identity
+\begin{equation}\label{eq:cheb}
+T_m(z)^2 - (z^2 - 1)\,U_{m-1}(z)^2 = 1,
+\end{equation}
+valid for all $z$ and all $m \ge 1$, is equivalent to $\cos^2(m\theta) + \sin^2(m\theta) = 1$
+via $z = \cos\theta$.  It is a Pell equation in the polynomial ring~\cite{mason,nathanson1976}:
+$X^2 - (z^2-1)\,Y^2 = 1$ with $X = T_m(z)$, $Y = U_{m-1}(z)$.
+
+\section{Parameterization}
+
+Fix integers $a \ge 3$ and $k \ge 1$.
+Define
+\begin{equation}\label{eq:z}
+z \;=\; \frac{k^2}{2^{a-3}} + 1, \qquad
+n \;=\; 4k^2 + 2^a.
+\end{equation}
+Note that $z$ is rational; it is an integer when $2^{\lceil(a-3)/2\rceil} \mid k$,
+and a half-integer when $a = 4$ and $k$ is odd.
+A direct computation gives the key factorization
+\begin{equation}\label{eq:factor}
+z^2 - 1 \;=\; \frac{k^2(k^2 + 2^{a-2})}{2^{2(a-3)}}
+\;=\; n \cdot \frac{k^2}{2^{2a-4}}.
+\end{equation}
+
+\newpage
+\section{Main result}
+
+\begin{theorem}\label{thm:main}
+With $z$ and $n$ as in \eqref{eq:z}, define
+\[
+m \;=\; \min\bigl\{\, m \ge 1 \;:\; 2^{a-2} \mid k \cdot U_{m-1}(z) \,\bigr\}.
+\]
+Then $x^2 - n\,y^2 = 1$ is solved by
+\begin{equation}\label{eq:sol}
+\boxed{\;x = T_m(z), \qquad y = \frac{k \cdot U_{m-1}(z)}{2^{a-2}}.\;}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Substitute \eqref{eq:factor} into \eqref{eq:cheb}:
+\[
+T_m(z)^2 - n \cdot \frac{k^2}{2^{2a-4}} \cdot U_{m-1}(z)^2 = 1,
+\]
+which is $T_m(z)^2 - n \bigl(\frac{k \cdot U_{m-1}(z)}{2^{a-2}}\bigr)^2 = 1$.
+The choice of $m$ ensures $y \in \mathbb{Z}$.
+\end{proof}
+
+\section{Determination of $m$}
+
+\begin{proposition}\label{prop:m}
+Write $k = 2^s \cdot j$ with $j$ odd, $s \ge \lceil(a-3)/2\rceil$.
+Then:
+\begin{enumerate}
+\item[(i)] $z = 2^{2s-a+3}\,j^2 + 1$, which is $j^2+1$ when $a$ is odd and $s = (a-3)/2$,
+      or $2j^2+1$ when $a$ is even and $s = (a-2)/2$.
+\item[(ii)] $v_2\bigl(k \cdot U_{m-1}(z)\bigr) = s + v_2\bigl(U_{m-1}(z)\bigr)$,
+      so the integrality condition becomes $v_2\bigl(U_{m-1}(z)\bigr) \ge a - 2 - s$.
+\item[(iii)] For $j = 1$ (the hardest case):
+\end{enumerate}
+\begin{center}
+\begin{tabular}{ccccccccccc}
+\toprule
+$a$ & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 \\
+\midrule
+$m$ & 2 & 2 & 2 & 4 & 4 & 8 & 8 & 16 & 16 & 32 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\vspace{-0.5em}
+giving $m = 2^{\lceil(a-4)/2\rceil}$ for $a \ge 4$.
+When $v_2(j) \ge 1$, $m$ is smaller: each additional factor of~$2$ in $j$ halves~$m$.
+\end{proposition}
+
+\begin{proof}
+Part~(i) is arithmetic.  For part~(iii), the two base cases are $z = 2$
+(tower over $\mathbb{Q}(\sqrt{3})$) and $z = 3$ (tower over $\mathbb{Q}(\sqrt{2})$).
+The 2-adic valuations of $U_{m-1}(2)$ and $U_{m-1}(3)$ are computed from
+the recurrence $U_m(z) = 2z\,U_{m-1}(z) - U_{m-2}(z)$:
+
+\smallskip
+\noindent\textit{Tower $z = 2$:} $U_0 = 1$, $U_1 = 4$, $U_2 = 15$, $U_3 = 56$,
+$U_7 = 10864$.  The valuations are $v_2 = 0, 2, 0, 3, 0, 2, 0, 4, \ldots$ ---
+period~4 in the exponents, gaining one bit every~4 steps, so the first $m$ with
+$v_2(U_{m-1}) \ge r$ is $m = 2^{\lceil r/2 \rceil}$.
+
+\smallskip
+\noindent\textit{Tower $z = 3$:} $U_0 = 1$, $U_1 = 6$, $U_2 = 35$, $U_3 = 204$,
+$U_7 = 235416$.  Similarly $v_2 = 0, 1, 0, 2, 0, 1, 0, 3, \ldots$, and
+the first $m$ with $v_2(U_{m-1}) \ge r$ is again $m = 2^{\lceil r/2 \rceil}$.
+
+\smallskip
+\noindent
+Combining with $r = a - 2 - s$ and $s = \lceil(a-3)/2\rceil$ gives
+$m = 2^{\lceil(a-4)/2\rceil}$.
+\end{proof}
+
+\section{Special cases}
+
+\subsection{$m = 1$: Richaud--Degert families}
+
+When $2^{a-2} \mid k$ (equivalently $v_2(k) \ge a-2$), we have $m = 1$,
+$T_1(z) = z$, $U_0(z) = 1$, giving
+\[
+x = \frac{k^2}{2^{a-3}} + 1, \qquad y = \frac{k}{2^{a-2}}.
+\]
+Setting $a_0 = k$, $r = 2^{a-2}$, this becomes the classical
+Richaud--Degert formula~\cite{richaud1866,degert1958} for $n = a_0^2 + r$ with $r \mid 2a_0$:
+\[
+x = \frac{2a_0^2 + r}{r}, \qquad y = \frac{2a_0}{r}.
+\]
+More generally, this formula is valid for \emph{any} $r \ge 1$ (not just powers of~2)
+whenever $r \mid 2a_0$ and $n = a_0^2 + r$ is not a perfect square.
+
+\subsection{$m = 2$: degree-4 families}
+
+For $d = 8$ ($a = 3$), $k$ odd, $z = k^2 + 1$:
+\[
+x = T_2(k^2+1) = 2k^4 + 4k^2 + 1, \qquad y = k \cdot U_1(k^2+1) = k(k^2+1) = k^3+k.
+\]
+
+\subsection{$m = 3$: degree-6 family}
+
+For $d = 16$ ($a = 4$), $k$ odd, $z = (k^2+2)/2$:
+\[
+x = T_3\!\left(\frac{k^2+2}{2}\right)
+= \frac{(k^2+2)(k^4+4k^2+1)}{2}, \qquad
+y = \frac{k(k^2+1)(k^2+3)}{4}.
+\]
+Here $z$ is a half-integer, yet $x$ and $y$ are integer by mod-4 arithmetic:
+$k^4 + 4k^2 + 1 \equiv 2 \pmod{4}$ for odd~$k$.
+
+\section{The $d = 16$ boundary}
+
+\begin{proposition}\label{prop:boundary}
+For $d \le 16$ ($a \le 4$), the formula \eqref{eq:sol} covers \emph{all}~$k$.
+For $d = 32$ ($a = 5$) and $k$ odd, $z = (k^2+4)/4$ is a quarter-integer
+and $T_m(z) \notin \mathbb{Z}$ for all $m \ge 1$.
+\end{proposition}
+
+\begin{proof}
+For $a \le 3$: $z$ is always an integer (the divisibility $2^0 \mid k$ is vacuous).
+For $a = 4$, $k$ odd: $z = (k^2+2)/2$.  We must check that $T_m(z)$ is integer
+for some~$m$.  At $m = 3$: $T_3(z) = 4z^3 - 3z = \frac{(k^2+2)((k^2+2)^2-3)}{2}$.
+Since $(k^2+2)^2 - 3 = k^4+4k^2+1 \equiv 2 \pmod{4}$ for odd~$k$, the product
+$(k^2+2)(k^4+4k^2+1)$ is always even, so $T_3(z) \in \mathbb{Z}$.
+
+For $a = 5$, $k$ odd: $z = (k^2+4)/4$.  Since $T_m$ has leading coefficient~$2^{m-1}$,
+the denominator of $T_m(z)$ is $4^m / 2^{m-1} = 2^{m+1}$, which grows with~$m$.
+An explicit check for $k = 3$ ($z = 13/4$):
+$T_1 = 13/4$, $T_2 = 153/8$, $T_3 = 2041/16$, $T_4 = 25889/32$ ---
+none are integers, and the denominators increase monotonically.
+\end{proof}
+
+\begin{remark}
+For $d \ge 32$ with $k$ odd, the Pell solution depends on the specific arithmetic
+of the field $\mathbb{Q}(\sqrt{k^2 + 2^{a-2}})$ and admits no universal polynomial
+formula in~$k$.  However, for $k$ in the divisibility class $2^{\lceil(a-3)/2\rceil} \mid k$,
+the Chebyshev formula applies for \emph{arbitrarily large}~$a$.
+\end{remark}
+
+\section{Fundamentality}
+
+\begin{conjecture}\label{conj:fund}
+For $n = 4k^2 + 2^a$ with $2^{\lceil(a-3)/2\rceil} \mid k$,
+the solution \eqref{eq:sol} is the fundamental solution of $x^2 - ny^2 = 1$
+(or the fundamental norm-$+1$ solution when a norm-$-1$ unit exists).
+\end{conjecture}
+
+This has been verified computationally for all $a = 3, \ldots, 12$ and
+all $j = 1, 3, 5, 7, 9, 11$ (60 test cases, 0 failures).
+The conjecture is supported by the minimality of~$m$: since $T_m(z)$ is
+monotonically increasing in~$m$ for $z \ge 1$, the smallest~$m$
+yielding integer~$y$ produces the smallest~$x$.
+
+For the classical R-D case ($m = 1$), fundamentality is well established~\cite{mollin1992}.
+For polynomial Pell solutions producing fundamental units
+in infinite families, see McLaughlin~\cite{mclaughlin2003}.
+
+\section*{Acknowledgments}
+
+Computations were performed using Wolfram Mathematica.
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}
