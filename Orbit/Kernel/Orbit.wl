@@ -27,5 +27,9 @@ Get["Orbit`GoldilocksEncoding`"];
 Get["Orbit`FareyBits`"];
 Get["Orbit`ChebyshevDisk`"];
 Get["Orbit`PellCompact`"];
+Get["Orbit`PellRegulator`"];
+Get["Orbit`PellSeedRegulator`"];
+Get["Orbit`PellChebyshevCompact`"];
+Get["Orbit`PellChebyshevSolve`"];
 
 EndPackage[];
