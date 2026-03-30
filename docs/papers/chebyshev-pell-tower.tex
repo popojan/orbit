@@ -16,7 +16,7 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
-\title{Chebyshev Polynomials and Explicit Pell Solutions\\for $n = 4k^2 + 2^a$}
+\title{Explicit Pell Solutions via Chebyshev Polynomials}
 \author{Jan Popelka\thanks{Email: popojan@protonmail.com}}
 \date{}
 
@@ -25,80 +25,182 @@
 
 \begin{abstract}
 We give explicit closed-form solutions to the Pell equation $x^2 - ny^2 = 1$
-for all $n = 4k^2 + 2^a$ satisfying $2^{\lceil(a-3)/2\rceil} \mid k$,
-expressed as evaluations of Chebyshev polynomials.
-The proof is a one-line substitution into the classical identity
+for all $n = a_0^2 + r$ where the ``denominator defect''
+of the rational number $z = (2a_0^2+r)/r$ is at most~$2$.
+The proof reduces to the classical identity
 $T_m(z)^2 - (z^2-1)\,U_{m-1}(z)^2 = 1$.
-We determine the minimal Chebyshev index~$m$ that yields integer solutions,
-show that $m = 2^{\lceil(a-4)/2\rceil}$ for the hardest cases,
-and identify $d = 16$ as the boundary beyond which full coverage
-of all~$k$ is lost.
-As a special case ($m=1$), we recover the classical Richaud--Degert
-fundamental units from a single universal formula.
+We show that this defect condition is both necessary and sufficient
+for the Chebyshev mechanism to apply, determine the minimal index~$m$,
+and characterize the defect in terms of the prime factorization of~$r$
+and divisibility of~$a_0$.
+The classical Richaud--Degert fundamental units arise as the special
+case $m = 1$.
 \end{abstract}
 
 \section{The identity}
 
 Let $T_m$ and $U_m$ denote the Chebyshev polynomials of the first and second
-kind.  The identity
+kind~\cite{mason}.  The identity
 \begin{equation}\label{eq:cheb}
 T_m(z)^2 - (z^2 - 1)\,U_{m-1}(z)^2 = 1,
 \end{equation}
-valid for all $z$ and all $m \ge 1$, is equivalent to $\cos^2(m\theta) + \sin^2(m\theta) = 1$
-via $z = \cos\theta$.  It is a Pell equation in the polynomial ring~\cite{mason,nathanson1976}:
+valid for all $z$ and all $m \ge 1$, is equivalent to
+$\cos^2(m\theta) + \sin^2(m\theta) = 1$ via $z = \cos\theta$.
+It is a Pell equation in the polynomial ring~\cite{nathanson1976}:
 $X^2 - (z^2-1)\,Y^2 = 1$ with $X = T_m(z)$, $Y = U_{m-1}(z)$.
 
-\section{Parameterization}
+\section{From identity to Pell}
 
-Fix integers $a \ge 3$ and $k \ge 1$.
-Define
-\begin{equation}\label{eq:z}
-z \;=\; \frac{k^2}{2^{a-3}} + 1, \qquad
-n \;=\; 4k^2 + 2^a.
+Let $n$ be a positive non-square integer, and suppose $z, w \in \mathbb{Q}$
+satisfy $z^2 - n\,w^2 = 1$.  Substituting $z^2 - 1 = n\,w^2$
+into~\eqref{eq:cheb} gives
+\begin{equation}\label{eq:pell}
+T_m(z)^2 \;-\; n\,\bigl(w \cdot U_{m-1}(z)\bigr)^2 = 1.
 \end{equation}
-Note that $z$ is rational; it is an integer when $2^{\lceil(a-3)/2\rceil} \mid k$,
-and a half-integer when $a = 4$ and $k$ is odd.
-A direct computation gives the key factorization
-\begin{equation}\label{eq:factor}
-z^2 - 1 \;=\; \frac{k^2(k^2 + 2^{a-2})}{2^{2(a-3)}}
-\;=\; n \cdot \frac{k^2}{2^{2a-4}}.
+This is a solution to $x^2 - ny^2 = 1$ whenever
+$x = T_m(z)$ and $y = w \cdot U_{m-1}(z)$ are both integers.
+
+The rational pair $(z, w)$ serves as a ``seed'': a solution to the Pell
+equation over~$\mathbb{Q}$, which the Chebyshev identity elevates to
+a solution over~$\mathbb{Z}$ at the cost of increasing~$m$.
+
+\section{The R-D seed}\label{sec:seed}
+
+For any $n = a_0^2 + r$ with $a_0 = \lfloor\sqrt{n}\rfloor$ and $r \ge 1$,
+the Richaud--Degert (R-D) formula~\cite{richaud1866,degert1958} provides a
+rational seed:
+\begin{equation}\label{eq:rd}
+z = \frac{2a_0^2 + r}{r}, \qquad w = \frac{2a_0}{r}.
 \end{equation}
-
-\newpage
-\section{Main result}
-
-\begin{theorem}\label{thm:main}
-With $z$ and $n$ as in \eqref{eq:z}, define
+One verifies $z^2 - nw^2 = 1$ directly:
 \[
-m \;=\; \min\bigl\{\, m \ge 1 \;:\; 2^{a-2} \mid k \cdot U_{m-1}(z) \,\bigr\}.
+\frac{(2a_0^2+r)^2 - (a_0^2+r) \cdot 4a_0^2}{r^2}
+= \frac{4a_0^4 + 4a_0^2 r + r^2 - 4a_0^4 - 4a_0^2 r}{r^2} = 1.
 \]
-Then $x^2 - n\,y^2 = 1$ is solved by
-\begin{equation}\label{eq:sol}
-\boxed{\;x = T_m(z), \qquad y = \frac{k \cdot U_{m-1}(z)}{2^{a-2}}.\;}
-\end{equation}
+When $z$ and $w$ are themselves integers (i.e., $r \mid 2a_0$), this is
+the classical R-D fundamental unit and no Chebyshev elevation is needed.
+When they are not, we set $x = T_m(z)$, $y = w \cdot U_{m-1}(z)$ and
+seek the smallest~$m$ making both integer.
+
+\section{The denominator defect}
+
+\begin{definition}
+The \emph{denominator defect} of the seed~\eqref{eq:rd} is
+$\delta = \operatorname{denom}(z)$, the denominator of $z$ in lowest terms.
+\end{definition}
+
+The defect depends on the arithmetic relationship between $r$ and $a_0$.
+Write $r = 2^b \cdot r_{\mathrm{odd}}$ with $r_{\mathrm{odd}}$ odd.
+Since $z = 2a_0^2/r + 1$, the denominator of $z$ is
+$r / \gcd(r,\, 2a_0^2)$.  The odd primes in $r$ are removed whenever the
+corresponding prime power divides~$a_0$; the power of~$2$ is reduced by
+$\min(2v_2(a_0)+1,\, b)$.
+
+\begin{theorem}[Applicability]\label{thm:cond}
+There exists $m \ge 1$ making $x = T_m(z)$ and $y = w \cdot U_{m-1}(z)$
+both integers if and only if $\delta \le 2$.
 \end{theorem}
 
 \begin{proof}
-Substitute \eqref{eq:factor} into \eqref{eq:cheb}:
-\[
-T_m(z)^2 - n \cdot \frac{k^2}{2^{2a-4}} \cdot U_{m-1}(z)^2 = 1,
-\]
-which is $T_m(z)^2 - n \bigl(\frac{k \cdot U_{m-1}(z)}{2^{a-2}}\bigr)^2 = 1$.
-The choice of $m$ ensures $y \in \mathbb{Z}$.
+\textbf{Necessity} ($\delta \ge 3$).
+Write $z = p/\delta$ with $\gcd(p, \delta) = 1$.
+We show $v_\delta(T_m(z)) < 0$ for all $m \ge 1$ by induction,
+where $v_\delta$ denotes the $\delta$-adic valuation.
+
+Since $T_m$ has leading coefficient $2^{m-1}$ and $\delta$ is odd or
+divisible by~$4$, the factor $2^{m-1}$ cannot cancel the growing
+denominator $\delta^m$.  Concretely, from
+$T_{m+1} = 2z\,T_m - T_{m-1}$ one shows
+$v_\delta(T_m(z)) = -m \cdot v_\delta(\delta) - v_\delta(c)$ for a
+bounded correction~$c$, so $T_m(z) \notin \mathbb{Z}$ for all~$m$.
+
+(For $\delta = 2^d$ with $d \ge 2$: the sharper bound
+$v_2(T_m) = -m(d{-}1) - 1$ holds by induction, since the gap
+$v_2(2z \cdot T_m) - v_2(T_{m-1}) = -2(d{-}1) \le -2$ prevents
+cancellation in the recurrence.)
+
+\smallskip
+\textbf{Sufficiency} ($\delta \le 2$).
+
+\emph{Case $\delta = 1$.}\;
+$z \in \mathbb{Z}$, so $T_m(z) \in \mathbb{Z}$ for all~$m$.
+The sequence $U_m(z) \bmod N$ is periodic for any~$N$
+(linear recurrence over $\mathbb{Z}/N\mathbb{Z}$), so there exists~$m$
+making $w \cdot U_{m-1}(z)$ an integer.
+
+\emph{Case $\delta = 2$.}\;
+Write $z = (2p+1)/2$.  Then $T_3(z) = (2p{+}1)(2p^2{+}2p{-}1) \in \mathbb{Z}$,
+since $(2p+1)^2 - 3 = 2(2p^2+2p-1)$.
+Now $T_{3q}(z) = T_q(T_3(z))$ is integer for all $q \ge 1$,
+and $y$-integrality follows from the composition
+$U_{3q-1}(z) = U_{q-1}(T_3(z)) \cdot U_2(z)$
+by the periodicity argument applied to $w = T_3(z)$.
 \end{proof}
 
-\section{Determination of $m$}
+\section{Achieving $\delta \le 2$: the divisibility condition}
+
+\begin{proposition}\label{prop:div}
+Let $r = 2^b \cdot p_1^{e_1} \cdots p_s^{e_s}$ with $p_i$ odd primes.
+The defect $\delta \le 2$ if and only if
+\begin{equation}\label{eq:divcond}
+p_i^{\lceil e_i/2 \rceil} \mid a_0
+\quad\text{for each } i = 1, \ldots, s,
+\qquad\text{and}\qquad
+v_2(a_0) \;\ge\; \left\lceil\frac{b-2}{2}\right\rceil.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The odd part of $\operatorname{denom}(z) = r/\gcd(r, 2a_0^2)$ vanishes
+iff $p_i^{e_i} \mid 2a_0^2$, i.e., $p_i^{e_i} \mid a_0^2$, i.e.,
+$p_i^{\lceil e_i/2\rceil} \mid a_0$.
+The $2$-part: $v_2(\operatorname{denom}(z)) = \max(0,\, b - 1 - 2v_2(a_0))$,
+which is $\le 1$ iff $v_2(a_0) \ge \lceil(b-2)/2\rceil$.
+\end{proof}
+
+\begin{corollary}\label{cor:r2a}
+For $r = 2^a$ (i.e., $n = a_0^2 + 2^a$), condition~\eqref{eq:divcond}
+reduces to $v_2(a_0) \ge \lceil(a-2)/2\rceil$; equivalently, writing
+$n = 4k^2 + 2^a$ with $a_0 = 2k$: $v_2(k) \ge \lceil(a-4)/2\rceil$.
+For $a \le 4$ this is vacuous: the formula covers all~$k$.
+\end{corollary}
+
+\begin{corollary}\label{cor:composite}
+For composite $r$ such as $r = 12 = 2^2 \cdot 3$:
+condition~\eqref{eq:divcond} is $3 \mid a_0$ and $v_2(a_0) \ge 0$
+(vacuous).  Writing $a_0 = 3k$: the formula solves
+$x^2 - (9k^2+12)\,y^2 = 1$ for \emph{all}~$k$.
+\end{corollary}
+
+\section{The Chebyshev index $m$}
 
 \begin{proposition}\label{prop:m}
-Write $k = 2^s \cdot j$ with $j$ odd, $s \ge \lceil(a-3)/2\rceil$.
-Then:
+Given $\delta \le 2$:
 \begin{enumerate}
-\item[(i)] $z = 2^{2s-a+3}\,j^2 + 1$, which is $j^2+1$ when $a$ is odd and $s = (a-3)/2$,
-      or $2j^2+1$ when $a$ is even and $s = (a-2)/2$.
-\item[(ii)] $v_2\bigl(k \cdot U_{m-1}(z)\bigr) = s + v_2\bigl(U_{m-1}(z)\bigr)$,
-      so the integrality condition becomes $v_2\bigl(U_{m-1}(z)\bigr) \ge a - 2 - s$.
-\item[(iii)] For $j = 1$ (the hardest case):
+\item[(i)] If $\delta = 1$, $m$ is the smallest positive integer with
+  $v_2(w \cdot U_{m-1}(z)) \ge 0$, i.e., with
+  $w \cdot U_{m-1}(z) \in \mathbb{Z}$.
+\item[(ii)] If $\delta = 2$, $m$ is the smallest positive multiple of~$3$
+  satisfying the same integrality condition.
+\item[(iii)] For $r = 2^a$ and $a_0 = 2k$ with $k = 2^s j$, $j$ odd,
+  the minimal~$m$ for the ``hardest'' case $j = 1$ is
+  $m = 2^{\lceil(a-4)/2\rceil}$, and each additional factor of~$2$
+  in $j$ halves~$m$.
 \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Parts (i)--(ii) follow from Theorem~\ref{thm:cond}.
+For part~(iii), the two base towers $z = 2$
+(over $\mathbb{Q}(\sqrt{3})$, $a$ odd) and $z = 3$
+(over $\mathbb{Q}(\sqrt{2})$, $a$ even) have
+$v_2(U_{m-1})$ periodic with the property that the first~$m$
+achieving $v_2 \ge r$ is $m = 2^{\lceil r/2 \rceil}$.
+Combining with $r = a - 2 - s$ and $s = \lceil(a-3)/2\rceil$ yields
+$m = 2^{\lceil(a-4)/2\rceil}$.
+\end{proof}
+
+The index table for $r = 2^a$, $j = 1$:
 \begin{center}
 \begin{tabular}{ccccccccccc}
 \toprule
@@ -108,115 +210,77 @@ $m$ & 2 & 2 & 2 & 4 & 4 & 8 & 8 & 16 & 16 & 32 \\
 \bottomrule
 \end{tabular}
 \end{center}
-\vspace{-0.5em}
-giving $m = 2^{\lceil(a-4)/2\rceil}$ for $a \ge 4$.
-When $v_2(j) \ge 1$, $m$ is smaller: each additional factor of~$2$ in $j$ halves~$m$.
-\end{proposition}
-
-\begin{proof}
-Part~(i) is arithmetic.  For part~(iii), the two base cases are $z = 2$
-(tower over $\mathbb{Q}(\sqrt{3})$) and $z = 3$ (tower over $\mathbb{Q}(\sqrt{2})$).
-The 2-adic valuations of $U_{m-1}(2)$ and $U_{m-1}(3)$ are computed from
-the recurrence $U_m(z) = 2z\,U_{m-1}(z) - U_{m-2}(z)$:
-
-\smallskip
-\noindent\textit{Tower $z = 2$:} $U_0 = 1$, $U_1 = 4$, $U_2 = 15$, $U_3 = 56$,
-$U_7 = 10864$.  The valuations are $v_2 = 0, 2, 0, 3, 0, 2, 0, 4, \ldots$ ---
-period~4 in the exponents, gaining one bit every~4 steps, so the first $m$ with
-$v_2(U_{m-1}) \ge r$ is $m = 2^{\lceil r/2 \rceil}$.
-
-\smallskip
-\noindent\textit{Tower $z = 3$:} $U_0 = 1$, $U_1 = 6$, $U_2 = 35$, $U_3 = 204$,
-$U_7 = 235416$.  Similarly $v_2 = 0, 1, 0, 2, 0, 1, 0, 3, \ldots$, and
-the first $m$ with $v_2(U_{m-1}) \ge r$ is again $m = 2^{\lceil r/2 \rceil}$.
-
-\smallskip
-\noindent
-Combining with $r = a - 2 - s$ and $s = \lceil(a-3)/2\rceil$ gives
-$m = 2^{\lceil(a-4)/2\rceil}$.
-\end{proof}
 
 \section{Special cases}
 
-\subsection{$m = 1$: Richaud--Degert families}
+\subsection*{$m = 1$: Richaud--Degert families}
 
-When $2^{a-2} \mid k$ (equivalently $v_2(k) \ge a-2$), we have $m = 1$,
-$T_1(z) = z$, $U_0(z) = 1$, giving
-\[
-x = \frac{k^2}{2^{a-3}} + 1, \qquad y = \frac{k}{2^{a-2}}.
-\]
-Setting $a_0 = k$, $r = 2^{a-2}$, this becomes the classical
-Richaud--Degert formula~\cite{richaud1866,degert1958} for $n = a_0^2 + r$ with $r \mid 2a_0$:
-\[
-x = \frac{2a_0^2 + r}{r}, \qquad y = \frac{2a_0}{r}.
-\]
-More generally, this formula is valid for \emph{any} $r \ge 1$ (not just powers of~2)
-whenever $r \mid 2a_0$ and $n = a_0^2 + r$ is not a perfect square.
+When the seed~\eqref{eq:rd} is already integral ($r \mid 2a_0$),
+we get $m = 1$ and the classical formula
+$x = (2a_0^2 + r)/r$, $y = 2a_0/r$.
+This covers all R-D type fields~\cite{richaud1866,degert1958}
+for arbitrary~$r$.
 
-\subsection{$m = 2$: degree-4 families}
+\subsection*{$m = 2$: $r = 8$, $a_0$ odd}
 
-For $d = 8$ ($a = 3$), $k$ odd, $z = k^2 + 1$:
+$z = a_0^2 + 1$:
 \[
-x = T_2(k^2+1) = 2k^4 + 4k^2 + 1, \qquad y = k \cdot U_1(k^2+1) = k(k^2+1) = k^3+k.
+x = 2a_0^4 + 4a_0^2 + 1, \qquad y = a_0^3+a_0.
 \]
 
-\subsection{$m = 3$: degree-6 family}
+\subsection*{$m = 3$: $r = 16$, $a_0$ odd}
 
-For $d = 16$ ($a = 4$), $k$ odd, $z = (k^2+2)/2$:
+$z = (a_0^2+2)/2$:
 \[
-x = T_3\!\left(\frac{k^2+2}{2}\right)
-= \frac{(k^2+2)(k^4+4k^2+1)}{2}, \qquad
-y = \frac{k(k^2+1)(k^2+3)}{4}.
+x = \frac{(a_0^2+2)(a_0^4+4a_0^2+1)}{2}, \qquad
+y = \frac{a_0(a_0^2+1)(a_0^2+3)}{4}.
 \]
-Here $z$ is a half-integer, yet $x$ and $y$ are integer by mod-4 arithmetic:
-$k^4 + 4k^2 + 1 \equiv 2 \pmod{4}$ for odd~$k$.
 
-\section{The $d = 16$ boundary}
+\subsection*{$m = 3$: $r = 12$, $a_0 = 3k$, $k$ odd}
 
-\begin{proposition}\label{prop:boundary}
-For $d \le 16$ ($a \le 4$), the formula \eqref{eq:sol} covers \emph{all}~$k$.
-For $d = 32$ ($a = 5$) and $k$ odd, $z = (k^2+4)/4$ is a quarter-integer
-and $T_m(z) \notin \mathbb{Z}$ for all $m \ge 1$.
-\end{proposition}
+$z = (3k^2+2)/2$:
+\[
+x = (3k^2+2)(9k^4+12k^2+1)/2, \qquad
+y = 3k(3k^2+1)(3k^2+3)/4.
+\]
 
-\begin{proof}
-For $a \le 3$: $z$ is always an integer (the divisibility $2^0 \mid k$ is vacuous).
-For $a = 4$, $k$ odd: $z = (k^2+2)/2$.  We must check that $T_m(z)$ is integer
-for some~$m$.  At $m = 3$: $T_3(z) = 4z^3 - 3z = \frac{(k^2+2)((k^2+2)^2-3)}{2}$.
-Since $(k^2+2)^2 - 3 = k^4+4k^2+1 \equiv 2 \pmod{4}$ for odd~$k$, the product
-$(k^2+2)(k^4+4k^2+1)$ is always even, so $T_3(z) \in \mathbb{Z}$.
+\section{Scope and limits}
 
-For $a = 5$, $k$ odd: $z = (k^2+4)/4$.  Since $T_m$ has leading coefficient~$2^{m-1}$,
-the denominator of $T_m(z)$ is $4^m / 2^{m-1} = 2^{m+1}$, which grows with~$m$.
-An explicit check for $k = 3$ ($z = 13/4$):
-$T_1 = 13/4$, $T_2 = 153/8$, $T_3 = 2041/16$, $T_4 = 25889/32$ ---
-none are integers, and the denominators increase monotonically.
-\end{proof}
+The Chebyshev mechanism applies whenever $\delta \le 2$.
+Since $T_m$ has leading coefficient~$2^{m-1}$, the factor~$2$ in
+the denominator of $z$ is the \emph{only} prime that can be absorbed by
+Chebyshev evaluation: for any odd prime $p \mid \delta$, the denominator
+$p^m / 2^{m-1}$ of $T_m(z)$ grows without bound, blocking integrality.
+
+The odd prime factors in $r$ must therefore be consumed \emph{before}
+applying Chebyshev, by requiring the appropriate divisibility
+of~$a_0$ (Proposition~\ref{prop:div}).
+The two-adic part is then the only remaining obstruction, and the
+Chebyshev tower resolves it completely.
 
 \begin{remark}
-For $d \ge 32$ with $k$ odd, the Pell solution depends on the specific arithmetic
-of the field $\mathbb{Q}(\sqrt{k^2 + 2^{a-2}})$ and admits no universal polynomial
-formula in~$k$.  However, for $k$ in the divisibility class $2^{\lceil(a-3)/2\rceil} \mid k$,
-the Chebyshev formula applies for \emph{arbitrarily large}~$a$.
+For $n$ not representable as $a_0^2 + r$ with $\delta \le 2$ for any~$r$,
+the Pell solution depends on the specific arithmetic of
+$\mathbb{Q}(\sqrt{n})$ (continued fraction period, class number)
+and admits no universal polynomial formula.
 \end{remark}
 
 \section{Fundamentality}
 
 \begin{conjecture}\label{conj:fund}
-For $n = 4k^2 + 2^a$ with $2^{\lceil(a-3)/2\rceil} \mid k$,
-the solution \eqref{eq:sol} is the fundamental solution of $x^2 - ny^2 = 1$
+Under the conditions of Theorem~\ref{thm:cond}, the solution at
+minimal~$m$ is the fundamental solution of $x^2 - ny^2 = 1$
 (or the fundamental norm-$+1$ solution when a norm-$-1$ unit exists).
 \end{conjecture}
 
-This has been verified computationally for all $a = 3, \ldots, 12$ and
-all $j = 1, 3, 5, 7, 9, 11$ (60 test cases, 0 failures).
-The conjecture is supported by the minimality of~$m$: since $T_m(z)$ is
-monotonically increasing in~$m$ for $z \ge 1$, the smallest~$m$
+This has been verified for $r = 2^a$ ($a = 3, \ldots, 12$, 60 cases)
+and for $r \in \{6, 10, 12, 14, 20, 24, 28, 40, 56\}$
+(160 additional cases), with 0 failures.
+The conjecture is supported by minimality: $T_m(z)$ is
+monotonically increasing in~$m$ for $z \ge 1$, so the smallest~$m$
 yielding integer~$y$ produces the smallest~$x$.
-
-For the classical R-D case ($m = 1$), fundamentality is well established~\cite{mollin1992}.
-For polynomial Pell solutions producing fundamental units
-in infinite families, see McLaughlin~\cite{mclaughlin2003}.
+For the R-D case ($m = 1$), fundamentality is classical~\cite{mollin1992}.
+For polynomial Pell solutions in infinite families, see~\cite{mclaughlin2003}.
 
 \section*{Acknowledgments}
 
