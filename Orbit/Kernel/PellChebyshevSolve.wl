@@ -14,14 +14,14 @@ Begin["`Private`"];
 
 Options[PellChebyshevSolve] = {"CMax" -> 7, "MMax" -> 15};
 
-PellChebyshevSolve[n_Integer, OptionsPattern[]] /; n > 1 && !IntegerQ[Sqrt[n]] :=
+PellChebyshevSolve[n_, OptionsPattern[]] /; (IntegerQ/@ NumeratorDenominator@Sqrt[n] != {True, True}) :=
   Module[{cmax, mmax},
     cmax = OptionValue["CMax"];
     mmax = OptionValue["MMax"];
     Catch[
-      Do[
-        pellChebyshevTryC[n, cc, mmax],
-      {cc, 1, cmax}];
+      Monitor[Do[
+        pellChebyshevTryC[n, Denominator@n * cc, mmax],
+      {cc, 1, cmax}],cc];
       $Failed
     , "pellHit"]
   ];
@@ -31,7 +31,7 @@ PellChebyshevSolve[___] := $Failed;
 (* Try a specific c value: enumerate divisors of 4c²n *)
 pellChebyshevTryC[n_, c_, mmax_] :=
   Module[{cn = c^2 * n, divs, a0sq, a0, z, delta, w, xc, wU, yn},
-    divs = Divisors[4 cn];
+    divs = Divisors[4 Numerator@cn];
     Do[
       If[rr <= 0 || rr >= cn, Continue[]];
       a0sq = cn - rr;
