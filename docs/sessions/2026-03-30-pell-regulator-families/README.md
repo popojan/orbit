@@ -395,9 +395,37 @@ When k = m (72.3%): extract ε from ε^m by O(log m) NUDUPL operations.
 When k/m is a known small rational: similarly extract.
 When k/m is unknown: need R or class number information — still hard.
 
+### Large-scale verification (n ≤ 2000, c ≤ 20, 4812 pairs)
+
+| k/m | count | fraction | meaning |
+|-----|-------|----------|---------|
+| 1 | 3804 | **79.1%** | formula = ε^m exactly |
+| 1/3 | 454 | 9.4% | formula = ε^{m/3} — norm-1 or simpler field |
+| 1/2 | 295 | 6.1% | formula = ε^{m/2} — norm-1 halving |
+| 3/2 | 44 | 0.9% | |
+| 2 | 56 | 1.2% | formula = ε^{2m} — order vs field gap |
+| 3 | 28 | 0.6% | |
+
+**k < m in 17.4%**: the formula gives a LOWER power than expected = BONUS!
+These cases correlate with n having odd CF period (norm-1 exists) or
+c²n being in a simpler R-D family than the parent n.
+
+**k/m denominator is almost always 1, 2, or 3** (94% of mismatches).
+
+### Pattern in k/m = 1/3 (dominant mismatch)
+
+k/m = 1/3 occurs primarily when m = 3 (half-integer z, T₃ evaluation) and
+the T₃ value happens to BE the fundamental solution (not its cube).
+This happens when c²n has an R-D decomposition with δ = 1 that our
+formula doesn't "see" (it uses δ = 2 and T₃ instead of δ = 1 and T₁).
+
+Implication: for these n, a SIMPLER formula exists — but finding it
+requires knowing the alternative R-D decomposition.
+
 ### Scripts
 - `power-analysis.wl` — corrected y=cY computation
-- `k-vs-m-comprehensive.wl` — full k vs m scan
+- `k-vs-m-comprehensive.wl` — full k vs m scan (n ≤ 200)
+- `k-vs-m-large.wl` — large-scale scan (n ≤ 2000, 4812 pairs)
 
 ## Files
 
