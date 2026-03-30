@@ -427,24 +427,126 @@ requires knowing the alternative R-D decomposition.
 - `k-vs-m-comprehensive.wl` — full k vs m scan (n ≤ 200)
 - `k-vs-m-large.wl` — large-scale scan (n ≤ 2000, 4812 pairs)
 
+## Conductor Analysis (NEW)
+
+The **conductor** fcond of the order Z[c√n] inside the maximal order O_K
+determines whether k = m (our formula gives ε^m) or k ≠ m.
+
+- **fcond = 1 → k = m always (100%, 51/51)**. Clean algorithmic case.
+- **fcond > 1 → k = m ~80%**. When k≠m: m/k ∈ {2, 3} dominant.
+- **k/m = 1/3 driven by n_sf ≡ 1 mod 4** (90.4%). O_K = Z[(1+√n_sf)/2] ⊋ Z[√n_sf].
+- **k/m = 1/2 heterogeneous** — neither norm-1 nor n_sf mod 4 is clean predictor.
+- Two sources of fcond > 1: (1) n_sf ≡ 1(4), (2) n contains p² for odd p.
+
+Reinterpretation: **k = 1 (fundamental) in 50.6%** of all (n,c) pairs.
+k=1,m=1: 978 cases. k=1,m=3: 156. k=1,m=2: 93.
+The "m/k=2" cases were misread — they are k=1,m=2 where T₂ IS fundamental.
+
+Scripts: `conductor-analysis.wl`, `conductor-exact.wl`, `predict-km.wl`,
+`predictor-failures.wl`, `mk-split-analysis.wl`, `reinterpret-k.wl`
+
+## Divisor Method: r | 4n (NEW)
+
+Instead of only a₀ = floor(√n): enumerate **all** r | 4n, check if n-r = square.
+Coverage jumps from 25% to **45%** at c=1. Cost O(τ(4n)) ≈ 15 ops per n.
+With c ≤ 7: **54%** of n ≤ 1000.
+
+Hard primes (127, 193, 409, 541, 991) uncoverable at c ≤ 100: genuine barrier.
+These have τ(4p) = 6 (too few divisors).
+
+Scripts: `divisor-method.wl`, `combined-divisor-scaling.wl`
+
+## Benchmark (NEW)
+
+PellChebyshevSolve on n = 2..100000:
+- Solved: 12846/99683 = **12.9%** coverage
+- Fundamental: **99.9%** of solved
+- **20× speedup** vs FindInstance on solvable n
+- Visualization: `chebyshev-coverage.png`
+
+Scripts: `benchmark-100k.wl`, `plot-coverage.wl`, `coverage-map.wl`
+
+## z-Equivalence Classes (NEW)
+
+455 classes, each = one quadratic field Q(√n_sf).
+All members: n = k²·n_sf for varying k. Same z, different m.
+**455/455 same field** — perfect correspondence.
+
+Largest class (z=19, Q(√10)): 29 members up to n=10000.
+Seed denominator ≈ Chebyshev c (98.6% divisibility).
+
+Scripts: `z-equivalence-classes.wl`, `seed-vs-c.wl`
+
+## Smooth Chebyshev & Factor Base (NEW)
+
+**Relaxing δ ≤ 2 to B-smooth r**: P²-nY² = r² from each smooth decomposition.
+For n=127: 6 smooth relations (B=13). Brahmagupta composition in Q: rc = 3^k
+grows forever (non-principal ideal of norm 3).
+
+**Algebraic z impossibility**: T_m(a+b√n) gives elements of Q(√n) but
+z²-1 is NEVER n·w² (proved: ab=pq + normalization → 0=-1).
+
+**Regulator via ArcCosh**: R = m·arccosh(z) does NOT need δ ≤ 2!
+Works for ANY z. Bottleneck: knowing m (= CF period information).
+Example: n=13078849728, m=42, R=527.73 in 0.1ms via arccosh.
+
+Scripts: `smooth-combine.wl`, `factor-base.wl`, `algebraic-z.wl`,
+`brahmagupta-compose.wl`, `chain-compose.wl`, `regulator-arccosh.wl`,
+`near-miss-rounding.wl`
+
+## Open Questions (prioritized)
+
+1. **R = m·arccosh(z) for all n**: how to determine m without CF walk?
+   m = CF period information. Possible shortcuts: conductor, L-functions, class number.
+2. **Smooth factor base hybrid**: Chebyshev generates O(1) relations,
+   but combining requires ideal arithmetic (form reduction). Bridge needed.
+3. **C implementation**: pre-filter in pellreg2. For 13% of n: skip BSGS.
+4. **Fundamentality proof**: 12828/12846 verified. Monotonicity argument incomplete.
+5. **Paper revision**: current version covers general r + defect δ. Needs update
+   with divisor method, conductor, arccosh regulator.
+
 ## Files
 
-- `pell-families.wl` — Wolfram analysis toolkit (original)
-- `plot-all-with-rd.wl` — Visualization scripts
-- `rd-verify.wl` — Master R-D table verification
-- `rd-unified.wl` — Elegant parameterization with proofs
-- `non-rd-branches.wl` — Non-R-D branch exploration
-- `non-rd-verify.wl` — Degree-4 non-R-D verification
-- `deg6-verify.wl` — Degree-6 polynomial discovery
+### Core theory
 - `UNIFIED-RD-TABLE.md` — Complete unified documentation
-- `README.md` — this document
+- `pell-families.wl`, `plot-all-with-rd.wl` — Original analysis toolkit
+- `rd-verify.wl`, `rd-unified.wl` — R-D formula verification
+
+### Chebyshev tower
+- `non-rd-branches.wl`, `non-rd-verify.wl`, `deg6-verify.wl` — Non-R-D families
+- `cheb-verify.wl`, `cheb-principle.wl` — Chebyshev elevation
+- `demeyer-verify.wl` — Chebyshev-Pell identity verification
+- `tower-verify.wl`, `tower-recursive.wl`, `d32-even.wl`, `d32-twostep.wl`
+
+### Conductor & k/m
+- `conductor-analysis.wl`, `conductor-exact.wl` — Conductor computation
+- `predict-km.wl`, `predictor-failures.wl` — k/m prediction
+- `mk-split-analysis.wl`, `reinterpret-k.wl`, `mk2-alternatives.wl`
+- `k-vs-m-comprehensive.wl`, `k-vs-m-large.wl`, `power-analysis.wl`
+
+### Coverage & benchmark
+- `divisor-method.wl`, `combined-divisor-scaling.wl` — Divisor method
+- `coverage-map.wl`, `coverage-analysis.wl` — Coverage maps
+- `density-fundamental.wl`, `density-nonfundamental.wl` — Density analysis
+- `benchmark-100k.wl`, `plot-coverage.wl` — Benchmark
+- `z-equivalence-classes.wl`, `seed-vs-c.wl` — z-classes
+- `growth-champions.wl`, `outliers-analysis.wl` — Outlier analysis
+- `tower-fields.wl`, `why-only-p2.wl`, `three-adic.wl` — Tower structure
+
+### Smooth & composition
+- `smooth-combine.wl`, `factor-base.wl` — Smooth Chebyshev relations
+- `brahmagupta-compose.wl`, `chain-compose.wl` — Rational composition
+- `algebraic-z.wl` — Algebraic z impossibility proof
+- `regulator-arccosh.wl` — Direct regulator computation
+- `near-miss-rounding.wl`, `mixed-strategy.wl`, `scaling-trick.wl`
+
+### Paper
+- `../papers/chebyshev-pell-tower.tex` — Draft paper
 
 ## Usage
 
 ```wolfram
-Get["pell-families.wl"];
-reg = loadRegulators["~/github/zzz/build/reg100k.csv"];
-families = analyzePowerOf2Distances[reg, 4];
-plotFamilies[families]
-plotFamiliesRatio[families]
+<< Orbit`
+PellChebyshevSolve[916]
+(* <|"n"->916, "x"->5848201, "y"->193230, "c"->1, "r"->16, "z"->227/2, "m"->3|> *)
 ```
