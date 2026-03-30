@@ -98,7 +98,29 @@ Input spectrum should be list of {x, y} pairs. Use same p as forward transform."
 (* ============================================ *)
 
 CyclotomicFromCirc::usage = "CyclotomicFromCirc[t, n] converts Circ parameter to cyclotomic.
-The phase φ[t] becomes a cyclotomic element with rational coefficients.";
+The phase \[CurlyPhi][t] becomes a cyclotomic element with rational coefficients.
+CyclotomicFromCirc[{r, t}, n] embeds a scaled phase r\[CenterDot]\[CurlyPhi][t].";
+
+CircPolarReduce::usage = "CircPolarReduce[terms] reduces a polar term list to canonical form
+via \[CapitalPhi]n. Unique but may have more terms. Required for equality comparison.
+Input: {{c1,t1},...} or {r,t} single pair.";
+
+CircPolarMultiply::usage = "CircPolarMultiply[{r, t}, terms] multiplies each term by {r,t}.
+Distributes \[CircleTimes] over angles, scales coefficients. No reduction, stays sparse.
+Also: CircPolarMultiply[{r1,t1}, {r2,t2}] = {r1*r2, t1 \[CircleTimes] t2}.";
+
+CircPolarScale::usage = "CircPolarScale[terms, c] scales all coefficients by rational c.";
+
+CircPolarToComplex::usage = "CircPolarToComplex[terms] evaluates a polar term list to complex.
+Also: CircPolarToComplex[{r, t}] for single pair.";
+
+CircPolarToCyclotomic::usage = "CircPolarToCyclotomic[terms] converts polar term list to CyclotomicElement.";
+
+CyclotomicToCircPolar::usage = "CyclotomicToCircPolar[elem] converts CyclotomicElement to polar term list.";
+
+CircAdditionKernel::usage = "CircAdditionKernel[{r1,t1}, {r2,t2}] returns the symmetric
+addition kernel K = 1/z1 + 1/z2. z1+z2 = CircPolarMultiply[z1*z2, K].
+Infix: {r1,t1} \[CirclePlus] {r2,t2} adds directly.";
 
 (* ============================================ *)
 (* SHORT ALIASES (Greek letters)               *)
@@ -108,16 +130,13 @@ The phase φ[t] becomes a cyclotomic element with rational coefficients.";
 Type: Esc+P+h+i+Esc or Esc+F+Esc
 
 Convolution via FFT:  \[CapitalPsi][\[CapitalPhi][a] \[CapitalPhi][b]]
-(displays as: Ψ[Φ[a] Φ[b]])";
+(displays as: \[CapitalPsi][\[CapitalPhi][a] \[CapitalPhi][b]])";
 
 \[CapitalPsi]::usage = "\[CapitalPsi][list] is a short alias for CyclotomicInverseDFT.
 Type: Esc+P+s+i+Esc or Esc+Y+Esc
 
 Convolution via FFT:  \[CapitalPsi][\[CapitalPhi][a] \[CapitalPhi][b]]
-(displays as: Ψ[Φ[a] Φ[b]])";
-
-CyclotomicToCircPhases::usage = "CyclotomicToCircPhases[elem] attempts to express as sum of Circ phases.
-Returns {coeffs, phases} where elem = Σ coeffs[[k]] φ[phases[[k]]].";
+(displays as: \[CapitalPsi][\[CapitalPhi][a] \[CapitalPhi][b]])";
 
 Begin["`Private`"];
 
@@ -429,16 +448,158 @@ zetaPower[n_Integer, k_Integer] := Module[{coeffs, idx},
 (* Convert Circ phase to cyclotomic element *)
 (* v2: φ[t] = e^(i(5π/4 + πt)) for γ[t] = Cos[5π/4 + πt] *)
 (* For t = 2k/n - 7/4, this is a root of unity *)
-CyclotomicFromCirc[t_?NumericQ, n_Integer] := Module[
-  {k, coeffs},
-  (* φ[t] corresponds to e^(i(5π/4 + πt)) in v2 *)
-  (* For now, just verify t gives n-th root *)
+CyclotomicFromCirc[t_?NumericQ, n_Integer] := Module[{k},
   k = (t + 7/4) * n / 2;  (* v2: 7/4 offset *)
   If[IntegerQ[k],
-    CyclotomicTwiddle[n, -k],  (* ω = e^(-2πi/n), so φ relates inversely *)
+    CyclotomicTwiddle[n, -k],
     $Failed
   ]
 ]
+
+(* Scaled phase: r·φ[t] *)
+CyclotomicFromCirc[{r_, t_}, n_Integer] :=
+  CyclotomicScale[CyclotomicFromCirc[t, n], r]
+
+(* ============================================ *)
+(* POLAR-CYCLOTOMIC BRIDGE                     *)
+(* Plain {{c,t},...} term lists — no wrapper   *)
+(* ============================================ *)
+
+(* Predicates *)
+polarPairQ[x_] := MatchQ[x, {_?NumberQ, _Rational | _Integer}]
+polarAngleQ[x_] := MatchQ[x, {_, _}] && !polarPairQ[x] && !polarSumQ[x]
+polarSumQ[x_] := MatrixQ[x, (IntegerQ[#] || Head[#] === Rational) &] && Last[Dimensions[x]] === 2
+
+(* Auto-promote: {r, Pi*p/q} -> {{r, rho}} via CircPolar *)
+autoPromote[x_?polarPairQ] := {x}
+autoPromote[x_?polarSumQ] := x
+autoPromote[x_?polarAngleQ] := CircPolar[x]
+autoPromote[x_?polarAngleSumQ] := Join @@ (CircPolar /@ x)
+
+(* Infer minimal cyclotomic order from a pair *)
+circPolarOrder[{_, t_}] := Denominator[(t + 7/4) / 2]
+
+(* Order of a term list = LCM of all term orders *)
+circPolarOrderList[terms_?polarSumQ] := LCM @@ (circPolarOrder /@ terms)
+
+(* Helper: Circ parameter t -> power-basis index *)
+circToIndex[t_, n_] := Mod[Round[(t + 7/4) * n / 2], n]
+
+(* Normalize angle to canonical form at order n *)
+normalizeAngle[{r_, t_}, n_] := {r, \[Rho][n, circToIndex[t, n]]}
+
+(* Merge terms with same angle, drop zeros *)
+mergeTerms[terms_List] := Module[{grouped},
+  grouped = GroupBy[terms, #[[2]] &, Total[#[[All, 1]]] &];
+  Select[KeyValueMap[{#2, #1} &, grouped], #[[1]] =!= 0 &]
+]
+
+(* Re-index terms to order n *)
+promoteTerms[terms_List, n_Integer] :=
+  normalizeAngle[#, n] & /@ terms
+
+(* ============================================ *)
+(* CONVERSIONS                                 *)
+(* ============================================ *)
+
+(* CyclotomicElement -> term list (reduced/canonical) *)
+CyclotomicToCircPolar[CyclotomicElement[n_, coeffs_]] :=
+  Select[
+    Table[{coeffs[[k + 1]], \[Rho][n, k]}, {k, 0, Length[coeffs] - 1}],
+    #[[1]] =!= 0 &
+  ]
+
+(* Backward compat *)
+CyclotomicToCircPhases = CyclotomicToCircPolar;
+
+(* Term list -> CyclotomicElement (triggers Phi_n reduction) *)
+CircPolarToCyclotomic[terms_?polarSumQ] := Module[{n, coeffs},
+  n = circPolarOrderList[terms];
+  coeffs = Table[0, n];
+  Scan[(coeffs[[circToIndex[#[[2]], n] + 1]] += #[[1]]) &, terms];
+  CyclotomicElement[n, coeffs]
+]
+
+CircPolarToCyclotomic[pair_?polarPairQ] := CircPolarToCyclotomic[{pair}]
+
+(* Reduce to canonical form via Phi_n *)
+CircPolarReduce[terms_?polarSumQ] :=
+  CyclotomicToCircPolar[CircPolarToCyclotomic[terms]]
+
+CircPolarReduce[pair_?polarPairQ] := CircPolarReduce[{pair}]
+
+(* Evaluate to complex number (no reduction needed) *)
+CircPolarToComplex[terms_?polarSumQ] :=
+  Total[#[[1]] (\[Alpha]@\[Kappa]@#[[2]]) . {1, I} & /@ terms] // FullSimplify
+
+CircPolarToComplex[pair_?polarPairQ] :=
+  pair[[1]] (\[Alpha]@\[Kappa]@pair[[2]]) . {1, I} // FullSimplify
+
+CircPolarToComplex[x_?polarAngleQ] := CircPolarToComplex[autoPromote[x]]
+
+(* ============================================ *)
+(* ARITHMETIC                                  *)
+(* ============================================ *)
+
+(* Scale all coefficients *)
+CircPolarScale[terms_?polarSumQ, c_] := {c #[[1]], #[[2]]} & /@ terms
+
+(* Multiply term list by single pair: distribute CircTimes *)
+CircPolarMultiply[{r_, t_}, terms_?polarSumQ] :=
+  {#[[1]] r, CircTimes[#[[2]], t]} & /@ terms
+
+CircPolarMultiply[terms_?polarSumQ, pair_?polarPairQ] :=
+  CircPolarMultiply[pair, terms]
+
+(* Single * single *)
+CircPolarMultiply[{r1_, t1_}, {r2_, t2_}] /; polarPairQ[{r1, t1}] :=
+  {r1 r2, CircTimes[t1, t2]}
+
+(* ============================================ *)
+(* ADDITION via CirclePlus (\[CirclePlus])     *)
+(* Unreduced: merges same-angle, never Phi_n   *)
+(* Returns plain {{c,t},...} term list          *)
+(* ============================================ *)
+
+(* Normalize any input to a term list at order n *)
+toTermsAt[pair_?polarPairQ, n_] := {normalizeAngle[pair, n]}
+toTermsAt[terms_?polarSumQ, n_] := promoteTerms[terms, n]
+
+(* Core: merge two term lists at common order *)
+circPolarAddTwo[a_?polarSumQ, b_?polarSumQ] := Module[{n},
+  n = LCM[circPolarOrderList[a], circPolarOrderList[b]];
+  mergeTerms[Join[promoteTerms[a, n], promoteTerms[b, n]]]
+]
+
+circPolarAddTwo[a_?polarPairQ, b_?polarPairQ] := circPolarAddTwo[{a}, {b}]
+circPolarAddTwo[a_?polarPairQ, b_?polarSumQ] := circPolarAddTwo[{a}, b]
+circPolarAddTwo[a_?polarSumQ, b_?polarPairQ] := circPolarAddTwo[a, {b}]
+(* angle-form promotion (bare pair or wrapped {{r,angle},...}) *)
+circPolarAddTwo[a_?polarAngleQ, b_] := circPolarAddTwo[autoPromote[a], autoPromote[b]]
+circPolarAddTwo[a_, b_?polarAngleQ] := circPolarAddTwo[autoPromote[a], autoPromote[b]]
+circPolarAddTwo[a_?polarAngleSumQ, b_] := circPolarAddTwo[Join @@ (autoPromote /@ a), autoPromote[b]]
+circPolarAddTwo[a_, b_?polarAngleSumQ] := circPolarAddTwo[autoPromote[a], Join @@ (autoPromote /@ b)]
+
+(* Predicate union for CirclePlus dispatch *)
+polarAnyQ[x_] := polarPairQ[x] || polarSumQ[x] || polarAngleQ[x] || polarAngleSumQ[x]
+
+(* CirclePlus: universal entry point, auto-promotes all inputs *)
+CirclePlus[a_, b_] /; polarAnyQ[a] && polarAnyQ[b] := circPolarAddTwo[a, b]
+
+(* Variadic: a \[CirclePlus] b \[CirclePlus] c flattens *)
+CirclePlus[first_, second_, rest__] /; polarAnyQ[first] :=
+  Fold[circPolarAddTwo, autoPromote[first], Map[autoPromote, {second, rest}]]
+
+(* Legacy *)
+CircPolarAdd[args__] := CirclePlus[args]
+
+(* ============================================ *)
+(* ADDITION KERNEL (symmetric)                 *)
+(* K = 1/z1 + 1/z2 as term list               *)
+(* ============================================ *)
+
+CircAdditionKernel[{r1_, t1_}, {r2_, t2_}] :=
+  {1/r1, CircInverse[t1]} \[CirclePlus] {1/r2, CircInverse[t2]}
 
 (* ============================================ *)
 (* GREEK LETTER ALIASES                        *)
@@ -449,6 +610,40 @@ CyclotomicFromCirc[t_?NumericQ, n_Integer] := Module[
 
 (* Ψ = Inverse DFT (Esc+Y+Esc or Esc+Psi+Esc) *)
 \[CapitalPsi][x_List] := CyclotomicInverseDFT[x]
+
+(* ============================================ *)
+(* CircleTimes ⊗ for polar types               *)
+(* pair ⊗ pair = pair, pair ⊗ sum = sum        *)
+(* Must come BEFORE the DFT list overload       *)
+(* ============================================ *)
+
+(* pair ⊗ pair → pair *)
+CircleTimes[a_?polarPairQ, b_?polarPairQ] := {a[[1]] b[[1]], CircTimes[a[[2]], b[[2]]]}
+
+(* pair ⊗ sum or sum ⊗ pair → distribute *)
+CircleTimes[pair_?polarPairQ, terms_?polarSumQ] :=
+  {#[[1]] pair[[1]], CircTimes[#[[2]], pair[[2]]]} & /@ terms
+
+CircleTimes[terms_?polarSumQ, pair_?polarPairQ] := CircleTimes[pair, terms]
+
+(* sum ⊗ sum: distribute all pairs (m×n terms) *)
+CircleTimes[a_?polarSumQ, b_?polarSumQ] := Module[{n},
+  n = LCM[Orbit`Private`circPolarOrderList[a], Orbit`Private`circPolarOrderList[b]];
+  Orbit`Private`mergeTerms[
+    Flatten[Outer[{#1[[1]] #2[[1]], CircTimes[#1[[2]], #2[[2]]]} &, a, b, 1], 1]
+  ]
+]
+
+(* angle-form auto-promotion (bare pair) *)
+CircleTimes[a_?polarAngleQ, b_] := CircleTimes[autoPromote[a][[1]], b]
+CircleTimes[a_, b_?polarAngleQ] := CircleTimes[a, autoPromote[b][[1]]]
+
+(* angle-form wrapped as {{r, angle}} — promote to {{r, rho}} *)
+polarAngleSumQ[x_] := MatrixQ[x] && Last[Dimensions[x]] === 2 && !polarSumQ[x] &&
+  AnyTrue[x[[All, 2]], !IntegerQ[#] && Head[#] =!= Rational &]
+
+CircleTimes[a_?polarAngleSumQ, b_] := CircleTimes[Join @@ (autoPromote /@ a), b]
+CircleTimes[a_, b_?polarAngleSumQ] := CircleTimes[a, Join @@ (autoPromote /@ b)]
 
 (* Element-wise multiplication of cyclotomic lists: use CircleTimes ⊗ *)
 (* Type: Esc + c + * + Esc *)

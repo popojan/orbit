@@ -70,6 +70,13 @@ Type: Esc r Esc
 Example - Gauss's 17-star (Braunschweig monument):
   Polygon[\[Kappa][\[Rho][17] \[CircleDot] 3#] & /@ Range[17]]";
 
+CircPolar::usage = "CircPolar[{r, \[Pi] x/y}] converts standard polar form to {r, \[Rho][y, y+x/2]}.
+CircPolar[{r, \[Pi] x/y}] represents the complex number r\[CenterDot]e^(i\[Pi]x/y).
+Examples:
+  CircPolar[{3, \[Pi] 2/7}]  = {3, \[Rho][7, 7+1]}  = {3, \[Rho][7, 8]}
+  CircPolar[{1, \[Pi]/3}]    = {1, \[Rho][3, 3+1/2]} = {1, \[Rho][3, 7/2]}
+  CircPolar[{5, \[Pi]}]      = {5, \[Rho][1, 1/2]}   (* = 5*(-1) *)";
+
 (* Constants *)
 CircIdentity::usage = "CircIdentity = -7/4, the multiplicative identity.
 Equivalent to 1/4 (mod 2). Represents {1, 0}.";
@@ -175,6 +182,15 @@ CircNormalize[t_] := Mod[t + 1, 2] - 1  (* centered at 0 *)
 (* Fully symbolic; formula threads via arithmetic *)
 CircRoot[n_, k_: 1] := 2 k/n - 7/4
 \[Rho][n_, k_: 1] := 2 k/n - 7/4
+
+(* Convert standard polar (r, angle) to {{r, rho}} term list *)
+(* Angle Pi*x/y maps to rho[y, y + x/2] *)
+CircPolar[{r_, Pi Rational[x_, y_]}] := {{r, \[Rho][y, y + x/2]}}
+CircPolar[{r_, 0}] := {{r, CircIdentity}}
+CircPolar[{r_, Pi}] := {{r, \[Rho][2, 1]}}
+CircPolar[{r_, -Pi}] := {{r, \[Rho][2, 1]}}
+CircPolar[{r_, n_Integer Pi}] := {{r, \[Rho][1, (n + 1)/2]}}  /; OddQ[n]
+CircPolar[{r_, n_Integer Pi}] := {{r, CircIdentity}} /; EvenQ[n]
 
 (* ============================================ *)
 (* INFIX OPERATOR \[CircleTimes] = ⊗            *)
