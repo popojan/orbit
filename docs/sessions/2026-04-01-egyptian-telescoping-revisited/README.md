@@ -431,5 +431,30 @@ $\varphi$-split series: $a_k - a_{k+1} = F_{4k+1} / (F_{2k-1} F_{2k} F_{2k+1} F_
 
 ## Files
 
-- `README.md` — this document
-- [`../2026-02-19-prime-interference-moire/algebraic-exploitation.md`](../2026-02-19-prime-interference-moire/algebraic-exploitation.md) — parent session
+- `README.md` — this document (main Egyptian fractions discoveries)
+- **[`TAIL-EULER-PRIMORIAL.md`](./TAIL-EULER-PRIMORIAL.md)** — **NEW (2026-04-01)** Tailů jednotkových zlomků, Euler-suma, primoriální struktura, inverzní formule
+- `tail_inversion_formula.wl` — Praktické demo: jak počítat tailů analyticky skrz Zetu
+- `verify-trigamma.wl` — Ověření closed form Σ(tail_m)^s = ψ^(s-1)(1+u/v)/v^(2s)
+- [`../2026-02-19-prime-interference-moire/algebraic-exploitation.md`](../2026-02-19-prime-interference-moire/algebraic-exploitation.md) — parent session (prime interference)
+
+## New Discovery: Primorial Structure in Tail Euler Sums
+
+During exploration of tail fractions from telescoping sums, discovered unexpected **primorial structure**:
+
+- **Euler-regularized sums** $\Sigma_m \frac{1}{m^s(n+q^2m)}$ (s ≥ 1) generate **highly smooth denominators**
+- **Primorial coverage**: ~85% of all prime factors come from {2,3,5,7,11}
+- **Structure is invariant**: Coverage remains ~79-85% regardless of regularization parameter s
+- **Three hypotheses verified** (m-dependence of prime multiplicities, stability of perturbations, robustness under s-variation)
+
+See [`TAIL-EULER-PRIMORIAL.md`](./TAIL-EULER-PRIMORIAL.md) for complete analysis, experiments, and open questions.
+
+Connection back to Egyptian fractions: Tails encode unit fraction decomposition structure in their prime factorization signatures.
+
+### Inversion Formula for Partial Tail Sums
+
+Further analysis (2026-04-01) reveals that while **individual tail values cannot be inverted** from the closed-form Zeta, **partial tail sums have an analytical formula**:
+
+For any split at index N:
+$$T_N(s) = \sum_{m=N+1}^{\infty} (\text{tail}_m)^s = \left(\frac{1}{v^2}\right)^s \left[\zeta(s, 1+u/v) - \sum_{k=1}^{N} \frac{1}{(u/v+k)^s}\right]$$
+
+This combines the closed form (Zeta/PolyGamma) with a finite correction, enabling **analytical computation** of truncation tails without summing to infinity. Verified numerically to machine precision for s=2,3,4.
