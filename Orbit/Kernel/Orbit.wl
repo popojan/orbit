@@ -31,5 +31,7 @@ Get["Orbit`PellRegulator`"];
 Get["Orbit`PellSeedRegulator`"];
 Get["Orbit`PellChebyshevCompact`"];
 Get["Orbit`PellChebyshevSolve`"];
+Get["Orbit`PellFactorBase`"];
+Get["Orbit`SuccessorOrbit`"];
 
 EndPackage[];
