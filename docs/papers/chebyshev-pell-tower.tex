@@ -172,26 +172,110 @@ condition~\eqref{eq:divcond} is $3 \mid a_0$ and $v_2(a_0) \ge 0$
 $x^2 - (9k^2+12)\,y^2 = 1$ for \emph{all}~$k$.
 \end{corollary}
 
-\section{The Chebyshev index $m$}
+\section{The Chebyshev index $m$}\label{sec:index}
 
-\begin{proposition}\label{prop:m}
-Given $\delta \le 2$:
+\subsection{Zero structure of $U_k$ modulo prime powers}
+
+\begin{definition}
+The \emph{rank of apparition} $\alpha(p^e, z)$ is the smallest positive
+index~$k$ such that $U_{k-1}(z) \equiv 0 \pmod{p^e}$.
+\end{definition}
+
+\begin{proposition}[Zero structure]\label{prop:zeros}
+For any prime power $p^e$ with $p \nmid 2$, the set
+$\{k \ge 0 : U_k(z) \equiv 0 \pmod{p^e}\}$
+is an arithmetic progression with common difference $\alpha(p^e, z)$.
+Furthermore:
 \begin{enumerate}
-\item[(i)] If $\delta = 1$, $m$ is the smallest positive integer with
-  $v_2(w \cdot U_{m-1}(z)) \ge 0$, i.e., with
-  $w \cdot U_{m-1}(z) \in \mathbb{Z}$.
-\item[(ii)] If $\delta = 2$, $m$ is the smallest positive multiple of~$3$
-  satisfying the same integrality condition.
-\item[(iii)] For $r = 2^a$ and $a_0 = 2k$ with $k = 2^s j$, $j$ odd,
-  the minimal~$m$ for the ``hardest'' case $j = 1$ is
-  $m = 2^{\lceil(a-4)/2\rceil}$, and each additional factor of~$2$
-  in $j$ halves~$m$.
+\item[(i)] $\alpha(p, z)$ divides $p - \left(\frac{z^2 - 1}{p}\right)$,
+  where $\left(\frac{\cdot}{p}\right)$ is the Legendre symbol.
+\item[(ii)] $\alpha(p^e, z)$ divides $p^{e-1} \cdot \alpha(p, z)$.
 \end{enumerate}
 \end{proposition}
 
 \begin{proof}
-Parts (i)--(ii) follow from Theorem~\ref{thm:cond}.
-For part~(iii), the two base towers $z = 2$
+The recurrence $U_{k+1} = 2z\,U_k - U_{k-1}$ is a linear recurrence
+over $\mathbb{Z}/p^e\mathbb{Z}$ with companion matrix
+$M = \bigl(\begin{smallmatrix} 2z & -1 \\ 1 & 0 \end{smallmatrix}\bigr)$.
+Its eigenvalues satisfy $\lambda^2 - 2z\lambda + 1 = 0$, i.e.,
+$\lambda = z \pm \sqrt{z^2 - 1}$.
+Since $U_k(z) = (\lambda_1^{k+1} - \lambda_2^{k+1})/(\lambda_1 - \lambda_2)$,
+the zeros of $U_k \bmod p$ correspond to $\lambda_1^{k+1} = \lambda_2^{k+1}$,
+i.e., $(\lambda_1/\lambda_2)^{k+1} = 1$.
+Thus $\alpha(p, z) = \operatorname{ord}_p(\lambda_1/\lambda_2)$, which
+divides the group order: $p-1$ when $z^2-1$ is a QR mod~$p$
+(eigenvalues in $\mathbb{F}_p$), or $p+1$ when it is a NQR
+(eigenvalues in $\mathbb{F}_{p^2}$).
+Part~(ii) follows from Hensel's lemma.
+\end{proof}
+
+\subsection{The LCM algorithm}
+
+Let $N = \operatorname{denom}(w)$ where $w = 2a_0/r$ is the $y$-component
+of the seed~\eqref{eq:rd}.
+
+\begin{proposition}\label{prop:m}
+Given $\delta \le 2$:
+\begin{enumerate}
+\item[(i)] If $\delta = 1$ and $N = 1$, then $m = 1$.
+\item[(ii)] If $\delta = 1$ and $N > 1$: factor
+  $N = p_1^{e_1} \cdots p_s^{e_s}$ and compute
+  $\alpha_i = \alpha(p_i^{e_i}, z)$ for each factor. Then
+  \begin{equation}\label{eq:lcm}
+  m = \operatorname{lcm}(\alpha_1, \ldots, \alpha_s).
+  \end{equation}
+\item[(iii)] If $\delta = 2$: set $z' = T_3(z)$ (integer by
+  Theorem~\ref{thm:cond}), $N' = \operatorname{denom}(w \cdot U_2(z))$.
+  If $N' = 1$ then $m = 3$; otherwise
+  $m = 3 \cdot \operatorname{lcm}(\alpha(p_i^{e_i}, z'))$ over the
+  prime power factors of~$N'$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+For~(i)--(ii): by Proposition~\ref{prop:zeros}, the condition
+$N \mid U_{m-1}(z)$ is equivalent to
+$\alpha(p_i^{e_i}, z) \mid m$ for each $i$; the smallest such~$m$ is
+the LCM.
+For~(iii): the composition identity
+$U_{3q-1}(z) = U_{q-1}(T_3(z)) \cdot U_2(z)$ reduces the
+integrality condition $w \cdot U_{3q-1}(z) \in \mathbb{Z}$ to
+$N' \mid U_{q-1}(z')$, and the LCM formula gives the minimal~$q$.
+\end{proof}
+
+\textbf{Algorithm.}\;
+Given $n = a_0^2 + r$ with $\delta \le 2$:
+\begin{enumerate}
+\item Compute $z = (2a_0^2 + r)/r$, \; $w = 2a_0/r$, \; $N = \operatorname{denom}(w)$.
+\item For each prime power $p^e \| N$: iterate
+  $U_{k+1} \equiv 2z\,U_k - U_{k-1} \pmod{p^e}$ starting from
+  $U_0 = 1$, $U_1 = 2z$, until the first $U_k \equiv 0$.
+  Record $\alpha(p^e) = k + 1$.
+\item Set $m = \operatorname{lcm}(\alpha(p_1^{e_1}), \ldots, \alpha(p_s^{e_s}))$.
+  If $\delta = 2$, replace $z \to T_3(z)$, $N \to \operatorname{denom}(w \cdot U_2(z))$
+  in steps 1--2 and multiply $m$ by~$3$.
+\item Evaluate $x = T_m(z)$, \; $y = w \cdot U_{m-1}(z)$.
+\end{enumerate}
+
+\textbf{Complexity.}\;
+The brute-force scan over $m = 1, \ldots, m_{\min}$ costs
+$O(m_{\min} \cdot \log^2 N)$ arithmetic operations.
+Since $m_{\min} = \operatorname{lcm}(\alpha_i)$ can be as large as
+$\prod \alpha_i$ when the ranks are pairwise coprime,
+the LCM algorithm reduces this to $O(\sum \alpha_i \cdot \log^2 N)$\,---\,an
+exponential improvement in the number of distinct prime factors of~$N$.
+
+\subsection{The $r = 2^a$ tower as a special case}
+
+\begin{corollary}\label{cor:2tower}
+For $r = 2^a$, $a_0 = 2k$, $k = 2^s j$ with $j$ odd,
+the minimal~$m$ for the hardest case $j = 1$ is
+$m = 2^{\lceil(a-4)/2\rceil}$.
+Each additional factor of~$2$ in $j$ halves~$m$.
+\end{corollary}
+
+\begin{proof}
+The two base towers $z = 2$
 (over $\mathbb{Q}(\sqrt{3})$, $a$ odd) and $z = 3$
 (over $\mathbb{Q}(\sqrt{2})$, $a$ even) have
 $v_2(U_{m-1})$ periodic with the property that the first~$m$
@@ -210,6 +294,28 @@ $m$ & 2 & 2 & 2 & 4 & 4 & 8 & 8 & 16 & 16 & 32 \\
 \bottomrule
 \end{tabular}
 \end{center}
+
+\subsection{Worst-case examples}
+
+When $r$ has multiple large prime factors, $N = \operatorname{denom}(w)$
+is composite and the ranks at different primes combine
+multiplicatively.  The following table lists the worst cases
+(largest~$m$ across \emph{all} decompositions) for small~$n$:
+
+\begin{center}
+\begin{tabular}{rrrll}
+\toprule
+$n$ & $m$ & $N$ & $z$ & $r$ \\
+\midrule
+2197 & 39 & 26 & $11/2$ & $676 = 2^2 \cdot 13^2$ \\
+3125 & 15 & 5  & $123/2$ & $100 = 2^2 \cdot 5^2$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+For $n = 3125 = 5^5$, the optimal decomposition
+$a_0 = 55$, $r = 100$ yields $\delta = 2$ with
+$N' = \operatorname{denom}(w \cdot U_2(z)) = 5$
+and $\alpha(5, T_3(z)) = 5$, giving $m = 3 \times 5 = 15$.
 
 \section{Special cases}
 
@@ -246,23 +352,250 @@ y = 3k(3k^2+1)(3k^2+3)/4.
 
 \section{Scope and limits}
 
-The Chebyshev mechanism applies whenever $\delta \le 2$.
-Since $T_m$ has leading coefficient~$2^{m-1}$, the factor~$2$ in
-the denominator of $z$ is the \emph{only} prime that can be absorbed by
-Chebyshev evaluation: for any odd prime $p \mid \delta$, the denominator
-$p^m / 2^{m-1}$ of $T_m(z)$ grows without bound, blocking integrality.
+\subsection{The $\delta \ge 3$ obstruction}
 
-The odd prime factors in $r$ must therefore be consumed \emph{before}
-applying Chebyshev, by requiring the appropriate divisibility
-of~$a_0$ (Proposition~\ref{prop:div}).
-The two-adic part is then the only remaining obstruction, and the
-Chebyshev tower resolves it completely.
+The Chebyshev mechanism applies whenever $\delta \le 2$.
+The threshold is sharp: $2$ is the \emph{only} prime appearing
+in the leading coefficient $2^{m-1}$ of~$T_m$, so it is the only
+prime whose powers in the denominator of~$z$ can be absorbed.
+
+\begin{proposition}[Necessity, detailed]\label{prop:necessity}
+Write $z = p/\delta$ with $\gcd(p, \delta) = 1$ and $\delta \ge 3$.
+\begin{enumerate}
+\item[(i)] If $q \mid \delta$ is an odd prime, then
+  $v_q(T_m(z)) = -m \cdot v_q(\delta)$ for all $m \ge 1$.
+\item[(ii)] If $\delta = 2^d$ with $d \ge 2$, then
+  $v_2(T_m(z)) = -m(d{-}1) - 1$ for all $m \ge 1$.
+\end{enumerate}
+In both cases $T_m(z) \notin \mathbb{Z}$.
+\end{proposition}
+
+\begin{proof}
+Both parts follow by induction on~$m$ via the recurrence
+$T_{m+1} = 2z\,T_m - T_{m-1}$.
+
+For~(i): let $e = v_q(\delta)$.  Then $v_q(T_1) = -e$, and
+$v_q(2z \cdot T_m) = -e + v_q(T_m) = -(m{+}1)e$ while
+$v_q(T_{m-1}) = -(m{-}1)e$.  Since $-(m{+}1)e < -(m{-}1)e$
+(the gap is $2e \ge 2$), the ultrametric inequality gives
+$v_q(T_{m+1}) = -(m{+}1)e$.
+
+For~(ii): $v_2(T_1) = -(d{-}1) - 1 = -d$, and
+$v_2(2z \cdot T_m) = 1 + (-d) + v_2(T_m) = -m(d{-}1) - d$ while
+$v_2(T_{m-1}) = -(m{-}1)(d{-}1) - 1 = -m(d{-}1) + d - 2$.
+The gap $-m(d{-}1) - d - (-m(d{-}1) + d - 2) = -2(d{-}1) \le -2$
+prevents cancellation, so $v_2(T_{m+1}) = -(m{+}1)(d{-}1) - 1$.
+\end{proof}
+
+\subsection{Completeness of the divisor search}
+
+\begin{proposition}\label{prop:complete}
+If $\delta \le 2$ for the decomposition $n = a_0^2 + r$, then
+$|r|$ divides~$4n$.
+\end{proposition}
+
+\begin{proof}
+Write $z = (a_0^2 + n)/r$.  If $\delta = 1$, then $r \mid (a_0^2 + n)$.
+Since $r = n - a_0^2$, we get $r \mid (a_0^2 + n) + (n - a_0^2) = 2n$,
+so $|r| \mid 2n \mid 4n$.
+If $\delta = 2$, then $r \mid 2(a_0^2 + n)$, so
+$r \mid 2(a_0^2 + n) + 2(n - a_0^2) = 4n$.
+\end{proof}
+
+This means the search over divisors of~$4n$ is \emph{theoretically complete}:
+every valid seed with $\delta \le 2$ has $|r|$ in the divisor list.
+No seeds are missed.
+
+\subsection{Genuine amplification vs.\ circularity}
+
+The rational seeds with $\delta \le 2$ come from convergents~$p_k/q_k$
+of~$\sqrt{n}$ whose norm $p_k^2 - nq_k^2$ is small.
+Not all such seeds provide a genuine computational advantage:
+
+\begin{itemize}
+\item \textbf{Norm $\pm 1$}: this \emph{is} the Pell solution
+  ($m = 1$, no amplification).
+\item \textbf{Norm $\pm 2$}: gives $z = (p^2 + nq^2)/2$.
+  If $p^2 - nq^2 = 2$, then $z = p^2 - 1 = nq^2 + 1$,
+  which equals the Pell $x$-value (since
+  $\varepsilon = \alpha^2/2$ where $\alpha = p + q\sqrt{n}$).
+  Again $m = 1$, circular.
+\item \textbf{Norm $\pm 4$}: gives $\delta \le 2$ with $z$ potentially
+  much smaller than the Pell solution.
+  This is where the Chebyshev tower provides genuine amplification.
+\end{itemize}
+
+Thus the method provides a speedup over the continued fraction algorithm
+\emph{if and only if} a norm-$\pm 4$ convergent exists before the
+full CF period.  For $n = 127$, the convergent norms
+$\{-6, 13, -7, 9, -3, 2, -3, 9, -7, 13, -6, 1\}$
+contain no~$\pm 4$, and the method offers no advantage.
+
+\subsection{Hyperbolic characterization}
+
+The Pell conic $x^2 - ny^2 = 1$ admits the hyperbolic parametrization
+$x = \cosh R$, $y = \sinh R / \sqrt{n}$, where
+$R = \operatorname{arccosh}(x) = \log\varepsilon$ is the regulator
+of the fundamental unit $\varepsilon = x + y\sqrt{n}$.
+The Chebyshev composition $T_m(\cosh\varphi) = \cosh(m\varphi)$
+translates the algebraic condition on the seed into a metric one:
+
+\begin{theorem}[Regulator splitting]\label{thm:split}
+The Chebyshev mechanism solves $x^2 - ny^2 = 1$ with index~$m$
+if and only if
+\begin{equation}\label{eq:split}
+\cosh(R/m) \in \mathbb{Q}
+\quad\text{with}\quad
+\operatorname{denom}\bigl(\cosh(R/m)\bigr) \le 2.
+\end{equation}
+Equivalently, the regulator decomposes as
+$R = m \cdot \operatorname{arccosh}(z)$ for a rational~$z$
+with $\delta = \operatorname{denom}(z) \le 2$.
+\end{theorem}
+
+\begin{proof}
+Set $\varphi = R/m$ and $z = \cosh\varphi$.  Then
+$T_m(z) = \cosh(m\varphi) = \cosh R = x$ and
+$U_{m-1}(z) = \sinh(m\varphi)/\sinh\varphi$, so
+$w = \sinh\varphi / \sqrt{n}$ gives $z^2 - nw^2 = 1$.
+The seed $(z, w)$ has defect $\delta = \operatorname{denom}(z)$,
+and the Chebyshev elevation produces integers if and only if
+$\delta \le 2$ (Theorem~\ref{thm:cond}).
+\end{proof}
+
+For solvable families, $z$ is a rational function of the family
+parameter (e.g., $z = (a^2+2)/2$ for $n = a^2+4$) and $m$ is a
+fixed small integer.
+For inaccessible~$n$ such as $127$, $\cosh(R/m)$ is irrational
+for every $m \ge 2$: the regulator admits no rational splitting.
+
+\section{Closed-form CF expansions}\label{sec:cf}
+
+For each solvable family, the Pell solution is a polynomial in the
+family parameter, so the Euclidean algorithm on $(x, y)$ has a
+\emph{fixed quotient template} independent of the parameter value.
+This yields closed-form continued fraction expansions:
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Family & CF of $\sqrt{n}$ & Period \\
+\midrule
+$a^2 + 1$ & $[a;\; \overline{2a}]$ & 1 \\
+$a^2 + 2$ & $[a;\; \overline{a,\, 2a}]$ & 2 \\
+$a^2 + 4$, $a$ odd &
+  $[a;\; \overline{\tfrac{a-1}{2},\, 1,\, 1,\, \tfrac{a-1}{2},\, 2a}]$ & 5 \\
+$a^2 - 4$, $a$ odd $\ge 5$ &
+  $[a{-}1;\; \overline{1,\, \tfrac{a-3}{2},\, 2,\, \tfrac{a-3}{2},\, 1,\, 2(a{-}1)}]$ & 6 \\
+$(4k)^2 + 8$ &
+  $[4k;\; \overline{k,\, 8k}]$ & 2 \\
+$(4k{+}2)^2 + 8$ &
+  $[4k{+}2;\; \overline{k,\, 1,\, 1,\, 2k,\, 1,\, 1,\, k,\, 2(4k{+}2)}]$ & 8 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Every partial quotient is a linear function of the family parameter.
+The palindromic structure is a classical property of periodic
+continued fractions; the novelty is that the Chebyshev framework
+makes the template derivable \emph{without running the CF algorithm}.
+
+\section{Parametric square root approximations}\label{sec:sqrt}
+
+Combining the closed-form Pell solutions with the Egyptian
+square root series (the author's \texttt{Egypt} package;
+see \texttt{Orbit\textasciigrave SquareRootRationalizations})
+yields parametric rational approximations to~$\sqrt{n}$.
+The $k$-th approximation is
+\[
+E_k = \frac{x-1}{y}\,\Bigl(1 + \sum_{j=1}^{k}
+\frac{1}{T_{\lceil j/2\rceil}(x)\bigl(
+U_{\lfloor j/2\rfloor}(x) - U_{\lfloor j/2\rfloor - 1}(x)\bigr)}\Bigr),
+\]
+where $(x, y)$ is the Pell solution.
+
+\subsection{Chebyshev composition identities}
+
+For solvable families with $x = T_m(z)$, the $T$-composition is immediate:
+\begin{equation}\label{eq:Tcomp}
+T_j\bigl(T_m(z)\bigr) = T_{jm}(z).
+\end{equation}
+The $U$-composition follows from $U_{m-1}(\cos\theta) = \sin(m\theta)/\sin\theta$:
+\begin{align}
+U_{j-1}\bigl(T_m(z)\bigr)
+&= \frac{\sin(jm\theta)}{\sin(m\theta)}
+= \frac{\sin(jm\theta)/\sin\theta}{\sin(m\theta)/\sin\theta}
+\notag\\[4pt]
+&= \frac{U_{jm-1}(z)}{U_{m-1}(z)}.
+\label{eq:Ucomp}
+\end{align}
+The quotient is always a polynomial in~$z$ since the zeros of
+$U_{m-1}$ (at $z = \cos(k\pi/m)$) are a subset of those
+of~$U_{jm-1}$.
+
+\subsection{Collapse of the Egypt terms}
+
+Each term in the Egypt series evaluates $T$ and $U$ at~$x = T_m(z)$.
+Applying \eqref{eq:Tcomp} and \eqref{eq:Ucomp}:
+\begin{align*}
+T_{\lceil k/2\rceil}(x) &= T_{\lceil k/2\rceil \cdot m}(z),
+\\[3pt]
+U_{\lfloor k/2\rfloor}(x) - U_{\lfloor k/2\rfloor - 1}(x)
+&= \frac{U_{(\lfloor k/2\rfloor + 1)m - 1}(z)
+       - U_{\lfloor k/2\rfloor \cdot m - 1}(z)}{U_{m-1}(z)}.
+\end{align*}
+The $k$-th Egypt term therefore collapses to a single expression
+at the \emph{seed}~$z$:
+\begin{equation}\label{eq:egyptcollapse}
+\text{Term}_k
+= \frac{U_{m-1}(z)}{
+  T_{\lceil k/2\rceil m}(z)\;\bigl(
+    U_{(\lfloor k/2\rfloor+1)m-1}(z)
+  - U_{\lfloor k/2\rfloor m - 1}(z)\bigr)}.
+\end{equation}
+All Chebyshev evaluations are at the rational seed~$z$
+(a small number), not at the Pell solution~$x$ (which can
+be astronomically large).  The indices form a regular stride
+at multiples of~$m$.
+
+\begin{example}
+For $n = a^2 + 4$, $a$ odd: $m = 3$, $z = (a^2+2)/2$,
+$U_2(z) = (a^2+1)(a^2+3)$.
+\begin{align*}
+\mathrm{Term}_1
+&= \frac{U_2(z)}{T_3(z) \cdot U_2(z)} = \frac{1}{T_3(z)}
+ = \frac{2}{(a^2+2)(a^4+4a^2+1)},
+\\[4pt]
+\mathrm{Term}_2
+&= \frac{U_2(z)}{T_3(z)\,(U_5(z) - U_2(z))}.
+\end{align*}
+The first term is simply the reciprocal of the Pell $x$-value;
+subsequent terms introduce higher Chebyshev polynomials at~$z$,
+all expressible as explicit polynomials in~$a$.
+\end{example}
+
+\subsection{The $n = a^2+4$ approximation}
+
+\begin{corollary}\label{cor:sqrt4}
+For $n = a^2 + 4$ with $a$ odd:
+\[
+E_0 = \frac{a(a^2+3)}{a^2+1}, \qquad
+n - E_0^2 = \frac{4}{(a^2+1)^2},
+\]
+i.e., $(a^2+1)^2(a^2+4) = a^2(a^2+3)^2 + 4$.
+Each subsequent term improves the approximation with
+squared-denominator error:
+\[
+n - E_k^2 = \frac{4\,\cdot\, (\text{polynomial in } a)}{
+(\text{product of squared polynomial factors in } a)}.
+\]
+\end{corollary}
 
 \begin{remark}
-For $n$ not representable as $a_0^2 + r$ with $\delta \le 2$ for any~$r$,
-the Pell solution depends on the specific arithmetic of
-$\mathbb{Q}(\sqrt{n})$ (continued fraction period, class number)
-and admits no universal polynomial formula.
+The error denominators grow doubly exponentially in~$k$
+(each Egypt term squares the previous denominator and multiplies
+by a new polynomial factor), giving a sequence of rational
+approximations to~$\sqrt{n}$ where both the approximants and
+their errors are explicit polynomials in the family parameter~$a$.
 \end{remark}
 
 \section{Fundamentality}

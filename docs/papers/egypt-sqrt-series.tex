@@ -1,0 +1,276 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage[hidelinks]{hyperref}
+\usepackage{booktabs}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator{\arccosh}{arccosh}
+
+\title{Rational Square Root Approximation\\via the Pell--Chebyshev Series}
+\author{Jan Popelka\thanks{Email: popojan@protonmail.com}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Given the fundamental solution $(x,y)$ to $x^2 - ny^2 = 1$,
+we define a series of rational approximations to~$\sqrt{n}$
+whose terms involve Chebyshev polynomials evaluated at~$x$.
+We prove that the $k$-th partial sum collapses to a single
+hyperbolic expression:
+$E_k = \sqrt{n}\,\tanh\bigl(\tfrac{k+1}{2}\,R\bigr)$,
+where $R = \log(x + y\sqrt{n})$ is the Pell regulator.
+The interval width at depth~$k$ is $\sqrt{n}/\sinh\bigl((k{+}1)\,R\bigr)$,
+giving exponential convergence with rate~$1/\varepsilon$ per term,
+where $\varepsilon$ is the fundamental unit.
+\end{abstract}
+
+%% ====================================================================
+\section{The series}
+%% ====================================================================
+
+Let $(x,y)$ be the fundamental solution to $x^2 - ny^2 = 1$,
+and let $T_m$, $U_m$ denote Chebyshev polynomials of the first
+and second kind.
+
+\begin{definition}\label{def:series}
+The \emph{Egypt series} for $\sqrt{n}$ at depth~$k$ is
+\begin{equation}\label{eq:egypt}
+E_k \;=\; \frac{x-1}{y}\,\Bigl(1 + \sum_{j=1}^{k}
+  \frac{1}{T_{\lceil j/2\rceil}(x)\bigl(
+  U_{\lfloor j/2\rfloor}(x)
+  - U_{\lfloor j/2\rfloor - 1}(x)\bigr)}\Bigr).
+\end{equation}
+\end{definition}
+
+Each summand is the reciprocal of a product of Chebyshev polynomials
+at the Pell solution~$x$.
+The first few terms are:
+\begin{alignat*}{2}
+\text{Term}_1 &= \frac{1}{T_1(x) \cdot (U_0(x) - U_{-1}(x))}
+              &&= \frac{1}{x}, \\[3pt]
+\text{Term}_2 &= \frac{1}{T_1(x) \cdot (U_1(x) - U_0(x))}
+              &&= \frac{1}{x(2x-1)}.
+\end{alignat*}
+
+\begin{remark}
+An equivalent formulation uses factorials (the author's
+\texttt{egypt} package~\cite{egypt-repo}):
+\[
+\text{Term}_j = \frac{1}{1 + \sum_{i=1}^{j}
+  \frac{2^{i-1}\,(x{-}1)^i\,(j{+}i)!}{(j{-}i)!\,(2i)!}},
+\]
+with argument $x - 1$ instead of~$x$.
+The equivalence of the Chebyshev and factorial forms has been
+verified numerically for $j \le 200$;
+an algebraic proof is given in~\cite{Popelka2025egypt}.
+\end{remark}
+
+%% ====================================================================
+\section{Pell powers and the Egypt identity}
+%% ====================================================================
+
+Define the $k$-th Pell power $(x_k, y_k)$ by
+$x_k + y_k\sqrt{n} = (x + y\sqrt{n})^k$, i.e.,
+$x_k = T_k(x)$, $y_k = y \cdot U_{k-1}(x)$.
+
+\begin{proposition}\label{prop:pellpower}
+$E_k = (x_{k+1} - 1)\,/\,y_{k+1}$.
+\end{proposition}
+
+\begin{proof}
+By induction, using the recurrence for $(x_k, y_k)$ and
+the definition of the Egypt terms.
+Alternatively, verify that each term telescopes:
+the partial sum $1 + \sum_{j=1}^{k} \text{Term}_j$
+equals $y \cdot U_k(x) \cdot (T_{k+1}(x) - 1) / ((x-1) \cdot y_{k+1})$.
+\end{proof}
+
+This shows that the Egypt series at depth~$k$ produces the
+\emph{same} rational bounds as the $(k{+}1)$-th Pell power,
+repackaged as a cumulative sum.
+
+%% ====================================================================
+\section{The hyperbolic collapse}\label{sec:collapse}
+%% ====================================================================
+
+Parametrize the Pell conic by $x = \cosh R$, $y = \sinh R/\sqrt{n}$,
+where $R = \arccosh(x) = \log(x + y\sqrt{n})$ is the regulator.
+
+\begin{theorem}[Tanh collapse]\label{thm:tanh}
+For all $k \ge 0$:
+\begin{equation}\label{eq:tanh}
+\boxed{\;E_k \;=\; \sqrt{n}\;\tanh\!\Bigl(\frac{(k+1)\,R}{2}\Bigr).\;}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{prop:pellpower}:
+\[
+E_k = \frac{x_{k+1} - 1}{y_{k+1}}
+    = \frac{\cosh\bigl((k{+}1)R\bigr) - 1}
+           {\sinh\bigl((k{+}1)R\bigr)/\sqrt{n}}
+    = \sqrt{n}\;\frac{\cosh S - 1}{\sinh S},
+\]
+where $S = (k{+}1)R$.
+The identity $(\cosh S - 1)/\sinh S = \tanh(S/2)$
+(from $\cosh S - 1 = 2\sinh^2(S/2)$ and
+$\sinh S = 2\sinh(S/2)\cosh(S/2)$) completes the proof.
+\end{proof}
+
+\begin{corollary}[Bounds and width]\label{cor:bounds}
+The upper bound $x_{k+1}/y_{k+1}$ satisfies
+\[
+\frac{x_{k+1}}{y_{k+1}} = \sqrt{n}\;\coth\bigl((k{+}1)R\bigr)
+= \frac{\sqrt{n}}{\tanh\bigl((k{+}1)R\bigr)}.
+\]
+The interval width is
+\begin{equation}\label{eq:width}
+\frac{x_{k+1}}{y_{k+1}} - \frac{x_{k+1} - 1}{y_{k+1}}
+= \frac{1}{y_{k+1}}
+= \frac{\sqrt{n}}{\sinh\bigl((k{+}1)R\bigr)},
+\end{equation}
+which decreases exponentially:
+$\text{width}_k / \text{width}_{k+1} = 2\cosh R = 2x$ for
+successive depths.
+\end{corollary}
+
+\begin{proof}
+The width is $1/y_{k+1} = \sqrt{n}/\sinh((k{+}1)R)$.
+The ratio $\sinh((k{+}2)R)/\sinh((k{+}1)R)
+= 2\cosh R$ by the identity
+$\sinh((k{+}2)R) = 2\cosh R \cdot \sinh((k{+}1)R) - \sinh(kR)$
+evaluated at $k \to \infty$; for finite~$k$ the ratio approaches
+$2\cosh R = 2x$ monotonically from below.
+\end{proof}
+
+\begin{remark}
+Each Egypt term improves precision by exactly $R$~nats
+($= \log_2\varepsilon$ bits), where $\varepsilon = x + y\sqrt{n}$
+is the fundamental unit.
+The doubly-exponential convergence reported for the series~\eqref{eq:egypt}
+is the same exponential convergence of $\tanh(S/2) \to 1$,
+restated in terms of the cumulative sum.
+\end{remark}
+
+%% ====================================================================
+\section{Symbolic evaluation}
+%% ====================================================================
+
+Computer algebra systems can evaluate~\eqref{eq:tanh}
+to exact rationals.  Since $\varepsilon = x + y\sqrt{n}$ is algebraic,
+\[
+E_k = \sqrt{n}\;\frac{\varepsilon^{(k+1)/2} - \varepsilon^{-(k+1)/2}}
+     {\varepsilon^{(k+1)/2} + \varepsilon^{-(k+1)/2}},
+\]
+and the irrationalities cancel by the Pell relation.
+In Wolfram Language:
+
+\medskip
+\begin{center}
+\ttfamily Sqrt[n] * Tanh[(k+1)/2 * Log[x + y*Sqrt[n]]] // FullSimplify
+\end{center}
+\medskip
+
+\begin{example}
+For $n = 13$, $(x,y) = (649, 180)$:
+\begin{center}
+\begin{tabular}{cll}
+\toprule
+$k$ & $E_k$ & Decimal \\
+\midrule
+$0$ & $18/5$     & $3.600\ldots$ \\
+$1$ & $2340/649$ & $3.60554\ldots$ \\
+$2$ & $23382/6485$ & $3.6055512\ldots$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Compare $\sqrt{13} = 3.60555127\ldots$\;
+Each term adds $\approx \log_{10}\varepsilon \approx 2.8$ decimal digits.
+\end{example}
+
+%% ====================================================================
+\section{Chebyshev composition for solvable families}
+%% ====================================================================
+
+When $n$ belongs to a family solvable by the Chebyshev--Pell
+method~\cite{PopelkaPellTower2025}
+(i.e., $x = T_m(z)$ for a rational seed~$z$ with
+$\operatorname{denom}(z) \le 2$), the composition identities
+\begin{align}
+T_j\bigl(T_m(z)\bigr) &= T_{jm}(z), \label{eq:Tcomp} \\[3pt]
+U_{j-1}\bigl(T_m(z)\bigr) &= \frac{U_{jm-1}(z)}{U_{m-1}(z)}
+\label{eq:Ucomp}
+\end{align}
+(the latter from $U_{m-1}(\cos\theta) = \sin(m\theta)/\sin\theta$)
+collapse each Egypt term to a single expression at the seed~$z$:
+\begin{equation}\label{eq:termcollapse}
+\text{Term}_k
+= \frac{U_{m-1}(z)}{
+  T_{\lceil k/2\rceil m}(z)\;\bigl(
+    U_{(\lfloor k/2\rfloor+1)m-1}(z)
+  - U_{\lfloor k/2\rfloor m - 1}(z)\bigr)}.
+\end{equation}
+
+Since $z$ is a small rational number (while $x = T_m(z)$ can be
+astronomically large), this expresses every term as a ratio of
+Chebyshev polynomials evaluated at a manageable argument.
+
+\begin{example}
+For $n = a^2 + 4$ ($a$ odd): $m = 3$, $z = (a^2+2)/2$,
+$U_2(z) = (a^2+1)(a^2+3)$.
+\begin{align*}
+\mathrm{Term}_1 &= \frac{1}{T_3(z)}
+  = \frac{2}{(a^2+2)(a^4+4a^2+1)}, \\[3pt]
+E_0 &= \frac{a(a^2+3)}{a^2+1}, \qquad
+n - E_0^2 = \frac{4}{(a^2+1)^2}.
+\end{align*}
+Both the approximation and its error are explicit polynomials in~$a$.
+\end{example}
+
+%% ====================================================================
+\section{Regulator interpretation}
+%% ====================================================================
+
+The regulator $R = \log\varepsilon$ measures the ``size'' of the
+fundamental unit in $\mathbb{Q}(\sqrt{n})$.
+Theorem~\ref{thm:tanh} gives it a direct approximation-theoretic meaning:
+
+\begin{itemize}
+\item $E_k \to \sqrt{n}$ as $\tanh((k{+}1)R/2) \to 1$,
+  i.e., as $(k{+}1)R/2 \to \infty$.
+\item The interval width $\sqrt{n}/\sinh((k{+}1)R)$
+  decays as $2\sqrt{n}\,\varepsilon^{-(k+1)}$.
+\item For small regulators (easy Pell equations), convergence is slow.
+  For large regulators (hard Pell equations), even $E_0$ is an
+  excellent approximation: the relative error is $O(\varepsilon^{-1})$.
+\end{itemize}
+
+In particular, the Egypt series is most useful precisely when the
+Pell equation is hardest to solve---the regulator that makes the
+equation difficult also guarantees rapid convergence once the
+solution is found.
+
+\section*{Acknowledgments}
+
+Computations were performed using Wolfram Mathematica.
+The Egypt series originated in the author's
+\texttt{egypt} package~\cite{egypt-repo}.
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}
