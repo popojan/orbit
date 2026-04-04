@@ -494,16 +494,35 @@ Scripts: `smooth-combine.wl`, `factor-base.wl`, `algebraic-z.wl`,
 `brahmagupta-compose.wl`, `chain-compose.wl`, `regulator-arccosh.wl`,
 `near-miss-rounding.wl`
 
+## Chebyshev-Pell Period Theorem (NEW — 2026-03-30)
+
+**See [`CHEBYSHEV-PERIOD-THEOREM.md`](CHEBYSHEV-PERIOD-THEOREM.md) for full statement and proofs.**
+
+Resolves open question 1 below. For decomposition c²n = a₀² + r with
+z = (2a₀²+r)/r ∈ Z, w = 2a₀/r = p/d (reduced):
+
+    m = lcm_{p^e || d} α(p^e)
+
+where α(p^e) is the **Lucas rank of apparition** of (2z, 1) mod p^e.
+
+Key findings:
+- **m = 1 for all R-D decompositions** (d = 1). Verified 745/745.
+- **α(p) = 2 iff p | z** (4776/4776). So d | z forces m = 2.
+- **α(p) = ord(z+√(z²-1)) mod p** (eigenvalue of Chebyshev iteration).
+- **R = m·arccosh(z) is NOT universal** for non-integer z: ratio is transcendental (Baker).
+- Coverage: 79% at c ≤ 20 (n ≤ 200), 67% at c ≤ 100 (n ≤ 1000).
+- Hard primes (127, 193) remain unreachable — decomposition encodes Pell circularly.
+
 ## Open Questions (prioritized)
 
-1. **R = m·arccosh(z) for all n**: how to determine m without CF walk?
-   m = CF period information. Possible shortcuts: conductor, L-functions, class number.
+1. ~~**R = m·arccosh(z) for all n**: how to determine m without CF walk?~~
+   **RESOLVED**: m = lcm of Lucas ranks. Not universal; requires integer z via scaling.
 2. **Smooth factor base hybrid**: Chebyshev generates O(1) relations,
    but combining requires ideal arithmetic (form reduction). Bridge needed.
 3. **C implementation**: pre-filter in pellreg2. For 13% of n: skip BSGS.
 4. **Fundamentality proof**: 12828/12846 verified. Monotonicity argument incomplete.
 5. **Paper revision**: current version covers general r + defect δ. Needs update
-   with divisor method, conductor, arccosh regulator.
+   with divisor method, conductor, arccosh regulator, period theorem.
 
 ## Files
 
@@ -539,6 +558,18 @@ Scripts: `smooth-combine.wl`, `factor-base.wl`, `algebraic-z.wl`,
 - `algebraic-z.wl` — Algebraic z impossibility proof
 - `regulator-arccosh.wl` — Direct regulator computation
 - `near-miss-rounding.wl`, `mixed-strategy.wl`, `scaling-trick.wl`
+
+### Chebyshev period theorem (PARI/GP)
+- `arccosh_m.gp` — Initial verification: R/arccosh(z) NOT generally integer
+- `arccosh_m2.gp` — Delta distribution, divisor method, surprise cases
+- `arccosh_m3.gp` — Norm sign fix (Pell vs field regulator), O_K membership
+- `arccosh_m4.gp` — m-value distribution: all R-D give m=1, delta=2 analysis
+- `cheb_period.gp` — Period method: finds m via U_k mod d iteration
+- `cheb_theory.gp` — Lucas rank connection, eigenvalue interpretation
+- `cheb_deep.gp` — Splitting type, Legendre connection, forced alpha=2
+- `cheb_structure.gp` — Symmetry, spectrum, lifting, full theorem summary
+- `hard_primes.gp` — Attack on n=127,193 (negative result, c ≤ 500)
+- `verify_n.gp` — Verification of n=13078849728 with c=5
 
 ### Paper
 - `../papers/chebyshev-pell-tower.tex` — Draft paper
