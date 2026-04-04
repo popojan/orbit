@@ -532,4 +532,161 @@ VerificationTest[
   TestID -> "Inverse-zero-fails"
 ]
 
+(* ============================================ *)
+(* POLAR-CYCLOTOMIC BRIDGE                    *)
+(* ============================================ *)
+
+(* CyclotomicFromCirc with {r, t} pair: r=1 equivalent to bare form *)
+VerificationTest[
+  CyclotomicToComplex[CyclotomicFromCirc[{1, \[Rho][7, 1]}, 7]] // FullSimplify,
+  CyclotomicToComplex[CyclotomicFromCirc[\[Rho][7, 1], 7]] // FullSimplify,
+  SameTest -> (FullSimplify[#1 - #2] === 0 &),
+  TestID -> "FromCirc-pair-vs-bare-equivalent"
+]
+
+(* Scaled phase: 3·φ[ρ[5,2]] *)
+VerificationTest[
+  CyclotomicToComplex[CyclotomicFromCirc[{3, \[Rho][5, 2]}, 5]] // FullSimplify,
+  3 Exp[2 Pi I 2/5] // FullSimplify,
+  SameTest -> (FullSimplify[#1 - #2] === 0 &),
+  TestID -> "FromCirc-scaled-phase"
+]
+
+(* CyclotomicToCircPolar: returns plain term list *)
+VerificationTest[
+  CyclotomicToCircPolar[CyclotomicElement[6, {3, 2}]],
+  {{3, \[Rho][6, 0]}, {2, \[Rho][6, 1]}},
+  TestID -> "ToCircPolar-two-terms"
+]
+
+VerificationTest[
+  CyclotomicToCircPolar[CyclotomicElement[4, {0, 5}]],
+  {{5, \[Rho][4, 1]}},
+  TestID -> "ToCircPolar-skip-zeros"
+]
+
+(* CirclePlus: pair + pair gives term list *)
+VerificationTest[
+  MatrixQ[{3, \[Rho][5, 1]} \[CirclePlus] {7, \[Rho][5, 3]}],
+  True,
+  TestID -> "CirclePlus-returns-matrix"
+]
+
+(* CirclePlus: unreduced, exactly 2 terms *)
+VerificationTest[
+  Length[{7, \[Rho][8, 1]} \[CirclePlus] {11, \[Rho][5, 2]}],
+  2,
+  TestID -> "CirclePlus-unreduced-two-terms"
+]
+
+(* CirclePlus: cross-order complex value matches *)
+VerificationTest[
+  Module[{sum = {3, \[Rho][7, 1]} \[CirclePlus] {5, \[Rho][11, 3]}},
+    Chop[N[CircPolarToComplex[sum] - (3 Exp[2 Pi I / 7] + 5 Exp[2 Pi I 3/11])]]
+  ],
+  0,
+  TestID -> "CirclePlus-cross-order-value"
+]
+
+(* CirclePlus: same angle merges to single term *)
+VerificationTest[
+  {3, \[Rho][5, 1]} \[CirclePlus] {7, \[Rho][5, 1]},
+  {{10, \[Rho][5, 1]}},
+  TestID -> "CirclePlus-same-angle-merges"
+]
+
+(* CirclePlus: chaining — term list + single works *)
+VerificationTest[
+  Module[{s = {7, \[Rho][8, 1]} \[CirclePlus] {11, \[Rho][5, 2]},
+          result},
+    result = s \[CirclePlus] {7, \[Rho][8, 1]};
+    {Length[result], Chop[N[CircPolarToComplex[result] -
+      (14 Exp[2 Pi I/8] + 11 Exp[2 Pi I 2/5])]]}
+  ],
+  {2, 0},
+  TestID -> "CirclePlus-chain-sum-plus-single"
+]
+
+(* CirclePlus: variadic a+b+c, 3 distinct terms *)
+VerificationTest[
+  Module[{sum = {1, \[Rho][3, 1]} \[CirclePlus] {1, \[Rho][3, 2]} \[CirclePlus] {1, \[Rho][3, 0]}},
+    {Length[sum], CircPolarToComplex[sum] // FullSimplify}
+  ],
+  {3, 0},
+  TestID -> "CirclePlus-three-cube-roots-zero"
+]
+
+(* CircPolarReduce: canonical form, zero gives empty *)
+VerificationTest[
+  CircPolarReduce[{1, \[Rho][3, 1]} \[CirclePlus] {1, \[Rho][3, 2]} \[CirclePlus] {1, \[Rho][3, 0]}],
+  {},
+  TestID -> "PolarReduce-cube-roots-to-zero"
+]
+
+(* CircPolarReduce: cross-order expands but matches *)
+VerificationTest[
+  Module[{sum = CircPolar[{7, Pi/4}] \[CirclePlus] CircPolar[{11, 4 Pi/5}],
+          reduced},
+    reduced = CircPolarReduce[sum];
+    {Length[sum], Length[reduced],
+     Chop[N[CircPolarToComplex[sum] - CircPolarToComplex[reduced]]]}
+  ],
+  {2, 5, 0},
+  TestID -> "PolarReduce-expands-but-matches"
+]
+
+(* CircPolarMultiply: single * term list distributes *)
+VerificationTest[
+  Module[{sum = {3, \[Rho][5, 1]} \[CirclePlus] {7, \[Rho][5, 3]},
+          prod},
+    prod = CircPolarMultiply[{2, \[Rho][5, 2]}, sum];
+    Chop[N[CircPolarToComplex[prod] -
+      (3 Exp[2 Pi I/5] + 7 Exp[2 Pi I 3/5]) * 2 Exp[2 Pi I 2/5]]]
+  ],
+  0,
+  TestID -> "PolarMultiply-single-times-sum"
+]
+
+(* CircPolarMultiply: preserves sparsity *)
+VerificationTest[
+  Length[CircPolarMultiply[{2, \[Rho][5, 2]},
+    {3, \[Rho][5, 1]} \[CirclePlus] {7, \[Rho][5, 3]}]],
+  2,
+  TestID -> "PolarMultiply-preserves-sparsity"
+]
+
+(* CircPolarScale *)
+VerificationTest[
+  CircPolarScale[{{3, \[Rho][5, 1]}, {7, \[Rho][5, 3]}}, 1/2],
+  {{3/2, \[Rho][5, 1]}, {7/2, \[Rho][5, 3]}},
+  TestID -> "PolarScale"
+]
+
+(* CircAdditionKernel: 2-sparse, symmetric *)
+VerificationTest[
+  Length[CircAdditionKernel[{3, \[Rho][7, 1]}, {5, \[Rho][7, 2]}]],
+  2,
+  TestID -> "AdditionKernel-two-sparse"
+]
+
+VerificationTest[
+  Module[{z1 = {3, \[Rho][7, 1]}, z2 = {5, \[Rho][7, 2]}},
+    Chop[N[CircPolarToComplex[CircAdditionKernel[z1, z2]] -
+           CircPolarToComplex[CircAdditionKernel[z2, z1]]]]
+  ],
+  0,
+  TestID -> "AdditionKernel-symmetric"
+]
+
+(* Factorization: z1+z2 = CircPolarMultiply[z1*z2, K] *)
+VerificationTest[
+  Module[{z1 = {3, \[Rho][7, 1]}, z2 = {5, \[Rho][7, 2]}, K, prod},
+    K = CircAdditionKernel[z1, z2];
+    prod = CircPolarMultiply[{z1[[1]] z2[[1]], CircTimes[z1[[2]], z2[[2]]]}, K];
+    Chop[N[CircPolarToComplex[prod] - CircPolarToComplex[z1 \[CirclePlus] z2]]]
+  ],
+  0,
+  TestID -> "Factorization-z1z2K"
+]
+
 EndTestSection[]

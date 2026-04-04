@@ -723,8 +723,26 @@ FindCanonicalInteger[n_Integer, maxSplits_Integer: 3, maxDenom_Integer: 100, ret
 EgyptianFractions[q_Rational, OptionsPattern[]] := Module[
   {raw, maxRec, mergeOrd, bisected, expanded, partials, method},
 
-  raw = RawFractionsSymbolic[q];
   method = OptionValue[Method];
+
+  (* BestK dispatch: hybrid CRT-based + CF *)
+  If[method === "BestK",
+    maxRec = OptionValue[MaxRecursion];
+    maxRec = If[maxRec === Automatic, 1, maxRec];
+    Module[{maxItems = OptionValue[MaxItems], g, pp, nn, result},
+      g = GCD[Numerator[q], Denominator[q]];
+      pp = Numerator[q]/g; nn = Denominator[q]/g;
+      If[IntegerQ[maxItems] && maxItems < 10,
+        (* Target-T mode: find decomposition with at most maxItems terms *)
+        result = BestKTargetT[pp, nn, maxItems];
+        If[result =!= $Failed, Return[Sort[result, Greater]]];
+        (* Fallback to standard BestK if target not achievable *)
+      ];
+      Return[BestKEgyptian[pp, nn, maxRec]]
+    ]
+  ];
+
+  raw = RawFractionsSymbolic[q];
   mergeOrd = OptionValue[MergeOrder];
 
   (* Resolve MaxRecursion: Automatic depends on Method *)
@@ -848,6 +866,15 @@ EgyptianFractions[n_Integer, OptionsPattern[]] := Switch[OptionValue[Method],
 (* Improper fractions: extract integer part *)
 EgyptianFractions[q_Rational, opts:OptionsPattern[]] /; q >= 1 := Module[
   {intPart = Floor[q], fracPart = FractionalPart[q]},
+  (* BestK dispatch for improper fractions *)
+  If[OptionValue[Method] === "BestK",
+    Module[{mr = OptionValue[MaxRecursion]},
+      mr = If[mr === Automatic, 1, mr];
+      If[fracPart == 0, Return[{intPart}],
+        Return[Join[{intPart}, BestKEgyptian[Numerator[fracPart], Denominator[fracPart], mr]]]
+      ]
+    ]
+  ];
   If[fracPart == 0,
     EgyptianFractions[intPart, opts],
     Join[{intPart}, EgyptianFractions[fracPart, opts]]
@@ -983,6 +1010,221 @@ RationalInterval[q_Rational] := Module[
       Interval[{Min[c1, c2], Max[c1, c2]}]
     ]
   ]
+]
+
+(* ===================================================================
+   BESTK METHOD - CRT-based Egyptian fraction optimization
+   =================================================================== *)
+
+(* Bicriterion CRT candidate selection.
+   For N = prod p_i^a_i and gcd(p, N) = 1:
+   Each prime power p_i^a_i is assigned to either the k side (k ≡ 0)
+   or the (p-k) side (k ≡ p). CRT assembles the congruences.
+   Search space: 2^omega(N) candidates, independent of p.
+   Reference: Hardy-Ramanujan (1917), omega(N) ~ log log N. *)
+
+BestKCRTCandidates[pp_, nn_] := Module[
+  {factors, m, mods, rems, bits, k, candidates = {}},
+
+  factors = Power @@@ FactorInteger[nn]; (* {p1^a1, p2^a2, ...} *)
+  m = Length[factors];
+
+  Do[
+    bits = IntegerDigits[s, 2, m];
+    mods = factors;
+    rems = Table[If[bits[[i]] == 0, 0, Mod[pp, mods[[i]]]], {i, m}];
+    k = ChineseRemainder[rems, mods];
+    If[k =!= Undefined && 0 < k < pp, AppendTo[candidates, k]],
+    {s, 0, 2^m - 1}
+  ];
+
+  DeleteDuplicates[Select[candidates, 0 < # <= Floor[(pp - 1)/2] &]]
+]
+
+(* Decompose a fraction, using BestK recursively if maxRec > 0, else Orbit *)
+BestKDecompose[pp_, nn_, maxRec_] :=
+  If[maxRec > 0, BestKEgyptian[pp, nn, maxRec], EgyptianFractions[pp/nn]]
+
+(* Main BestK function.
+   maxRec = 0: pure Orbit (no BestK search)
+   maxRec = 1: one level of CRT + Orbit on remainders (default)
+   maxRec = 2+: recursive CRT on remainders *)
+
+BestKEgyptian[p_, n_, maxRec_: 1] := Module[
+  {g, pp, nn, bestResult, bestNT, bestMax, best,
+   candidates, ef1, ef2, combo, ad, nt, mx,
+   kMin, divs, k, r, sn, sd},
+
+  g = GCD[p, n]; pp = p/g; nn = n/g;
+  If[pp == 0, Return[{}]];
+  If[pp == 1, Return[{1/nn}]];
+  If[pp >= nn, Return[Join[{1}, BestKEgyptian[pp - nn, nn, maxRec]]]];
+
+  (* Baseline: standard CF decomposition *)
+  bestResult = EgyptianFractions[pp/nn];
+  bestNT = Length[bestResult];
+  bestMax = Max[Denominator /@ bestResult];
+  best = {bestNT, bestMax, bestResult};
+
+  (* === Strategy 1: CRT candidates (bicriterion factor assignment) === *)
+  candidates = BestKCRTCandidates[pp, nn];
+
+  (* Always include k=1 (subtract 1/N trick) *)
+  candidates = DeleteDuplicates[Prepend[candidates, 1]];
+
+  Do[
+    ef1 = BestKDecompose[kk, nn, maxRec - 1];
+    ef2 = BestKDecompose[pp - kk, nn, maxRec - 1];
+    combo = Join[ef1, ef2];
+    ad = Denominator /@ combo;
+    If[Length[ad] != Length[DeleteDuplicates[ad]], Continue[]];
+    nt = Length[combo]; mx = Max[ad];
+    If[nt < best[[1]] || (nt == best[[1]] && mx < best[[2]]),
+      best = {nt, mx, combo}
+    ],
+    {kk, candidates}
+  ];
+
+  (* === Strategy 2: divisor-aligned greedy k === *)
+  divs = Select[Divisors[nn], 1 < # < nn &];
+  If[Length[divs] > 0,
+    kMin = Ceiling[nn/pp];
+    candidates = {};
+    Do[
+      k = Ceiling[kMin/d]*d;
+      If[kMin <= k <= 3*nn, AppendTo[candidates, k]],
+      {d, divs}
+    ];
+    candidates = DeleteDuplicates[candidates];
+
+    Do[
+      r = pp*k - nn;
+      If[r <= 0, Continue[]];
+      g = GCD[r, nn*k];
+      sn = r/g; sd = nn*k/g;
+      If[sn == 0, Continue[]];
+      ef2 = If[sn == 1, {1/sd}, BestKDecompose[sn, sd, maxRec - 1]];
+      combo = Prepend[ef2, 1/k];
+      ad = Denominator /@ combo;
+      If[Length[ad] != Length[DeleteDuplicates[ad]], Continue[]];
+      nt = Length[combo]; mx = Max[ad];
+      If[nt < best[[1]] || (nt == best[[1]] && mx < best[[2]]),
+        best = {nt, mx, combo}
+      ],
+      {k, candidates}
+    ]
+  ];
+
+  Sort[best[[3]], Greater]
+]
+
+(* ===================================================================
+   TARGET-T: Find decomposition with exactly T unit fractions
+   =================================================================== *)
+
+(* T=1: p/N = 1/d iff p | N *)
+BestKFindT[p_, n_, 1] := Module[{g = GCD[p, n], pp, nn},
+  pp = p/g; nn = n/g;
+  If[pp == 1, {1/nn}, $Failed]
+]
+
+(* T=2: p/N = 1/d1 + 1/d2 via (p*d1 - N)(p*d2 - N) = N^2 *)
+BestKFindT[p_, n_, 2] := Module[
+  {g, pp, nn, d1, d2, bestSol = $Failed, bestMax = Infinity},
+
+  g = GCD[p, n]; pp = p/g; nn = n/g;
+  If[pp == 1, Return[{1/nn}]]; (* T=1 suffices *)
+
+  Do[
+    d2val = nn^2/delta;
+    d1 = (nn + delta)/pp;
+    d2 = (nn + d2val)/pp;
+    If[IntegerQ[d1] && IntegerQ[d2] && d1 >= 1 && d2 > d1, (* d2 > d1: strict distinct *)
+      If[d2 < bestMax,
+        bestMax = d2;
+        bestSol = {1/d1, 1/d2}
+      ]
+    ],
+    {delta, Divisors[nn^2]}
+  ];
+
+  bestSol
+]
+
+(* T>=3: p/N = 1/d + FindT[remainder, T-1], d from CRT candidates *)
+BestKFindT[p_, n_, t_Integer /; t >= 3] := Module[
+  {g, pp, nn, candidates, dMin, d, r, rg, rn, rd, sub,
+   bestSol = $Failed, bestMax = Infinity, sol, mx},
+
+  g = GCD[p, n]; pp = p/g; nn = n/g;
+
+  (* Maybe fewer terms suffice *)
+  sub = BestKFindT[pp, nn, t - 1];
+  If[sub =!= $Failed, Return[sub]];
+
+  dMin = Ceiling[nn/pp];
+
+  (* Candidates for first term 1/d, d >= dMin *)
+  candidates = {dMin, dMin + 1}; (* always include greedy and greedy+1 *)
+
+  (* All divisors of N that are >= dMin *)
+  Do[If[d >= dMin, AppendTo[candidates, d]], {d, Divisors[nn]}];
+
+  (* CRT-based: divisor-aligned k *)
+  Do[
+    d = Ceiling[dMin/div]*div;
+    If[d >= dMin, AppendTo[candidates, d]],
+    {div, Divisors[nn]}
+  ];
+
+  (* CRT bicriterion candidates mapped to d values *)
+  Module[{crtK = BestKCRTCandidates[pp, nn]},
+    Do[
+      d = nn/GCD[kk, nn];
+      If[d >= dMin, AppendTo[candidates, d]];
+      d = kk;
+      If[d >= dMin, AppendTo[candidates, d]],
+      {kk, crtK}
+    ]
+  ];
+
+  candidates = Select[DeleteDuplicates[candidates], # >= dMin && # <= 5*nn &];
+
+  Do[
+    r = pp*d - nn;
+    If[r <= 0, Continue[]];
+
+    rg = GCD[r, nn*d];
+    rn = r/rg; rd = nn*d/rg;
+
+    (* Recurse: find (t-1)-term decomposition of remainder *)
+    sub = BestKFindT[rn, rd, t - 1];
+    If[sub === $Failed, Continue[]];
+
+    sol = Prepend[sub, 1/d];
+
+    (* Distinct denominators? *)
+    If[Length[sol] != Length[DeleteDuplicates[Denominator /@ sol]], Continue[]];
+
+    mx = Max[Denominator /@ sol];
+    If[mx < bestMax,
+      bestMax = mx;
+      bestSol = sol
+    ],
+    {d, candidates}
+  ];
+
+  bestSol
+]
+
+(* Top-level Target-T: try T=1, 2, ..., maxT, return first success *)
+BestKTargetT[p_, n_, maxT_] := Module[{result, t = 1},
+  While[t <= maxT,
+    result = BestKFindT[p, n, t];
+    If[result =!= $Failed, Return[result]];
+    t++
+  ];
+  $Failed
 ]
 
 End[];

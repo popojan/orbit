@@ -323,18 +323,30 @@ Iteration: {nn/Mean[bounds], Mean[bounds]}
 The bounds converge quadratically to Sqrt[nn] from both sides.
 Use Normal[result] to extract {lower, upper} list for numeric operations.";
 
-EgyptSqrt::usage = "EgyptSqrt[n, {x, y}, k] computes rational sqrt approximation bounds using Egypt method with Pell solution.
+EgyptSqrt::usage = "EgyptSqrt[{x, y}, k] approximates Sqrt[(x^2-1)/y^2] via Chebyshev T/U ratio.
+EgyptSqrt[n, {x, y}, k] approximates Sqrt[n] given Pell solution x^2 - n*y^2 = 1.
 
-Parameters:
-  n     - the number whose square root to approximate
-  {x,y} - Pell solution to x^2 - n*y^2 = 1 (use PellSolution[n])
-  k     - number of terms in factorial series
+Two-argument form: EgyptSqrt[{x, y}, k]
+  Approximates Sqrt[(x^2-1)/y^2] for any (x, y) with x > 1.
+  No Pell relation required. n is inferred as (x^2-1)/y^2.
+  Returns: Interval[{(T_{k+1}(x)-1)/(y*U_k(x)), (T_{k+1}(x)+1)/(y*U_k(x))}]
+  Width: 2/(y*U_k(x)). Both bounds simplify to comparable size.
 
-Returns: Interval[{lower, upper}] bracketing Sqrt[n]
+Three-argument form: EgyptSqrt[n, {x, y}, k]
+  Requires Pell solution x^2 - n*y^2 = 1.
+  Returns: Interval[{r, n/r}] where r = (T_{k+1}(x)-1)/(y*U_k(x)).
 
-Uses factorial-based series expansion: ((x-1)/y) * (1 + Sum[FactorialTerm[x-1, j], {j,1,k}])
-Then constructs bounds as {r, n/r} where r is the approximation.
-Use Normal[result] to extract {lower, upper} list for numeric operations.";
+Collapse identity: the Egypt factorial/Chebyshev series collapses to
+  E_k = Sqrt[n] * Tanh[(k+1)/2 * Log[x + y*Sqrt[n]]]
+      = (ChebyshevT[k+1, x] - 1) / (y * ChebyshevU[k, x])
+
+Geometric meaning: stereographic projection from (-1,0) on the Pell
+hyperbola through the (k+1)-th Pell power onto the Y-axis.
+
+Examples:
+  EgyptSqrt[{649, 180}, 3]     (* sqrt(13), tight bounds *)
+  EgyptSqrt[13, {649, 180}, 3] (* sqrt(13), Dedekind cut *)
+  EgyptSqrt[{3, 1}, 5]         (* sqrt(8) = 2*sqrt(2) *)";
 
 SqrtInterval::usage = "SqrtInterval[n, k] returns an Interval[{lower, upper}] bracketing Sqrt[n].
 
@@ -848,10 +860,29 @@ BabylonianSqrt[nn_, n_, k_] := Module[{bounds},
 (* Helper: factorial-based sum of terms (explicit version) *)
 sqrtTermsFactorial[x_, n_] := 1 + Sum[FactorialTerm[x, j], {j, 1, n}]
 
-(* Egypt method - returns sorted Interval using smart comparison *)
-EgyptSqrt[n_, {x_, y_}, k_] := Module[{r},
-  r = (x - 1)/y * sqrtTermsFactorial[x - 1, k];
-  (* Smart sort: if r^2 < n then r < sqrt(n) < n/r, else n/r < sqrt(n) < r *)
+(* Egypt method - collapsed Chebyshev form (T/U ratio) *)
+(* The sum 1 + Σ ChebyshevTerm[x-1,j] collapses to: *)
+(*   E_k = (T_{k+1}(x) - 1) / (y * U_k(x))             *)
+(* Equivalently: E_k = sqrt((x^2-1)/y^2) * tanh((k+1)*R/2) *)
+(*   where R = arccosh(x)                                 *)
+(* n is redundant: inferred as (x^2-1)/y^2               *)
+
+(* Two-argument form: EgyptSqrt[{x, y}, k] — n inferred *)
+(* Approximates sqrt((x^2-1)/y^2) for any (x, y) with x > 1 *)
+(* Both bounds simplify: (xk +/- 1) share large factors with yk *)
+(* Width = 2/yk (Dedekind cut: lower * upper = (x^2-1)/y^2)   *)
+EgyptSqrt[{x_, y_}, k_] := Module[{xk, yk},
+  xk = ChebyshevT[k + 1, x];
+  yk = y * ChebyshevU[k, x];
+  Interval[{(xk - 1) / yk, (xk + 1) / yk}]
+]
+
+(* Three-argument form: EgyptSqrt[n, {x, y}, k] — backward compatible *)
+(* Uses {r, n/r} bounds for the Dedekind-cut property *)
+EgyptSqrt[n_, {x_, y_}, k_] := Module[{xk, yk, r},
+  xk = ChebyshevT[k + 1, x];
+  yk = y * ChebyshevU[k, x];
+  r = (xk - 1) / yk;
   If[r^2 < n,
     Interval[{r, n/r}],
     Interval[{n/r, r}]

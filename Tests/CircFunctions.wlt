@@ -95,4 +95,40 @@ VerificationTest[
   TestID -> "PiLp-Chebyshev"
 ]
 
+(* ============================================ *)
+(* CircPolar: standard polar -> {r, rho} form  *)
+(* ============================================ *)
+
+(* CircPolar returns {{r, rho}} term list *)
+VerificationTest[
+  CircPolar[{3, Pi 2/7}],
+  {{3, \[Rho][7, 8]}},
+  TestID -> "CircPolar-pi-2-7"
+]
+
+VerificationTest[
+  CircPolar[{1, Pi/3}],
+  {{1, \[Rho][3, 7/2]}},
+  TestID -> "CircPolar-pi-3"
+]
+
+VerificationTest[
+  CircPolar[{5, 0}],
+  {{5, CircIdentity}},
+  TestID -> "CircPolar-zero-angle"
+]
+
+(* Roundtrip: CircPolar -> CircPolarToComplex *)
+VerificationTest[
+  Chop[N[CircPolarToComplex[CircPolar[{3, Pi 2/7}]] - 3 Exp[I Pi 2/7]]],
+  0,
+  TestID -> "CircPolar-roundtrip-complex"
+]
+
+VerificationTest[
+  Chop[N[CircPolarToComplex[CircPolar[{2, Pi}]] - (-2)]],
+  0,
+  TestID -> "CircPolar-pi-gives-minus-one"
+]
+
 EndTestSection[]
