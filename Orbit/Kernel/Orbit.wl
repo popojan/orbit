@@ -9,6 +9,7 @@ BeginPackage["Orbit`"];
 Get["Orbit`Primorials`"];
 Get["Orbit`SemiprimeFactorization`"];
 Get["Orbit`ModularFactorials`"];
+Get["Orbit`PellEquation`"];
 Get["Orbit`SquareRootRationalizations`"];
 Get["Orbit`ChebyshevIntegralTheorem`"];
 Get["Orbit`LegacyPolynomials`"];
@@ -26,12 +27,9 @@ Get["Orbit`FunctionIntervals`"];
 Get["Orbit`GoldilocksEncoding`"];
 Get["Orbit`FareyBits`"];
 Get["Orbit`ChebyshevDisk`"];
-Get["Orbit`PellCompact`"];
-Get["Orbit`PellRegulator`"];
-Get["Orbit`PellSeedRegulator`"];
-Get["Orbit`PellChebyshevCompact`"];
+Get["Orbit`PellCompactEncoding`"];
 Get["Orbit`PellChebyshevSolve`"];
-Get["Orbit`PellFactorBase`"];
+(* PellFactorBase requires PARI/GP — load manually: Get["Orbit`PellFactorBase`"] *)
 Get["Orbit`SuccessorOrbit`"];
 
 EndPackage[];

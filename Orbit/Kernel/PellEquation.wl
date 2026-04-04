@@ -1,14 +1,23 @@
 (* ::Package:: *)
 
-(* Pell Regulator via Infrastructure BSGS *)
-(* Sublinear O(sqrt(L)) computation of log(fundamental unit) *)
-(* Two-pass: discover collision at pp=50, refine at pp=R/ln10+50 *)
+(* PellEquation: Core Pell solver, regulator, and fundamental extraction *)
+(* Consolidates: PellRegulator.wl, PellSolution from SquareRootRationalizations *)
 
 BeginPackage["Orbit`"];
 
-PellRegulator::usage = "PellRegulator[n] computes the regulator R = Log[x + y Sqrt[n]] where x^2 - n y^2 = 1.
+PellSolve::usage = "PellSolve[d] returns {x, y} — the fundamental solution to x^2 - d y^2 = 1.
+Uses Wildberger's algorithm (O(L) where L is the CF period).";
+
+PellSolution::usage = "PellSolution[d] finds the fundamental solution {x, y} to the Pell equation x^2 - d y^2 = 1.
+
+Returns: {x -> value, y -> value}
+
+Backward-compatible wrapper around PellSolve.";
+
+PellRegulator::usage = "PellRegulator[n] computes the regulator R = Log[x + y Sqrt[n]] of the fundamental unit.
 Returns <|\"R\" -> regulator, \"Digits\" -> precision, \"Steps\" -> baby+giant count|>.
-Uses infrastructure BSGS (Buchmann-Williams) with O(Sqrt[L]) steps where L is the CF period.";
+Uses infrastructure BSGS (Buchmann-Williams) with O(Sqrt[L]) steps.
+Convention: returns R for fundamental unit, even if norm = -1 (PARI convention).";
 
 PellRegulatorInteger::usage = "PellRegulatorInteger[n] computes Round[R] where R is the Pell regulator.
 Single-pass BSGS at pp=50, minimal disambiguation. Fastest variant.
@@ -16,9 +25,79 @@ Returns <|\"R\" -> Round[R], \"Steps\" -> count|>.";
 
 PellRegulatorPARI::usage = "PellRegulatorPARI[n] computes the Pell regulator via PARI/GP quadunit(4n). Requires gp on PATH.";
 
-Begin["`Private`"]
+PellFundamentalExtract::usage = "PellFundamentalExtract[x, y, d] extracts the fundamental solution from (x + y Sqrt[d])^k.
 
-(* --- Binary quadratic forms {a, b, c, dist} of discriminant delta --- *)
+Given any Pell solution (x, y) with x^2 - d y^2 = 1, finds the minimal positive
+solution by generating CF convergents of Sqrt[d].
+
+Returns: {fx, fy}";
+
+Begin["`Private`"];
+
+(* ================================================================== *)
+(* PellSolve: Wildberger's algorithm                                   *)
+(* https://cs.uwaterloo.ca/journals/JIS/VOL13/Wildberger/wildberger2.pdf *)
+(* ================================================================== *)
+
+PellSolve[d_Integer /; d > 1 && !IntegerQ[Sqrt[d]]] := Module[
+  {a = 1, b = 0, c = -d, t, u = 1, v = 0, r = 0, s = 1},
+  While[t = a + b + b + c; If[t > 0,
+    a = t; b += c; u += v; r += s,
+    b += a; c = t; v += u; s += r];
+    Not[a == 1 && b == 0 && c == -d]
+  ]; {u, r}]
+
+(* Backward-compatible wrapper *)
+PellSolution[d_] := Module[{xy = PellSolve[d]},
+  {Global`x -> xy[[1]], Global`y -> xy[[2]]}]
+
+(* ================================================================== *)
+(* PellFundamentalExtract: find fundamental from any power             *)
+(* ================================================================== *)
+
+(* Square root in Z[Sqrt[d]] for norm +/-1 elements *)
+pellSqrtInt[x_, y_, d_] := Catch[Module[{a2, a, b2},
+  If[y == 0, Throw[$Failed]];
+  Do[
+    a2 = (x + sign)/2;
+    If[IntegerQ[a2] && a2 > 0,
+      a = Quiet[Sqrt[a2]];
+      If[IntegerQ[a] && a > 0,
+        b2 = y/(2*a);
+        If[IntegerQ[b2] && a^2 + d*b2^2 == x && 2*a*b2 == y,
+          Throw[{a, b2}]]]],
+  {sign, {1, -1}}];
+  $Failed]]
+
+(* Extract via CF convergents — finds first convergent with norm = 1 *)
+PellFundamentalExtract[x0_, y0_, dd_] := Catch[Module[
+  {cf, a0, period, pPrev2, pPrev1, qPrev2, qPrev1, p, q, a, maxIter},
+
+  cf = ContinuedFraction[Sqrt[dd]];
+  a0 = cf[[1]];
+  period = cf[[2]];
+
+  pPrev2 = 1; pPrev1 = a0;
+  qPrev2 = 0; qPrev1 = 1;
+
+  If[a0^2 - dd == 1, Throw[{a0, 1}]];
+
+  maxIter = 2 * Length[period] + 2;
+  Do[
+    a = period[[Mod[k - 1, Length[period]] + 1]];
+    p = a*pPrev1 + pPrev2;
+    q = a*qPrev1 + qPrev2;
+    If[p^2 - dd*q^2 == 1, Throw[{p, q}]];
+    pPrev2 = pPrev1; pPrev1 = p;
+    qPrev2 = qPrev1; qPrev1 = q;
+  , {k, 1, maxIter}];
+
+  {x0, y0}]]
+
+(* ================================================================== *)
+(* BSGS Infrastructure for Pell Regulator                              *)
+(* Binary quadratic forms {a, b, c, dist} of discriminant delta = 4n   *)
+(* ================================================================== *)
 
 pellStartForm[delta_, pp_] := Module[{sqd, b0, c0},
   sqd = N[Sqrt[delta], pp];
@@ -43,7 +122,7 @@ pellReduce[sqd_, delta_, form_, pp_] := Module[{f = form},
   Do[If[pellIsReduced[sqd, f], Return[f, Module]];
     f = pellRho[sqd, delta, f, pp], {500}]; f]
 
-(* --- Gauss composition with corrected distance: d3 = d1 + d2 + Log[g] --- *)
+(* Gauss composition with corrected distance: d3 = d1 + d2 + Log[g] *)
 
 pellCompose[sqd_, delta_, f1_, f2_, pp_] :=
   Module[{a1, b1, c1, d1, a2, b2, c2, d2,
@@ -63,7 +142,7 @@ pellCompose[sqd_, delta_, f1_, f2_, pp_] :=
   If[!IntegerQ[c3], Return[$Failed]];
   pellReduce[sqd, delta, {a3, b3, c3, d1 + d2 + N[Log[g], pp]}, pp]]
 
-(* --- Two-pass BSGS --- *)
+(* Two-pass BSGS *)
 
 bsgsPass[n_, pp_] := Module[
   {delta = 4 n, sqd, f0, b0, f, bigB,
@@ -126,14 +205,14 @@ PellRegulator[n_] := Module[
       f[[4]]]];
   reg = pass2;
 
-  (* Disambiguation: norm check via cosh *)
+  (* Disambiguation: norm check via cosh — PARI convention (keep norm -1) *)
   R = reg;
   Do[
     xr = Round[N[Cosh[c], ppFinal]];
     yr = Round[N[Sinh[c]/Sqrt[n], ppFinal]];
     norm = xr^2 - n yr^2;
     If[norm == 1 && xr > 1, R = c; Break[]];
-    If[norm == -1 && xr > 1, R = 2 c; Break[]];
+    If[norm == -1 && xr > 1, R = c; Break[]];
   , {c, Select[{reg/3, reg/2, reg}, # > 0.5 &]}];
 
   digits = Max[1, Floor[ppFinal - Ceiling[Abs[R]/Log[10]]] - 2];
@@ -144,24 +223,19 @@ PellRegulator[n_] := Module[
     "BabySteps" -> babySteps,
     "GiantSteps" -> giantSteps|>]
 
-(* --- Integer regulator: single pass, minimal disambiguation --- *)
+(* Integer regulator: single pass, minimal disambiguation *)
 
 PellRegulatorInteger[n_] := Module[
   {pass1, reg1, babySteps, giantSteps, babyIdx,
    ppD, reg, R, xr, yr, norm},
 
-  (* Pass 1: discover collision at pp=50 *)
   pass1 = bsgsPass[n, 50];
   If[pass1 === $Failed, Return[$Failed]];
   {reg1, babySteps, giantSteps, babyIdx} = pass1;
 
-  (* Pass 2: replay at just enough precision for cosh norm check.
-     cosh(reg) has ceil(reg/ln10) integer digits.
-     Need ~5 extra digits past decimal for Round to work. *)
   ppD = Ceiling[Abs[reg1]/Log[10]] + 5;
   If[ppD <= 50,
-    reg = reg1, (* pp=50 already sufficient *)
-    (* Replay at ppD *)
+    reg = reg1,
     reg = Module[{delta = 4 n, sqd, f0, f, genForm, curForm, fb},
       {sqd, f0} = pellStartForm[delta, ppD];
       f = f0;
@@ -176,30 +250,28 @@ PellRegulatorInteger[n_] := Module[
           curForm[[4]]],
         f[[4]]]]];
 
-  (* Disambiguate via cosh norm check *)
   R = reg;
   Do[
     xr = Round[N[Cosh[c], ppD]];
     yr = Round[N[Sinh[c]/Sqrt[n], ppD]];
     norm = xr^2 - n yr^2;
     If[norm == 1 && xr > 1, R = c; Break[]];
-    If[norm == -1 && xr > 1, R = 2 c; Break[]];
+    If[norm == -1 && xr > 1, R = c; Break[]];
   , {c, Select[{reg/3, reg/2, reg}, # > 0.5 &]}];
 
   <|"R" -> Round[R],
     "Rfloat" -> R,
     "Steps" -> babySteps + giantSteps|>]
 
-(* --- PARI oracle --- *)
+(* PARI oracle *)
 
 PellRegulatorPARI[n_] := Module[{cmd, raw},
   cmd = "echo 'print(my(u=quadunit(4*" <> ToString[n] <>
-    "),a=component(u,2),b=component(u,3),R=log(abs(a+b*sqrt(" <>
-    ToString[n] <> ".))));if(a^2-" <> ToString[n] <>
-    "*b^2==-1,R=2*R);R)' | gp -q 2>/dev/null";
+    "),a=component(u,2),b=component(u,3));log(abs(a+b*sqrt(" <>
+    ToString[n] <> ".))))' | gp -q 2>/dev/null";
   raw = StringTrim[RunProcess[{"bash", "-c", cmd}, "StandardOutput"]];
   If[StringLength[raw] > 0, ToExpression[raw], $Failed]]
 
-End[]
+End[];
 
-EndPackage[]
+EndPackage[];

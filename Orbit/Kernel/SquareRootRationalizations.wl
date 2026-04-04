@@ -14,59 +14,11 @@ The method uses the fundamental solution to x² - n·y² = 1, then refines using
 
 IMPORTANT: The Chebyshev series yields exact rational results ONLY when evaluated at x-1 where (x,y) is the Pell solution. This is a characterization property - the Pell solution is the unique point where the rationalization is perfectly rational.";
 
-PellSolution::usage = "PellSolution[d] finds the fundamental solution {x, y} to the Pell equation x² - d·y² = 1.
-
-Returns: {x -> value, y -> value}
-
-Uses Wildberger's efficient algorithm from:
-https://cs.uwaterloo.ca/journals/JIS/VOL13/Wildberger/wildberger2.pdf";
-
-BrahmaguptaBhaskaraSolve::usage = "BrahmaguptaBhaskaraSolve[d] solves x² - d·y² = 1 using Cunningham+ChebyshevBabylonianStep method.
-
-Returns: <|\"D\"->d, \"x\"->x, \"y\"->y, \"c\"->startingValue|>
-
-Uses the Cunningham representation to find quasi-solution p²-Dq²=c with c∈{±1,±2,±4},
-then applies ChebyshevBabylonianStep[] to obtain solution.
-
-NOTE: Returns k-th power of fundamental, not always fundamental itself.
-For fundamental solution, use standard methods or compute GCD of multiple solutions.";
-
-BrahmaguptaBhaskaraRegulator::usage = "BrahmaguptaBhaskaraRegulator[d] computes the regulator R(d) = log(α + β√d).
-
-Returns: <|\"D\"->d, \"R\"->regulator, \"kBase\"->k, \"c\"->startingValue|>
-
-The regulator is computed via R(d) = log(ChebyshevBabylonianStep_result) / k where k depends on starting value c.
-This avoids computing the potentially huge fundamental solution directly.
-
-Precision: Achieves ~20 digits accuracy.";
-
-BrahmaguptaBhaskaraFundamental::usage = "BrahmaguptaBhaskaraFundamental[d] finds the FUNDAMENTAL solution to x² - d·y² = 1.
-
-Returns: <|\"D\"->d, \"x\"->x, \"y\"->y, \"verified\"->bool, \"extracted\"->bool|>
-
-Unlike BrahmaguptaBhaskaraSolve (which may return k-th power), this function
-extracts the minimal positive solution by repeatedly taking square roots in Z[√D].
-
-Algorithm:
-  1. Get solution from BrahmaguptaBhaskaraSolve (may be k-th power)
-  2. Repeatedly apply √ in Z[√D] until no integer root exists
-  3. If result has norm -1, square it to get norm +1 solution
-
-The 'extracted' field indicates whether extraction was needed (True) or
-the initial solution was already fundamental (False).";
-
-PellFundamentalExtract::usage = "PellFundamentalExtract[x, y, d] extracts fundamental solution from (x + y√d)^k.
-
-Given any Pell solution (x, y) with x² - d·y² = 1, this function finds
-the minimal positive solution (fx, fy) by repeatedly taking square roots.
-
-Returns: {fx, fy}
-
-Algorithm:
-  1. While (x + y√D) has an integer square root in Z[√D]:
-       Replace (x, y) with the root
-  2. If x² - d·y² = -1: return (x² + d·y², 2xy)  (* square to get +1 *)
-  3. Else: return (x, y)  (* already norm +1 *)";
+(* PellSolution and PellFundamentalExtract are now defined in PellEquation.wl *)
+(* BrahmaguptaBhaskara* kept accessible but undocumented *)
+BrahmaguptaBhaskaraSolve;
+BrahmaguptaBhaskaraRegulator;
+BrahmaguptaBhaskaraFundamental;
 
 ChebyshevTerm::usage = "ChebyshevTerm[x, k] computes the k-th term in the Chebyshev-based rational approximation series.
 
@@ -735,15 +687,8 @@ sqrtTermsHeld[x_, n_] :=
 sqrtTermsList[x_, n_] :=
     Join[{1}, Table[ChebyshevTerm[x, j], {j, 1, n}]]
 
-(* Pell equation solver - Wildberger's algorithm
-   https://cs.uwaterloo.ca/journals/JIS/VOL13/Wildberger/wildberger2.pdf *)
-PellSolution[d_] := Module[
-  { a = 1, b = 0, c = -d, t, u = 1, v = 0, r = 0, s = 1},
-  While[t = a + b + b + c; If[t > 0,
-    a = t; b += c; u += v; r += s,
-    b += a; c = t; v += u; s += r];
-    Not[a == 1 && b == 0 && c == -d]
-  ]; {Global`x -> u, Global`y -> r} ]
+(* PellSolution: thin backward-compat wrapper around PellSolve (PellEquation.wl) *)
+(* Kept here because SqrtRationalization and SqrtInterval depend on the rule format *)
 
 (* Main rationalization function *)
 SqrtRationalization[n_, OptionsPattern[]] :=
@@ -1178,63 +1123,7 @@ BrahmaguptaBhaskaraRegulator[d_Integer] := Module[{start, c, winner, step, resul
    Given solution (x + y√D) = fundamental^k, extract the fundamental.
    =================================================================== *)
 
-(* Square root in Z[√D] for norm ±1 elements *)
-(* Returns {a, b} such that (a + b√D)² = x + y√D, or $Failed *)
-pellSqrtInt[x_, y_, d_] := Catch[Module[{a2, a, b},
-  If[y == 0, Throw[$Failed]];
-  Do[
-    a2 = (x + sign)/2;
-    If[IntegerQ[a2] && a2 > 0,
-      a = Quiet[Sqrt[a2]];
-      If[IntegerQ[a] && a > 0,
-        b = y/(2*a);
-        If[IntegerQ[b] && a^2 + d*b^2 == x && 2*a*b == y,
-          Throw[{a, b}]
-        ]
-      ]
-    ],
-    {sign, {1, -1}}
-  ];
-  $Failed
-]];
-
-(* Extract fundamental Pell solution using incremental CF convergents *)
-(* Generates convergents one at a time, stops at first norm=1 solution *)
-PellFundamentalExtract[x0_, y0_, dd_] := Catch[Module[
-  {cf, a0, period, pPrev2, pPrev1, qPrev2, qPrev1, p, q, a, maxIter},
-
-  (* Get CF expansion: [a0; period] *)
-  cf = ContinuedFraction[Sqrt[dd]];
-  a0 = cf[[1]];
-  period = cf[[2]];
-
-  (* Initialize: p_{-1}=1, p_0=a0, q_{-1}=0, q_0=1 *)
-  pPrev2 = 1; pPrev1 = a0;
-  qPrev2 = 0; qPrev1 = 1;
-
-  (* Check k=0 *)
-  If[a0^2 - dd == 1, Throw[{a0, 1}]];
-
-  (* Iterate through periodic part - need at most 2*period iterations *)
-  maxIter = 2 * Length[period] + 2;
-  Do[
-    a = period[[Mod[k - 1, Length[period]] + 1]];
-    p = a*pPrev1 + pPrev2;
-    q = a*qPrev1 + qPrev2;
-
-    (* Check for fundamental solution *)
-    If[p^2 - dd*q^2 == 1,
-      Throw[{p, q}]
-    ];
-
-    (* Update for next iteration *)
-    pPrev2 = pPrev1; pPrev1 = p;
-    qPrev2 = qPrev1; qPrev1 = q;
-  , {k, 1, maxIter}];
-
-  (* Fallback - shouldn't happen *)
-  {x0, y0}
-]];
+(* pellSqrtInt and PellFundamentalExtract moved to PellEquation.wl *)
 
 (* Complete solver with fundamental extraction *)
 BrahmaguptaBhaskaraFundamental[d_Integer] := Module[{sol, x, y, fx, fy},
