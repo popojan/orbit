@@ -20,9 +20,10 @@ BeginPackage["Orbit`"];
 SuccessorMatrix::usage = "SuccessorMatrix[o] or SuccessorMatrix[o, λ] returns the integer transfer matrix N.
 Default scale λ = 2. For o = a/b: N = {{(λ²+1)a−b, −λa}, {λa, 0}}, det N = (λa)².";
 
-SuccessorOrbit::usage = "SuccessorOrbit[o, k] or SuccessorOrbit[o, k, λ] returns the exact rational f[k].
+SuccessorOrbit::usage = "SuccessorOrbit[o, k] or SuccessorOrbit[o, k, λ] returns f[k].
 Threads over lists: SuccessorOrbit[o, {0, 1, 5, 28}] returns {f[0], f[1], f[5], f[28]}.
-Default scale λ = 2. The sequence satisfies f[k+1] = (f[k]² − o) / f[k−1].";
+Default scale λ = 2. Accepts any real/complex λ (uses Chebyshev closed form).
+The sequence satisfies f[k+1] = (f[k]² − o) / f[k−1].";
 
 SuccessorTrace::usage = "SuccessorTrace[o, k] or SuccessorTrace[o, k, λ] returns tr(N^k), always an integer.
 Threads over lists: SuccessorTrace[o, {0, 1, 2}] returns {2, tr(N), tr(N²)}.
@@ -86,29 +87,45 @@ orbitModSingle[NN_, w_, \[Lambda]a_, k_, m_] := Module[{v},
 
 (* === IMPLEMENTATIONS === *)
 
-SuccessorMatrix[o_, \[Lambda]_Integer: 2] := Module[{a, b},
+SuccessorMatrix[o_, \[Lambda]_: 2] := Module[{a, b},
   {a, b} = ab[o];
   nMatrix[a, b, \[Lambda]]
 ]
 
-(* Single k *)
-SuccessorOrbit[o_, k_Integer, \[Lambda]_Integer: 2] := Module[{a, b},
+(* Chebyshev closed form — works for any λ, o *)
+orbitChebyshev[o_, k_, \[Lambda]_] := Module[{c},
+  c = ((\[Lambda]^2 + 1) o - 1) / (2 \[Lambda] o);
+  o ChebyshevU[k, c] + (1 - o)/2 ChebyshevU[k - 1, c]
+]
+
+(* Single k, integer λ: fast matrix path *)
+SuccessorOrbit[o_?rationalQ, k_Integer, \[Lambda]_Integer: 2] := Module[{a, b},
   {a, b} = ab[o];
   orbitSingle[a, b, \[Lambda], k]
 ]
 
-(* Thread over list *)
-SuccessorOrbit[o_, ks_List, \[Lambda]_Integer: 2] := Module[{a, b},
-  {a, b} = ab[o];
-  orbitSingle[a, b, \[Lambda], #] & /@ ks
-]
+(* Single k, any λ: Chebyshev path (works for real k too) *)
+SuccessorOrbit[o_, k_, \[Lambda]_] := orbitChebyshev[o, k, \[Lambda]] /; !IntegerQ[\[Lambda]]
 
-(* Single k *)
-SuccessorTrace[o_, k_Integer, \[Lambda]_Integer: 2] :=
+(* Real k with default λ=2: Chebyshev path *)
+SuccessorOrbit[o_, k_, \[Lambda]_Integer: 2] := orbitChebyshev[o, k, \[Lambda]] /; !IntegerQ[k]
+
+(* Thread over list *)
+SuccessorOrbit[o_, ks_List, \[Lambda]_: 2] :=
+  SuccessorOrbit[o, #, \[Lambda]] & /@ ks
+
+(* Single k — integer λ: matrix path *)
+SuccessorTrace[o_?rationalQ, k_Integer, \[Lambda]_Integer: 2] :=
   Tr[MatrixPower[SuccessorMatrix[o, \[Lambda]], k]]
 
+(* Single k — any λ: Chebyshev path *)
+SuccessorTrace[o_, k_Integer, \[Lambda]_] := Module[{c},
+  c = ((\[Lambda]^2 + 1) o - 1) / (2 \[Lambda] o);
+  2 (\[Lambda] o)^k ChebyshevT[k, c]
+] /; !IntegerQ[\[Lambda]]
+
 (* Thread over list *)
-SuccessorTrace[o_, ks_List, \[Lambda]_Integer: 2] :=
+SuccessorTrace[o_, ks_List, \[Lambda]_: 2] :=
   SuccessorTrace[o, #, \[Lambda]] & /@ ks
 
 (* Single k *)
