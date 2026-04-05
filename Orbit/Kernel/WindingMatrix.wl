@@ -21,6 +21,14 @@ M_{np} = cos(γ_n ln p).";
 ResidualMatrix::usage = "ResidualMatrix[nZeros, nPrimes] returns the fractional residuals
 r_{np} = FractionalPart[γ_n ln p / (2π)], values in [0, 1).";
 
+SymbolicWindingMatrix::usage = "SymbolicWindingMatrix[nPrimes] returns the winding matrix
+symbolically as Floor[ZetaZero[n] Log[Prime[j]] / (2π)], unevaluated.
+Call N[] or replace ZetaZero to evaluate.";
+
+SymbolicResidualMatrix::usage = "SymbolicResidualMatrix[nPrimes] returns the residual matrix
+symbolically as FractionalPart[ZetaZero[n] Log[Prime[j]] / (2π)], unevaluated.
+Call N[] or replace ZetaZero to evaluate.";
+
 WindingData::usage = "WindingData[nZeros, nPrimes] returns an Association with keys
 \"Winding\", \"Interaction\", \"Residual\", \"Theta\" (= γ⊗ℓ/(2π), rank 1),
 \"Gammas\", \"LogPrimes\", \"SVD\".";
@@ -57,6 +65,17 @@ ResidualMatrix[nz_Integer, np_Integer] := Module[{g, lp},
   lp = Table[Log[N[Prime[j], 15]], {j, np}];
   Table[FractionalPart[g[[n]] lp[[j]] / (2 Pi)], {n, nz}, {j, np}]
 ]
+
+(* Symbolic versions: return held expressions *)
+(* Use Inactive to prevent evaluation of Floor/FractionalPart *)
+SymbolicWindingMatrix[nz_Integer, np_Integer] :=
+  Table[Inactive[Floor][Im[ZetaZero[n]] Log[Prime[j]] / (2 Pi)], {n, nz}, {j, np}]
+
+SymbolicResidualMatrix[nz_Integer, np_Integer] :=
+  Table[Inactive[FractionalPart][Im[ZetaZero[n]] Log[Prime[j]] / (2 Pi)], {n, nz}, {j, np}]
+
+(* Activate + N to evaluate *)
+(* Usage: Activate[N[SymbolicWindingMatrix[5, 5]]] *)
 
 WindingData[nz_Integer, np_Integer] := Module[{g, lp, theta, ww, rr, mm, svd},
   g = ZeroHeights[nz];
