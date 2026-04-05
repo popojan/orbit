@@ -31,5 +31,6 @@ Get["Orbit`PellCompactEncoding`"];
 Get["Orbit`PellChebyshevSolve`"];
 (* PellFactorBase requires PARI/GP — load manually: Get["Orbit`PellFactorBase`"] *)
 Get["Orbit`SuccessorOrbit`"];
+Get["Orbit`WindingMatrix`"];
 
 EndPackage[];
