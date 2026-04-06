@@ -260,13 +260,69 @@ hence more singularity.
    for Riemann zeros (not for L-function zeros), protecting Floor values from
    boundary changes.
 
-**What remains for a full proof:**
-- Why entry (5,1) specifically? ($\gamma_5 \cdot \ln 2$ has the right fractional part)
-- Why bell-shaped residuals? (Connected to explicit formula: $\cos(2\pi R)$
-  biased negative at primes = von Mangoldt detection)
-- Formal argument that for ALL $n$, a "rescuing" entry exists in column $p = 2$
-
 **Script:** `scripts/cofactor-euler-comparison.wl`
+
+## Toward a proof: induction via Schur complement
+
+### Setup
+
+$W_{n+1}$ is obtained from $W_n$ by appending row $\gamma_{n+1}$ and column $p_{n+1}$:
+
+$$W_{n+1} = \begin{pmatrix} W_n & \mathbf{v} \\ \mathbf{u}^T & w \end{pmatrix}$$
+
+where $w = \lfloor \zeta(3)\gamma_{n+1}\ln p_{n+1}/(2\pi)\rfloor$,
+$\mathbf{v}$ = new column (first $n$ rows),
+$\mathbf{u}$ = new row (first $n$ columns).
+
+### Induction step
+
+If $\det(W_n) \neq 0$ (induction hypothesis), then:
+
+$$\det(W_{n+1}) = \det(W_n) \cdot \underbrace{\left(w - \mathbf{u}^T W_n^{-1} \mathbf{v}\right)}_{\text{Schur complement } s_{n+1}}$$
+
+The Schur complement $s_{n+1}$ is rational: $s_{n+1} = (w \cdot \det(W_n) - \mathbf{u}^T \mathrm{adj}(W_n) \mathbf{v}) / \det(W_n)$.
+
+**Induction reduces to:** $s_{n+1} \neq 0$, i.e.:
+
+$$w \cdot \det(W_n) \neq \mathbf{u}^T \,\mathrm{adj}(W_n)\, \mathbf{v} \qquad (\star)$$
+
+Both sides are integers. The left side grows as $O(\gamma_{n+1} \ln p_{n+1} \cdot \det(W_n))$.
+
+### Numerical verification (n = 4..35)
+
+| $n+1$ | $\det(W_{n-1})$ | Schur $s_n$ | $\det(W_n)$ |
+|--------|-----------------|-------------|-------------|
+| 4 | $-2$ | $-3/2$ | 3 |
+| 5 | 3 | 1 | 3 |
+| 8 | $-2$ | $1/2$ | $-1$ |
+| 18 | 20 | 1 | 20 |
+| 21 | 160 | $1/8$ | 20 |
+| 33 | $-834$ | $4/417$ | $-8$ |
+| 34 | $-8$ | $-751$ | 6008 |
+
+The Schur complement is **always nonzero** (verified $n = 4, \ldots, 35$).
+It can be very small ($4/417$ at $n = 33$) but never zero. Base case:
+$\det(W_3) = -2 \neq 0$ ($W_2$ is singular, so induction starts at $n = 3$).
+
+### What the induction needs
+
+A proof of $(\star)$ for all $n$. This is a single integer inequality per step:
+the Floor-value $w$ times a known determinant must differ from a specific
+bilinear form over the adjugate. Under:
+
+- **Hypothesis A** ($\mathbb{Q}$-linear independence of $\gamma_i$): eliminates
+  the possibility that the null vector has $\sum c_i \gamma_i = 0$
+- **Hypothesis B** (quantitative Diophantine bound on $\gamma_i$ combinations):
+  the Schur complement numerator $w \cdot \det(W_n) - \mathbf{u}^T \mathrm{adj}(W_n) \mathbf{v}$
+  cannot vanish because $\gamma_{n+1}$ enters the LHS through $w$ and the RHS
+  through $\mathbf{u}$, creating a non-degenerate dependence on $\gamma_{n+1}$
+
+The Schur complement formulation reduces the "for all $n$" problem to a
+sequence of single-step integer non-equalities, each depending on one new
+zero $\gamma_{n+1}$ entering the system. This is the cleanest form we have
+for a potential inductive proof.
+
+**Script:** `scripts/cofactor-euler-comparison.wl` (Schur complement computed inline)
 
 ### Large-n verification (n = 3..200)
 
