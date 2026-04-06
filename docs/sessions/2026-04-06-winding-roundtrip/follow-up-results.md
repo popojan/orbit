@@ -371,7 +371,12 @@ $\zeta(7) = 1.008$ is even closer. The Euler correction at $p = 2$ is only
 3. **Uniqueness proof:** Can the column-pruning argument be made into a proof (not just enumeration)?
 4. ~~det = 1 scaling for 21×21?~~ **DONE** — $k = 197/48 \approx 4.104$ gives $\det = -1$; unimodular exists for all $n = 3, \ldots, 30$
 5. **Connection ζ(3) ↔ e ↔ 2π:** Three families likely independent. No simple multiplicative relation found (LLL search). $11/4 \approx \sqrt{2\pi\zeta(3)}$ to 0.06% but not exact.
-6. **Dirichlet L-functions:** Does ζ(3) remain optimal for winding matrices built from L-function zeros?
+6. ~~Dirichlet L-functions~~ **TESTED.** ζ(3) scaling is specific to Riemann zeros.
+   L-function winding matrices are massively singular for ALL tested scalings
+   (including L(q,j,s) at integer s). Even k=2π doesn't fully rescue them.
+   The winding matrix concept with standard primes in columns is **not universal**
+   for L-functions — likely needs modification (e.g., only primes coprime to
+   the modulus, or character-twisted columns).
 7. **Analytical cofactor proof:** Why does $p^3/(p^3-1)$ per-column correction prevent $\det = 0$?
 
 ## $k \cdot \pi \cdot \zeta(3)$ never-singular family
