@@ -213,6 +213,61 @@ the specific cofactor combinations that would drive $\det$ to zero.
 
 **Script:** `scripts/why-zeta3-not-zeta2.wl`, `scripts/persistent-breakpoints.wl`
 
+#### The cofactor mechanism: surgical dissection
+
+Comparing $W^{(\zeta(3))}$ (with Euler) vs $\tilde{W}$ (stripped) entry by entry
+at $n = 5$ (where stripped is singular but Euler saves):
+
+- **Only 3 entries differ**, all in **column 1** ($p = 2$): rows 3, 4, 5 get +1
+- The 8/7 correction at $p = 2$ pushes $\lfloor \cdots \rfloor$ over integer thresholds
+- Null space of stripped matrix: $3r_1 - r_2 - 3r_3 + r_4 + r_5 = 0$
+- **Single entry (5,1) breaks this**: restoring only (5,1) gives $\det = 3$ (non-singular).
+  Restoring (3,1) or (4,1) alone does NOT help ($\det$ stays 0).
+
+At $n = 6$: same 3 entries differ, same critical entry (5,1). Null space
+$r_1 - r_2 - r_3 + r_4 - r_5 + r_6 = 0$ also broken by (5,1).
+
+For larger $n$: corrections spread to column $p = 3$ (from $n \geq 8$),
+but **column $p = 2$ remains the primary protector**.
+
+#### Residual distribution: third pillar
+
+Fractional parts $\{\gamma_n \ln p / (2\pi)\}$ for $20 \times 20$:
+
+| | Riemann $\zeta$ | $L(4,2)$ |
+|---|----------------|----------|
+| mean | 0.507 | 0.508 |
+| std | **0.239** | 0.292 |
+| $\chi^2$/dof | **6.59** (non-uniform!) | 0.69 (uniform) |
+| Shape | bell-shaped, depleted at 0 and 1 | flat |
+
+Riemann zeros produce **non-uniform residuals** that avoid 0 and 1 — i.e.,
+Floor entries are away from integer boundaries where they might change.
+L-function zeros produce uniform residuals with more boundary entries,
+hence more singularity.
+
+#### Three pillars of the never-singular mechanism
+
+1. **Euler per-column correction** $p^3/(p^3-1)$: adds +1 to specific entries
+   in column $p = 2$, breaking integer linear dependencies. Entry (5,1) is the
+   critical protector for small $n$.
+
+2. **Exponential corridor**: $\zeta(3)$ threads through a gap of width
+   $\propto e^{-0.46n}$ between singular intervals. Cofactors grow but
+   breakpoints densify; $\zeta(3)$ never touches zero.
+
+3. **Bell-shaped residuals**: $\{\gamma_n \ln p/(2\pi)\}$ depleted near 0 and 1
+   for Riemann zeros (not for L-function zeros), protecting Floor values from
+   boundary changes.
+
+**What remains for a full proof:**
+- Why entry (5,1) specifically? ($\gamma_5 \cdot \ln 2$ has the right fractional part)
+- Why bell-shaped residuals? (Connected to explicit formula: $\cos(2\pi R)$
+  biased negative at primes = von Mangoldt detection)
+- Formal argument that for ALL $n$, a "rescuing" entry exists in column $p = 2$
+
+**Script:** `scripts/cofactor-euler-comparison.wl`
+
 ### Large-n verification (n = 3..200)
 
 Falsification attempt: test all families at $n$ up to 200 (198 consecutive matrices).
