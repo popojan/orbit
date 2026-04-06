@@ -155,6 +155,49 @@ $n = 100$ (98 consecutive non-singular matrices).
    Chebyshev polynomial of order $k$. Is $W^{(k)}$ related to $T_k$ applied
    to the winding matrix?
 
-4. **ALS with optimal $k$:** Does ALS roundtrip work better with
-   $k = 11/4$ or $k = 2\pi$ than with $k = 1$? (Expected yes, since
-   non-singular matrices should give better rank-1 recovery.)
+4. **ALS with optimal $k$:** ✅ ANSWERED (2026-04-06 follow-up)
+
+   $k = 2\pi$ gives **~4× better** $\gamma$ precision than $k = 1$.
+   $k = 11/4$ is intermediate (except 15×15 failure — local ALS minimum).
+
+   | Size | $k=1$ $\gamma_\text{mean}$ | $k=11/4$ | $k=2\pi$ | Speedup |
+   |------|---------------------------|----------|----------|---------|
+   | 5 | 0.222 | 0.150 | 0.068 | 3.3× |
+   | 20 | 0.061 | 0.041 | 0.014 | 4.4× |
+   | 100 | 0.018 | 0.008 | 0.005 | 3.8× |
+
+   All three scalings give 100% prime recovery (except k=11/4 at 15×15).
+   Paradox: $k=1$ has best W roundtrip (99–100%) but worst $\gamma$ precision.
+   Reason: larger $k$ → larger entries → smaller *relative* floor noise.
+
+## Uniqueness of decomposition W = ⌊a ⊗ ℓ⌋
+
+**Status:** 🔬 NUMERICALLY VERIFIED (n=3..30)
+
+Given $W = \lfloor a_n \ell_j \rfloor$ with constraints:
+- $e^{\ell_1} = 2$ (scale normalization)
+- $e^{\ell_j} \in \mathbb{Z}_{\text{odd}}$ for $j > 1$ (lattice + OddQ)
+- $k_1 < k_2 < \cdots < k_n$ (monotone columns)
+
+**Result:** The decomposition is unique for 24 out of 28 sizes (n=3..30).
+
+| $n$ | Unique? | Impostor | Type | $\Delta\ln$ |
+|-----|---------|----------|------|-------------|
+| 3–8 | ✓ | — | — | — |
+| **9** | no | 21 for 23 | composite (3·7) | 0.091 |
+| 10–11 | ✓ | — | — | — |
+| **12** | no | 35 for 37 | composite (5·7) | 0.056 |
+| **13** | no | 43 for 41 | prime (twin) | 0.048 |
+| 14–16 | ✓ | — | — | — |
+| **17** | no | 61 for 59 | prime (twin) | 0.033 |
+| **18–30** | **✓** | — | — | — |
+
+**Key observations:**
+- Impostors always affect only the **last column** (largest prime/integer)
+- $\Delta\ln$ decreases with $n$: more rows = tighter constraints
+- Twin prime impostors (gap 2) at $n = 13, 17$; composite impostors at $n = 9, 12$
+- Adding 1–5 extra rows (rectangular $m \times n$, $m > n$) always restores uniqueness
+- **No failures for $n \geq 18$** (through $n = 30$)
+
+**Conjecture:** For all sufficiently large $n$ (empirically $n \geq 18$),
+the $n \times n$ winding matrix has a unique decomposition.
