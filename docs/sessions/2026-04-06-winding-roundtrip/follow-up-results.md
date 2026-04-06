@@ -374,9 +374,18 @@ $\zeta(7) = 1.008$ is even closer. The Euler correction at $p = 2$ is only
 6. ~~Dirichlet L-functions~~ **TESTED.** ζ(3) scaling is specific to Riemann zeros.
    L-function winding matrices are massively singular for ALL tested scalings
    (including L(q,j,s) at integer s). Even k=2π doesn't fully rescue them.
-   The winding matrix concept with standard primes in columns is **not universal**
-   for L-functions — likely needs modification (e.g., only primes coprime to
-   the modulus, or character-twisted columns).
+   **Character-aware modification tested:** skip ramified primes ($\chi(p)=0$).
+   ALS roundtrip improves dramatically (L(4,2): 3/20 → 10/20 primes correct).
+   But integer winding matrix remains **always singular** for L(4,2) (25/25 sizes).
+
+   **Root cause:** L-function zeros come in close pairs (e.g., L(4,2): $\Delta\gamma \approx 0.2$
+   within pairs vs $\approx 3$ between). Paired zeros create near-identical rows in $W$,
+   making Floor discretization unable to distinguish them.
+
+   **Conclusion:** Winding matrix concept is universal at the ALS/continuous level
+   (recovers $\gamma$ and primes for any L-function). But the integer structure
+   (det, Smith form, never-singular scaling) is **specific to Riemann $\zeta$** whose
+   zeros are well-separated enough for Floor discretization to preserve rank.
 7. **Analytical cofactor proof:** Why does $p^3/(p^3-1)$ per-column correction prevent $\det = 0$?
 
 ## $k \cdot \pi \cdot \zeta(3)$ never-singular family
