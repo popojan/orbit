@@ -117,3 +117,127 @@ but explodes for $n > 25$. The row operations become more complex.
 
 4. **Does $d_n$ encode number-theoretic information** (e.g., about the
    distribution of $\gamma_n\ln p \bmod 2\pi$)?
+
+---
+
+## Addendum: Full scan to $n = 40$ and the breaking point at $n = 22$
+
+**Date:** 2026-04-06
+
+### Extended data
+
+| $n$ | rank | $d_n$ | det | max\|S\| | max\|T\| |
+|-----|------|-------|-----|----------|----------|
+| 3 | 2 | 0 | 0 | 3 | 1 |
+| **4** | **4** | **1** | 1 | 2 | **1** |
+| **5** | **5** | **1** | $-1$ | 2 | **1** |
+| 6–9 | def. | 0 | 0 | $\leq 2$ | **1** |
+| 10–11 | def. | 0 | 0 | 1 | **1** |
+| 12–18 | def. | 0 | 0 | $\leq 3$ | $\leq 2$ |
+| **19** | **19** | **2** | $-2$ | 3 | **1** |
+| **20** | **20** | **2** | $-2$ | 4 | **1** |
+| 21 | def. | 0 | 0 | 3 | 3 |
+| **22** | **22** | **10** | 10 | 24 | 5 |
+| 25 | 25 | 20 | 20 | 55 | 16 |
+| 27 | 27 | 59 | $-59$ | 75 | 57 |
+| 32 | 32 | 171 | 171 | 5305 | 138 |
+| 34 | 34 | 960 | 960 | 31563 | 833 |
+| 37 | 37 | 398 | $-398$ | 70849 | 370 |
+| 40 | 40 | 25935 | 25935 | $1.4 \times 10^8$ | 23664 |
+
+### Three regimes
+
+1. **$n \leq 5$ (unimodular):** $d_n = 1$, $\det = \pm 1$.
+   $W$ is invertible over $\mathbb{Z}$. max|T| = 1 always.
+
+2. **$6 \leq n \leq 21$ (singular but tame):** $d_n = 0$ or 2.
+   max|T| $\leq 3$, max|S| $\leq 4$. Column operations stay elementary.
+
+3. **$n \geq 22$ (explosion):** $d_n$ grows, max|S| explodes (to $10^8$
+   by $n = 40$). The integer structure becomes "wild."
+
+### The breaking point: $n = 22$ and $\pi \approx 22/7$
+
+The Smith form transitions from tame to wild at exactly $n = 22$.
+The best-known rational approximation of $\pi$ is $22/7$ (second
+convergent of the continued fraction $\pi = [3; 7, 15, 1, 292, \ldots]$).
+
+The winding matrix entries involve $\gamma_n \ln p / (2\pi)$, so the
+denominators of rational approximations to $\pi$ (and $2\pi$) control
+when near-integer coincidences occur in the Floor function. The CF
+convergents of $\pi$ have numerators $3, 22, 333, 355, 103993, \ldots$
+
+**Observation:** The breaking point $n = 22$ coincides with the numerator
+of the second CF convergent of $\pi$. This MAY be related: when the
+matrix size hits 22, the approximation $\pi \approx 22/7$ creates
+near-integer relationships among the entries that collapse the Smith
+structure.
+
+**Status:** 🤔 SPECULATIVE. The connection between CF($\pi$) and the
+Smith breaking point is a numerological observation, not a theorem.
+It would be strengthened if:
+- The next transition occurs near $n = 333$ (third CF numerator)
+- The tame regime for max|T| = 1 is explained by $22/7$ accuracy
+- A similar matrix built with a different constant shows a breaking
+  point at a different CF numerator
+
+### Test: other constants (2026-04-06)
+
+Replaced $2\pi$ with $e$, $\sqrt{2}$, $\varphi$, $\pi$ in the Floor
+formula. If the breaking point tracks CF numerators, different constants
+should break at different $n$.
+
+| Constant $c$ | CF | det(22) | Break pattern |
+|---------|------|---------|-----------|
+| $2\pi$ | [6;3,1,1,7,...] | 10 | singular 6–18, break at 22 |
+| $e$ | [2;1,2,1,1,4,...] | 10 | similar pattern |
+| $\sqrt{2}$ | [1;2,2,2,...] | $-62$ | different but no special break |
+| $\varphi$ | [1;1,1,1,...] | 40 | smooth growth |
+| $\pi$ | [3;7,15,1,292,...] | 7 | very tame (det ≤ 15 at $n=25$) |
+
+**Result: no CF connection.** Different constants give different $d_n$
+sequences, but the singular region ($n \approx 6$–$18$) and full-rank
+recovery ($n \geq 19$) appear for ALL constants tested. The pattern is
+driven by the **distribution of $\gamma_n$ and $\ln p_j$** (zero density
+vs. prime gaps), not by the arithmetic of the dividing constant.
+
+Also: no second transition at $n = 333$ for $2\pi$. The matrix stays
+full rank with smoothly growing $d_n$ for $n = 25$ through $n = 350$.
+
+**Verdict:** The $n = 22$ breaking point is NOT explained by CF($\pi$) alone
+(no second transition at $n = 333$, other constants show similar singular
+regions). However, there IS a measurable mechanism:
+
+### The 7-divisibility trace (2026-04-06)
+
+For the winding matrix divided by $\pi$ (not $2\pi$):
+
+$\det(W) \bmod 7$:
+```
+n=3..10:  6 1 5 6 1 6 4 5    (no zeros — 7 absent)
+n=11..13: 0 0 0              (trivially, det=0)
+n=14..21: 3 6 4 2 2 1 5 6    (no zeros)
+n=22:     0                   ← 7 first appears (22/7 effect)
+n=23..25: 5 5 6              (gap)
+n=26..30: 0 0 0 0 0          ← 5 consecutive! (resonance)
+n=31..36: 6 4 4 1 3 3        (gap)
+n=37:     0                   ← returns
+```
+
+**Mechanism:** Row 22 has $\gamma_{22}\ln 3/\pi = 28.994$ (fractional
+part 0.006 from integer). The approximation $\pi \approx 22/7$ makes
+entries near integers at $n = 22$, creating a rank perturbation that
+introduces factor 7 in the determinant.
+
+**Near-integer γ_n/π values:**
+- $\gamma_{37}/\pi \approx 37.00$ (dist 0.004) — $n = 37$ is where 7 returns
+- $\gamma_{96}/\pi \approx 73.00$ (dist 0.0004) — extremely precise
+- $\gamma_{70}/\pi \approx 58.00$ (dist 0.002)
+
+These near-integer coincidences ($\gamma_n \approx k\pi$ for integer $k$)
+affect the Floor entries and hence the determinant, but the connection
+to 7-divisibility is not systematic enough for a clean theorem.
+
+**Status:** 🔬 OBSERVED MECHANISM, not a theorem. The 22/7 approximation
+creates a measurable trace in the Smith structure, but does not govern
+it deterministically.

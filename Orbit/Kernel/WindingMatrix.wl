@@ -12,14 +12,14 @@
 
 BeginPackage["Orbit`"];
 
-WindingMatrix::usage = "WindingMatrix[nZeros, nPrimes] returns the integer winding number matrix
-w_{np} = Floor[γ_n ln p / (2π)]. Caches zero heights for efficiency.";
+WindingMatrix::usage = "WindingMatrix[nZeros, nPrimes, k:1] returns the integer winding number matrix
+w_{np} = Floor[k γ_n ln p / (2π)]. Scaling k controls resolution (default 1). Caches zero heights.";
 
 InteractionMatrix::usage = "InteractionMatrix[nZeros, nPrimes] returns the real interaction matrix
 M_{np} = cos(γ_n ln p).";
 
-ResidualMatrix::usage = "ResidualMatrix[nZeros, nPrimes] returns the fractional residuals
-r_{np} = FractionalPart[γ_n ln p / (2π)], values in [0, 1).";
+ResidualMatrix::usage = "ResidualMatrix[nZeros, nPrimes, k:1] returns the fractional residuals
+r_{np} = FractionalPart[k γ_n ln p / (2π)], values in [0, 1). Scaling k matches WindingMatrix.";
 
 SymbolicWindingMatrix::usage = "SymbolicWindingMatrix[nPrimes] returns the winding matrix
 symbolically as Floor[ZetaZero[n] Log[Prime[j]] / (2π)], unevaluated.
@@ -48,10 +48,10 @@ ZeroHeights[n_Integer] := Module[{},
 ]
 
 (* Core matrices *)
-WindingMatrix[nz_Integer, np_Integer] := Module[{g, lp},
+WindingMatrix[nz_Integer, np_Integer, k_:1] := Module[{g, lp},
   g = ZeroHeights[nz];
   lp = Table[Log[N[Prime[j], 15]], {j, np}];
-  Table[Floor[g[[n]] lp[[j]] / (2 Pi)], {n, nz}, {j, np}]
+  Table[Floor[k g[[n]] lp[[j]] / (2 Pi)], {n, nz}, {j, np}]
 ]
 
 InteractionMatrix[nz_Integer, np_Integer] := Module[{g, lp},
@@ -60,10 +60,10 @@ InteractionMatrix[nz_Integer, np_Integer] := Module[{g, lp},
   Table[Cos[g[[n]] lp[[j]]], {n, nz}, {j, np}]
 ]
 
-ResidualMatrix[nz_Integer, np_Integer] := Module[{g, lp},
+ResidualMatrix[nz_Integer, np_Integer, k_:1] := Module[{g, lp},
   g = ZeroHeights[nz];
   lp = Table[Log[N[Prime[j], 15]], {j, np}];
-  Table[FractionalPart[g[[n]] lp[[j]] / (2 Pi)], {n, nz}, {j, np}]
+  Table[FractionalPart[k g[[n]] lp[[j]] / (2 Pi)], {n, nz}, {j, np}]
 ]
 
 (* Symbolic versions: return held expressions *)
