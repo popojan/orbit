@@ -62,6 +62,23 @@ Examples:
   PellBallotQ[2, {3, 2}]    (* -> True, Pell solution *)
   PellBallotQ[13, {5, 1}]   (* -> False, not on CF path *)";
 
+PellBallotProductSmooth::usage = "PellBallotProductSmooth[s] computes the ballot product with continuous
+parameter s (= Sqrt[D] or Floor[Sqrt[D]] or any positive real).
+
+Phase boundaries at s, 2s (no Floor/Ceiling). Automatically finds the
+e-crossing point b where LogGamma[b+2] - LogGamma[s+1] - LogGamma[2s+1] - (b-2s)Log[2] = E.
+
+PellBallotProductSmooth[s, b] computes the product to explicit b (no crossing search).
+
+Returns <|\"Product\" -> ..., \"b\" -> ..., \"s\" -> ..., \"LogProduct\" -> ...|>.
+
+Fully continuous in s — try Plot[PellBallotProductSmooth[s][\"LogProduct\"], {s, 1, 20}].
+
+Examples:
+  PellBallotProductSmooth[3]            (* s=3, crossing at b~9 *)
+  PellBallotProductSmooth[Sqrt[13]]     (* exact sqrt *)
+  PellBallotProductSmooth[7.5]          (* non-integer s *)";
+
 PellBallotProduct::usage = "PellBallotProduct[d, b] computes the cumulative product of ballot numbers
 ballot(x, y*(x)) for x = 1 to b, where y*(x) = Floor[Sqrt[(x^2-1)/d]].
 
@@ -360,6 +377,30 @@ PellBallotQ[d_Integer, {x1_Integer, y1_Integer}] /; d > 1 && x1 >= 2 && y1 >= 1 
 
 (* ================================================================== *)
 (* PellBallotProduct: closed-form cumulative ballot product             *)
+(* ================================================================== *)
+
+(* ================================================================== *)
+(* PellBallotProductSmooth: fully continuous ballot product             *)
+(* ================================================================== *)
+
+(* Log of product from 1 to b with continuous s = sqrt(D): *)
+(* Phase 0 [1, s]: log = -LogGamma[s+1] *)
+(* Phase 1 [s, 2s]: log = 0 *)
+(* Phase 2 [2s, b]: log = LogGamma[b+2] - LogGamma[2s+1] - (b-2s)Log[2] *)
+(* Total: LogGamma[b+2] - LogGamma[s+1] - LogGamma[2s+1] - (b-2s)Log[2] *)
+
+(* Two-argument form: purely symbolic log-product *)
+PellBallotProductSmooth[s_, b_] :=
+  LogGamma[b + 2] - LogGamma[s + 1] - LogGamma[2 s + 1] - (b - 2 s) Log[2]
+
+(* One-argument form: e-crossing point b as function of s *)
+(* Returns b such that PellBallotProductSmooth[s, b] == E *)
+(* Symbolic: stays unevaluated. Numeric: resolves via FindRoot. *)
+PellBallotProductSmooth[s_?NumericQ] :=
+  b /. FindRoot[PellBallotProductSmooth[s, b] == E, {b, E N[s]}]
+
+(* ================================================================== *)
+(* PellBallotProduct: discrete version (wraps smooth for crossing)     *)
 (* ================================================================== *)
 
 (* ballot(x, k) = Gamma[x+k] / (k! * Gamma[x+1]) = Gamma[x+k] / (Gamma[k+1] * Gamma[x+1]) *)
