@@ -22,11 +22,18 @@ For $n = \lfloor\sqrt{D}\rfloor$:
 
 where $a = \lceil 2\sqrt{D} \rceil$ (first $x$ with $y^* = 2$).
 
-## Total product: closed form
+The general ballot formula for any phase $k$:
+$$b_D(x) = \frac{1}{x}\binom{x+k-1}{k} = \frac{(x+1)(x+2)\cdots(x+k-1)}{k!}$$
+
+## Total product: closed form (when crossing is in $y^* = 2$)
 
 $$\prod_{x=1}^{b} b_D(x) = \frac{(b+1)!}{n! \;\cdot\; a! \;\cdot\; 2^{b-a+1}}$$
 
 Verified exactly for $n = 3, 5, 7, 10, 15$.
+
+**Caveat:** The $e$-crossing occurs in phase $y^* = 2$ for $D \geq 12$ ($n \geq 3$).
+For small $D$ (5, 7, 10, 11) the crossing extends into phase $y^* = 3$, where
+$b_D(x) = (x+1)(x+2)/6$, and the product formula needs an additional factor.
 
 ## Band invariance
 
