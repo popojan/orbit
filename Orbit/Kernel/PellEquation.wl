@@ -32,6 +32,29 @@ solution by generating CF convergents of Sqrt[d].
 
 Returns: {fx, fy}";
 
+PellBallotCount::usage = "PellBallotCount[d, {x, y}] counts monotonic lattice paths from (1,0) to (x,y)
+that stay above the Pell hyperbola u^2 - d*v^2 >= 1.
+
+Uses dynamic programming. Every visited lattice point must satisfy the constraint.
+Steps are unit right (+1,0) and unit up (0,+1).
+
+The Pell-Ballot conjecture states that for points (x,y) on the CF path of Sqrt[d],
+this count equals the ballot number Binomial[x+y-1, y]/x.
+
+Examples:
+  PellBallotCount[2, {3, 2}]    (* -> 2 = C_2 *)
+  PellBallotCount[13, {4, 1}]   (* -> 1, norm 3 point on CF path *)";
+
+PellBallotQ::usage = "PellBallotQ[d, {x, y}] returns True if the lattice path count from (1,0) to (x,y)
+above x^2 - d*y^2 >= 1 equals the ballot number Binomial[x+y-1, y]/x.
+
+Points on the CF path of Sqrt[d] (convergents and semi-convergents) satisfy this.
+Points NOT on the CF path do not.
+
+Examples:
+  PellBallotQ[2, {3, 2}]    (* -> True, Pell solution *)
+  PellBallotQ[13, {5, 1}]   (* -> False, not on CF path *)";
+
 Begin["`Private`"];
 
 (* ================================================================== *)
@@ -271,6 +294,40 @@ PellRegulatorPARI[n_] := Module[{cmd, raw},
     ToString[n] <> ".))))' | gp -q 2>/dev/null";
   raw = StringTrim[RunProcess[{"bash", "-c", cmd}, "StandardOutput"]];
   If[StringLength[raw] > 0, ToExpression[raw], $Failed]]
+
+(* ================================================================== *)
+(* PellBallotCount: lattice paths above Pell hyperbola (DP)            *)
+(* ================================================================== *)
+
+PellBallotCount[d_Integer, {x1_Integer, y1_Integer}] /; d > 1 && x1 >= 1 && y1 >= 0 :=
+  Module[{dp},
+    If[y1 == 0, Return[If[x1 >= 1, 1, 0]]];
+    dp = Table[0, {x1}, {y1 + 1}];
+    Do[
+      Do[
+        If[u^2 - d r^2 >= 1,
+          dp[[u, r + 1]] =
+            If[u == 1 && r == 0, 1, 0] +
+            If[u > 1, dp[[u - 1, r + 1]], 0] +
+            If[r > 0, dp[[u, r]], 0],
+          dp[[u, r + 1]] = 0
+        ],
+      {r, 0, y1}],
+    {u, 1, x1}];
+    dp[[x1, y1 + 1]]
+  ]
+
+(* ================================================================== *)
+(* PellBallotQ: test if path count = ballot number                     *)
+(* ================================================================== *)
+
+PellBallotQ[d_Integer, {x1_Integer, y1_Integer}] /; d > 1 && x1 >= 2 && y1 >= 1 :=
+  Module[{ballot, count},
+    ballot = Binomial[x1 + y1 - 1, y1] / x1;
+    If[!IntegerQ[ballot], Return[False]];
+    count = PellBallotCount[d, {x1, y1}];
+    count === ballot
+  ]
 
 End[];
 

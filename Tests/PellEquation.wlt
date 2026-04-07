@@ -132,4 +132,67 @@ VerificationTest[
   TestID -> "PellFundExtract-d2-squared"
 ]
 
+(* ============================================ *)
+(* PellBallotCount: lattice paths above hyperbola *)
+(* ============================================ *)
+
+VerificationTest[
+  PellBallotCount[2, {3, 2}],
+  2,
+  TestID -> "PellBallotCount-d2-Pell"
+]
+
+VerificationTest[
+  PellBallotCount[3, {2, 1}],
+  1,
+  TestID -> "PellBallotCount-d3-Pell"
+]
+
+VerificationTest[
+  PellBallotCount[5, {9, 4}],
+  55,
+  TestID -> "PellBallotCount-d5-Pell"
+]
+
+VerificationTest[
+  PellBallotCount[7, {8, 3}],
+  15,
+  TestID -> "PellBallotCount-d7-Pell"
+]
+
+(* Ballot formula: count = Binomial[x+y-1, y] / x *)
+VerificationTest[
+  PellBallotCount[10, {19, 6}],
+  Binomial[24, 6] / 19,
+  TestID -> "PellBallotCount-d10-ballot-formula"
+]
+
+(* ============================================ *)
+(* PellBallotQ: CF path detection               *)
+(* ============================================ *)
+
+VerificationTest[
+  PellBallotQ[2, {3, 2}],
+  True,
+  TestID -> "PellBallotQ-d2-Pell-True"
+]
+
+VerificationTest[
+  PellBallotQ[13, {4, 1}],
+  True,
+  TestID -> "PellBallotQ-d13-convergent-True"
+]
+
+VerificationTest[
+  PellBallotQ[13, {5, 1}],
+  False,
+  TestID -> "PellBallotQ-d13-nonCF-False"
+]
+
+VerificationTest[
+  PellBallotQ[13, {29, 8}],
+  True,
+  TestID -> "PellBallotQ-d13-semiconvergent-True"
+]
+
 EndTestSection[]
