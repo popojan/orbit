@@ -35,15 +35,22 @@ Returns: {fx, fy}";
 PellBallotCount::usage = "PellBallotCount[d, {x, y}] counts monotonic lattice paths from (1,0) to (x,y)
 that stay above the Pell hyperbola u^2 - d*v^2 >= 1.
 
+PellBallotCount[d, x] counts paths to (x, y*(x)) where y*(x) = Floor[Sqrt[(x^2-1)/d]]
+is the highest lattice point still on or above the hyperbola at that x coordinate.
+This one-argument form is well-defined for all x >= 2.
+
 Uses dynamic programming. Every visited lattice point must satisfy the constraint.
 Steps are unit right (+1,0) and unit up (0,+1).
 
-The Pell-Ballot conjecture states that for points (x,y) on the CF path of Sqrt[d],
-this count equals the ballot number Binomial[x+y-1, y]/x.
+The Pell-Ballot conjecture: for (x,y) on the CF path of Sqrt[d],
+count equals the ballot number Binomial[x+y-1, y]/x.
+For other x, count > ballot (the hyperbola doesn't block enough paths).
 
 Examples:
-  PellBallotCount[2, {3, 2}]    (* -> 2 = C_2 *)
-  PellBallotCount[13, {4, 1}]   (* -> 1, norm 3 point on CF path *)";
+  PellBallotCount[2, {3, 2}]   (* -> 2 = C_2, Pell solution *)
+  PellBallotCount[2, 3]        (* -> 2, same via one-arg form *)
+  PellBallotCount[13, {4, 1}]  (* -> 1, CF convergent *)
+  PellBallotCount[7, 5]        (* -> 3, non-CF point, ballot=3 too? no, norm=-3 *)";
 
 PellBallotQ::usage = "PellBallotQ[d, {x, y}] returns True if the lattice path count from (1,0) to (x,y)
 above x^2 - d*y^2 >= 1 equals the ballot number Binomial[x+y-1, y]/x.
@@ -299,6 +306,7 @@ PellRegulatorPARI[n_] := Module[{cmd, raw},
 (* PellBallotCount: lattice paths above Pell hyperbola (DP)            *)
 (* ================================================================== *)
 
+(* Two-argument form: explicit target (x, y) *)
 PellBallotCount[d_Integer, {x1_Integer, y1_Integer}] /; d > 1 && x1 >= 1 && y1 >= 0 :=
   Module[{dp},
     If[y1 == 0, Return[If[x1 >= 1, 1, 0]]];
@@ -316,6 +324,10 @@ PellBallotCount[d_Integer, {x1_Integer, y1_Integer}] /; d > 1 && x1 >= 1 && y1 >
     {u, 1, x1}];
     dp[[x1, y1 + 1]]
   ]
+
+(* One-argument form: target = (x, y*(x)), highest lattice point above hyperbola *)
+PellBallotCount[d_Integer, x1_Integer] /; d > 1 && x1 >= 2 :=
+  PellBallotCount[d, {x1, Floor[Sqrt[(x1^2 - 1)/d]]}]
 
 (* ================================================================== *)
 (* PellBallotQ: test if path count = ballot number                     *)
