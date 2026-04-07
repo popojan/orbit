@@ -396,8 +396,10 @@ PellBallotProductSmooth[s_, b_] :=
 (* One-argument form: e-crossing point b as function of s *)
 (* Returns b such that PellBallotProductSmooth[s, b] == E *)
 (* Symbolic: stays unevaluated. Numeric: resolves via FindRoot. *)
-PellBallotProductSmooth[s_?NumericQ] :=
-  b /. FindRoot[PellBallotProductSmooth[s, b] == E, {b, E N[s]}]
+(* One-argument: e-crossing point via Solve (returns Root object) *)
+(* Matches any numeric or algebraic s; stays unevaluated for purely symbolic s *)
+PellBallotProductSmooth[s_] /; NumericQ[N[s]] :=
+  b /. First@Solve[PellBallotProductSmooth[s, b] == E && b > 0, b]
 
 (* ================================================================== *)
 (* PellBallotProduct: discrete version (wraps smooth for crossing)     *)
