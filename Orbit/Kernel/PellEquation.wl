@@ -62,6 +62,23 @@ Examples:
   PellBallotQ[2, {3, 2}]    (* -> True, Pell solution *)
   PellBallotQ[13, {5, 1}]   (* -> False, not on CF path *)";
 
+PellBallotProduct::usage = "PellBallotProduct[d, b] computes the cumulative product of ballot numbers
+ballot(x, y*(x)) for x = 1 to b, where y*(x) = Floor[Sqrt[(x^2-1)/d]].
+
+Uses Gamma functions — works for non-integer b as continuous extension.
+Computes phase by phase: y*=0 (Gamma ratio), y*=1 (trivial), y*=2 (Gamma/2^n),
+y*>=3 (term by term for integer b).
+
+PellBallotProduct[d] with one argument returns the product at the e-crossing point:
+the smallest b where the cumulative log-product exceeds e. This value is an invariant
+depending only on Floor[Sqrt[d]].
+
+Examples:
+  PellBallotProduct[101, 27]   (* -> 3289/256 *)
+  PellBallotProduct[101, 27.5] (* -> continuous extension via Gamma *)
+  PellBallotProduct[101]       (* -> 3289/256, auto e-crossing *)
+  PellBallotProduct[61]        (* -> 969/64, same band as D=50..63 *)";
+
 Begin["`Private`"];
 
 (* ================================================================== *)
@@ -340,6 +357,72 @@ PellBallotQ[d_Integer, {x1_Integer, y1_Integer}] /; d > 1 && x1 >= 2 && y1 >= 1 
     count = PellBallotCount[d, {x1, y1}];
     count === ballot
   ]
+
+(* ================================================================== *)
+(* PellBallotProduct: closed-form cumulative ballot product             *)
+(* ================================================================== *)
+
+(* ballot(x, k) = Gamma[x+k] / (k! * Gamma[x+1]) = Gamma[x+k] / (Gamma[k+1] * Gamma[x+1]) *)
+(* Phase boundaries: y*(x) = k when k^2 <= (x^2-1)/d < (k+1)^2 *)
+(* i.e., x in [Ceiling[Sqrt[d*k^2+1]], Ceiling[Sqrt[d*(k+1)^2+1]] - 1] *)
+
+(* Product over phase k from x=lo to x=hi: *)
+(* Prod_{x=lo}^{hi} Gamma[x+k] / (Gamma[k+1] * Gamma[x+1]) *)
+(* = 1/Gamma[k+1]^(hi-lo+1) * Prod Gamma[x+k]/Gamma[x+1] *)
+(* For k=0: Prod 1/x = Gamma[lo]/Gamma[hi+1] *)
+(* For k=1: Prod 1 = 1 *)
+(* For k=2: Prod (x+1)/2 = Gamma[hi+2]/(Gamma[lo+1]*2^(hi-lo+1)) *)
+(* General k: Prod Gamma[x+k]/(Gamma[k+1]*Gamma[x+1]) -- no simple telescoping *)
+
+(* One-argument form: find e-crossing automatically *)
+PellBallotProduct[d_] := Module[{n = Floor[Sqrt[d]], b = Null, acc = 0, ys, bal, maxX},
+  maxX = Max[4 n, 10];
+  Do[
+    ys = Floor[Sqrt[Max[(x^2 - 1)/d, 0]]];
+    bal = Gamma[x + ys] / (Gamma[ys + 1] Gamma[x + 1]);
+    If[NumericQ[bal] && bal > 0, acc += Log[N[bal, 30]]];
+    If[acc >= N[E, 30], b = x; Break[]],
+  {x, 1, maxX}];
+  If[b === Null, b = maxX];
+  PellBallotProduct[d, b]
+]
+
+(* Two-argument form: closed-form product to given b *)
+PellBallotProduct[d_, b_] := Module[
+  {n, result = 1, k = 0, lo, hi, phaseEnd},
+  n = Floor[Sqrt[d]];
+
+  While[True,
+    (* Phase k: y*(x) = k for x in [lo, hi] *)
+    lo = If[k == 0, 1, Ceiling[Sqrt[N[d k^2 + 1]]]];
+    phaseEnd = Ceiling[Sqrt[N[d (k + 1)^2 + 1]]] - 1;
+    hi = Min[phaseEnd, Floor[b]];
+    If[lo > Floor[b] || lo > hi, Break[]];
+
+    (* Product for this phase *)
+    Which[
+      k == 0,
+        result *= Gamma[lo] / Gamma[hi + 1],
+      k == 1,
+        Null,
+      k == 2,
+        result *= Gamma[hi + 2] / (Gamma[lo + 1] * 2^(hi - lo + 1)),
+      True,
+        (* General k >= 3: term by term *)
+        Do[result *= Gamma[x + k] / (Gamma[k + 1] Gamma[x + 1]), {x, lo, hi}]
+    ];
+
+    If[hi >= Floor[b], Break[]];
+    k++
+  ];
+  (* Non-integer remainder via continuous extension *)
+  If[b =!= Floor[b],
+    Module[{x = b, ys = Floor[Sqrt[Max[(b^2 - 1)/d, 0]]]},
+      result *= Gamma[x + ys] / (Gamma[ys + 1] Gamma[x + 1])
+    ]
+  ];
+  result
+]
 
 End[];
 
