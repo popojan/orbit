@@ -418,15 +418,15 @@ PellBallotProductSmooth[s_] /; NumericQ[N[s]] :=
 (* General k: Prod Gamma[x+k]/(Gamma[k+1]*Gamma[x+1]) -- no simple telescoping *)
 
 (* One-argument form: find e-crossing automatically *)
-PellBallotProduct[d_] := Module[{n = Floor[Sqrt[d]], b = Null, acc = 0, ys, bal, maxX},
+PellBallotProduct[d_] := Module[{n = Floor[Sqrt[d]], b, maxX, accs, ys, bal},
   maxX = Max[4 n, 10];
-  Do[
+  accs = FoldList[Plus, 0, Table[
     ys = Floor[Sqrt[Max[(x^2 - 1)/d, 0]]];
     bal = Gamma[x + ys] / (Gamma[ys + 1] Gamma[x + 1]);
-    If[NumericQ[bal] && bal > 0, acc += Log[N[bal, 30]]];
-    If[acc >= N[E, 30], b = x; Break[]],
-  {x, 1, maxX}];
-  If[b === Null, b = maxX];
+    If[NumericQ[bal] && bal > 0, Log[N[bal, 30]], 0],
+  {x, 1, maxX}]];
+  b = First@PositionSmallest[(accs - N[E, 30])^2] - 1;
+  If[b < 1, b = 1];
   PellBallotProduct[d, b]
 ]
 
