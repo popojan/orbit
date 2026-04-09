@@ -1,0 +1,323 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage[hidelinks]{hyperref}
+\usepackage{booktabs}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\ceil}[1]{\lceil #1 \rceil}
+\newcommand{\B}{\mathrm{B}}
+
+\title{Beatty Ballot Theorem:\\Lattice Paths Below Irrational Staircases}
+\author{Jan Popelka\thanks{Email: popojan@protonmail.com. Code: \url{https://github.com/popojan/orbit}}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+For any irrational $\alpha > 0$, the staircase function $S(x) = \floor{x/\alpha}$ defines a constraint on monotonic lattice paths from $(1,0)$ to $(x, S(x))$.
+We show that the number of such paths equals the ballot number $\B(p,q) = \binom{p+q-1}{q}/p$ precisely at the numerators $p$ of convergents and semi-convergents of the continued fraction expansion of $\alpha$, with $q$ the corresponding denominator.
+For convergents approaching $\alpha$ from above ($p/q > \alpha$), the path target is $(p, q)$ and the match is direct.
+For convergents from below ($p/q < \alpha$), the path target is $(p, q-1)$ yet the count still equals $\B(p,q)$ --- a ``shadow'' phenomenon explained by an explicit bijection.
+The classical ballot formula counts lattice paths below a \emph{linear} boundary.
+Here the boundary is the Beatty staircase $\floor{x/\alpha}$ --- a non-linear, number-theoretic constraint --- yet the same ballot numbers emerge, governed entirely by the continued fraction expansion of $\alpha$.
+\end{abstract}
+
+%----------------------------------------------------------------------
+\section{Introduction}
+%----------------------------------------------------------------------
+
+Let $\alpha > 0$ be irrational and define the \emph{Beatty staircase}
+\begin{equation}\label{eq:staircase}
+  S(x) = \floor{x / \alpha}, \qquad x = 1, 2, 3, \ldots
+\end{equation}
+A \emph{constrained lattice path} from $(1,0)$ to $(n, m)$ is a sequence of unit steps right $(+1,0)$ or up $(0,+1)$ such that at every intermediate point $(x, y)$ on the path, $y \leq S(x)$.
+
+Let $\mathrm{DP}(n) = \mathrm{DP}_\alpha(n)$ denote the number of such paths from $(1,0)$ to $(n, S(n))$ --- i.e., to the highest lattice point below the staircase at column $n$.
+
+The \emph{ballot number} is
+\begin{equation}\label{eq:ballot}
+  \B(n, k) = \frac{1}{n}\binom{n+k-1}{k}, \qquad n \geq 1,\ k \geq 0.
+\end{equation}
+This is an integer whenever $\gcd(n, k) = 1$ (generalized Fuss--Catalan number).
+
+We say $x = p$ is a \emph{ballot hit} if $\mathrm{DP}(p)$ equals a ballot number $\B(p, q)$ for some~$q$.
+
+%----------------------------------------------------------------------
+\section{Convergents and semi-convergents}
+%----------------------------------------------------------------------
+
+Recall that the continued fraction expansion $\alpha = [a_0; a_1, a_2, \ldots]$ generates convergents $p_k/q_k$ and semi-convergents
+\begin{equation}
+  \frac{p_{k-1} + j \cdot p_k}{q_{k-1} + j \cdot q_k}, \qquad j = 1, \ldots, a_{k+1} - 1
+\end{equation}
+between consecutive convergents $p_{k-1}/q_{k-1}$ and $p_{k+1}/q_{k+1}$.
+
+For all convergents and semi-convergents, $\gcd(p, q) = 1$ (from the determinant identity $|p_k q_{k-1} - p_{k-1} q_k| = 1$), ensuring $\B(p, q) \in \mathbb{Z}$.
+
+%----------------------------------------------------------------------
+\section{Main result}
+%----------------------------------------------------------------------
+
+\begin{theorem}[Beatty Ballot Theorem]\label{thm:main}
+Let $\alpha > 0$ be irrational with convergents and semi-convergents $\{p_j/q_j\}$. Then the ballot hits of $S(x) = \floor{x/\alpha}$ are exactly the numerators~$p_j$ with $p_j \geq \floor{\alpha}$, and at each hit:
+\begin{enumerate}
+  \item If $p/q > \alpha$ (overestimate), then $S(p) = q$ and $\mathrm{DP}(p) = \B(p, q)$. \hfill\emph{(direct)}
+  \item If $p/q < \alpha$ (underestimate), then $S(p) = q - 1$ and $\mathrm{DP}(p) = \B(p, q)$. \hfill\emph{(shadow)}
+\end{enumerate}
+\end{theorem}
+
+The proof has two parts: the direct case reduces to a classical ballot count under a rational staircase (Section~\ref{sec:rational}), and the shadow case follows via an explicit bijection (Section~\ref{sec:shadow}).
+
+%----------------------------------------------------------------------
+\section{Rational staircase reduction}\label{sec:rational}
+%----------------------------------------------------------------------
+
+The proof of the direct case rests on two ingredients.
+
+\subsection{Ballot count under rational staircases}
+
+\begin{proposition}[Rational ballot formula]\label{prop:rational}
+For coprime integers $p, q$ with $p > q \geq 1$, the number of monotonic lattice paths from $(1, 0)$ to $(p, q)$ staying weakly below $\floor{qx/p}$ equals
+$\B(p, q) = \binom{p+q-1}{q}/p$.
+\end{proposition}
+
+\begin{proof}
+Every path from $(1,0)$ to $(p,q)$ starts with a right-step (since an up-step from $(1,0)$ to $(1,1)$ requires $1 \leq \floor{q/p} = 0$, a contradiction).
+Removing this forced first step gives a bijection with paths from $(0,0)$ to $(p-1,q)$ staying weakly below $\floor{q(x+1)/p}$, which is the staircase of the line $qx = py$ shifted by one unit.
+Since $\gcd(p,q) = 1$, the latter count equals $\frac{1}{p+q}\binom{p+q}{q}$ by the Cycle Lemma \cite[Theorem~10.4.1]{Krattenthaler2015}.
+The identity $\frac{1}{p+q}\binom{p+q}{q} = \frac{1}{p}\binom{p+q-1}{q}$ is immediate.
+\end{proof}
+
+\begin{remark}
+When $\gcd(p, q) > 1$, the formula $\binom{p+q-1}{q}/p$ is not an integer, and the proposition does not apply. For convergents and semi-convergents, $\gcd(p, q) = 1$ always holds.
+\end{remark}
+
+\subsection{Staircase coincidence at convergents}
+
+\begin{lemma}[Floor agreement]\label{lem:floor}
+Let $p/q$ be a convergent or semi-convergent of $\alpha$ with $\alpha > 1$.
+Then $\floor{x/\alpha} = \floor{qx/p}$ for all $x = 1, \ldots, p-1$, and:
+\begin{itemize}
+  \item if $p/q > \alpha$, also at $x = p$ (so $S(p) = q$);
+  \item if $p/q < \alpha$, then $S(p) = q - 1 = \floor{qp/p} - 1$.
+\end{itemize}
+\end{lemma}
+
+\begin{proof}
+We first prove the lemma for convergents $p/q = p_k/q_k$, then extend to semi-convergents.
+
+The gap $\Delta(x) := |x/\alpha - qx/p| = x\,|p - q\alpha|/(\alpha p)$ is bounded using
+$|p_k - q_k\alpha| < 1/q_{k+1}$ \cite[Theorem~13]{Khinchin1964}:
+\begin{equation}\label{eq:gap}
+  \Delta(x) < \frac{x}{\alpha p\, q_{k+1}}.
+\end{equation}
+The floors $\floor{x/\alpha}$ and $\floor{qx/p}$ can disagree only if $\Delta(x) \geq d(x)$, where $d(x)$ is the distance from $qx/p$ to the nearest integer on the far side.
+
+For $x = 1, \ldots, p-1$: since $\gcd(p,q)=1$, the values $qx \bmod p$ are a permutation of $\{1, \ldots, p-1\}$, so the fractional parts $\{qx/p\}$ are exactly $\{1/p, 2/p, \ldots, (p-1)/p\}$.
+Hence $d(x) \geq 1/p$ for all such $x$.
+By~\eqref{eq:gap} at $x \leq p-1$:
+\[
+  \Delta(x) < \frac{p-1}{\alpha p\, q_{k+1}} < \frac{1}{\alpha q_{k+1}} < \frac{1}{p},
+\]
+where the last step uses $p_{k+1} = a_{k+1}p_k + p_{k-1} \geq p_k + 1 > p_k = p$, giving $\alpha q_{k+1} > p$.
+This shows $\Delta(x) < d(x)$, so floors agree for $x = 1, \ldots, p-1$.
+
+For $x = p$: $qp/p = q$ is an integer, so $d(p) = 1$.
+When $p/q > \alpha$: $\Delta(p) = (p - q\alpha)/\alpha < 1/(\alpha q_{k+1}) < 1 = d(p)$, so $\floor{p/\alpha} = q$.
+When $p/q < \alpha$: $p/\alpha < q$, but $p/\alpha > q-1$ (since $|p - q\alpha| < 1/q_{k+1} < 1$ gives $q - 1 < p/\alpha < q$), so $\floor{p/\alpha} = q - 1$.
+
+\emph{Semi-convergents.}
+The Beatty difference sequence $\bigl(\floor{(j{+}1)/\alpha} - \floor{j/\alpha}\bigr)_{j \geq 0}$ is the Sturmian word of slope~$1/\alpha$.
+By the theory of mechanical words \cite[Ch.~2, Prop.~2.1.18 and Thm.~2.1.13]{Lothaire2002}, this Sturmian word agrees with the Christoffel word of slope $q/p$ on the first $p$ characters if and only if $p/q$ is a convergent or semi-convergent of~$\alpha$.
+Agreement of the two words on $\{0, \ldots, p-1\}$ is equivalent to $\floor{x/\alpha} = \floor{qx/p}$ for $x = 1, \ldots, p$.
+Combined with the endpoint analysis above (cases $p/q > \alpha$ and $p/q < \alpha$), the lemma follows for semi-convergents as well.
+\end{proof}
+
+\begin{remark}[Sturmian interpretation]
+The phase widths $w_j = \floor{(j+1)\alpha} - \floor{j\alpha}$ form the Sturmian word of slope $1/\alpha$, taking values in $\{\floor{\alpha}, \floor{\alpha}+1\}$.
+By the Three-Distance Theorem \cite{Sos1957}, the Sturmian word completes an exact substitution period at convergent positions~$p_k$, explaining why floor agreement (Lemma~\ref{lem:floor}) holds precisely at convergents and semi-convergents.
+\end{remark}
+
+%----------------------------------------------------------------------
+\section{Shadow bijection}\label{sec:shadow}
+%----------------------------------------------------------------------
+
+\begin{lemma}[Shadow bijection]\label{lem:shadow}
+Let $p/q$ be a convergent of $\alpha$ with $p/q < \alpha$ (so $S(p) = q - 1$).
+Define the \emph{raised staircase} $\tilde{S}$ by $\tilde{S}(x) = S(x)$ for $x < p$ and $\tilde{S}(p) = q$.
+Then there is a bijection between:
+\begin{enumerate}
+  \item[(a)] paths from $(1,0)$ to $(p, q-1)$ under $S$, and
+  \item[(b)] paths from $(1,0)$ to $(p, q)$ under $\tilde{S}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Every path in (a) arrives at $(p, q-1)$ with $q-1 = S(p)$, the maximum height.
+Since $\tilde{S}(p) = q = S(p) + 1$, appending one up-step yields a valid path in (b).
+
+Conversely, every path in (b) must enter column $p$ at height $\leq S(p-1) \leq q - 1$ (since $S(p-1) = \floor{(p-1)/\alpha}$ and $p/q < \alpha$ implies $S(p-1) \leq q-1$). The only way to reach height $q$ at column $p$ is to take the final step as an up-step. Removing it gives a path in (a).
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+\emph{Direct case} ($p/q > \alpha$, so $S(p) = q$).
+By Lemma~\ref{lem:floor}, $S(x) = \floor{x/\alpha} = \floor{qx/p}$ for $x = 1, \ldots, p$.
+Paths under $S$ are identical to paths under $\floor{qx/p}$, so $\mathrm{DP}(p) = \B(p, q)$ by Proposition~\ref{prop:rational}.
+
+\emph{Shadow case} ($p/q < \alpha$, so $S(p) = q - 1$).
+By Lemma~\ref{lem:floor}, $\floor{x/\alpha} = \floor{qx/p}$ for $x = 1, \ldots, p-1$, so the raised staircase satisfies $\tilde{S}(x) = \floor{qx/p}$ for all $x = 1, \ldots, p$ (using $\tilde{S}(p) = q = \floor{qp/p}$).
+The path count for~(b) in Lemma~\ref{lem:shadow} is therefore $\B(p,q)$ by Proposition~\ref{prop:rational}, and the bijection gives $\mathrm{DP}(p) = \B(p, q)$.
+\end{proof}
+
+%----------------------------------------------------------------------
+\section{Converse: ballot hits only at convergents}\label{sec:converse}
+%----------------------------------------------------------------------
+
+The forward direction of Theorem~\ref{thm:main} shows that every convergent numerator is a ballot hit.
+We now prove the converse: non-convergent positions are \emph{never} ballot hits.
+
+\begin{lemma}[Staircase monotonicity]\label{lem:mono}
+Let $S_1, S_2\colon \{1, \ldots, n\} \to \mathbb{Z}_{\geq 0}$ be non-decreasing staircase functions with $S_1 \geq S_2$ pointwise, $S_1(n) = S_2(n)$, and $S_1(x_0) > S_2(x_0)$ for some $x_0 \in \{1, \ldots, n-1\}$.
+Then the number of monotonic lattice paths from $(1,0)$ to $(n, S_1(n))$ staying weakly below $S_1$ is strictly greater than the number staying weakly below~$S_2$.
+\end{lemma}
+
+\begin{proof}
+Every path valid under $S_2$ is valid under $S_1$ (since $S_1 \geq S_2$).
+It remains to exhibit a path valid under $S_1$ but not~$S_2$.
+Set $h = S_2(x_0)$.
+Since $x_0 < n$ and $S_2$ is non-decreasing with $S_2(n) = q$, we have $h \leq q - 1$.
+The path that goes right from $(1,0)$ to $(x_0, 0)$, then up to $(x_0, h+1)$, then right to $(n, h+1)$, then up to $(n, q)$ stays weakly below $S_1$ (since $h + 1 \leq S_1(x_0)$ and $S_1$ is non-decreasing) but violates $S_2$ at~$x_0$.
+\end{proof}
+
+\begin{lemma}[Sturmian disagreement]\label{lem:sturmian}
+Let $\alpha > 1$ be irrational and let $n, q$ be positive integers with $\gcd(n, q) = 1$.
+If $n/q$ is not a convergent or semi-convergent of $\alpha$, then $\floor{x/\alpha} \neq \floor{qx/n}$ for some $x \in \{1, \ldots, n-1\}$.
+\end{lemma}
+
+\begin{proof}
+The sequence $\bigl(\floor{(j+1)/\alpha} - \floor{j/\alpha}\bigr)_{j \geq 0}$ is the Sturmian word of slope $1/\alpha$.
+By the theory of Sturmian words \cite[Ch.~2]{Lothaire2002}, it agrees with the Christoffel word of slope $q/n$ on positions $0, \ldots, n-1$ if and only if $n/q$ is a convergent or semi-convergent of~$\alpha$.
+Disagreement of the two words at any position $j < n$ implies $\floor{(j{+}1)/\alpha} \neq \floor{q(j{+}1)/n}$.
+\end{proof}
+
+\begin{proof}[Proof of the converse]
+Let $n > \floor{\alpha}$ be an integer that is not a convergent or semi-convergent numerator of~$\alpha$.
+Set $q = S(n) = \floor{n/\alpha}$.
+We must show $\mathrm{DP}(n) \neq \B(n, q')$ for every $q' \geq 0$.
+
+\emph{Candidate $q' = q$ (direct).}
+Since $\alpha$ is irrational, $n/q > \alpha$, so $x/\alpha > qx/n$ for all $x > 0$, giving $S(x) \geq \floor{qx/n}$ pointwise.
+Both staircases agree at $x = n$: $S(n) = q = \floor{qn/n}$.
+By Lemma~\ref{lem:sturmian}, $S(x_0) > \floor{qx_0/n}$ for some $x_0 < n$ (since $n/q$ is not a convergent or semi-convergent).
+By Lemma~\ref{lem:mono}, $\mathrm{DP}(n) > \B(n, q)$.
+
+\emph{Candidate $q' = q + 1$ (shadow).}
+Via the shadow bijection (Lemma~\ref{lem:shadow}), $\mathrm{DP}(n)$ equals the path count from $(1,0)$ to $(n, q+1)$ under the raised staircase $\tilde{S}$, where $\tilde{S}(x) = S(x)$ for $x < n$ and $\tilde{S}(n) = q + 1$.
+Now $n/(q+1) < \alpha$, so $(q{+}1)x/n > x/\alpha$ for all $x > 0$, giving $\floor{(q{+}1)x/n} \geq \tilde{S}(x)$ pointwise.
+Both agree at $x = n$: $\floor{(q{+}1)n/n} = q + 1 = \tilde{S}(n)$.
+By Lemma~\ref{lem:sturmian}, $\floor{(q{+}1)x_0/n} > \tilde{S}(x_0)$ for some $x_0 < n$.
+By Lemma~\ref{lem:mono} (with roles exchanged), $\mathrm{DP}(n) < \B(n, q+1)$.
+
+\emph{Other $q'$.}
+Since $\B(n, \cdot)$ is strictly increasing and $\B(n, q) < \mathrm{DP}(n) < \B(n, q+1)$, no ballot number is hit.
+\end{proof}
+
+%----------------------------------------------------------------------
+\section{Examples}
+%----------------------------------------------------------------------
+
+\begin{example}[$\alpha = \sqrt{7}$]
+$\sqrt{7} = [2; 1, 1, 1, 4, 1, 1, 1, 4, \ldots]$ with convergents $3/1$, $5/2$, $8/3$, $37/14$, $45/17$, \ldots
+
+\medskip
+\begin{tabular}{cccccl}
+\toprule
+$p/q$ & norm $p^2 - 7q^2$ & $S(p)$ & $\mathrm{DP}(p)$ & $\B(p,q)$ & type \\
+\midrule
+$3/1$ & $+2$ & $1$ & $1$ & $1$ & direct \\
+$5/2$ & $-3$ & $1$ & $3$ & $3$ & shadow ($S = q-1$) \\
+$8/3$ & $+1$ & $3$ & $15$ & $15$ & direct \\
+$13/5$ & $-6$ & $4$ & $476$ & $476$ & shadow (semi-conv) \\
+$37/14$ & $-3$ & $13$ & $25347179900$ & $25347179900$ & shadow \\
+\bottomrule
+\end{tabular}
+\end{example}
+
+\begin{example}[$\alpha = \varphi = (1+\sqrt{5})/2$, golden ratio]
+All partial quotients equal $1$, so there are no semi-convergents.
+Every ballot hit is a convergent --- Fibonacci numerators $2, 3, 5, 8, 13, 21, 34, 55, \ldots$
+The direct and shadow hits alternate perfectly.
+\end{example}
+
+\begin{example}[$\alpha = \pi$]
+The staircase $\floor{x/\pi}$ detects convergents of $\pi$: $22/7$ (direct), plus semi-convergents $4, 7, 10, 13, 16, 19$ (direct, from partial quotient $a_1 = 7$) and $25, 47, 69, 91$ (shadow, from $a_2 = 15$).
+\end{example}
+
+%----------------------------------------------------------------------
+\section{Transposed lattice duality}
+%----------------------------------------------------------------------
+
+The \emph{transposed staircase} $S^T(y) = \floor{y \cdot \alpha}$ with paths in the $(q, p)$-plane produces the complementary pattern: overestimate convergents become shadow, underestimates become direct.
+
+\begin{corollary}
+The original and transposed staircases together capture all convergents of $\alpha$, with each convergent appearing as direct in one orientation and shadow in the other.
+\end{corollary}
+
+%----------------------------------------------------------------------
+\section{Connection to Pell equations}
+%----------------------------------------------------------------------
+
+When $\alpha = \sqrt{d}$ for a non-square positive integer $d$, the convergents $p/q$ satisfy $p^2 - dq^2 = N$ with $|N|$ bounded.
+The fundamental Pell solution ($N = 1$) is always a direct ballot hit.
+
+For irrational $d$ (e.g., $d = \pi$), convergents of $\sqrt{d}$ give ``approximate Pell'' solutions with $|p^2 - dq^2| < 2\sqrt{d}$.
+These remain ballot hits of the staircase $\floor{x/\sqrt{d}}$, extending the Pell--ballot connection to all positive reals.
+
+%----------------------------------------------------------------------
+\section{Remarks}
+%----------------------------------------------------------------------
+
+\begin{remark}[Perturbation sensitivity]
+The ballot property is fragile: random perturbation of even a single value $S(x)$ destroys most ballot hits.
+The exact staircase $\floor{x/\alpha}$ is essential.
+\end{remark}
+
+\begin{remark}[Boundary irrelevance]
+The original observation (Pell--ballot conjecture) used the Pell hyperbola $u^2 - dv^2 \geq 1$ as the lattice path boundary.
+However, any curve with the same asymptote $v \sim x/\sqrt{d}$ produces identical ballot hits, since the path count depends only on the staircase function $S(x) = \floor{x/\alpha}$, not on the boundary shape.
+\end{remark}
+
+\begin{remark}[Classical vs.\ Beatty boundary]
+The classical ballot problem counts monotonic lattice paths below the \emph{linear} boundary $y = kx/n$, yielding $\B(n,k) = \binom{n+k-1}{k}/n$ via the Cycle Lemma or reflection principle \cite{DvoretzkyMotzkin1947, Andre1887}.
+Krattenthaler's survey~\cite{Krattenthaler2015} notes that clean formulas for non-linear boundaries are rare.
+Our result shows that the Beatty staircase $\floor{x/\alpha}$ --- a non-linear, number-theoretically structured boundary --- produces the \emph{same} ballot numbers, but only at positions determined by the continued fraction of $\alpha$.
+\end{remark}
+
+%----------------------------------------------------------------------
+\section*{Acknowledgments}
+%----------------------------------------------------------------------
+
+Computational experiments were performed in Wolfram Language using the Orbit paclet (\url{https://github.com/popojan/orbit}).
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}
