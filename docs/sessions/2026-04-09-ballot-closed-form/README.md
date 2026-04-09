@@ -422,17 +422,229 @@ The correction structure is the same (same Sturmian pattern), but the truncation
 shifts to $d_0 + 1$. This generalization is needed for computing $v(p)$ at positions
 $p = p_0 + k \cdot p_1$ for $k \geq 3$.
 
-### Possible next steps
+### Multi-block iteration (resolved)
 
-1. **Multi-block generalization:** Derive the correction for arbitrary initial dimension $d_0$
-   (needed for iterating the block transfer).
+The formula for $M[j,s]$ is **independent of input dimension**: the same
+$\Delta(j,s)$ applies regardless of the state vector size. Verified by
+iterating the block transfer 3 times on $\pi$ ($v(25) \to v(47) \to v(69) \to v(91)$),
+matching DP at every step. The key: the Toeplitz entry $\binom{p_1-1+j-s}{j-s}$
+and the correction $\Delta(j,s)$ depend only on $j$, $s$, and the CF parameters
+$(w, a_1)$, not on the number of input entries.
 
-2. **Direct closed form for $v_j(p)$:** Combine the block transfer formula with the
-   convolution structure to get a direct formula for $v_j$ at any semi-convergent position,
-   without matrix multiplication.
+Script: `scripts/full_formula_test.wl`
 
-3. **Level-2 corrections:** Extend to the next CF level ($a_2$), where the block of blocks
-   introduces a second layer of corrections with the same self-similar structure.
+---
+
+## Result 8: Self-Similar Level-$k$ Correction Formula
+
+**Status:** $\checkmark$ Verified for $\sqrt{5}$ and $\pi$ at levels 1 and 2
+
+### Discovery
+
+The block transfer correction has the **same formula at every CF level**.
+At level $k$, the block transfer maps a state vector through $q_k$ rises
+(the $k$-th convergent denominator). The Toeplitz part is
+$T_k[j,s] = \binom{p_k - 1 + j - s}{j - s}$, and the correction is:
+
+$$\boxed{\Delta_k[A_k + 2 + d,\, s] = \sum_{m=1}^{d+1}
+v_{d-m+1}(p_k - wm)\;\binom{A_k + m(w{+}1) - s}{mw - 1}}$$
+
+where $v_j(p) = \frac{p - wj}{p}\binom{p+j-1}{j}$ is the universal uniform
+formula from Result 1.
+
+### What changes between levels
+
+| Parameter | Level 1 | Level 2 | General |
+|-----------|---------|---------|---------|
+| Convergent $p_k$ | $p_1$ | $p_2$ | $k$-th convergent numerator |
+| Offset $A_k$ | $q_1$ | $q_1 + q_2 - 1$ | $\sum_{i=1}^k q_i - k + 1$ |
+| First correction row | $q_1 + 2$ | $q_1 + q_2 + 1$ | $A_k + 2$ |
+| Valid range | $d = 0, \ldots, q_1 - 2$ | $d = 0, \ldots, q_1 - 1$ | $d = 0, \ldots, q_1 - 1$ |
+| Basis functions | same | same | $\binom{A_k + m(w{+}1) - s}{mw - 1}$ |
+
+### What stays the same
+
+- The uniform formula $v_j(p)$ (the coefficients)
+- The basis structure $\binom{A_k + m(w{+}1) - s}{mw - 1}$
+- The floor $w = \lfloor\alpha\rfloor$ (determines everything)
+- The shifted positions $p_k - wm$ (same linear pattern at every level)
+
+### Ballot factorization
+
+The coefficients factor through **ballot numbers**:
+
+$$v_{d-m+1}(p_k - wm) = (p_k - w(d{+}1)) \cdot B(p_k - wm,\, d - m + 1)$$
+
+where $B(n, k) = \binom{n+k-1}{k}/n$. The linear factor $(p_k - w(d{+}1))$
+is **common to all $m$**, so:
+
+$$\Delta_k[A_k{+}2{+}d,\, s] = (p_k - w(d{+}1)) \cdot
+\sum_{m=1}^{d+1} B(p_k{-}wm,\, d{-}m{+}1)\;\binom{A_k + m(w{+}1) - s}{mw - 1}$$
+
+Each term is a product of a **ballot number** (encoding the irrational via $p_k$)
+and a **binomial coefficient** (encoding the lattice combinatorics via $A_k$, $w$).
+
+### Numerical verification
+
+**$\sqrt{5} = [2;\, 4, 4, 4, \ldots]$, $w = 2$:**
+
+Level 1 ($p_1 = 9$, $A_1 = 4$): all 3 correction rows match. ✓
+
+Level 2 ($p_2 = 38$, $A_2 = 20$): first $q_1 = 4$ of 17 correction rows match. ✓
+
+| $d$ | Coefficients $c_{d,m}$ | Matches formula? |
+|-----|------------------------|:---:|
+| 0 | $\{1\}$ | ✓ |
+| 1 | $\{34, 1\}$ | ✓ |
+| 2 | $\{592, 32, 1\}$ | ✓ |
+| 3 | $\{7030, 525, 30, 1\}$ | ✓ |
+| 4 | — | ✗ (sub-block corrections activate) |
+
+**$\pi = [3;\, 7, 15, 1, \ldots]$, $w = 3$:**
+
+Level 1 ($p_1 = 22$, $A_1 = 7$): all 6 correction rows match. ✓
+
+Level 2 ($p_2 = 333$, $A_2 = 112$): first $q_1 = 7$ of $\sim 105$
+correction rows match. ✓
+
+### Beyond $d = q_1 - 1$: sub-block interactions
+
+For $d \geq q_1$, the simple formula breaks. The residual comes from
+**level-1 corrections within sub-blocks**, compounded through Toeplitz
+propagation. Specifically, each level-2 block decomposes as
+$M_2 = M_1' \cdot M_1^{a_2-1}$ ($a_2 - 1$ standard + 1 anomalous level-1 blocks),
+and the level-1 corrections $\Delta_1$ within each $M_1$ create higher-order
+corrections when composed.
+
+The residual does **not** decompose into the same binomial basis, indicating
+that the full correction requires additional basis functions from the
+sub-block interaction structure.
+
+### Open: convolution identity
+
+The inner sum $\Phi_k(d, s) = \sum_m B(p_k{-}wm,\, d{-}m{+}1) \cdot \binom{A_k + m(w{+}1) - s}{mw - 1}$
+is a convolution of ballot numbers with binomial coefficients. An identity
+collapsing this sum would yield a direct closed form for the correction
+and potentially extend to all $d$ (not just $d < q_1$).
+
+### Observation: parallel boundaries
+
+Shifting the staircase boundary $\lfloor x/\alpha \rfloor$ by $k$ lattice
+points corresponds to counting paths at height $j + k$ vs height $j$.
+The correction structure encodes exactly this shift: the coefficient
+$v_j(p_k - wm)$ counts paths under a **parallel boundary** displaced by
+$wm$ columns. The self-similar formula thus decomposes the staircase
+correction into a sum of parallel-boundary contributions.
+
+Scripts: `scripts/level2_correction_v2.wl`, `scripts/level2_formula_verify.wl`
+
+---
+
+## Result 9: Structural Properties of the Block Transfer
+
+**Status:** $\checkmark$ Verified for $\sqrt{5}$ and $\pi$
+
+### Unimodularity
+
+The top $(q_1{+}1) \times (q_1{+}1)$ square submatrix of $M_k$ (the Toeplitz
+region, where $\Delta = 0$) has $\det = 1$. This is the lattice-path
+manifestation of the CF unimodularity condition $p_k q_{k-1} - p_{k-1} q_k = \pm 1$.
+
+### Last-two-equal identity
+
+At every semi-convergent position $p/q$:
+
+$$v_{q-1}(p) = v_q(p) = B(p, q)$$
+
+The last two entries of the state vector are always equal. This is structural:
+the final rise in the staircase copies $v_{q-1}$ into $v_q$.
+
+### Last-row ballot constraint
+
+At the $k$-th semi-convergent $p = p_0 + k p_1$, $q = q_0 + k q_1$:
+
+$$\delta_q(p) = v_q(p) - v_q^{\mathrm{lin}}(p) = -(k-1) \cdot B(p, q)$$
+
+since $v_q^{\mathrm{lin}}(p) = k \cdot B(p, q)$ and $v_q(p) = B(p, q)$.
+
+### Polynomial structure of corrections (top-down)
+
+For fixed $j = q_1 + 1 + d$, the correction $\delta_j(p)$ across semi-convergent
+positions $p = p_0 + k p_1$ ($k \geq 2$) is a polynomial in $p$ of degree $d$.
+
+| $d$ | Leading coefficient | Sub-leading ratio $c_{d-1}/c_d$ |
+|-----|--------------------|---------------------------------|
+| 0 | $-B'$ | — |
+| 1 | $-B'$ | $-101/13$ |
+| 2 | $-B'/2$ | $-189/13$ |
+| 3 | $-B'/6$ | $-264/13$ |
+| $\geq q_1$ | **changes** (sub-block corrections) | different denominator |
+
+where $B' = B(p_0{+}p_1,\, q_0{+}q_1)$ and $13 = q_0 + 3q_1$ for $\sqrt{5}$.
+
+### Convolution identity (negative result)
+
+For $w = 1$ (Catalan case), the correction sum collapses to a single binomial
+via Vandermonde--Chu: the bottom indices sum to a constant ($m{-}1 + d{-}m{+}1 = d$).
+
+For $w \geq 2$, this collapse is **impossible**: the bottom indices sum to
+$d + m(w{-}1)$, which depends on $m$. The multi-term sum IS the closed form.
+
+### Persistent denominator $q_0 + (a_2{-}1)q_1$
+
+For $\sqrt{5}$: the denominator $13 = q_0 + 3q_1$ (the $q$-value at the
+penultimate semi-convergent $p_0 + (a_2{-}1)p_1 = 29$) appears in:
+
+- Sub-leading polynomial ratios: $c_{d-1}/c_d = -101/13, -189/13, -264/13$
+- Combined ballot coefficient: $(M_1[2q_1, q_1{-}1] + M_1[2q_1, q_1]) / B' = B(p_1, q_1) / 13$
+
+This is specific to $\sqrt{5}$ and the $p_1 \to p_2$ transition; for $\pi$
+the analogue would be $q_0 + (a_2{-}1)q_1 = 1 + 14 \cdot 7 = 99$.
+**Not yet verified** as a general pattern.
+
+### Ballot recurrence
+
+The block transfer last row gives an exact one-step ballot recurrence:
+
+$$B(p{+}p_1,\, q{+}q_1) = \sum_{s=0}^{q_1} M_1[2q_1, s] \cdot v_s(p)$$
+
+with the bottom-right entry $M_1[2q_1, q_1] = B(p_0{+}p_1,\, q_0{+}q_1)$.
+Combining the last two entries (since $v_{q-1} = v_q = B(p,q)$):
+
+$$B(p{+}p_1,\, q{+}q_1) = \sum_{s=0}^{q_1-2} M_1[2q_1, s] \cdot v_s(p)
+\;+\; (M_1[2q_1, q_1{-}1] + B') \cdot B(p, q)$$
+
+Verified for the first step ($k = 1 \to 2$) on $\sqrt{5}$ and $\pi$.
+For subsequent steps ($k \geq 2$), the state vector grows beyond $q_1{+}1$
+entries, requiring the full (dimension-independent) transfer formula.
+
+At level 2: $M_2[\mathrm{last},:] \cdot v(47) = B(85, 38)$ confirmed,
+but $M_2[\mathrm{last, last}] = B(p_2, q_2) = B(38, 17)$
+(the convergent ballot number, not the first semi-convergent's).
+
+Scripts: `scripts/unimodular.wl`, `scripts/topdown_polynomials.wl`,
+`scripts/convolution_identity.wl`, `scripts/ballot_recurrence.wl`,
+`scripts/minor_structure.wl`
+
+---
+
+## Open Questions
+
+1. **Full correction for $d \geq q_1$:** Sub-block interaction terms. The residual
+   doesn't decompose into the binomial basis $\binom{A_k + m(w{+}1) - s}{mw - 1}$,
+   suggesting additional basis functions from level-1 corrections propagated through
+   Toeplitz kernels.
+
+2. **Matrix-level recursion:** Express $\Delta_2$ directly through $M_1$ (the level-1
+   transfer matrix), not just its scalar entries. This would capture the sub-block
+   interactions algebraically.
+
+3. **Unimodularity cascade:** The CF determinant $\pm 1$ manifests as $\det(M_{\mathrm{top}}) = 1$.
+   Does this propagate through levels? What is $\det(M_{2,\mathrm{top}})$?
+
+4. **Combinatorial deficit as invariant:** The function $\delta_j(p) = v_j(p) - v_j^{\mathrm{lin}}(p)$
+   is a new invariant of the irrational $\alpha$, encoding CF structure in lattice path
+   corrections. Does it connect to irrationality measures?
 
 ### References
 
@@ -484,3 +696,8 @@ Local: `papers/krattenthaler-lattice-path-survey-2015.pdf`
 | `scripts/recursive_decomposition.wl` | Attempted recursive decomposition |
 | `scripts/offbyone_fix.wl` | Off-by-one analysis (residuals = polynomial, same leading coeffs) |
 | `scripts/transfer_matrix_fixed.wl` | **KEY:** Block transfer matrix M, Toeplitz + binomial structure |
+| `scripts/level2_correction.wl` | Level-2 correction (Sturmian word — wrong stair ordering) |
+| `scripts/level2_correction_v2.wl` | **KEY:** Level-2 correction with actual staircase (correct) |
+| `scripts/level2_formula_verify.wl` | **KEY:** Self-similar formula verification, √5 + π, levels 1–2 |
+| `scripts/level2_residual.wl` | Residual analysis at shifted positions |
+| `scripts/level2_deep_residual.wl` | Sub-block decomposition of level-2 correction |
