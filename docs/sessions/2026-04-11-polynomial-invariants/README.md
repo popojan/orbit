@@ -277,6 +277,23 @@ This generalizes to **every** rational p/q: approaching from below adds CF parti
 
 **Status:** 🔬 NUMERICALLY VERIFIED (110 slopes + 19 asymmetry points at α=2). The Egyptian fraction mechanism is qualitative but fully consistent with all data. Rigorous formalization (connecting tuple count to spectral gap of transfer matrix) remains open.
 
+### ⏸️ OPEN QUESTION: Does C(α) encode all of α?
+
+Two competing viewpoints, neither proven:
+
+**Viewpoint A (C is just a scalar):** C(α) assigns one real number to each α. The convergent-endpoint framework BeattyBallotCount[α, {p_k, q_k}] captures the *full* CF expansion of α — a sequence of transfer matrices, not just one number. The diagonal (n,n) is a projection that loses information. Different α could share the same C.
+
+**Viewpoint B (C is a faithful encoding):** C(α) is monotonically increasing (numerically verified). A monotone function is injective, so C(α₁) ≠ C(α₂) whenever α₁ ≠ α₂. The fractal kink hierarchy — with kink size ~1/q at every rational p/q — *is* the Stern-Brocot tree, read off from the graph of C. For irrational α, the local behavior of C near α (approached through its rational approximants) encodes the full CF expansion. The limit n → ∞ does not blur the structure — it *integrates* over infinitely many periods of the staircase, converging to a well-defined constant that reflects the entire Sturmian word. In this view, C is analogous to Minkowski's question-mark function ?(x): monotone, continuous, with fractal structure controlled by CF denominators.
+
+**What would resolve this:**
+- **For B:** Prove strict monotonicity of C(α). Then injectivity follows. The kink hierarchy would then be a complete encoding of α.
+- **Against B:** Find α₁ ≠ α₂ with C(α₁) = C(α₂). This seems unlikely given the data but is not excluded.
+- **Deeper:** Even if C is injective, the convergent framework might reveal structure (e.g., spectral gaps, Lyapunov exponents of transfer matrices) that C alone does not make accessible. Injectivity ≠ practical decodability.
+
+**Note:** For α < 1, the staircase Floor[αx] eventually falls below the diagonal, so no paths to (n,n) exist and C(α) = 0. The diagonal approach covers only α > 1; the full range requires the substitution α ↔ 1/α or the convergent framework.
+
+**Status:** ⏸️ OPEN — both viewpoints are consistent with the data. Neither has a proof.
+
 ## Open Threads
 
 - **Formalize the CF→Egypt→bottleneck chain:** Prove that the number of Egyptian tuples for 1/α controls the modulus of continuity of C(α). The spectral gap of the period transfer matrix should be expressible in terms of tuple parameters.
