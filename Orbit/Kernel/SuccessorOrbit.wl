@@ -7,7 +7,7 @@
    exponential growth (seed>1), and everything in between.
 
    Matrix form: N = {{(λ²+1)a−b, −λa}, {λa, 0}} for seed o = a/b, scale λ
-   Closed form: f[k] = o·U_k(c) + (1−o)/2·U_{k−1}(c), c = ((λ²+1)o−1)/(2λo)
+   Closed form: f[k] = o·(λ·U_{k−1}(c) − U_{k−2}(c)), c = ((λ²+1)o−1)/(2λo)
    Cassini invariant: f[k]² − f[k−1]·f[k+1] = o (constant, independent of λ)
 
    Reference: docs/sessions/2026-04-04-algebraic-sine-successor/
@@ -95,7 +95,7 @@ SuccessorMatrix[o_, \[Lambda]_: 2] := Module[{a, b},
 (* Chebyshev closed form — works for any λ, o *)
 orbitChebyshev[o_, k_, \[Lambda]_] := Module[{c},
   c = ((\[Lambda]^2 + 1) o - 1) / (2 \[Lambda] o);
-  o ChebyshevU[k, c] + (1 - o)/2 ChebyshevU[k - 1, c]
+  o (\[Lambda] ChebyshevU[k - 1, c] - ChebyshevU[k - 2, c])
 ]
 
 (* Single k, integer λ: fast matrix path *)
@@ -168,7 +168,7 @@ SuccessorOrbitMod[o_?rationalQ, k_Integer, m_Integer, \[Lambda]_Integer: 2] := M
 ]
 
 (* Rational o: thread over list *)
-SuccessorOrbitMod[o_?rationalQ, ks_List, m_Integer, \[Lambda]_Integer: 2] := Module[
+SuccessorOrbitMod[o_?rationalQ, ks_List, m, \[Lambda]_Integer: 2] := Module[
   {a, b, NN, w, Nw, NNm, v, results, \[Alpha], \[Delta]},
   {a, b} = ab[o];
   NN = nMatrix[a, b, \[Lambda]];
@@ -227,17 +227,23 @@ SuccessorDiscriminant[o_, \[Lambda]_Integer: 2] := Module[{a, b},
 ]
 
 (* Period constructor: o = 1/|λ - e^{iπ/q}|² for period 2q *)
+(* Integer period: exact algebraic via RootReduce *)
 SuccessorFromPeriod[period_Integer, \[Lambda]_Integer: 2] := Module[{q},
   q = period / 2;
   1 / (\[Lambda]^2 - 2 \[Lambda] Cos[Pi/q] + 1) // RootReduce
-] /; EvenQ[period] && period >= 4
+] /; EvenQ[period] && period >= 2
 
-(* Odd period: not achievable (period is always 2q) *)
+(* Odd integer period: not achievable (period is always 2q) *)
 SuccessorFromPeriod[period_Integer, ___] := (
   Message[SuccessorFromPeriod::oddper, period]; $Failed
 ) /; OddQ[period]
 
 SuccessorFromPeriod::oddper = "Period `` must be even (period = 2q).";
+
+(* Non-integer period (real, symbolic): generalized formula *)
+(* Rotation angle = Pi/q = 2Pi/period radians per step *)
+SuccessorFromPeriod[period_, \[Lambda]_: 2] :=
+  1 / (\[Lambda]^2 - 2 \[Lambda] Cos[2 Pi/period] + 1) /; !IntegerQ[period]
 
 (* SuccessorOrbit also accepts algebraic seeds *)
 ab[o_] := Module[{r = Rationalize[o, 0]},
@@ -246,16 +252,16 @@ ab[o_] := Module[{r = Rationalize[o, 0]},
     (* Algebraic: return as-is, let matrix be symbolic *)
     {o, 1}
   ]
-] /; !IntegerQ[o] && !Head[o] === Rational
+] /; !IntegerQ[o] && !(Head[o] === Rational)
 
 (* For algebraic o: orbit via closed form (Chebyshev) *)
 SuccessorOrbit[o_, k_Integer, \[Lambda]_Integer: 2] := Module[{c},
   c = ((\[Lambda]^2 + 1) o - 1) / (2 \[Lambda] o);
-  o ChebyshevU[k, c] + (1 - o)/2 ChebyshevU[k - 1, c] // Simplify
-] /; !IntegerQ[o] && !Head[o] === Rational
+  o (\[Lambda] ChebyshevU[k - 1, c] - ChebyshevU[k - 2, c]) // Simplify
+] /; !IntegerQ[o] && !(Head[o] === Rational)
 
 SuccessorOrbit[o_, ks_List, \[Lambda]_Integer: 2] :=
-  SuccessorOrbit[o, #, \[Lambda]] & /@ ks /; !IntegerQ[o] && !Head[o] === Rational
+  SuccessorOrbit[o, #, \[Lambda]] & /@ ks /; !IntegerQ[o] && !(Head[o] === Rational)
 
 (* === CONTINUOUS INTERPOLATION ("the price of continuity") === *)
 (* All symbolic — evaluates to exact expressions. Use N[] for numerics. *)

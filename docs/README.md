@@ -1,6 +1,6 @@
 # Documentation Index
 
-**Generated:** 2025-12-28 12:30:38
+**Generated:** 2026-04-11 07:44:50
 
 ## Theorems (Master References)
 
@@ -26,6 +26,8 @@
 - [Friedrich Wilhelm Bessel (1784–1846)](learning/bessel-biography.md)
 - [Character Sums over Finite Fields](learning/character-sums-introduction.md)
 - [Coprimality Probability and ζ(2)](learning/coprimality-zeta.md)
+- [The Dirichlet Class Number Formula for Real Quadratic Fields](learning/dirichlet-class-number-real-quadratic.md)
+- [Engel Expansion: A Unique Egyptian Fraction Representation](learning/engel-expansion.md)
 - [Eratosthenes of Cyrene (c. 276 – c. 194 BC)](learning/eratosthenes-life.md)
 - [Leonhard Euler (1707–1783)](learning/euler-biography.md)
 - [Finite Abelian Groups Quick Course](learning/finite-abelian-groups-course.md)
@@ -41,24 +43,27 @@
 - [Lychrel Numbers and the 196 Problem](learning/lychrel-196.md)
 - [Manjul Bhargava](learning/manjul-bhargava.md)
 - [Minkowski Geometries: L^p Norms and the Many Values of Pi](learning/minkowski-geometries.md)
+- [RH in Orbit Language: Working Notes](learning/rh-orbit-intuition.md)
+- [Semiconvergents vs Full Convergents: Sturmian Transposition View](learning/semiconvergent-vs-convergent-sturmian.md)
 - [Claude Shannon and Information Theory](learning/shannon-information-theory.md)
 - [六十心 (Liù Shí Xīn) — The Sixty Minds](learning/sixty-minds-buddhism.md)
 - [Split-kvaterniony (Coquaterniony)](learning/split-quaternions.md)
+- [Three-Distance Theorem and CF Remainders](learning/three-distance-theorem.md)
 - [Hana Vymazalová: Staroegyptská matematika — Čtenářské poznámky](learning/vymazalova-hieratic-notes.md)
 - [Édouard Zeckendorf (1901-1983): The Amateur Who Named a Theorem](learning/zeckendorf-biography.md)
 
 ## Recent Sessions (Last 10)
 
-- [Circ Function Exploration: Hartley Connection](sessions/2025-12-07-circ-hartley-exploration/README.md) *(2025-12-28)*
-- [ArcTan Interval Denominators and Twin Prime Structure](sessions/2025-12-22-arctan-twin-primes/README.md) *()*
-- [Great Pyramid of Giza and Continued Fractions](sessions/2025-12-20-giza-pell-revival/README.md) *(2025-12-21)*
-- [Interval Width Determinants](sessions/2025-12-20-interval-determinants/README.md) *(2025-12-20)*
-- [Pi Exploration: Interval Bounds and Iteration Methods](sessions/2025-12-20-pi-exploration/README.md) *(2025-12-20)*
-- [Rationals as Pythagorean Differences](sessions/2025-12-20-pi-exploration/rationals-pythagorean-triples.md) *(2025-12-20)*
-- [Rational Interval Bounds with Unit Fraction Widths](sessions/2025-12-20-pi-exploration/rational-interval-bounds.md) *(2025-12-20)*
-- [E-Prime Connections: The s_n Sequence and Prime Distribution](sessions/2025-12-19-e-prime-connections/README.md) *(2025-12-20)*
-- [Symbolic Formulas for E-Spiral Intersections](sessions/2025-12-18-bessel-ode-exploration/symbolic-summary.md) *(2025-12-19)*
-- [Session: Bessel ODE and Exponential Connection](sessions/2025-12-18-bessel-ode-exploration/README.md) *(2025-12-19)*
+- [Polynomial Structure of Beatty Ballot Rows](sessions/2026-04-11-polynomial-invariants/README.md) *()*
+- [Three-Gap Theorem: Literature Survey for Discrete/Matrix Extensions](sessions/2026-04-10-rotation-to-pell-chain/three-gap-literature.md) *()*
+- [Three-Distance Theorem via Successor Orbit](sessions/2026-04-10-rotation-to-pell-chain/README.md) *()*
+- [Beatty Ballot Closed Forms — Summary & Next Steps](sessions/2026-04-09-ballot-closed-form/SUMMARY.md) *(2026-04-09)*
+- [Closed-Form State Vectors for Beatty Ballot Paths](sessions/2026-04-09-ballot-closed-form/README.md) *(2026-04-09)*
+- [Perturbation Expansion for Lattice Paths: Structure and Interpretation](sessions/2026-04-09-ballot-closed-form/INTERPRETATION.md) *(2026-04-09)*
+- [Universal Staircase Ballot Theorem](sessions/2026-04-07-general-boundary-ballot/README.md) *(2026-04-09)*
+- [Generalized Pell Equation and Egyptian Sqrt for Irrational d](sessions/2026-04-07-general-boundary-ballot/generalized-pell-egyptian.md) *(2026-04-09)*
+- [Transfer Matrix Decomposition of DP(x)](sessions/2026-04-07-chebyshev-wigner-semicircle/transfer-matrix-dp.md) *(2026-04-09)*
+- [Successor Orbit as Ellipse Projection](sessions/2026-04-04-algebraic-sine-successor/successor-ellipse-interpretation.md) *()*
 
 ## Navigation
 

@@ -111,4 +111,83 @@ VerificationTest[
   TestID -> "SqrtInterval-width-decreases"
 ]
 
+(* ============================================ *)
+(* SEED FLOOR & WIDTH CONVERGENCE              *)
+(* ============================================ *)
+
+(* For integer d, SqrtConvergent finds Pell solution (N=1) with floor = 0 *)
+VerificationTest[
+  (floor /. SqrtConvergent[13, 10^-10]) < 10^-20,
+  True,
+  TestID -> "SqrtConvergent-Pell-floor-vanishes"
+]
+
+(* For irrational d, floor is positive *)
+VerificationTest[
+  (floor /. SqrtConvergent[Pi]) > 0,
+  True,
+  TestID -> "SqrtConvergent-irrational-positive-floor"
+]
+
+(* targetFloor controls precision: tighter target -> smaller floor *)
+VerificationTest[
+  Module[{f1, f2},
+    f1 = floor /. SqrtConvergent[Pi, 10^-3];
+    f2 = floor /. SqrtConvergent[Pi, 10^-10];
+    f1 < 10^-3 && f2 < 10^-10
+  ],
+  True,
+  TestID -> "SqrtConvergent-targetFloor-controls-precision"
+]
+
+(* EgyptSqrt width decreases monotonically with k for irrational seed *)
+VerificationTest[
+  Module[{sol = SqrtConvergent[Pi], pv, qv, widths},
+    pv = p /. sol; qv = q /. sol;
+    widths = Table[
+      N[Max[EgyptSqrt[Pi, {pv, qv}, k]] - Min[EgyptSqrt[Pi, {pv, qv}, k]]],
+      {k, 1, 8}];
+    AllTrue[Differences[widths], Negative]
+  ],
+  True,
+  TestID -> "EgyptSqrt-irrational-width-monotone"
+]
+
+(* Width converges to floor: at large k, relative error < 0.1% *)
+VerificationTest[
+  Module[{sol = SqrtConvergent[Pi], pv, qv, fl, widthLarge},
+    pv = p /. sol; qv = q /. sol;
+    fl = floor /. sol;
+    widthLarge = N[Max[EgyptSqrt[Pi, {pv, qv}, 20]] - Min[EgyptSqrt[Pi, {pv, qv}, 20]]];
+    Abs[widthLarge - fl] / fl < 10^-3
+  ],
+  True,
+  TestID -> "EgyptSqrt-width-converges-to-floor"
+]
+
+(* For Pell seeds (N=1), each k step multiplies precision by ~x *)
+(* Width: 2/y -> 1/(xy) -> ... so w(0)/w(1) ≈ 2x                *)
+VerificationTest[
+  Module[{sol = PellSolution[13], xv, yv, w0, w1},
+    xv = x /. sol; yv = y /. sol;
+    w0 = Max[EgyptSqrt[13, {xv, yv}, 0]] - Min[EgyptSqrt[13, {xv, yv}, 0]];
+    w1 = Max[EgyptSqrt[13, {xv, yv}, 1]] - Min[EgyptSqrt[13, {xv, yv}, 1]];
+    (* w0/w1 = 2x for Pell seeds *)
+    w0 / w1 == 2 xv
+  ],
+  True,
+  TestID -> "EgyptSqrt-Pell-iteration-gain-2x"
+]
+
+(* For integer d with Pell seed (N=1), width -> 0 without floor *)
+VerificationTest[
+  Module[{sol = PellSolution[13], xv, yv, w},
+    xv = x /. sol; yv = y /. sol;
+    w = Max[EgyptSqrt[13, {xv, yv}, 15]] - Min[EgyptSqrt[13, {xv, yv}, 15]];
+    w < 10^-30
+  ],
+  True,
+  TestID -> "EgyptSqrt-Pell-width-vanishes"
+]
+
 EndTestSection[]

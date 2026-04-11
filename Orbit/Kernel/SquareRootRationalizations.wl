@@ -568,6 +568,47 @@ This is a helper for ChebyshevBabylonianStep[]. Usually called with m=1.";
 sym::usage = "sym[d, n, m] is a historical alias for ChebyshevBabylonianStep[d, n, m].";
 sqrttrf::usage = "sqrttrf[d, n, m] is a historical alias for ChebyshevRefinement[d, n, m].";
 
+GeneralizedEgyptSqrt::usage = "GeneralizedEgyptSqrt[d, {p, q}, k] approximates Sqrt[d] for ANY positive real d.
+
+Wraps EgyptSqrt[d, {p, q}, k] where p/q is an approximation to Sqrt[d].
+
+Returns: Interval[{r, d/r}] where r is an exact rational number.
+  Dedekind cut: r * (d/r) = d exactly.
+  One-sided: r < Sqrt[d] when p^2 - d*q^2 < 1.
+
+The Chebyshev T/U shortcut is preserved: no iteration, direct polynomial evaluation.
+  r = (ChebyshevT[k+1, p] - 1) / (q * ChebyshevU[k, p])
+
+Forms:
+  GeneralizedEgyptSqrt[d, k, {p, q}] — k Chebyshev terms, user-provided seed
+  GeneralizedEgyptSqrt[d, k]         — k terms, auto-select best CF convergent
+  GeneralizedEgyptSqrt[d]            — auto-select convergent and k
+
+Precision: determined by seed quality |p^2 - d*q^2|.
+  Floor on width: |1-N|/(q^2 * Sqrt[d]) where N = p^2 - d*q^2.
+  For integer d with exact Pell (N=1): no floor, k gives unlimited precision.
+  For irrational d: use larger CF convergent for tighter bounds.
+
+Examples:
+  GeneralizedEgyptSqrt[Pi, 3, {296, 167}]  (* Sqrt[Pi], Dedekind = Pi *)
+  GeneralizedEgyptSqrt[Pi, 3]              (* auto-seed from CF *)
+  GeneralizedEgyptSqrt[E, 2, {61, 37}]     (* Sqrt[E] *)
+  GeneralizedEgyptSqrt[13, 3, {649, 180}]  (* matches SqrtInterval[13, 3] *)";
+
+SqrtConvergent::usage = "SqrtConvergent[d, targetFloor] finds the smallest CF convergent {p, q} of Sqrt[d] such that the Dedekind width floor is below targetFloor.
+
+The width floor of GeneralizedEgyptSqrt[d, {p,q}, k] as k → ∞ is:
+  |1 - N| / (q · Sqrt[p^2 - 1])   where N = p^2 - d*q^2
+
+Vanishes iff N = 1 (exact Pell). For irrational d, N ≠ 1 always.
+This floor cannot be reduced by increasing k — only by choosing a larger convergent.
+
+Returns: {p -> val, q -> val, norm -> val, floor -> val}.
+
+Examples:
+  SqrtConvergent[Pi, 10^-10]  (* find seed for 10-digit precision *)
+  SqrtConvergent[E, 10^-20]   (* find seed for 20-digit precision *)";
+
 Begin["`Private`"];
 
 (* ===================================================================
@@ -1208,6 +1249,77 @@ PhiInterval[k_Integer /; k < 1] := (
 )
 
 PhiInterval::posk = "Number of terms `1` must be a positive integer.";
+
+(* ===================================================================
+   GENERALIZED EGYPT SQRT — Convergent selection & seed quality
+   =================================================================== *)
+
+(* Precision needed for norm computation given convergent numerator p *)
+normPrecision[p_] := Max[30, Ceiling[2 Log10[Max[2, p]]] + 10]
+
+(* Width floor of the Dedekind interval {r, d/r} as k → ∞            *)
+(* Floor = |1 - N| / (q · √(p²-1)) where N = p² - d·q²              *)
+(* Vanishes iff N = 1 (exact Pell solution); positive for irrational d *)
+seedFloor[d_, p_, q_] := Module[{prec = normPrecision[p], norm},
+  norm = N[p^2 - d q^2, prec];
+  N[Abs[1 - norm] / (q Sqrt[N[p^2 - 1, prec]])]
+]
+
+(* SqrtConvergent: find smallest CF convergent with floor < target     *)
+(* Fallback: returns convergent with smallest floor (closest to N = 1) *)
+SqrtConvergent[d_, targetFloor_: 10^-1] := Module[
+  {cf, p, q, norm, floor, prec, nTerms = 50,
+   bestP, bestQ, bestFloor = Infinity},
+  cf = ContinuedFraction[Sqrt[d], nTerms];
+  Do[
+    {p, q} = {Numerator[#], Denominator[#]} &@
+      FromContinuedFraction[Take[cf, j]];
+    floor = seedFloor[d, p, q];
+    If[floor < bestFloor, {bestP, bestQ, bestFloor} = {p, q, floor}];
+    If[floor < targetFloor,
+      prec = normPrecision[p];
+      norm = N[p^2 - d q^2, prec];
+      Return[{Global`p -> p, Global`q -> q, Global`norm -> norm, Global`floor -> floor}]
+    ],
+  {j, 2, Length[cf]}];
+  (* Fallback: convergent with smallest floor *)
+  prec = normPrecision[bestP];
+  norm = N[bestP^2 - d bestQ^2, prec];
+  {Global`p -> bestP, Global`q -> bestQ, Global`norm -> norm, Global`floor -> bestFloor}
+]
+
+GeneralizedEgyptSqrt::floor = "Seed {`1`, `2`} has |norm| = `3`. Width floor \[TildeEqual] `4`. Use a larger CF convergent for tighter bounds.";
+
+(* Numeric seed: validate floor *)
+GeneralizedEgyptSqrt[d_, k_Integer, {p_Integer, q_Integer}] := Module[{floor},
+  floor = seedFloor[d, p, q];
+  If[floor > 10^-3,
+    Message[GeneralizedEgyptSqrt::floor, p, q,
+      NumberForm[N[Abs[p^2 - d q^2], 6], 4], ScientificForm[floor, 2]]];
+  EgyptSqrt[d, {p, q}, k]
+]
+
+(* Symbolic seed/k: return Dedekind pair with unevaluated Chebyshev *)
+GeneralizedEgyptSqrt[d_, k_, {p_, q_}] := Module[{r},
+  r = (ChebyshevT[k + 1, p] - 1) / (q ChebyshevU[k, p]);
+  {r, d/r}
+]
+
+(* d, k — auto-seed via SqrtConvergent *)
+GeneralizedEgyptSqrt[d_, k_Integer] := Module[{sol},
+  sol = SqrtConvergent[d];
+  GeneralizedEgyptSqrt[d, k, {Global`p /. sol, Global`q /. sol}]
+] /; Positive[d]
+
+(* d only — auto k and seed *)
+GeneralizedEgyptSqrt[d_] := Module[{sol, p, q, k},
+  sol = SqrtConvergent[d];
+  p = Global`p /. sol;
+  q = Global`q /. sol;
+  (* k ≈ log₂(log(p + q√d)): conservative auto-order *)
+  k = Max[1, Ceiling[Log[2, Max[2, Log[Max[2, p + q N[Sqrt[d]]]]]]]];
+  GeneralizedEgyptSqrt[d, k, {p, q}]
+] /; Positive[d]
 
 End[];
 

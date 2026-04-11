@@ -62,6 +62,44 @@ Examples:
   PellBallotQ[2, {3, 2}]    (* -> True, Pell solution *)
   PellBallotQ[13, {5, 1}]   (* -> False, not on CF path *)";
 
+BeattyBallotCount::usage = "BeattyBallotCount[alpha, n] counts monotonic lattice paths
+from (1,0) to (n, Floor[n/alpha]) staying weakly below the Beatty staircase
+S(x) = Floor[x/alpha].
+
+BeattyBallotCount[alpha, {n, m}] counts paths to explicit target (n, m) under
+the same staircase (requires m <= Floor[n/alpha]).
+
+BeattyBallotCount[alpha, All, n] returns {count_1, ..., count_n} in a single DP pass,
+where count_k = BeattyBallotCount[alpha, k]. Linear in the cost of the largest call.
+
+BeattyBallotCount[alpha, All, {n, m}] returns the row at fixed height m of the full
+lattice path count matrix: {c_1, ..., c_n} where c_x = number of paths from (1,0)
+to (x, m) staying under the staircase. Entries with Floor[x/alpha] < m are 0.
+
+Uses dynamic programming. For alpha = Sqrt[d], this generalizes PellBallotCount
+(the boundary is the Beatty staircase instead of the Pell hyperbola).
+
+By the Beatty Ballot Theorem, BeattyBallotCount[alpha, p] equals the ballot number
+Binomial[p+q-1, q]/p precisely when p/q is a convergent or semi-convergent of alpha.
+
+Examples:
+  BeattyBallotCount[Sqrt[7], 8]        (* -> 15 = B(8,3), convergent 8/3 *)
+  BeattyBallotCount[Pi, 22]            (* -> 53820 = B(22,7), convergent 22/7 *)
+  BeattyBallotCount[Pi, 9]             (* -> 15, not a ballot number *)
+  BeattyBallotCount[GoldenRatio, 13]   (* -> 9690 = B(13,8), convergent *)
+  BeattyBallotCount[Pi, All, 5]        (* -> {1, 1, 3, 7, 15} *)
+  BeattyBallotCount[Pi, All, {22, 7}]  (* -> row at height 7, entry 22 = 53820 *)";
+
+BeattyBallotQ::usage = "BeattyBallotQ[alpha, n] returns True if BeattyBallotCount[alpha, n]
+equals a ballot number B(n, q) for q = Floor[n/alpha] or q = Floor[n/alpha] + 1.
+
+True iff n is a convergent or semi-convergent numerator of alpha.
+
+Examples:
+  BeattyBallotQ[Pi, 22]     (* -> True, convergent *)
+  BeattyBallotQ[Pi, 9]      (* -> False *)
+  BeattyBallotQ[Pi, 25]     (* -> True, semi-convergent *)";
+
 PellBallotProductSmooth::usage = "PellBallotProductSmooth[s] computes the ballot product with continuous
 parameter s (= Sqrt[D] or Floor[Sqrt[D]] or any positive real).
 
@@ -466,6 +504,90 @@ PellBallotProduct[d_, b_] := Module[
   ];
   result
 ]
+
+(* ================================================================== *)
+(* BeattyBallotCount: lattice paths under Beatty staircase (DP)        *)
+(* ================================================================== *)
+
+(* Two-argument form: explicit target (n, m) *)
+BeattyBallotCount[alpha_, {n_Integer, m_Integer}] /; n >= 1 && m >= 0 :=
+  Module[{S, dp},
+    If[m == 0, Return[1]];
+    S = Table[Min[Floor[x/alpha], m], {x, 1, n}];
+    If[m > S[[n]], Return[0]]; (* target above staircase *)
+    dp = Table[0, {n}, {m + 1}];
+    Do[
+      Do[
+        If[y <= S[[x]],
+          dp[[x, y + 1]] =
+            If[x == 1 && y == 0, 1, 0] +
+            If[x > 1 && y <= S[[x - 1]], dp[[x - 1, y + 1]], 0] +
+            If[y > 0, dp[[x, y]], 0]
+        ],
+        {y, 0, Min[m, S[[x]]]}],
+      {x, 1, n}];
+    dp[[n, m + 1]]
+  ]
+
+(* One-argument form: target = (n, S(n)) where S(n) = Floor[n/alpha] *)
+BeattyBallotCount[alpha_, n_Integer] /; n >= 1 :=
+  BeattyBallotCount[alpha, {n, Floor[n/alpha]}]
+
+(* Sequence form: all counts 1..n in a single DP pass *)
+BeattyBallotCount[alpha_, All, n_Integer] /; n >= 1 :=
+  Module[{S, mMax, dp, results},
+    S = Table[Floor[x/alpha], {x, 1, n}];
+    mMax = S[[n]];
+    If[mMax == 0, Return[Table[1, {n}]]];
+    dp = Table[0, {n}, {mMax + 1}];
+    results = Table[0, {n}];
+    Do[
+      Do[
+        If[y <= S[[x]],
+          dp[[x, y + 1]] =
+            If[x == 1 && y == 0, 1, 0] +
+            If[x > 1 && y <= S[[x - 1]], dp[[x - 1, y + 1]], 0] +
+            If[y > 0, dp[[x, y]], 0]
+        ],
+        {y, 0, Min[mMax, S[[x]]]}];
+      results[[x]] = dp[[x, S[[x]] + 1]],
+      {x, 1, n}];
+    results
+  ]
+
+(* Fixed-height row form: row at height m for all columns 1..n *)
+BeattyBallotCount[alpha_, All, {n_Integer, m_Integer}] /; n >= 1 && m >= 0 :=
+  Module[{S, dp, results},
+    If[m == 0, Return[Table[1, {n}]]];
+    S = Table[Min[Floor[x/alpha], m], {x, 1, n}];
+    dp = Table[0, {n}, {m + 1}];
+    results = Table[0, {n}];
+    Do[
+      Do[
+        If[y <= S[[x]],
+          dp[[x, y + 1]] =
+            If[x == 1 && y == 0, 1, 0] +
+            If[x > 1 && y <= S[[x - 1]], dp[[x - 1, y + 1]], 0] +
+            If[y > 0, dp[[x, y]], 0]
+        ],
+        {y, 0, S[[x]]}];
+      results[[x]] = dp[[x, m + 1]],
+      {x, 1, n}];
+    results
+  ]
+
+(* ================================================================== *)
+(* BeattyBallotQ: test if path count = ballot number                   *)
+(* ================================================================== *)
+
+BeattyBallotQ[alpha_, n_Integer] /; n >= 2 :=
+  Module[{s, count, b1, b2},
+    s = Floor[n/alpha];
+    count = BeattyBallotCount[alpha, n];
+    b1 = If[s >= 1 && GCD[n, s] == 1, Binomial[n + s - 1, s] / n, None];
+    b2 = If[GCD[n, s + 1] == 1, Binomial[n + s, s + 1] / n, None];
+    count === b1 || count === b2
+  ]
 
 End[];
 
