@@ -275,9 +275,15 @@ $\delta_j(p) := v_j(p) - \frac{p - wj}{p}\binom{p+j-1}{j}$ has the following str
 3. **At $j = q_1 + 1$ only:** The correction is a **constant** $-B(p_0 + p_1, q_0 + q_1)$,
    independent of $p$.
 
-### Where we got stuck
+### Where we got stuck (RESOLVED 2026-04-10 — see R18)
 
-Three approaches were attempted:
+**Resolution:** The cfBlock[0] rise-vs-within problem was solved by the
+**rotation decomposition** (R18): $M_r = \operatorname{sturmianBlock}[d_0{+}r, p{-}r, q{-}r] \cdot \operatorname{riseProduct}[d_0, r]$,
+where $r = $ number of rises before first within. This eliminates cfBlock[0]
+entirely and gives EXACT MATCH for $\sqrt{2}$, $\sqrt{3}$, $\varphi$ at levels 1–6.
+See `SUMMARY.md` R18 for full details.
+
+The three approaches below were the earlier (pre-R18) attempts:
 
 **Approach 1: Additive decomposition (and why it structurally fails)**
 
