@@ -290,6 +290,12 @@ Two competing viewpoints, neither proven:
 - **Against B:** Find α₁ ≠ α₂ with C(α₁) = C(α₂). This seems unlikely given the data but is not excluded.
 - **Deeper:** Even if C is injective, the convergent framework might reveal structure (e.g., spectral gaps, Lyapunov exponents of transfer matrices) that C alone does not make accessible. Injectivity ≠ practical decodability.
 
+**Self-correction (same session):** The first criterion is nearly trivial. If α₁ < α₂ then Floor[α₁x] ≤ Floor[α₂x] for all x, so every path under the α₁-staircase is also under the α₂-staircase, giving a_{α₁}(n) ≤ a_{α₂}(n) hence C(α₁) ≤ C(α₂). Strict inequality follows because the staircases differ at a positive fraction of positions, creating a multiplicative (not additive) advantage. So **injectivity is easy — it's the wrong question.**
+
+The real question is stronger: does the *fractal structure* of C (the pattern of kink sizes at rationals, their hierarchical arrangement) encode the full CF expansion of α? Injectivity only says C(α₁) ≠ C(α₂); it does not say we can *read off* the CF of α from the local behavior of C near α. The function f(α) = α is also injective but carries no CF information in its structure.
+
+So the open question should be reformulated: **Is C(α) a Minkowski-?(x)-type function, where the local derivative (or kink) structure at α recovers the CF partial quotients of α?** This is a question about the *regularity class* of C, not about injectivity.
+
 **Note:** For α < 1, the staircase Floor[αx] eventually falls below the diagonal, so no paths to (n,n) exist and C(α) = 0. The diagonal approach covers only α > 1; the full range requires the substitution α ↔ 1/α or the convergent framework.
 
 **Status:** ⏸️ OPEN — both viewpoints are consistent with the data. Neither has a proof.
