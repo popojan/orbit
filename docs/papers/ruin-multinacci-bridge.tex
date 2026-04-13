@@ -206,11 +206,12 @@ The Lindstr\"om--Gessel--Viennot formula gives~\cite{Krattenthaler2015}:
 \begin{equation}\label{eq:lindstrom}
 a_k(n) = \sum_{j \geq 0} (-1)^j \binom{2n-1}{n - j(k+1)}.
 \end{equation}
-Note that starting at $(1, 0)$ rather than $(0, 0)$ forces the first step
-to be a right-step (an up-step to $(1, 1)$ would require $1 \leq k \cdot 1$,
-which is satisfied, but starting at $(0, 0)$ would require $0 \leq S(0) = 0$,
-placing us immediately on the barrier).
-The convention $(1, 0) \to (n, n)$ avoids this boundary subtlety.
+The convention of starting at $(1, 0)$ rather than $(0, 0)$ is standard
+for ballot-type problems: at $(0, 0)$ the first step must be $R$ (since
+an up-step to $(0, 1)$ would violate $y \leq S(0) = 0$), so the first
+right-step is forced and contributes no choice.
+Starting at $(1, 0)$ removes this forced step and simplifies the
+counting.
 
 \begin{example}[First terms]\label{ex:first-terms}
 The sequences begin:
@@ -239,9 +240,11 @@ For $k \geq 2$, the asymptotic behavior is
 a_k(n) \sim C_k \cdot \frac{4^n}{\sqrt{\pi n}} \quad (n \to \infty),
 \end{equation}
 where $C_k > 0$ is a constant depending on~$k$.
-The $n^{-1/2}$ exponent (rather than $n^{-3/2}$ for Catalan) reflects
-the fact that for $k \geq 2$, the path endpoint $(n, n)$ lies
-\emph{strictly below} the barrier $y = kn$: the constraint is not tight.
+The transition from $n^{-3/2}$ (Catalan) to $n^{-1/2}$ is a general
+phenomenon in lattice path asymptotics: when the endpoint lies
+\emph{strictly below} the barrier ($n < kn$ for $k \geq 2$), the
+square-root singularity of the generating function contributes the
+milder $n^{-1/2}$ factor~\cite{FlajoletSedgewick2009, BanderierFlajolet2002}.
 
 The unconstrained case $k = \infty$ has $a_\infty(n) = \binom{2n-1}{n-1}
 \sim 4^n / (2\sqrt{\pi n})$, giving $C_\infty = 1/2$.
@@ -571,32 +574,70 @@ The corresponding random walk inherits this periodicity, leading to a
 
 \subsection{Sturmian walks}
 
-Define the rise sequence $r_j = S(j+1) - S(j)$ for $j = 0, 1, 2, \ldots$
-This is a Sturmian word on the alphabet $\{\floor{q/p}, \ceil{q/p}\}$
-with period~$p$ and exactly $q$ rises summing to~$q$ in each
-period~\cite{Lothaire2002}.
+The staircase $S(x) = \floor{qx/p}$ increases by either $\floor{q/p}$
+or $\ceil{q/p}$ at each step.
+The \emph{rise sequence}
+\[
+r_j = S(j+1) - S(j) = \floor{p(j+1)/q} - \floor{pj/q},
+\qquad j = 0, 1, 2, \ldots
+\]
+takes values in $\{\floor{p/q}, \ceil{p/q}\}$ and has period~$q$
+with $\sum_{j=0}^{q-1} r_j = p$.
+This is a \emph{Sturmian word}~\cite{Lothaire2002}: a binary sequence
+of minimal complexity (exactly $n+1$ distinct subwords of length~$n$).
 
-The bijection $s = S(x) \cdot p/q - y$ (generalizing $s = kx - y$ from
-the integer case) transforms the lattice path constraint into a
-random walk on $\Z$ with position-dependent steps: from phase
-$j \in \{0, 1, \ldots, q-1\}$, a right-step contributes $+r_j$ and
-an up-step contributes $-1$, where $r_j = \floor{p(j+1)/q} - \floor{pj/q}$.
+\begin{example}[Slope $3/2$]
+The rise sequence is $(r_0, r_1) = (1, 2)$: the staircase alternates
+between steps of height~$1$ and height~$2$.
+\end{example}
+
+\begin{example}[Slope $5/3$]
+The rise sequence is $(r_0, r_1, r_2) = (1, 2, 2)$: one short step
+followed by two long steps per period.
+\end{example}
+
+The key difference from integer slopes is that a right-step at
+position $x$ increases the gap $s = S(x) - y$ (distance below the
+barrier) by $r_{x \bmod q}$, not by a fixed constant~$k$.
+Each right-step contributes $+r_j$ to the gap (where $j$ is the
+current phase $x \bmod q$) and each up-step contributes $-1$,
+exactly as before.
+The walk thus has \emph{position-dependent steps}: the step size
+depends on the phase $j \in \{0, 1, \ldots, q-1\}$.
 
 \subsection{Periodic ruin recursion}
 
-The ruin probability now depends on the phase.
-Let $\rho(s, j)$ be the ruin probability from position~$s$ in
-phase~$j$.
-The exponential ansatz $\rho(s, j) = A_j \cdot t^s$ gives the
-amplitude relation
-\[
-\frac{A_{j+1}}{A_j} = \frac{2t - 1}{t^{r_j + 1}},
-\]
-where the factor arises from conditioning on the first step in the
-symmetric case $p = q = 1/2$.
+The ruin probability now depends on both the height~$s$ and the
+phase~$j$: let $\rho(s, j)$ denote the probability that the walk,
+starting from height~$s$ in phase~$j$, ever reaches $s = -1$.
 
-Requiring periodicity $A_{q} = A_0$ (the walk returns to the same
-phase after $q$ steps) gives the \textbf{master equation}:
+Conditioning on the first step (right with probability $1/2$, up
+with probability $1/2$ in the symmetric limit):
+\begin{equation}\label{eq:ruin-phase}
+\rho(s, j) = \frac{1}{2}\,\rho(s + r_j,\; j+1) + \frac{1}{2}\,\rho(s - 1,\; j),
+\end{equation}
+where phase indices are taken mod~$q$.
+A right-step advances the phase ($j \to j+1$) and adds $r_j$ to the
+height; an up-step keeps the phase and subtracts~$1$.
+
+The exponential ansatz $\rho(s, j) = A_j \cdot t^s$ separates
+variables.
+Substituting into~\eqref{eq:ruin-phase}:
+\[
+A_j \cdot t^s
+= \frac{1}{2}\,A_{j+1} \cdot t^{s + r_j} + \frac{1}{2}\,A_j \cdot t^{s-1}.
+\]
+Dividing by $A_j \cdot t^{s-1}$:
+\[
+t = \frac{1}{2}\,\frac{A_{j+1}}{A_j}\,t^{r_j + 1} + \frac{1}{2},
+\qquad\text{i.e.,}\qquad
+\frac{A_{j+1}}{A_j} = \frac{2t - 1}{t^{r_j + 1}}.
+\]
+This is the \emph{amplitude ratio} for phase~$j$: it relates the
+ruin prefactors in consecutive phases.
+
+Requiring periodicity $A_q = A_0$ (the walk returns to the same
+phase after $q$ right-steps) gives the \textbf{master equation}:
 
 \begin{theorem}[Master equation]\label{thm:master}
 The exponential rate $t$ of the ruin probability for the Sturmian walk
@@ -758,8 +799,10 @@ Its basic properties are:
 
 \begin{enumerate}
 \item \textbf{Monotonicity:} $C$ is strictly increasing.
-\item \textbf{Boundary values:} $C(1) = 0$ and
-  $\lim_{\alpha \to \infty} C(\alpha) = 1/2$.
+  A steeper barrier is easier to avoid, so more paths survive.
+\item \textbf{Boundary values:} $C(1) = 0$ (barrier on the diagonal
+  --- Catalan regime, certain ruin) and
+  $\lim_{\alpha \to \infty} C(\alpha) = 1/2$ (no barrier).
 \item \textbf{Algebraic at rationals:} $C(p/q) \in \overline{\Q}$ for
   every rational $p/q > 1$ (Theorem~\ref{thm:algebraic}).
 \item \textbf{Kink hierarchy:} $C$ has a kink (corner) at every
@@ -767,20 +810,53 @@ Its basic properties are:
   At irrationals, $C$ is smooth.
 \end{enumerate}
 
+The kink structure makes $C(\alpha)$ a ``devil's staircase''-like
+object, though it is \emph{strictly} increasing (unlike the classical
+devil's staircase, which is constant on a set of full measure).
+
+\subsection{Kinks at rationals}\label{subsec:kinks}
+
+At each rational slope $p/q$, the function $C(\alpha)$ has a corner:
+the left and right derivatives differ.
+The mechanism is the Sturmian word structure.
+As $\alpha$ crosses $p/q$, the Sturmian word of slope $\alpha$
+undergoes a \emph{combinatorial rearrangement}: one ``short'' rise
+becomes ``long'' (or vice versa), changing the transfer matrix
+product and hence the ruin probability.
+
+The kink magnitude depends on the denominator~$q$:
+\begin{itemize}
+\item \textbf{Large kinks} at $q = 1$ (integer slopes): the
+  $k$-nacci equation changes degree; $C$ jumps from
+  $1 - 1/\tau_k$ to $1 - 1/\tau_{k+1}$.
+\item \textbf{Medium kinks} at small~$q$: visible as corners in the
+  graph of~$C$.
+\item \textbf{Small kinks} at large~$q$: the kink magnitude
+  decreases roughly as $1/q^2$, matching the approximation quality
+  of continued fraction convergents.
+\end{itemize}
+
+At irrational $\alpha$, the kinks from all rational approximants
+accumulate, and $C$ becomes differentiable (the left and right
+derivatives agree in the limit).
+
 \subsection{Approximation by convergents}
 
-For irrational $\alpha$ with convergents $p_k/q_k$, the algebraic
-values $C(p_k/q_k)$ approximate $C(\alpha)$ from alternating sides.
-The convergence is super-geometric.
+For irrational $\alpha$ with continued fraction convergents
+$p_k/q_k$, the algebraic values $C(p_k/q_k)$ approximate
+$C(\alpha)$ from alternating sides (above for overestimates
+$p_k/q_k > \alpha$, below for underestimates).
+The convergence is \emph{super-geometric}: the same-side error ratios
+$d_{k+2}/d_k$ decrease with~$k$, ruling out simple geometric decay.
 
-\begin{example}[$\alpha = \varphi$, golden ratio]
+\begin{example}[$\alpha = \varphi$, golden ratio]\label{ex:phi-conv}
 The Fibonacci convergents $2/1, 3/2, 5/3, 8/5, 13/8, \ldots$ give:
 
 \smallskip
 \begin{center}
 \begin{tabular}{ccccc}
 \toprule
-$k$ & $p_k/q_k$ & side & $|C(p_k/q_k) - C(\varphi)|$ & ratio \\
+$k$ & $p_k/q_k$ & side & $|C(p_k/q_k) - C(\varphi)|$ & same-side ratio \\
 \midrule
 2 & $2/1$ & above & $1.1 \times 10^{-1}$ & --- \\
 3 & $3/2$ & below & $1.6 \times 10^{-2}$ & --- \\
@@ -793,37 +869,94 @@ $k$ & $p_k/q_k$ & side & $|C(p_k/q_k) - C(\varphi)|$ & ratio \\
 \end{center}
 
 \smallskip\noindent
-Same-side ratios are not constant but \emph{decrease}, indicating
-super-geometric convergence.
-The asymmetry (overshoot from above $\approx 2\times$ undershoot from
-below) reflects the Sturmian correction structure.
+The decreasing same-side ratios ($0.14, 0.11, \ldots$ from above;
+$0.057, 0.018$ from below) confirm super-geometric convergence.
+The asymmetry --- overshoot from above is roughly $2\times$ the
+undershoot from below --- reflects the different Sturmian
+corrections on the two sides.
 \end{example}
+
+\begin{example}[$\alpha = I_0(2)/I_1(2) \approx 1.433$, Bessel ratio]
+\label{ex:bessel-conv}
+The continued fraction $[1; 2, 3, 4, 5, \ldots]$ has rapidly
+growing denominators ($q_k \sim k!/e$).
+The convergents $3/2, 10/7, 43/30, 225/157, \ldots$ give:
+
+\smallskip
+\begin{center}
+\begin{tabular}{ccccc}
+\toprule
+$k$ & $p_k/q_k$ & side & $|C(p_k/q_k) - C(\alpha)|$ & ratio \\
+\midrule
+1 & $3/2$ & above & $3.6 \times 10^{-2}$ & --- \\
+2 & $10/7$ & below & $9.7 \times 10^{-5}$ & --- \\
+3 & $43/30$ & above & $9.5 \times 10^{-5}$ & $0.0026$ \\
+4 & $225/157$ & --- & $\approx 0$ & --- \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\smallskip\noindent
+The first-step convergence is $\approx 50$ times faster than
+for~$\varphi$, and the asymmetry is nearly $1:1$ (compared to
+$\approx 2:1$ for~$\varphi$).
+After only 2--3 convergents, $C$ is indistinguishable from its
+limit at computational precision.
+\end{example}
+
+The contrast between the two cases illustrates a general principle:
+the convergence speed of $C(p_k/q_k) \to C(\alpha)$ is controlled
+by the growth rate of the CF denominators~$q_k$.
+For $\varphi = [1; \overline{1}]$, all partial quotients are~$1$
+(the slowest possible growth, $q_k \sim \varphi^k$), giving many
+resolvable kink levels.
+For the Bessel ratio $[1; 2, 3, 4, \ldots]$, the growing partial
+quotients produce factorial-speed convergence ($q_k \sim k!/e$),
+collapsing the kink hierarchy in a few steps.
 
 \subsection{The hierarchy of defining equations}
 
-Each slope type has a progressively more complex defining object for $C$:
+Each slope type has a progressively more complex defining object
+for~$C$:
 
 \begin{center}
 \begin{tabular}{llll}
 \toprule
 Slope & Defining equation for $C$ & Type & Complexity \\
 \midrule
-Integer $k$ & $\rho^{k+1} - 2\rho + 1 = 0$ & polynomial & degree $k$ \\
-Rational $p/q$ & $(2t-1)^q = t^{p+q}$ + boundary & polynomial system &
-  degree $p+q-1$ \\
+Integer $k$ & $\rho^{k+1} - 2\rho + 1 = 0$ & polynomial &
+  degree $k$ \\
+Rational $p/q$ & $(2t-1)^q = t^{p+q}$ + boundary &
+  polynomial system & degree $p+q-1$ \\
 Irrational & ??? & ??? & ??? \\
 \bottomrule
 \end{tabular}
 \end{center}
 
+The transition from integer to rational slopes is
+\emph{low-degree algebraic $\to$ higher-degree algebraic}: the
+master equation grows in degree, and the boundary system grows in
+dimension, but the result remains a root of a polynomial with
+integer coefficients.
+
 For irrational slopes, the periodicity argument that produces the
 master equation breaks down: the Sturmian word is aperiodic, the
 transfer operator becomes infinite-dimensional, and the
 ``$q \times q$ boundary system'' has $q = \infty$.
-Whether $C(\alpha)$ remains algebraic, or whether the
-integer-to-rational transition (low-degree algebraic $\to$
-higher-degree algebraic) is followed by an algebraic-to-transcendental
-transition at irrational slopes, is the central open question.
+
+\begin{remark}[Approximation by algebraic numbers]
+The convergent analysis shows that $C(\alpha)$ for irrational
+$\alpha$ is the limit of algebraic numbers $C(p_k/q_k)$ of
+increasing degree.
+This is reminiscent of Liouville's construction of transcendental
+numbers as limits of rationals with controlled approximation
+quality --- but here the approximants are algebraic of degree
+$d_k$ rather than rational (degree~$1$).
+The question ``is $C(\varphi) \approx 0.269$ algebraic or
+transcendental?'' is open;
+the super-geometric convergence of the algebraic approximants
+makes it difficult to distinguish the two cases numerically.
+\end{remark}
 
 %======================================================================
 \section{Concluding remarks}\label{sec:outlook}
