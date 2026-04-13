@@ -6,7 +6,9 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{booktabs}
 \usepackage{tikz}
-\usetikzlibrary{positioning, arrows.meta}
+\usetikzlibrary{positioning, arrows.meta, patterns}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -66,8 +68,8 @@ to share a common algebraic core.
 \medskip\noindent\textbf{Lattice paths.}
 Counting monotonic lattice paths subject to boundary constraints is a
 classical theme in enumerative combinatorics, going back to
-Bertrand's ballot problem~\cite{Andre1887} and the reflection
-principle~\cite{Lindstrom1973}.
+Bertrand's ballot problem and Andr\'e's reflection
+principle~\cite{Andre1887}.
 The Catalan numbers $C_n = \frac{1}{n+1}\binom{2n}{n}$ enumerate paths
 from the origin to $(n,n)$ that stay weakly below the diagonal $y = x$.
 Replacing the diagonal by the line $y = kx$ for integer~$k$ gives a
@@ -200,6 +202,67 @@ For integer $k \geq 1$, consider the barrier $S(x) = kx$ and paths from
 $(1, 0)$ to $(n, n)$.
 The constraint $y \leq kx$ is vacuous for $k \geq n$ (since $y \leq n$
 on any path to $(n, n)$), so the interesting regime is $k = O(1)$.
+
+Figure~\ref{fig:lattice-path} shows the barrier $y = 2x$ (i.e., $k = 2$)
+with two example paths.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.7]
+  % Grid
+  \draw[gray!25, very thin] (0,0) grid (7,7);
+
+  % Barrier staircase y = 2x (shown as shaded region above)
+  \fill[black!8]
+    (0,0) -- (0,7) -- (7,7) -- (7,7)
+    -- (3.5,7) -- (3,6) -- (2.5,5) -- (2,4) -- (1.5,3) -- (1,2)
+    -- (0.5,1) -- (0,0) -- cycle;
+
+  % Staircase boundary (y = floor(2x) for x = 0, 0.5, 1, ...)
+  % Actually S(x) = 2x (linear for integer k), so steps at y=2,4,6,...
+  \draw[thick, black!60]
+    (0,0) -- (1,0) -- (1,2) -- (2,2) -- (2,4) -- (3,4) -- (3,6)
+    -- (3.5,6) -- (3.5,7);
+  % Line y = 2x for reference
+  \draw[dashed, black!40] (0,0) -- (3.5,7);
+
+  % Valid path (stays below barrier): RRUURURUR to (5,5) but let's do (6,6)
+  % Path: from (1,0) to (6,6): 5 R-steps, 6 U-steps
+  % A valid path: RRUURUURUU -> (1,0)->(2,0)->(3,0)->(3,1)->(3,2)->(4,2)->(4,3)->(5,3)->(5,4)->(5,5)->(5,6)->(6,6)
+  % Actually let's use a simpler example: (1,0) to (5,5)
+  % Path 1 (valid): R R U U R U U R U U -> stays below y=2x
+  \draw[thick, blue!70!black]
+    (1,0) -- (2,0) -- (2,1) -- (2,2) -- (3,2) -- (3,3)
+    -- (3,4) -- (4,4) -- (4,5) -- (5,5);
+
+  % Path 2 (valid, different): R U R U U R U R UU
+  \draw[thick, red!70!black, densely dashed]
+    (1,0) -- (1,1) -- (2,1) -- (2,2) -- (2,3) -- (3,3)
+    -- (4,3) -- (4,4) -- (5,4) -- (5,5);
+
+  % Barrier line label
+  \node[black!60, rotate=63, font=\small] at (2.8,6.2) {$y = 2x$};
+
+  % Start and end markers
+  \fill (1,0) circle (3pt);
+  \fill (5,5) circle (3pt);
+  \node[below, font=\small] at (1,0) {$(1,0)$};
+  \node[right, font=\small] at (5,5) {$(n,n)$};
+
+  % Axis labels
+  \node[below, font=\small] at (3.5,-0.3) {$x$};
+  \node[left, font=\small] at (-0.3,3.5) {$y$};
+
+  % Shaded region label
+  \node[black!50, font=\footnotesize] at (1.3,5) {forbidden};
+\end{tikzpicture}
+\caption{Two valid lattice paths from $(1,0)$ to $(n,n)$ under
+the barrier $y = 2x$ (slope $k = 2$).
+The shaded region is forbidden.
+The path count $a_2(n) \sim C_2 \cdot 4^n / \sqrt{\pi n}$ with
+$C_2 = 1/\varphi^2 \approx 0.382$.}
+\label{fig:lattice-path}
+\end{figure}
 
 Let $a_k(n)$ denote the number of such paths.
 The Lindstr\"om--Gessel--Viennot formula gives~\cite{Krattenthaler2015}:
@@ -518,7 +581,7 @@ The proof can be visualized as a triangle:
 \node (A) [below right=2.5cm and 2cm of C]
   {\textsc{Algebra}\\{\small $k$-nacci equation}\\{\small $v^k = v^{k-1} + \cdots + 1$}};
 
-\draw[->, thick] (C) -- node[left, font=\small] {bijection\\$s = kx - y$} (P);
+\draw[->, thick] (C) -- node[left=4pt, font=\small] {bijection\\$s = kx - y$} (P);
 \draw[->, thick] (P) -- node[below, font=\small] {$\rho = 1/v$} (A);
 \draw[->, thick] (A) -- node[right, font=\small] {$C_k = 1 - 1/\tau_k$} (C);
 \end{tikzpicture}
@@ -619,6 +682,10 @@ with probability $1/2$ in the symmetric limit):
 where phase indices are taken mod~$q$.
 A right-step advances the phase ($j \to j+1$) and adds $r_j$ to the
 height; an up-step keeps the phase and subtracts~$1$.
+Note the asymmetry: the phase tracks the $x$-coordinate
+($j = x \bmod q$), which only changes on right-steps.
+For integer slopes ($q = 1$), there is only one phase and the
+recursion reduces to the homogeneous equation~\eqref{eq:ruin-eq}.
 
 The exponential ansatz $\rho(s, j) = A_j \cdot t^s$ separates
 variables.
@@ -813,6 +880,161 @@ Its basic properties are:
 The kink structure makes $C(\alpha)$ a ``devil's staircase''-like
 object, though it is \emph{strictly} increasing (unlike the classical
 devil's staircase, which is constant on a set of full measure).
+Figure~\ref{fig:C-alpha} shows $C(\alpha)$ computed at rational
+slopes with denominators up to~$12$.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=12cm, height=7cm,
+  xlabel={slope $\alpha$},
+  ylabel={$C(\alpha)$},
+  xmin=1, xmax=4.1,
+  ymin=0, ymax=0.5,
+  ytick={0, 0.1, 0.2, 0.3, 0.4, 0.5},
+  xtick={1, 1.5, 2, 2.5, 3, 3.5, 4},
+  grid=major,
+  grid style={gray!20},
+  every axis plot/.append style={thick},
+  legend pos=south east,
+  legend style={font=\footnotesize},
+]
+% Data from survey_C_low.tsv + survey_C_alpha.tsv + survey_C_detail.tsv
+% Combined and sorted, showing the fractal kink structure
+\addplot[only marks, mark=*, mark size=0.8pt, blue!70!black]
+  coordinates {
+  (1.0, 0.0)
+  (1.125, 0.0915)
+  (1.143, 0.1018)
+  (1.167, 0.1149)
+  (1.2, 0.1322)
+  (1.25, 0.1564)
+  (1.286, 0.1682)
+  (1.333, 0.1924)
+  (1.375, 0.2017)
+  (1.4, 0.2106)
+  (1.429, 0.2169)
+  (1.5, 0.2533)
+  (1.545, 0.2571)
+  (1.556, 0.2589)
+  (1.571, 0.2621)
+  (1.583, 0.2631)
+  (1.6, 0.2684)
+  (1.625, 0.2711)
+  (1.636, 0.2721)
+  (1.667, 0.2851)
+  (1.7, 0.2869)
+  (1.714, 0.2890)
+  (1.727, 0.2897)
+  (1.75, 0.2962)
+  (1.778, 0.2976)
+  (1.8, 0.3014)
+  (1.818, 0.3020)
+  (1.833, 0.3043)
+  (1.857, 0.3059)
+  (1.875, 0.3070)
+  (1.889, 0.3077)
+  (1.9, 0.3081)
+  (1.909, 0.3085)
+  (1.917, 0.3087)
+  (2.0, 0.3831)
+  (2.083, 0.3836)
+  (2.091, 0.3837)
+  (2.1, 0.3840)
+  (2.111, 0.3844)
+  (2.125, 0.3849)
+  (2.143, 0.3857)
+  (2.167, 0.3869)
+  (2.182, 0.3871)
+  (2.2, 0.3889)
+  (2.222, 0.3892)
+  (2.25, 0.3923)
+  (2.273, 0.3924)
+  (2.286, 0.3929)
+  (2.3, 0.3930)
+  (2.333, 0.3987)
+  (2.364, 0.3988)
+  (2.375, 0.3990)
+  (2.4, 0.4002)
+  (2.417, 0.4003)
+  (2.429, 0.4006)
+  (2.444, 0.4007)
+  (2.455, 0.4007)
+  (2.5, 0.4129)
+  (2.545, 0.4129)
+  (2.556, 0.4130)
+  (2.571, 0.4132)
+  (2.583, 0.4132)
+  (2.6, 0.4140)
+  (2.625, 0.4141)
+  (2.636, 0.4141)
+  (2.667, 0.4176)
+  (2.7, 0.4176)
+  (2.714, 0.4177)
+  (2.727, 0.4178)
+  (2.75, 0.4190)
+  (2.778, 0.4190)
+  (2.8, 0.4195)
+  (2.818, 0.4195)
+  (2.833, 0.4197)
+  (2.857, 0.4198)
+  (2.875, 0.4198)
+  (2.889, 0.4198)
+  (2.9, 0.4199)
+  (2.909, 0.4199)
+  (2.917, 0.4199)
+  (3.0, 0.4567)
+  (3.083, 0.4567)
+  (3.091, 0.4567)
+  (3.1, 0.4567)
+  (3.111, 0.4567)
+  (3.125, 0.4567)
+  (3.143, 0.4568)
+  (3.167, 0.4569)
+  (3.2, 0.4571)
+  (3.25, 0.4575)
+  (3.286, 0.4576)
+  (3.333, 0.4588)
+  (3.375, 0.4589)
+  (3.4, 0.4589)
+  (3.429, 0.4590)
+  (3.5, 0.4629)
+  (3.667, 0.4637)
+  (3.75, 0.4638)
+  (4.0, 0.4813)
+};
+
+% Mark integer slopes with larger markers
+\addplot[only marks, mark=*, mark size=2.5pt, red!70!black]
+  coordinates {
+  (1.0, 0.0)
+  (2.0, 0.3831)
+  (3.0, 0.4567)
+  (4.0, 0.4813)
+};
+
+% Horizontal asymptote C = 1/2
+\addplot[dashed, gray, thin, domain=1:4.1] {0.5};
+\node[gray, font=\footnotesize, anchor=west] at (axis cs:4.05,0.5) {$\frac{1}{2}$};
+
+% Integer slope labels
+\node[red!70!black, font=\footnotesize, anchor=south west]
+  at (axis cs:2.02,0.385) {$k\!=\!2$};
+\node[red!70!black, font=\footnotesize, anchor=south west]
+  at (axis cs:3.02,0.458) {$k\!=\!3$};
+
+\end{axis}
+\end{tikzpicture}
+\caption{The asymptotic constant $C(\alpha)$ as a function of slope,
+computed at rational slopes $p/q$ with $q \leq 12$.
+Large red dots mark integer slopes (the $k$-nacci values
+$C_k = 1 - 1/\tau_k$).
+Visible kinks occur at integers (largest), half-integers,
+third-integers, etc.
+The dashed line is the asymptote $C = 1/2$.}
+\label{fig:C-alpha}
+\end{figure}
 
 \subsection{Kinks at rationals}\label{subsec:kinks}
 
