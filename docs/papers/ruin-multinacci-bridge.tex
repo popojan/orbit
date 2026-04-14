@@ -1,6 +1,6 @@
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath,amsthm,amssymb}
+\usepackage{amsmath,amsthm,amssymb,mathtools}
 \usepackage{geometry}
 \geometry{margin=2.5cm}
 \usepackage[hidelinks]{hyperref}
@@ -265,10 +265,12 @@ $C_2 = 1/\varphi^2 \approx 0.382$.}
 \end{figure}
 
 Let $a_k(n)$ denote the number of such paths.
-The Lindstr\"om--Gessel--Viennot formula gives~\cite{Krattenthaler2015}:
-\begin{equation}\label{eq:lindstrom}
-a_k(n) = \sum_{j \geq 0} (-1)^j \binom{2n-1}{n - j(k+1)}.
-\end{equation}
+For $k = 1$, these are the Catalan numbers:
+$a_1(n) = C_n = \frac{1}{n+1}\binom{2n}{n}$.
+For $k \geq 2$, the endpoint $(n, n)$ lies strictly below the barrier
+$y = kn$, and no closed-form alternating sum is known; the path counts
+are computed via dynamic programming or the generating function methods
+of Banderier and Flajolet~\cite{BanderierFlajolet2002}.
 The convention of starting at $(1, 0)$ rather than $(0, 0)$ is standard
 for ballot-type problems: at $(0, 0)$ the first step must be $R$ (since
 an up-step to $(0, 1)$ would violate $y \leq S(0) = 0$), so the first
@@ -581,9 +583,9 @@ The proof can be visualized as a triangle:
 \node (A) [below right=2.5cm and 2cm of C]
   {\textsc{Algebra}\\{\small $k$-nacci equation}\\{\small $v^k = v^{k-1} + \cdots + 1$}};
 
-\draw[->, thick] (C) -- node[left=4pt, font=\small] {bijection\\$s = kx - y$} (P);
+\draw[->, thick] (C) -- node[left=20pt, font=\small] {bijection\\$s = kx - y$} (P);
 \draw[->, thick] (P) -- node[below, font=\small] {$\rho = 1/v$} (A);
-\draw[->, thick] (A) -- node[right, font=\small] {$C_k = 1 - 1/\tau_k$} (C);
+\draw[->, thick] (A) -- node[right=10pt, font=\small] {$C_k = 1 - 1/\tau_k$} (C);
 \end{tikzpicture}
 \end{center}
 
@@ -604,6 +606,20 @@ is zero, and the correct order is $4^n / n^{3/2}$ instead.
 Probabilistically, $\rho = 1$ means certain ruin: the symmetric
 $\{+1, -1\}$ walk returns to every level with probability~$1$.
 \end{example}
+
+\begin{corollary}[Self-contained characterization]\label{cor:self-contained}
+The asymptotic constant $C_k$ is the unique solution in $(0, 1/2)$ of
+\begin{equation}\label{eq:self-contained}
+(1 - C)^{k+1} = 1 - 2C.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Substituting $C = 1 - \rho$ into $\rho^{k+1} - 2\rho + 1 = 0$ gives
+$(1 - C)^{k+1} = 2(1-C) - 1 = 1 - 2C$.
+Since $\rho_0 \in (1/2, 1)$ for $k \geq 2$, we have
+$C \in (0, 1/2)$.
+\end{proof}
 
 \begin{corollary}[Limiting case]\label{cor:limit}
 As $k \to \infty$, $\tau_k \to 2$ and
@@ -915,7 +931,7 @@ slopes with denominators up to~$12$.
   (1.375, 0.2017)
   (1.4, 0.2106)
   (1.429, 0.2169)
-  (1.5, 0.2533)
+  (1.5, 0.2518)
   (1.545, 0.2571)
   (1.556, 0.2589)
   (1.571, 0.2621)
@@ -938,7 +954,7 @@ slopes with denominators up to~$12$.
   (1.9, 0.3081)
   (1.909, 0.3085)
   (1.917, 0.3087)
-  (2.0, 0.3831)
+  (2.0, 0.3820)
   (2.083, 0.3836)
   (2.091, 0.3837)
   (2.1, 0.3840)
@@ -984,7 +1000,7 @@ slopes with denominators up to~$12$.
   (2.9, 0.4199)
   (2.909, 0.4199)
   (2.917, 0.4199)
-  (3.0, 0.4567)
+  (3.0, 0.4563)
   (3.083, 0.4567)
   (3.091, 0.4567)
   (3.1, 0.4567)
@@ -1002,16 +1018,16 @@ slopes with denominators up to~$12$.
   (3.5, 0.4629)
   (3.667, 0.4637)
   (3.75, 0.4638)
-  (4.0, 0.4813)
+  (4.0, 0.4812)
 };
 
 % Mark integer slopes with larger markers
 \addplot[only marks, mark=*, mark size=2.5pt, red!70!black]
   coordinates {
   (1.0, 0.0)
-  (2.0, 0.3831)
-  (3.0, 0.4567)
-  (4.0, 0.4813)
+  (2.0, 0.3820)
+  (3.0, 0.4563)
+  (4.0, 0.4812)
 };
 
 % Horizontal asymptote C = 1/2
@@ -1165,6 +1181,123 @@ For irrational slopes, the periodicity argument that produces the
 master equation breaks down: the Sturmian word is aperiodic, the
 transfer operator becomes infinite-dimensional, and the
 ``$q \times q$ boundary system'' has $q = \infty$.
+
+Although no exact equation is known for $C(\alpha)$ at irrational
+slopes, the integer-slope ruin equation extends to a universal
+upper bound.
+
+\begin{proposition}[Smooth upper bound]\label{prop:upper-bound}
+For all real $\alpha > 1$,
+\[
+C(\alpha) \leq C_{\mathrm{smooth}}(\alpha) \coloneqq 1 - \rho_0(\alpha),
+\]
+where $\rho_0(\alpha) \in (0,1)$ is the unique root of
+$\rho^{\alpha+1} = 2\rho - 1$.
+Equality holds if and only if $\alpha$ is a positive integer.
+\end{proposition}
+
+\begin{proof}[Sketch]
+For integer $k$, the equation $\rho^{k+1} = 2\rho - 1$ \emph{is} the
+ruin equation, so equality holds.
+For rational $\alpha = p/q$ with $q \geq 2$, the smooth equation
+$\rho^{(p+q)/q} = 2\rho - 1$ raises to $\rho^{p+q} = (2\rho - 1)^q$,
+which is the master equation~\eqref{eq:master-intro}.
+Its root $\rho_0$ is therefore a root of the master equation.
+However, the master equation has $p + q - 1$ additional roots,
+and the boundary system selects a linear combination that yields
+$C(p/q) < 1 - \rho_0$.
+The strict inequality has been verified numerically for all
+rational slopes $p/q$ with $q \leq 12$.
+For irrational~$\alpha$, continuity gives
+$C(\alpha) = \lim C(p_k/q_k) \leq C_{\mathrm{smooth}}(\alpha)$.
+\end{proof}
+
+\begin{remark}
+The function $C_{\mathrm{smooth}}(\alpha)$ interpolates
+\emph{analytically} between the $k$-nacci values
+$C_k = 1 - 1/\tau_k$ at integer slopes.
+It is the ``smooth envelope'' of the Devil's-staircase
+function~$C(\alpha)$.
+The gap $C_{\mathrm{smooth}} - C$ measures the cost of the
+staircase discretization:
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+$\alpha$ & $C(\alpha)$ & $C_{\mathrm{smooth}}(\alpha)$ & gap \\
+\midrule
+$3/2$ & $0.2518$ & $0.2803$ & $11\%$ \\
+$5/2$ & $0.4124$ & $0.4302$ & $4\%$ \\
+$7/2$ & $0.4627$ & $0.4717$ & $2\%$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The gap decreases with $\alpha$ (both values approach $1/2$) and
+is largest just below integer slopes, where the staircase effect
+is most pronounced.
+\end{remark}
+
+\begin{proposition}[Lower bound]\label{prop:lower-bound}
+For all $\alpha \geq 3/2$,
+\[
+C(\alpha) \geq \frac{1}{2} - 2^{-\alpha}.
+\]
+\end{proposition}
+
+\begin{proof}
+\textbf{Case 1: $\alpha \geq 2$.}
+Let $\floor{\alpha} = k \geq 2$ and set $\rho^* = 1/2 + 2^{-k}$.
+Evaluating the ruin polynomial:
+\[
+f(\rho^*) = (\rho^*)^{k+1} - 2\rho^* + 1
+= \bigl(\tfrac{1}{2} + 2^{-k}\bigr)^{k+1} - 2^{1-k}.
+\]
+For $k = 2$: $f(3/4) = 27/64 - 1/2 = -5/64 < 0$.
+For $k \geq 3$: since $(k+1) \cdot 2^{1-k} \leq 1$, we have
+$(1 + 2^{1-k})^{k+1} \leq e < 4$,
+giving $f(\rho^*) \leq (e - 4) \cdot 2^{-(k+1)} < 0$.
+Since $f(0) = 1 > 0$ and $\rho_0$ is the unique root in $(0,1)$,
+we get $\rho_0 < \rho^*$, hence $C(k) > 1/2 - 2^{-k}$.
+By monotonicity of~$C$:
+$C(\alpha) \geq C(k) > 1/2 - 2^{-k} \geq 1/2 - 2^{-\alpha}$.
+
+\smallskip\noindent
+\textbf{Case 2: $\alpha \in [3/2, 2)$.}
+By monotonicity, $C(\alpha) \geq C(3/2)$.
+The palindromic minimal polynomial~\eqref{eq:C32-poly} evaluates to
+$9/4096 > 0$ at $x = 1/4$, and has no real root below $C(3/2)$,
+so $C(3/2) > 1/4$.
+Since $1/4 = 1/2 - 2^{-2} \geq 1/2 - 2^{-\alpha}$ for $\alpha < 2$,
+the bound follows.
+\end{proof}
+
+\begin{remark}[Conjectured extension to all $\alpha > 1$]
+Numerical evidence strongly supports the lower bound
+$C(\alpha) \geq 1/2 - 2^{-\alpha}$ for all $\alpha > 1$, with equality
+only at $\alpha = 1$.
+An asymptotic analysis of the master equation
+$(2t-1)^q = t^{2q+1}$ for slopes $(q+1)/q$ near the phase transition
+shows that $q \cdot C((q+1)/q) \to 1$ as $q \to \infty$
+(the boundary system converges to a DFT, and only the principal
+ruin root contributes).
+Since $1 > (\ln 2)/2$, this would close the remaining gap on
+$(1, 3/2)$ via a partition argument with the concavity of
+$1/2 - 2^{-\alpha}$.
+\end{remark}
+
+Combined with Proposition~\ref{prop:upper-bound}, we obtain:
+
+\begin{corollary}[Sandwich bounds]\label{cor:sandwich}
+For all $\alpha \geq 3/2$,
+\[
+\frac{1}{2} - 2^{-\alpha} \;\leq\; C(\alpha)
+\;\leq\; 1 - \rho_0(\alpha),
+\]
+where $\rho_0(\alpha)$ is the sub-unit root of
+$\rho^{\alpha+1} = 2\rho - 1$.
+Both bounds converge to $1/2$ exponentially as $\alpha \to \infty$;
+the upper bound is tight at integer slopes, the lower bound at
+$\alpha = 1$.
+\end{corollary}
 
 \begin{remark}[Approximation by algebraic numbers]
 The convergent analysis shows that $C(\alpha)$ for irrational
