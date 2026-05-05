@@ -1,32 +1,48 @@
 # Open Directions — Chebyshev Ω-Bijection
 
 **Date created:** 2026-05-04
+**Last updated:** 2026-05-04 (after Doi 2025 literature check)
 **Maintainer:** Jan + AI (collaborative log)
 **Purpose:** Track speculative and concrete follow-ups so we don't lose threads.
 
-Each direction is annotated with **status** (open/explored/parked/closed),
+Each direction is annotated with **status** (open/explored/parked/closed/folklore),
 **channel-match** (does the technique fit the question?), **investment**
 (rough), **payoff** (rough), and **kill criterion** (when to stop).
+
+## Overall novelty triage (after literature check 2026-05-04)
+
+The polynomial structure ($H_n$ master polynomial, factorization
+$H_n = \prod F_d$, square identity, closed form) is **classical**:
+$H_n(x) = W_{(n-1)/2}(x+1)$ where $W$ is Chebyshev of the fourth kind.
+See Doi (2025, arXiv:2501.16478), Watkins & Zeitlin (1993), Barnes (1977),
+Gürtaş (2017, 2022). Most "structural" follow-ups will hit known territory.
+
+The **mod-p / arithmetic-function** side (Theorem 1, intCont formula) is
+classical-adjacent but the specific packaging may be new. Wieferich-style
+higher-order analysis (A2) and q-deformation (D1+D2) are the most likely
+genuinely-novel directions.
 
 ---
 
 ## A. Quadratic reciprocity / Legendre / Euler channel
 
 ### A1. Polynomial form of supplementary law `(2/p)`
-**Status:** ✅ formalized (see `quadratic-reciprocity-formalization.md`, Theorem 1)
+**Status:** ✅ formalized; **classical-adjacent** (Eisenstein-style)
 **Investment:** done
-**Payoff:** clean statement, possibly publishable as note in *Monthly* / *Math Mag*
+**Payoff:** clean statement; before considering *Monthly* / *Math Mag* note,
+careful literature dive needed (search Eisenstein/Lemmermeyer reciprocity-laws
+references for exact-form occurrences)
 
 ### A2. Wieferich detection via F_p mod p²
-**Status:** 🤔 hypothesis, untested
-**Channel-match:** high — $F_p^2 \equiv x^{p-1} \pmod p$ exactly, so the "next-order"
-correction $F_p(x)^2 - x^{p-1}$ should be divisible by $p$ but not $p^2$ generically;
-for **Wieferich primes** $(2^{p-1} \equiv 1 \pmod{p^2})$ the divisibility may go higher.
-**Investment:** medium (compute F_p mod p² for p up to 5000, look for outliers)
-**Payoff:** if Wieferich is detected, novel polynomial primality criterion;
-known Wieferichs are 1093, 3511 — easy to check
-**Kill criterion:** if F_p mod p² is "boringly" the same monomial up to lifted sign,
-no extra info; close.
+**Status:** ❌ **CLOSED null result** (2026-05-04, see `scripts/wieferich_test.wl`)
+**Finding:** Wieferich signal is ENTIRELY in the leading coefficient
+$2^{(p-1)/2} \pmod{p^2}$, which encodes $q_p(2)$ via
+$\frac{1}{2}\left(\frac{2}{p}\right) q_p(2) \pmod p$. Sub-leading coefficients
+have full support for both Wieferich and non-Wieferich primes (no sparsity
+distinction). Verified for p ≤ 97 + p ∈ {1093, 3511}.
+**Verdict:** Polynomial reformulation gives no computational advantage over
+direct Fermat quotient; sub-leading structure is classical Wolstenholme territory.
+**Closed.**
 
 ### A3. Legendre symbols of other small primes via $F_p$
 **Status:** ⏸️ open
@@ -50,29 +66,21 @@ Chebyshev polynomials over $\mathbb{Z}[\zeta_3]$ encode cubic reciprocity?
 ## B. Frobenius / cyclotomic structure channel
 
 ### B1. Frobenius lift `F_{pm} ≡ F_m^{p-1} mod p`
-**Status:** ✅ formalized (Theorem 3); narrow empirical verification
-**Investment:** small follow-up needed — verify across more $d$ values (currently only $p=2$ cases)
-**Payoff:** lemma in joint paper
+**Status:** ✅ formalized (Theorem 3 with three cases); **classical**
+**Note:** verified $pm \leq 60$, including $m = 2$ exception requiring
+$F_{2p} \equiv (2/p) F_2^{(p-1)/2} \pmod p$.
 
 ### B2. Splitting of primes via Chebyshev factorization
-**Status:** ✅ corollary noted (Corollary 4)
-**Investment:** done modulo write-up
-**Payoff:** Chebyshev = visual real-cyclotomic factorization
+**Status:** ✅ corollary noted; **classical** (class field theory restatement)
+**Payoff:** at most expository
 
 ### B3. Frobenius for $p = 2$ (special case)
-**Status:** ⏸️ unclear (script saw failure for $n = 6, 18, 30$)
-**Setup:** $T_n(x+1) - 1 \equiv (T_{n/2}(x+1) - 1)^2 \pmod 2$ fails when
-$\text{intCont}(T_n(x+1)-1)$ is even. Need Tate-style refinement.
-**Channel-match:** medium
-**Investment:** low
-**Kill criterion:** if intCont obstruction is intrinsic, accept and document.
+**Status:** ⏸️ resolved trivially: $F_d \equiv 1 \pmod 2$ for odd $d > 1$;
+the "obstruction" was just integer-content artifact.
+**Closed.**
 
 ### B4. Iwasawa-style p-adic analysis of $F_p$
-**Status:** ⏸️ very speculative
-**Setup:** $F_p(x) \in \mathbb{Z}[x]$ has $p$-adic valuation structure of coefficients.
-Connection to $p$-adic L-functions of cyclotomic fields?
-**Channel-match:** low (Iwasawa is about Galois extensions, not real cyclotomic)
-**Kill criterion:** drop unless A2 gives Wieferich connection.
+**Status:** ⏸️ very speculative; only worth pursuing if A2 (Wieferich) succeeds
 
 ---
 
@@ -172,13 +180,10 @@ Compute $H_n$ and look at degree distribution → detect smoothness without fact
 ## F. Algebraic geometry / arithmetic geometry channel
 
 ### F1. Discriminant of $H_n$ (or its factors)
-**Status:** ⏸️ open
-**Setup:** $\text{Disc}(F_p)$ for prime $p$ should be a clean function of $p$
-(it's discriminant of a Galois extension of $\mathbb{Q}$). Known formula for
-discriminant of $\mathbb{Q}(\zeta_p)^+$: $p^{(p-3)/2}$.
-**Channel-match:** high (classical)
-**Investment:** low
-**Payoff:** likely re-derivation of known result
+**Status:** **closed (folklore)** — $\text{Disc}(F_p)$ is the discriminant
+of $\mathbb{Q}(\zeta_p)^+$, classically $p^{(p-3)/2}$ (or sign-corrected variant).
+Doi 2025's $W$-side gives this directly.
+**Payoff:** none (already known)
 
 ### F2. Galois group of splitting field of $H_n$
 **Status:** ⏸️ tautological — same as $\Phi_n$, isomorphic to $(\mathbb{Z}/n\mathbb{Z})^* / \{\pm 1\}$
@@ -268,31 +273,46 @@ sequences. Does $H_n$ have a Lucas-Lehmer interpretation?
 
 ---
 
-## Currently most promising (sorted by my estimate)
+## Currently most promising (after Doi 2025 lit check + A2 null result)
 
-1. **A2** — Wieferich detection via $F_p \bmod p^2$ (concrete, low cost)
-2. **C2** — OEIS lookup of $c_k(n)$ (5-minute cost, possibly novel)
-3. **F1** — Discriminant of $H_n$ (1 hour cost)
-4. **D1+D2** — q-deformation toward Mersenne (high investment, biggest payoff if it works)
-5. **A1+B1+B2** — write up the formalization as short note (low cost, modest publication)
+1. ~~**A2**~~ — closed null result (Wieferich = leading-coefficient Fermat quotient,
+   no new information). See A2 entry above.
+2. **The intCont formula** $\text{intCont}(T_n(x+1) - 1) = 2^{2 v_2(n) - 1}$ —
+   verify against $W_n$ leading-coefficient formulas in Doi 2025; if not
+   immediately implied, this might be a small genuinely new observation
+3. **C2** — OEIS lookup of $c_k(n)$ (5-minute cost, possibly novel sequences)
+4. **D1+D2** — q-deformation toward Mersenne (high investment, high speculative
+   risk; biggest hypothetical payoff but no concrete plan)
 
-## Currently least promising
+After A2 closed, **the only "possibly genuinely novel" remaining concrete
+direction is the intCont formula check** (10-minute task). Everything else
+is either folklore or pure speculation.
 
-- **F2** (Galois group: tautological)
+## Closed / parked / folklore
+
+- **A1, B1, B2, B3, B4, F1, F2** — classical / folklore via Doi 2025,
+  Watkins–Zeitlin 1993, Barnes 1977, classical CFT
 - **G2** (ZK trivial)
 - **E2** (no algorithmic speedup)
 - **A4** (cubic reciprocity wrong channel)
 
-## Open question for next session
+## Resolution and next steps
 
-> Which of A2 (Wieferich), D2 (Mersenne via q), or F1 (discriminant) should we
-> attempt first?
+A2 has been **attempted and closed null** (2026-05-04). All polynomial-structure
+directions are now either folklore (per Doi 2025) or null (A2). The session is
+expository synthesis with no genuinely novel mathematical contribution.
 
-My recommendation: **A2 — Wieferich**, because:
-- The setup is already in place ($F_p$, mod arithmetic)
-- Cost is genuinely 1 hour (compute $F_p \bmod p^2$ for $p \leq 5000$)
-- Two known Wieferich primes (1093, 3511) give clear positive controls
-- If it doesn't fire, we close the door and move on
-- If it does fire, the result is immediately interesting
+**Reasonable next-session options:**
 
-A2 alone would justify a follow-up session.
+1. **Quick checks** (10 min total):
+   - Verify intCont formula $2^{2v_2(n)-1}$ against Doi 2025 leading-coefficient
+     formulas for $t_n(x)$ and $p_n^\pm(x)$
+   - OEIS lookup of $c_k(n)$ sequences for $k \in \{0, 1, 2, 3\}$
+
+2. **Park the project** as expository / educational. The write-up is clean,
+   theorems formalized, literature documented. Move to a different thread.
+
+3. **Speculative deep-dive into D1+D2** (q-deformation → Mersenne) — high cost,
+   high risk, no clear path. Recommend NOT pursuing without external motivation.
+
+**Recommendation:** option 1 (quick checks), then option 2 (park).

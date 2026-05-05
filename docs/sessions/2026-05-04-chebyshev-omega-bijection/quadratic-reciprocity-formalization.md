@@ -1,7 +1,9 @@
 # Quadratic Reciprocity via Cyclotomic Chebyshev Factorization
 
 **Date:** 2026-05-04
-**Status:** 🔬 Verified for primes p ≤ 47, prime powers d ≤ 49, composites d ≤ 22; proofs sketched, full proofs straightforward via classical cyclotomic Frobenius
+**Status:** 🔬 Verified for primes p ≤ 97, prime powers p^k ≤ 200 (odd p),
+composites pm ≤ 60; proofs given, results are classical recombination
+(see Literature section).
 
 ## Setup
 
@@ -90,22 +92,44 @@ $$2^{p^{j-1}(p-1)/2} = \big(2^{(p-1)/2}\big)^{p^{j-1}} \equiv \left(\frac{2}{p}\
 
 ---
 
-## Theorem 3 (Frobenius for composite $d$)
+## Theorem 3 (Frobenius for composite $d$, refined)
 
-For odd primes $p$, integers $m \geq 2$ with $\gcd(p, m) = 1$:
+The classical cyclotomic Frobenius is $\Phi_{pm}(t) \equiv \Phi_m(t)^{p-1} \pmod p$
+when $\gcd(p, m) = 1$. Translating to Chebyshev variables via $t + t^{-1} = 2(x+1)$
+encounters one subtlety: for $d > 2$, $F_d$ has degree $\varphi(d)/2$ (Galois-pair
+collapse), but for $d = 2$ the substitution does not collapse pairs (the unique
+root $t = -1$ is self-reciprocal). This breaks degree-counting at $m = 2$.
 
+**Three cases** (verified for $pm \leq 60$, all $p$ prime up to 13):
+
+**(3a)** For odd prime $p$ and integer $m \geq 3$ with $\gcd(p, m) = 1$:
 $$F_{pm}(x) \equiv F_m(x)^{p-1} \pmod p.$$
 
-### Proof
+**(3b)** For odd prime $p$ and $m = 2$:
+$$F_{2p}(x) \equiv \left(\frac{2}{p}\right) F_2(x)^{(p-1)/2} \pmod p.$$
 
-From the classical cyclotomic Frobenius
-$$\Phi_{pm}(t) \equiv \Phi_m(t)^{p-1} \pmod p$$
-(proof: $\Phi_{pm}(t) = \Phi_m(t^p)/\Phi_m(t)$; reduce mod $p$ via $t^p \equiv t$ on
-coefficients to get $\Phi_m(t^p) \equiv \Phi_m(t)^p$, hence $\Phi_{pm} \equiv \Phi_m^{p-1}$).
+**(3c)** For $p = 2$, odd $m \geq 3$:
+$$F_{2m}(x) \equiv F_m(x) \pmod 2 \quad (\text{both sides reduce to } 1).$$
 
-Translate to the Chebyshev side via the substitution $t + t^{-1} = 2(x+1)$,
-$\Phi_d(t) = t^{\varphi(d)/2} F_d\big(\frac{t + t^{-1}}{2} - 1\big)$ (up to normalization).
-The Frobenius identity transfers verbatim. $\square$
+### Proofs
+
+**(3a):** From cyclotomic Frobenius $\Phi_{pm}(t) \equiv \Phi_m(t)^{p-1} \pmod p$
+(proof: $\Phi_{pm}(t) = \Phi_m(t^p)/\Phi_m(t)$; reduce mod $p$ via Frobenius
+$\Phi_m(t^p) \equiv \Phi_m(t)^p$). Both sides have degree $(p-1)\varphi(m)$ in
+$t$; under the substitution $y = t + t^{-1}$ both halve consistently to give
+the Chebyshev-side identity. Constants match: $F_{pm}(0) = \Phi_{pm}(1) = 1$
+(since $pm$ has $\geq 2$ distinct primes), and $F_m(0)^{p-1} \equiv 1 \pmod p$
+by Fermat (whether $F_m(0) = q$ prime or 1).
+
+**(3b):** Degrees: $\deg F_{2p} = \varphi(2p)/2 = (p-1)/2$, $\deg F_2 = 1$, so
+$\deg F_2^{(p-1)/2} = (p-1)/2$ matches. Both polynomials are determined modulo $p$
+up to a non-zero scalar; the constant of $F_{2p}$ is $\Phi_{2p}(1) = 1$, and the
+constant of $F_2(x)^{(p-1)/2}$ at $x = 0$ is $2^{(p-1)/2} \equiv \left(\frac{2}{p}\right) \pmod p$
+(Euler's criterion). Hence the scalar is $\left(\frac{2}{p}\right)$. $\square$
+
+**(3c):** $F_d$ for odd $d > 1$ has odd constant $\Phi_d(1) \in \{p, 1\}$ and
+even non-constant coefficients (induction, using $H_n = 1 + 2 \sum T_a$), so
+$F_d \equiv 1 \pmod 2$ for all odd $d > 1$. Both $F_{2m}$ and $F_m$ reduce to $1$. $\square$
 
 ---
 
@@ -124,29 +148,90 @@ This is the **Chebyshev (real-cyclotomic) version of the splitting theorem**.
 
 ## Verification (computational)
 
-All theorems verified by `scripts/explore_v2.wl` and follow-up runs:
+Verified by `scripts/theorem3_extended.wl`:
 
-- Theorem 1: primes $p \in \{3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47\}$
-- Theorem 2: prime powers $d \in \{9, 25, 27, 49\}$
-- Theorem 3: composites $d \in \{10, 14, 22\}$ (all of form $2p$, verified $F_{2p} \equiv F_p \pmod 2$)
-- Corollary 4: implicit (follows from Theorem 3 and classical splitting)
+- **Theorem 1**: all odd primes $3 \leq p \leq 97$ (25 primes) — 100% match
+- **Theorem 2**: all odd prime powers $3 \leq p^k \leq 200$ (verified) — 100% match;
+  fails at $p = 2$ powers ($d = 4, 8, 16, 32, 64, 128$) because $\left(\frac{2}{2}\right)$
+  is not defined and ψ_{2^k} hits $y=0$ root for $k \geq 2$
+- **Theorem 3a** ($m \geq 3$, $\gcd(p,m)=1$): all 44 valid pairs with $pm \leq 60$ — 100% match
+- **Theorem 3b** ($m = 2$): verified for $p \in \{3, 5, 7, 11, 13\}$ — 100% match
+- **Theorem 3c** ($p = 2$): verified for $m \in \{3, 5, ..., 29\}$ — 100% match (trivial)
+
+---
+
+## Literature (classical antecedents)
+
+The polynomial-structure side of this work is **already in the literature**.
+Specifically, our master polynomial $H_n(x)$ is (up to a linear shift) the
+**Chebyshev polynomial of the fourth kind** $W_{(n-1)/2}$.
+
+### Direct correspondence with Doi (2025), arXiv:2501.16478
+
+In Doi's notation (following Barnes 1977 and Mason–Handscomb), let
+$c_n(x) := U_n(x/2)$ (rescaled Chebyshev of the second kind) and
+$$p_n^+(x) := c_n(x) + c_{n-1}(x) = W_n(x/2),$$
+the **Chebyshev polynomial of the fourth kind** (after rescaling).
+
+Under the substitution $x \to 2(x+1)$:
+$$p_n^+(2(x+1)) = U_n(x+1) + U_{n-1}(x+1) = \frac{\sin((2n+1)\theta/2)}{\sin(\theta/2)} \quad (\cos\theta = x+1)$$
+which is **exactly our $H_{2n+1}(x)$**. Equivalently
+$$\boxed{\,H_n(x) = W_{(n-1)/2}(x+1) \quad \text{for odd } n.\,}$$
+
+Doi's **Theorem 1.4(ii)** then gives our factorization explicitly: for odd $n > 2$,
+$$\psi_n(x) = p_{\lfloor n/2 \rfloor}^+(x) \Big/ \prod_{2 < d < n,\ d \mid n} \psi_{n/d}(x) \cdot (\text{Möbius corrections})$$
+which translates verbatim to $F_n(x) = H_n(x) / \prod_{d|n,\ 1 < d < n} F_d(x)$.
+
+The identity $T_n(x+1) - 1 = x \cdot H_n(x)^2$ is Doi's **Theorem 2.2** (that
+$t_n(x) \pm 2$ is divisible by $(p_s^\pm(x))^2$) restated under the shift.
+
+So the **polynomial structure** (factorization, closed form, square identity)
+is a re-derivation of:
+- Watkins & Zeitlin (1993, *Amer. Math. Monthly* 100(5))
+- Barnes (1977, *J. Elisha Mitchell Sci. Soc.* 93(1))
+- Gürtaş (2017, *AMM* 124(1); 2022 follow-up on variants)
+- Doi (2025, arXiv:2501.16478, with explicit non-recursive formula)
+
+### Mod-p / Legendre side
+
+The reduction $T_p(x) \equiv x^p \pmod p$ (Chebyshev Frobenius) and Euler's
+criterion $2^{(p-1)/2} \equiv (2/p) \pmod p$ are classical. The combination
+appears in **Eisenstein-style proofs of quadratic reciprocity** (using
+$\sin(qx) = \sin(x) U_q(4\sin^2 x)$ as the kernel). Whether Theorem 1 in
+the *exact* form $F_p(x) \equiv (2/p) x^{(p-1)/2} \pmod p$ appears verbatim
+is uncertain, but it is a 2-line consequence of standard facts.
+
+### Honest assessment
+
+- **Polynomial structure** (Theorem 0 / $H_n$): **classical**, fully covered
+  by Doi 2025 + Watkins–Zeitlin 1993 + Barnes 1977.
+- **Theorem 1 (mod-p Legendre)**: classical-adjacent, Eisenstein-style,
+  possibly worth a short *Monthly* note if not already published.
+- **Theorem 2 (prime powers)**: same status as Theorem 1.
+- **Theorem 3 (Frobenius lift)**: classical cyclotomic Frobenius.
+- **Possibly novel**: the integer content formula $\text{intCont}(T_n(x+1) - 1) = 2^{2 v_2(n) - 1}$
+  (in `README.md` § "4 \| n is NOT a real obstruction"), which encodes the
+  2-adic valuation in the leading content. Not seen in the literature surveyed,
+  though it may follow from $W_n$ leading-coefficient analysis. Worth a short
+  literature dive.
+
+The session's main value is **expository synthesis**, not new mathematics, *except*
+possibly the intCont formula and the open directions in `OPEN-DIRECTIONS.md`
+(notably A2 Wieferich and D1+D2 q-Mersenne).
 
 ---
 
 ## Adversarial check
 
-- ✓ **Not a tautology.** Each theorem combines a Chebyshev-specific identity
-  ($T_p(x+1) - 1 = x H_p^2$) with a classical number-theoretic identity
-  (Frobenius / Euler). Neither is sufficient alone.
-- ✓ **Sign correctness.** Theorem 1's leading-coefficient computation is
-  independent of the squared identity; it confirms the sign matches
-  Euler/Legendre, not just $\pm 1$.
-- ⚠️ **Novelty unclear.** The classical cyclotomic Frobenius and Euler criterion
-  are standard. Whether anyone has published Theorem 1 in this *exact form*
-  is uncertain. The polynomial form is pretty but possibly folklore.
-- ⚠️ **Theorem 3 verified narrowly.** Only $p = 2$ composite cases tested
-  empirically (script bug confused $F_d$ with $F_{d/p}$ for general
-  composites). Should expand verification.
+- ✓ **Sign correctness.** Theorem 1's leading-coefficient computation
+  ($2^{(p-1)/2} \equiv (2/p)$) is independent of the squared identity, confirming
+  the sign matches Euler/Legendre.
+- ✓ **Theorem 3 cases unified.** Initial empirical failure at $m = 2$ exposed
+  the degree-halving asymmetry; refined statement (3b) re-introduces the same
+  Legendre symbol $(2/p)$ as Theorem 1, giving thematic coherence.
+- ✓ **Folklore status documented.** Direct correspondence $H_n(x) = W_{(n-1)/2}(x+1)$
+  identified via Doi 2025; polynomial-structure side is classical.
+  Mod-p / Legendre side is Eisenstein-style classical material.
 
 ## What this lets us prove cleanly
 
