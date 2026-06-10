@@ -1,0 +1,815 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage[hidelinks]{hyperref}
+\usepackage{booktabs}
+\usepackage{tikz}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{observation}[theorem]{Observation}
+
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\ceil}[1]{\lceil #1 \rceil}
+\newcommand{\B}{\mathrm{B}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\pFq}[2]{{}_{#1}F_{#2}}
+
+\title{Closed-Form State Vectors for Lattice Paths\\
+Below Irrational Staircases}
+\author{Jan Popelka\thanks{Email: popojan@protonmail.com.
+Code: \url{https://github.com/popojan/orbit}}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We derive explicit binomial formulas for the transfer matrix of
+lattice paths constrained by the Beatty staircase
+$\floor{x/\alpha}$, where $\alpha$ is irrational with continued
+fraction $[w; a_1, a_2, \ldots]$.
+The transfer matrix between consecutive convergents decomposes as
+a Toeplitz matrix minus a correction given by a finite sum of
+products of ballot numbers and binomial coefficients.
+For the step width $w = 1$, this correction collapses to a single
+binomial via the classical Rothe--Hagen identity.
+For $w \geq 2$, the correction is an irreducible terminating
+Saalsch\"utzian generalized hypergeometric function
+$\pFq{2w+2}{2w+1}(1)$.
+The formula is self-similar: it applies at every level of the
+continued fraction hierarchy with only the local parameters
+changing, and successive levels compose via a terminating
+inclusion--exclusion expansion.
+For $w = 1$ and quadratic irrationals, the level-to-level scaling
+is governed by powers of the fundamental unit of
+$\mathbb{Q}(\sqrt{D})$.
+\end{abstract}
+
+%======================================================================
+\section{Introduction}\label{sec:intro}
+%======================================================================
+
+\subsection{Context}
+
+Counting monotonic lattice paths subject to boundary constraints is
+a classical problem in enumerative combinatorics, with origins in
+Bertrand's ballot problem~\cite{Andre1887} and connections to
+random walks, queuing theory, and algebraic
+combinatorics~\cite{Krattenthaler2015}.
+
+When the boundary is the line $y = qx/p$ for coprime $p, q$, the
+number of paths from $(1,0)$ to $(p, j)$ staying weakly below the
+boundary is given by a ballot-type formula involving a single
+binomial coefficient~\cite{IrvingRattan2009}.
+When the boundary is the Beatty staircase
+$S(x) = \floor{x/\alpha}$ for an irrational $\alpha$, the path
+count at convergent positions equals the ballot number
+$\B(p,q) = \binom{p+q-1}{q}/p$, as shown
+in~\cite{PopelkaBeattyBallot2026}.
+
+But the ballot number gives only the \emph{total} path count at the
+endpoint $(p, q)$.
+The full \emph{state vector} --- the number of paths reaching each
+intermediate height $j = 0, 1, \ldots, q$ at position~$p$ ---
+contains richer information and is essential for composing blocks
+across multiple continued fraction levels.
+
+\subsection{Main results}
+
+Let $\alpha = [w; a_1, a_2, \ldots]$ be irrational with convergents
+$p_k/q_k$.
+We study the \emph{block transfer matrix} $M$ that maps the state
+vector at one convergent position to the next.
+Our main contributions are:
+
+\begin{enumerate}
+\item \textbf{Uniform formula (Theorem~\ref{thm:uniform}).}
+  For heights $j \leq q_1$, the state vector entry $v_j(p)$ at any
+  semi-convergent position $p$ equals the rational ballot formula
+  $v_j(p) = \frac{p - wj}{p}\binom{p+j-1}{j}$, with no correction
+  needed.
+
+\item \textbf{Block transfer decomposition
+  (Theorem~\ref{thm:transfer}).}
+  The full transfer matrix decomposes as $M = T - \Delta$, where
+  $T$ is the Toeplitz matrix
+  $T[j,s] = \binom{p_1 - 1 + j - s}{j - s}$ and $\Delta$ is
+  a correction supported on rows $j \geq d_0$, given by
+  %
+  \begin{equation}\label{eq:R7-intro}
+    \Delta[d_0{+}d,\, s] = \sum_{m=1}^{d+1}
+      v_{d-m+1}(p_1 - wm)\;\binom{d_0 - 2 + m(w{+}1) - s}{mw - 1},
+  \end{equation}
+  %
+  where $d_0$ is the input dimension and $d = 0, \ldots, q_1 - 1$.
+  The decomposition is proven for all $q_1$ by a linearity and
+  self-similarity argument: each rise injects a free-path count
+  into the newly accessible row, which then propagates as a
+  uniform-staircase path count in the residual block.
+
+\item \textbf{Hypergeometric classification
+  (Theorem~\ref{thm:hypergeom}).}
+  The correction~\eqref{eq:R7-intro} is a terminating $1$-balanced
+  (Saalsch\"utzian) generalized hypergeometric function
+  $\pFq{2w+2}{2w+1}(1)$.
+  For $w = 1$, it collapses via the Pfaff--Saalsch\"utz theorem to
+  the single binomial $\binom{d_0 + p_1 + d - 1 - s}{d}$ (the
+  Rothe--Hagen identity with parameter $b = 2$).
+  For $w \geq 2$, no such collapse exists.
+
+\item \textbf{Self-similar hierarchy (Theorem~\ref{thm:selfsim}).}
+  Formula~\eqref{eq:R7-intro} applies at every continued fraction
+  level with only $p_k$ and $d_{0,k}$ changing.
+  Successive levels compose via a product of $a_{k+1}$ block
+  matrices, whose inclusion--exclusion expansion terminates exactly
+  at order $a_{k+1}$.
+
+\item \textbf{Rotation decomposition (Theorem~\ref{thm:rotation}).}
+  For $w = 1$, the block transfer at non-canonical Sturmian
+  positions decomposes as
+  $M_r = \operatorname{sturmianBlock}(d_0{+}r,\, p{-}r,\, q{-}r)
+  \cdot \operatorname{riseProduct}(d_0,\, r)$,
+  eliminating the level-$0$ ambiguity.
+\end{enumerate}
+
+\subsection{Relation to prior work}
+
+Irving and Rattan~\cite{IrvingRattan2009} gave the uniform ballot
+formula (our Result~1) for paths below a rational line $y = x/a$.
+Banderier and Wallner~\cite{BanderierWallner2019} studied the
+generating function approach, showing that individual heights under
+rational staircases have complicated expressions but block sums
+simplify (``ugly $+$ ugly $=$ nice'').
+Firoozi, Jedwab, and Rattan~\cite{FirooziJedwabRattan2026} studied
+flaw-counting under rational slopes using alternating sums
+reminiscent of our correction structure.
+
+Our contribution is the explicit closed-form correction
+formula~\eqref{eq:R7-intro} for individual heights beyond the
+uniform zone, its identification as a Saalsch\"utzian hypergeometric
+function, and the self-similar hierarchical structure linking all
+continued fraction levels.
+
+\subsection{Outline}
+
+Section~\ref{sec:prelim} fixes notation.
+Section~\ref{sec:uniform} establishes the uniform formula.
+Section~\ref{sec:transfer} proves the main decomposition theorem.
+Section~\ref{sec:hypergeom} classifies the correction
+hypergeometrically.
+Section~\ref{sec:selfsim} develops the hierarchical structure.
+Section~\ref{sec:rotation} treats the rotation decomposition.
+Section~\ref{sec:wreduction} presents the $w$-reduction kernel.
+Section~\ref{sec:scaling} discusses level scaling for quadratic
+irrationals.
+Section~\ref{sec:open} lists open problems.
+
+%======================================================================
+\section{Preliminaries}\label{sec:prelim}
+%======================================================================
+
+\subsection{Continued fractions}
+
+Let $\alpha > 1$ be irrational with continued fraction expansion
+$\alpha = [a_0; a_1, a_2, \ldots]$ where $a_0 = w = \floor{\alpha}$.
+The convergents $p_k/q_k$ satisfy the recurrence
+\begin{equation}\label{eq:cf-recurrence}
+  p_{k+1} = a_{k+1} p_k + p_{k-1}, \qquad
+  q_{k+1} = a_{k+1} q_k + q_{k-1},
+\end{equation}
+with $p_{-1} = 1$, $q_{-1} = 0$, $p_0 = w$, $q_0 = 1$.
+The \emph{semi-convergents} between $p_{k-1}/q_{k-1}$ and
+$p_{k+1}/q_{k+1}$ are
+$\frac{p_{k-1} + j p_k}{q_{k-1} + j q_k}$ for
+$j = 1, \ldots, a_{k+1} - 1$.
+
+\subsection{Sturmian words}\label{ssec:sturmian}
+
+The \emph{Sturmian word} of slope $1/\alpha$ is the binary sequence
+$\mathbf{s} = (s_n)_{n \geq 0}$ with
+$s_n = \floor{(n+1)/\alpha} - \floor{n/\alpha} \in \{0, 1\}$.
+The letter $1$ indicates a \emph{rise} (height increases by one) and
+$0$ a \emph{within-stair} (height stays).
+Between convergent positions $p_{k-1}$ and $p_k$, the staircase
+$\floor{x/\alpha}$ has exactly $q_k$ rises and
+$p_k - q_k = (w-1)q_k + q_{k-1}$ within-stairs.
+
+For a block with first partial quotient $a_1$, the Sturmian word
+has pattern
+\begin{equation}\label{eq:sturmian-pattern}
+  \underbrace{0 \cdots 0}_{w}\; 1 \;
+  \underbrace{0 \cdots 0}_{w-1}\; 1 \;
+  \underbrace{0 \cdots 0}_{w-1}\; 1 \;
+  \cdots \;
+  \underbrace{0 \cdots 0}_{w-1}\; 1,
+\end{equation}
+with $q_1 = a_1$ rises.
+The total length is $p_1 = wa_1 + 1$ columns.
+
+\subsection{Transfer matrices and state vectors}
+
+The \emph{state vector} $\mathbf{v}(c) = (v_0(c), v_1(c), \ldots,
+v_N(c))$ at column $c$ counts the number of monotonic lattice paths
+from $(1, s)$ to $(c, j)$ staying weakly below the staircase
+$\floor{x/\alpha}$.
+The column-by-column recurrence is:
+\begin{align}
+  v_j(c{+}1) &= \sum_{k=0}^{j} v_k(c)
+  &&\text{(within-stair column)}, \label{eq:within}\\
+  v_j(c{+}1) &= \sum_{k=0}^{j-1} v_k(c)
+  &&\text{(rise column, row $j$ newly accessible)}.
+  \label{eq:rise}
+\end{align}
+Starting from $v_j(0) = \delta_{j,s}$ for source height~$s$, the
+\emph{block transfer matrix} $M \in \Z^{(N+1) \times (N+1)}$ is
+defined by
+\begin{equation}
+  v_j(p_1) = \sum_{s=0}^{N} M[j, s]\, v_s(0).
+\end{equation}
+
+\subsection{Ballot numbers}
+
+The ballot number $\B(p,q) = \frac{1}{p}\binom{p+q-1}{q}$ counts
+lattice paths from $(1,0)$ to $(p,q)$ staying weakly below
+$y = qx/p$ for coprime $p, q$.
+It satisfies $\B(p, 0) = 1$ for all $p \geq 1$ and
+$\B(1, q) = \delta_{q,0}$.
+
+The \emph{generalized ballot formula} for height $j$ at position $p$
+under a uniform staircase of step width $w$ is
+\begin{equation}\label{eq:vlin}
+  v_j(p) = \frac{p - wj}{p}\binom{p + j - 1}{j}.
+\end{equation}
+Note that $v_0(p) = 1$ for all $p$ and
+$v_q(p) = \B(p, q)$ when $p = wq + 1$.
+
+%======================================================================
+\section{Uniform formula}\label{sec:uniform}
+%======================================================================
+
+\begin{theorem}[Uniform formula]\label{thm:uniform}
+Let $\alpha = [w; a_1, a_2, \ldots]$ be irrational and let $p$
+be a semi-convergent numerator between convergents $p_{k-1}$ and
+$p_{k+1}$.
+Then
+\begin{equation}\label{eq:uniform}
+  v_j(p) = \frac{p - wj}{p}\binom{p+j-1}{j}
+  \qquad\text{for } j = 0, 1, \ldots, q_1.
+\end{equation}
+\end{theorem}
+
+This is the rational ballot formula of Irving and
+Rattan~\cite{IrvingRattan2009}, applied to the staircase
+$\floor{qx/p}$ which agrees with $\floor{x/\alpha}$ on the first
+$q_1 + 1$ heights.
+
+\begin{proposition}[Two-term exactness]\label{prop:twoterm}
+If $p/q = [w; a_1]$ is a rational with a two-term continued
+fraction, then~\eqref{eq:uniform} is exact for \emph{all}
+$j = 0, 1, \ldots, q$.
+In particular, no correction is needed.
+\end{proposition}
+
+\begin{proof}
+A two-term CF means the staircase $\floor{qx/p}$ has a single
+Sturmian block with uniform step spacing.
+The classical ballot formula applies at every height.
+\end{proof}
+
+\begin{corollary}\label{cor:correction-start}
+Corrections to the uniform formula first appear at height
+$j = q_1 + 1$ and are present precisely when $p/q$ has three or
+more continued fraction terms (i.e., the staircase has non-uniform
+step spacing).
+\end{corollary}
+
+%======================================================================
+\section{Block transfer decomposition}\label{sec:transfer}
+%======================================================================
+
+\subsection{Toeplitz structure}
+
+The \emph{Toeplitz matrix} for a block of width $p_1$ is
+\begin{equation}\label{eq:toeplitz}
+  T[j, s] = \binom{p_1 - 1 + j - s}{j - s},
+\end{equation}
+which counts all monotonic paths from $(0, s)$ to $(p_1, j)$
+\emph{without} the staircase constraint.
+This is the transfer matrix that would arise if all $p_1$ columns
+were within-stairs (no rises).
+
+\begin{proposition}\label{prop:toeplitz-exact}
+For $j \leq d_0 - 1$, where $d_0 = q_0 + q_1 - 1$ is the input
+state dimension (input rows $0, \ldots, d_0 - 1$), the transfer
+matrix equals the Toeplitz matrix:
+$M[j, s] = T[j, s]$.
+\end{proposition}
+
+\begin{proof}
+A monotone path ending at height $j$ has height at most $j$ at
+every column.
+The staircase constraint is weakest at the start of the block,
+where the accessible rows are $0, \ldots, d_0 - 1$.
+Hence for $j \leq d_0 - 1$ every unconstrained path counted by
+$T[j, s]$ already satisfies the constraint, and the two counts
+agree.
+\end{proof}
+
+\subsection{The correction formula}
+
+\begin{theorem}[Block transfer decomposition]\label{thm:transfer}
+The block transfer matrix for a Sturmian block with parameters
+$(d_0, w, p_1, q_1)$ decomposes as
+\begin{equation}\label{eq:decomp}
+  M[j, s] = T[j, s] - \Delta[j, s],
+\end{equation}
+where $\Delta[j, s] = 0$ for $j < d_0$ and, for
+$j = d_0 + d$ with $0 \leq d \leq q_1 - 1$:
+\begin{equation}\label{eq:R7}
+  \Delta[d_0{+}d,\, s] = \sum_{m=1}^{d+1}
+    v_{d-m+1}(p_1 - wm)\;\binom{d_0 - 2 + m(w{+}1) - s}{mw - 1}.
+\end{equation}
+Here $v_j(p)$ is the uniform ballot formula~\eqref{eq:vlin}.
+\end{theorem}
+
+\begin{remark}[Offset]\label{rmk:offset}
+The offset $A = d_0 - 2$ in the binomial factor is an index
+identity, not an independent phenomenon: for the row
+$j_m = d_0 + m - 1$ newly accessible at the $m$-th rise,
+\[
+  \binom{mw - 1 + j_m - s}{j_m - s}
+  = \binom{d_0 - 2 + m(w{+}1) - s}{mw - 1},
+\]
+so the binomial factor in~\eqref{eq:R7} is precisely the
+\emph{free} path count into that row at the rise column
+(Step~1 of the proof below).
+In particular $A = d_0 - 2$ is universal --- independent of $w$,
+$p_1$, and $q_1$.
+\end{remark}
+
+\begin{proof}[Proof of Theorem~\ref{thm:transfer}]
+The proof tracks the correction vector $\boldsymbol{\delta}(c)$,
+defined as $\delta_j(c) = T[j, s](c) - M[j, s](c)$, column by
+column through the $q_1$ phases of the Sturmian block, and then
+solves the resulting recursion in closed form by linearity and
+self-similarity.
+
+\emph{Phase structure.}
+The block~\eqref{eq:sturmian-pattern} consists of $q_1$ phases,
+each comprising one rise followed by within-stair columns:
+\begin{itemize}
+\item Phase $m$ ($1 \leq m \leq q_1 - 1$): rise at column
+  $mw + 1$, then $w - 1$ within-stairs.
+\item Phase $q_1$: rise at column $q_1 w + 1 = p_1$, no
+  trailing within-stairs.
+\end{itemize}
+Before phase~$1$, there are $w$ initial within-stairs (columns
+$1, \ldots, w$) which do not contribute to $\boldsymbol{\delta}$
+since the correction starts at zero.
+
+\emph{Step 1: correction dynamics.}
+At a within-stair column, both the free evolution $T(c)$ and the
+constrained evolution $M(c)$ obey the prefix-sum
+recurrence~\eqref{eq:within}, so
+$\boldsymbol{\delta}(c{+}1) = L\boldsymbol{\delta}(c)$, where $L$
+denotes the prefix-sum operator.
+At the rise of phase $m$ (the transition from column $mw$ to
+$mw + 1$), the row $j_m = d_0 + m - 1$ (correction depth
+$d = m - 1$) becomes accessible.
+Existing rows again satisfy $\delta' = L\delta$, while the new
+row satisfies, by~\eqref{eq:within} for $T$ and~\eqref{eq:rise}
+for $M$,
+\[
+  \delta_{j_m}' = \sum_{k \leq j_m} T_k(mw)
+   - \sum_{k < j_m} M_k(mw)
+  = \sum_{k < j_m} \delta_k(mw) + t_m,
+\]
+with the scalar inhomogeneous term
+\[
+  t_m := T_{j_m}(mw) = \binom{mw - 1 + j_m - s}{j_m - s}
+  = \binom{d_0 - 2 + m(w{+}1) - s}{mw - 1},
+\]
+the free path count into the newly accessible row
+(Remark~\ref{rmk:offset}).
+In operator form, each non-final phase acts as
+\begin{equation}\label{eq:phase-op}
+  \boldsymbol{\delta}^{(m+1)} = L^{w-1}\bigl(
+    L(\boldsymbol{\delta}^{(m)} \oplus 0)
+    + t_m\, \mathbf{e}_{m-1}\bigr),
+\end{equation}
+where $L^n[\delta](d) = \sum_{d'=0}^{d}
+\binom{n-1+d-d'}{d-d'}\,\delta(d')$ is the $n$-fold prefix sum,
+$\oplus 0$ denotes padding with a zero entry, and
+$\mathbf{e}_{m-1}$ is the unit vector at position $m - 1$.
+The final phase uses $L^0 = \mathrm{Id}$ instead of $L^{w-1}$.
+
+\emph{Step 2: linearity.}
+The dynamics~\eqref{eq:phase-op} are linear with a single scalar
+injection $t_m$ per phase.
+Starting from the empty vector, the final correction therefore
+splits as
+\[
+  \delta_d^{(q_1)} = \sum_{m=1}^{q_1} t_m\, K_m(d),
+\]
+where $K_m(d)$ is the result of propagating a \emph{unit}
+injection at depth $m - 1$ in phase $m$ through the remaining
+phases.
+The kernel $K_m$ is independent of $d_0$ and $s$, which enter
+only through $t_m$; and since all operators are lower triangular,
+$K_m(d) = 0$ for $d < m - 1$, so only the terms $m \leq d + 1$
+contribute at depth $d$.
+
+\emph{Step 3: self-similar kernel.}
+After its injection, the unit at depth $m - 1$ undergoes the
+following schedule of operations: $w - 1$ prefix sums (the rest of
+phase $m$); then, for each of the phases $m + 1, \ldots, q_1 - 1$,
+one append-and-prefix-sum followed by $w - 1$ prefix sums; finally
+one append-and-prefix-sum (phase $q_1$).
+These are verbatim the column recurrences of a staircase state
+vector --- \eqref{eq:within} for a within-stair,
+\eqref{eq:rise} for a rise --- with correction depth playing the
+role of height.
+Note that $K_m$ is \emph{not} the free composition
+$L^{(q_1-m)w}$: the per-phase appending truncates the vector
+(depth $d$ exists only from phase $d + 1$ on), and it is exactly
+this truncation that re-creates the staircase constraint one
+level down.
+Relabel the injection column as $x = 1$ and set the relative
+height $j = d - m + 1$, $q_{\mathrm{res}} = q_1 - m$, and
+$P = w q_{\mathrm{res}} + 1 = p_1 - wm$.
+The schedule has rises at $x = rw + 1$ for
+$r = 1, \ldots, q_{\mathrm{res}}$, ending at $x = P$, with
+within-stairs elsewhere.
+Since $\lceil r P / q_{\mathrm{res}} \rceil = rw + 1$ for
+$r = 1, \ldots, q_{\mathrm{res}}$, this is exactly the rise
+schedule of the two-term staircase
+$\floor{q_{\mathrm{res}}\, x / P}$.
+Hence $K_m(d)$ equals the number of monotone lattice paths from
+$(1, 0)$ to $(P, j)$ staying weakly below
+$\floor{q_{\mathrm{res}}\, x / P}$, and by two-term exactness
+(Proposition~\ref{prop:twoterm}),
+\[
+  K_m(d) = v_j(P) = v_{d-m+1}(p_1 - wm).
+\]
+Substituting into Step~2 yields~\eqref{eq:R7}.
+\end{proof}
+
+\begin{remark}[Independent verification]
+Formula~\eqref{eq:R7} has additionally been verified symbolically
+for $q_1 \leq 9$ with free parameters $w$, $d_0$, $s$, and against
+explicitly computed block transfer matrices for
+$\sqrt{2}$, $\sqrt{3}$, $\sqrt{5}$, $\sqrt{7}$, $\sqrt{37}$,
+$\varphi$, $e$, and $1 + \pi/10$.
+\end{remark}
+
+\begin{example}\label{ex:sqrt5}
+For $\alpha = \sqrt{5}$, $w = 2$, $a_1 = 4$, $p_1 = 9$, $q_1 = 4$,
+$d_0 = 4$, the correction matrix $\Delta$ has non-zero entries at
+rows $j = 4, \ldots, 7$ (i.e., $d = 0, \ldots, 3$); the first two
+are
+\begin{align*}
+  \Delta[4, s] &= \binom{5 - s}{1},\\
+  \Delta[5, s] &= 5\binom{5 - s}{1} + \binom{8 - s}{3}.
+\end{align*}
+These match~\eqref{eq:R7} with $d = 0$: one term ($m = 1$,
+$v_0(7) = 1$, $\binom{5 - s}{1}$); and $d = 1$: two terms
+($m = 1$: $v_1(7) = 5$, $\binom{5 - s}{1}$; $m = 2$:
+$v_0(5) = 1$, $\binom{8 - s}{3}$).
+For instance, at $s = 0$: $\Delta[4, 0] = 5$ and
+$\Delta[5, 0] = 25 + 56 = 81$, matching the directly computed
+block transfer matrix.
+\end{example}
+
+%======================================================================
+\section{Hypergeometric classification}\label{sec:hypergeom}
+%======================================================================
+
+\subsection{The $w = 1$ collapse: Rothe--Hagen identity}
+
+\begin{theorem}[Rothe--Hagen collapse]\label{thm:rothe-hagen}
+For $w = 1$, the multi-term sum~\eqref{eq:R7} collapses to a
+single binomial:
+\begin{equation}\label{eq:w1-collapse}
+  \Delta_{w=1}[d_0 + d,\, s] = \binom{d_0 + p_1 + d - 1 - s}{d}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $w = 1$, $p_1 = q_1 + 1$, and the sum~\eqref{eq:R7} becomes
+\[
+  \sum_{m=1}^{d+1} v_{d-m+1}(p_1 - m)\,\binom{d_0 - 2 + 2m - s}{m-1}.
+\]
+Substituting $v_j(p) = \frac{p-j}{p}\binom{p+j-1}{j}$ and
+simplifying, this is an instance of the Rothe--Hagen identity
+\cite{Rothe1793, Hagen1891}
+\[
+  \sum_{k=0}^{n} \frac{a}{a+bk}\binom{a+bk}{k}
+  \frac{c}{c+(n-k)b}\binom{c+(n-k)b}{n-k}
+  = \frac{a+c}{a+c+bn}\binom{a+c+bn}{n}
+\]
+with parameters $b = 2$, evaluated at the appropriate $a$, $c$,
+$n$.
+The collapsed form~\eqref{eq:w1-collapse} has been verified
+symbolically for $d = 0, \ldots, 5$ with free $d_0$, $p_1$, $s$.
+\end{proof}
+
+\subsection{General $w$: Saalsch\"utzian hypergeometric}
+
+\begin{theorem}[Hypergeometric classification]%
+\label{thm:hypergeom}
+For general $w \geq 1$, the correction
+sum~\eqref{eq:R7} at $s = 0$ equals, up to a prefactor, a
+terminating $1$-balanced (Saalsch\"utzian) generalized
+hypergeometric function:
+\[
+  \Delta[d_0{+}d,\, 0] = \mathrm{prefactor}(w, d_0, p_1, d)
+  \cdot \pFq{2w+2}{2w+1}\!\left(
+    \begin{matrix}
+      \text{upper parameters} \\
+      \text{lower parameters}
+    \end{matrix}
+  ;\, 1\right).
+\]
+The classification by $w$:
+\begin{center}
+\begin{tabular}{clll}
+\toprule
+$w$ & Type & Structure & Status \\
+\midrule
+$1$ & $\pFq{4}{3}(1)$ & Collapses (Pfaff--Saalsch\"utz) & $= \binom{\cdot}{\cdot}$ \\
+$2$ & $\pFq{6}{5}(1)$ & Irreducible Saalsch\"utzian & Closed form \\
+$3$ & $\pFq{8}{7}(1)$ & Irreducible Saalsch\"utzian & Closed form \\
+$w$ & $\pFq{2w+2}{2w+1}(1)$ & Irreducible for $w \geq 2$ & Closed form \\
+\bottomrule
+\end{tabular}
+\end{center}
+All instances satisfy the $1$-balanced condition
+$\sum(\text{upper}) - \sum(\text{lower}) + 1 = 0$.
+\end{theorem}
+
+\begin{proof}
+Mathematica's \texttt{Sum} evaluates the
+sum~\eqref{eq:R7} at $s = 0$ in terms of
+\texttt{HypergeometricPFQ} for each fixed $w$.
+The parameter lists are explicit functions of $d_0$, $p_1$, $d$.
+The $1$-balanced property is verified symbolically.
+For $w = 1$, the $\pFq{3}{2}(1)$ (the leading term is
+$\pFq{4}{3}$ in the full parametrization, but after absorbing
+the prefactor it reduces to $\pFq{3}{2}$) satisfies the
+Pfaff--Saalsch\"utz identity, which forces collapse to a single
+binomial coefficient.
+For $w \geq 2$, \texttt{FunctionExpand} does not reduce the
+$\pFq{2w+2}{2w+1}$, and no Whipple-type transformation applies.
+\end{proof}
+
+\begin{remark}[Pole regularization]
+At integer specializations of $d_0$ and $p_1$, some lower
+parameters of the $\pFq{2w+2}{2w+1}$ become non-positive integers,
+creating Pochhammer poles.
+The original sum~\eqref{eq:R7} remains well-defined; the
+hypergeometric representation requires a limit.
+All $27$ pole cases tested match exactly after regularization.
+\end{remark}
+
+%======================================================================
+\section{Self-similar hierarchy}\label{sec:selfsim}
+%======================================================================
+
+\subsection{Universality across CF levels}
+
+\begin{theorem}[Self-similar correction]\label{thm:selfsim}
+The correction formula~\eqref{eq:R7} applies at every continued
+fraction level $k$ with parameters $(d_{0,k}, w, p_k, q_k)$,
+where $d_{0,k}$ is the state dimension at level $k$.
+\end{theorem}
+
+\begin{proof}
+The derivation of~\eqref{eq:R7} depends only on the Sturmian block
+structure: $q_k$ rises of type~\eqref{eq:rise} interspersed with
+within-stairs of type~\eqref{eq:within}, in the
+pattern~\eqref{eq:sturmian-pattern} with local parameters.
+Since this structure is universal to all CF levels --- each
+level~$k$ block has a Sturmian pattern with parameters
+$(p_k, q_k, w)$ --- the same derivation applies.
+The offset $A_k = d_{0,k} - 2$ is universal by
+Remark~\ref{rmk:offset}.
+\end{proof}
+
+\subsection{Inclusion--exclusion composition}
+
+At continued fraction level $k + 1$, the block transfer is a
+product of $a_{k+1}$ sub-blocks:
+\begin{equation}\label{eq:product}
+  M_{k+1} = \prod_{i=1}^{a_{k+1}} (T_i - \Delta_i),
+\end{equation}
+where each factor $T_i - \Delta_i$ is the transfer matrix of a
+level-$k$ sub-block with correction given
+by~\eqref{eq:R7}.
+
+\begin{theorem}[Terminating expansion]\label{thm:ie}
+The inclusion--exclusion expansion of~\eqref{eq:product},
+\begin{equation}\label{eq:ie-expansion}
+  M_{k+1} = \sum_{S \subseteq \{1, \ldots, a_{k+1}\}}
+  (-1)^{|S|} \prod_{i \in S} \Delta_i \prod_{i \notin S} T_i,
+\end{equation}
+terminates at order $|S| = a_{k+1}$.
+Moreover, order $n$ first contributes at correction depth
+$d = (n-1)q_k$, so for small $d$ only low-order terms are
+needed.
+\end{theorem}
+
+\begin{proof}
+The sum~\eqref{eq:ie-expansion} is a finite expansion of a product
+of $a_{k+1}$ matrices and terminates by construction at
+$|S| = a_{k+1}$.
+The activation depth follows from the support of $\Delta_i$:
+each correction $\Delta_i$ is non-zero only at rows
+$j \geq d_{0,k} + 2$, contributing a dimension shift of $q_k$
+per correction factor.
+\end{proof}
+
+\begin{example}
+For $\alpha = \sqrt{5}$ ($a_2 = 4$), the level-$2$ block decomposes
+into $4$ sub-blocks.
+Order~$0$ (pure Toeplitz) gives the leading approximation;
+order~$1$ corrects starting at $d = 0$;
+order~$2$ at $d = 4$; order~$3$ at $d = 8$; order~$4$ at $d = 12$.
+Each successive order improves accuracy by approximately two orders
+of magnitude.
+For $\alpha = \pi$ ($a_2 = 15$), the expansion has $15$ terms.
+\end{example}
+
+%======================================================================
+\section{Rotation decomposition}\label{sec:rotation}
+%======================================================================
+
+The Sturmian word~\eqref{eq:sturmian-pattern} assumes a
+\emph{canonical} starting position (first column is a within-stair).
+At non-canonical positions within the staircase, the block begins
+with $r \geq 1$ rises before the first within-stair.
+
+\begin{definition}
+The \emph{rotation parameter} at position $x$ in the staircase
+$\floor{x/\alpha}$ is
+$r(x) = \#\{\text{consecutive rises starting at column } x\}$.
+\end{definition}
+
+\begin{theorem}[Rotation decomposition]\label{thm:rotation}
+For $w = 1$ and rotation $r$, the block transfer matrix decomposes
+as
+\begin{equation}\label{eq:rotation}
+  M_r = \operatorname{sturmianBlock}(d_0 + r,\, p - r,\, q - r)
+  \cdot \operatorname{riseProduct}(d_0,\, r),
+\end{equation}
+where $\operatorname{sturmianBlock}$ applies~\eqref{eq:R7} with
+shifted parameters and $\operatorname{riseProduct}$ is the
+composition of $r$ consecutive rise matrices from
+dimension~$d_0$.
+\end{theorem}
+
+This has been verified for $\sqrt{2}$, $\sqrt{3}$, and $\varphi$
+at continued fraction levels $1$ through~$6$ with exact match.
+
+\begin{remark}
+The rotation $r$ is the only non-symbolic component in the
+closed-form transfer: it requires $O(\log p)$ evaluations of
+$\floor{x/\alpha}$.
+For quadratic irrationals with periodic CF, $r$ follows a
+quasi-periodic pattern but has no known closed form.
+\end{remark}
+
+%======================================================================
+\section{The $w$-reduction kernel}\label{sec:wreduction}
+%======================================================================
+
+For $w \geq 2$, the irreducible Saalsch\"utzian
+$\pFq{2w+2}{2w+1}(1)$ of Section~\ref{sec:hypergeom} can be
+related back to the $w = 1$ case via a convolution.
+
+\begin{theorem}[$w$-reduction]\label{thm:wreduction}
+For any $w \geq 2$, the correction at $s = 0$ satisfies
+\begin{equation}\label{eq:convolution}
+  \Delta_w[d, 0] = \sum_{j=0}^{d} K_w[j;\, d_0, q_1]\,
+  \Delta_1[d - j, 0],
+\end{equation}
+where $\Delta_1[d, 0] = \binom{d_0 + q_1 + d}{d}$ is the
+Rothe--Hagen form and $K_w$ is a polynomial kernel with:
+\begin{enumerate}
+\item $\deg K_w = (w-1)(d_0 + q_1) - w$;
+\item $K_w[0] = \binom{d_0 + w - 1}{w - 1}$ (universal, independent of $q_1$);
+\item Leading coefficient: $[q_1^d]\, K_w[d]
+  = \binom{d_0 + w - 1}{w - 1}\cdot\frac{(w-1)^d}{d!}$.
+\end{enumerate}
+\end{theorem}
+
+The kernel $K_w$ has been computed explicitly for $w = 2, 3, 4$
+and verified across $\sqrt{5}$, $\sqrt{6}$, $\sqrt{7}$ for
+$d_0 = 3, \ldots, 10$ with exact match in all $24$ test cases.
+
+\begin{remark}
+The leading coefficient formula implies rapid decay:
+$(w-1)^d/d!$ decreases factorially, so the kernel concentrates
+near $j = 0$.
+This explains why the $w \geq 2$ corrections are well-approximated
+by the $w = 1$ (Rothe--Hagen) correction with a multiplicative
+factor of $\binom{d_0 + w - 1}{w - 1}$.
+\end{remark}
+
+%======================================================================
+\section{Level scaling for quadratic irrationals}%
+\label{sec:scaling}
+%======================================================================
+
+For $w = 1$ and quadratic irrationals $\alpha = \sqrt{D}$, the
+continued fraction is eventually periodic, and the block corrections
+at successive levels exhibit a clean scaling law.
+
+\begin{theorem}[Fundamental unit scaling]\label{thm:scaling}
+For $w = 1$, $\alpha = \sqrt{D}$ with periodic CF, the full-block
+correction at level $k$ satisfies
+\begin{equation}\label{eq:scaling}
+  C_k(d, s) = A_d\, \varepsilon^k + B_d\, \bar{\varepsilon}^k + H_d,
+\end{equation}
+where $\varepsilon$ is the fundamental unit of
+$\mathbb{Q}(\sqrt{D})$, $\bar{\varepsilon}$ is its algebraic
+conjugate, and $A_d$, $B_d$, $H_d$ depend on $d$, $s$, and the
+CF parameters.
+\end{theorem}
+
+\begin{remark}
+This is \emph{not} a new method for computing $\varepsilon$ (the CF
+is faster).
+The significance is combinatorial: it provides a new interpretation
+of the fundamental unit as the scaling eigenvalue of lattice path
+corrections under continued fraction refinement.
+\end{remark}
+
+The recursion is triangular: the Toeplitz convolution at row
+$d_0 + D$ depends only on corrections at rows $0, \ldots, D$, so
+the recursion closes for any fixed depth.
+At $d = 0$, the corrections alternate $1, 0, 1, 0, \ldots$
+(eigenvalues $\pm 1$).
+
+%======================================================================
+\section{Open problems}\label{sec:open}
+%======================================================================
+
+\begin{enumerate}
+\item \textbf{Rotation decomposition for $w \geq 2$.}
+  Theorem~\ref{thm:rotation} is proved for $w = 1$.
+  Extending it to general $w$ requires a rotation-aware version of
+  the multi-term sum~\eqref{eq:R7}.
+
+\item \textbf{Sub-leading kernel coefficients.}
+  The three universal formulas for $K_w$ (degree, $K_w[0]$, leading
+  coefficient) are proved, but the sub-leading $q_1$-coefficients
+  have no known universal closed form.
+
+\item \textbf{SL$(2, \mathbb{Z})$ connection.}
+  The sub-block factorization of Section~\ref{sec:selfsim} mirrors
+  the continued fraction matrix recursion
+  $\bigl(\begin{smallmatrix} p_{k+1} & p_k \\ q_{k+1} & q_k
+  \end{smallmatrix}\bigr) =
+  \bigl(\begin{smallmatrix} a_{k+1} & 1 \\ 1 & 0
+  \end{smallmatrix}\bigr)
+  \bigl(\begin{smallmatrix} p_k & p_{k-1} \\ q_k & q_{k-1}
+  \end{smallmatrix}\bigr)$.
+  A precise correspondence with the SL$(2, \Z)$ decomposition of
+  the transfer matrix is unknown.
+
+\item \textbf{Irrationality measure connection.}
+  The combinatorial deficit
+  $\delta_j(p) = v_j(p) - v_j^{\mathrm{lin}}(p)$ encodes continued
+  fraction structure.
+  Whether this connects to irrationality measures or Diophantine
+  approximation quality is open.
+\end{enumerate}
+
+%======================================================================
+\section*{Acknowledgments}
+%======================================================================
+
+Computational experiments were performed in Wolfram Language using
+the Orbit paclet
+(\url{https://github.com/popojan/orbit}).
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

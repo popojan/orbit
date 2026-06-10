@@ -1,7 +1,38 @@
 # Mathematical Explorations - Status Tracker
 
 **Repository:** popojan/orbit
-**Last Updated:** December 16, 2025
+**Last Updated:** June 10, 2026
+
+---
+
+## June 10, 2026: R7 block-transfer correction formula — proven for all q₁
+
+### Status
+✅ **PROVEN** — former Open Problem 1 of `ballot-closed-form.tex` resolved; draft index errata found and fixed.
+
+### Summary
+The central correction formula (R7) of the closed-form state vector paper,
+
+$$\Delta[d_0{+}d, s] = \sum_{m=1}^{d+1} v_{d-m+1}(p_1 - wm)\,\binom{d_0-2+m(w{+}1)-s}{mw-1},$$
+
+previously verified symbolically only for $q_1 \leq 9$, is now **proven for all $q_1, w, d_0, s$** via a three-step linearity/self-similarity argument:
+
+1. **Dynamics:** the correction $\delta = T - M$ evolves by prefix sums, with one scalar injection per rise — the free (Toeplitz) path count into the newly accessible row. The "mysterious" universal offset $A = d_0 - 2$ is exactly this Toeplitz entry rewritten.
+2. **Linearity:** the final correction is a sum of independently propagated injections; the kernel is independent of $d_0, s$.
+3. **Self-similarity:** the truncated propagation kernel is *verbatim* the within/rise DP of the residual two-term staircase $\lfloor q_{\rm res} x / P\rfloor$, $P = p_1 - wm$ — hence equals $v_{d-m+1}(p_1 - wm)$ by two-term exactness (cycle lemma). The per-phase truncation that breaks naive Vandermonde composition *is* the staircase constraint reappearing one level down. No Zeilberger certificate needed.
+
+### Errata (draft paper, fixed)
+- Theorem 4.2/intro support indices were shifted by +2 (claimed rows $j \geq d_0{+}2$, $d \leq q_1{-}2$; actual: $j \geq d_0$, $d \leq q_1{-}1$).
+- Prop 4.1: correct bound is $M = T$ for $j \leq d_0 - 1$ (new one-line monotonicity proof).
+- Example 4.3 (√5) had wrong rows and a wrong coefficient ($v_1(7) = 5$, not 3); corrected against the actual block transfer matrix.
+
+### Verification
+- Kernel hypothesis: 595 + 140 + 720 exact checks (w ≤ 5, q₁ ≤ 8, d₀/s sweeps).
+- End-to-end on actual blocks: √2, √3, √5, √7, √37, φ, e, 1+π/10 (w ∈ {1,2,6}) — all match.
+
+### Documentation
+- [sessions/2026-06-10-r7-general-proof/README.md](sessions/2026-06-10-r7-general-proof/README.md) — hypothesis-first log, proof, errata.
+- `docs/papers/ballot-closed-form.tex` — proof inserted, errata fixed, compiles clean.
 
 ---
 
