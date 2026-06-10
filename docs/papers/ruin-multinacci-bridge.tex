@@ -14,6 +14,7 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
 
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
@@ -52,6 +53,10 @@ For rational slopes $p/q$, we extend the result using
 Sturmian random walks: $C(p/q)$ is an algebraic number determined by
 the master equation $(2t-1)^q = t^{p+q}$ and a $q \times q$ boundary
 system.
+Martingale arguments on the ruin process give unconditional sandwich
+bounds $\tfrac{1}{2} - 2^{-\alpha} \leq C(\alpha) \leq
+(1 - \rho_0^{\alpha+2})/2$ for all slopes $\alpha > 1$, where
+$\rho_0$ is the smooth ruin root.
 This framework reveals a graph of connections between lattice path
 enumeration, classical ruin theory, and the theory of Pisot numbers,
 linking communities that have studied the same algebraic objects
@@ -153,6 +158,12 @@ number theory and substitution dynamics
 community~\cite{Miles1960, Rauzy1982, DresdenDu2014}.
 Our contribution is the horizontal arrow.
 
+The $k = 2$ case was observed independently by
+Kote\v{s}ovec~\cite{Kotesovec2012}, who computed the asymptotic
+formula $a_2(n) \sim (3 - \sqrt{5})\, 4^n / (2\sqrt{\pi n})$ for
+OEIS~A127927, noting the appearance of the golden ratio without
+connecting it to the ruin equation or the multinacci family.
+
 \medskip\noindent\textbf{Organization.}
 Sections~\ref{sec:lattice}--\ref{sec:multinacci} give self-contained
 introductions to lattice paths, ruin theory, and multinacci constants,
@@ -162,8 +173,9 @@ Section~\ref{sec:bridge} proves the bridge identity for integer slopes.
 Section~\ref{sec:rational} extends the result to rational slopes via
 the master equation.
 Section~\ref{sec:fractal} discusses the function $C(\alpha)$ for
-general real slopes, including convergent approximation and the
-transition to irrational slopes.
+general real slopes, including convergent approximation, the
+transition to irrational slopes, and unconditional sandwich bounds
+obtained by martingale arguments.
 Section~\ref{sec:outlook} collects open questions.
 
 %======================================================================
@@ -653,15 +665,17 @@ The corresponding random walk inherits this periodicity, leading to a
 
 \subsection{Sturmian walks}
 
-The staircase $S(x) = \floor{qx/p}$ increases by either $\floor{q/p}$
-or $\ceil{q/p}$ at each step.
-The \emph{rise sequence}
+For the ruin analysis it is convenient to transpose the picture and
+follow the \emph{gap} between the path and the barrier as a function
+of the number of right-steps taken.
+The gap gained per right-step is governed by the transposed staircase
+$\floor{p\,\tau/q}$, whose \emph{rise sequence}
 \[
-r_j = S(j+1) - S(j) = \floor{p(j+1)/q} - \floor{pj/q},
+r_j = \floor{p(j+1)/q} - \floor{pj/q},
 \qquad j = 0, 1, 2, \ldots
 \]
-takes values in $\{\floor{p/q}, \ceil{p/q}\}$ and has period~$q$
-with $\sum_{j=0}^{q-1} r_j = p$.
+takes values in $\{\floor{p/q}, \ceil{p/q}\}$, has period~$q$,
+and satisfies $\sum_{j=0}^{q-1} r_j = p$.
 This is a \emph{Sturmian word}~\cite{Lothaire2002}: a binary sequence
 of minimal complexity (exactly $n+1$ distinct subwords of length~$n$).
 
@@ -675,14 +689,23 @@ The rise sequence is $(r_0, r_1, r_2) = (1, 2, 2)$: one short step
 followed by two long steps per period.
 \end{example}
 
-The key difference from integer slopes is that a right-step at
-position $x$ increases the gap $s = S(x) - y$ (distance below the
-barrier) by $r_{x \bmod q}$, not by a fixed constant~$k$.
-Each right-step contributes $+r_j$ to the gap (where $j$ is the
-current phase $x \bmod q$) and each up-step contributes $-1$,
-exactly as before.
+The key difference from integer slopes is that a right-step
+increases the gap~$s$ (distance below the barrier) by $r_j$, where
+$j$ is the current phase, not by a fixed constant~$k$; each up-step
+contributes $-1$, exactly as before.
 The walk thus has \emph{position-dependent steps}: the step size
 depends on the phase $j \in \{0, 1, \ldots, q-1\}$.
+Starting from $s_0 = \floor{p/q}$ in phase $j_0 = 1$ (the initial
+state used in the definition of $C(p/q)$,
+eq.~\eqref{eq:C-rational}), the prefix sums of the rise sequence
+telescope to an explicit \emph{gap process}: after $\tau$
+right-steps and $u$ up-steps,
+\begin{equation}\label{eq:gap-process}
+  s \;=\; \floor{\alpha(\tau + 1)} - u,
+  \qquad \alpha = \frac{p}{q}.
+\end{equation}
+This identity is the basis of the unconditional bounds in
+Section~\ref{sec:fractal}.
 
 \subsection{Periodic ruin recursion}
 
@@ -755,13 +778,36 @@ After removing the trivial root $t = 1$, equation~\eqref{eq:master}
 has degree $p + q - 1$.
 
 \begin{proposition}\label{prop:q-roots}
-The master equation has exactly $q$ roots with $|t| < 1$.
+The master equation~\eqref{eq:master} has exactly $q$ roots
+with $|t| < 1$ (after removing the root $t = 1$).
 \end{proposition}
 
-This has been verified computationally for all coprime pairs $(p, q)$
-with $p + q \leq 12$.
-A proof via Rouch\'e's theorem applied to the sectors of the unit
-disk is in preparation.
+\begin{proof}
+Consider the family $P_\lambda(t) = (2t-1)^q - \lambda\, t^{p+q}$
+for $\lambda \in [0, 1]$.
+At $\lambda = 0$, $P_0$ has a root of multiplicity~$q$ at $t = 1/2$,
+inside the unit disk.
+
+For $\lambda \in [0, 1)$, no root lies on the unit circle:
+on $|t| = 1$ with $t = e^{i\theta}$,
+$|2t - 1|^2 = 5 - 4\cos\theta > 1$ for $\theta \neq 0$,
+so $|(2t-1)^q| > 1 \geq \lambda = \lambda\,|t|^{p+q}$;
+at $t = 1$, $P_\lambda(1) = 1 - \lambda \neq 0$.
+By the continuity of roots, the number of roots
+inside the open unit disk is constant on $[0, 1)$, hence equals~$q$.
+
+At $\lambda = 1$, the root $t = 1$ appears on the boundary.
+By the implicit function theorem,
+$t(\lambda) \approx 1 + (1-\lambda)/(p-q)$
+near $\lambda = 1$ (since $P_1'(1) = 2q - (p+q) = q - p < 0$),
+so for $\lambda < 1$ this root satisfies $t(\lambda) > 1$:
+it approaches $t = 1$ from \emph{outside} the unit disk.
+Therefore $P_1(t) = (2t-1)^q - t^{p+q}$ retains exactly $q$ roots
+with $|t| < 1$.
+Since $t = 1$ is a simple root of $P_1$ (as $P_1'(1) \neq 0$),
+the reduced polynomial $P_1(t)/(t-1)$ of degree $p + q - 1$
+inherits all $q$ sub-unit roots.
+\end{proof}
 
 Let $t_1, \ldots, t_q$ denote the sub-unit roots.
 The general solution of the ruin recursion is
@@ -881,7 +927,9 @@ slope $\alpha \in (1, \infty)$.
 Its basic properties are:
 
 \begin{enumerate}
-\item \textbf{Monotonicity:} $C$ is strictly increasing.
+\item \textbf{Monotonicity:} $C$ is strictly increasing
+  (Lemma~\ref{lem:mono} proves the non-strict version at the walk
+  level).
   A steeper barrier is easier to avoid, so more paths survive.
 \item \textbf{Boundary values:} $C(1) = 0$ (barrier on the diagonal
   --- Catalan regime, certain ruin) and
@@ -916,6 +964,58 @@ slopes with denominators up to~$12$.
   legend pos=south east,
   legend style={font=\footnotesize},
 ]
+% --- Sandwich bounds ---
+% Lower bound: C(alpha) >= 1/2 - 2^{-alpha} (Prop 6.2, proven for alpha >= 3/2)
+\addplot[domain=1:4.1, samples=80, smooth, green!50!black, thin]
+  {0.5 - 2^(-x)};
+% Intermediate smooth references (log-linear family 1/2 - 2^{-(alpha+k)})
+\addplot[domain=1:4.1, samples=80, smooth, green!50!black, thin,
+  densely dotted]
+  {0.5 - 2^(-(x+1))};
+\addplot[domain=1:4.1, samples=80, smooth, green!50!black, thin,
+  densely dashed]
+  {0.5 - 2^(-(x+2))};
+% C_smooth(alpha) = 1 - rho_0(alpha), conjectured upper bound (Conj 6.2)
+% Exact at integer slopes; computed parametrically from rho^{alpha+1}=2rho-1
+\addplot[smooth, red!50!black, thin]
+  coordinates {
+    (1.000, 0.000)
+    (1.010, 0.010)
+    (1.026, 0.025)
+    (1.054, 0.050)
+    (1.078, 0.070)
+    (1.104, 0.090)
+    (1.132, 0.110)
+    (1.162, 0.130)
+    (1.195, 0.150)
+    (1.230, 0.170)
+    (1.269, 0.190)
+    (1.311, 0.210)
+    (1.358, 0.230)
+    (1.409, 0.250)
+    (1.467, 0.270)
+    (1.533, 0.290)
+    (1.607, 0.310)
+    (1.693, 0.330)
+    (1.795, 0.350)
+    (1.916, 0.370)
+    (1.985, 0.380)
+    (2.000, 0.382)
+    (2.063, 0.390)
+    (2.151, 0.400)
+    (2.250, 0.410)
+    (2.364, 0.420)
+    (2.498, 0.430)
+    (2.657, 0.440)
+    (2.851, 0.450)
+    (3.000, 0.456)
+    (3.099, 0.460)
+    (3.431, 0.470)
+    (3.649, 0.475)
+    (3.922, 0.480)
+    (4.000, 0.481)
+  };
+
 % Data from survey_C_low.tsv + survey_C_alpha.tsv + survey_C_detail.tsv
 % Combined and sorted, showing the fractal kink structure
 \addplot[only marks, mark=*, mark size=0.8pt, blue!70!black]
@@ -1040,15 +1140,27 @@ slopes with denominators up to~$12$.
 \node[red!70!black, font=\footnotesize, anchor=south west]
   at (axis cs:3.02,0.458) {$k\!=\!3$};
 
+% Bound labels
+\node[green!50!black, font=\footnotesize, anchor=north west]
+  at (axis cs:1.55,0.15) {$\frac{1}{2} - 2^{-\alpha}$};
+\node[red!50!black, font=\footnotesize, anchor=south east]
+  at (axis cs:3.9,0.485) {$C_{\mathrm{smooth}}$};
+
 \end{axis}
 \end{tikzpicture}
-\caption{The asymptotic constant $C(\alpha)$ as a function of slope,
-computed at rational slopes $p/q$ with $q \leq 12$.
-Large red dots mark integer slopes (the $k$-nacci values
-$C_k = 1 - 1/\tau_k$).
-Visible kinks occur at integers (largest), half-integers,
-third-integers, etc.
-The dashed line is the asymptote $C = 1/2$.}
+\caption{The asymptotic constant $C(\alpha)$ (blue dots, computed at
+rational slopes $p/q$ with $q \leq 12$) with sandwich bounds.
+The lower bound $\tfrac{1}{2} - 2^{-\alpha}$
+(Proposition~\ref{prop:lower-bound}, solid green) and the
+conjectured upper bound $C_{\mathrm{smooth}}(\alpha) = 1 - \rho_0$
+(Conjecture~\ref{conj:upper-bound}, solid dark red, exact at
+integer slopes) frame all data points.
+The two intermediate curves $\tfrac{1}{2} - 2^{-(\alpha+k)}$ for
+$k = 1, 2$ (dotted/dashed green) correspond to parallel lines in
+the log-linearization $\ln(1/(1/2 - C))$ and track the staircase
+plateaus.
+Large red dots mark integer slopes
+($C_k = 1 - 1/\tau_k$).}
 \label{fig:C-alpha}
 \end{figure}
 
@@ -1182,35 +1294,111 @@ master equation breaks down: the Sturmian word is aperiodic, the
 transfer operator becomes infinite-dimensional, and the
 ``$q \times q$ boundary system'' has $q = \infty$.
 
-Although no exact equation is known for $C(\alpha)$ at irrational
-slopes, the integer-slope ruin equation extends to a universal
-upper bound.
+\subsection{Sandwich bounds via the gap process}
 
-\begin{proposition}[Smooth upper bound]\label{prop:upper-bound}
-For all real $\alpha > 1$,
+Although no exact equation is known for $C(\alpha)$ at irrational
+slopes, the explicit gap process~\eqref{eq:gap-process} yields
+unconditional bounds.
+Throughout, $\rho(\alpha)$ denotes the probability that the gap
+$s_t = \floor{\alpha(\tau_t + 1)} - u_t$ ever reaches $-1$ under
+fair coin flips, so that $C(p/q) = (1 - \rho(p/q))/2$ for rational
+slopes; for irrational~$\alpha$ the same walk is defined verbatim.
+
+\begin{lemma}[Monotonicity]\label{lem:mono}
+For real slopes $\alpha < \alpha'$, the ruin probabilities satisfy
+$\rho(\alpha') \leq \rho(\alpha)$.
+In particular $C(p/q) \leq C(p'/q')$ for rational slopes
+$p/q < p'/q'$.
+\end{lemma}
+
+\begin{proof}
+Couple the two walks on the same sequence of coin flips, so that
+$\tau_t$ and $u_t$ agree.
+By~\eqref{eq:gap-process}, $s_t(\alpha) = \floor{\alpha(\tau_t + 1)}
+- u_t$ is pointwise non-decreasing in~$\alpha$, so every ruin path
+for $\alpha'$ is a ruin path for~$\alpha$.
+\end{proof}
+
+\begin{lemma}[Exponential ruin bound]\label{lem:lundberg}
+For every real $\alpha > 1$,
 \[
-C(\alpha) \leq C_{\mathrm{smooth}}(\alpha) \coloneqq 1 - \rho_0(\alpha),
+\rho(\alpha) \;\leq\;
+\exp\!\left(-\,\frac{4\alpha(\alpha-1)}{(\alpha+1)^2}\right),
+\qquad\text{hence}\qquad
+C(\alpha) \;\geq\; L(\alpha) :=
+\frac{1}{2}\left(1 - e^{-4\alpha(\alpha-1)/(\alpha+1)^2}\right).
+\]
+\end{lemma}
+
+\begin{proof}
+Let $X_t = \tau_t - u_t$, a simple $\pm 1$ random walk, so that
+$\tau_t = (t + X_t)/2$.
+From $\floor{x} \geq x - 1$ and~\eqref{eq:gap-process},
+\[
+s_t \;\geq\; \alpha(\tau_t + 1) - 1 - u_t
+\;=\; \frac{\alpha+1}{2}\,X_t + \frac{\alpha-1}{2}\,t + (\alpha - 1).
+\]
+Ruin requires $s_t \leq -1$ at some~$t$, hence
+$Y_t := X_t + \varepsilon t \leq -a$ with
+\[
+\varepsilon = \frac{\alpha-1}{\alpha+1},
+\qquad
+a = \frac{2\alpha}{\alpha+1}.
+\]
+For $\theta = 2\varepsilon$ the process $e^{-\theta Y_t}$ is a
+supermartingale: each step multiplies its conditional expectation by
+$e^{-\theta\varepsilon}\cosh\theta \leq 1$, since
+$\ln\cosh\theta \leq \theta^2/2 = \theta\varepsilon$.
+Stopping at the first time $T$ with $Y_T \leq -a$, optional stopping
+gives $e^{\theta a}\,\mathbb{P}(T \leq n) \leq
+\mathbb{E}\bigl[e^{-\theta Y_{T \wedge n}}\bigr] \leq 1$ for
+every~$n$, so
+$\rho \leq e^{-\theta a} = \exp(-4\alpha(\alpha-1)/(\alpha+1)^2)$.
+\end{proof}
+
+The integer-slope ruin equation suggests, in addition, a natural
+smooth upper bound.
+
+\begin{definition}[Smooth envelope]\label{def:smooth}
+For real $\alpha > 1$, define
+\[
+C_{\mathrm{smooth}}(\alpha) \coloneqq 1 - \rho_0(\alpha),
 \]
 where $\rho_0(\alpha) \in (0,1)$ is the unique root of
 $\rho^{\alpha+1} = 2\rho - 1$.
-Equality holds if and only if $\alpha$ is a positive integer.
-\end{proposition}
+\end{definition}
 
-\begin{proof}[Sketch]
-For integer $k$, the equation $\rho^{k+1} = 2\rho - 1$ \emph{is} the
-ruin equation, so equality holds.
-For rational $\alpha = p/q$ with $q \geq 2$, the smooth equation
-$\rho^{(p+q)/q} = 2\rho - 1$ raises to $\rho^{p+q} = (2\rho - 1)^q$,
-which is the master equation~\eqref{eq:master-intro}.
-Its root $\rho_0$ is therefore a root of the master equation.
-However, the master equation has $p + q - 1$ additional roots,
-and the boundary system selects a linear combination that yields
-$C(p/q) < 1 - \rho_0$.
-The strict inequality has been verified numerically for all
-rational slopes $p/q$ with $q \leq 12$.
-For irrational~$\alpha$, continuity gives
-$C(\alpha) = \lim C(p_k/q_k) \leq C_{\mathrm{smooth}}(\alpha)$.
-\end{proof}
+By Theorem~\ref{thm:bridge}, $C_{\mathrm{smooth}}(k) = C_k$ for every
+integer $k \geq 2$: the smooth envelope interpolates the $k$-nacci
+values analytically.
+
+\begin{conjecture}[Smooth upper bound]\label{conj:upper-bound}
+For all real $\alpha > 1$,
+\[
+C(\alpha) \leq C_{\mathrm{smooth}}(\alpha),
+\]
+with equality if and only if $\alpha$ is a positive integer.
+\end{conjecture}
+
+The algebraic mechanism behind the conjecture is clear for rational
+slopes.
+For $\alpha = p/q$ with $q \geq 2$, the smooth equation
+$\rho_0^{(p+q)/q} = 2\rho_0 - 1$, raised to the $q$-th power, gives
+$\rho_0^{p+q} = (2\rho_0 - 1)^q$: the smooth root $\rho_0$ is a
+root of the master equation~\eqref{eq:master}, hence one of the $q$
+sub-unit roots (Proposition~\ref{prop:q-roots}).
+However, the phase amplitudes~\eqref{eq:amplitudes} for $\rho_0$
+satisfy $A_j^{(1)} = \rho_0^{d_j}$, where
+$d_j = jp/q - \sum_{m<j} r_m$ measures the deviation of the Sturmian
+word from uniform spacing.
+For $q \geq 2$, these amplitudes vary non-trivially with~$j$, so
+the single-root ansatz $\rho(s, j) \propto \rho_0^s$ cannot satisfy
+all $q$ boundary conditions~\eqref{eq:boundary} simultaneously:
+the remaining sub-unit roots enter with non-zero coefficients.
+This boundary mixing has produced strict inequality
+$C(p/q) < 1 - \rho_0$ in every case tested
+(all coprime $(p, q)$ with $q \leq 12$), but a proof that the
+mixing always acts in this direction is open.
 
 \begin{remark}
 The function $C_{\mathrm{smooth}}(\alpha)$ interpolates
@@ -1236,14 +1424,80 @@ is largest just below integer slopes, where the staircase effect
 is most pronounced.
 \end{remark}
 
+While Conjecture~\ref{conj:upper-bound} remains open, a weaker
+upper bound of the same shape follows unconditionally from the gap
+process.
+
+\begin{proposition}[Unconditional upper bound]%
+\label{prop:upper-unconditional}
+For every real $\alpha > 1$,
+\[
+C(\alpha) \;\leq\; U(\alpha) :=
+\frac{1 - \rho_0(\alpha)^{\alpha+2}}{2},
+\]
+where $\rho_0(\alpha)$ is the sub-unit root of
+$\rho^{\alpha+1} = 2\rho - 1$ (Definition~\ref{def:smooth}).
+\end{proposition}
+
+\begin{proof}
+Let $\sigma_t := \alpha(\tau_t + 1) - u_t$ be the \emph{smooth gap};
+by $\floor{x} \leq x$ and~\eqref{eq:gap-process}, $s_t \leq \sigma_t$
+pointwise under the same coin flips, so
+$\rho \geq \psi := \mathbb{P}(\sigma_t \leq -1 \text{ for some } t)$.
+The process $\rho_0^{\sigma_t}$ is a martingale: each step
+multiplies its conditional expectation by
+$\tfrac{1}{2}\bigl(\rho_0^{\alpha} + \rho_0^{-1}\bigr)
+= \rho_0^{-1} \cdot \tfrac{1}{2}\bigl(\rho_0^{\alpha+1} + 1\bigr)
+= \rho_0^{-1} \cdot \tfrac{1}{2}\bigl(2\rho_0 - 1 + 1\bigr) = 1$.
+Let $T$ be the first time $\sigma \leq -1$.
+Before $T$ the martingale is bounded by $\rho_0^{-1}$, and on
+survival $\sigma_t \to \infty$ almost surely (the smooth gap has
+deterministic drift $(\alpha-1)/2 > 0$ per step), so
+$\rho_0^{\sigma_t} \to 0$; optional stopping with dominated
+convergence gives
+$\rho_0^{\alpha} = \mathbb{E}\bigl[\rho_0^{\sigma_T};\, T < \infty
+\bigr]$.
+Down-steps have size one, so $\sigma_T \in (-2, -1]$ and
+$\rho_0^{\sigma_T} \leq \rho_0^{-2}$, whence
+$\rho_0^{\alpha} \leq \rho_0^{-2}\,\psi$.
+Therefore $\rho \geq \psi \geq \rho_0^{\alpha+2}$ and
+$C = (1 - \rho)/2 \leq (1 - \rho_0^{\alpha+2})/2$.
+\end{proof}
+
+\begin{remark}[Distance to the conjecture]
+Since $\rho_0^{\alpha+1} = 2\rho_0 - 1$, the conjectured bound can
+be rewritten as
+$C_{\mathrm{smooth}} = 1 - \rho_0 = (1 - \rho_0^{\alpha+1})/2$.
+The unconditional bound $U = (1 - \rho_0^{\alpha+2})/2$ differs by
+exactly one factor of $\rho_0$ in the exponent --- the price of the
+overshoot in the coupling: the smooth walk crosses level $-1$
+without hitting it.
+Removing this factor is precisely the content of
+Conjecture~\ref{conj:upper-bound}.
+\end{remark}
+
 \begin{proposition}[Lower bound]\label{prop:lower-bound}
-For all $\alpha \geq 3/2$,
+For all $\alpha > 1$,
 \[
 C(\alpha) \geq \frac{1}{2} - 2^{-\alpha}.
 \]
 \end{proposition}
 
 \begin{proof}
+\textbf{Case 0: $1 < \alpha < 2$.}
+By Lemma~\ref{lem:lundberg} it suffices to show
+$L(\alpha) \geq \tfrac{1}{2} - 2^{-\alpha}$, which is equivalent to
+$4\alpha(\alpha-1)/(\alpha+1)^2 \geq (\alpha-1)\ln 2$, i.e.\ to
+\[
+h(\alpha) := 4\alpha - \ln 2\,(\alpha+1)^2 \;\geq\; 0.
+\]
+The function $h$ is concave, with $h(1) = 4 - 4\ln 2 > 0$ and
+$h(2) = 8 - 9\ln 2 > 0$, so $h > 0$ on $[1, 2]$.
+(The same computation shows that $L(\alpha) \geq \tfrac12 -
+2^{-\alpha}$ holds up to $\alpha \approx 3.48$, the larger root
+of~$h$.)
+
+\smallskip\noindent
 \textbf{Case 1: $\alpha \geq 2$.}
 Let $\floor{\alpha} = k \geq 2$ and set $\rho^* = 1/2 + 2^{-k}$.
 Evaluating the ruin polynomial:
@@ -1257,46 +1511,38 @@ $(1 + 2^{1-k})^{k+1} \leq e < 4$,
 giving $f(\rho^*) \leq (e - 4) \cdot 2^{-(k+1)} < 0$.
 Since $f(0) = 1 > 0$ and $\rho_0$ is the unique root in $(0,1)$,
 we get $\rho_0 < \rho^*$, hence $C(k) > 1/2 - 2^{-k}$.
-By monotonicity of~$C$:
+By monotonicity (Lemma~\ref{lem:mono}):
 $C(\alpha) \geq C(k) > 1/2 - 2^{-k} \geq 1/2 - 2^{-\alpha}$.
-
-\smallskip\noindent
-\textbf{Case 2: $\alpha \in [3/2, 2)$.}
-By monotonicity, $C(\alpha) \geq C(3/2)$.
-The palindromic minimal polynomial~\eqref{eq:C32-poly} evaluates to
-$9/4096 > 0$ at $x = 1/4$, and has no real root below $C(3/2)$,
-so $C(3/2) > 1/4$.
-Since $1/4 = 1/2 - 2^{-2} \geq 1/2 - 2^{-\alpha}$ for $\alpha < 2$,
-the bound follows.
 \end{proof}
 
-\begin{remark}[Conjectured extension to all $\alpha > 1$]
-Numerical evidence strongly supports the lower bound
-$C(\alpha) \geq 1/2 - 2^{-\alpha}$ for all $\alpha > 1$, with equality
-only at $\alpha = 1$.
-An asymptotic analysis of the master equation
-$(2t-1)^q = t^{2q+1}$ for slopes $(q+1)/q$ near the phase transition
-shows that $q \cdot C((q+1)/q) \to 1$ as $q \to \infty$
-(the boundary system converges to a DFT, and only the principal
-ruin root contributes).
-Since $1 > (\ln 2)/2$, this would close the remaining gap on
-$(1, 3/2)$ via a partition argument with the concavity of
-$1/2 - 2^{-\alpha}$.
+\begin{remark}[Sharpness near the phase transition]
+For slopes $(q+1)/q$, Lemma~\ref{lem:lundberg} gives
+$q\,C((q+1)/q) \geq \tfrac{1}{2}(1 - o(1))$ as $q \to \infty$.
+A (non-rigorous) asymptotic analysis of the master equation
+$(2t-1)^q = t^{2q+1}$ near the phase transition suggests the sharp
+limit $q\,C((q+1)/q) \to 1$ (the boundary system converges to a
+DFT, and only the principal ruin root contributes), consistent with
+the numerics; the factor lost by Lemma~\ref{lem:lundberg} is the
+floor slack in~\eqref{eq:gap-process}.
 \end{remark}
 
-Combined with Proposition~\ref{prop:upper-bound}, we obtain:
+The bounds combine into an unconditional sandwich:
 
 \begin{corollary}[Sandwich bounds]\label{cor:sandwich}
-For all $\alpha \geq 3/2$,
+For all $\alpha > 1$,
 \[
 \frac{1}{2} - 2^{-\alpha} \;\leq\; C(\alpha)
-\;\leq\; 1 - \rho_0(\alpha),
+\;\leq\; \frac{1 - \rho_0(\alpha)^{\alpha+2}}{2},
 \]
 where $\rho_0(\alpha)$ is the sub-unit root of
-$\rho^{\alpha+1} = 2\rho - 1$.
-Both bounds converge to $1/2$ exponentially as $\alpha \to \infty$;
-the upper bound is tight at integer slopes, the lower bound at
-$\alpha = 1$.
+$\rho^{\alpha+1} = 2\rho - 1$
+(Propositions~\ref{prop:lower-bound}
+and~\ref{prop:upper-unconditional}).
+If Conjecture~\ref{conj:upper-bound} holds, the upper bound improves
+to $1 - \rho_0(\alpha) = (1 - \rho_0(\alpha)^{\alpha+1})/2$, which is
+tight at integer slopes.
+All bounds converge to $1/2$ exponentially as $\alpha \to \infty$;
+the lower bound is tight at $\alpha = 1$.
 \end{corollary}
 
 \begin{remark}[Approximation by algebraic numbers]
