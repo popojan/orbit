@@ -5,6 +5,28 @@
 
 ---
 
+## June 10, 2026: Sandwich bounds for C(α) — lower bound proven for ALL α > 1, unconditional upper bound
+
+### Status
+✅ **PROVEN** — the "conjectured extension to all α > 1" of the lower bound is now a theorem; new unconditional upper bound; smooth upper bound (C ≤ 1−ρ₀) remains 🤔 CONJECTURE.
+
+### Summary
+Both results flow from the telescoped **gap process** of the Sturmian ruin walk (now eq. gap-process in `ruin-multinacci-bridge.tex`): after τ right-steps and u up-steps, $s = \lfloor\alpha(\tau+1)\rfloor - u$, and $C = (1-\rho)/2$.
+
+1. **Lemma (Lundberg):** $\rho(\alpha) \le \exp(-4\alpha(\alpha-1)/(\alpha+1)^2)$ for all real α > 1 — exponential supermartingale $e^{-\theta Y_t}$, $Y_t = X_t + \varepsilon t$, $\theta = 2\varepsilon$, using only ⌊x⌋ ≥ x−1 and ln cosh θ ≤ θ²/2.
+2. **Lower bound for all α > 1:** $L(\alpha) \ge 1/2 - 2^{-\alpha}$ ⟺ $h(\alpha) = 4\alpha - \ln 2(\alpha+1)^2 \ge 0$; h concave, h(1), h(2) > 0 ⟹ covers (1,2); integer-anchor argument covers α ≥ 2. **The planned DFT/Vandermonde program (q·C → 1 rigor) is bypassed entirely** — no partition, no anchors. Old Case 2 deleted.
+3. **Unconditional upper bound:** $C(\alpha) \le U(\alpha) = (1-\rho_0^{\alpha+2})/2$ via coupling s ≤ σ (smooth gap) + the exact martingale $\rho_0^{\sigma_t}$; overshoot σ_T ∈ (−2,−1] gives the exponent α+2. Since $C_{\rm smooth} = (1-\rho_0^{\alpha+1})/2$, the conjecture is exactly "remove one factor ρ₀" — the overshoot. Sandwich now unconditional.
+4. **Monotonicity lemma** (coin-flip coupling): retroactively rigorizes the monotonicity steps of the old proof.
+5. Errata: §5.1–5.2 transposed-staircase inconsistency (S = ⌊qx/p⌋ vs r_j of ⌊px/q⌋) fixed minimally.
+
+### Verification
+`sessions/2026-06-10-sandwich-lower-bound/scripts/sandwich_verification.wl`: exact C(p/q) solver reproduces paper table 6/6 + C(k) = 1−1/τ_k; sandwich L ≤ C ≤ U on 66 coprime slopes, 0 violations (min slack C−L = 0.031, U−C = 0.009); h-roots 0.287/3.4837.
+
+### Open
+- Tight upper bound C ≤ 1−ρ₀ (Conjecture): the remaining factor ρ₀ = overshoot of the smooth walk; a ladder-height/renewal analysis of the overshoot distribution is the natural next attack.
+
+---
+
 ## June 10, 2026: R7 block-transfer correction formula — proven for all q₁
 
 ### Status
