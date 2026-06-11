@@ -409,6 +409,37 @@ function up to exponentially small corrections — value level
 $C(p/q)$ on the right, level $C^-(p/q) = (1-\tilde\rho)/2$ on the left,
 jump algebraic.
 
+## Part 6: Theorem 0 — the foundation is now unconditional
+
+The note (`c-alpha-one-sided-regularity.tex`, now 6 pp) gained the missing
+base of the chain:
+
+- **Theorem 0 (path-count identification):**
+  $a_\alpha(n)/\binom{2n-1}{n-1} \to \sigma(\alpha)$ for **every** real
+  $\alpha > 1$, with error $O(\log^2 n / n)$. Proof: prefix-comparison
+  lemma (bridge vs free measure differs by $1 + O(T^2/n)$ on
+  $T$-step prefixes — binomial ratio estimate) + bridge late-ruin lemma
+  (hypergeometric $\tau_t$ + Hoeffding's sampling-without-replacement
+  inequality gives $e^{-cT}$) + the free late-contact lemma. So
+  $C(\alpha) = \sigma(\alpha)/2$ exists for all slopes — including
+  irrationals, making Theorem C a statement about a genuine function.
+- **Nonsingularity proposition:** the $q$-dim space of decaying interior
+  solutions, evaluated at the boundary, is injective by a
+  martingale-uniqueness argument (bounded martingale, $h \to 0$ on both
+  absorption and escape) — so the (standard and sharpened) boundary
+  systems are nonsingular and compute the probabilistic ruin functions.
+  The last inherited assumption is gone.
+- 🔬 Rate check (`15_theorem0_rate_check.wl`, α = 3/2): $n \cdot$err
+  $= 0.6164, 0.6193, 0.6208, 0.6215, 0.6219$ at $n = 50..800$ — the true
+  error is asymptotically $\approx 0.622/n$, consistent with (sharper
+  than) the proven bound, and explains why the $1/n$-fit estimators in
+  the survey scripts work.
+- Bridge paper: remark added after eq. (C-rational) — the Definition is
+  now a theorem; the 20-digit table is an implementation check.
+
+**The full chain — path counts → survival → boundary systems → left-jump
+closed form, right flatness, irrational continuity — is self-contained.**
+
 ## Open directions (gate-checked)
 
 1. **Exact sum rules / pure-jump question:** $J(p/q)$ is now computable
@@ -421,10 +452,11 @@ jump algebraic.
    $q \approx 15$–$20$ at $\alpha \approx 1.4$) asymptotically.
 3. **Closed form for the contraction rate $\mu(\alpha)$** (time-direction
    spectral quantity behind the $e^{-\kappa/\varepsilon}$ laws; measured
-   0.90–0.96 per column).
-4. **Nonsingularity of the (modified) boundary system** — the one
-   assumption inherited from the paper's framework; a proof would make
-   Theorems A–C unconditional at the ruin level.
+   0.90–0.96 per column); same circle: the clean $1/n$-correction constant
+   of Theorem 0 (≈ 0.622 at 3/2).
+4. **Publication shape:** the note now carries five self-contained
+   results; decide whether it stays a companion note or merges into the
+   bridge survey as a proofs section.
 
 ### Considered and rejected (2026-06-11)
 

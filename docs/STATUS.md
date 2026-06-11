@@ -32,8 +32,11 @@ Follow-up on the Egyptian-telescoping TV map (Σ_∞ = (TV+frac)/2) and Jan's in
 ### Late evening: right flatness + formal proofs (TeX note)
 12. **Right side resolved + proofs formalized:** new 4pp note `docs/papers/c-alpha-one-sided-regularity.tex` — column-gain lemma (right perturbation recedes to infinity: first change at m ≥ 1/(qε)) + Chernoff late-contact lemma ⟹ **Theorem A** (left limit = sharpened-barrier constant, exponential approach), **Theorem B** (0 ≤ C(p/q+ε)−C(p/q) ≤ Ae^{−κ/ε}: flat to infinite order from the right), **Theorem C** (continuity at every irrational, stretched-exponential modulus by Diophantine type). Rigorous at survival level; transfer to C inherits the paper's C = σ/2 identification (verified 20+ digits, not yet proven — flagged in the note). H-R1 ✅: measured per-column rates 0.93/0.90/0.96 (3/2, 5/3, 4/3) below Chernoff bounds. Bridge paper bullets updated to cite the proven bounds.
 
+### Night cap: Theorem 0 — foundation unconditional
+13. **Path-count identification PROVEN:** a_α(n)/binom(2n−1,n−1) → σ(α) for every real α > 1, error O(log²n/n) (prefix-comparison + Hoeffding sampling-without-replacement + free Chernoff). **Nonsingularity of the boundary systems PROVEN** (martingale uniqueness). The whole chain — path counts → survival → boundary systems → left-jump closed form, right flatness, irrational continuity — is now self-contained; the 20-digit tables demote to implementation checks. Rate check at 3/2: n·err → 0.622 (clean 1/n, sharper than the bound). Note grew to 6 pp; bridge paper Definition (C-rational) upgraded to theorem status via remark.
+
 ### Verification
-`docs/sessions/2026-06-11-tv-map-c-alpha-kinks/scripts/01–14` (TV exact q≤40; boundary-system one-sided ladders; DP cross-checks at n ≫ word period — n.b. script 07's K=50 DP check was invalid by design, n < period, see session README; closed form 25/25 + 6×10⁻¹¹ precision test + exact algebra for 3/2; right-flatness rates script 14).
+`docs/sessions/2026-06-11-tv-map-c-alpha-kinks/scripts/01–15` (TV exact q≤40; boundary-system one-sided ladders; DP cross-checks at n ≫ word period — n.b. script 07's K=50 DP check was invalid by design, n < period, see session README; closed form 25/25 + 6×10⁻¹¹ precision test + exact algebra for 3/2; right-flatness rates script 14; Theorem 0 rate check script 15).
 
 ### Open
 - Formalize the coupling proof of C⁻ = (1−ρ̃)/2; exact sum rules / pure-jump question (continuous part of C zero?); decay law of c(α,q) via Cramer one-row perturbation asymptotics; right-derivative 0 via spectral gap.
