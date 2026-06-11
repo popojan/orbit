@@ -440,23 +440,42 @@ base of the chain:
 **The full chain — path counts → survival → boundary systems → left-jump
 closed form, right flatness, irrational continuity — is self-contained.**
 
+## Part 7: Renewal formula, μ(α), and the pure-jump verdict
+
+Directions 1–3 closed in one stroke — see
+[jump-decay-and-rates.md](./jump-decay-and-rates.md):
+
+- **Renewal formula (exact identity, H-S3 ✅):**
+  $J = H_0(s_0,j_0)(1-\rho(0,0))/(2h(0,0))$ via Sherman–Morrison on the
+  one differing boundary row; machine-precision on 10 rationals;
+  collapses to the proven integer formula at $q = 1$. All decay lives in
+  $H_0$ = probability of ruin at a phase-0 column.
+- **Decay law (H-S2 ✅):** $J \approx B(\alpha)\,\mu(\alpha)^q q^{-3/2}$
+  with the Cramér rate
+  $\mu(\alpha) = (\alpha+1)^{\alpha+1}/(2^{\alpha+1}\alpha^\alpha)$;
+  √2-family to $q = 169$: $\mu_{\rm emp} = 0.96466$ vs theory $0.96492$
+  (**2.7×10⁻⁴**); the $c/q^2$ plateau is pre-asymptotic, crossover
+  $q^* \sim (\alpha-1)^{-2}$ — retro-explains the unimodal $q^2J$
+  profile. Same μ matches the right-flatness ladder rates (0.2–0.3%).
+- **Pure jump (H-S1 ✅):** exact sum rule $q \leq 60$ covers 95.10% of
+  $\Delta C$; tail extrapolation with theoretical μ gives continuous
+  part $= 6.6{\times}10^{-6} \approx 0.03\%$ of $\Delta C$ — **zero
+  within error**. On the tested interval
+  $C(\beta) - C(\alpha) = \sum_{r \in (\alpha,\beta]} J(r)$:
+  C is the strictly increasing pure-jump sibling of TV.
+
 ## Open directions (gate-checked)
 
-1. **Exact sum rules / pure-jump question:** $J(p/q)$ is now computable
-   exactly for any rational — redo the local sum rule with exact jumps to
-   large $q$ and test whether the continuous part of C is 0
-   (C = pure jump function, the monotone sibling of TV).
-2. **Decay law of $c(\alpha, q)$, now algebraic:** $J = (\tilde\rho - \rho)/2$
-   is a one-row perturbation — Cramer's rule gives $J$ as a determinant
-   ratio in the root data; derive the plateau + decay (onset
-   $q \approx 15$–$20$ at $\alpha \approx 1.4$) asymptotically.
-3. **Closed form for the contraction rate $\mu(\alpha)$** (time-direction
-   spectral quantity behind the $e^{-\kappa/\varepsilon}$ laws; measured
-   0.90–0.96 per column); same circle: the clean $1/n$-correction constant
-   of Theorem 0 (≈ 0.622 at 3/2).
-4. **Publication shape:** the note now carries five self-contained
-   results; decide whether it stays a companion note or merges into the
-   bridge survey as a proofs section.
+1. **Prove pure-jump** (analytic summation of the renewal jump law over
+   Farey fractions).
+2. **Prove μ(α)** (local LDP for the killed periodic column chain — the
+   formula is the standard Cramér tilt, machinery exists).
+3. **The 0.622 constant** of Theorem 0's $1/n$ term — same spectral
+   circle, underived.
+4. **Publication shape** (Jan): the note carries Theorem 0,
+   nonsingularity, Theorems A–C, the closed form, renewal formula, μ(α),
+   and the pure-jump evidence — decide companion note vs merge into the
+   bridge survey.
 
 ### Considered and rejected (2026-06-11)
 
@@ -485,5 +504,9 @@ closed form, right flatness, irrational continuity — is self-contained.**
 - `scripts/11_integer_closed_form.wl` — C⁻(k) = (τ_k−1)/2 to machine precision (k = 3, 4)
 - `scripts/12_general_left_limit_formula.wl` — sharpened-barrier closed form vs all 25 measured left limits
 - `scripts/13_formula_precision_test.wl`, `scripts/13b_exact_J32.wl` — 10⁻¹¹ precision test; exact algebraic J(3/2)
+- `scripts/14_right_flatness_rate.wl`, `scripts/15_theorem0_rate_check.wl` — exponential right rates; Theorem 0 rate (n·err → 0.622)
+- `scripts/16_exact_sum_rule.wl`, `scripts/17_sqrt2_family_decay.wl`, `scripts/18_renewal_identity.wl` — pure-jump sum rule; μ(α) confirmation; renewal identity
 - [`left-limit-closed-form.md`](./left-limit-closed-form.md) — derivation, proof strategy, verification, erratum #2
+- [`jump-decay-and-rates.md`](./jump-decay-and-rates.md) — renewal formula, Cramér rate μ(α), pure-jump verdict
+- `../../papers/c-alpha-one-sided-regularity.tex` — the formal note (Theorem 0, nonsingularity, Theorems A–C)
 - Parent sessions: [Egyptian telescoping](../2026-04-01-egyptian-telescoping-revisited/README.md), [boundary correction](../2026-04-13-boundary-correction/INTERPOLATION-SCHEME.md), [polynomial invariants](../2026-04-11-polynomial-invariants/README.md)
