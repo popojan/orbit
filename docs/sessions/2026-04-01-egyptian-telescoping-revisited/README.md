@@ -283,22 +283,67 @@ each unit fraction is itself an infinite process.**
 | $\sqrt{2}-1$ | $0.51717\ldots$ | $0.10296\ldots$ | $= 0.41421\ldots$ ✓ |
 | $\varphi - 1$ | $1.19596\ldots$ | $0.57792\ldots$ | $= 0.61803\ldots$ ✓ |
 
+### The reduction: total variation identity (added 2026-06-11)
+
+$\Sigma_\infty$ is the sum of the odd-indexed convergent differences and
+$\Sigma_{\text{tail}}$ the sum of the absolute even-indexed ones (Result 3).
+Summing and differencing the two parity classes:
+
+$$\Sigma_\infty + \Sigma_{\text{tail}} = \sum_{n} |c_n - c_{n-1}|
+= \sum_{n} \frac{1}{q_{n-1} q_n} =: \mathrm{TV}(\alpha), \qquad
+\Sigma_\infty - \Sigma_{\text{tail}} = \alpha - a_0$$
+
+$$\boxed{\;\Sigma_\infty = \frac{\mathrm{TV}(\alpha) + (\alpha - a_0)}{2},
+\qquad
+\Sigma_{\text{tail}} = \frac{\mathrm{TV}(\alpha) - (\alpha - a_0)}{2}\;}$$
+
+Here $\mathrm{TV}(\alpha)$ — the **total variation of the convergent
+sequence** — is taken in the even-length CF convention, which the algorithm
+enforces via its odd-case tuple $(q_{n-1},\, q_n - q_{n-1},\, 1)$, i.e., the
+$[\ldots, a_n - 1, 1]$ canonicalization (see
+`docs/papers/egyptian-fractions-telescoping.tex`, CF–Egypt Bijection).
+
+✅ Verified exactly against `EgyptianFractions[·, Method -> "Raw"]` for
+$q = 2/3, 5/8, 7/11, 13/21, 8/13, 1/6, 4/17, 16/113$, and to ~28 digits for
+$\varphi - 1$ and $\sqrt{2} - 1$ (`verify-tv-identity.wl`).
+
+**Consequence:** the pair $(\Sigma_\infty, \Sigma_{\text{tail}})$ carries
+exactly one scalar of information beyond $\alpha$ itself — $\mathrm{TV}(\alpha)$.
+The "difference of two infinities" is precisely the parity split of the
+convergent differences.
+
 ### Key property: CF prefix determines the fulls
 
 $5/8$ and $7/11$ share the CF prefix $[0; 1, 1, 1, \ldots]$ and therefore
 have the **same** $\Sigma_\infty = 7/6$. They differ only in their tails.
 Numbers with the same CF prefix live in the same "infinite neighborhood."
 
-### The two new constants
+### The two constants (corrected 2026-06-11: affine images of known constants)
 
 For $\sqrt{2}$: $\;\Sigma_\infty = \sum_{k=1}^{\infty} \frac{1}{P_{2k-1} P_{2k}}$
 where $P_n$ are Pell denominators $(1, 2, 5, 12, 29, 70, \ldots)$.
-Converges to $\approx 0.51717\ldots$ — not a recognized constant.
+Converges to $\approx 0.51717\ldots$
 
 For $\varphi$: $\;\Sigma_\infty = \sum_{k=1}^{\infty} \frac{1}{F_{2k-1} F_{2k}}$
-where $F_n$ are Fibonacci numbers.
-Converges to $\approx 1.19596\ldots$ — possibly a new constant related to
-Fibonacci reciprocal sums.
+where $F_n$ are Fibonacci numbers. Converges to $\approx 1.19596\ldots$
+
+**Neither is new** (original claims "not a recognized constant" / "possibly a
+new constant" retracted). By the TV identity above, both are affine images of
+the reciprocal-products-of-consecutive-denominators constants:
+
+$$\Sigma_\infty(\varphi) = \frac{H_F + 1/\varphi}{2}, \qquad
+H_F = \sum_{n=1}^{\infty} \frac{1}{F_n F_{n+1}} = 1.7738775832851323\ldots
+= \text{OEIS A290565}$$
+
+(digit match verified 2026-06-11; A290565 "sum of reciprocal golden rectangle
+numbers" lists only integral/Lambert-type formulas — no elementary closed form
+is known).
+
+$$\Sigma_\infty(\sqrt{2}) = \frac{H_P + (\sqrt{2}-1)}{2}, \qquad
+H_P = \sum_{n=1}^{\infty} \frac{1}{P_n P_{n+1}} = 0.6201348780682487\ldots$$
+
+$H_P$ is **not in OEIS** (decimal search 2026-06-11) — submission candidate.
+Both identities verified to ~28 digits in `verify-tv-identity.wl`.
 
 ### The three levels of infinity
 
@@ -400,9 +445,12 @@ $$\boxed{F_{2k+1}\,F_{2k+2} - F_{2k-1}\,F_{2k} = F_{4k+1}}$$
 The indices $5, 9, 13, 17, 21, 25, 29, \ldots$ form an arithmetic progression
 with step 4. Verified for $k = 1, \ldots, 7$.
 
-**Status:** ✅ NUMERICALLY VERIFIED. Likely provable from the Fibonacci
-multiplication formula $F_m F_n + F_{m-1} F_{n-1} = F_{m+n-1}$ or the
-Vajda identity. Not yet checked against literature.
+**Status:** ✅ PROVEN (upgraded 2026-06-11). Two lines: the telescoping
+identity $F_i F_{i+1} - F_{i-1} F_i = F_i^2$ gives
+$F_{2k+1} F_{2k+2} - F_{2k-1} F_{2k} = F_{2k}^2 + F_{2k+1}^2$, and the
+classical identity $F_n^2 + F_{n+1}^2 = F_{2n+1}$ (at $n = 2k$) yields
+$F_{4k+1}$. The identity is the sum-of-two-consecutive-squares identity in
+disguise — classical (Vajda/Koshy family), no literature novelty.
 
 This identity governs the **differences** of consecutive terms in the
 $\varphi$-split series: $a_k - a_{k+1} = F_{4k+1} / (F_{2k-1} F_{2k} F_{2k+1} F_{2k+2})$.
@@ -411,30 +459,62 @@ $\varphi$-split series: $a_k - a_{k+1} = F_{4k+1} / (F_{2k-1} F_{2k} F_{2k+1} F_
 
 ## Open Questions
 
-1. **Closed form for $\Sigma_\infty(\sqrt{2})$?** The sum
-   $\sum 1/(P_{2k-1}P_{2k})$ over Pell pairs — does it have a nice form
-   involving $\sqrt{2}$?
+**Reviewed 2026-06-11** through the Socratic gate-keeping / channel-match
+lenses (CLAUDE.md protocol). Original Q1, Q2, Q4 closed — see "Considered and
+rejected" below; Q3 survives in sharpened form.
 
-2. **Closed form for $\Sigma_\infty(\varphi)$?** The sum
-   $\sum 1/(F_{2k-1}F_{2k})$ — related to the reciprocal Fibonacci constant?
+1. **The TV map** (sharpened from old Q3). By the TV identity (Result 7), the
+   split map $\alpha \mapsto (\Sigma_\infty, \Sigma_{\text{tail}})$ is the
+   affine graph of the single function
+   $\mathrm{TV}(\alpha) = \sum_n 1/(q_{n-1} q_n)$ — all structural questions
+   about the split reduce to this one function.
+   Hypotheses (pre-registered before testing; **settled same day**, see
+   [2026-06-11-tv-map-c-alpha-kinks](../2026-06-11-tv-map-c-alpha-kinks/README.md)):
+   - continuous at every irrational — ✅ PROVEN;
+   - jump discontinuity at every rational — ✅ PROVEN, exact law: right-continuous,
+     left jump $2/((q-q^*)q)$ with sign $(-1)^n$ ($q^* = q_{n-1}$);
+   - nowhere monotone — ✅ PROVEN (both jump signs dense);
+   - maximized on $(0,1)$ uniquely at $\varphi - 1$ with value $H_F$ = A290565 — ✅ PROVEN
+     (continuant monotonicity);
+   - overall character: Minkowski-?-like singular function — ❌ CORRECTED:
+     TV is a right-continuous **jump function of unbounded variation**
+     (? is continuous); ?-like flatness instead shows up in $C(\alpha)$
+     from the right.
+   Bonus identities: $\Sigma_{\text{tail}} = \sum_{n\geq1}|\alpha - p_n/q_n|$
+   (total convergent approximation error), placing TV in the **error-sum
+   function family** (Ridley & Petruska, Indag. Math. 11(2):273–282, 2000;
+   Baruchel–Elsner arXiv:1602.06445, split denominators with $b_m = 1$).
+   Follow-up discovery in the same session: $C(\alpha)$ from the
+   Beatty/ballot setting shares the regularity class — right-continuous with
+   left jumps $\approx 0.12/q^2$ at rationals (DP-validated), falsifying the
+   continuity claim in `ruin-multinacci-bridge.tex`.
 
-3. **The split as a map:** The function $\alpha \mapsto (\Sigma_\infty, \Sigma_{\text{tail}})$
-   maps reals to pairs of positive reals with $\Sigma_\infty > \alpha - a_0$.
-   What are its properties? Is it continuous? Monotone?
+### Considered and rejected (2026-06-11)
 
-4. **Connection to D(s,w):** The two-variable Dirichlet series from the prime
-   interference session had the integral representation
-   $D(s,w) = \frac{1}{\Gamma(w)}\int_0^\infty t^{w-1}[\text{Li}_s(e^{-t}) - e^{-t}]^2\,dt$.
-   Does the telescoping split have an analogous integral form?
+- **Closed forms for $\Sigma_\infty(\sqrt{2})$ and $\Sigma_\infty(\varphi)$**
+  (old Q1, Q2): RESOLVED BY REDUCTION. The TV identity gives
+  $\Sigma_\infty(\varphi) = (H_F + 1/\varphi)/2$ with $H_F$ = OEIS A290565
+  (studied; no elementary closed form known) and
+  $\Sigma_\infty(\sqrt{2}) = (H_P + \sqrt{2} - 1)/2$ with
+  $H_P = \sum 1/(P_n P_{n+1})$ not in OEIS. A closed form is exactly as hard
+  as for the classical consecutive-Fibonacci-product constant; nothing
+  Egypt-specific remains. (Optional follow-up: submit $H_P$ to OEIS.)
+- **Connection to $D(s,w)$** (old Q4): channel mismatch. $D(s,w)$ integrates a
+  smooth symmetric kernel over the full $(i,j)$ lattice; the telescoping split
+  selects CF-determined, best-approximation-sparse $(u_k, v_k)$ that no smooth
+  kernel sees. The per-tuple analytic home already exists:
+  $\zeta(s, 1 + u/v)$ with its classical Hurwitz integral representation
+  (proven in [TAIL-EULER-PRIMORIAL.md](./TAIL-EULER-PRIMORIAL.md)).
 
 ---
 
 ## Files
 
 - `README.md` — this document (main Egyptian fractions discoveries)
-- **[`TAIL-EULER-PRIMORIAL.md`](./TAIL-EULER-PRIMORIAL.md)** — **NEW (2026-04-01)** Tailů jednotkových zlomků, Euler-suma, primoriální struktura, inverzní formule
-- `tail_inversion_formula.wl` — Praktické demo: jak počítat tailů analyticky skrz Zetu
+- **[`TAIL-EULER-PRIMORIAL.md`](./TAIL-EULER-PRIMORIAL.md)** — Tail power sums, Hurwitz zeta, primorial structure, splitf, ζ-optimization
+- `tail_inversion_formula.wl` — Analytický výpočet partial tail sums přes Zetu
 - `verify-trigamma.wl` — Ověření closed form Σ(tail_m)^s = ψ^(s-1)(1+u/v)/v^(2s)
+- `verify-tv-identity.wl` — TV identita Σ_∞ = (TV+frac)/2 vs Orbit Raw tuples; non-uniqueness formátu (šest single-tuple reprezentací 1/6); redukce konstant na A290565 / H_P (2026-06-11)
 - [`../2026-02-19-prime-interference-moire/algebraic-exploitation.md`](../2026-02-19-prime-interference-moire/algebraic-exploitation.md) — parent session (prime interference)
 
 ## New Discovery: Primorial Structure in Tail Euler Sums
@@ -458,3 +538,42 @@ For any split at index N:
 $$T_N(s) = \sum_{m=N+1}^{\infty} (\text{tail}_m)^s = \left(\frac{1}{v^2}\right)^s \left[\zeta(s, 1+u/v) - \sum_{k=1}^{N} \frac{1}{(u/v+k)^s}\right]$$
 
 This combines the closed form (Zeta/PolyGamma) with a finite correction, enabling **analytical computation** of truncation tails without summing to infinity. Verified numerically to machine precision for s=2,3,4.
+
+### Duality: Tail → Polygamma, Truncated → Digamma
+
+The identity $\text{trunc}_m + \text{tail}_m = 1/n$ lifts to a duality on the level of series:
+
+- **Tail power sum**: $\sum \text{tail}_m^s = \zeta(s, 1+u/v)/v^{2s}$ → **polygamma** ($\psi', \psi'', \ldots$)
+- **Truncated Dirichlet**: $\sum \text{trunc}_m/m^2 = [\psi(1+u/v) + \gamma]/u^2$ → **digamma** + Euler $\gamma$
+- **Connection**: $D_\text{trunc} + D_\text{tail} = \zeta(s)/n$
+
+### ζ as Optimization Criterion for Recursive Splits
+
+$\zeta(2, 1+u/v)$ perfectly ranks factorizations by quality (Spearman=1 on semiprimes ≤ 500). ζ-guided greedy-head recursion gives 8-212× improvement in max denominator over trivial splits for unit fractions.
+
+**Limitations**: ζ degrades along recursion (head denominators lose factorizability). For $p/q$ with $p>1$, CF-based Orbit remains superior. Does not help with Erdős–Straus (#terms reduction requires merging, not splitting).
+
+### Inductive Closed Form Egyptian Fractions (no factorization needed)
+
+Greedy step on $p/N$ gives remainder $r < p$. By induction on $p$:
+- $p=1$: trivial (unit fraction)
+- $p=2$: always 2 terms: $\frac{2}{2m+1} = \frac{1}{m+1} + \frac{1}{(2m+1)(m+1)}$
+- $p=3$: 2–3 terms depending on $N \bmod 6$ (explicit formulas for all cases)
+- $p=k$: at most $k$ terms, building on all $r < k$
+
+This is the greedy algorithm viewed inductively, producing **explicit closed-form formulas without factorization**. Trade-off: denominators grow doubly-exponentially vs. CF/Orbit's polynomial growth.
+
+### Best-k: Hybrid faktorizace + greedy indukce
+
+Key new result: instead of greedy's $k = \lceil N/p \rceil$, choose $k$ that **shares a factor with $N$**.
+For $N = d \cdot e$, setting $k = \lceil N/(pd) \rceil \cdot d$ gives remainder divisible by $d$, dramatically reducing denominators.
+
+Examples: $4/77 = 1/22 + 1/154$ (2 terms, max=154 vs Orbit's 4 terms, max=4466), $8/49 = 1/7 + 1/49$ (2 terms vs Orbit's 8 terms).
+
+Best-k is the first method combining closed-form explicitness, small denominators, few terms, and guaranteed termination.
+
+**Bicriterion CRT selection** (key theoretical result): for $N = \prod p_i^{a_i}$, assign each prime power to either $\gcd(k, N)$ or $\gcd(p{-}k, N)$ side. CRT solves for $k$. Search space: $2^{\omega(N)} \sim (\log N)^{0.7}$ candidates (Hardy–Ramanujan), independent of $p$. No arbitrary limits.
+
+Prototype: `EgyptianFractions[q, Method -> "BestK"]` in Orbit paclet.
+
+See [`TAIL-EULER-PRIMORIAL.md`](./TAIL-EULER-PRIMORIAL.md) for full analysis.

@@ -1,7 +1,35 @@
 # Mathematical Explorations - Status Tracker
 
 **Repository:** popojan/orbit
-**Last Updated:** June 10, 2026
+**Last Updated:** June 11, 2026
+
+---
+
+## June 11, 2026: C(α) has LEFT JUMPS at rationals (not kinks); TV map fully resolved
+
+### Status
+TV side ✅ PROVEN; C side 🔬 NUMERICALLY VERIFIED (DP-validated to ~6 digits) — **falsifies the continuity claim in `ruin-multinacci-bridge.tex` (~line 354), erratum needed.**
+
+### Summary
+Follow-up on the Egyptian-telescoping TV map (Σ_∞ = (TV+frac)/2) and Jan's intuition that its singular character resembles C(α):
+
+1. **TV theorems (all pre-registered hypotheses settled):** right-continuous; left jump at every rational of exact magnitude 2/((q−q*)q), sign (−1)^n; continuous at irrationals; nowhere monotone; unique max H_F = A290565 at noble numbers; unbounded variation. New identity: Σ_tail = Σ|α − p_n/q_n| (total convergent approximation error).
+2. **Literature resolved:** TV is an affine transform of the *unweighted* error-sum function — family introduced by Ridley & Petruska (Indag. Math. 11(2):273–282, 2000), split-denominator generalization Baruchel–Elsner arXiv:1602.06445. H_P = Σ1/(P_nP_{n+1}) not in OEIS (submission candidate).
+3. **C(α) discovery:** at every rational tested (3/2, 4/3, 5/3, 6/5, 7/5, 8/5, 10/7), C is **right-continuous with a left jump** J ≈ (0.11–0.14)/q²; right-derivative ≈ 0. E.g. lim_{x→3/2⁻} C = 0.224566 vs C(3/2) = 0.251848. Validated against BeattyBallotCount DP (no phase artifact). Jump law depends on the full Sturmian word: J(7/5) ≠ J(8/5) at identical (q, q*).
+4. **Summability paradox (open):** monotone bounded C forces ΣJ < ∞, but measured c = q²J does not decay through q ≤ 7 — decay must set in for deeper words; discriminating q=13 row experiment designed.
+5. **Bridge verdict:** TV and C share the regularity class (right-continuous, left anomalies at ℚ graded by denominator, same two-CF-representation mechanism) but admit **no functional relation** (jump-ratio mismatch; word- vs (q,q*)-dependence).
+
+### Afternoon continuation (same day)
+6. **Paper corrected:** `ruin-multinacci-bridge.tex` — continuity claim replaced by right-continuity + left-jump hierarchy; new subsection "Left jumps at rationals" with measured table, summability constraint, right-flatness; compiles clean (19 pp).
+7. **Integer closed form (NEW):** 🔬 C⁻(k) = (τ_k−1)/2, i.e. J(k) = (τ_k−1)/(2τ_k^{k+1}), equivalently 1−2C⁻(k) = ρ_k^k (k-th POWER of the ruin probability) — machine precision at k=3,4; J(k) ~ 2^{−(k+2)}. Phase-rotation closed form for C⁻(p/q) falsified (all rotations ≥ C; natural phase j₀ = min).
+8. **q=13 row + methodological fix:** Aitken on non-uniform K-ladders is invalid (caught via an increasing sequence "converging" below itself); re-extraction gives smooth unimodal c(α) = q²J profile (peak ≈ 0.18 at α ≈ 1.2), mild word fine structure, NO strong word dependence (H-E1 was an artifact).
+9. **Summability resolved in principle:** local sum rule on (27/20, 29/20]: eight measured jumps = 60.1% of ΔC = 0.0263; budget forces decay of c by q ≈ 46. Measured: c(q=20) = 0.108, c(q=29) = 0.1006 vs plateau 0.136–0.148 (q ≤ 13, same CF family) — decay onset q ≈ 15–20, local exponent J ~ q^{−2.3} ⟹ jump mass summable. Precise decay law open.
+
+### Verification
+`docs/sessions/2026-06-11-tv-map-c-alpha-kinks/scripts/01–11` (TV exact q≤40; boundary-system one-sided ladders; DP cross-checks at n ≫ word period — n.b. script 07's K=50 DP check was invalid by design, n < period, see session README).
+
+### Open
+- Prove C⁻(k) = (τ_k−1)/2 (renewal/defect argument at density-zero defect epochs); closed form for general C⁻(p/q); pure-jump question (is the continuous part of C zero?); decay law of c(α,q) beyond the plateau; right-derivative 0 via spectral gap.
 
 ---
 
@@ -55,6 +83,172 @@ previously verified symbolically only for $q_1 \leq 9$, is now **proven for all 
 ### Documentation
 - [sessions/2026-06-10-r7-general-proof/README.md](sessions/2026-06-10-r7-general-proof/README.md) — hypothesis-first log, proof, errata.
 - `docs/papers/ballot-closed-form.tex` — proof inserted, errata fixed, compiles clean.
+
+---
+
+## May 29, 2026: Square-root nomograph reads as a 2D dipole
+
+### Status
+🔬 **NUMERICALLY VERIFIED** — three algebraic identities confirmed by `FullSimplify`; closed (no follow-ups).
+
+### Summary
+The geometric picture behind the $\sqrt{}$ construction (intersection of the n-circle through $(-1,0)$ and $(n,0)$ with the |z|-circle of radius $n^m$) admits a clean electrostatic reading:
+
+- **n-foliation = 2D electric dipole at $(-1,0)$**: $1/(n+1) = \operatorname{Re}(1/(z+1))$, harmonic (Laplacian zero) — so the n-circles are the dipole equipotentials.
+- **m-field = log-ratio of two harmonic potentials**: $\log|z| = m\,\log n$, where $\log|z|$ is the origin-monopole potential.
+- **Rectifying chart**: in $(\xi,\eta) = (\log|z|,\log n)$, every $m$-isoline is a straight ray through the origin and every $n$-isoline is a horizontal line.
+
+Also clarified an in-session error: the m-isolines have no asymptotic ray of finite slope; they asymptote (for $1/2 < m < 1$) to the algebraic curve $Y^2 \sim X^{2m/(2m-1)}$, with coefficient $1$ (verified for $m = 2/3, 3/4, 4/5, 15/16$).
+
+### Documentation
+- [sessions/2026-05-29-nomograph-dipole/README.md](sessions/2026-05-29-nomograph-dipole/README.md) — full writeup with the dipole identity, rectifying chart, and figure.
+- `scripts/01-verify-isolines.wl` — algebraic identity + asymptotic checks.
+- `scripts/02-dipole-check.wl` — dipole equipotential identity, harmonicity, and $\log|z| = m\log n$.
+- `scripts/03-figure-dipole-nomograph.wl` — Cartesian vs rectified two-panel figure.
+
+### Scope
+No new theorem; a unification of nomograph / Möbius / electrostatics viewpoints on the existing picture. Does not make non-constructible roots (odd $q$) classically constructible — the Wantzel obstruction is intrinsic to the m-coordinate.
+
+---
+
+## May 3, 2026: `FactorChebyshevProbe` — Lucas-V on the divisor hyperbola
+
+### Status
+🔬 **NUMERICALLY VERIFIED** — 7/7 identity tests pass; 313/313 across the suite.
+
+### Summary
+Bridge function added to `Orbit/Kernel/SquareRootRationalizations.wl`:
+
+```mathematica
+FactorChebyshevProbe[j_, n_, k_] := ChebyshevT[k, (j + n/j)/(2 Sqrt[n])]
+```
+
+This is the algebraic shadow of the Lucas-V sequence $V_k(j) = j^k + (n/j)^k$
+on the divisor hyperbola $xy = n$, expressed via the existing Chebyshev kernel.
+
+Three load-bearing identities (all tested in `Tests/SquareRootRationalizations.wlt`):
+
+1. **Factor symmetry:** `FactorChebyshevProbe[p, n, k] == FactorChebyshevProbe[q, n, k]` for any divisor pair $n = pq$ and any $k$.
+2. **Hyperbolic factor angle at $k=1$:** reduces to $\cosh(\frac12 \log(q/p))$ — analogue of Pell's regulator on the divisor hyperbola.
+3. **Pell recovery:** at $j = x_1 + y_1 \sqrt{d}$ on $x^2 - dy^2 = 1$ with $n=1$, recovers $x_k = T_k(x_1)$.
+
+### Context
+Crystallized from a discussion of why the original $\rho$-based factor probe
+detects $n = pq$. Two structural observations: (i) stripped of $\sin(\pi\cdot)$,
+$\rho$ is cosmetic — the detection lives entirely in the involution $j \leftrightarrow n/j$
+and the identity $j(c-j) = n$; (ii) the Hartley constant $7/4$ in `CircFunctions`
+and the constant in $\rho$ are the same self-dual centering. The probe is the
+multiplicative-line counterpart of the additive-circle `Circ` machinery, sharing
+the same Chebyshev kernel as Pell.
+
+### Documentation
+- [sessions/2026-05-03-factor-chebyshev-probe/README.md](sessions/2026-05-03-factor-chebyshev-probe/README.md) — motivation, identities, open directions.
+
+### Open directions (from session README)
+- ~~Lucas reformulation of `ForFactiMod`~~ → **Resolved 2026-05-04**: running-product gives `~28×` speedup at 8-digit n (`~3.16×/decade`, consistent with `O(n)→O(√n)`); "Lucas" framing falsified — it's a first-order multiplicative recurrence, not Lucas-V. See `D1-running-product-forFactiMod.md`. Paclet integration deferred pending user decision.
+- ~~Egyptian decomposition characterization at $c = p+q$~~ → **Falsified 2026-05-04**: CF↔EF equivalence and single-tuple criterion (`(p+q) | (pq-1)` iff `q² ≡ -1 mod p+q`) rule out factor recovery. Two independent theoretical reasons, 20 empirical cases. EF probes value, not factorization. See `D2-egyptian-decomposition.md`.
+- ~~Dirichlet-character probe analogue~~ → **Killed by gate 2026-05-04**: $\chi \bmod n$ vanishes on divisors of $n$ by definition of $(\mathbb{Z}/n\mathbb{Z})^*$. Channel-mismatch — no compute needed. See `D3-D4-gate-keeping.md`.
+- ~~Explicit `Circ`-bridge accessor~~ → **Killed by gate 2026-05-04**: bridge requires $\log j$ (transcendental on integers), breaking both exact channels. Verbal observation is the right form. See `D3-D4-gate-keeping.md`.
+
+### Protocol updates (2026-05-04)
+
+**First tightening:** extended trigger to cover follow-up on previously-listed open directions; added check #5 **Channel match**. Trial run on session §§4–5 caught both dead ends in <10 minutes via check #5 alone.
+
+**Second tightening (pre-write):** apply gate at *drafting time* — every candidate must pass all 5 checks before entering an Open Directions list. Killed candidates go to a "Considered and rejected" subsection with one-sentence reason. When check #5 kills a direction, optionally extract the *deeper question* the original intent was gesturing at. Empty active list is a valid outcome — better than padding. Cost moves from follow-up to drafting; user reads a shorter, higher-signal list.
+
+**Retrospective on this session:** of 6 originally-listed open directions, 1 confirmed (D1, with retraction of "Lucas" framing), 1 trivially confirmed (D3, collapses to existing function), 1 falsified (D2), 2 killed by gate (D4, D5), 1 parked vague (D6). Three of six (D2, D4, D5) would have been caught by Channel Match at write time — exactly the pre-write tightening's target. Session retained as cautionary example of un-gated speculation.
+
+---
+
+## May 1, 2026: $L_{\mathrm{Eis}}(s)$ — Pole structure verified, direction closed
+
+### Status
+
+✅ **NUMERICALLY VERIFIED** — Closes direction 5.4 from `2026-05-01-LM-cheatsheet-review/A_n_definition_and_geometry.md`.
+
+### Summary
+
+Continuation of Primal Forest / cheatsheet review. The Eisenstein-like cosecant sum
+$$\mathrm{Eis}(n) = \sum_{\substack{d=2\\ d\nmid n}}^{\lfloor\sqrt n\rfloor}\frac{\pi^2}{d^2\sin^2(\pi r_d/d)}$$
+has Dirichlet series $L_{\mathrm{Eis}}(s) := \sum \mathrm{Eis}(n)/n^s$.
+
+**Established (numerically verified to ≥ 4 digits):**
+- Absolute convergence for $\Re(s) > 1$.
+- Exact swap-of-sums formula: $L_{\mathrm{Eis}}(s) = \pi^2\sum_{d\ge 2} d^{-s-2}\sum_{r=1}^{d-1}\csc^2(\pi r/d)\,\zeta(s, d+r/d)$.
+- **Double pole at $s=1$ with coefficient $\pi^2/6$**.
+- **Simple pole coefficient $\pi^2(\gamma-\zeta(3))/3 \approx -2.056$**.
+- Tauberian: $\sum_{n\le m}\mathrm{Eis}(n)/n \sim (\pi^2/12)\log^2 m + c_1 \log m + K + o(1)$ with empirical $K \approx 1.768$ (regular part, not pursued analytically).
+- $L_{\mathrm{Eis}}(s)$ is **not** a multiple of $\zeta^2(s)$: same double-pole strength but the simple-pole coefficient encodes $\zeta(3)$-data structurally distinct from $(\pi^2/6)\gamma_1$.
+
+**Not pursued (per Trinity protocol):**
+- Riemann-style functional equation — same failure mode as retracted $L_M$ FE (no Euler product, no machinery).
+- Closed form for $K \approx 1.768$.
+- Modular interpretation, prime-side asymptotic for $\mathrm{Eis}(p)$ — separate open questions.
+
+### Follow-up: $L_{\rm EOP}(s, M)$ and $\sigma$-family
+
+Continued the same evening. The bounded smoothing $\mathrm{EOP}(n, M) = \sum_d 1/(1+Md^2\sin^2(\pi n/d))$ (the $e$-outside form of `consolidated_summary.md` §3.2) interpolates between $\lfloor\sqrt n\rfloor-1$ ($M=0$) and $M(n)$ ($M=\infty$).
+
+- **Closed form** $c_2(M) = \coth(1/\sqrt M)/(2\sqrt M)$ for double pole of $L_{\rm EOP}(s, M)$ at $s=1$. Verified numerically to 99.8% across $M \in \{1, 4, 16, 100, 1000\}$. Limits: $c_2(\infty) = 1/2$ matches $L_M$.
+- **Mellin in $M$** gives one-parameter family $L_\sigma(s)$ for $\sigma \in (0, 1)$ via $\widetilde{\mathrm{EOP}}(n, \sigma) = \int M^{\sigma-1}\mathrm{EOP}\,dM$.
+- **Phase transition at $\sigma=1/2$**: pole order at $s=1$ jumps from double ($\sigma > 1/2$) to **TRIPLE** ($\sigma = 1/2$) and back to simple+separated ($\sigma < 1/2$). The triple pole at $\sigma = 1/2$ has coefficient $1/2$. Qualitative match to weight-1 Eisenstein obstruction (log-divergence in pole order, not coefficients).
+
+Documentation: [sessions/2026-05-01-LM-cheatsheet-review/L_EOP_pole_structure.md](sessions/2026-05-01-LM-cheatsheet-review/L_EOP_pole_structure.md)
+
+### Documentation
+
+- [sessions/2026-05-01-LM-cheatsheet-review/Le_convergence_results.md](sessions/2026-05-01-LM-cheatsheet-review/Le_convergence_results.md) — $L_{\rm Eis}(s)$ pole structure, double pole verified.
+- [sessions/2026-05-01-LM-cheatsheet-review/L_EOP_pole_structure.md](sessions/2026-05-01-LM-cheatsheet-review/L_EOP_pole_structure.md) — $L_{\rm EOP}$ closed form $c_2(M)$ + $\sigma$-family phase transition.
+- [sessions/2026-05-01-LM-cheatsheet-review/Le_convergence_test.wl](sessions/2026-05-01-LM-cheatsheet-review/Le_convergence_test.wl), `eop_pole_structure.wl` — verification scripts.
+
+### Off-topic (recorded, not pursued)
+
+User asked whether $\sin(\pi q n / d)$ with relatively prime $q$ could remove the $d \mid n$ prefilter. **No** — for any integer $q$, $d \mid n \Rightarrow d \mid qn$, so the singularity persists. Half-integer or rational $1/q$ shifts avoid the singularity but produce different objects (lose residue structure and chord-length geometry).
+
+---
+
+## April 22, 2026: Primorial Formula — Fractional Recurrence Optimization
+
+### Status
+
+✅ **DELIVERED** — Post-hoc optimization of paper's existing k! algorithm. Paper itself unchanged.
+
+### Summary
+
+Started from Jan's empirical `30030 · den(Σ(-1)^k ⌊6√k⌋!/(2k+1)) = m#` (m ≥ 13). Explored whether sqrt-factorial weights could replace paper's k!. After deep investigation and careful empirical testing:
+
+- **`(c√k)!` family FALSIFIED** as uniform replacement: c=5 fails at m=745 (=5·149, boundary cancellation at k=372); c=6 fails at m=26351 (=13·2027). Larger c delays failure but never eliminates it.
+- **Paper's k! weight remains rigorously proven** — theorem unchanged.
+- **Net deliverable: fractional-reduction + running-factorial recurrence**. Maintains state in primorial-size (`O(m)` bits) instead of factorial-size (`O(m·log m)` bits), with `log m` factor speedup and **20-70× empirical speedup** over paper's original rational-bignum recurrence.
+
+### Fractional Recurrence (the actual new result)
+
+Two optimizations combined:
+
+1. **Fractional reduction**: at each step, reduce partial sum `S_k` mod 1. Since `den(frac(S_k)) = den(S_k)` for non-integer `S_k`, this preserves the primorial identity while bounding the numerator.
+
+2. **Running factorial mod L**: maintain `F_k = k! mod L` where `L = lcm(1..m)`. One multiplication per step (vs k multiplications in the naive `factMod from scratch` approach).
+
+### Structural insights (retained)
+
+- **Type I / Type II prime dichotomy**: primes p with ν_p(2k+1) ≥ 2 are automatically ≤ √(2k+1). Weight only needs to cancel these "small-big" primes.
+- **Freezing (paper Prop 4.7)**: during composite 2k+1 runs, both num and den of `frac(S_k)` are exactly unchanged — state is literally frozen between prime entries.
+- **Logarithmic vs polynomial p-adic density**: factorials grow p-adically like `N/(p-1)` (polynomial in N); lcms like `log_p N` (logarithmic). Factorials can match arbitrarily high `α` with `√k`-size weight; lcms cannot — this explains why factorial-of-sqrt family is the only viable sublinear-weight candidate.
+
+### Lessons learned (epistemic)
+
+- "Verified to m=301" was naive. Pattern-matching small m doesn't establish conjecture for all m.
+- Boundary cancellations at squarefree composites are **real phenomena** with probabilistic-looking firing rate ~1/p.
+
+### Documentation
+
+- [sessions/2026-04-22-primorial-minimal-weights/README.md](sessions/2026-04-22-primorial-minimal-weights/README.md) — master document with full history (including falsified explorations)
+- [sessions/2026-04-22-primorial-minimal-weights/scripts/recurrence_kfact_frac.wl](sessions/2026-04-22-primorial-minimal-weights/scripts/recurrence_kfact_frac.wl) — **primary deliverable**: optimized recurrence for paper's k! algorithm
+
+### Possible future work
+
+- Consider adding fractional recurrence as an appendix / remark to the existing paper (post-hoc optimization note).
+- Investigate whether `lcm(1..k)²` variant (strict inequality, no boundary) admits a clean proof — might be a separate minor note.
 
 ---
 
