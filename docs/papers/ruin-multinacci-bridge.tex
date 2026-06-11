@@ -351,9 +351,10 @@ on the internal structure of this pattern --- the sequence of
 ``short'' and ``long'' risers within each period.
 
 For irrational~$\alpha$, the staircase is aperiodic.
-The function $\alpha \mapsto C(\alpha)$ is monotone increasing,
-continuous, and exhibits a fractal kink hierarchy at every
-rational point~\cite{PopelkaBeattyBallot2026}.
+The function $\alpha \mapsto C(\alpha)$ is monotone increasing and
+right-continuous, with a \emph{left jump} at every rational slope
+tested (Section~\ref{subsec:kinks}); at irrational points it appears
+continuous~\cite{PopelkaBeattyBallot2026}.
 
 %======================================================================
 \section{Ruin theory and asymmetric random walks}\label{sec:ruin}
@@ -936,14 +937,21 @@ Its basic properties are:
   $\lim_{\alpha \to \infty} C(\alpha) = 1/2$ (no barrier).
 \item \textbf{Algebraic at rationals:} $C(p/q) \in \overline{\Q}$ for
   every rational $p/q > 1$ (Theorem~\ref{thm:algebraic}).
-\item \textbf{Kink hierarchy:} $C$ has a kink (corner) at every
-  rational point, with the kink magnitude governed by the denominator.
-  At irrationals, $C$ is smooth.
+\item \textbf{Left-jump hierarchy:} at every rational slope tested,
+  $C$ is continuous from the right but jumps from the left:
+  $C^-(p/q) := \lim_{\alpha \to (p/q)^-} C(\alpha) < C(p/q)$, with
+  jump magnitude governed by the denominator
+  (Section~\ref{subsec:kinks}).
+  At irrationals, the nearby jumps are small and $C$ appears
+  continuous.
 \end{enumerate}
 
-The kink structure makes $C(\alpha)$ a ``devil's staircase''-like
-object, though it is \emph{strictly} increasing (unlike the classical
-devil's staircase, which is constant on a set of full measure).
+The jump structure makes $C(\alpha)$ a ``devil's staircase''-like
+object, though it differs from the classical staircase in two ways:
+it is \emph{strictly} increasing (the classical devil's staircase is
+constant on a set of full measure), and it is \emph{not continuous} ---
+its singular structure includes a pure jump component supported on
+the rationals.
 Figure~\ref{fig:C-alpha} shows $C(\alpha)$ computed at rational
 slopes with denominators up to~$12$.
 
@@ -1017,7 +1025,7 @@ slopes with denominators up to~$12$.
   };
 
 % Data from survey_C_low.tsv + survey_C_alpha.tsv + survey_C_detail.tsv
-% Combined and sorted, showing the fractal kink structure
+% Combined and sorted, showing the left-jump structure at rationals
 \addplot[only marks, mark=*, mark size=0.8pt, blue!70!black]
   coordinates {
   (1.0, 0.0)
@@ -1164,31 +1172,90 @@ Large red dots mark integer slopes
 \label{fig:C-alpha}
 \end{figure}
 
-\subsection{Kinks at rationals}\label{subsec:kinks}
+\subsection{Left jumps at rationals}\label{subsec:kinks}
 
-At each rational slope $p/q$, the function $C(\alpha)$ has a corner:
-the left and right derivatives differ.
-The mechanism is the Sturmian word structure.
-As $\alpha$ crosses $p/q$, the Sturmian word of slope $\alpha$
-undergoes a \emph{combinatorial rearrangement}: one ``short'' rise
-becomes ``long'' (or vice versa), changing the transfer matrix
-product and hence the ruin probability.
+At each rational slope $p/q$, the function $C(\alpha)$ is continuous
+from the right but \emph{discontinuous from the left}:
+\[
+C^-(p/q) \;:=\; \lim_{\alpha \to (p/q)^-} C(\alpha)
+\;<\; C(p/q) \;=\; \lim_{\alpha \to (p/q)^+} C(\alpha).
+\]
+This was established computationally (June 2026) by evaluating the
+boundary system of Section~\ref{sec:rational} along the two
+continued-fraction extension families
+$[a_0; a_1, \ldots, a_n, K]$ and $[a_0; a_1, \ldots, a_n{-}1, 1, K]$,
+which approach $p/q$ from opposite sides as $K \to \infty$, and
+cross-validating the one-sided values against the lattice-path counts
+themselves (agreement to ${\sim}6$ digits).%
+\footnote{Verification scripts:
+\texttt{docs/sessions/2026-06-11-tv-map-c-alpha-kinks/} in the
+companion repository. Since $C$ is monotone, the one-sided limits
+exist and do not depend on the approach family.}
+Earlier drafts of this paper described these singularities as kinks
+(corners); the corner appearance in coarse rational surveys is an
+artifact of secant slopes taken across the left jumps.
 
-The kink magnitude depends on the denominator~$q$:
+Measured jumps $J(p/q) = C(p/q) - C^-(p/q)$:
+
+\smallskip
+\begin{center}
+\begin{tabular}{lccccccc}
+\toprule
+$p/q$ & $3/2$ & $4/3$ & $5/3$ & $6/5$ & $7/5$ & $8/5$ & $10/7$ \\
+\midrule
+$C^-(p/q)$ & $0.22457$ & $0.17704$ & $0.27235$ & $0.12513$ & $0.20382$ & $0.26279$ & $0.21291$ \\
+$C(p/q)$   & $0.25185$ & $0.19086$ & $0.28412$ & $0.13051$ & $0.20933$ & $0.26741$ & $0.21576$ \\
+$J$        & $0.0273$  & $0.0138$  & $0.0118$  & $0.0054$  & $0.0055$  & $0.0046$  & $0.0029$ \\
+$q^2 J$    & $0.109$   & $0.124$   & $0.106$   & $0.134$   & $0.138$   & $0.116$   & $0.140$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\smallskip
+Three observations:
 \begin{itemize}
-\item \textbf{Large kinks} at $q = 1$ (integer slopes): the
-  $k$-nacci equation changes degree; $C$ jumps from
-  $1 - 1/\tau_k$ to $1 - 1/\tau_{k+1}$.
-\item \textbf{Medium kinks} at small~$q$: visible as corners in the
-  graph of~$C$.
-\item \textbf{Small kinks} at large~$q$: the kink magnitude
-  decreases roughly as $1/q^2$, matching the approximation quality
-  of continued fraction convergents.
+\item \textbf{Magnitude:} on these slopes $J \approx c/q^2$ with
+  $c \approx 0.11$--$0.14$, matching the approximation scale of
+  continued-fraction convergents.
+  The constant is \emph{word-dependent}: $J(7/5) \neq J(8/5)$ even
+  though both have $q = 5$ and the same previous-convergent
+  denominator.
+\item \textbf{Summability constraint:} since $C$ is monotone and
+  bounded, the total jump mass $\sum J(p/q)$ over any interval is
+  finite, whereas $c/q^2$ summed over \emph{all} coprime $p/q$
+  diverges.
+  The jump law must therefore decay below $c/q^2$ for typical
+  rationals (deeper continued fractions); the precise law is open.
+\item \textbf{Right flatness:} the one-sided difference quotients
+  from above decay geometrically, consistent with right derivative
+  $0$ at rational slopes --- a Minkowski-question-mark-like flatness
+  on the right side of each rational.
 \end{itemize}
 
-At irrational $\alpha$, the kinks from all rational approximants
-accumulate, and $C$ becomes differentiable (the left and right
-derivatives agree in the limit).
+At integer slopes the left limit has a closed form: numerically (to
+machine precision at $k = 3, 4$, and to $1.7 \times 10^{-8}$ at
+$k = 2$),
+\[
+C^-(k) = \frac{\tau_k - 1}{2},
+\qquad\text{equivalently}\qquad
+J(k) = \frac{\tau_k - 1}{2\,\tau_k^{\,k+1}},
+\]
+with $\tau_k$ the multinacci constant of
+Section~\ref{sec:multinacci}.
+Using the master-equation identity $2 - \tau_k = \tau_k^{-k}$, the
+relation reads $1 - 2\,C^-(k) = \rho_k^{\,k}$ with
+$\rho_k = 1/\tau_k$ the ruin probability of the $\{+k, -1\}$ walk:
+the left limit is governed by the \emph{$k$-th power} of the ruin
+probability, while the value itself is governed by the first power
+($C(k) = 1 - \rho_k$).
+Asymptotically $J(k) \sim 2^{-(k+2)}$.
+A closed form for $C^-(p/q)$ at general rationals is open
+(phase rotations of the boundary system are ruled out).
+
+At irrational $\alpha$, the jumps of nearby rationals vanish at rate
+$O(1/q^2)$, and the convergent values $C(p_k/q_k)$ approach
+$C(\alpha)$ from both sides; $C$ appears continuous (no longer
+claimed smooth) at irrationals.
 
 \subsection{Approximation by convergents}
 
@@ -1259,10 +1326,10 @@ the convergence speed of $C(p_k/q_k) \to C(\alpha)$ is controlled
 by the growth rate of the CF denominators~$q_k$.
 For $\varphi = [1; \overline{1}]$, all partial quotients are~$1$
 (the slowest possible growth, $q_k \sim \varphi^k$), giving many
-resolvable kink levels.
+resolvable hierarchy levels.
 For the Bessel ratio $[1; 2, 3, 4, \ldots]$, the growing partial
 quotients produce factorial-speed convergence ($q_k \sim k!/e$),
-collapsing the kink hierarchy in a few steps.
+collapsing the jump hierarchy in a few steps.
 
 \subsection{The hierarchy of defining equations}
 
