@@ -25,11 +25,15 @@ Follow-up on the Egyptian-telescoping TV map (Σ_∞ = (TV+frac)/2) and Jan's in
 8. **q=13 row + methodological fix:** Aitken on non-uniform K-ladders is invalid (caught via an increasing sequence "converging" below itself); re-extraction gives smooth unimodal c(α) = q²J profile (peak ≈ 0.18 at α ≈ 1.2), mild word fine structure, NO strong word dependence (H-E1 was an artifact).
 9. **Summability resolved in principle:** local sum rule on (27/20, 29/20]: eight measured jumps = 60.1% of ΔC = 0.0263; budget forces decay of c by q ≈ 46. Measured: c(q=20) = 0.108, c(q=29) = 0.1006 vs plateau 0.136–0.148 (q ≤ 13, same CF family) — decay onset q ≈ 15–20, local exponent J ~ q^{−2.3} ⟹ jump mass summable. Precise decay law open.
 
+### Evening continuation: GENERAL CLOSED FORM for C⁻(p/q)
+10. **The left-jump hierarchy is algebraic.** Column-drop analysis (⌊xm⌋ drops exactly at q | m as x → p/q⁻) identifies the left limit as the same periodic Sturmian walk with a **sharpened barrier** (absorbing level 0 at phase 0): C⁻(p/q) = (1 − ρ̃(s₀,j₀))/2, J(p/q) = (ρ̃ − ρ)/2 — one boundary row changes, roots/amplitudes shared. 🔬 Verified 25/25 measured left limits, best agreement 6×10⁻¹¹ (8/5); integer case collapses to ρ̃(s) = ρ^s ⟹ ρ⁻ = ρ_k^k. Coupling proof strategy (monotone + Chernoff) recorded in `left-limit-closed-form.md`. Exact example: J(3/2) has minpoly 64x⁶−896x⁵+4336x⁴−7688x³+2100x²−528x+13.
+11. **Paper erratum #2 fixed:** the reduced quartic for slope 3/2 is t⁴+t³+t²−3t+1 with both sub-unit roots real (displayed t⁴+2t³−2t²−2t+1 vanished at t=1, unrelated to the master equation). Closed form added to the paper subsection; compiles clean.
+
 ### Verification
-`docs/sessions/2026-06-11-tv-map-c-alpha-kinks/scripts/01–11` (TV exact q≤40; boundary-system one-sided ladders; DP cross-checks at n ≫ word period — n.b. script 07's K=50 DP check was invalid by design, n < period, see session README).
+`docs/sessions/2026-06-11-tv-map-c-alpha-kinks/scripts/01–13b` (TV exact q≤40; boundary-system one-sided ladders; DP cross-checks at n ≫ word period — n.b. script 07's K=50 DP check was invalid by design, n < period, see session README; closed form 25/25 + 6×10⁻¹¹ precision test + exact algebra for 3/2).
 
 ### Open
-- Prove C⁻(k) = (τ_k−1)/2 (renewal/defect argument at density-zero defect epochs); closed form for general C⁻(p/q); pure-jump question (is the continuous part of C zero?); decay law of c(α,q) beyond the plateau; right-derivative 0 via spectral gap.
+- Formalize the coupling proof of C⁻ = (1−ρ̃)/2; exact sum rules / pure-jump question (continuous part of C zero?); decay law of c(α,q) via Cramer one-row perturbation asymptotics; right-derivative 0 via spectral gap.
 
 ---
 

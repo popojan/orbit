@@ -853,9 +853,11 @@ $(r_0, r_1) = (1, 2)$: the staircase alternates between a step of
 height~$1$ and a step of height~$2$.
 
 The master equation $(2t - 1)^2 = t^5$ has degree~$5$; after
-removing $t = 1$, it factors as $t^4 + 2t^3 - 2t^2 - 2t + 1 = 0$.
-This palindromic quartic has two sub-unit roots (one pair of complex
-conjugates).
+removing $t = 1$, it factors as $t^4 + t^3 + t^2 - 3t + 1 = 0$
+(check: $t^5 - 4t^2 + 4t - 1 = (t-1)(t^4 + t^3 + t^2 - 3t + 1)$).
+This quartic has two sub-unit roots, both real:
+$t_1 \approx 0.43691$ and $t_2 \approx 0.71974 = \rho_0(3/2)$;
+the remaining pair is complex with modulus greater than~$1$.
 
 The boundary system is $2 \times 2$.
 Solving it and computing $C(3/2)$ yields an algebraic number of
@@ -1249,8 +1251,33 @@ the left limit is governed by the \emph{$k$-th power} of the ruin
 probability, while the value itself is governed by the first power
 ($C(k) = 1 - \rho_k$).
 Asymptotically $J(k) \sim 2^{-(k+2)}$.
-A closed form for $C^-(p/q)$ at general rationals is open
-(phase rotations of the boundary system are ruled out).
+
+The integer formula is the $q = 1$ case of a \textbf{general closed
+form}.
+For $x = p/q - \varepsilon$ with $\varepsilon \to 0^+$, the Beatty
+allowance drops by exactly one unit, $\floor{x m} = \floor{(p/q)m} - 1$,
+precisely in the columns $q \mid m$ (where $\{(p/q)m\} = 0$); the
+left limit is therefore the constant of the \emph{same} periodic
+Sturmian walk with a sharpened absorbing barrier --- level $0$ at
+phase $j = 0$, level $-1$ at phases $j = 1, \ldots, q-1$.
+Writing $\tilde\rho(s, j)$ for the ruin probability of this modified
+system (same roots $t_i$ and amplitudes $A_j^{(i)}$ as
+in~\eqref{eq:amplitudes}, with the phase-$0$ boundary row of the
+system~\eqref{eq:boundary} replaced by
+$\sum_i c_i A_0^{(i)} = 1$):
+\[
+C^-(p/q) \;=\; \frac{1 - \tilde\rho(s_0, j_0)}{2},
+\qquad\text{hence}\qquad
+J(p/q) \;=\; \frac{\tilde\rho(s_0, j_0) - \rho(s_0, j_0)}{2}
+\]
+is algebraic for every rational slope.
+Verified against measured one-sided limits at all 25 tested
+rationals, with agreement down to $6 \times 10^{-11}$ where ladder
+extrapolations are sharpest ($8/5$, $5/3$).
+For $q = 1$ the modified system collapses to
+$\tilde\rho(s) = \rho^s$, recovering $1 - 2C^-(k) = \rho_k^k$.
+Example: $J(3/2) = 0.0272922840\ldots$ has minimal polynomial
+$64x^6 - 896x^5 + 4336x^4 - 7688x^3 + 2100x^2 - 528x + 13$.
 
 At irrational $\alpha$, the jumps of nearby rationals vanish at rate
 $O(1/q^2)$, and the convergent values $C(p_k/q_k)$ approach
