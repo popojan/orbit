@@ -375,22 +375,56 @@ $64x^6-896x^5+4336x^4-7688x^3+2100x^2-528x+13$.
 $t^4+t^3+t^2-3t+1$ with both sub-unit roots real (the displayed
 $t^4+2t^3-2t^2-2t+1$ vanished at $t=1$ and was unrelated).
 
+## Part 5: Right flatness + formal proofs (TeX note)
+
+Both remaining regularity directions closed in one framework — see
+**`docs/papers/c-alpha-one-sided-regularity.tex`** (4 pp, compiles clean):
+
+- **Column-gain lemma (right side):** for $x = p/q + \varepsilon$ the
+  allowance first changes at column $m \geq 1/(q\varepsilon)$ — the
+  perturbation *recedes to infinity* (mirror of the left side, where the
+  $q \mid m$ drop is immediate). Hence right-continuity, and with the
+  Chernoff late-contact lemma:
+  $0 \leq C(p/q+\varepsilon) - C(p/q) \leq A e^{-\kappa/\varepsilon}$ —
+  **flat to infinite order from the right** (Theorem B).
+- **Formalized coupling proofs**: Lemma 1 (column comparison), Lemma 2
+  (late-contact Chernoff via $s_t > \alpha\tau_t - u_t + (\alpha-1)$,
+  iid bound $\lambda_\theta = (e^{-\theta\alpha}+e^{\theta})/2 < 1$),
+  Theorem A (left limit = sharpened-barrier constant, with exponential
+  approach rate), Theorem B (right flatness), Theorem C (**continuity at
+  every irrational**, stretched-exponential modulus by Diophantine type),
+  Corollary (integer case $\rho^- = \rho_k^k$). Rigorous at the
+  survival-probability level; the transfer to C inherits the paper's
+  $C = \sigma/2$ identification.
+- **H-R1 ✅ (pre-registered):** above-ladder gaps are geometric in $q_K$;
+  measured per-column rates 0.929–0.934 (3/2), 0.899–0.903 (5/3),
+  0.955–0.960 (4/3), all below the per-flip Chernoff bounds
+  (0.980 / 0.969 / 0.990). True rate = time-direction spectral quantity,
+  open. (`14_right_flatness_rate.wl`)
+- Bridge paper updated: right-flatness and irrational-continuity bullets
+  now cite the proven bounds (companion note added to `references.bib`).
+
+**Local picture complete:** near each rational, C is a two-level step
+function up to exponentially small corrections — value level
+$C(p/q)$ on the right, level $C^-(p/q) = (1-\tilde\rho)/2$ on the left,
+jump algebraic.
+
 ## Open directions (gate-checked)
 
-1. **Formalize the coupling proof** of $C^- = (1-\tilde\rho)/2$
-   (monotone direction + Chernoff tail; rigorous at ruin level, inherits
-   the paper's $C = (1-\rho)/2$ identification at path-count level).
-2. **Exact sum rules / pure-jump question:** $J(p/q)$ is now computable
+1. **Exact sum rules / pure-jump question:** $J(p/q)$ is now computable
    exactly for any rational — redo the local sum rule with exact jumps to
    large $q$ and test whether the continuous part of C is 0
    (C = pure jump function, the monotone sibling of TV).
-3. **Decay law of $c(\alpha, q)$, now algebraic:** $J = (\tilde\rho - \rho)/2$
+2. **Decay law of $c(\alpha, q)$, now algebraic:** $J = (\tilde\rho - \rho)/2$
    is a one-row perturbation — Cramer's rule gives $J$ as a determinant
    ratio in the root data; derive the plateau + decay (onset
    $q \approx 15$–$20$ at $\alpha \approx 1.4$) asymptotically.
-4. **Right-derivative 0 at rationals** (observed geometric decay ~0.89 per
-   K at 3/2): prove via spectral gap; would establish ?-like flatness of C
-   from the right.
+3. **Closed form for the contraction rate $\mu(\alpha)$** (time-direction
+   spectral quantity behind the $e^{-\kappa/\varepsilon}$ laws; measured
+   0.90–0.96 per column).
+4. **Nonsingularity of the (modified) boundary system** — the one
+   assumption inherited from the paper's framework; a proof would make
+   Theorems A–C unconditional at the ruin level.
 
 ### Considered and rejected (2026-06-11)
 

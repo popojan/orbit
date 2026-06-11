@@ -1228,10 +1228,15 @@ Three observations:
   diverges.
   The jump law must therefore decay below $c/q^2$ for typical
   rationals (deeper continued fractions); the precise law is open.
-\item \textbf{Right flatness:} the one-sided difference quotients
-  from above decay geometrically, consistent with right derivative
-  $0$ at rational slopes --- a Minkowski-question-mark-like flatness
-  on the right side of each rational.
+\item \textbf{Right flatness:} a coupling argument (companion
+  note~\cite{regularity-note}) gives
+  $0 \leq C(p/q + \varepsilon) - C(p/q) \leq A\,e^{-\kappa/\varepsilon}$
+  with explicit $\kappa > 0$: $C$ is flat to \emph{infinite order} from
+  the right at every rational --- a Minkowski-question-mark-like
+  flatness.
+  The observed geometric decay of the one-sided difference quotients
+  (per-column contraction $\mu \approx 0.93$ at $3/2$) realizes this
+  bound.
 \end{itemize}
 
 At integer slopes the left limit has a closed form: numerically (to
@@ -1279,10 +1284,10 @@ $\tilde\rho(s) = \rho^s$, recovering $1 - 2C^-(k) = \rho_k^k$.
 Example: $J(3/2) = 0.0272922840\ldots$ has minimal polynomial
 $64x^6 - 896x^5 + 4336x^4 - 7688x^3 + 2100x^2 - 528x + 13$.
 
-At irrational $\alpha$, the jumps of nearby rationals vanish at rate
-$O(1/q^2)$, and the convergent values $C(p_k/q_k)$ approach
-$C(\alpha)$ from both sides; $C$ appears continuous (no longer
-claimed smooth) at irrationals.
+At irrational $\alpha$, the same coupling argument proves continuity,
+with a stretched-exponential modulus governed by the Diophantine type
+of $\alpha$~\cite{regularity-note}; smoothness at irrationals is not
+claimed.
 
 \subsection{Approximation by convergents}
 
