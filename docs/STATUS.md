@@ -38,8 +38,13 @@ Follow-up on the Egyptian-telescoping TV map (Σ_∞ = (TV+frac)/2) and Jan's in
 ### Verification
 `docs/sessions/2026-06-11-tv-map-c-alpha-kinks/scripts/01–15` (TV exact q≤40; boundary-system one-sided ladders; DP cross-checks at n ≫ word period — n.b. script 07's K=50 DP check was invalid by design, n < period, see session README; closed form 25/25 + 6×10⁻¹¹ precision test + exact algebra for 3/2; right-flatness rates script 14; Theorem 0 rate check script 15).
 
+### Directions 1–3 closed (same day, continuation)
+14. **Renewal formula (exact):** J = H₀(s₀,j₀)(1−ρ(0,0))/(2h(0,0)) via Sherman–Morrison on the one differing boundary row; machine precision on 10 rationals; reduces to the integer formula at q=1. All decay lives in H₀ = P(ruin at a phase-0 column).
+15. **Decay law + Cramér rate:** J ≈ B(α)·μ(α)^q·q^{−3/2} with **μ(α) = (α+1)^{α+1}/(2^{α+1}α^α)** (tilt of the column chain r_j − Geom(1/2)); √2-family to q=169: μ_emp = 0.96466 vs 0.96492 (2.7×10⁻⁴); same μ matches right-flatness ladders (0.2–0.3%). The c/q² plateau is pre-asymptotic; crossover q* ~ (α−1)⁻² explains the unimodal q²J profile.
+16. **Pure-jump verdict 🔬:** exact sum rule on (27/20, 29/20]: q≤60 jumps = 95.10% of ΔC; tail model with theoretical μ ⟹ continuous part = 6.6×10⁻⁶ ≈ 0.03% of ΔC (zero within error). C(β)−C(α) = Σ J(r) — pure jump function, the monotone sibling of TV.
+
 ### Open
-- Formalize the coupling proof of C⁻ = (1−ρ̃)/2; exact sum rules / pure-jump question (continuous part of C zero?); decay law of c(α,q) via Cramer one-row perturbation asymptotics; right-derivative 0 via spectral gap.
+- Prove pure-jump (analytic summation of the renewal jump law); prove μ(α) via local LDP for the killed periodic column chain; derive the 0.622 constant of Theorem 0's 1/n term; publication shape (companion note vs merge into bridge survey).
 
 ---
 
