@@ -1,0 +1,352 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage[hidelinks]{hyperref}
+\usepackage{booktabs}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\dnorm}[1]{\left\| #1 \right\|}
+
+\title{One-sided regularity of the Beatty ballot constant:\\
+left jumps, right flatness, and a closed form for the jump}
+\author{Jan Popelka\thanks{Email: popojan@protonmail.com}}
+\date{June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $C(\alpha)$ denote the asymptotic constant of monotone lattice paths
+under the Beatty staircase of slope $\alpha > 1$, as studied in the
+companion survey~\cite{bridge}.
+Working at the level of the underlying Sturmian ruin probabilities, we
+prove that at every rational $p/q$ the left limit $C^-(p/q)$ exists and
+equals the constant of the \emph{same} periodic walk with a sharpened
+absorbing barrier (level $0$ at phase $0$); this yields an algebraic
+closed form for the jump $J(p/q) = C(p/q) - C^-(p/q)$.
+We further prove that $C$ is flat to infinite order from the right at
+every rational, with an explicit exponential bound
+$C(p/q + \varepsilon) - C(p/q) \leq A\,e^{-\kappa/\varepsilon}$, and
+that $C$ is continuous at every irrational, with a stretched-exponential
+modulus governed by the Diophantine type.
+For integer slopes the closed form collapses to
+$1 - 2\,C^-(k) = \rho_k^{\,k}$, where $\rho_k$ is the ruin probability
+of the $\{+k, -1\}$ walk.
+\end{abstract}
+
+\section{Setup}
+
+We use the framework of~\cite{bridge}.
+Fix a slope $\alpha > 1$.
+An infinite sequence of independent fair coin flips generates a path of
+right-steps ($R$) and up-steps ($U$); after $t$ flips containing
+$\tau_t$ right-steps and $u_t$ up-steps, the \emph{gap process} is
+\begin{equation}\label{eq:gap}
+s_t \;=\; \floor{\alpha(\tau_t + 1)} - u_t .
+\end{equation}
+The walk \emph{survives} if $s_t \geq 0$ for all $t$; write
+$\sigma(\alpha)$ for the survival probability.
+For rational $\alpha = p/q$ the rise sequence
+$r_j = \floor{\alpha(j+1)} - \floor{\alpha j}$ is $q$-periodic, the ruin
+probability $\rho(s, j)$ from height $s$ in phase $j = x \bmod q$
+satisfies the periodic recursion of~\cite{bridge}, and
+$\sigma(p/q) = 1 - \rho(s_0, j_0)$ with $s_0 = \floor{p/q}$, $j_0 = 1$.
+Throughout we use the identification
+\begin{equation}\label{eq:ident}
+C(\alpha) = \tfrac{1}{2}\,\sigma(\alpha)
+\end{equation}
+of~\cite{bridge} (eq.~(C-rational) there; verified against exact path
+counts to 20+ digits).
+All results below are proved for $\sigma$; they transfer to $C$
+via~\eqref{eq:ident}.
+
+Two elementary observations are used repeatedly.
+First, since $\floor{x} > x - 1$,
+\begin{equation}\label{eq:linbound}
+s_t \;>\; \alpha\,\tau_t - u_t + (\alpha - 1) \;=:\; Y_t + (\alpha - 1),
+\end{equation}
+where $Y_t = \sum_{i \leq t} \zeta_i$ with i.i.d.\ increments
+$\zeta_i = +\alpha$ or $-1$, each with probability $\tfrac12$.
+Second, monotonicity: if $\alpha' \leq \alpha''$ then
+$\floor{\alpha' m} \leq \floor{\alpha'' m}$ for all $m$, so under the
+common coin-flip coupling the gap processes satisfy
+$s'_t \leq s''_t$ pointwise and $\sigma(\alpha') \leq \sigma(\alpha'')$.
+
+\section{Two lemmas}
+
+\begin{lemma}[Column comparison]\label{lem:columns}
+Let $\alpha = p/q$ in lowest terms and $\varepsilon > 0$.
+\begin{enumerate}
+\item[(a)] For every $m \geq 1$:
+  $\floor{(\alpha - \varepsilon)m} \leq \floor{\alpha m} - [\,q \mid m\,]$,
+  with equality whenever $\varepsilon m < 1/q$.
+\item[(b)] For every $m$ with $\varepsilon m < 1/q$:
+  $\floor{(\alpha + \varepsilon)m} = \floor{\alpha m}$.
+\item[(c)] For irrational $\alpha$ and any $x$ with $|x - \alpha| =
+  \varepsilon$: $\floor{x m} = \floor{\alpha m}$ for all
+  $m < m_*(\varepsilon) := \min\{m \geq 1 : \dnorm{\alpha m} \leq
+  \varepsilon m\}$, where $\dnorm{\cdot}$ is the distance to the nearest
+  integer; $m_*(\varepsilon) \to \infty$ as $\varepsilon \to 0$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) The fractional part of $\alpha m$ lies in
+$\{0, 1/q, \ldots, (q-1)/q\}$ and vanishes exactly when $q \mid m$.
+Subtracting $\varepsilon m > 0$ from an integer drops the floor by at
+least one; subtracting less than $1/q$ from a number with fractional
+part $\geq 1/q$ leaves the floor unchanged.
+(b) Adding $\varepsilon m < 1/q$ cannot push the fractional part
+($\leq (q-1)/q$) past $1$.
+(c) Immediate from the definition; $m_* \to \infty$ because
+$\dnorm{\alpha m} > 0$ for each fixed $m$.
+\end{proof}
+
+\begin{lemma}[Late-contact bound]\label{lem:chernoff}
+Fix $\alpha > 1$ and $\theta \in (0, \theta_0(\alpha))$, where
+$\theta_0$ is the positive root of
+$\lambda_\theta := \tfrac12(e^{-\theta\alpha} + e^{\theta}) = 1$.
+Then for every $c \geq 0$ and $T \geq 1$,
+\[
+P\bigl(\exists\, t \geq T:\ s_t \leq c\bigr)
+\;\leq\; \frac{e^{\theta(c - \alpha + 1)}}{1 - \lambda_\theta}\;
+\lambda_\theta^{\,T}.
+\]
+The same bound holds for any gap process whose allowance differs from
+\eqref{eq:gap} by a bounded amount $b$, with $c$ replaced by $c + b$.
+\end{lemma}
+
+\begin{proof}
+By~\eqref{eq:linbound}, $s_t \leq c$ implies $Y_t \leq c - \alpha + 1$.
+For fixed $t$, Markov's inequality on $e^{-\theta Y_t}$ gives
+$P(Y_t \leq c - \alpha + 1) \leq e^{\theta(c - \alpha + 1)}
+\lambda_\theta^{\,t}$, since
+$E\,e^{-\theta\zeta} = \lambda_\theta$.
+Note $\lambda_\theta < 1$ for small $\theta > 0$ because
+$\frac{d}{d\theta}\lambda_\theta|_{0} = \tfrac12(1 - \alpha) < 0$.
+Sum the geometric series over $t \geq T$.
+\end{proof}
+
+Since every column (right-step) consumes at least one coin flip,
+``after column $M$'' implies $t \geq M$, and
+Lemma~\ref{lem:chernoff} applies with $T = M$.
+
+\section{Left limit: the sharpened-barrier system}
+
+\begin{definition}\label{def:sharp}
+For $\alpha = p/q$, the \emph{sharpened system} is the periodic walk
+with gap process
+$\tilde s_t = \floor{\alpha(\tau_t+1)} - [\,q \mid (\tau_t+1)\,] - u_t$,
+i.e.\ the original walk with the absorbing barrier raised by one unit
+in the columns $q \mid m$ (phase $0$).
+Write $\tilde\sigma(p/q)$ for its survival probability and
+$\tilde\rho(s, j)$ for its ruin probabilities.
+\end{definition}
+
+\begin{proposition}\label{prop:sharp-solve}
+$\tilde\rho$ satisfies the same interior recursion as $\rho$, with the
+same sub-unit master-equation roots $t_i$ and phase amplitudes
+$A_j^{(i)}$ of~\cite{bridge}; the boundary system changes in exactly
+one row: the phase-$0$ condition $\sum_i c_i A_0^{(i)}/t_i = 1$ is
+replaced by $\sum_i c_i A_0^{(i)} = 1$ (absorption at level $0$
+instead of $-1$).
+Consequently $\tilde\sigma(p/q) = 1 - \tilde\rho(s_0, j_0)$ is
+algebraic.
+For $q = 1$ the system collapses to $\tilde\rho(s) = \rho^{\,s}$.
+\end{proposition}
+
+\begin{proof}
+The interior recursion (conditioning on one coin flip) is untouched by
+the barrier modification, so the exponential ansatz and the master
+equation are unchanged.
+The absorbing states are $s = -1$ at phases $j \neq 0$ and $s = 0$ at
+phase $0$, giving the stated $q$ boundary rows.
+For $q = 1$: the single condition $\tilde\rho(0) = 1$ with
+$\tilde\rho(s) = c\,t^s$, $t = \rho$, forces $c = 1$.
+\end{proof}
+
+\begin{theorem}[Left limit]\label{thm:left}
+For every rational $p/q$ with $p > q \geq 1$, $\gcd(p,q) = 1$:
+\[
+\lim_{\varepsilon \to 0^+} \sigma(p/q - \varepsilon)
+= \tilde\sigma(p/q),
+\qquad\text{with}\qquad
+0 \leq \tilde\sigma - \sigma(p/q - \varepsilon)
+\leq A\,\lambda^{\,1/(q\varepsilon)}
+\]
+for explicit $A, \lambda < 1$ depending only on $p/q$.
+Hence, via~\eqref{eq:ident},
+$C^-(p/q) = \tfrac12\bigl(1 - \tilde\rho(s_0, j_0)\bigr)$ and the jump
+$J(p/q) = \tfrac12\bigl(\tilde\rho(s_0,j_0) - \rho(s_0,j_0)\bigr)$ is
+algebraic.
+\end{theorem}
+
+\begin{proof}
+Couple all walks on the same coin flips.
+By Lemma~\ref{lem:columns}(a), $s^{(\varepsilon)}_t \leq \tilde s_t$
+pointwise, so $\sigma(p/q - \varepsilon) \leq \tilde\sigma$; the left
+limit (which exists by monotonicity of $\sigma$ and is independent of
+the approach) is $\leq \tilde\sigma$.
+
+For the reverse inequality, set $M = \floor{1/(q\varepsilon)}$.
+By Lemma~\ref{lem:columns}(a) the two gap processes coincide while
+$\tau_t < M$.
+On the event $\{\tilde s \text{ survives}\} \setminus
+\{s^{(\varepsilon)} \text{ survives}\}$, ruin of $s^{(\varepsilon)}$
+occurs at some time $t$ with $\tau_t \geq M$, at which moment
+$\tilde s_t \leq s^{(\varepsilon)}_t + (\varepsilon \tau_t + 1)
+\leq \varepsilon\tau_t + 1$
+(the two allowances differ by at most $\varepsilon m + 1$ at column
+$m$).
+Partition the columns into dyadic blocks $\tau \in [2^i M, 2^{i+1} M)$:
+on block $i$ the defect is at most $2^{i+1}\varepsilon M + 1 \leq
+2^{i+1}/q + 1$, while $t \geq 2^i M$.
+Lemma~\ref{lem:chernoff} bounds the probability of block-$i$ contact by
+$B\,e^{\theta(2^{i+1}/q + 1)}\lambda_\theta^{\,2^i M}$.
+Choosing $\theta$ with $e^{2\theta/q} \lambda_\theta^{M} < 1$ (possible
+for $M \geq M_0(\theta)$), the sum over $i$ is dominated by a constant
+multiple of its first term, giving the bound
+$A \lambda_\theta^{\,M}$.
+\end{proof}
+
+\begin{corollary}[Integer slopes]\label{cor:integer}
+$1 - 2\,C^-(k) = \rho_k^{\,k}$, i.e.\
+$C^-(k) = (\tau_k - 1)/2$ and
+$J(k) = (\tau_k - 1)/(2\tau_k^{\,k+1}) \sim 2^{-(k+2)}$,
+where $\tau_k = 1/\rho_k$ is the multinacci constant.
+\end{corollary}
+
+\begin{proof}
+Proposition~\ref{prop:sharp-solve} with $q = 1$:
+$\tilde\rho(s_0) = \rho^{\,k}$ since $s_0 = k$; then
+$2 - \tau_k = \tau_k^{-k}$ (master equation) gives the stated forms.
+\end{proof}
+
+\section{Right flatness}
+
+\begin{theorem}[Right flatness]\label{thm:right}
+For every rational $p/q$ and $0 < \varepsilon < 1$:
+\[
+0 \;\leq\; \sigma(p/q + \varepsilon) - \sigma(p/q)
+\;\leq\; A\,\lambda^{\,1/(q\varepsilon)} .
+\]
+Consequently all one-sided right derivatives of $C$ at $p/q$ vanish:
+$C$ is flat to infinite order from the right.
+\end{theorem}
+
+\begin{proof}
+Monotonicity gives the left inequality.
+By Lemma~\ref{lem:columns}(b) the gap processes coincide while
+$\tau_t < M = \floor{1/(q\varepsilon)}$, so on
+$\{s^{(+\varepsilon)} \text{ survives}\} \setminus
+\{s \text{ survives}\}$ the unperturbed walk is ruined at a column
+$\geq M$ while carrying a bonus of at most $\varepsilon\tau + 1$;
+the dyadic-block argument of Theorem~\ref{thm:left} applies verbatim
+to the unperturbed walk's late contact, giving the bound.
+Flatness: $A e^{-\kappa/\varepsilon}/\varepsilon^n \to 0$ for every $n$,
+with $\kappa = |{\ln \lambda}|/q$.
+\end{proof}
+
+\begin{remark}
+The same argument applied below the jump gives
+$\tilde\sigma - \sigma(p/q - \varepsilon) \leq A\lambda^{1/(q\varepsilon)}$
+(Theorem~\ref{thm:left}): the approach to the \emph{left limit} is also
+exponentially fast.
+Near each rational, $C$ is therefore a two-level step function up to
+exponentially small corrections --- consistent with the geometric
+convergence (in $K$) of the continued-fraction ladders observed
+numerically.
+\end{remark}
+
+\section{Continuity at irrationals}
+
+\begin{theorem}\label{thm:irrational}
+$\sigma$ (hence $C$) is continuous at every irrational $\alpha$, with
+\[
+|\sigma(x) - \sigma(\alpha)| \;\leq\; A\,\lambda^{\,m_*(|x - \alpha|)},
+\]
+$m_*$ as in Lemma~\ref{lem:columns}(c).
+If $\alpha$ has Diophantine type $\kappa$ (i.e.\
+$\dnorm{\alpha m} \geq c\,m^{1-\kappa}$), then
+$m_*(\varepsilon) \geq (c/\varepsilon)^{1/\kappa}$ and the modulus is
+stretched-exponential; for bounded type (e.g.\ quadratic irrationals),
+$|\sigma(x) - \sigma(\alpha)| \leq A\,\lambda^{\,c/\sqrt{\varepsilon}}$.
+\end{theorem}
+
+\begin{proof}
+Identical coupling: the words agree up to column $m_*$, the defect/bonus
+beyond column $m$ is at most $\varepsilon m + 1$, and the dyadic
+late-contact argument gives the bound.
+\end{proof}
+
+\section{Numerical verification}
+
+The closed form of Theorem~\ref{thm:left} was tested against one-sided
+ladder extrapolations at 25 rationals (all slopes measured in the
+companion session); it agrees within each measurement's accuracy,
+down to $6 \times 10^{-11}$ at $8/5$ and $4 \times 10^{-9}$ at $5/3$.
+Exact example: for $3/2$ (sub-unit roots $0.43691$, $0.71974$, both
+real),
+\[
+J(3/2) = 0.0272922840\ldots,
+\qquad
+64x^6 - 896x^5 + 4336x^4 - 7688x^3 + 2100x^2 - 528x + 13 = 0 .
+\]
+
+The exponential rates of Theorems~\ref{thm:left}--\ref{thm:right} are
+visible as geometric convergence of the CF-extension ladders
+$x_K \to p/q$ (where $\varepsilon_K = 1/(q\,q_K)$, so
+$\lambda^{1/(q\varepsilon)} = \lambda^{q_K}$): measured per-column
+contraction $\mu$ versus the per-flip Chernoff bound
+$\lambda_{\theta^*}$:
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+slope & measured $\mu$ (above-ladder, $q_K \leq 83$) & bound $\lambda_{\theta^*}$ \\
+\midrule
+$3/2$ & $0.929$--$0.934$ & $0.9801$ \\
+$5/3$ & $0.899$--$0.903$ & $0.9689$ \\
+$4/3$ & $0.955$--$0.960$ & $0.9898$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\smallskip\noindent
+(The measured rates drift slowly upward with $K$, suggesting a nearby
+asymptotic value; all are comfortably below the proven bound.)
+
+The true contraction rate $\mu$ is a spectral quantity of the
+time-direction transfer operator; identifying it in closed form is
+open.
+
+\begin{remark}[Status]
+Theorems~\ref{thm:left}--\ref{thm:irrational} are rigorous statements
+about the survival probabilities $\sigma$, $\tilde\sigma$ of the
+coin-flip gap processes.
+Their translation to the lattice-path constant $C$ rests on the
+identification~\eqref{eq:ident} of~\cite{bridge}.
+The nonsingularity of the (modified) $q \times q$ boundary system is
+assumed as in~\cite{bridge}, where it is verified computationally.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{bridge}
+J.~Popelka,
+\emph{Lattice paths under Beatty staircases: ruin theory and multinacci
+constants} (working title),
+companion survey, \texttt{ruin-multinacci-bridge}, 2026.
+\end{thebibliography}
+
+\end{document}
