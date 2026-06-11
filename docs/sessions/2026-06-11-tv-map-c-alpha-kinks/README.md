@@ -355,23 +355,39 @@ $C = 0.2217049$, just above $C(19/13) = 0.2217047$ — right-continuity
 confirmed to $2 \times 10^{-7}$.
 Lesson recorded: DP validation requires $n \gg$ word period.
 
+## Part 4: General closed form for C⁻(p/q) (evening continuation)
+
+**RESOLVED** — see [left-limit-closed-form.md](./left-limit-closed-form.md).
+The $\varepsilon \to 0^+$ column-drop analysis ($\lfloor xm \rfloor$ drops
+exactly at $q \mid m$) identifies the left limit as the **same periodic
+walk with a sharpened barrier** (absorbing level 0 at phase 0):
+
+$$C^-(p/q) = \frac{1 - \tilde\rho(s_0, j_0)}{2}, \qquad
+J(p/q) = \frac{\tilde\rho(s_0,j_0) - \rho(s_0,j_0)}{2} \in \overline{\mathbb{Q}}$$
+
+— one boundary row changes, everything else (roots, amplitudes) is shared.
+🔬 Verified 25/25 measured left limits (best agreement $6 \times 10^{-11}$
+at 8/5); integer case collapses to $\tilde\rho(s) = \rho^s$ ⟹
+$1 - 2C^-(k) = \rho_k^k$. Coupling proof strategy (monotone + Chernoff)
+recorded in the doc. Exact example: $J(3/2)$ has minimal polynomial
+$64x^6-896x^5+4336x^4-7688x^3+2100x^2-528x+13$.
+**Paper erratum #2 found and fixed:** the reduced quartic for slope 3/2 is
+$t^4+t^3+t^2-3t+1$ with both sub-unit roots real (the displayed
+$t^4+2t^3-2t^2-2t+1$ vanished at $t=1$ and was unrelated).
+
 ## Open directions (gate-checked)
 
-1. **Prove $C^-(k) = (\tau_k - 1)/2$.** The relation
-   $1 - 2C^- = \rho^k$ is proof-shaped: the below-limit walk is the
-   periodic walk with density-zero defects, and a renewal/ladder argument
-   at the defect epochs should produce the $k$-th power. First exact
-   anchor for general $C^-(p/q)$.
-2. **Pure-jump question:** the sum rule leaves $\sim 40\%$ of
-   $\Delta C$ for $q \geq 14$ jumps + continuous part; with the measured
-   decay law the $q \geq 14$ jump tail plausibly accounts for most of it.
-   Quantify: extend the sum rule with the measured $c(q)$ profile and
-   test whether the continuous part is 0 (C = pure jump function — the
-   monotone sibling of TV's purely atomic variation).
-3. **Decay law of $c(\alpha, q)$** beyond the plateau (onset
-   $q \approx 15$–$20$ at $\alpha \approx 1.4$): power vs logarithmic;
-   does the onset scale with $\alpha$ or with the CF word? Candidates
-   tie to the spectral gap of the $q$-cycle transfer operator.
+1. **Formalize the coupling proof** of $C^- = (1-\tilde\rho)/2$
+   (monotone direction + Chernoff tail; rigorous at ruin level, inherits
+   the paper's $C = (1-\rho)/2$ identification at path-count level).
+2. **Exact sum rules / pure-jump question:** $J(p/q)$ is now computable
+   exactly for any rational — redo the local sum rule with exact jumps to
+   large $q$ and test whether the continuous part of C is 0
+   (C = pure jump function, the monotone sibling of TV).
+3. **Decay law of $c(\alpha, q)$, now algebraic:** $J = (\tilde\rho - \rho)/2$
+   is a one-row perturbation — Cramer's rule gives $J$ as a determinant
+   ratio in the root data; derive the plateau + decay (onset
+   $q \approx 15$–$20$ at $\alpha \approx 1.4$) asymptotically.
 4. **Right-derivative 0 at rationals** (observed geometric decay ~0.89 per
    K at 3/2): prove via spectral gap; would establish ?-like flatness of C
    from the right.
@@ -401,4 +417,7 @@ Lesson recorded: DP validation requires $n \gg$ word period.
 - `scripts/09_q29_discriminator.wl` — J(41/29): decay of c at q = 29 confirmed
 - `scripts/10_dp_revalidation.wl` — corrected DP validation (n ≫ period) of the q=13-row family
 - `scripts/11_integer_closed_form.wl` — C⁻(k) = (τ_k−1)/2 to machine precision (k = 3, 4)
+- `scripts/12_general_left_limit_formula.wl` — sharpened-barrier closed form vs all 25 measured left limits
+- `scripts/13_formula_precision_test.wl`, `scripts/13b_exact_J32.wl` — 10⁻¹¹ precision test; exact algebraic J(3/2)
+- [`left-limit-closed-form.md`](./left-limit-closed-form.md) — derivation, proof strategy, verification, erratum #2
 - Parent sessions: [Egyptian telescoping](../2026-04-01-egyptian-telescoping-revisited/README.md), [boundary correction](../2026-04-13-boundary-correction/INTERPOLATION-SCHEME.md), [polynomial invariants](../2026-04-11-polynomial-invariants/README.md)
