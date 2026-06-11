@@ -19,7 +19,8 @@
 \newcommand{\dnorm}[1]{\left\| #1 \right\|}
 
 \title{One-sided regularity of the Beatty ballot constant:\\
-left jumps, right flatness, and a closed form for the jump}
+the path-count identification, left jumps, right flatness,\\
+and a closed form for the jump}
 \author{Jan Popelka\thanks{Email: popojan@protonmail.com}}
 \date{June 2026}
 
@@ -27,19 +28,26 @@ left jumps, right flatness, and a closed form for the jump}
 \maketitle
 
 \begin{abstract}
-Let $C(\alpha)$ denote the asymptotic constant of monotone lattice paths
-under the Beatty staircase of slope $\alpha > 1$, as studied in the
-companion survey~\cite{bridge}.
-Working at the level of the underlying Sturmian ruin probabilities, we
-prove that at every rational $p/q$ the left limit $C^-(p/q)$ exists and
-equals the constant of the \emph{same} periodic walk with a sharpened
-absorbing barrier (level $0$ at phase $0$); this yields an algebraic
-closed form for the jump $J(p/q) = C(p/q) - C^-(p/q)$.
-We further prove that $C$ is flat to infinite order from the right at
-every rational, with an explicit exponential bound
-$C(p/q + \varepsilon) - C(p/q) \leq A\,e^{-\kappa/\varepsilon}$, and
-that $C$ is continuous at every irrational, with a stretched-exponential
-modulus governed by the Diophantine type.
+Let $a_\alpha(n)$ count monotone lattice paths from $(1,0)$ to $(n,n)$
+that stay weakly below the line $y = \alpha x$, for a slope
+$\alpha > 1$, and let $\sigma(\alpha)$ be the survival probability of
+the associated fair-coin gap walk.
+We first prove the identification
+$a_\alpha(n) \sim \sigma(\alpha)\,\binom{2n-1}{n-1}$
+(Theorem~\ref{thm:zero}; previously verified numerically in the
+companion survey~\cite{bridge}), so that the ballot constant
+$C(\alpha) = \sigma(\alpha)/2$ exists for \emph{every} real
+$\alpha > 1$.
+We also prove that the periodic boundary system of~\cite{bridge} is
+nonsingular and computes $\sigma(p/q)$
+(Proposition~\ref{prop:nonsing}).
+On this basis we establish: at every rational $p/q$ the left limit
+$C^-(p/q)$ exists and equals the constant of the same periodic walk
+with a sharpened absorbing barrier, giving an \emph{algebraic closed
+form} for the jump $J(p/q) = C(p/q) - C^-(p/q)$; the function $C$ is
+flat to infinite order from the right at every rational, with an
+explicit exponential bound; and $C$ is continuous at every irrational,
+with a stretched-exponential modulus governed by the Diophantine type.
 For integer slopes the closed form collapses to
 $1 - 2\,C^-(k) = \rho_k^{\,k}$, where $\rho_k$ is the ruin probability
 of the $\{+k, -1\}$ walk.
@@ -47,43 +55,179 @@ of the $\{+k, -1\}$ walk.
 
 \section{Setup}
 
-We use the framework of~\cite{bridge}.
 Fix a slope $\alpha > 1$.
-An infinite sequence of independent fair coin flips generates a path of
-right-steps ($R$) and up-steps ($U$); after $t$ flips containing
-$\tau_t$ right-steps and $u_t$ up-steps, the \emph{gap process} is
+A monotone path from $(1,0)$ to $(n,n)$ consists of $n-1$ right-steps
+($R$) and $n$ up-steps ($U$); it stays \emph{under the barrier} if
+$y \leq \alpha x$ at every lattice point visited, equivalently if the
+integer \emph{gap}
 \begin{equation}\label{eq:gap}
-s_t \;=\; \floor{\alpha(\tau_t + 1)} - u_t .
+s_t \;=\; \floor{\alpha(\tau_t + 1)} - u_t
 \end{equation}
-The walk \emph{survives} if $s_t \geq 0$ for all $t$; write
-$\sigma(\alpha)$ for the survival probability.
-For rational $\alpha = p/q$ the rise sequence
-$r_j = \floor{\alpha(j+1)} - \floor{\alpha j}$ is $q$-periodic, the ruin
-probability $\rho(s, j)$ from height $s$ in phase $j = x \bmod q$
-satisfies the periodic recursion of~\cite{bridge}, and
-$\sigma(p/q) = 1 - \rho(s_0, j_0)$ with $s_0 = \floor{p/q}$, $j_0 = 1$.
-Throughout we use the identification
-\begin{equation}\label{eq:ident}
-C(\alpha) = \tfrac{1}{2}\,\sigma(\alpha)
-\end{equation}
-of~\cite{bridge} (eq.~(C-rational) there; verified against exact path
-counts to 20+ digits).
-All results below are proved for $\sigma$; they transfer to $C$
-via~\eqref{eq:ident}.
+is nonnegative for all $t$, where $\tau_t$ and $u_t$ count the
+right-steps and up-steps among the first $t$ steps.
+Let $a_\alpha(n)$ be the number of such paths; the unconstrained count
+is $a_\infty(n) = \binom{2n-1}{n-1} \sim 4^n/(2\sqrt{\pi n})$.
+
+The same gap process driven by an infinite sequence of independent
+fair coin flips ($R$ or $U$, probability $\tfrac12$ each) is the
+\emph{free walk}; it \emph{survives} if $s_t \geq 0$ for all $t$, and
+we write $\sigma(\alpha)$ for its survival probability.
+For rational $\alpha = p/q$ in lowest terms the rise sequence
+$r_j = \floor{\alpha(j+1)} - \floor{\alpha j}$ is $q$-periodic; the
+ruin probabilities $\rho(s, j)$ from height $s$ in phase
+$j = x \bmod q$ satisfy the periodic recursion of~\cite{bridge}, and
+$\sigma(p/q) = 1 - \rho(s_0, j_0)$ with $s_0 = \floor{p/q}$,
+$j_0 = 1$.
 
 Two elementary observations are used repeatedly.
 First, since $\floor{x} > x - 1$,
 \begin{equation}\label{eq:linbound}
-s_t \;>\; \alpha\,\tau_t - u_t + (\alpha - 1) \;=:\; Y_t + (\alpha - 1),
+s_t \;>\; \alpha\,\tau_t - u_t + (\alpha - 1) .
 \end{equation}
-where $Y_t = \sum_{i \leq t} \zeta_i$ with i.i.d.\ increments
-$\zeta_i = +\alpha$ or $-1$, each with probability $\tfrac12$.
 Second, monotonicity: if $\alpha' \leq \alpha''$ then
 $\floor{\alpha' m} \leq \floor{\alpha'' m}$ for all $m$, so under the
 common coin-flip coupling the gap processes satisfy
 $s'_t \leq s''_t$ pointwise and $\sigma(\alpha') \leq \sigma(\alpha'')$.
 
-\section{Two lemmas}
+\section{The path-count identification}
+
+\begin{lemma}[Prefix comparison]\label{lem:prefix}
+Let $P_n$ denote the uniform measure on the $\binom{2n-1}{n-1}$
+unconstrained paths and $P$ the fair-coin measure.
+For every event $A$ determined by the first $T$ steps, with
+$T \leq n^{1/2}$,
+\[
+\bigl|P_n(A) - P(A)\bigr| \;\leq\; c_0\,\frac{T^2}{n}
+\]
+for an absolute constant $c_0$.
+\end{lemma}
+
+\begin{proof}
+Set $m = 2n-1$, $k = n-1$.
+A fixed prefix of $T$ steps containing $r$ right-steps has
+$P_n$-probability $\binom{m-T}{k-r}/\binom{m}{k}$ and $P$-probability
+$2^{-T}$.
+Their ratio is
+\[
+2^{T}\,\frac{\binom{m-T}{k-r}}{\binom{m}{k}}
+= 2^{T}\,
+\frac{\prod_{i=0}^{r-1}(k-i)\;\prod_{j=0}^{T-r-1}(m-k-j)}
+     {\prod_{l=0}^{T-1}(m-l)}
+= \prod_{\text{$T$ factors}}
+\frac{1 - O(T/n)}{1 - O(T/n)}
+= 1 + O\!\left(\frac{T^2}{n}\right),
+\]
+uniformly over $0 \leq r \leq T$, since every numerator factor lies in
+$[\,n - T,\, n\,]$ and every denominator factor in
+$[\,2n - 1 - T,\, 2n - 1\,]$, while $2^T$ matches the $T$ factors of
+$\approx \tfrac12$.
+Summing over the atoms of $A$ gives the claim.
+\end{proof}
+
+\begin{lemma}[Late ruin under the bridge]\label{lem:bridgelate}
+Fix $\alpha > 1$.
+There are constants $c = c(\alpha) > 0$, $T_0 = T_0(\alpha)$ such that
+for all $n$ and all $T \geq T_0$,
+\[
+P_n\bigl(\exists\, t \in (T,\, 2n-1]:\ s_t < 0\bigr)
+\;\leq\; \frac{e^{-cT}}{1 - e^{-c}} .
+\]
+\end{lemma}
+
+\begin{proof}
+By~\eqref{eq:linbound}, $s_t < 0$ forces
+$\tau_t < (t - \alpha + 1)/(1 + \alpha) \leq t/(1+\alpha)$.
+Under $P_n$ the count $\tau_t$ is hypergeometric (the number of
+right-steps in a sample of size $t$ drawn without replacement from
+$n-1$ rights and $n$ ups), with mean
+$t\,\frac{n-1}{2n-1} \geq \frac{t}{2} - \frac{1}{2}$.
+By Hoeffding's inequality for sampling without
+replacement~\cite{hoeffding}, $\tau_t$ obeys the binomial Chernoff
+bound:
+\[
+P_n\Bigl(\tau_t \leq \tfrac{t}{1+\alpha}\Bigr)
+\;\leq\; \exp\bigl(-2 t\,(\varepsilon_\alpha - O(1/t))^2\bigr),
+\qquad
+\varepsilon_\alpha = \tfrac12 - \tfrac{1}{1+\alpha}
+= \tfrac{\alpha - 1}{2(\alpha+1)} > 0 .
+\]
+Choose $T_0$ so that the exponent is $\leq -ct$ for $t \geq T_0$ with
+$c = \varepsilon_\alpha^2$, and sum over $t > T$.
+\end{proof}
+
+\begin{theorem}[Path-count identification]\label{thm:zero}
+For every real $\alpha > 1$,
+\[
+\lim_{n \to \infty} \frac{a_\alpha(n)}{a_\infty(n)} = \sigma(\alpha),
+\qquad\text{with}\qquad
+\Bigl|\frac{a_\alpha(n)}{a_\infty(n)} - \sigma(\alpha)\Bigr|
+= O\!\left(\frac{\log^2 n}{n}\right).
+\]
+Consequently $a_\alpha(n) \sim C(\alpha)\, 4^n/\sqrt{\pi n}$ with
+$C(\alpha) = \sigma(\alpha)/2$.
+\end{theorem}
+
+\begin{proof}
+$a_\alpha(n)/a_\infty(n) = P_n(\text{survival})$.
+Let $A_T = \{s_t \geq 0 \text{ for } t \leq T\}$, a prefix event.
+Then
+\[
+\bigl|P_n(\text{surv}) - \sigma\bigr|
+\leq \bigl|P_n(A_T) - P(A_T)\bigr|
++ P_n\bigl(A_T \setminus \text{surv}\bigr)
++ P\bigl(A_T \setminus \{\text{surv. forever}\}\bigr).
+\]
+The first term is $O(T^2/n)$ by Lemma~\ref{lem:prefix}; the second is
+$\leq B e^{-cT}$ by Lemma~\ref{lem:bridgelate}; the third is
+$\leq B' \lambda^{T}$ by the free late-contact bound
+(Lemma~\ref{lem:chernoff} below, applied with contact level $-1$).
+Taking $T = \lceil K \log n \rceil$ with $K$ large enough that
+$e^{-cT} + \lambda^T = O(1/n)$ makes all three terms
+$O(\log^2 n / n)$.
+\end{proof}
+
+\begin{remark}
+The $O(\log^2 n / n)$ rate is consistent with the empirical
+$1/n$-convergence of the normalized counts
+$a_\alpha(n)\sqrt{\pi n}/4^n$ used by the numerical estimators
+in~\cite{bridge}.
+Theorem~\ref{thm:zero} requires no rationality: it defines
+$C(\alpha)$ for every real slope, so the regularity statements below
+concern a genuine function on $(1, \infty)$.
+\end{remark}
+
+\begin{proposition}[Nonsingularity of the boundary system]
+\label{prop:nonsing}
+For every rational $p/q$, the $q \times q$ boundary system
+of~\cite{bridge} (and its sharpened variant of
+Definition~\ref{def:sharp} below) is nonsingular, and its solution is
+the probabilistic ruin function.
+\end{proposition}
+
+\begin{proof}
+The space $V$ of solutions of the interior recursion that decay as
+$s \to \infty$ has dimension $q$: it is the stable subspace of the
+associated linear transfer cocycle, spanned by the modes
+$A_j^{(i)} t_i^s$ of the $q$ sub-unit master-equation roots (with
+polynomial corrections at multiple roots), whose count with
+multiplicity is $q$ by~\cite[Prop.~5.3]{bridge}.
+The true ruin function $\rho$ lies in $V$ (ruin probabilities tend to
+$0$ as $s \to \infty$ by~\eqref{eq:linbound} and the strong law) and
+attains the boundary values $1$.
+Suppose $h \in V$ vanishes at all $q$ absorbing boundary states.
+Extend $h$ by $0$ to the absorbing states; interior harmonicity makes
+$h(s_{t \wedge \text{abs}}, j_{t \wedge \text{abs}})$ a bounded
+martingale.
+Almost surely the walk is either absorbed (where $h = 0$) or
+$s_t \to \infty$ (where $h \to 0$ by decay), so dominated convergence
+gives $h \equiv 0$.
+Hence the evaluation map $V \to \mathbb{R}^q$ at the boundary is
+injective, therefore bijective: the system is nonsingular and its
+unique solution is $\rho$.
+The same argument applies verbatim to the sharpened barrier.
+\end{proof}
+
+\section{Two coupling lemmas}
 
 \begin{lemma}[Column comparison]\label{lem:columns}
 Let $\alpha = p/q$ in lowest terms and $\varepsilon > 0$.
@@ -113,7 +257,7 @@ part $\geq 1/q$ leaves the floor unchanged.
 $\dnorm{\alpha m} > 0$ for each fixed $m$.
 \end{proof}
 
-\begin{lemma}[Late-contact bound]\label{lem:chernoff}
+\begin{lemma}[Late-contact bound, free walk]\label{lem:chernoff}
 Fix $\alpha > 1$ and $\theta \in (0, \theta_0(\alpha))$, where
 $\theta_0$ is the positive root of
 $\lambda_\theta := \tfrac12(e^{-\theta\alpha} + e^{\theta}) = 1$.
@@ -128,14 +272,14 @@ The same bound holds for any gap process whose allowance differs from
 \end{lemma}
 
 \begin{proof}
-By~\eqref{eq:linbound}, $s_t \leq c$ implies $Y_t \leq c - \alpha + 1$.
-For fixed $t$, Markov's inequality on $e^{-\theta Y_t}$ gives
-$P(Y_t \leq c - \alpha + 1) \leq e^{\theta(c - \alpha + 1)}
-\lambda_\theta^{\,t}$, since
-$E\,e^{-\theta\zeta} = \lambda_\theta$.
-Note $\lambda_\theta < 1$ for small $\theta > 0$ because
+By~\eqref{eq:linbound}, $s_t \leq c$ implies
+$Y_t := \alpha\tau_t - u_t \leq c - \alpha + 1$; $Y_t$ is an i.i.d.\
+sum with increments $+\alpha$ or $-1$, each with probability
+$\tfrac12$, and $E\,e^{-\theta\zeta} = \lambda_\theta < 1$ for small
+$\theta > 0$ since
 $\frac{d}{d\theta}\lambda_\theta|_{0} = \tfrac12(1 - \alpha) < 0$.
-Sum the geometric series over $t \geq T$.
+Markov's inequality and the geometric series over $t \geq T$ give the
+claim.
 \end{proof}
 
 Since every column (right-step) consumes at least one coin flip,
@@ -171,7 +315,9 @@ The interior recursion (conditioning on one coin flip) is untouched by
 the barrier modification, so the exponential ansatz and the master
 equation are unchanged.
 The absorbing states are $s = -1$ at phases $j \neq 0$ and $s = 0$ at
-phase $0$, giving the stated $q$ boundary rows.
+phase $0$, giving the stated $q$ boundary rows; nonsingularity and the
+probabilistic identification follow from
+Proposition~\ref{prop:nonsing}.
 For $q = 1$: the single condition $\tilde\rho(0) = 1$ with
 $\tilde\rho(s) = c\,t^s$, $t = \rho$, forces $c = 1$.
 \end{proof}
@@ -186,8 +332,8 @@ For every rational $p/q$ with $p > q \geq 1$, $\gcd(p,q) = 1$:
 \leq A\,\lambda^{\,1/(q\varepsilon)}
 \]
 for explicit $A, \lambda < 1$ depending only on $p/q$.
-Hence, via~\eqref{eq:ident},
-$C^-(p/q) = \tfrac12\bigl(1 - \tilde\rho(s_0, j_0)\bigr)$ and the jump
+Hence $C^-(p/q) = \tfrac12\bigl(1 - \tilde\rho(s_0, j_0)\bigr)$ and
+the jump
 $J(p/q) = \tfrac12\bigl(\tilde\rho(s_0,j_0) - \rho(s_0,j_0)\bigr)$ is
 algebraic.
 \end{theorem}
@@ -205,8 +351,7 @@ $\tau_t < M$.
 On the event $\{\tilde s \text{ survives}\} \setminus
 \{s^{(\varepsilon)} \text{ survives}\}$, ruin of $s^{(\varepsilon)}$
 occurs at some time $t$ with $\tau_t \geq M$, at which moment
-$\tilde s_t \leq s^{(\varepsilon)}_t + (\varepsilon \tau_t + 1)
-\leq \varepsilon\tau_t + 1$
+$\tilde s_t \leq \varepsilon \tau_t + 1$
 (the two allowances differ by at most $\varepsilon m + 1$ at column
 $m$).
 Partition the columns into dyadic blocks $\tau \in [2^i M, 2^{i+1} M)$:
@@ -326,19 +471,17 @@ $4/3$ & $0.955$--$0.960$ & $0.9898$ \\
 \smallskip\noindent
 (The measured rates drift slowly upward with $K$, suggesting a nearby
 asymptotic value; all are comfortably below the proven bound.)
-
 The true contraction rate $\mu$ is a spectral quantity of the
 time-direction transfer operator; identifying it in closed form is
 open.
 
 \begin{remark}[Status]
-Theorems~\ref{thm:left}--\ref{thm:irrational} are rigorous statements
-about the survival probabilities $\sigma$, $\tilde\sigma$ of the
-coin-flip gap processes.
-Their translation to the lattice-path constant $C$ rests on the
-identification~\eqref{eq:ident} of~\cite{bridge}.
-The nonsingularity of the (modified) $q \times q$ boundary system is
-assumed as in~\cite{bridge}, where it is verified computationally.
+With Theorem~\ref{thm:zero} (path-count identification) and
+Proposition~\ref{prop:nonsing} (nonsingularity), the chain
+\emph{path counts $\to$ survival probabilities $\to$ boundary systems
+$\to$ one-sided regularity and closed-form jumps} is self-contained.
+The numerical agreement tables (here and in~\cite{bridge}) serve as
+implementation checks, no longer as evidence for the identification.
 \end{remark}
 
 \begin{thebibliography}{9}
@@ -347,6 +490,11 @@ J.~Popelka,
 \emph{Lattice paths under Beatty staircases: ruin theory and multinacci
 constants} (working title),
 companion survey, \texttt{ruin-multinacci-bridge}, 2026.
+\bibitem{hoeffding}
+W.~Hoeffding,
+\emph{Probability inequalities for sums of bounded random variables},
+J.~Amer.\ Statist.\ Assoc.\ 58 (1963), 13--30.
+(Section~6: sampling without replacement.)
 \end{thebibliography}
 
 \end{document}

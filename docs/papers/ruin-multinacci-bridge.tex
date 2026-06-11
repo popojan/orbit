@@ -836,6 +836,20 @@ where $s_0 = \floor{p/q}$ and $j_0 = 1 \bmod q$ (since the path
 starts at $x = 1$, giving phase $1$, not~$0$).
 \end{definition}
 
+\begin{remark}[The identification is a theorem]
+That the limit $a_{p/q}(n)\sqrt{\pi n}/4^n$ exists and
+equals~\eqref{eq:C-rational} is proven in the companion
+note~\cite{regularity-note}: Theorem~0 there shows
+$a_\alpha(n)/\binom{2n-1}{n-1} \to \sigma(\alpha)$ (the survival
+probability of the free coin-flip gap walk) for \emph{every} real
+$\alpha > 1$, with error $O(\log^2 n / n)$, via a prefix-comparison
+estimate and Hoeffding's inequality for sampling without replacement;
+a martingale-uniqueness argument there also proves that the boundary
+system~\eqref{eq:boundary} is nonsingular and computes
+$\sigma(p/q) = 1 - \rho(s_0, j_0)$.
+The verification table below is therefore an implementation check.
+\end{remark}
+
 Since the $t_i$ are algebraic (roots of a polynomial with integer
 coefficients), the amplitudes~\eqref{eq:amplitudes} and boundary
 coefficients~\eqref{eq:boundary} are algebraic, and therefore:
