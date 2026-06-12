@@ -1,7 +1,26 @@
 # Mathematical Explorations - Status Tracker
 
 **Repository:** popojan/orbit
-**Last Updated:** June 11, 2026
+**Last Updated:** June 12, 2026
+
+---
+
+## June 12, 2026: C(α) — pure-jump theorem PROVEN, exact decay rate μ(α) PROVEN, finite-size constant derived
+
+### Status
+✅ PROVEN (Theorems D, E in `docs/papers/c-alpha-one-sided-regularity.tex`, 8 pp) — the three remaining open items of June 11 are closed.
+
+### Summary
+1. **Theorem D (pure jump):** C(β) − C(α) = Σ_{r∈(α,β]} J(r); C′ = 0 a.e. Proof: Dirichlet covering at scale δ = 1/(qQ), where the flatness exponent 1/(qδ) = Q cancels q — each of ~Q² intervals contributes ≤ 2Aλ^Q (new uniform-constants lemma), and Q²λ^Q → 0. Flatness alone would not suffice (Minkowski ? is flat at rationals yet continuous); the quantitative uniform rate is essential. C is the distribution function of a purely atomic measure with algebraic weights on Farey fractions.
+2. **Theorem E (exact rate):** lim (1/m) log P(contact at column m & survival) = log μ(α), μ(α) = (α+1)^{α+1}/(2^{α+1}α^α). Upper: Chernoff via negative binomial (Geom(1/2) inter-arrival ups). Lower: Cramér tilt + explicit √m-scenario (subexponential cost). **Corollary:** J(p/q) = μ(p/q)^{q(1+o(1))} rigorously, via the renewal formula; geometric summability of jumps.
+3. **Numerical confirmation #2 of μ:** Fibonacci convergents q = 5..89: rate → 0.928947 vs μ(φ) = 0.929004 (5×10⁻⁵; √2 family gave 2.7×10⁻⁴).
+4. **Finite-size constant:** c₁(α) = ½·lim E[1_surv(T/2 − D − D²/2)] = ½·E[D_R + (D_R²−R)/2; ruin] (OST); exact DP at 3/2 gives c₁ = 0.622225, matching measured n·err → 0.622. Closed form via ruin-time GF open.
+
+### Verification
+`docs/sessions/2026-06-12-pure-jump-mu-proofs/scripts/19–20` (Fibonacci rate ladder; c₁ DP with σ cross-check to 8 digits).
+
+### Open
+- Sharp q^{−3/2} prefactor in Theorem E (local CLT, aesthetics); closed form of c₁(α) via ruin-time GF; publication shape (Jan).
 
 ---
 
