@@ -51,6 +51,13 @@ with a stretched-exponential modulus governed by the Diophantine type.
 For integer slopes the closed form collapses to
 $1 - 2\,C^-(k) = \rho_k^{\,k}$, where $\rho_k$ is the ruin probability
 of the $\{+k, -1\}$ walk.
+Finally, we prove that $C$ is a \emph{pure jump function} ---
+$C(\beta) - C(\alpha) = \sum_{r \in (\alpha,\beta]} J(r)$, by a
+Dirichlet-covering argument riding on the uniform flatness --- and
+that the jumps decay at the exact exponential rate
+$J(p/q) = \mu(p/q)^{\,q(1+o(1))}$ with
+$\mu(\alpha) = (\alpha+1)^{\alpha+1}/(2^{\alpha+1}\alpha^{\alpha})$,
+the Cram\'er tilt rate of the column chain.
 \end{abstract}
 
 \section{Setup}
@@ -194,6 +201,29 @@ in~\cite{bridge}.
 Theorem~\ref{thm:zero} requires no rationality: it defines
 $C(\alpha)$ for every real slope, so the regularity statements below
 concern a genuine function on $(1, \infty)$.
+\end{remark}
+
+\begin{remark}[The finite-size constant]\label{rem:finitesize}
+The true error is asymptotically $c_1(\alpha)/n$, and the constant is
+explicit: expanding the prefix weight of Lemma~\ref{lem:prefix} to
+first order,
+$2^T\binom{m-T}{k-r}/\binom{m}{k} = 1 + \bigl(\tfrac{T}{2} - D -
+\tfrac{D^2}{2}\bigr)/m + O(T^4/m^2)$ with $D = 2r - T$ (the
+$R$--$U$ imbalance; the term has mean zero, as it must), whence
+\[
+c_1(\alpha) \;=\; \tfrac12 \lim_{T \to \infty}
+E\Bigl[\mathbf{1}_{\{\text{surv} \leq T\}}
+\Bigl(\tfrac{T}{2} - D_T - \tfrac{D_T^2}{2}\Bigr)\Bigr]
+\;=\; \tfrac12\,E\Bigl[D_R + \tfrac{D_R^2 - R}{2};\ \text{ruin}\Bigr],
+\]
+the second form by optional stopping at the ruin time $R$ (both
+$D_t$ and $D_t^2 - t$ are martingales vanishing at $0$; uniform
+integrability holds by the exponential ruin-tail).
+For $\alpha = 3/2$ an exact dynamic program gives
+$c_1 = 0.622225\ldots$, matching the independently measured
+$n\cdot(\text{normalized count} - \sigma) \to 0.622$.
+A closed form would follow from the joint ruin-time/position
+generating function of the periodic chain; we leave this open.
 \end{remark}
 
 \begin{proposition}[Nonsingularity of the boundary system]
@@ -435,7 +465,204 @@ beyond column $m$ is at most $\varepsilon m + 1$, and the dyadic
 late-contact argument gives the bound.
 \end{proof}
 
-\section{Numerical verification}
+\section{The pure-jump structure}
+
+We now show that the jumps are \emph{all} there is: the
+Lebesgue--Stieltjes measure of $C$ has no continuous component.
+The proof combines the two-sided exponential flatness with Dirichlet's
+approximation theorem; the decisive cancellation is that at scale
+$\delta = 1/(qQ)$ the flatness exponent $1/(q\delta)$ equals $Q$,
+\emph{uniformly in the denominator} $q$.
+
+\begin{lemma}[Uniform flatness constants]\label{lem:uniform}
+Let $[\alpha_0, \beta_0] \subset (1, \infty)$ be compact.
+There exist $A < \infty$ and $\lambda < 1$ such that for every rational
+$p/q \in [\alpha_0, \beta_0]$ and every $\varepsilon > 0$,
+\[
+C(p/q + \varepsilon) - C(p/q) \;\leq\; A\,\lambda^{1/(q\varepsilon)},
+\qquad
+C^-(p/q) - C(p/q - \varepsilon) \;\leq\; A\,\lambda^{1/(q\varepsilon)} .
+\]
+\end{lemma}
+
+\begin{proof}
+Inspect the proofs of Theorems~\ref{thm:left} and~\ref{thm:right} with
+$M = \floor{1/(q\varepsilon)}$.
+Fix $\theta \in (0, \theta_0(\alpha_0))$ once for the whole interval;
+since $\lambda_\theta(\alpha) = \tfrac12(e^{-\theta\alpha} + e^\theta)$
+is decreasing in $\alpha$, the value
+$\lambda := \lambda_\theta(\alpha_0) < 1$ bounds it for all slopes in
+the interval, and the prefactor of Lemma~\ref{lem:chernoff} is bounded
+by $B = e^{\theta}/(1-\lambda)$ uniformly (slopes are bounded).
+In the dyadic-block sum the block-$i$ defect is at most
+$2^{i+1}\varepsilon M + 1 \leq 2^{i+1}/q + 1 \leq 2^{i+1} + 1$, so the
+sum is dominated by
+$B e^{\theta} \sum_i (e^{2\theta} \lambda^{M})^{2^i}
+\leq 2 B e^{\theta} e^{2\theta} \lambda^{M}$
+whenever $e^{2\theta}\lambda^{M} \leq \tfrac12$, i.e.\ for
+$M \geq M_0(\theta, \lambda)$ --- a uniform threshold.
+For $M < M_0$ the left-hand sides are at most the total variation
+$\tfrac12$, absorbed by enlarging $A$ to
+$\max(2Be^{3\theta}, \tfrac12 \lambda^{-M_0})$.
+\end{proof}
+
+\begin{theorem}[Pure jump structure]\label{thm:purejump}
+The continuous part of the Lebesgue--Stieltjes measure of $C$ vanishes
+on $(1, \infty)$: for all $1 < \alpha < \beta$,
+\[
+C(\beta) - C(\alpha) \;=\; \sum_{r \in (\alpha, \beta] \cap \mathbb{Q}}
+J(r) .
+\]
+In particular $C' = 0$ Lebesgue-almost everywhere, and $C$ is the
+distribution function of the purely atomic measure
+$\sum_{p/q} J(p/q)\,\delta_{p/q}$ with the algebraic weights of
+Theorem~\ref{thm:left}.
+\end{theorem}
+
+\begin{proof}
+Write $\mu_C = \mu_{\mathrm{atom}} + \mu_{\mathrm{cont}}$ with
+$\mu_{\mathrm{atom}} = \sum_r J(r)\delta_r$ ($C$ is monotone and
+right-continuous, so this is the usual decomposition; the atoms sit at
+the rationals by Theorems~\ref{thm:left}--\ref{thm:irrational}).
+Fix a compact $[\alpha_0, \beta_0] \subset (1,\infty)$ and let
+$A, \lambda$ be as in Lemma~\ref{lem:uniform}.
+
+Let $Q \geq 1$.
+By Dirichlet's approximation theorem, every $x \in [\alpha_0, \beta_0]$
+satisfies $|x - p/q| < 1/(qQ)$ for some rational $p/q$ with
+$q \leq Q$; hence the intervals
+$I_{p/q} = \bigl(p/q - \tfrac{1}{qQ},\; p/q + \tfrac{1}{qQ}\bigr)$,
+taken over rationals in $[\alpha_0 - 1, \beta_0 + 1]$ with $q \leq Q$,
+cover $[\alpha_0, \beta_0]$.
+There are at most $(\beta_0 - \alpha_0 + 2)\sum_{q \leq Q} q
+\leq c\,Q^2$ of them.
+
+Since $\mu_{\mathrm{cont}}$ has no atoms,
+\[
+\mu_{\mathrm{cont}}(I_{p/q})
+= \mu_{\mathrm{cont}}\bigl(I_{p/q} \setminus \{p/q\}\bigr)
+\leq \Bigl[C\bigl(\tfrac{p}{q} + \tfrac{1}{qQ}\bigr) - C\bigl(\tfrac{p}{q}\bigr)\Bigr]
++ \Bigl[C^-\bigl(\tfrac{p}{q}\bigr) - C\bigl(\tfrac{p}{q} - \tfrac{1}{qQ}\bigr)\Bigr]
+\;\leq\; 2A\,\lambda^{Q},
+\]
+where the final step uses Lemma~\ref{lem:uniform} with
+$\varepsilon = 1/(qQ)$, so that $1/(q\varepsilon) = Q$ ---
+\emph{independently of} $q$.
+Therefore
+\[
+\mu_{\mathrm{cont}}\bigl([\alpha_0, \beta_0]\bigr)
+\;\leq\; c\,Q^2 \cdot 2A\,\lambda^{Q}
+\;\xrightarrow[Q \to \infty]{}\; 0 .
+\]
+Exhausting $(1,\infty)$ by compacts gives $\mu_{\mathrm{cont}} = 0$.
+The a.e.\ vanishing derivative follows since a monotone pure-jump
+function has $C' = 0$ off the (countable) atom set union a Lebesgue-null
+set.
+\end{proof}
+
+\begin{remark}
+The numerical sum rule of the companion session is the quantitative
+shadow of Theorem~\ref{thm:purejump}: on $(27/20, 29/20]$ the exact
+jumps with $q \leq 60$ account for $95.10\%$ of $\Delta C$, and the
+extrapolated tail matches the remainder to $6.6 \times 10^{-6}$.
+Note that flatness alone does not imply the theorem --- Minkowski's
+question-mark function is flat at every rational yet continuous; the
+covering argument needs the \emph{quantitative} uniform rate of
+Lemma~\ref{lem:uniform}.
+\end{remark}
+
+\section{The exact decay rate of the jumps}
+
+\begin{theorem}[Contact rate]\label{thm:rate}
+For $\alpha > 1$ let
+\[
+\mu(\alpha) \;=\; \inf_{0 < e^\theta < 2}
+\frac{e^{-\theta\alpha}}{2 - e^{\theta}}
+\;=\; \frac{(\alpha+1)^{\alpha+1}}{2^{\alpha+1}\,\alpha^{\alpha}},
+\qquad e^{\theta^*} = \frac{2\alpha}{\alpha + 1},
+\]
+and for $c_0 \geq 0$ let
+$K_m = \{\exists\, t:\ \tau_t = m,\ s_t \leq c_0\}$ be the event that
+the gap drops to $c_0$ or below while in column $m$.
+Then
+\[
+P(K_m) \;\leq\; e^{\theta^*(c_0 + 1)}\,\mu(\alpha)^{\,m+1},
+\qquad
+P\bigl(K_m \cap \{\text{survival}\}\bigr) \;\geq\;
+\mu(\alpha)^{\,m}\, e^{-c\sqrt{m}} \quad (m \geq m_0),
+\]
+so $\lim_m \frac{1}{m}\log P(K_m \cap \{\text{survival}\}) = \log
+\mu(\alpha)$.
+\end{theorem}
+
+\begin{proof}
+\emph{Upper bound.}
+The up-steps between consecutive right-steps are i.i.d.\
+$\mathrm{Geom}(\tfrac12)$ variables $G_j$ ($P(G = g) = 2^{-g-1}$,
+$E e^{\theta G} = 1/(2 - e^\theta)$ for $e^\theta < 2$).
+The gap while in column $m$ is $\floor{\alpha(m+1)} - u$, so $K_m$
+forces $U_{m+1} := G_1 + \cdots + G_{m+1} \geq \alpha(m+1) - 1 - c_0$.
+Markov's inequality with $e^{\theta U}$ gives
+$P(K_m) \leq e^{\theta(c_0 + 1)}\bigl[e^{-\theta\alpha}/(2 -
+e^\theta)\bigr]^{m+1}$; optimize $\theta = \theta^*$.
+
+\emph{Lower bound.}
+Let $Q$ retile the first $m+1$ inter-arrival variables as
+$\mathrm{Geom}$ with mean $\alpha$ (success probability
+$1/(1+\alpha)$ --- precisely the $\theta^*$-tilt of
+$\mathrm{Geom}(\tfrac12)$), leaving the rest of the randomness
+untouched.
+On any event where $U_{m+1} \leq \alpha(m+1) + K\sqrt{m}$ the
+Radon--Nikodym derivative satisfies
+$dP/dQ \geq \mu(\alpha)^{m+1} e^{-\theta^* K\sqrt{m}}$.
+Under $Q$ the column increments $r_j - G_j$ have mean zero and finite
+variance, and we exhibit a $Q$-scenario of probability
+$\geq e^{-c'\sqrt{m}}$ inside $K_m \cap \{U \leq \alpha(m+1) +
+K\sqrt{m}\}$ with survival up to column $m$:
+force $G_j = 0$ for the first $k_0 = \lceil c_1\sqrt{m}\rceil$ columns
+($Q$-cost $(1+\alpha)^{-k_0}$), lifting the gap to height
+$\asymp \sqrt{m}$; by Kolmogorov's inequality the zero-drift middle
+section stays positive with probability $\geq \tfrac12$ for a suitable
+$c_1$; finally force $\asymp \sqrt{m}$ heavy columns at the end to
+bring the gap back below $c_0$ at column $m$ ($Q$-cost again
+$e^{-c''\sqrt{m}}$).
+After column $m$ the original measure resumes; survival from a
+bounded gap costs a further constant factor
+$\sigma_{\min}(\alpha) > 0$ (force a bounded number of right-steps,
+then Lemma~\ref{lem:chernoff}).
+Combining, $P(K_m \cap \text{survival}) \geq
+E_Q[\mathbf{1}\,dP/dQ]\,\sigma_{\min} \geq \mu^{m} e^{-c\sqrt{m}}$.
+\end{proof}
+
+\begin{corollary}[Jump decay]\label{cor:jumpdecay}
+For every rational $p/q$ in a compact slope interval,
+\[
+c_1\, e^{-c\sqrt{q}}\;\mu(p/q)^{\,q}
+\;\leq\; J(p/q) \;\leq\;
+c_2\, \mu(p/q)^{\,q},
+\]
+i.e.\ $J(p/q) = \mu(p/q)^{\,q\,(1 + o(1))}$.
+In particular the jump series $\sum J$ converges geometrically in $q$
+and the pre-asymptotic plateau $J \approx c/q^2$ observed for small $q$
+must cross over to exponential decay (numerically at
+$q^* \sim (\alpha - 1)^{-2}$).
+\end{corollary}
+
+\begin{proof}
+By the renewal formula (a one-row Sherman--Morrison perturbation of
+the boundary system of~\cite{bridge}, cf.\
+Proposition~\ref{prop:sharp-solve}),
+$J = H_0 (1 - \rho(0,0))/(2 h(0,0))$, where $H_0$ is the probability
+of absorption at the phase-$0$ boundary state, $h(0,0) \in
+[\tfrac12, 1]$, and $1 - \rho(0,0) \in (\sigma_{\min}, 1)$.
+Absorption at phase $0$ requires the gap to reach $-1$ in a column
+divisible by $q$, the first opportunity being column $q$; so
+$H_0 \leq \sum_{j \geq 1} P(K_{jq}) \leq B \mu^{q}$ by
+Theorem~\ref{thm:rate} (upper), and
+$H_0 \geq P(K_q \cap \text{ruin in column } q)
+\geq \mu^{q} e^{-c\sqrt{q}}$ by the lower construction with a final
+forced dip below $-1$ within column $q$.
+\end{proof}
 
 The closed form of Theorem~\ref{thm:left} was tested against one-sided
 ladder extrapolations at 25 rationals (all slopes measured in the
@@ -470,18 +697,29 @@ $4/3$ & $0.955$--$0.960$ & $0.9898$ \\
 
 \smallskip\noindent
 (The measured rates drift slowly upward with $K$, suggesting a nearby
-asymptotic value; all are comfortably below the proven bound.)
-The true contraction rate $\mu$ is a spectral quantity of the
-time-direction transfer operator; identifying it in closed form is
-open.
+asymptotic value; all are comfortably below the proven per-flip bound.)
+The asymptotic contraction rates match the Cram\'er rate of
+Theorem~\ref{thm:rate}: after the empirical $q^{-3/2}$ prefactor
+correction, the ladders give $0.9532$ vs $\mu(3/2) = 0.95090$,
+$0.9212$ vs $\mu(5/3) = 0.91914$, $0.97878$ vs $\mu(4/3) = 0.97640$
+(all within $0.3\%$), and the exact jumps along the $\sqrt2$-convergent
+slopes $17/12 \to 239/169$ give
+$\mu_{\mathrm{emp}} = 0.96466$ vs $\mu(\sqrt2) = 0.964920$
+(within $2.7 \times 10^{-4}$).
+The sharp polynomial prefactor ($q^{-3/2}$ empirically) is not proven
+here.
 
 \begin{remark}[Status]
 With Theorem~\ref{thm:zero} (path-count identification) and
 Proposition~\ref{prop:nonsing} (nonsingularity), the chain
 \emph{path counts $\to$ survival probabilities $\to$ boundary systems
-$\to$ one-sided regularity and closed-form jumps} is self-contained.
+$\to$ one-sided regularity, closed-form jumps, pure-jump structure and
+exact decay rate} is self-contained.
 The numerical agreement tables (here and in~\cite{bridge}) serve as
 implementation checks, no longer as evidence for the identification.
+Open: the sharp polynomial prefactor in Theorem~\ref{thm:rate}
+(empirically $q^{-3/2}$), and a closed form for the finite-size
+constant $c_1(\alpha)$ of Remark~\ref{rem:finitesize}.
 \end{remark}
 
 \begin{thebibliography}{9}
