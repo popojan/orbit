@@ -174,15 +174,25 @@ the dynamics-unification is hard.
 
 ### Experiment 0 — the necessary-condition gate (cheap, decisive if it fails)
 
-✅ **RUN 2026-06-15 — mechanism gate PASSED.** Full results:
-[`exp0-results.md`](exp0-results.md). Summary: the Weil form built from the
-**geometric side** (primes + Γ + pole, validated to 24 digits against the true
-zeros, zeros never consulted) is **PSD for genuine ζ**; a planted FE-symmetric
-off-line quartet flips it **indefinite** at a finite threshold `δ*≈0.035`, with
-the deficit `∝ δ²` to leading order (consistent with `−sinh²(σ−1/2)`; leading
-order is generic, not a unique confirmation). The off-line zeros were *planted*,
-so this is the **mechanism** gate; the **Davenport–Heilbronn** version below
-(emergent off-line zeros) is the outstanding upgrade.
+✅ **RUN 2026-06-15 — mechanism gate PASSED** ([`exp0-results.md`](exp0-results.md))
+**and emergent gate PASSED** ([`dh-results.md`](dh-results.md)).
+
+*Mechanism (planted):* the Weil form built from the **geometric side** (primes +
+Γ + pole, validated to 24 digits against the true zeros, zeros never consulted)
+is **PSD for genuine ζ**; a planted FE-symmetric off-line quartet flips it
+**indefinite** at a finite threshold `δ*≈0.035`, deficit `∝ δ²` to leading order
+(consistent with `−sinh²(σ−1/2)`; leading order is generic, not a unique
+confirmation).
+
+*Emergent (Davenport–Heilbronn):* the DH function (FE, **no** Euler product) is
+set up self-validated (`κ` from the Gauss sum = closed form to 20 digits; FE to
+`10⁻²³`); its off-line zeros are found directly (`0.8085+85.699i`, δ=0.31; the FE
+pair `0.651/0.349+114.163i`, δ=0.15, to 28-digit `|f|`); its arithmetic-side Weil
+form (`Λ_f` from `−f'/f` + Γ, validated to 25 digits, **zeros never consulted**)
+goes strongly indefinite **exactly at those off-line heights**, as δ-ordered
+negative spikes 100–600× above the on-line baseline. Crucially, detection is
+**resolution-gated** — coarse bands see PSD, fine bands see the violation — i.e.
+**band-saturation in the positivity channel**, the direct empirical hook for H1.
 
 🤔 **Hypothesis H0 (original, partially settled).** The orbit–Cassini positivity
 signature, built from the explicit formula (prime side only), is positive
@@ -274,7 +284,7 @@ eigenvector collision (the √-sensitivity of `parabolic-limit.md`, amplificatio
 | primes = hyperbolic side, zeros = periodic side | ❌ **false** (Break A — both are periodic in Duality II) |
 | orbit picture sees level repulsion / GUE | ❌ **false** (Break B — one-body, no interaction) |
 | the lens proves / levers RH | ❌ inherits `1/2` from the FE; lens not lever |
-| H0 (ζ vs Davenport–Heilbronn signature) | 🤔 untested — necessary-condition gate |
+| H0 (ζ vs Davenport–Heilbronn signature) | ✅ PASSED — ζ PSD; DH indefinite at its off-line zeros, from arithmetic alone; detection resolution-gated |
 | H1 (σ-rigidity onset vs κ=π) | 🤔 untested — the falsifiable prize |
 | H2 (κ=π = parabolic degeneration) | 🤔 untested — speculative, needs the operator |
 
