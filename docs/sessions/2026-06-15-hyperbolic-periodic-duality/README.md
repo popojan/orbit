@@ -219,6 +219,15 @@ the critical line (and no Euler product, which is *why* it can break RH).
 This is the falsifiable core, and it operationalizes the "positivity?" channel
 directly against the `zzz` κ=π wall.
 
+🔬 **FIRST CUT RUN 2026-06-15** ([`h1-results.md`](h1-results.md)): on the true ζ
+spectrum (`T=100`), the off-line detection threshold `δ*` is **resolution-gated** —
+total blindness below ~Nyquist (`κ-proxy ≲ 2.7`, no detection up to `δ=0.4`), onset
+straddling `κ~π`, then `δ*` collapses `0.4→0.05→0.01`. Verdict: **one wall** (onset
+*at* the resolution wall; "positivity beats resolution" NOT seen). Caveats: the
+κ-proxy constant is arbitrary (no decimal `κ_c=π` claim); conditioning confounds
+`δ*` above onset; the sharp line-vs-zeros verdict needs the along-line `ε*`
+companion (H1.2). Original framing:
+
 🤔 **Hypothesis H1.** Let the Weil-fit (`zzz --weil`, `e4-fit.wls`) optimize zero
 configurations against band-limited prime data, but with the real part `σ`
 **freed** (a 2-D fit `σ + iγ`, not constrained to the line). Started from an
@@ -285,7 +294,7 @@ eigenvector collision (the √-sensitivity of `parabolic-limit.md`, amplificatio
 | orbit picture sees level repulsion / GUE | ❌ **false** (Break B — one-body, no interaction) |
 | the lens proves / levers RH | ❌ inherits `1/2` from the FE; lens not lever |
 | H0 (ζ vs Davenport–Heilbronn signature) | ✅ PASSED — ζ PSD; DH indefinite at its off-line zeros, from arithmetic alone; detection resolution-gated |
-| H1 (σ-rigidity onset vs κ=π) | 🤔 untested — the falsifiable prize |
+| H1 (σ-rigidity onset vs κ=π) | 🔬 FIRST CUT ([`h1-results.md`](h1-results.md)) — positivity is resolution-gated, blind below ~Nyquist, onset at κ~π scale = **one wall** (NOT "beats resolution"); decimal κ_c and the line-vs-zeros verdict need the along-line companion |
 | H2 (κ=π = parabolic degeneration) | 🤔 untested — speculative, needs the operator |
 
 **Bottom line.** The poetry reduces to one solid mathematical statement (positivity
