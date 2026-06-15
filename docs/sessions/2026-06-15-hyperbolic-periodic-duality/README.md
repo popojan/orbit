@@ -303,3 +303,32 @@ falsifiable empirical question that did not exist before (**is the critical line
 more rigid than its individual zeros, and does that rigidity switch on at the same
 κ=π as level repulsion?**). The lens survives Breaks A and B as a lens; H1 is the
 experiment that could promote it from poetry to physics — or cleanly retire it.
+
+## 8. Is the periodic/hyperbolic (Cassini) regime actually operative? — honest audit
+
+Asked directly (2026-06-15), and worth recording. **In the experiments run so far
+(Exp 0, DH, H1, H1.2) the periodic/hyperbolic Cassini regime does NO load-bearing
+computational work.** What is computed throughout is **Weil positivity** —
+`Σ_ρ h(γ_ρ) ≥ 0 ⟺ RH` — a *many-body* object (a sum over all zeros). The Cassini
+form `Q` (det `1−c²`) is a *one-body* 2×2 object; for the FE-pair it equals
+`−sinh²(σ−1/2)`, which is an elementary identity **monotone in σ** — i.e. exactly
+the *tautological* single-zero quantity flagged in §6. So:
+
+- The Cassini/orbit regime is the **one-body, kinematic re-description** = the
+  tautological layer (Break B, now concrete). The experiments deliberately go
+  *beyond* it to the many-body Weil form, which is the non-tautological content
+  and the part the orbit picture explicitly **cannot see** (no interaction).
+- Even the one quantitative match (off-line deficit `∝ δ²`, H1.2 slope 2.000) is
+  **generic analyticity**, not a unique Cassini `sinh²` fingerprint. The Cassini
+  picture *correctly describes* the parabolic boundary; it does not *predict* it.
+- What the orbit picture genuinely did: it was the **generative metaphor** that
+  pointed at positivity as the channel (intuition.txt suspect 3) and supplied the
+  geometric image "the line = the periodic/hyperbolic boundary." Heuristic value,
+  real; computational role, none yet.
+
+**To make it load-bearing** would require an experiment where the orbit recurrence
+/ Cassini trichotomy supplies detection power or an inequality the bare Weil form
+does not — i.e. *orbits in interaction*, the operator. That is Hilbert–Pólya, the
+lever we lack. Until then: **we are testing the Weil-positivity skeleton; the
+orbit/Cassini flesh is decorative** (consistent, generative, not operative). This
+is the honest scope of everything in this session.

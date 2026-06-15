@@ -77,3 +77,46 @@ gives extra detection power); if `δ* ≈ ε*`, one wall confirmed; if `δ* > ε
 line is less rigid. Plus a conditioning-controlled basis (orthogonalized, fixed
 condition number across `w`) to remove the cushion confound. That is the clean
 H1.2 experiment.
+
+---
+
+## H1.2 — the two channels' scaling (definitive)
+
+**Script:** [`scripts/h1b-channel-scaling.wl`](scripts/h1b-channel-scaling.wl).
+**Status:** ✅ — clean verdict, no conditioning confound (a response norm, not a
+sign).
+
+Apples-to-apples: the response `‖ΔM‖_F` of the Weil/Gram form to a displacement
+`d` of a conjugate zero-pair, **along the line** (`±γ₀ → ±(γ₀+d)`) versus **off
+the line** (the FE+conj quartet `±γ₀ ± i d` vs its `d→0` limit), at `γ₀=100`.
+
+| channel | `‖ΔM‖_F` vs `d` | fitted slope (w=1) | (w=2) |
+|---|---|---|---|
+| along-line (γ / position) | `∝ d` | **0.99998** | **1.0011** |
+| off-line (σ / the line) | `∝ d²` | **2.00008** | **2.0004** |
+
+Exponents 1 and 2 to 4 significant figures, at both resolutions.
+
+**Verdict.** The σ-channel (off-line / positivity) is **intrinsically
+second-order** — quadratically suppressed for small displacement — while the
+γ-channel (along-line / position) is **first-order**. Consequences:
+
+- The line is **NOT "more rigid"** than its zeros. The opposite: off-line
+  violations are *harder* to detect (extra factor `d`), which is exactly why H1
+  found off-line detection onset only *at/above* Nyquist while position
+  information is available first-order.
+- **"Positivity beats resolution" (the exciting κ<π outcome) is definitively
+  dead**: a quadratic channel cannot out-detect a linear one. **"One wall"
+  stands**, refined: the σ-channel switches on at the *same* Nyquist wall but is
+  one order weaker, so it onsets at/above it, never below.
+- The relative response `R_off/R_on ∝ d` grows with resolution (at `w=2` it
+  reaches 0.6 by `d=0.08`, vs 0.14 at `w=1`): finer bands help the σ-channel
+  more — consistent with the resolution-gating of H1.
+
+**Cassini connection, honestly.** The off-line channel's `d²` *is* the
+`det Q = −sinh²(σ−1/2) ≈ −δ²` parabolic vanishing — the periodic/hyperbolic
+boundary is a quadratic (parabolic) minimum, and that quadratic-ness is what
+makes the σ-channel weak. But the `d²` follows from analyticity alone (the
+quartet is even in `d`); the Cassini law **correctly describes** the parabolic
+boundary but does **not uniquely predict** it. Descriptive, not load-bearing —
+see the note in README §7.
