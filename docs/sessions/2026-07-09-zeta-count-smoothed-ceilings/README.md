@@ -591,6 +591,64 @@ because it over-damps the dominant small-prime terms. Varying with `t`
 Scripts: [`scripts/18-box-average-smoothing-truncated-logzeta.wl`](scripts/18-box-average-smoothing-truncated-logzeta.wl),
 [`scripts/19-box-smoothing-per-prime-and-t-dependent-w.wl`](scripts/19-box-smoothing-per-prime-and-t-dependent-w.wl).
 
+### 9.1 Addendum (2026-07-10): the polylog↔ζ circularity (Jan's question), and §9 adopted in zzz
+
+Jan asked whether the ζ-values that surface in *symbolic* polylog evaluation make §9's
+closed form a usable circularity. Answered by reduction to channels already closed:
+summing the dilog term over **all** primes telescopes through the prime zeta into the
+Möbius–ζ ladder (`Σ_j P(js)/j²` with `P(s) = Σ_k μ(k)/k·log ζ(ks)`) — the completed box
+average is just `(1/2w)∫log ζ`, so §4.2.5's verdict applies verbatim: the ladder closes
+the *enumeration*, never the *evaluation* (at `σ = 1/2` the head rung is the target
+itself). The one fresh-looking corner — each Euler factor's own Lerch/Jonquière
+functional equation `Li_s(z) + (−1)^s Li_s(1/z) = (2πi)^s ζ(1−s, x)/Γ(s)`, whose Hurwitz
+values at non-positive integers degenerate to Bernoulli polynomials — is §5–§6 in
+disguise: exact per-prime staircases on the *local factor's* lattice (the wrong ℤ),
+blocked from crossing primes by the ℚ-independence of `{ln p}`; and the constants
+`ζ(2), ζ(3), …` carry no height-`t` information. Parked with mechanisms, not priors.
+Meanwhile the practical half of §9 shipped: in zzz (commit `ef99388f`,
+`doc/notes/box-forward-step.md`) the box average acts as a per-term `sinc(m·w·ln p)`
+weight on the forward zero counter — gate-checked at 2.5–3.5× location gain for
+`κ = gap·log X ∈ (1.5π, 3π)` and **null at `κ ≤ π`** (this session's smoothing
+independently confirming zzz's band-saturation theorem at its threshold), then measured
+**2.25×** in the live `--loop` with primes staying sieve-exact. That run also supplies
+the missing large-`t` data for §9's open `w(t)` question: with
+`w = c·gap(t) = 2πc/log(t/2π)` at fixed `c = 0.375`, gap-unit errors are flat-to-improving
+from `t ≈ 124` to `t ≈ 4.6×10⁴` (per-band median `0.017 → 0.012`) while `log(t/2π)`
+varies 3× — the RvM-density scaling is the right first-order law, with only a mild
+κ-drift of the optimal `c` on top (`0.5 → 0.25` as κ grows `1.5π → 3π`).
+
+**And the untruncated closure** (Jan's follow-up; full detail in the
+[note §6](box-average-smoothing-truncated-logzeta.md), script
+[`scripts/20`](scripts/20-untruncated-box-closure.wl)): box-averaging the **whole**
+`log ζ` closes exactly — but across the line, not on the prime side. Since a box
+average is an endpoint difference of the antiderivative (so any `w(t)` law closes the
+same way), Littlewood's lemma gives
+`(1/2w)∫_{t-w}^{t+w} Log ζ(1/2+ix) dx = (i/2w)[G(t+w) − G(t-w)]` with
+`G(τ) = ∫_{1/2}^∞ Log ζ(σ+iτ) dσ` — 🔬 `9×10⁻¹³`, including a window containing `γ_2`;
+the Im half is the classical `S₁`. This is the **third member of the Cauchy–Riemann
+family** (per-prime `ceilC` §4.2, global `ZeroCountX` §4.2.6): smoothing along the line
+= evaluation across the line. At a zero the `−∞` spike closes to a finite dip
+`log|ζ′(ρ)| + log w − 1 + O(w²)` (🔬 exact `w²` scaling), i.e. depth drifting like
+`−log log(t/2π)` under `w = c·gap(t)`. The prime side does *not* close (the pole's
+`e^{v/2}` beats sinc's algebraic damping; the σ-ray **is** the regularized
+`Σ_p Li₂(p^{-1/2-iτ})/ln p` — §4.2.5 again). Unfolding reading: `w = c·gap(t)` is a
+constant-width-`c` box in the unfolded time `τ = N₀(t)` — the window matched to the
+*output* (zero) lattice, mirror image of the rejected input-lattice `w_p = c/ln p`.
+
+**And the last rotation — an imaginary window** (Jan: "`w = i/2` simplifies nicely";
+full detail [note §7](box-average-smoothing-truncated-logzeta.md), script
+[`scripts/21`](scripts/21-imaginary-window-rotation.wl)): `w = iv` lands the box on the
+`σ`-segment `(1/2−v, 1/2+v)` (`v = 1/2` = the whole strip), where the functional-equation
+pairing splits it **exactly**: Re = the `σ`-window average of `log|ζ|` (zeros as
+log-wells, same dip law sideways), Im = the explicit `(1/2)⟨arg χ⟩ ≈ −θ(t)` **plus a
+jump of exactly π at each zero and zero fluctuation between them** (🔬 π to 8 digits
+across `γ_1`; residual constant to `5×10⁻⁸` over `t ∈ (15.5, 20)` while `S(t)` varies by
+~0.2). The FE symmetrization annihilates `S(t)` analytically — the counting channel's
+*analytic* content is gauge; only the *topological* content (winding, π per zero)
+survives — the snap-to-ℤ atom purified, and `ZeroCountX` §4.2.6's `σ`-averaged sibling.
+Prime side: sinc rotates to `sinh(mv ln p)/(mv ln p) ≥ 1` — anti-damping, so the
+imaginary window is the zzz anti-lever; band-saturation stands.
+
 ## Verification
 
 All scripts run with `wolframscript -file` (hypotheses stated in headers before checks):
@@ -658,17 +716,33 @@ All scripts run with `wolframscript -file` (hypotheses stated in headers before 
   — per-prime `w_p=c/ln p` gives uniform `sinc(kc)` ladder weight
   (`1.6×10⁻¹⁵`) but empirically worse (`0.162` best vs `0.035`);
   `t`-dependent `w(t)=c/log(t/2π)` inconclusive on this window.
+- [`scripts/20-untruncated-box-closure.wl`](scripts/20-untruncated-box-closure.wl)
+  — untruncated closure (§9.1): t-box of `log ζ` = `i·Δ`(σ-ray integral), `9×10⁻¹³`
+  incl. a window containing `γ_2`; dip depth `log|ζ′(ρ)|+log w−1` with exact `w²`
+  error scaling; prime side divergent (analytic).
+- [`scripts/21-imaginary-window-rotation.wl`](scripts/21-imaginary-window-rotation.wl)
+  — imaginary window `w=iv` = σ-segment average (note §7): exact FE split
+  (`log|χ|` odd to `10⁻¹⁵`, integral form exact at `t=20`, mod-2π offsets logged);
+  `(1/2)⟨arg χ⟩ = −θ(t)+O(v²/t)` (1/t scaling verified); unwrapped branch: jump
+  `= π` to 8 digits across `γ_1`, flat to `5×10⁻⁸` between zeros; sinh weights.
+- [`scripts/22-borders-and-derivative-form.wl`](scripts/22-borders-and-derivative-form.wl)
+  — borders (note §7.1): `|χ(it)| = √((t/2π)tanh(πt/2))` (12 digits);
+  `log|ζ(1+it)|−log|ζ(it)| = −log|χ(it)|` (`10⁻¹⁵`, borders pointwise zero-free);
+  `d/dt⟨arg ζ⟩_strip` a.e. `= −log|χ(it)|` (FD, `10⁻⁸`–`10⁻⁹`) — all arithmetic in
+  the π-jumps (monodromy), none in the derivative.
 
 ## Open directions
 
-- **`t`-dependent smoothing window `w(t)` for the box-averaged sum (active).**
-  §9 tried `w(t)=c/\log(t/2\pi)` (matched to the RvM zero density) and found
-  it inconclusive on `t\in(13,33)` — too little variation in `\log(t/2\pi)`
-  over that window (`0.73\to1.66`) for the idea to prove itself, and the
+- **`t`-dependent smoothing window `w(t)` for the box-averaged sum (resolved at
+  first order — §9.1).** §9 tried `w(t)=c/\log(t/2\pi)` (matched to the RvM zero
+  density) and found it inconclusive on `t\in(13,33)` — too little variation in
+  `\log(t/2\pi)` over that window (`0.73\to1.66`) for the idea to prove itself, and the
   implied `w` swings into the already-known-bad `w\gtrsim1` region at low
-  `t`. Untested at heights where `\log t` genuinely varies (`t` in the
-  hundreds/thousands). Gate: channel matches (RvM density is the textbook
-  reason to expect `t`-dependence); cheap; falsifiable at larger `t`.
+  `t`. **Update 2026-07-10:** answered at large `t` by the zzz adoption (§9.1):
+  `w = c·gap(t)` at fixed `c = 0.375` holds gap-unit errors flat-to-improving over
+  `t ∈ (1.2×10², 4.6×10⁴)` (`\log(t/2\pi)` varying 3×) inside the live `--loop`.
+  Remaining open: only the second-order drift of `c_{opt}` with `κ = gap·log X`
+  (`0.5 → 0.25` as κ grows `1.5π → 3π`).
 - **The `σ_opt(m)` law (active).** §6 measured the finite-truncation optimum at
   `σ_opt ≈ 0.6 > 1/2`, drifting only sluggishly toward the critical line
   (`0.65 → 0.60 → 0.60` at `m = 20, 50, 168`). Derive it: model the residual as
