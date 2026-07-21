@@ -32,5 +32,10 @@ Get["Orbit`PellChebyshevSolve`"];
 (* PellFactorBase requires PARI/GP — load manually: Get["Orbit`PellFactorBase`"] *)
 Get["Orbit`SuccessorOrbit`"];
 Get["Orbit`WindingMatrix`"];
+(* RiemannSiegelZExternal requires a built ../zeta/build/zetacalc binary — *)
+(* load manually: Get["Orbit`RiemannSiegelZExternal`"] *)
+(* ZetaZeroLocate additionally requires a built ../zzz/build/zzz binary — *)
+(* load manually: Get["Orbit`ZetaZeroLocate`"] (which Gets *)
+(* RiemannSiegelZExternal itself if not already loaded) *)
 
 EndPackage[];
