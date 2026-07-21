@@ -156,11 +156,16 @@ VerificationTest[
 
 (* ============ FRAME TICKS: matplotlib-style offset text, all ticks relative to tmin (always runs) ============ *)
 
+(* Tick positions are relative to tmin (0 .. tmax-tmin), matching the
+   plotted data (also shifted to height-tmin) -- not absolute t. See the
+   comment on zcHeightTicks: at huge absolute heights, ListLinePlot's own
+   rendering collapses absolute x-coordinates to a single point well
+   before the tick label text is even involved. *)
 VerificationTest[
   Module[{ticks = Orbit`Private`zcHeightTicks[29538618432.0, 29538618432.5]},
     {Length[ticks], ticks[[1, 1]], ticks[[-1, 1]]}
   ],
-  {6, 29538618432.0, 29538618432.5},
+  {6, 0., 0.5},
   TestID -> "RSZExt-heightticks-endpoint-positions"
 ]
 
@@ -446,6 +451,28 @@ If[ZetaCalcAvailableQ[],
     Head[RiemannSiegelZetaPlot[{10^11, 10^11 + 1}, "ShowZeros" -> True, "Threads" -> 1, "PlotPoints" -> 100]],
     Legended,
     TestID -> "RSZExt-zetaplot-tiny-window-huge-height-renders"
+  ];
+
+  (* Regression guard for the actual bug (not just the tick-label symptom):
+     at t ~ 1e18, window width / tmin's own magnitude is ~1e-17 -- below
+     double epsilon. Confirmed by direct testing that plotting with
+     absolute x-coordinates there makes ListLinePlot's own bare N[...]
+     collapse every x-coordinate to the same double, giving a PlotRange
+     like {0., 3.4*10^17} instead of the requested {tmin, tmin+2} -- not
+     merely "compressed", outright wrong. A window this narrow relative to
+     tmin (10^11, used above) does NOT exercise this: 1/10^11 is still
+     comfortably above double epsilon, so that test alone would not have
+     caught this regressing. The fix shifts to height-tmin coordinates
+     before any N[...] happens, so the PlotRange must come out {~0, ~2}. *)
+  VerificationTest[
+    Module[{tmin, plt, xrange},
+      tmin = N[10^18 + 1/3, 47];
+      plt = RiemannSiegelZPlot[{tmin, tmin + 2}, "Threads" -> 1, "PlotPoints" -> 50];
+      xrange = (PlotRange /. AbsoluteOptions[plt, PlotRange])[[1]];
+      Abs[xrange[[1]]] < 10^-6 && Abs[xrange[[2]] - 2] < 10^-6
+    ],
+    True,
+    TestID -> "RSZExt-plot-correct-range-at-t1e18"
   ];
 
   (* Regression guard for the clipped-Epilog bug: the reference label must

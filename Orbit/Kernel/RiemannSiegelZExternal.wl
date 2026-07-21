@@ -22,11 +22,11 @@ RiemannSiegelZSweep::usage = "RiemannSiegelZSweep[t0, n, delta] computes the Rie
 
 RiemannSiegelZetaSweep::usage = "RiemannSiegelZetaSweep[t0, n, delta] computes zeta(1/2+i*height) at the same grid as RiemannSiegelZSweep, by combining zetacalc's Z(height) with the rotation factor Exp[-I*RiemannSiegelTheta[height]] computed natively in WL, at working precision scaled to theta's own magnitude (theta(t) ~ (t/2)*Log[t/2pi] is as large as t itself, so MachinePrecision's relative error would otherwise become an absolute phase error far bigger than zetacalc's Z(t) error). Returns a list of {height, zeta[height]} pairs, or $Failed. Accepts the same options as RiemannSiegelZSweep.";
 
-RiemannSiegelZZeros::usage = "RiemannSiegelZZeros[t0, n, delta] finds sign changes of Z in an n-point zetacalc sweep and refines each to high precision by bisection (further single-point zetacalc calls at shrinking brackets -- sweeps and single points cost about the same, so this needs no interpolation machinery). Returns a sorted list of t-values where Z(t) == 0, i.e. zeros of zeta(1/2+it) on the critical line (Z is constructed so that a sign change in the real Z is exactly a zero of the complex zeta -- unlike Re[zeta] or Im[zeta], which cross zero at many unrelated points and are not by themselves zero markers). CAUTION: only sign changes resolved by the initial grid are found -- if delta is coarser than the local zero spacing (~2*Pi/Log[t/(2 Pi)]), an even number of zeros between two consecutive grid points will be missed (the classical zero-counting caveat also relevant to Turing's method / zetacalc's own blfi tool, which this function does not use). Options: \"Tolerance\" (Automatic = 10^-6, a fixed absolute width in t independent of height -- tighten at the cost of roughly one extra zetacalc process launch per ~3 further decimal digits), \"MaxIterations\" (60), plus all RiemannSiegelZSweep options.";
+RiemannSiegelZZeros::usage = "RiemannSiegelZZeros[t0, n, delta] finds sign changes of Z in an n-point zetacalc sweep and refines each to high precision by N-ary sweep-search, not binary bisection: each refinement round re-sweeps the CURRENT bracket at \"RefineWidth\" points in a single zetacalc call and keeps the adjacent pair whose sign differs, narrowing the bracket by ~RefineWidth per round instead of 2x. This matters because zetacalc's fixed per-call setup cost dominates its marginal per-point cost within one sweep by ~80-90x (measured directly: 5 separate single-point calls at t=1e14 took 8.5s; one 200-point sweep at the same height took under 2s) -- classic bisection paid that fixed cost on every single halving (15-20 separate process launches per zero), where sweep-search needs only 1-3 batched-sweep launches for the same tolerance. Returns a sorted list of t-values where Z(t) == 0, i.e. zeros of zeta(1/2+it) on the critical line (Z is constructed so that a sign change in the real Z is exactly a zero of the complex zeta -- unlike Re[zeta] or Im[zeta], which cross zero at many unrelated points and are not by themselves zero markers). CAUTION: only sign changes resolved by the initial grid are found -- if delta is coarser than the local zero spacing (~2*Pi/Log[t/(2 Pi)]), an even number of zeros between two consecutive grid points will be missed (the classical zero-counting caveat also relevant to Turing's method / zetacalc's own blfi tool, which this function does not use). Options: \"Tolerance\" (Automatic = 10^-6, a fixed absolute width in t independent of height -- worth tightening well past this default now that sweep-search makes it cheap: confirmed directly at t ~ 1e12 that the residual |Z| at the returned zero shrinks cleanly and proportionally as Tolerance tightens from 1e-6 to 1e-9 to 1e-12 (6*10^-7 -> 4*10^-11 -> 1*10^-13), reaching zetacalc's own genuine noise floor rather than plateauing at some fixed digit count -- past that floor, further tightening just fails instead of helping), \"MaxIterations\" (10, max refinement rounds -- generous headroom, since even reaching 1e-9 from a typical bracket width takes only 1-5 rounds at the default \"RefineWidth\"), \"RefineWidth\" (200, points per refinement sweep -- raising it trades a slightly more expensive sweep for fewer rounds; only matters for exotic cases, the default already captures most of the available speedup), plus all RiemannSiegelZSweep options.";
 
-RiemannSiegelZPlot::usage = "RiemannSiegelZPlot[{tmin, tmax}] plots the Riemann-Siegel Z function over [tmin, tmax] using a single zetacalc sweep (bypassing Wolfram's native RiemannSiegelZ). Option \"PlotPoints\" (200) sets the sweep size; \"ShowZeros\" -> True (default False) marks the zeros with GridLines, computed via RiemannSiegelZZeros on its own grid (sized off the local zero spacing, independent of \"PlotPoints\") -- off by default because, unlike sweeping, zero-refinement costs one zetacalc process launch per bisection step, so this can turn a quick plot into a multi-second one. All RiemannSiegelZSweep options are also accepted, and so is any option of ListLinePlot (e.g. an explicit GridLines -> {zeros, {0}}, which takes priority over \"ShowZeros\"' own). Returns $Failed (with a message) on failure.";
+RiemannSiegelZPlot::usage = "RiemannSiegelZPlot[{tmin, tmax}] plots the Riemann-Siegel Z function over [tmin, tmax] using a single zetacalc sweep (bypassing Wolfram's native RiemannSiegelZ). The x-axis is height-tmin, not absolute t (tmin itself always sits at x=0, tmax at x=tmax-tmin) -- required, not cosmetic: at heights where tmax-tmin is a tiny fraction of tmin's own magnitude (already true past t ~ 1e15 for a window a few units wide), handing Graphics absolute t-coordinates collapses every x-coordinate to the same machine double before rendering even starts, since ListLinePlot's own machinery works in machine floats regardless of how precisely a height was computed symbolically. The absolute tmin is shown once, in the top FrameLabel slot (\"t = <tmin> + ...\"), and the frame ticks are labeled as matching small offsets, matplotlib-style. Any GridLines/Epilog/etc. you supply must therefore use height-tmin coordinates too, not absolute t. Option \"PlotPoints\" (200) sets the sweep size; \"ShowZeros\" -> True (default False) marks the zeros with GridLines (already shifted to the height-tmin frame), computed via RiemannSiegelZZeros on its own grid (sized off the local zero spacing, independent of \"PlotPoints\") -- off by default because, unlike sweeping, zero-refinement costs one zetacalc process launch per bisection step, so this can turn a quick plot into a multi-second one. All RiemannSiegelZSweep options are also accepted, and so is any option of ListLinePlot (e.g. an explicit GridLines -> {{0.3, 0.7}, {0}} at those height-tmin offsets, which takes priority over \"ShowZeros\"' own). Returns $Failed (with a message) on failure.";
 
-RiemannSiegelZetaPlot::usage = "RiemannSiegelZetaPlot[{tmin, tmax}] plots zeta(1/2+i t) over [tmin, tmax] from a single zetacalc-backed sweep (RiemannSiegelZetaSweep). By default draws Re[zeta] and Im[zeta] against t as two lines (ListLinePlot with PlotLegends), styled to match built-in ReImPlot's own convention for a Re/Im pair -- same color, Re solid / Im dotted -- read at run time from an actual ReImPlot call rather than a hardcoded color/dashing literal, so it stays in step with the current $PlotTheme. With \"Argand\" -> True it instead draws the parametric trace {Re[zeta[t]], Im[zeta[t]]} in the complex plane as t sweeps the range (ComplexListPlot), where a zero of zeta shows up as the curve passing through the origin. \"ShowZeros\" -> True (default False, same cost caveat as RiemannSiegelZPlot) marks zeros with GridLines in the line-mode view; it is a no-op in Argand mode, where the origin itself already marks zeros. Option \"PlotPoints\" (200) sets the sweep size; all RiemannSiegelZSweep options are accepted, and so is any option of ListLinePlot or ComplexListPlot (whichever applies). Returns $Failed (with a message) on failure.";
+RiemannSiegelZetaPlot::usage = "RiemannSiegelZetaPlot[{tmin, tmax}] plots zeta(1/2+i t) over [tmin, tmax] from a single zetacalc-backed sweep (RiemannSiegelZetaSweep). By default draws Re[zeta] and Im[zeta] against t as two lines (ListLinePlot with PlotLegends), styled to match built-in ReImPlot's own convention for a Re/Im pair -- same color, Re solid / Im dotted -- read at run time from an actual ReImPlot call rather than a hardcoded color/dashing literal, so it stays in step with the current $PlotTheme. In this line mode, the x-axis is height-tmin, not absolute t (see RiemannSiegelZPlot's docstring for why -- required at large heights, not cosmetic; the absolute tmin is shown once in the top FrameLabel), so any GridLines/Epilog/etc. you supply must use height-tmin coordinates. With \"Argand\" -> True it instead draws the parametric trace {Re[zeta[t]], Im[zeta[t]]} in the complex plane as t sweeps the range (ComplexListPlot, unaffected by any of this -- its axes are Re/Im, not t), where a zero of zeta shows up as the curve passing through the origin. \"ShowZeros\" -> True (default False, same cost caveat as RiemannSiegelZPlot) marks zeros with GridLines (already shifted to height-tmin) in the line-mode view; it is a no-op in Argand mode, where the origin itself already marks zeros. Option \"PlotPoints\" (200) sets the sweep size; all RiemannSiegelZSweep options are accepted, and so is any option of ListLinePlot or ComplexListPlot (whichever applies). Returns $Failed (with a message) on failure.";
 
 Begin["`Private`"];
 
@@ -265,27 +265,45 @@ RiemannSiegelZetaSweep[t0_?NumericQ, n_Integer?Positive, delta_?NumericQ, opts :
 
 Options[RiemannSiegelZZeros] = Join[Options[RiemannSiegelZSweep], {
   "Tolerance" -> Automatic,
-  "MaxIterations" -> 60
+  "MaxIterations" -> 10,
+  "RefineWidth" -> 200
 }];
 
+RiemannSiegelZZeros::norefine = "no sign change found while refining a bracket (offset [`1`, `2`] from `3`); this should not happen if the original bracket was valid -- possible coincidental near-zero excursion between grid points, or a floating-point edge case.";
+
+(* Same MachinePrecision-contamination guard as zcZerosInWindow's own
+   delta fix (see there for the full mechanism): mixing a MachinePrecision
+   number into arithmetic with an exact or high-precision one drags the
+   *whole* result down to MachinePrecision, whose ULP can already exceed a
+   refinement bracket's width at fairly moderate heights -- confirmed
+   directly with a bare delta=0.01 at t=1e12 (ULP there is 2.22*10^-4,
+   already bigger than the bracket after just one round of this module's
+   own 200-way narrowing, which reaches that floor in far fewer rounds
+   than the old 2x-per-round bisection did). Guarding t0/delta at entry
+   protects the outer sweep and every refinement round that follows,
+   rather than requiring every caller to remember to pass exact/rational
+   height and delta. *)
+zcSafePrecision[x_] := If[Precision[x] === MachinePrecision, SetPrecision[x, 30], x];
+
 RiemannSiegelZZeros[t0_?NumericQ, n_Integer?Positive, delta_?NumericQ, opts : OptionsPattern[]] :=
- Module[{sweepOpts, sweep, tol, maxIter, exactZeros, brackets, bisect, zeroAt, refined},
+ Module[{t0Safe = zcSafePrecision[t0], deltaSafe = zcSafePrecision[delta],
+   sweepOpts, sweep, tol, maxIter, refineWidth, exactZeros, brackets, bisect, refined},
   sweepOpts = FilterRules[{opts}, Options[RiemannSiegelZSweep]];
-  sweep = RiemannSiegelZSweep[t0, n, delta, sweepOpts];
+  sweep = RiemannSiegelZSweep[t0Safe, n, deltaSafe, sweepOpts];
   If[FailureQ[sweep], Return[$Failed]];
 
   tol = OptionValue["Tolerance"];
   (* Fixed, height-independent: the local zero spacing shrinks only
      logarithmically with height, so a tolerance scaled *up* by height
      (an earlier version of this used 10^-12*height) becomes larger than
-     any realistic bracket well before t ~ 1e9 -- bisection would then
-     exit after zero iterations and silently return an unrefined,
+     any realistic bracket well before t ~ 1e9 -- refinement would then
+     exit after zero rounds and silently return an unrefined,
      grid-resolution estimate. 10^-6 is comfortably tighter than any
-     delta used in practice while staying cheap (few dozen zetacalc
-     single-point calls per zero); tighten explicitly for more precision
-     at the cost of one more process launch per ~3 extra decimal digits. *)
+     delta used in practice while staying cheap; tighten explicitly for
+     more precision at very little extra cost now (see "RefineWidth"). *)
   If[tol === Automatic, tol = 10^-6];
   maxIter = OptionValue["MaxIterations"];
+  refineWidth = OptionValue["RefineWidth"];
 
   (* A grid point landing exactly on a zero is its own answer -- no bracket
      needed (and Sign[0]*Sign[x] would never flag it as a sign change). *)
@@ -296,29 +314,49 @@ RiemannSiegelZZeros[t0_?NumericQ, n_Integer?Positive, delta_?NumericQ, opts : Op
     (#[[3]]*#[[4]] < 0) &
     ];
 
-  zeroAt[tt_] := Module[{s = RiemannSiegelZSweep[tt, 1, 1, sweepOpts]},
-    If[FailureQ[s], $Failed, s[[1, 2]]]
-    ];
-
-  (* Bisect in an offset from the bracket's own lower endpoint, not in
-     absolute t: repeatedly averaging two close *absolute* heights (both
-     carrying the same large, unchanging integer part) is exactly the
-     computation where high-precision inputs can still lose working
+  (* Refine in an offset from the bracket's own lower endpoint, not in
+     absolute t: repeatedly working with two close *absolute* heights
+     (both carrying the same large, unchanging integer part) is exactly
+     the computation where high-precision inputs can still lose working
      precision to cancellation as the bracket narrows, and where
      MachinePrecision inputs hit a hard ULP floor set by the *absolute*
      magnitude rather than the (much finer) bracket width -- confirmed via
      ZetaZeroLocate at t ~ 3e10, where this floor was ~7e-6 in t, vs a
      documented zetacalc noise floor several orders of magnitude finer.
      ref only gets added back momentarily (to hand zetacalc an absolute
-     height) and once at the end. *)
-  bisect[{tlo_, thi_, zlo_, zhi_}] := Module[{ref = tlo, a = 0, b, fa = zlo, mid, fmid, iter = 0},
+     height) and once at the end.
+
+     N-ary sweep-search, not binary bisection: each round re-sweeps the
+     *current* bracket at refineWidth points in a SINGLE zetacalc process
+     call and keeps the adjacent pair whose sign differs, narrowing the
+     bracket by ~refineWidth (not 2x) per round. Measured directly:
+     zetacalc's fixed per-call setup cost (MPFR coefficient/stage
+     computation) dominates its marginal per-point cost within one sweep
+     by ~80-90x (5 separate single-point calls at t=1e14: 8.475s; one
+     200-point sweep at the same height: well under 2s) -- classic
+     bisection paid that fixed cost on every single halving, so this
+     turns what was O(log2(gap/tolerance)) separate process launches per
+     zero into O(log_refineWidth(gap/tolerance)) batched-sweep launches:
+     typically 1-3 rounds instead of 15-20. *)
+  bisect[{tlo_, thi_, zlo_, zhi_}] := Module[{ref = tlo, a = 0, b, iter = 0, sub, offs, vals, zeroPos, k},
     b = thi - tlo;
     While[(b - a) > tol && iter < maxIter,
-     mid = (a + b)/2;
-     fmid = zeroAt[ref + mid];
-     If[FailureQ[fmid], Return[$Failed]];
-     If[fmid == 0, a = b = mid; Break[]];
-     If[Sign[fmid] == Sign[fa], a = mid; fa = fmid, b = mid];
+     sub = RiemannSiegelZSweep[ref + a, refineWidth, (b - a)/(refineWidth - 1), sweepOpts];
+     If[FailureQ[sub], Return[$Failed]];
+     offs = sub[[All, 1]] - ref;
+     vals = sub[[All, 2]];
+     zeroPos = FirstPosition[vals, x_ /; x == 0];
+     If[zeroPos =!= Missing["NotFound"],
+      a = b = offs[[zeroPos[[1]]]];
+      Break[]
+      ];
+     k = SelectFirst[Range[refineWidth - 1], Sign[vals[[#]]] != Sign[vals[[# + 1]]] &];
+     If[MissingQ[k],
+      Message[RiemannSiegelZZeros::norefine, N[a], N[b], N[ref]];
+      Return[$Failed]
+      ];
+     a = offs[[k]];
+     b = offs[[k + 1]];
      iter++;
      ];
     ref + (a + b)/2
@@ -346,7 +384,23 @@ RiemannSiegelZZeros[t0_?NumericQ, n_Integer?Positive, delta_?NumericQ, opts : Op
    turn an otherwise-quick plot call into a multi-second one. *)
 zcZerosInWindow[tmin_, tmax_, sweepOpts_] := Module[{gap, delta, n},
   gap = 2*Pi/Log[Max[Abs[N[tmin]], 10]/(2*Pi)];
-  delta = gap/20;
+  (* gap only needs to be right in order of magnitude (it just sizes the
+     grid), but the bare N[tmin] above makes gap -- and delta below --
+     MachinePrecision-tagged regardless. Mixing a MachinePrecision number
+     into arithmetic with a high-precision tmin (inside RiemannSiegelZSweep's
+     t0 + (k-1)*delta, called from RiemannSiegelZZeros below) drags the
+     *whole computation* down to MachinePrecision -- confirmed directly:
+     at t ~ 1e18 this collapsed every returned zero to the exact same
+     double, making "ShowZeros"'s zeros - tmin come out identically 0
+     everywhere. SetPrecision (not Rationalize -- tried first, but an
+     *exact* rationalized delta gets reused in every sweep/bisection step
+     downstream, and its denominator only grows from there, making the
+     whole computation minutes slower, and rendering as a stacked
+     fraction rather than a decimal in tick labels) gives delta a
+     genuine, bounded-size arbitrary-precision tag instead of
+     MachinePrecision, which stops it from dragging tmin's own precision
+     down when added to it, without either side effect. *)
+  delta = SetPrecision[gap/20, 30];
   n = Max[8, Ceiling[(tmax - tmin)/delta] + 1];
   RiemannSiegelZZeros[tmin, n, delta, sweepOpts]
   ];
@@ -373,24 +427,28 @@ zcReImPlotStyle[] := Module[{g, colors, dashes, thick},
    ticks carry only the part that actually varies across the window. The
    reference itself is added separately, in the top FrameLabel slot -- see
    zcHeightReferenceLabel. *)
-(* off is computed directly as step*(k-1), never as positions[[k]]-tmin --
-   the latter looked equivalent but silently broke at large absolute
-   heights: a bare N[...] on the (possibly Precision-40+) positions list
-   collapses everything to MachinePrecision, and once tmin's magnitude
-   exceeds the ULP that MachinePrecision affords (~t*2.22*10^-16 -- already
-   bigger than a typical tick spacing at t ~ 1e15+), every tick position
-   rounds to the *same* double and every offset comes out identically 0,
-   with a NumberForm::reqsigz warning from trying to then display digits
-   the (now machine-precision) number doesn't actually have. Computing off
-   from step alone, and the absolute tick position from tmin + step*(k-1)
-   with no intervening bare N[...], sidesteps this at any height. *)
+(* Tick POSITIONS are returned relative to tmin (0 .. tmax-tmin), matching
+   the plotted data below (which is *also* shifted to height-tmin before
+   being handed to ListLinePlot) -- not tmin + step*(k-1). It isn't just
+   the label text that breaks at huge absolute heights: ListLinePlot's own
+   rendering ultimately works in machine floats regardless of how
+   precisely a position was computed symbolically, and at t ~ 1e18 a
+   window of width 2 is ~1.2*10^-17 of tmin's own magnitude -- *below*
+   double epsilon (2.22*10^-16). Handing Graphics absolute x-coordinates
+   at that point doesn't just look "compressed"; confirmed by direct
+   test, the auto-computed PlotRange comes back outright wrong (e.g.
+   {0., 3.4*10^17} for a window that should read {tmin, tmin+2}), because
+   bare N[] on the whole data structure collapses every t-coordinate to
+   the *same* double before plotting even starts. Every offset computed
+   from step alone (never from a subtraction of two near-equal huge
+   numbers) sidesteps this at any height, for both the ticks and the data. *)
 zcHeightTicks[tmin_?NumericQ, tmax_?NumericQ, numTicks_Integer : 6] := Module[
   {step, digits},
   step = (tmax - tmin)/(numTicks - 1);
   digits = Max[0, Ceiling[-Log10[Max[Abs[step], 10^-6]]] + 2];
   Table[
-   With[{off = step*(k - 1), pos = tmin + step*(k - 1)},
-    {pos,
+   With[{off = step*(k - 1)},
+    {off,
      If[off == 0, "0", "+" <> ToString[NumberForm[off, {Infinity, digits}, ExponentFunction -> (Null &)]]]}
     ],
    {k, numTicks}
@@ -434,9 +492,15 @@ RiemannSiegelZPlot[{tmin_?NumericQ, tmax_?NumericQ}, opts : OptionsPattern[]] :=
   If[TrueQ[OptionValue["ShowZeros"]],
    zeros = zcZerosInWindow[tmin, tmax, sweepOpts];
    If[FailureQ[zeros], Return[$Failed]];
-   AppendTo[defaultOpts, GridLines -> {zeros, {0}}]
+   AppendTo[defaultOpts, GridLines -> {zeros - tmin, {0}}]
    ];
-  ListLinePlot[N[data], Sequence @@ Normal[Join[Association[defaultOpts], Association[userPlotOpts]]]]
+  (* Plotted x-coordinates are height-tmin, matching zcHeightTicks' now-
+     relative positions -- see the comment there: at huge absolute
+     heights, handing ListLinePlot's bare N[] the raw t-values (rather
+     than an offset already small by construction) silently collapses
+     every x-coordinate to the same double before rendering even starts. *)
+  ListLinePlot[N[{#[[1]] - tmin, #[[2]]} & /@ data],
+   Sequence @@ Normal[Join[Association[defaultOpts], Association[userPlotOpts]]]]
   ];
 
 Options[RiemannSiegelZetaPlot] = Join[Options[RiemannSiegelZetaSweep], Options[ListLinePlot], Options[ComplexListPlot], {
@@ -476,10 +540,14 @@ RiemannSiegelZetaPlot[{tmin_?NumericQ, tmax_?NumericQ}, opts : OptionsPattern[]]
    If[TrueQ[OptionValue["ShowZeros"]],
     zeros = zcZerosInWindow[tmin, tmax, sweepOpts];
     If[FailureQ[zeros], Return[$Failed]];
-    AppendTo[defaultOpts, GridLines -> {zeros, {0}}]
+    AppendTo[defaultOpts, GridLines -> {zeros - tmin, {0}}]
     ];
+   (* x-coordinates are height-tmin -- see the comment on zcHeightTicks:
+      handing ListLinePlot absolute t at huge heights collapses every
+      x-coordinate to the same double under its own bare N[], well before
+      the tick labels even come into it. *)
    ListLinePlot[
-    N[{{#[[1]], Re[#[[2]]]} & /@ data, {#[[1]], Im[#[[2]]]} & /@ data}],
+    N[{{#[[1]] - tmin, Re[#[[2]]]} & /@ data, {#[[1]] - tmin, Im[#[[2]]]} & /@ data}],
     Sequence @@ Normal[Join[Association[defaultOpts], Association[userPlotOpts]]]]
    ]
   ];

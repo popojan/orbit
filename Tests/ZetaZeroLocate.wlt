@@ -111,6 +111,20 @@ VerificationTest[
   TestID -> "ZZL-locate-malformed-approx-fails-cleanly"
 ]
 
+(* Regression guard: unlike ZetaZeroApprox[n, count], ZetaZeroLocate takes
+   no count argument. A stray extra positional argument doesn't match
+   ZetaZeroLocate[n_Integer?Positive, opts:OptionsPattern[]] at all, so
+   without an explicit guard it's left symbolically unevaluated, and
+   First[unevaluated expr] then silently returns n itself -- a plausible-
+   looking number, not an obvious failure. Confirmed to actually happen
+   in a real session before this guard was added. *)
+VerificationTest[
+  ZetaZeroLocate[1000, 1],
+  $Failed,
+  {ZetaZeroLocate::argx},
+  TestID -> "ZZL-locate-rejects-extra-positional-argument"
+]
+
 (* ============ EQUIVALENCE, AT A HEIGHT BOTH TOOLS ACTUALLY VALIDATE ============ *)
 (* zetacalc's own regime starts ~1e6 (see RiemannSiegelZExternal.wlt); zero
    #1000 sits at t ~ 1419, comfortably inside it and still fast enough for
