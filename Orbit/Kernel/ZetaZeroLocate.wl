@@ -16,9 +16,9 @@ Get["Orbit`RiemannSiegelZExternal`"];
 
 $ZzzBinary::usage = "$ZzzBinary is the user-configurable path to the zzz executable. Automatic (default) defers to ZzzResolveBinary[].";
 
-ZzzResolveBinary::usage = "ZzzResolveBinary[] returns the zzz binary path that ZetaZeroApprox will try to run, in priority order: $ZzzBinary (if set), the ZZZ_BINARY environment variable, the sibling ../zzz/build/zzz checkout (relative to this paclet), or a bare \"zzz\" looked up on $PATH. It does not verify the binary runs -- use ZzzAvailableQ[] for that.";
+ZzzResolveBinary::usage = "ZzzResolveBinary[] returns the zzz binary path that ZetaZeroApprox will try to run, in priority order: $ZzzBinary (if set), the ZZZ_BINARY environment variable, the sibling ../zzz/build/zzz checkout, or a bare \"zzz\" looked up on $PATH. When bridging through WSL (see $ExternalBinaryUseWSL, shared with zetacalc), the sibling-checkout guess is resolved against the WSL side's own $HOME instead of this paclet's own location. Does not verify the binary runs -- use ZzzAvailableQ[] for that.";
 
-ZzzAvailableQ::usage = "ZzzAvailableQ[] returns True if the resolved zzz binary can actually be launched (checked with a quick --usage call), without raising messages.";
+ZzzAvailableQ::usage = "ZzzAvailableQ[] returns True if the resolved zzz binary can actually be launched (checked with a quick --usage call, bridged through wsl.exe first if $ExternalBinaryUseWSL applies), without raising messages.";
 
 ZetaZeroApprox::usage = "ZetaZeroApprox[n, count] returns count consecutive approximate ordinates of nontrivial zeta zeros starting at #n, from zzz's zeta-evaluation-free counting-function bisection over primes -- no Riemann-Siegel main sum is evaluated, so this reaches ordinals far beyond zetacalc's (or Wolfram's ZetaZero's) practical range. These are approximate: zzz's own project docs report never better than ~5% of the local zero gap, so this is a locator, not a refiner -- see ZetaZeroLocate for the paired refinement step. Options: \"Primes\" (100, zzz's -k: primes used in the truncated Euler product), \"Method\" (\"GHY\", zzz's -G flag: the Gonek-Hughes-Young 2007 hybrid Euler-Hadamard product, which has an actual error bound and was measured faster than \"Heuristic\", zzz's damped method A, which has none), \"Precision\" (Automatic = zzz's own 256-bit default, its -p), \"Tolerance\" (Automatic = zzz's own 1e-6 default bisection tolerance, its -t), \"ExtraDigits\" (30, zzz's -d: digits beyond the ordinate's integer part -- deliberately raised from zzz's own default of 6, which collapses the returned ordinate to Mathematica's MachinePrecision (a literal with ~16-17 total significant digits parses as a hardware double) once the ordinate itself has 10+ integer digits, i.e. already past roughly zero #1e5; no amount of bisection downstream can recover digits from arithmetic on values already pinned to hardware-double precision, so this has to be fixed at the source), \"BinaryPath\" (Automatic), \"ExtraArguments\" ({}). Returns $Failed (with a message) if zzz is missing, exits non-zero, or its stdout is not plain one-number-per-line -- never fails silently.";
 
@@ -34,19 +34,22 @@ $ZzzBinary = Automatic;
 (* RiemannSiegelZExternal.wl -- same pattern, different sibling repo) *)
 (* ================================================================ *)
 
-ZzzResolveBinary[] := Module[{envVar, siblingGuess},
+ZzzResolveBinary[] := Module[{envVar, siblingGuess, wslHome},
   envVar = Environment["ZZZ_BINARY"];
-  siblingGuess = Quiet@FileNameJoin[{ParentDirectory[zcZzzKernelDir, 3], "zzz", "build", "zzz"}];
   Which[
     $ZzzBinary =!= Automatic, $ZzzBinary,
     StringQ[envVar] && envVar =!= "", envVar,
-    Quiet[FileExistsQ[siblingGuess]] === True, siblingGuess,
-    True, "zzz"
+    zcUseWSLQ[] && zcWSLAvailableQ[],
+      wslHome = zcWSLHomeDir[];
+      If[StringQ[wslHome], wslHome <> "/github/zzz/build/zzz", "zzz"],
+    True,
+      siblingGuess = Quiet@FileNameJoin[{ParentDirectory[zcZzzKernelDir, 3], "zzz", "build", "zzz"}];
+      If[Quiet[FileExistsQ[siblingGuess]] === True, siblingGuess, "zzz"]
   ]
 ];
 
 ZzzAvailableQ[] := Module[{proc},
-  proc = Quiet@RunProcess[{ZzzResolveBinary[], "--usage"}];
+  proc = Quiet@RunProcess[Join[zcRunPrefix[], {ZzzResolveBinary[], "--usage"}]];
   AssociationQ[proc] && proc["ExitCode"] == 0
 ];
 
@@ -111,7 +114,7 @@ ZetaZeroApprox[n_Integer?Positive, count : (_Integer?Positive) : 1, OptionsPatte
   args = Join[args, {"-d", ToString[OptionValue["ExtraDigits"]]}];
   args = Join[args, OptionValue["ExtraArguments"], {ToString[n], "0", ToString[count]}];
 
-  proc = Quiet[RunProcess[Prepend[args, binary]]];
+  proc = Quiet[RunProcess[Join[zcRunPrefix[], {binary}, args]]];
   If[!AssociationQ[proc],
    Message[ZetaZeroApprox::nobin, binary];
    Return[$Failed]

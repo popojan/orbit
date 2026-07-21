@@ -24,6 +24,18 @@ VerificationTest[
   TestID -> "ZZL-availableq-returns-boolean"
 ]
 
+(* zzz shares the WSL-bridging helpers with zetacalc (RiemannSiegelZExternal`
+   Private context) -- confirm ZzzResolveBinary respects the same forced
+   override and degrades the same way when wsl.exe isn't actually present
+   (this machine is Linux), rather than each module needing its own copy. *)
+VerificationTest[
+  Block[{Orbit`$ExternalBinaryUseWSL = True},
+    {Orbit`Private`zcUseWSLQ[], StringQ[ZzzResolveBinary[]]}
+  ],
+  {True, True},
+  TestID -> "ZZL-wsl-forced-true-still-resolves-a-string"
+]
+
 (* ============ NO-SILENT-FAIL CONTRACT (always runs, no real zzz/zetacalc needed) ============ *)
 
 (* These calls pass BOTH positional arguments (n and count) explicitly --

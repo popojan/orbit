@@ -8,13 +8,17 @@
 
 BeginPackage["Orbit`"];
 
-$ZetaCalcBinary::usage = "$ZetaCalcBinary is the user-configurable path to the zetacalc executable. Automatic (default) defers to ZetaCalcResolveBinary[].";
+$ZetaCalcBinary::usage = "$ZetaCalcBinary is the user-configurable path to the zetacalc executable. Automatic (default) defers to ZetaCalcResolveBinary[]. When bridging through WSL (see $ExternalBinaryUseWSL), this must be the Linux-side path (e.g. \"/home/user/github/zeta/build/zetacalc\"), not a Windows path.";
 
-ZetaCalcResolveBinary::usage = "ZetaCalcResolveBinary[] returns the zetacalc binary path that RiemannSiegelZSweep will try to run, in priority order: $ZetaCalcBinary (if set), the ZETACALC_BINARY environment variable, the sibling ../zeta/build/zetacalc checkout (relative to this paclet), or a bare \"zetacalc\" looked up on $PATH. It does not verify the binary runs -- use ZetaCalcAvailableQ[] for that.";
+$ExternalBinaryUseWSL::usage = "$ExternalBinaryUseWSL controls whether zetacalc and zzz are both launched through \"wsl.exe -e <linux-path> <args>\" rather than directly -- a native-Windows process can't exec a Linux ELF binary built inside WSL on its own. Automatic (default) enables this iff $OperatingSystem === \"Windows\"; set True/False to override. Has no effect on Linux/macOS. Unverified on an actual Windows+WSL box as of this writing -- built from the documented wsl.exe CLI contract, not yet tested end to end.";
 
-ZetaCalcAvailableQ::usage = "ZetaCalcAvailableQ[] returns True if the resolved zetacalc binary can actually be launched (checked with a quick --help call), without raising messages. Use to guard code paths that would otherwise fail when zetacalc is not installed/built.";
+ZetaCalcResolveBinary::usage = "ZetaCalcResolveBinary[] returns the zetacalc binary path that RiemannSiegelZSweep will try to run, in priority order: $ZetaCalcBinary (if set), the ZETACALC_BINARY environment variable, the sibling ../zeta/build/zetacalc checkout, or a bare \"zetacalc\" looked up on $PATH. When bridging through WSL (see $ExternalBinaryUseWSL), the sibling-checkout guess is resolved against the WSL side's own $HOME (queried through wsl.exe, since there is no correspondence between a Windows-side paclet install path and the WSL Linux filesystem) instead of this paclet's own location. Does not verify the binary runs -- use ZetaCalcAvailableQ[] for that.";
 
-RiemannSiegelZSweep::usage = "RiemannSiegelZSweep[t0, n, delta] computes the Riemann-Siegel Z function at the n grid points t0, t0+delta, ..., t0+(n-1)*delta in a single zetacalc process call (zetacalc's multi-point sweeps are nearly free relative to one point). Returns a list of {height, Z[height]} pairs with height built from exact/high-precision WL arithmetic on t0 and delta (not by re-parsing zetacalc's own lower-precision offset column). Returns $Failed (with a message) if the binary is missing, exits non-zero, or its stdout does not match the documented \"offset value 0\" contract -- this never fails silently. Options: \"BinaryPath\" (Automatic), \"Threads\" (Automatic = zetacalc's own default of all hardware threads), \"Kmin\", \"GridCorrection\" (\"on\"/\"off\"), \"HeightDigits\" (decimal digits used to format t0/delta for zetacalc, Automatic = 60), \"Terse\" (True), \"ExtraArguments\" (extra raw CLI args, {}).";
+ZetaCalcAvailableQ::usage = "ZetaCalcAvailableQ[] returns True if the resolved zetacalc binary can actually be launched (checked with a quick --help call, bridged through wsl.exe first if $ExternalBinaryUseWSL applies), without raising messages. Use to guard code paths that would otherwise fail when zetacalc is not installed/built.";
+
+ZetaCalcCudaAvailableQ::usage = "ZetaCalcCudaAvailableQ[] returns True if the resolved zetacalc binary actually supports --stage2-kernel cuda on this machine -- a real, cheap single-point probe call, memoized for the session (clear with ZetaCalcCudaAvailableQ[] =. if you rebuild/reconfigure mid-session). zetacalc's own --help text lists \"cuda\" unconditionally regardless of how the binary was actually built, so this is the only way to know at run time; used by RiemannSiegelZSweep's \"StageKernel\" -> \"Auto\".";
+
+RiemannSiegelZSweep::usage = "RiemannSiegelZSweep[t0, n, delta] computes the Riemann-Siegel Z function at the n grid points t0, t0+delta, ..., t0+(n-1)*delta in a single zetacalc process call (zetacalc's multi-point sweeps are nearly free relative to one point). Returns a list of {height, Z[height]} pairs with height built from exact/high-precision WL arithmetic on t0 and delta (not by re-parsing zetacalc's own lower-precision offset column). Returns $Failed (with a message) if the binary is missing, exits non-zero, or its stdout does not match the documented \"offset value 0\" contract -- this never fails silently. Options: \"BinaryPath\" (Automatic), \"Threads\" (Automatic = zetacalc's own default of all hardware threads), \"Kmin\", \"GridCorrection\" (\"on\"/\"off\"), \"StageKernel\" (Automatic = omit the flag, zetacalc's own default \"fused\"; \"fused\"/\"reference\"/\"cuda\" pass that value through as-is; \"Auto\" opts into ZetaCalcCudaAvailableQ[]'s probe and uses cuda only if it actually works on this machine -- not the bare default, since the CUDA backend has a real ~1.7s per-process context cost per zeta/README.md that only pays off at very large heights, and defaulting to it unconditionally would silently regress small/quick sweeps), \"HeightDigits\" (decimal digits used to format t0/delta for zetacalc, Automatic = 60), \"Terse\" (True), \"ExtraArguments\" (extra raw CLI args, {}).";
 
 RiemannSiegelZetaSweep::usage = "RiemannSiegelZetaSweep[t0, n, delta] computes zeta(1/2+i*height) at the same grid as RiemannSiegelZSweep, by combining zetacalc's Z(height) with the rotation factor Exp[-I*RiemannSiegelTheta[height]] computed natively in WL, at working precision scaled to theta's own magnitude (theta(t) ~ (t/2)*Log[t/2pi] is as large as t itself, so MachinePrecision's relative error would otherwise become an absolute phase error far bigger than zetacalc's Z(t) error). Returns a list of {height, zeta[height]} pairs, or $Failed. Accepts the same options as RiemannSiegelZSweep.";
 
@@ -30,26 +34,75 @@ Begin["`Private`"];
 zcKernelDir = DirectoryName[$InputFileName];
 
 $ZetaCalcBinary = Automatic;
+$ExternalBinaryUseWSL = Automatic;
+
+(* ================================================================ *)
+(* WSL bridging (Windows only; shared by RiemannSiegelZExternal and   *)
+(* ZetaZeroLocate, same Orbit`Private` context, since zetacalc and    *)
+(* zzz face the identical problem: a Linux ELF binary built inside    *)
+(* WSL can't be launched directly by a native-Windows RunProcess --  *)
+(* it has to run as "wsl.exe -e <linux-path> <args>"). Unverified     *)
+(* against a real WSL install as of this writing.                    *)
+(* ================================================================ *)
+
+zcUseWSLQ[] := Which[
+  $ExternalBinaryUseWSL === True, True,
+  $ExternalBinaryUseWSL === False, False,
+  True, $OperatingSystem === "Windows"
+  ];
+
+(* Memoized: wsl.exe has real per-call startup latency (a cold WSL2 VM
+   boot can take seconds), and this would otherwise be paid on every
+   single binary resolution/availability check. Clear with
+   zcWSLAvailableQ[] =. (private, but harmless to reach into) if WSL
+   state changes mid-session. *)
+zcWSLAvailableQ[] := zcWSLAvailableQ[] = Module[{proc},
+   proc = Quiet@RunProcess[{"wsl.exe", "-e", "true"}];
+   AssociationQ[proc] && proc["ExitCode"] == 0
+   ];
+
+(* The Linux-side $HOME, queried through WSL itself -- there's no
+   correspondence between a Windows-side paclet install path and the
+   WSL Linux filesystem, so the sibling-checkout guess is resolved
+   against this instead of $InputFileName when bridging. *)
+zcWSLHomeDir[] := zcWSLHomeDir[] = Module[{proc},
+   proc = Quiet@RunProcess[{"wsl.exe", "-e", "sh", "-c", "echo $HOME"}];
+   If[AssociationQ[proc] && proc["ExitCode"] == 0, StringTrim[proc["StandardOutput"]], $Failed]
+   ];
+
+(* Command prefix to prepend to a resolved binary + its args. Empty
+   when not bridging, so every existing native Linux/macOS call path
+   is completely unaffected. *)
+zcRunPrefix[] := If[zcUseWSLQ[] && zcWSLAvailableQ[], {"wsl.exe", "-e"}, {}];
 
 (* ================================================================ *)
 (* Binary resolution                                                 *)
 (* ================================================================ *)
 
-ZetaCalcResolveBinary[] := Module[{envVar, siblingGuess},
+ZetaCalcResolveBinary[] := Module[{envVar, siblingGuess, wslHome},
   envVar = Environment["ZETACALC_BINARY"];
-  siblingGuess = Quiet@FileNameJoin[{ParentDirectory[zcKernelDir, 3], "zeta", "build", "zetacalc"}];
   Which[
     $ZetaCalcBinary =!= Automatic, $ZetaCalcBinary,
     StringQ[envVar] && envVar =!= "", envVar,
-    Quiet[FileExistsQ[siblingGuess]] === True, siblingGuess,
-    True, "zetacalc"
+    zcUseWSLQ[] && zcWSLAvailableQ[],
+      wslHome = zcWSLHomeDir[];
+      If[StringQ[wslHome], wslHome <> "/github/zeta/build/zetacalc", "zetacalc"],
+    True,
+      siblingGuess = Quiet@FileNameJoin[{ParentDirectory[zcKernelDir, 3], "zeta", "build", "zetacalc"}];
+      If[Quiet[FileExistsQ[siblingGuess]] === True, siblingGuess, "zetacalc"]
   ]
 ];
 
 ZetaCalcAvailableQ[] := Module[{proc},
-  proc = Quiet@RunProcess[{ZetaCalcResolveBinary[], "--help"}];
+  proc = Quiet@RunProcess[Join[zcRunPrefix[], {ZetaCalcResolveBinary[], "--help"}]];
   AssociationQ[proc] && proc["ExitCode"] == 0
 ];
+
+ZetaCalcCudaAvailableQ[] := ZetaCalcCudaAvailableQ[] = Module[{proc},
+  proc = Quiet@RunProcess[Join[zcRunPrefix[],
+     {ZetaCalcResolveBinary[], "--t", "1000", "--N", "1", "--Z", "--terse", "--stage2-kernel", "cuda"}]];
+  AssociationQ[proc] && proc["ExitCode"] == 0
+  ];
 
 (* ================================================================ *)
 (* Numeric -> plain decimal-with-"e"-exponent string (never *^)      *)
@@ -108,6 +161,7 @@ Options[RiemannSiegelZSweep] = {
   "Threads" -> Automatic,
   "Kmin" -> Automatic,
   "GridCorrection" -> Automatic,
+  "StageKernel" -> Automatic,
   "HeightDigits" -> Automatic,
   "Terse" -> True,
   "ExtraArguments" -> {}
@@ -117,10 +171,11 @@ RiemannSiegelZSweep::nobin = "zetacalc binary not found or not runnable (tried `
 RiemannSiegelZSweep::exec = "zetacalc exited with code `1`: `2`";
 RiemannSiegelZSweep::badout = "zetacalc produced a line that does not match the documented \"offset value 0\" contract: `1`. This may indicate stdout/stderr are no longer separated in this zetacalc build.";
 RiemannSiegelZSweep::badcount = "zetacalc returned `1` output line(s) on stdout, expected `2`.";
+RiemannSiegelZSweep::stagekernel = "unknown \"StageKernel\" -> `1` (expected \"fused\", \"reference\", \"cuda\", \"Auto\", or Automatic).";
 
 RiemannSiegelZSweep[t0_?NumericQ, n_Integer?Positive, delta_?NumericQ, OptionsPattern[]] :=
  Module[{binary, digits, tStr, deltaStr, args, proc, exitCode, stdout, stderr,
-   lines, parsed, badLine},
+   lines, parsed, badLine, stageKernel},
   digits = OptionValue["HeightDigits"];
   If[digits === Automatic, digits = 60];
   binary = If[OptionValue["BinaryPath"] =!= Automatic,
@@ -128,6 +183,18 @@ RiemannSiegelZSweep[t0_?NumericQ, n_Integer?Positive, delta_?NumericQ, OptionsPa
     ZetaCalcResolveBinary[]];
   tStr = zcDecimalString[t0, digits];
   deltaStr = zcDecimalString[delta, Max[digits, 20]];
+
+  stageKernel = OptionValue["StageKernel"];
+  If[stageKernel =!= Automatic && !MemberQ[{"fused", "reference", "cuda", "Auto"}, stageKernel],
+   Message[RiemannSiegelZSweep::stagekernel, stageKernel];
+   Return[$Failed]
+   ];
+  (* "Auto" opts into the real probe (ZetaCalcCudaAvailableQ) rather than
+     unconditionally requesting cuda -- unlike a missing binary or a bad
+     argument, requesting cuda on a non-CUDA build is a *clean* zetacalc-
+     level failure (checked in its own source against stage2_cuda_available()),
+     but still not something to hand the user by default. *)
+  If[stageKernel === "Auto", stageKernel = If[ZetaCalcCudaAvailableQ[], "cuda", Automatic]];
 
   args = {"--t", tStr, "--N", ToString[n], "--delta", deltaStr, "--Z"};
   If[TrueQ[OptionValue["Terse"]], AppendTo[args, "--terse"]];
@@ -137,9 +204,11 @@ RiemannSiegelZSweep[t0_?NumericQ, n_Integer?Positive, delta_?NumericQ, OptionsPa
     args = Join[args, {"--Kmin", ToString[OptionValue["Kmin"]]}]];
   If[OptionValue["GridCorrection"] =!= Automatic,
     args = Join[args, {"--grid-correction", OptionValue["GridCorrection"]}]];
+  If[stageKernel =!= Automatic,
+    args = Join[args, {"--stage2-kernel", stageKernel}]];
   args = Join[args, OptionValue["ExtraArguments"]];
 
-  proc = Quiet[RunProcess[Prepend[args, binary]]];
+  proc = Quiet[RunProcess[Join[zcRunPrefix[], {binary}, args]]];
   If[!AssociationQ[proc],
    Message[RiemannSiegelZSweep::nobin, binary];
    Return[$Failed]
@@ -304,17 +373,27 @@ zcReImPlotStyle[] := Module[{g, colors, dashes, thick},
    ticks carry only the part that actually varies across the window. The
    reference itself is added separately, in the top FrameLabel slot -- see
    zcHeightReferenceLabel. *)
+(* off is computed directly as step*(k-1), never as positions[[k]]-tmin --
+   the latter looked equivalent but silently broke at large absolute
+   heights: a bare N[...] on the (possibly Precision-40+) positions list
+   collapses everything to MachinePrecision, and once tmin's magnitude
+   exceeds the ULP that MachinePrecision affords (~t*2.22*10^-16 -- already
+   bigger than a typical tick spacing at t ~ 1e15+), every tick position
+   rounds to the *same* double and every offset comes out identically 0,
+   with a NumberForm::reqsigz warning from trying to then display digits
+   the (now machine-precision) number doesn't actually have. Computing off
+   from step alone, and the absolute tick position from tmin + step*(k-1)
+   with no intervening bare N[...], sidesteps this at any height. *)
 zcHeightTicks[tmin_?NumericQ, tmax_?NumericQ, numTicks_Integer : 6] := Module[
-  {positions, step, digits},
+  {step, digits},
   step = (tmax - tmin)/(numTicks - 1);
-  positions = N[tmin + step*Range[0, numTicks - 1]];
   digits = Max[0, Ceiling[-Log10[Max[Abs[step], 10^-6]]] + 2];
   Table[
-   With[{off = positions[[k]] - tmin},
-    {positions[[k]],
+   With[{off = step*(k - 1), pos = tmin + step*(k - 1)},
+    {pos,
      If[off == 0, "0", "+" <> ToString[NumberForm[off, {Infinity, digits}, ExponentFunction -> (Null &)]]]}
     ],
-   {k, Length[positions]}
+   {k, numTicks}
    ]
   ];
 
@@ -323,8 +402,16 @@ zcHeightTicks[tmin_?NumericQ, tmax_?NumericQ, numTicks_Integer : 6] := Module[
    than not -- confirmed by actually rendering and looking, not assumed.
    The FrameLabel "top" slot has guaranteed reserved layout space instead. *)
 zcHeightReferenceLabel[tmin_?NumericQ] := Style[
+  (* No bare N[tmin] here -- same MachinePrecision-collapse trap as
+     zcHeightTicks above, just via NumberForm::reqsigz directly instead of
+     a wrong tick value: at t ~ 1e18, tmin has ~19 integer digits but a
+     bare N[] truncates it to MachinePrecision's ~16 significant digits,
+     and NumberForm{Infinity,0} then can't show all the integer digits it
+     was just asked for. NumberForm formats an exact or high-precision
+     real directly, with no need for a pre-conversion that only discards
+     information. *)
   "t = " <> If[IntegerQ[tmin], ToString[tmin],
-    ToString[NumberForm[N[tmin], {Infinity, 0}, ExponentFunction -> (Null &)]]] <> " + ...",
+    ToString[NumberForm[tmin, {Infinity, 0}, ExponentFunction -> (Null &)]]] <> " + ...",
   GrayLevel[0.5], 10
   ];
 

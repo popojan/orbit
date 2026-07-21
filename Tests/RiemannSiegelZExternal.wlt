@@ -23,6 +23,49 @@ VerificationTest[
   TestID -> "RSZExt-availableq-returns-boolean"
 ]
 
+VerificationTest[
+  BooleanQ[ZetaCalcCudaAvailableQ[]],
+  True,
+  TestID -> "RSZExt-cudaavailableq-returns-boolean"
+]
+
+(* ============ WSL BRIDGING (always runs -- this machine is Linux, so *)
+(* Automatic must be a complete no-op; forcing True must degrade *)
+(* gracefully rather than break, since wsl.exe doesn't exist here) ============ *)
+
+VerificationTest[
+  Orbit`Private`zcUseWSLQ[],
+  False,
+  TestID -> "RSZExt-wsl-automatic-off-on-linux"
+]
+
+VerificationTest[
+  Orbit`Private`zcRunPrefix[],
+  {},
+  TestID -> "RSZExt-wsl-runprefix-empty-by-default"
+]
+
+(* Forcing $ExternalBinaryUseWSL -> True on a box with no wsl.exe must not
+   silently misbehave -- zcWSLAvailableQ[] should correctly report False,
+   and zcRunPrefix[] must still come back empty (fall through to direct
+   execution), not a broken {"wsl.exe", "-e"} prefix pointed at nothing. *)
+VerificationTest[
+  Block[{Orbit`$ExternalBinaryUseWSL = True},
+    {Orbit`Private`zcUseWSLQ[], Orbit`Private`zcWSLAvailableQ[], Orbit`Private`zcRunPrefix[]}
+  ],
+  {True, False, {}},
+  TestID -> "RSZExt-wsl-forced-true-degrades-gracefully-without-wsl-exe"
+]
+
+(* ============ STAGEKERNEL (always runs for validation; real calls below) ============ *)
+
+VerificationTest[
+  RiemannSiegelZSweep[1000, 3, 1/20, "StageKernel" -> "not-a-real-kernel"],
+  $Failed,
+  {RiemannSiegelZSweep::stagekernel},
+  TestID -> "RSZExt-stagekernel-rejects-unknown-value"
+]
+
 (* ============ NO-SILENT-FAIL CONTRACT (always runs, no real zetacalc needed) ============ *)
 
 (* Missing/bogus binary: must fail loudly with a specific message, not just $Failed. *)
@@ -149,6 +192,35 @@ VerificationTest[
   TestID -> "RSZExt-heightticks-all-labels-distinguishable"
 ]
 
+(* Regression guard: at a huge, genuinely high-precision height (mirroring
+   what ZetaZeroApprox returns at t ~ 1e18) with a narrow window, an
+   earlier version silently collapsed all tick positions to the same
+   double (bare N[...] truncates Precision-47 input to MachinePrecision,
+   whose ULP at this magnitude already exceeds the tick spacing) --
+   producing identical "0" offsets everywhere and a NumberForm::reqsigz
+   warning when the reference label tried to show more integer digits
+   than that collapsed precision actually had. Neither should happen now
+   that off is computed from step alone, never from a subtraction of two
+   near-equal huge numbers. *)
+VerificationTest[
+  Module[{tmin, ticks},
+    tmin = N[10^18 + 1/3, 47];
+    ticks = Orbit`Private`zcHeightTicks[tmin, tmin + 2];
+    Length[DeleteDuplicates[ticks[[All, 2]]]] == 6
+  ],
+  True,
+  TestID -> "RSZExt-heightticks-distinguishable-at-huge-height"
+]
+
+VerificationTest[
+  Module[{tmin},
+    tmin = N[10^18 + 1/3, 47];
+    Check[Orbit`Private`zcHeightReferenceLabel[tmin]; True, False, NumberForm::reqsigz]
+  ],
+  True,
+  TestID -> "RSZExt-heightreference-no-reqsigz-at-huge-height"
+]
+
 (* The reference annotation carries the absolute height ticks no longer
    repeat, and doesn't choke on an exact-integer tmin (no stray "100." --
    NumberForm's default trailing decimal point for a converted Real). *)
@@ -229,6 +301,29 @@ If[ZetaCalcAvailableQ[],
     ],
     True,
     TestID -> "RSZExt-equivalence-Z-t1e6"
+  ];
+
+  (* "StageKernel" -> "fused"/"reference" must both actually run (they're
+     always available, unlike cuda) and agree with each other -- a real
+     regression guard, not just "doesn't error", since a typo in the CLI
+     mapping would silently fall through to zetacalc's own default instead
+     of the requested kernel. *)
+  VerificationTest[
+    Module[{fused, ref},
+      fused = RiemannSiegelZSweep[1000000, 3, 1/20, "Threads" -> 1, "StageKernel" -> "fused"];
+      ref = RiemannSiegelZSweep[1000000, 3, 1/20, "Threads" -> 1, "StageKernel" -> "reference"];
+      !FailureQ[fused] && !FailureQ[ref] && Max[Abs[fused[[All, 2]] - ref[[All, 2]]]] < 10^-9
+    ],
+    True,
+    TestID -> "RSZExt-stagekernel-fused-and-reference-agree"
+  ];
+
+  (* "Auto" must not blow up when cuda isn't actually available (the normal
+     case on this dev box) -- falls back to omitting the flag entirely. *)
+  VerificationTest[
+    Head[RiemannSiegelZSweep[1000000, 3, 1/20, "Threads" -> 1, "StageKernel" -> "Auto"]],
+    List,
+    TestID -> "RSZExt-stagekernel-auto-falls-back-cleanly"
   ];
 
   VerificationTest[
