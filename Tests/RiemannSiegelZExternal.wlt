@@ -40,21 +40,58 @@ VerificationTest[
 ]
 
 VerificationTest[
-  Orbit`Private`zcRunPrefix[],
-  {},
-  TestID -> "RSZExt-wsl-runprefix-empty-by-default"
+  Orbit`Private`zcShellQuote["plain"],
+  "'plain'",
+  TestID -> "RSZExt-shellquote-plain-string"
+]
+
+(* A literal single quote must be escaped as '"'"' (close quote, literal
+   quote via double-quoting, reopen quote) -- the standard POSIX trick,
+   needed since args can in principle come from user-supplied
+   "ExtraArguments". *)
+VerificationTest[
+  Orbit`Private`zcShellQuote["it's"],
+  "'it'\"'\"'s'",
+  TestID -> "RSZExt-shellquote-escapes-embedded-quote"
+]
+
+VerificationTest[
+  Orbit`Private`zcWSLCommand["zetacalc", {"--t", "1000"}],
+  {"zetacalc", "--t", "1000"},
+  TestID -> "RSZExt-wsl-command-plain-by-default"
 ]
 
 (* Forcing $ExternalBinaryUseWSL -> True on a box with no wsl.exe must not
    silently misbehave -- zcWSLAvailableQ[] should correctly report False,
-   and zcRunPrefix[] must still come back empty (fall through to direct
-   execution), not a broken {"wsl.exe", "-e"} prefix pointed at nothing. *)
+   and zcWSLCommand must still come back as a plain argv list (fall
+   through to direct execution), not a broken "wsl.exe -e bash -lc ..."
+   invocation pointed at nothing. *)
 VerificationTest[
   Block[{Orbit`$ExternalBinaryUseWSL = True},
-    {Orbit`Private`zcUseWSLQ[], Orbit`Private`zcWSLAvailableQ[], Orbit`Private`zcRunPrefix[]}
+    {Orbit`Private`zcUseWSLQ[], Orbit`Private`zcWSLAvailableQ[],
+     Orbit`Private`zcWSLCommand["zetacalc", {"--t", "1000"}]}
   ],
-  {True, False, {}},
-  TestID -> "RSZExt-wsl-forced-true-degrades-gracefully-without-wsl-exe"
+  {True, False, {"zetacalc", "--t", "1000"}},
+  TestID -> "RSZExt-wsl-command-degrades-gracefully-without-wsl-exe"
+]
+
+(* zcWSLCommand deliberately does NOT use "wsl.exe -e <path> <args>" (execs
+   directly, skipping .bashrc/.profile -- confirmed to cause
+   ZetaCalcCudaAvailableQ[] to read false on a machine with a verified
+   working CUDA build, since CUDA-related LD_LIBRARY_PATH/PATH setup is
+   commonly done in shell startup files). Regression guard for the shape
+   of the fix: when it WOULD bridge, the command must route through a
+   login shell with the binary+args shell-quoted into one string, not a
+   bare argv-style prefix. zcWSLAvailableQ is Block-scoped (not globally
+   reassigned) so this doesn't affect its real, memoized value in any
+   other test. *)
+VerificationTest[
+  Block[{Orbit`$ExternalBinaryUseWSL = True, Orbit`Private`zcWSLAvailableQ},
+   Orbit`Private`zcWSLAvailableQ[] := True;
+   Orbit`Private`zcWSLCommand["/home/user/zetacalc", {"--t", "1000"}]
+   ],
+  {"wsl.exe", "-e", "bash", "-lc", "'/home/user/zetacalc' '--t' '1000'"},
+  TestID -> "RSZExt-wsl-command-uses-login-shell-when-bridging"
 ]
 
 (* ============ STAGEKERNEL (always runs for validation; real calls below) ============ *)
@@ -195,6 +232,23 @@ VerificationTest[
   Length[DeleteDuplicates[Orbit`Private`zcHeightTicks[29538618432.0, 29538618432.5][[All, 2]]]],
   6,
   TestID -> "RSZExt-heightticks-all-labels-distinguishable"
+]
+
+(* Regression guard: exact tmin/tmax (the common case -- plain integer
+   bounds) with a window width that doesn't divide evenly by numTicks-1
+   (e.g. width 2 over 5 steps -> step 2/5) leaves the tick offset an
+   exact Rational. NumberForm renders an exact Rational as a stacked
+   fraction, not a decimal, no matter the requested digit count -- only
+   N[] first fixes that, confirmed directly against a real report of
+   ticks showing as fractions with the numerator/denominator spaced too
+   far apart. Every label must be a clean "+d.ddd"-style decimal string,
+   never contain "/". *)
+VerificationTest[
+  Module[{ticks = Orbit`Private`zcHeightTicks[1000000, 1000002]},
+    AllTrue[ticks[[All, 2]], StringFreeQ[#, "/"] &]
+  ],
+  True,
+  TestID -> "RSZExt-heightticks-exact-non-dividing-window-no-fractions"
 ]
 
 (* Regression guard: at a huge, genuinely high-precision height (mirroring

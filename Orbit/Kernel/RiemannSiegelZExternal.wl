@@ -70,10 +70,26 @@ zcWSLHomeDir[] := zcWSLHomeDir[] = Module[{proc},
    If[AssociationQ[proc] && proc["ExitCode"] == 0, StringTrim[proc["StandardOutput"]], $Failed]
    ];
 
-(* Command prefix to prepend to a resolved binary + its args. Empty
-   when not bridging, so every existing native Linux/macOS call path
-   is completely unaffected. *)
-zcRunPrefix[] := If[zcUseWSLQ[] && zcWSLAvailableQ[], {"wsl.exe", "-e"}, {}];
+(* POSIX single-quote a string for safe inclusion in a shell command line:
+   wrap in '...', escaping any embedded ' as '"'"' (close quote, literal
+   quote, reopen quote). *)
+zcShellQuote[s_String] := "'" <> StringReplace[s, "'" -> "'\"'\"'"] <> "'";
+
+(* Full RunProcess argument list for invoking `binary args...`, bridged
+   through WSL if applicable. Deliberately NOT "wsl.exe -e <path> <args>"
+   -- wsl.exe's -e execs the target directly, skipping .bashrc/.profile,
+   so any CUDA-related LD_LIBRARY_PATH/PATH setup done there (as WSL CUDA
+   installs commonly require) would be silently absent even though the
+   identical binary works fine from an interactive WSL shell -- exactly
+   the failure mode reported: ZetaCalcCudaAvailableQ[] false on a machine
+   confirmed to have a working CUDA build. Routing through "bash -lc"
+   (a login shell) picks up the same environment an interactive session
+   would have, at the cost of needing to shell-quote the command line
+   ourselves instead of passing an argv list directly. *)
+zcWSLCommand[binary_String, args_List] := If[zcUseWSLQ[] && zcWSLAvailableQ[],
+   {"wsl.exe", "-e", "bash", "-lc", StringRiffle[zcShellQuote /@ Prepend[args, binary], " "]},
+   Prepend[args, binary]
+   ];
 
 (* ================================================================ *)
 (* Binary resolution                                                 *)
@@ -94,13 +110,13 @@ ZetaCalcResolveBinary[] := Module[{envVar, siblingGuess, wslHome},
 ];
 
 ZetaCalcAvailableQ[] := Module[{proc},
-  proc = Quiet@RunProcess[Join[zcRunPrefix[], {ZetaCalcResolveBinary[], "--help"}]];
+  proc = Quiet@RunProcess[zcWSLCommand[ZetaCalcResolveBinary[], {"--help"}]];
   AssociationQ[proc] && proc["ExitCode"] == 0
 ];
 
 ZetaCalcCudaAvailableQ[] := ZetaCalcCudaAvailableQ[] = Module[{proc},
-  proc = Quiet@RunProcess[Join[zcRunPrefix[],
-     {ZetaCalcResolveBinary[], "--t", "1000", "--N", "1", "--Z", "--terse", "--stage2-kernel", "cuda"}]];
+  proc = Quiet@RunProcess[zcWSLCommand[ZetaCalcResolveBinary[],
+     {"--t", "1000", "--N", "1", "--Z", "--terse", "--stage2-kernel", "cuda"}]];
   AssociationQ[proc] && proc["ExitCode"] == 0
   ];
 
@@ -208,7 +224,7 @@ RiemannSiegelZSweep[t0_?NumericQ, n_Integer?Positive, delta_?NumericQ, OptionsPa
     args = Join[args, {"--stage2-kernel", stageKernel}]];
   args = Join[args, OptionValue["ExtraArguments"]];
 
-  proc = Quiet[RunProcess[Join[zcRunPrefix[], {binary}, args]]];
+  proc = Quiet[RunProcess[zcWSLCommand[binary, args]]];
   If[!AssociationQ[proc],
    Message[RiemannSiegelZSweep::nobin, binary];
    Return[$Failed]
@@ -449,7 +465,18 @@ zcHeightTicks[tmin_?NumericQ, tmax_?NumericQ, numTicks_Integer : 6] := Module[
   Table[
    With[{off = step*(k - 1)},
     {off,
-     If[off == 0, "0", "+" <> ToString[NumberForm[off, {Infinity, digits}, ExponentFunction -> (Null &)]]]}
+     If[off == 0, "0",
+      (* off is exact whenever tmin/tmax are (the common case for plain
+         integer/rational bounds) and the window width doesn't divide
+         evenly by numTicks-1 -- confirmed directly: NumberForm on an
+         exact Rational renders a stacked fraction, not a decimal, no
+         matter what digit count is requested; only N[] first fixes that.
+         Skipped for already-approximate off (which N[] alone, with no
+         explicit digit count, would instead collapse to MachinePrecision
+         -- the exact reqsigz-class bug fixed earlier in this file). *)
+      "+" <> ToString[NumberForm[
+         If[Precision[off] === Infinity, N[off, digits + 10], off],
+         {Infinity, digits}, ExponentFunction -> (Null &)]]]}
     ],
    {k, numTicks}
    ]

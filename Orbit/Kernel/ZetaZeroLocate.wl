@@ -49,7 +49,7 @@ ZzzResolveBinary[] := Module[{envVar, siblingGuess, wslHome},
 ];
 
 ZzzAvailableQ[] := Module[{proc},
-  proc = Quiet@RunProcess[Join[zcRunPrefix[], {ZzzResolveBinary[], "--usage"}]];
+  proc = Quiet@RunProcess[zcWSLCommand[ZzzResolveBinary[], {"--usage"}]];
   AssociationQ[proc] && proc["ExitCode"] == 0
 ];
 
@@ -114,7 +114,7 @@ ZetaZeroApprox[n_Integer?Positive, count : (_Integer?Positive) : 1, OptionsPatte
   args = Join[args, {"-d", ToString[OptionValue["ExtraDigits"]]}];
   args = Join[args, OptionValue["ExtraArguments"], {ToString[n], "0", ToString[count]}];
 
-  proc = Quiet[RunProcess[Join[zcRunPrefix[], {binary}, args]]];
+  proc = Quiet[RunProcess[zcWSLCommand[binary, args]]];
   If[!AssociationQ[proc],
    Message[ZetaZeroApprox::nobin, binary];
    Return[$Failed]
